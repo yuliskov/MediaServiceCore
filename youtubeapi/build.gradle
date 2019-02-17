@@ -2,17 +2,22 @@ apply from: '../constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
     testOptions.unitTests.includeAndroidResources = true
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 28
-        versionCode 1
-        versionName "0.0.1"
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        versionCode 5
+        versionName "0.0.5"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        consumerProguardFiles 'proguard-rules.txt'
     }
 
     buildTypes {

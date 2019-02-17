@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
+    testOptions.unitTests.includeAndroidResources = true
 
     defaultConfig {
         minSdkVersion 17
@@ -20,7 +21,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {

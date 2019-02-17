@@ -22,7 +22,7 @@ public class BrowserAuthTest {
     @Before
     public void setUp() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.youtube.com")
+                .baseUrl("https://www.youtube.com") // ignored in case of full url
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -30,7 +30,7 @@ public class BrowserAuthTest {
     }
 
     @Test
-    public void testUserAndDeviceCodeNotNull() throws IOException {
+    public void testThatUserCodeFieldsNotEmpty() throws IOException {
         Call<UserCode> userCode = mService.getUserCode(DEFAULT_APP_CLIENT_ID, DEFAULT_APP_SCOPE);
         Response<UserCode> response = userCode.execute();
         UserCode code = response.body();

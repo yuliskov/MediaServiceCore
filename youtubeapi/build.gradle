@@ -28,5 +28,9 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:' + appCompatVersion
     testImplementation 'junit:junit:' + junitVersion
-    androidTestImplementation 'com.android.support.test:runner:' + testRunnerVersion
+    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
+
+    implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
+    implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
+    implementation 'com.google.code.gson:gson:' + gsonVersion
 }

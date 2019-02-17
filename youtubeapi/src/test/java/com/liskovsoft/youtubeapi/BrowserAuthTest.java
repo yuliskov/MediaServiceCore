@@ -60,6 +60,7 @@ public class BrowserAuthTest {
 
     private AccessToken getAccessToken() throws IOException {
         UserCode userCode = getUserCode();
+        System.out.println("The user code is: " + userCode.getUserCode());
 
         Call<AccessToken> token = mService.getAuthToken(DEFAULT_APP_CLIENT_ID, userCode.getDeviceCode(), DEFAULT_APP_CLIENT_SECRET, DEFAULT_APP_GRANT_TYPE);
         Response<AccessToken> response = token.execute();

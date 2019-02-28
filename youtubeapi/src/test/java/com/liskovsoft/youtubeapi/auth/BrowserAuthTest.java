@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi;
+package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.youtubeapi.auth.BrowserAuth;
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;

@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
 public @interface JsonPath {
     /**
      * Path for the desired json element
-     * @return
      */
     String value();
 }

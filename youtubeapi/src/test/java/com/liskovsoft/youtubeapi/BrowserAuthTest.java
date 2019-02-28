@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi;
 
-import com.liskovsoft.youtubeapi.models.AccessToken;
-import com.liskovsoft.youtubeapi.models.UserCode;
+import com.liskovsoft.youtubeapi.auth.BrowserAuth;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.UserCode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

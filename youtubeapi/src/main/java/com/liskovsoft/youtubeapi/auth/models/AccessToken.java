@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.models;
+package com.liskovsoft.youtubeapi.auth.models;
 
 import com.google.gson.annotations.SerializedName;
 

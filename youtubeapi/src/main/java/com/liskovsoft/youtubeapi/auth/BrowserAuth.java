@@ -1,7 +1,7 @@
-package com.liskovsoft.youtubeapi;
+package com.liskovsoft.youtubeapi.auth;
 
-import com.liskovsoft.youtubeapi.models.AccessToken;
-import com.liskovsoft.youtubeapi.models.UserCode;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.UserCode;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

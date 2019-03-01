@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.content.models;
+package com.liskovsoft.youtubeapi.content.models.videos;
 
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 public class MusicItem {
     @JsonPath("$.tvMusicVideoRenderer.navigationEndpoint.watchEndpoint.videoId")
     private String videoId;
-    @JsonPath("$.tvMusicVideoRenderer.thumbnail.thumbnails")
+    @JsonPath("$.tvMusicVideoRenderer.thumbnail.thumbnails[*]")
     private JsonPathCollection<Thumbnail> thumbnails = new JsonPathCollection<>(Thumbnail.class);
     @JsonPath("$.tvMusicVideoRenderer.primaryText.runs[0].text")
     private String title;

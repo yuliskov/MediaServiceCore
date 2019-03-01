@@ -1,14 +1,12 @@
-package com.liskovsoft.youtubeapi.content.models;
+package com.liskovsoft.youtubeapi.content.models.videos;
 
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
-import java.util.List;
-
 public class VideoItem {
     @JsonPath("$.gridVideoRenderer.videoId")
     private String videoId;
-    @JsonPath("$.gridVideoRenderer.thumbnail.thumbnails")
+    @JsonPath("$.gridVideoRenderer.thumbnail.thumbnails[*]")
     private JsonPathCollection<Thumbnail> thumbnails = new JsonPathCollection<>(Thumbnail.class);
     @JsonPath("$.gridVideoRenderer.title.runs[0].text")
     private String title;

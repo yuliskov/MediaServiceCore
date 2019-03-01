@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.support;
+package com.liskovsoft.youtubeapi.converters.jsonpath;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

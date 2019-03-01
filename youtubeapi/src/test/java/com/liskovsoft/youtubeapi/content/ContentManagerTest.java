@@ -1,14 +1,19 @@
 package com.liskovsoft.youtubeapi.content;
 
-import com.liskovsoft.youtubeapi.content.models.ContentTab;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.liskovsoft.youtubeapi.content.models.ContentTabCollection;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathConverterFactory;
+import com.liskovsoft.youtubeapi.deserializer.ContentTabCollectionDeserializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.List;
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,17 +29,21 @@ public class ContentManagerTest {
 
     @Before
     public void setUp() {
+        Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(ContentTabCollection.class, new ContentTabCollectionDeserializer())
+                        .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.youtube.com") // ignored in case of full url
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(JsonPathConverterFactory.create())
                 .build();
 
         mService = retrofit.create(ContentManager.class);
     }
 
     @Test
-    public void testThatContentTabsNotEmpty() {
-        List<ContentTab> tabs = mService.getContentTabs(BODY_JSON);
-        assertTrue(tabs.size() > 2);
+    public void testThatContentTabsNotEmpty() throws IOException {
+        Call<ContentTabCollection> tabs = mService.getContentTabs(BODY_JSON);
+        assertTrue(tabs.execute().body().size() > 2);
     }
 }

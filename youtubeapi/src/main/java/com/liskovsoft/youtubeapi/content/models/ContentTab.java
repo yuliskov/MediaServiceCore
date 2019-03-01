@@ -1,10 +1,10 @@
 package com.liskovsoft.youtubeapi.content.models;
 
-import com.liskovsoft.youtubeapi.support.JsonPath;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-@JsonPath("$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs")
+@JsonPath("$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs[*]")
 public class ContentTab {
     @JsonPath("$.tabRenderer.title")
     private String title;

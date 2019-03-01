@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.content.models;
 
-import com.liskovsoft.youtubeapi.support.JsonPath;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 
 public class Thumbnail {
     @JsonPath("$.url")

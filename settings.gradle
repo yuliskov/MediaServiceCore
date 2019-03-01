@@ -1,1 +1,3 @@
 include ':youtubeapi'
+//include ':youtubeapi', ':sharedutils'
+//project(':sharedutils').projectDir = new File('..\\SharedUtils')

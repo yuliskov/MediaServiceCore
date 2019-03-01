@@ -27,6 +27,7 @@ project.ext {
     espressoVersion = '3.1.0'
     retrofitVersion = '2.5.0'
     gsonVersion = '2.8.2'
+    jsonPathVersion = '2.4.0'
 
     modulePrefix = ':'
     if (gradle.ext.has('appModulePrefix')) {

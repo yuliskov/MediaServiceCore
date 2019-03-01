@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.content.models;
 
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class VideoItem {
     @JsonPath("$.gridVideoRenderer.videoId")
     private String videoId;
     @JsonPath("$.gridVideoRenderer.thumbnail.thumbnails")
-    private List<Thumbnail> thumbnails;
+    private JsonPathCollection<Thumbnail> thumbnails = new JsonPathCollection<>(Thumbnail.class);
     @JsonPath("$.gridVideoRenderer.title.runs[0].text")
     private String title;
     @JsonPath("$.gridVideoRenderer.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId")

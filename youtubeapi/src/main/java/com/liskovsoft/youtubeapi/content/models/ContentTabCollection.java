@@ -1,9 +1,11 @@
 package com.liskovsoft.youtubeapi.content.models;
 
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
-
-import java.util.ArrayList;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
 @JsonPath("$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs[*]")
-public class ContentTabCollection extends ArrayList<ContentTab> {
+public class ContentTabCollection extends JsonPathCollection<ContentTab> {
+    public ContentTabCollection() {
+        super(ContentTab.class);
+    }
 }

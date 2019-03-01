@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.converters.jsonpath;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
 
@@ -36,19 +37,21 @@ public abstract class TypeAdapter<T> {
             Constructor<?> constructor = type.getConstructor();
             obj = constructor.newInstance();
 
-            if (obj instanceof List) {
+            if (obj instanceof JsonPathCollection) {
+                Class<?> myType = ((JsonPathCollection<Object>) obj).getMyType();
                 for (Object jsonObj : (JsonArray) jsonString) {
-                    ((List<Object>) obj).add(readType(type.getTypeParameters()[0].getClass(), jsonObj.toString()));
+                    ((JsonPathCollection<Object>) obj).add(readType(myType, jsonObj.toString()));
                 }
 
                 return obj;
             }
 
-            DocumentContext parser = mParser.parse(jsonString);
+            DocumentContext parser = mParser.parse((String) jsonString);
 
             Field[] fields = type.getDeclaredFields();
 
             for (Field field : fields) {
+                field.setAccessible(true);
                 String jsonPath = getJsonPath(field);
 
                 if (jsonPath == null) {
@@ -57,14 +60,22 @@ public abstract class TypeAdapter<T> {
 
                 Object jsonString2 = parser.read(jsonPath);
 
-                if (jsonString2 instanceof List) {
-                    ArrayList<Object> list = new ArrayList<>();
-                    for (Object jsonObj : (List) jsonString2) {
-                        list.add(readType(field.getType().getTypeParameters()[0].getClass(), jsonObj));
+                if (jsonString2 instanceof JsonArray) {
+                    JsonPathCollection<Object> list = (JsonPathCollection<Object>) field.get(obj);
+                    Class<Object> myType = list.getMyType();
+                    for (Object jsonObj : (JsonArray) jsonString2) {
+                        list.add(readType(myType, jsonObj.toString()));
                     }
-                    field.set(obj, list);
-                } else {
-                    field.set(obj, jsonString2);
+                } else if (jsonString2 instanceof JsonPrimitive) {
+                    Object val = null;
+
+                    if (((JsonPrimitive) jsonString2).isNumber()) {
+                        val = ((JsonPrimitive) jsonString2).getAsInt();
+                    } else if (((JsonPrimitive) jsonString2).isString()) {
+                        val = ((JsonPrimitive) jsonString2).getAsString();
+                    }
+
+                    field.set(obj, val);
                 }
             }
         } catch (Exception e) {

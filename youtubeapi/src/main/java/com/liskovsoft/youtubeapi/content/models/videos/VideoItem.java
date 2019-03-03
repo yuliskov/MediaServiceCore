@@ -4,30 +4,82 @@ import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
 public class VideoItem {
-    @JsonPath("$.gridVideoRenderer.videoId")
+    @JsonPath("$.videoId")
     private String videoId;
-    @JsonPath("$.gridVideoRenderer.thumbnail.thumbnails[*]")
+    @JsonPath("$.thumbnail.thumbnails[*]")
     private JsonPathCollection<Thumbnail> thumbnails = new JsonPathCollection<>(Thumbnail.class);
-    @JsonPath("$.gridVideoRenderer.channelThumbnail.thumbnails[0]")
+    @JsonPath("$.channelThumbnail.thumbnails[0]")
     private String channelThumbnail;
-    @JsonPath("$.gridVideoRenderer.title.runs[0].text")
+    @JsonPath("$.title.runs[0].text")
     private String title;
-    @JsonPath("$.gridVideoRenderer.longBylineText.runs[0].text")
+    @JsonPath("$.longBylineText.runs[0].text")
     private String userName;
-    @JsonPath("$.gridVideoRenderer.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId")
+    @JsonPath("$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId")
     private String channelId;
-    @JsonPath("$.gridVideoRenderer.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")
+    @JsonPath("$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")
     private String canonicalChannelUrl;
-    @JsonPath("$.gridVideoRenderer.publishedTimeText.runs[0].text")
+    @JsonPath("$.publishedTimeText.runs[0].text")
     private String publishedTime;
-    @JsonPath("$.gridVideoRenderer.viewCountText.runs[0].text")
+    @JsonPath("$.viewCountText.runs[0].text")
     private String viewCount;
-    @JsonPath("$.gridVideoRenderer.shortViewCountText.runs[0].text")
+    @JsonPath("$.shortViewCountText.runs[0].text")
     private String shortViewCount;
-    @JsonPath("$.gridVideoRenderer.lengthText.runs[0].text")
+    @JsonPath("$.lengthText.runs[0].text")
     private String length;
-    @JsonPath("$.gridVideoRenderer.lengthText.accessibility.accessibilityData.label")
+    @JsonPath("$.lengthText.accessibility.accessibilityData.label")
     private String accessibilityLength;
-    @JsonPath("$.gridVideoRenderer.badges[0].textBadge.label.runs[0].text")
+    @JsonPath("$.badges[0].textBadge.label.runs[0].text")
     private String qualityBadge;
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public JsonPathCollection<Thumbnail> getThumbnails() {
+        return thumbnails;
+    }
+
+    public String getChannelThumbnail() {
+        return channelThumbnail;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public String getCanonicalChannelUrl() {
+        return canonicalChannelUrl;
+    }
+
+    public String getPublishedTime() {
+        return publishedTime;
+    }
+
+    public String getViewCount() {
+        return viewCount;
+    }
+
+    public String getShortViewCount() {
+        return shortViewCount;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public String getAccessibilityLength() {
+        return accessibilityLength;
+    }
+
+    public String getQualityBadge() {
+        return qualityBadge;
+    }
 }

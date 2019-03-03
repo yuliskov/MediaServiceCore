@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
+import com.jayway.jsonpath.PathNotFoundException;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
@@ -13,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 public abstract class TypeAdapter<T> {
+    private static final String TAG = TypeAdapter.class.getSimpleName();
     private final ParseContext mParser;
 
     public TypeAdapter(ParseContext parser) {
@@ -24,13 +27,13 @@ public abstract class TypeAdapter<T> {
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
         DocumentContext parser = mParser.parse(is);
-        Object jsonString = parser.read(getJsonPath(getGenericType()));
+        Object jsonObj = parser.read(getJsonPath(getGenericType()));
 
-        return (T) readType(getGenericType(), jsonString);
+        return (T) readType(getGenericType(), jsonObj);
     }
 
     @SuppressWarnings("unchecked")
-    private Object readType(Class<?> type, Object jsonString) {
+    private Object readType(Class<?> type, Object jsonContent) {
         Object obj = null;
         boolean done = false;
 
@@ -40,14 +43,14 @@ public abstract class TypeAdapter<T> {
 
             if (obj instanceof JsonPathCollection) {
                 Class<?> myType = ((JsonPathCollection<Object>) obj).getGenericType();
-                for (Object jsonObj : (JsonArray) jsonString) {
+                for (Object jsonObj : (JsonArray) jsonContent) {
                     ((JsonPathCollection<Object>) obj).add(readType(myType, jsonObj.toString()));
                 }
 
                 return obj;
             }
 
-            DocumentContext parser = mParser.parse((String) jsonString);
+            DocumentContext parser = mParser.parse((String) jsonContent);
 
             Field[] fields = type.getDeclaredFields();
 
@@ -59,33 +62,33 @@ public abstract class TypeAdapter<T> {
                     continue;
                 }
 
-                Object jsonString2;
+                Object jsonVal;
 
                 try {
-                    jsonString2 = parser.read(jsonPath);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    jsonVal = parser.read(jsonPath);
+                } catch (PathNotFoundException e) {
+                    Log.e(TAG, type.getSimpleName() + ": " + e.getMessage());
                     continue;
                 }
 
-                if (jsonString2 instanceof JsonArray) {
+                if (jsonVal instanceof JsonArray) {
                     JsonPathCollection<Object> list = (JsonPathCollection<Object>) field.get(obj);
                     Class<Object> myType = list.getGenericType();
 
-                    for (Object jsonObj : (JsonArray) jsonString2) {
+                    for (Object jsonObj : (JsonArray) jsonVal) {
                         Object item = readType(myType, jsonObj.toString());
 
                         if (item != null) {
                             list.add(item);
                         }
                     }
-                } else if (jsonString2 instanceof JsonPrimitive) {
+                } else if (jsonVal instanceof JsonPrimitive) {
                     Object val = null;
 
-                    if (((JsonPrimitive) jsonString2).isNumber()) {
-                        val = ((JsonPrimitive) jsonString2).getAsInt();
-                    } else if (((JsonPrimitive) jsonString2).isString()) {
-                        val = ((JsonPrimitive) jsonString2).getAsString();
+                    if (((JsonPrimitive) jsonVal).isNumber()) {
+                        val = ((JsonPrimitive) jsonVal).getAsInt();
+                    } else if (((JsonPrimitive) jsonVal).isString()) {
+                        val = ((JsonPrimitive) jsonVal).getAsString();
                     }
 
                     field.set(obj, val);

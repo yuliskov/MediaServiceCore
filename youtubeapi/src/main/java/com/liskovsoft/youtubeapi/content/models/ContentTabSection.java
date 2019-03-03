@@ -7,12 +7,28 @@ import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
 public class ContentTabSection {
-    @JsonPath("$.shelfRenderer.title.runs[0].text")
-    String title;
-    @JsonPath("$.shelfRenderer.content.horizontalListRenderer.items[*]")
-    JsonPathCollection<VideoItem> videoItems = new JsonPathCollection<>(VideoItem.class);
-    @JsonPath("$.shelfRenderer.content.horizontalListRenderer.items[*]")
-    JsonPathCollection<MusicItem> musicItems = new JsonPathCollection<>(MusicItem.class);
-    @JsonPath("$.shelfRenderer.content.horizontalListRenderer.items[*]")
-    JsonPathCollection<ChannelItem> channelItems = new JsonPathCollection<>(ChannelItem.class);
+    @JsonPath("$.title.runs[0].text")
+    private String title;
+    @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")
+    private JsonPathCollection<VideoItem> videoItems = new JsonPathCollection<>(VideoItem.class);
+    @JsonPath("$.content.horizontalListRenderer.items[*].tvMusicVideoRenderer")
+    private JsonPathCollection<MusicItem> musicItems = new JsonPathCollection<>(MusicItem.class);
+    @JsonPath("$.content.horizontalListRenderer.items[*].gridChannelRenderer")
+    private JsonPathCollection<ChannelItem> channelItems = new JsonPathCollection<>(ChannelItem.class);
+
+    public String getTitle() {
+        return title;
+    }
+
+    public JsonPathCollection<VideoItem> getVideoItems() {
+        return videoItems;
+    }
+
+    public JsonPathCollection<MusicItem> getMusicItems() {
+        return musicItems;
+    }
+
+    public JsonPathCollection<ChannelItem> getChannelItems() {
+        return channelItems;
+    }
 }

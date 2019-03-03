@@ -9,12 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -28,6 +30,8 @@ public class ContentManagerTest {
 
     @Before
     public void setUp() {
+        ShadowLog.stream = System.out; // catch Log class output
+
         Gson gson = new GsonBuilder()
                         .registerTypeAdapter(ContentTabCollection.class, new ContentTabCollectionDeserializer())
                         .create();
@@ -44,5 +48,15 @@ public class ContentManagerTest {
     public void testThatContentTabsNotEmpty() throws IOException {
         Call<ContentTabCollection> tabs = mService.getContentTabs(BODY_JSON);
         assertTrue(tabs.execute().body().size() > 2);
+    }
+
+    @Test
+    public void testThatContentHasNonNullProps() throws IOException {
+        Call<ContentTabCollection> tabs = mService.getContentTabs(BODY_JSON);
+        ContentTabCollection tabCollection = tabs.execute().body();
+        String sampleTitle = tabCollection.get(0).getTitle();
+        String anotherTitle = tabCollection.get(0).getSections().get(0).getTitle();
+        assertNotNull(sampleTitle);
+        assertNotNull(anotherTitle);
     }
 }

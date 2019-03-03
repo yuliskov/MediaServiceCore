@@ -9,4 +9,16 @@ public class Thumbnail {
     private int width;
     @JsonPath("$.height")
     private int height;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -10,10 +10,10 @@ public class ChannelItem {
     private String title;
     @JsonPath("$.gridChannelRenderer.channelId")
     private String channelId;
+    @JsonPath("$.gridChannelRenderer.navigationEndpoint.browseEndpoint.browseId")
+    private String browseId;
     @JsonPath("$.gridChannelRenderer.videoCountText.runs[0].text")
     private String videoCount;
     @JsonPath("$.gridChannelRenderer.subscriberCountText.runs[0].text")
     private String subscriberCount;
-    @JsonPath("$.gridChannelRenderer.navigationEndpoint.browseEndpoint.browseId")
-    private String browseId;
 }

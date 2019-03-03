@@ -1,5 +1,6 @@
-package com.liskovsoft.youtubeapi.converters.jsonpath;
+package com.liskovsoft.youtubeapi.converters.jsonpath.converter;
 
+import com.liskovsoft.youtubeapi.converters.jsonpath.typeadapter.TypeAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 

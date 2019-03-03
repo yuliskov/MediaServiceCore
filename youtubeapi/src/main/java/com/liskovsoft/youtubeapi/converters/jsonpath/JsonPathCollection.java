@@ -12,7 +12,7 @@ public class JsonPathCollection<T> extends ArrayList<T> {
     /**
      * Type erase workaround
      */
-    public Class<T> getMyType() {
+    public Class<T> getGenericType() {
         return mType;
     }
 }

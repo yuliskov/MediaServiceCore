@@ -10,6 +10,8 @@ public class MusicItem {
     private JsonPathCollection<Thumbnail> thumbnails = new JsonPathCollection<>(Thumbnail.class);
     @JsonPath("$.tvMusicVideoRenderer.primaryText.runs[0].text")
     private String title;
+    @JsonPath("$.tvMusicVideoRenderer.secondaryText.runs[0].text")
+    private String userName;
     @JsonPath("$.tvMusicVideoRenderer.navigationEndpoint.watchEndpoint.playlistId")
     private String playlistId;
     @JsonPath("$.tvMusicVideoRenderer.tertiaryText.runs[2].text")
@@ -20,10 +22,4 @@ public class MusicItem {
     private String length;
     @JsonPath("$.tvMusicVideoRenderer.lengthText.accessibility.accessibilityData.label")
     private String accessibilityLength;
-    @JsonPath("$.gridVideoRenderer.badges[0].textBadge.label.runs[0].text")
-    private String qualityBadge;
-    @JsonPath("$.gridVideoRenderer.channelThumbnail.thumbnails[0]")
-    private String channelThumbnail;
-    @JsonPath("$.gridVideoRenderer.shortViewCountText.runs[0].text")
-    private String shortViewCount;
 }

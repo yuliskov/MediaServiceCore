@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.content;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.liskovsoft.youtubeapi.content.models.ContentTabCollection;
-import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathConverterFactory;
+import com.liskovsoft.youtubeapi.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.deserializer.ContentTabCollectionDeserializer;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 

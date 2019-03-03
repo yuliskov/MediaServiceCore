@@ -1,16 +1,16 @@
-package com.liskovsoft.youtubeapi.converters.jsonpath;
+package com.liskovsoft.youtubeapi.converters.jsonpath.typeadapter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class TypeAdapter<T> {
     private final ParseContext mParser;
@@ -19,26 +19,27 @@ public abstract class TypeAdapter<T> {
         mParser = parser;
     }
 
-    protected abstract Class<?> getType();
+    protected abstract Class<?> getGenericType();
 
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
         DocumentContext parser = mParser.parse(is);
-        Object jsonString = parser.read(getJsonPath(getType()));
+        Object jsonString = parser.read(getJsonPath(getGenericType()));
 
-        return (T) readType(getType(), jsonString);
+        return (T) readType(getGenericType(), jsonString);
     }
 
     @SuppressWarnings("unchecked")
     private Object readType(Class<?> type, Object jsonString) {
         Object obj = null;
+        boolean done = false;
 
         try {
             Constructor<?> constructor = type.getConstructor();
             obj = constructor.newInstance();
 
             if (obj instanceof JsonPathCollection) {
-                Class<?> myType = ((JsonPathCollection<Object>) obj).getMyType();
+                Class<?> myType = ((JsonPathCollection<Object>) obj).getGenericType();
                 for (Object jsonObj : (JsonArray) jsonString) {
                     ((JsonPathCollection<Object>) obj).add(readType(myType, jsonObj.toString()));
                 }
@@ -58,13 +59,25 @@ public abstract class TypeAdapter<T> {
                     continue;
                 }
 
-                Object jsonString2 = parser.read(jsonPath);
+                Object jsonString2;
+
+                try {
+                    jsonString2 = parser.read(jsonPath);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+                }
 
                 if (jsonString2 instanceof JsonArray) {
                     JsonPathCollection<Object> list = (JsonPathCollection<Object>) field.get(obj);
-                    Class<Object> myType = list.getMyType();
+                    Class<Object> myType = list.getGenericType();
+
                     for (Object jsonObj : (JsonArray) jsonString2) {
-                        list.add(readType(myType, jsonObj.toString()));
+                        Object item = readType(myType, jsonObj.toString());
+
+                        if (item != null) {
+                            list.add(item);
+                        }
                     }
                 } else if (jsonString2 instanceof JsonPrimitive) {
                     Object val = null;
@@ -76,13 +89,14 @@ public abstract class TypeAdapter<T> {
                     }
 
                     field.set(obj, val);
+                    done = true; // at least one field is set
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return obj;
+        return done ? obj : null;
     }
 
     private String getJsonPath(Class<?> type) {

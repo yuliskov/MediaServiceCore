@@ -1,6 +1,7 @@
-package com.liskovsoft.youtubeapi.converters.jsonpath;
+package com.liskovsoft.youtubeapi.converters.jsonpath.converter;
 
 import android.util.Log;
+import com.liskovsoft.youtubeapi.converters.jsonpath.typeadapter.TypeAdapter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;

@@ -1,3 +1,5 @@
 include ':youtubeapi'
-//include ':youtubeapi', ':sharedutils'
-//project(':sharedutils').projectDir = new File('..\\SharedUtils')
+
+gradle.ext.sharedUtilsRoot = '../SharedUtils'
+gradle.ext.sharedUtilsModulePrefix = 'ext-'
+apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')

@@ -1,10 +1,7 @@
 package com.liskovsoft.youtubeapi.content;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.liskovsoft.youtubeapi.content.models.ContentTabCollection;
-import com.liskovsoft.youtubeapi.converters.jsonpath.converter.JsonPathConverterFactory;
-import com.liskovsoft.youtubeapi.deserializer.ContentTabCollectionDeserializer;
+import com.liskovsoft.youtubeapi.content.models.ContentTabsContainer;
+import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +12,6 @@ import retrofit2.Retrofit;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,13 +28,9 @@ public class ContentManagerTest {
     public void setUp() {
         ShadowLog.stream = System.out; // catch Log class output
 
-        Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(ContentTabCollection.class, new ContentTabCollectionDeserializer())
-                        .create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.youtube.com") // ignored in case of full url
-                .addConverterFactory(JsonPathConverterFactory.create())
+                .addConverterFactory(JsonPathConverterFactory.create(ContentTabsContainer.class))
                 .build();
 
         mService = retrofit.create(ContentManager.class);
@@ -46,16 +38,16 @@ public class ContentManagerTest {
 
     @Test
     public void testThatContentTabsNotEmpty() throws IOException {
-        Call<ContentTabCollection> tabs = mService.getContentTabs(BODY_JSON);
-        assertTrue(tabs.execute().body().size() > 2);
+        Call<ContentTabsContainer> tabs = mService.getContentTabs(BODY_JSON);
+        assertTrue(tabs.execute().body().getContentTabs().size() > 2);
     }
 
     @Test
     public void testThatContentHasNonNullProps() throws IOException {
-        Call<ContentTabCollection> tabs = mService.getContentTabs(BODY_JSON);
-        ContentTabCollection tabCollection = tabs.execute().body();
-        String sampleTitle = tabCollection.get(0).getTitle();
-        String anotherTitle = tabCollection.get(0).getSections().get(0).getTitle();
+        Call<ContentTabsContainer> tabs = mService.getContentTabs(BODY_JSON);
+        ContentTabsContainer tabCollection = tabs.execute().body();
+        String sampleTitle = tabCollection.getContentTabs().get(0).getTitle();
+        String anotherTitle = tabCollection.getContentTabs().get(0).getSections().get(0).getTitle();
         assertNotNull(sampleTitle);
         assertNotNull(anotherTitle);
     }

@@ -1,11 +1,11 @@
-package com.liskovsoft.youtubeapi.converters.jsonpath.converter;
+package com.liskovsoft.youtubeapi.support.converters.jsonpath.converter;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
-import com.liskovsoft.youtubeapi.converters.jsonpath.typeadapter.ContentTabTypeAdapter;
+import com.liskovsoft.youtubeapi.support.converters.jsonpath.typeadapter.TypeAdapter;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -16,8 +16,9 @@ import java.lang.reflect.Type;
 
 public final class JsonPathConverterFactory extends Converter.Factory {
     private final ParseContext mParser;
+    private final Class<?> mType;
 
-    public static JsonPathConverterFactory create() {
+    public static JsonPathConverterFactory create(Class<?> type) {
         Configuration conf = Configuration
                 .builder()
                 .mappingProvider(new GsonMappingProvider())
@@ -26,29 +27,30 @@ public final class JsonPathConverterFactory extends Converter.Factory {
 
         ParseContext parser = JsonPath.using(conf);
 
-        return create(parser);
+        return create(parser, type);
     }
 
-    public static JsonPathConverterFactory create(ParseContext parser) {
-        if (parser == null) {
-            throw new NullPointerException();
+    private static JsonPathConverterFactory create(ParseContext parser, Class<?> type) {
+        if (parser == null || type == null) {
+            throw new NullPointerException("Improper initialization of converter factory");
         }
 
-        return new JsonPathConverterFactory(parser);
+        return new JsonPathConverterFactory(parser, type);
     }
 
-    private JsonPathConverterFactory(ParseContext parser) {
+    private JsonPathConverterFactory(ParseContext parser, Class<?> type) {
         mParser = parser;
+        mType = type;
     }
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        return new JsonPathResponseBodyConverter<>(new ContentTabTypeAdapter(mParser));
+        return new JsonPathResponseBodyConverter<>(new TypeAdapter<>(mParser, mType));
     }
     
     @Override
     public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
                                                           Retrofit retrofit) {
-        return new JsonPathRequestBodyConverter<>(new ContentTabTypeAdapter(mParser));
+        return new JsonPathRequestBodyConverter<>(new TypeAdapter<>(mParser, mType));
     }
 }

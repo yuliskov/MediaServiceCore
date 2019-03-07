@@ -1,10 +1,10 @@
 package com.liskovsoft.youtubeapi.content.models;
 
-import com.liskovsoft.youtubeapi.content.models.videos.ChannelItem;
-import com.liskovsoft.youtubeapi.content.models.videos.MusicItem;
-import com.liskovsoft.youtubeapi.content.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
+import com.liskovsoft.youtubeapi.common.models.videos.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.videos.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
 
 public class ContentTabSection {
     @JsonPath("$.title.runs[0].text")

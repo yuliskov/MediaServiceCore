@@ -1,35 +1,48 @@
-package com.liskovsoft.youtubeapi.converters.jsonpath.typeadapter;
+package com.liskovsoft.youtubeapi.support.converters.jsonpath.typeadapter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.PathNotFoundException;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.converters.jsonpath.JsonPathCollection;
+import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
-public abstract class TypeAdapter<T> {
+public class TypeAdapter<T> {
     private static final String TAG = TypeAdapter.class.getSimpleName();
     private final ParseContext mParser;
+    private final Class<?> mType;
 
-    public TypeAdapter(ParseContext parser) {
+    public TypeAdapter(ParseContext parser, Class<?> type) {
         mParser = parser;
+        mType = type;
     }
 
-    protected abstract Class<?> getGenericType();
+    private Class<?> getGenericType() {
+        return mType;
+    }
 
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
-        DocumentContext parser = mParser.parse(is);
-        Object jsonObj = parser.read(getJsonPath(getGenericType()));
+        Object jsonContent;
 
-        return (T) readType(getGenericType(), jsonObj);
+        String jsonPath = getJsonPath(getGenericType());
+
+        if (jsonPath != null) { // annotation on the same collection class
+            DocumentContext parser = mParser.parse(is);
+            jsonContent = parser.read(jsonPath);
+        } else { // annotation on field
+            jsonContent = Helpers.toString(is);
+        }
+
+        return (T) readType(getGenericType(), jsonContent);
     }
 
     @SuppressWarnings("unchecked")
@@ -92,8 +105,9 @@ public abstract class TypeAdapter<T> {
                     }
 
                     field.set(obj, val);
-                    done = true; // at least one field is set
                 }
+
+                done = true; // at least one field is set
             }
         } catch (Exception e) {
             e.printStackTrace();

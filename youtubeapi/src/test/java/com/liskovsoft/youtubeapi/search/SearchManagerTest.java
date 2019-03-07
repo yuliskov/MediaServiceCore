@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
+import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
 import org.junit.Before;
@@ -12,6 +13,8 @@ import retrofit2.Retrofit;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -40,7 +43,20 @@ public class SearchManagerTest {
 
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
-        Call<SearchResult> tabs = mService.getSearchResults(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
-        assertTrue(tabs.execute().body().getResultList().size() > 2);
+        Call<SearchResult> wrapper = mService.getSearchResults(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+
+        assertTrue("List > 2", wrapper.execute().body().getResultList().size() > 2);
+    }
+
+    @Test
+    public void testThatSearchResultFieldsNotEmpty() throws IOException {
+        Call<SearchResult> wrapper = mService.getSearchResults(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        SearchResult searchResult = wrapper.execute().body();
+        VideoItem videoItem = searchResult.getResultList().get(0);
+
+        assertNotNull(searchResult.getNextContinuation());
+        assertNotNull(searchResult.getReloadContinuation());
+        assertNotNull(videoItem.getVideoId());
+        assertNotNull(videoItem.getTitle());
     }
 }

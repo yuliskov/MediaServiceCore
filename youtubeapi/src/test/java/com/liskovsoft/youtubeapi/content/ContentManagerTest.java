@@ -1,5 +1,8 @@
 package com.liskovsoft.youtubeapi.content;
 
+import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.youtubeapi.content.models.ContentTab;
+import com.liskovsoft.youtubeapi.content.models.ContentTabSection;
 import com.liskovsoft.youtubeapi.content.models.ContentTabsContainer;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
 import org.junit.Before;
@@ -46,9 +49,12 @@ public class ContentManagerTest {
     public void testThatContentHasNonNullProps() throws IOException {
         Call<ContentTabsContainer> tabs = mService.getContentTabs(BODY_JSON);
         ContentTabsContainer tabCollection = tabs.execute().body();
-        String sampleTitle = tabCollection.getContentTabs().get(0).getTitle();
-        String anotherTitle = tabCollection.getContentTabs().get(0).getSections().get(0).getTitle();
-        assertNotNull(sampleTitle);
-        assertNotNull(anotherTitle);
+        ContentTab contentTab = tabCollection.getContentTabs().get(0);
+        ContentTabSection contentTabSection = contentTab.getSections().get(0);
+        VideoItem videoItem = contentTabSection.getVideoItems().get(0);
+
+        assertNotNull(contentTab.getTitle());
+        assertNotNull(videoItem.getVideoId());
+        assertNotNull(contentTabSection.getTitle());
     }
 }

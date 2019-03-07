@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.content;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.content.models.ContentTab;
 import com.liskovsoft.youtubeapi.content.models.ContentTabSection;
-import com.liskovsoft.youtubeapi.content.models.ContentTabsContainer;
+import com.liskovsoft.youtubeapi.content.models.RootContentContainer;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ContentManagerTest {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.youtube.com") // ignored in case of full url
-                .addConverterFactory(JsonPathConverterFactory.create(ContentTabsContainer.class))
+                .addConverterFactory(JsonPathConverterFactory.create())
                 .build();
 
         mService = retrofit.create(ContentManager.class);
@@ -41,14 +41,14 @@ public class ContentManagerTest {
 
     @Test
     public void testThatContentTabsNotEmpty() throws IOException {
-        Call<ContentTabsContainer> tabs = mService.getContentTabs(BODY_JSON);
+        Call<RootContentContainer> tabs = mService.getRootContent(BODY_JSON);
         assertTrue(tabs.execute().body().getContentTabs().size() > 2);
     }
 
     @Test
     public void testThatContentHasNonNullProps() throws IOException {
-        Call<ContentTabsContainer> tabs = mService.getContentTabs(BODY_JSON);
-        ContentTabsContainer tabCollection = tabs.execute().body();
+        Call<RootContentContainer> tabs = mService.getRootContent(BODY_JSON);
+        RootContentContainer tabCollection = tabs.execute().body();
         ContentTab contentTab = tabCollection.getContentTabs().get(0);
         ContentTabSection contentTabSection = contentTab.getSections().get(0);
         VideoItem videoItem = contentTabSection.getVideoItems().get(0);

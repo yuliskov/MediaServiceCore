@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
 import org.junit.Before;
@@ -13,7 +14,6 @@ import retrofit2.Retrofit;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +27,13 @@ public class SearchManagerTest {
             "'appQuality':'TV_APP_QUALITY_LIMITED_ANIMATION','isFirstLaunch':true},'acceptRegion':'UA','deviceMake':'LG'," +
             "'deviceModel':'42LA660S-ZA','platform':'TV'},'request':{},'user':{'enableSafetyMode':false}},'query':'%s'," +
             "'supportsVoiceSearch':false}";
+    private static final String JSON_CONTINUATION_DATA_TEMPLATE = "{'context':{'client':{'clientName':'TVHTML5','clientVersion':'6.20180807'," +
+            "'screenWidthPoints':1280,'screenHeightPoints':720,'screenPixelDensity':1,'theme':'CLASSIC','utcOffsetMinutes':120,'webpSupport':false," +
+            "'animatedWebpSupport':false,'tvAppInfo':{'livingRoomAppMode':'LIVING_ROOM_APP_MODE_MAIN'," +
+            "'appQuality':'TV_APP_QUALITY_LIMITED_ANIMATION'},'acceptRegion':'UA','deviceMake':'LG','deviceModel':'42LA660S-ZA','platform':'TV'}," +
+            "'request':{},'user':{'enableSafetyMode':false},'clickTracking':{'clickTrackingParams':'CAQQybcCIhMIyI2g4f3t4AIV13SyCh1LPghk'}}," +
+            "'continuation':'%s'}";
+
     private SearchManager mService;
 
     @Before
@@ -35,7 +42,7 @@ public class SearchManagerTest {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.youtube.com") // ignored in case of full url
-                .addConverterFactory(JsonPathConverterFactory.create(SearchResult.class))
+                .addConverterFactory(JsonPathConverterFactory.create())
                 .build();
 
         mService = retrofit.create(SearchManager.class);
@@ -43,20 +50,32 @@ public class SearchManagerTest {
 
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResults(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
 
-        assertTrue("List > 2", wrapper.execute().body().getResultList().size() > 2);
+        assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultFieldsNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResults(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
         SearchResult searchResult = wrapper.execute().body();
-        VideoItem videoItem = searchResult.getResultList().get(0);
+        VideoItem videoItem = searchResult.getVideoItems().get(0);
 
-        assertNotNull(searchResult.getNextContinuation());
-        assertNotNull(searchResult.getReloadContinuation());
+        assertNotNull(searchResult.getNextPageKey());
+        assertNotNull(searchResult.getReloadPageKey());
         assertNotNull(videoItem.getVideoId());
         assertNotNull(videoItem.getTitle());
+    }
+
+    @Test
+    public void testThatContinuationResultNotEmpty() throws IOException {
+        Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        SearchResult result = wrapper.execute().body();
+        String nextPageKey = result.getNextPageKey();
+
+        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SEARCH_KEY, String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey));
+        NextSearchResult result2 = wrapper2.execute().body();
+
+        assertTrue("List > 3", result2.getVideoItems().size() > 3);
     }
 }

@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 public class TypeAdapter<T> {
     private static final String TAG = TypeAdapter.class.getSimpleName();
@@ -23,6 +24,11 @@ public class TypeAdapter<T> {
     public TypeAdapter(ParseContext parser, Class<?> type) {
         mParser = parser;
         mType = type;
+    }
+
+    public TypeAdapter(ParseContext parser, Type type) {
+        mParser = parser;
+        mType = (Class<?>) type;
     }
 
     private Class<?> getGenericType() {

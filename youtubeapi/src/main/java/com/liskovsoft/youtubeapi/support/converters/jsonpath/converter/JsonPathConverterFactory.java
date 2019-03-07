@@ -16,9 +16,8 @@ import java.lang.reflect.Type;
 
 public final class JsonPathConverterFactory extends Converter.Factory {
     private final ParseContext mParser;
-    private final Class<?> mType;
 
-    public static JsonPathConverterFactory create(Class<?> type) {
+    public static JsonPathConverterFactory create() {
         Configuration conf = Configuration
                 .builder()
                 .mappingProvider(new GsonMappingProvider())
@@ -27,30 +26,33 @@ public final class JsonPathConverterFactory extends Converter.Factory {
 
         ParseContext parser = JsonPath.using(conf);
 
-        return create(parser, type);
+        return create(parser);
     }
 
-    private static JsonPathConverterFactory create(ParseContext parser, Class<?> type) {
-        if (parser == null || type == null) {
+    private static JsonPathConverterFactory create(ParseContext parser) {
+        if (parser == null) {
             throw new NullPointerException("Improper initialization of converter factory");
         }
 
-        return new JsonPathConverterFactory(parser, type);
+        return new JsonPathConverterFactory(parser);
     }
 
-    private JsonPathConverterFactory(ParseContext parser, Class<?> type) {
+    private JsonPathConverterFactory(ParseContext parser) {
         mParser = parser;
-        mType = type;
     }
 
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        return new JsonPathResponseBodyConverter<>(new TypeAdapter<>(mParser, mType));
+    public Converter<ResponseBody, ?> responseBodyConverter(Type type,
+                                                            Annotation[] annotations,
+                                                            Retrofit retrofit) {
+        return new JsonPathResponseBodyConverter<>(new TypeAdapter<>(mParser, type));
     }
-    
+
     @Override
-    public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
+    public Converter<?, RequestBody> requestBodyConverter(Type type,
+                                                          Annotation[] parameterAnnotations,
+                                                          Annotation[] methodAnnotations,
                                                           Retrofit retrofit) {
-        return new JsonPathRequestBodyConverter<>(new TypeAdapter<>(mParser, mType));
+        return new JsonPathRequestBodyConverter<>(new TypeAdapter<>(mParser, type));
     }
 }

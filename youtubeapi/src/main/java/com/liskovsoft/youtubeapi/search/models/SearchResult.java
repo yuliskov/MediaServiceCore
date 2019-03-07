@@ -9,20 +9,20 @@ public class SearchResult {
     private JsonPathCollection<VideoItem> mVideoItems = new JsonPathCollection<>(VideoItem.class);
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation")
-    private String mNextSearchKey;
+    private String mNextPageKey;
 
     @JsonPath("$.contents.sectionListRenderer.continuations[0].reloadContinuationData.continuation")
-    private String mReloadSearchKey;
+    private String mReloadPageKey;
 
     public JsonPathCollection<VideoItem> getVideoItems() {
         return mVideoItems;
     }
 
-    public String getNextSearchKey() {
-        return mNextSearchKey;
+    public String getNextPageKey() {
+        return mNextPageKey;
     }
 
-    public String getReloadSearchKey() {
-        return mReloadSearchKey;
+    public String getReloadPageKey() {
+        return mReloadPageKey;
     }
 }

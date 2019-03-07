@@ -15,5 +15,5 @@ public interface SearchManager {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<NextSearchResult> getNextSearchResult(@Query("key") String key, @Body String jsonData);
+    Call<NextSearchResult> getNextPage(@Query("key") String key, @Body String jsonData);
 }

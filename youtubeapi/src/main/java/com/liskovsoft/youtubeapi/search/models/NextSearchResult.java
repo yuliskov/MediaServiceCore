@@ -9,13 +9,13 @@ public class NextSearchResult {
     private JsonPathCollection<VideoItem> mVideoItems = new JsonPathCollection<>(VideoItem.class);
 
     @JsonPath("$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation")
-    private String mNextSearchKey;
+    private String mNextPageKey;
 
     public JsonPathCollection<VideoItem> getVideoItems() {
         return mVideoItems;
     }
 
-    public String getNextSearchKey() {
-        return mNextSearchKey;
+    public String getNextPageKey() {
+        return mNextPageKey;
     }
 }

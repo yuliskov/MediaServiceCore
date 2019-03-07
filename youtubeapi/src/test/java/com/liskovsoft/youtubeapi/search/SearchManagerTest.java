@@ -61,8 +61,8 @@ public class SearchManagerTest {
         SearchResult searchResult = wrapper.execute().body();
         VideoItem videoItem = searchResult.getVideoItems().get(0);
 
-        assertNotNull(searchResult.getNextPageKey());
-        assertNotNull(searchResult.getReloadPageKey());
+        assertNotNull(searchResult.getNextSearchKey());
+        assertNotNull(searchResult.getReloadSearchKey());
         assertNotNull(videoItem.getVideoId());
         assertNotNull(videoItem.getTitle());
     }
@@ -71,7 +71,7 @@ public class SearchManagerTest {
     public void testThatContinuationResultNotEmpty() throws IOException {
         Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
         SearchResult result = wrapper.execute().body();
-        String nextPageKey = result.getNextPageKey();
+        String nextPageKey = result.getNextSearchKey();
 
         Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SEARCH_KEY, String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey));
         NextSearchResult result2 = wrapper2.execute().body();

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.auth;
 
-public class AuthHelper {
+public class AuthParams {
     private static final String DEFAULT_APP_CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
     private static final String DEFAULT_APP_SCOPE = "http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content";
     private static final String DEFAULT_APP_CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";

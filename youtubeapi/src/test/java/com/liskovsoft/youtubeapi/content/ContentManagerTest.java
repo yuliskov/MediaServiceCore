@@ -30,13 +30,13 @@ public class ContentManagerTest {
 
     @Test
     public void testThatContentTabsNotEmpty() throws IOException {
-        Call<RootContent> tabs = mService.getRootContent(ContentHelper.getContentQuery());
+        Call<RootContent> tabs = mService.getRootContent(ContentParams.getContentQuery());
         assertTrue(tabs.execute().body().getContentTabs().size() > 2);
     }
 
     @Test
     public void testThatContentHasNonNullProps() throws IOException {
-        Call<RootContent> tabs = mService.getRootContent(ContentHelper.getContentQuery());
+        Call<RootContent> tabs = mService.getRootContent(ContentParams.getContentQuery());
         RootContent tabCollection = tabs.execute().body();
         ContentTab contentTab = tabCollection.getContentTabs().get(0);
         ContentTabSection contentTabSection = contentTab.getSections().get(0);

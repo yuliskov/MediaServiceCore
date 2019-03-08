@@ -30,14 +30,14 @@ public class SearchManagerTest {
 
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchHelper.getSearchKey(), SearchHelper.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultFieldsNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchHelper.getSearchKey(), SearchHelper.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
         SearchResult searchResult = wrapper.execute().body();
         VideoItem videoItem = searchResult.getVideoItems().get(0);
 
@@ -49,11 +49,11 @@ public class SearchManagerTest {
 
     @Test
     public void testThatContinuationResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchHelper.getSearchKey(), SearchHelper.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
         SearchResult result = wrapper.execute().body();
         String nextPageKey = result.getNextPageKey();
 
-        Call<NextSearchResult> wrapper2 = mService.getNextPage(SearchHelper.getSearchKey(), SearchHelper.getNextSearchQuery(nextPageKey));
+        Call<NextSearchResult> wrapper2 = mService.getNextPage(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(nextPageKey));
         NextSearchResult result2 = wrapper2.execute().body();
 
         assertTrue("List > 3", result2.getVideoItems().size() > 3);

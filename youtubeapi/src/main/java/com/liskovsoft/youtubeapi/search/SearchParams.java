@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
-public class SearchHelper {
+public class SearchParams {
     private static final String SEARCH_KEY = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
     private static final String JSON_DATA_TEMPLATE = "{'context':{'client':{'clientName':'TVHTML5','clientVersion':'6.20180807','screenWidthPoints':1280," +
             "'screenHeightPoints':720,'screenPixelDensity':1,'theme':'CLASSIC','utcOffsetMinutes':120,'webpSupport':false," +

@@ -46,7 +46,7 @@ public class BrowserAuthTest {
     }
 
     private UserCode getUserCode() throws IOException {
-        Call<UserCode> userCode = mService.getUserCode(AuthHelper.getClientId(), AuthHelper.getAppScope());
+        Call<UserCode> userCode = mService.getUserCode(AuthParams.getClientId(), AuthParams.getAppScope());
         Response<UserCode> response = userCode.execute();
         return response.body();
     }
@@ -55,7 +55,7 @@ public class BrowserAuthTest {
         UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<AccessToken> token = mService.getAuthToken(AuthHelper.getClientId(), userCode.getDeviceCode(), AuthHelper.getClientSecret(), AuthHelper.getGrantType());
+        Call<AccessToken> token = mService.getAuthToken(AuthParams.getClientId(), userCode.getDeviceCode(), AuthParams.getClientSecret(), AuthParams.getGrantType());
         Response<AccessToken> response = token.execute();
         return response.body();
     }

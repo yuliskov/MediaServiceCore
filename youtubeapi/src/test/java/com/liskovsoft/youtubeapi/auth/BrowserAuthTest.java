@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.auth;
 
-import com.liskovsoft.youtubeapi.auth.BrowserAuth;
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.UserCode;
 import org.junit.Before;
@@ -19,10 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class BrowserAuthTest {
-    private static final String DEFAULT_APP_CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
-    private static final String DEFAULT_APP_SCOPE = "http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content";
-    private static final String DEFAULT_APP_CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
-    private static final String DEFAULT_APP_GRANT_TYPE = "http://oauth.net/grant_type/device/1.0";
     private BrowserAuth mService;
 
     @Before
@@ -54,7 +49,7 @@ public class BrowserAuthTest {
     }
 
     private UserCode getUserCode() throws IOException {
-        Call<UserCode> userCode = mService.getUserCode(DEFAULT_APP_CLIENT_ID, DEFAULT_APP_SCOPE);
+        Call<UserCode> userCode = mService.getUserCode(AuthHelper.getClientId(), AuthHelper.getAppScope());
         Response<UserCode> response = userCode.execute();
         return response.body();
     }
@@ -63,7 +58,7 @@ public class BrowserAuthTest {
         UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<AccessToken> token = mService.getAuthToken(DEFAULT_APP_CLIENT_ID, userCode.getDeviceCode(), DEFAULT_APP_CLIENT_SECRET, DEFAULT_APP_GRANT_TYPE);
+        Call<AccessToken> token = mService.getAuthToken(AuthHelper.getClientId(), userCode.getDeviceCode(), AuthHelper.getClientSecret(), AuthHelper.getGrantType());
         Response<AccessToken> response = token.execute();
         return response.body();
     }

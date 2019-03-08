@@ -19,21 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchManagerTest {
-    private static final String SEARCH_KEY = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
-    private static final String SEARCH_QUERY = "thrones season 8 trailer";
-    private static final String JSON_DATA_TEMPLATE = "{'context':{'client':{'clientName':'TVHTML5','clientVersion':'6.20180807','screenWidthPoints':1280," +
-            "'screenHeightPoints':720,'screenPixelDensity':1,'theme':'CLASSIC','utcOffsetMinutes':120,'webpSupport':false," +
-            "'animatedWebpSupport':false,'tvAppInfo':{'livingRoomAppMode':'LIVING_ROOM_APP_MODE_MAIN'," +
-            "'appQuality':'TV_APP_QUALITY_LIMITED_ANIMATION','isFirstLaunch':true},'acceptRegion':'UA','deviceMake':'LG'," +
-            "'deviceModel':'42LA660S-ZA','platform':'TV'},'request':{},'user':{'enableSafetyMode':false}},'query':'%s'," +
-            "'supportsVoiceSearch':false}";
-    private static final String JSON_CONTINUATION_DATA_TEMPLATE = "{'context':{'client':{'clientName':'TVHTML5','clientVersion':'6.20180807'," +
-            "'screenWidthPoints':1280,'screenHeightPoints':720,'screenPixelDensity':1,'theme':'CLASSIC','utcOffsetMinutes':120,'webpSupport':false," +
-            "'animatedWebpSupport':false,'tvAppInfo':{'livingRoomAppMode':'LIVING_ROOM_APP_MODE_MAIN'," +
-            "'appQuality':'TV_APP_QUALITY_LIMITED_ANIMATION'},'acceptRegion':'UA','deviceMake':'LG','deviceModel':'42LA660S-ZA','platform':'TV'}," +
-            "'request':{},'user':{'enableSafetyMode':false},'clickTracking':{'clickTrackingParams':'CAQQybcCIhMIyI2g4f3t4AIV13SyCh1LPghk'}}," +
-            "'continuation':'%s'}";
-
+    private static final String SEARCH_TEXT = "thrones season 8 trailer";
     private SearchManager mService;
 
     @Before
@@ -50,14 +36,14 @@ public class SearchManagerTest {
 
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchHelper.getSearchKey(), SearchHelper.getSearchQuery(SEARCH_TEXT));
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultFieldsNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchHelper.getSearchKey(), SearchHelper.getSearchQuery(SEARCH_TEXT));
         SearchResult searchResult = wrapper.execute().body();
         VideoItem videoItem = searchResult.getVideoItems().get(0);
 
@@ -69,11 +55,11 @@ public class SearchManagerTest {
 
     @Test
     public void testThatContinuationResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SEARCH_KEY, String.format(JSON_DATA_TEMPLATE, SEARCH_QUERY));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchHelper.getSearchKey(), SearchHelper.getSearchQuery(SEARCH_TEXT));
         SearchResult result = wrapper.execute().body();
         String nextPageKey = result.getNextPageKey();
 
-        Call<NextSearchResult> wrapper2 = mService.getNextPage(SEARCH_KEY, String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey));
+        Call<NextSearchResult> wrapper2 = mService.getNextPage(SearchHelper.getSearchKey(), SearchHelper.getNextSearchQuery(nextPageKey));
         NextSearchResult result2 = wrapper2.execute().body();
 
         assertTrue("List > 3", result2.getVideoItems().size() > 3);

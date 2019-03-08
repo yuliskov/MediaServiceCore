@@ -17,10 +17,10 @@ public class ContentTab {
     private JsonPathCollection<ContentTabSection> sections = new JsonPathCollection<>(ContentTabSection.class); // type erase fix
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation")
-    private String mNextContinuation;
+    private String mNextPageKey;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.continuation.reloadContinuationData.continuation")
-    private String mReloadContinuation;
+    private String mReloadPageKey;
 
     public String getTitle() {
         return title;
@@ -35,11 +35,11 @@ public class ContentTab {
     }
 
 
-    public String getNextContinuation() {
-        return mNextContinuation;
+    public String getNextPageKey() {
+        return mNextPageKey;
     }
 
-    public String getReloadContinuation() {
-        return mReloadContinuation;
+    public String getReloadPageKey() {
+        return mReloadPageKey;
     }
 }

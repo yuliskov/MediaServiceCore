@@ -2,14 +2,14 @@ package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.UserCode;
+import com.liskovsoft.youtubeapi.support.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 
@@ -22,12 +22,9 @@ public class BrowserAuthTest {
 
     @Before
     public void setUp() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.youtube.com") // ignored in case of full url
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        ShadowLog.stream = System.out; // catch Log class output
 
-        mService = retrofit.create(BrowserAuth.class);
+        mService = RetrofitHelper.withGson(BrowserAuth.class);
     }
 
     @Test

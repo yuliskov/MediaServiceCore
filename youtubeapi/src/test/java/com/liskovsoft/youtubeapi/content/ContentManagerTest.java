@@ -4,14 +4,13 @@ import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.content.models.ContentTab;
 import com.liskovsoft.youtubeapi.content.models.ContentTabSection;
 import com.liskovsoft.youtubeapi.content.models.RootContent;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
+import com.liskovsoft.youtubeapi.support.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
-import retrofit2.Retrofit;
 
 import java.io.IOException;
 
@@ -26,12 +25,7 @@ public class ContentManagerTest {
     public void setUp() {
         ShadowLog.stream = System.out; // catch Log class output
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.youtube.com") // ignored in case of full url
-                .addConverterFactory(JsonPathConverterFactory.create())
-                .build();
-
-        mService = retrofit.create(ContentManager.class);
+        mService = RetrofitHelper.withJsonPath(ContentManager.class);
     }
 
     @Test

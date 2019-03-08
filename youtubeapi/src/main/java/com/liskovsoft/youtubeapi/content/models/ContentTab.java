@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.content.models;
 
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
+
+import java.util.List;
 
 public class ContentTab {
     @JsonPath("$.title")
@@ -14,7 +15,7 @@ public class ContentTab {
      * Sections == Rows in web app version
      */
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[*].shelfRenderer")
-    private JsonPathCollection<ContentTabSection> sections = new JsonPathCollection<>(ContentTabSection.class); // type erase fix
+    private List<ContentTabSection> sections;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -30,7 +31,7 @@ public class ContentTab {
         return browseId;
     }
 
-    public JsonPathCollection<ContentTabSection> getSections() {
+    public List<ContentTabSection> getSections() {
         return sections;
     }
 

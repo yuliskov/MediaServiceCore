@@ -8,13 +8,15 @@ import com.jayway.jsonpath.PathNotFoundException;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
+import com.liskovsoft.youtubeapi.support.utils.ReflectionHelper;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TypeAdapter<T> {
     private static final String TAG = TypeAdapter.class.getSimpleName();
@@ -60,15 +62,6 @@ public class TypeAdapter<T> {
             Constructor<?> constructor = type.getConstructor();
             obj = constructor.newInstance();
 
-            if (obj instanceof JsonPathCollection) {
-                Class<?> myType = ((JsonPathCollection<Object>) obj).getGenericType();
-                for (Object jsonObj : (JsonArray) jsonContent) {
-                    ((JsonPathCollection<Object>) obj).add(readType(myType, jsonObj.toString()));
-                }
-
-                return obj;
-            }
-
             DocumentContext parser = mParser.parse((String) jsonContent);
 
             Field[] fields = type.getDeclaredFields();
@@ -91,8 +84,12 @@ public class TypeAdapter<T> {
                 }
 
                 if (jsonVal instanceof JsonArray) {
-                    JsonPathCollection<Object> list = (JsonPathCollection<Object>) field.get(obj);
-                    Class<Object> myType = list.getGenericType();
+                    List<Object> list = new ArrayList<>();
+                    Class<?> myType = ReflectionHelper.getGenericParam(field);
+
+                    if (myType == null) {
+                        throw new IllegalStateException("Please, supply generic field for the list type: " + field);
+                    }
 
                     for (Object jsonObj : (JsonArray) jsonVal) {
                         Object item = readType(myType, jsonObj.toString());
@@ -101,6 +98,8 @@ public class TypeAdapter<T> {
                             list.add(item);
                         }
                     }
+
+                    field.set(obj, list);
                 } else if (jsonVal instanceof JsonPrimitive) {
                     Object val = null;
 

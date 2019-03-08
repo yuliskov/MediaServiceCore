@@ -1,13 +1,14 @@
 package com.liskovsoft.youtubeapi.common.models.videos;
 
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
+
+import java.util.List;
 
 public class MusicItem {
     @JsonPath("$.navigationEndpoint.watchEndpoint.videoId")
     private String videoId;
     @JsonPath("$.thumbnail.thumbnails[*]")
-    private JsonPathCollection<Thumbnail> thumbnails = new JsonPathCollection<>(Thumbnail.class);
+    private List<Thumbnail> thumbnails;
     @JsonPath("$.primaryText.runs[0].text")
     private String title;
     @JsonPath("$.secondaryText.runs[0].text")
@@ -27,7 +28,7 @@ public class MusicItem {
         return videoId;
     }
 
-    public JsonPathCollection<Thumbnail> getThumbnails() {
+    public List<Thumbnail> getThumbnails() {
         return thumbnails;
     }
 

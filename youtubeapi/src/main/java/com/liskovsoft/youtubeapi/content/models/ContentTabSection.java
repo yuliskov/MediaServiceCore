@@ -4,31 +4,32 @@ import com.liskovsoft.youtubeapi.common.models.videos.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.videos.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
+
+import java.util.List;
 
 public class ContentTabSection {
     @JsonPath("$.title.runs[0].text")
     private String title;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")
-    private JsonPathCollection<VideoItem> videoItems = new JsonPathCollection<>(VideoItem.class);
+    private List<VideoItem> videoItems;
     @JsonPath("$.content.horizontalListRenderer.items[*].tvMusicVideoRenderer")
-    private JsonPathCollection<MusicItem> musicItems = new JsonPathCollection<>(MusicItem.class);
+    private List<MusicItem> musicItems;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridChannelRenderer")
-    private JsonPathCollection<ChannelItem> channelItems = new JsonPathCollection<>(ChannelItem.class);
+    private List<ChannelItem> channelItems;
 
     public String getTitle() {
         return title;
     }
 
-    public JsonPathCollection<VideoItem> getVideoItems() {
+    public List<VideoItem> getVideoItems() {
         return videoItems;
     }
 
-    public JsonPathCollection<MusicItem> getMusicItems() {
+    public List<MusicItem> getMusicItems() {
         return musicItems;
     }
 
-    public JsonPathCollection<ChannelItem> getChannelItems() {
+    public List<ChannelItem> getChannelItems() {
         return channelItems;
     }
 }

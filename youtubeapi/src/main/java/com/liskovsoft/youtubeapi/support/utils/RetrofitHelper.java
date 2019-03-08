@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.support;
+package com.liskovsoft.youtubeapi.support.utils;
 
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.converter.JsonPathConverterFactory;
 import retrofit2.Retrofit;

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.UserCode;
-import com.liskovsoft.youtubeapi.support.RetrofitHelper;
+import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

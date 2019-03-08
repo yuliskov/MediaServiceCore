@@ -2,11 +2,12 @@ package com.liskovsoft.youtubeapi.search.models;
 
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPathCollection;
+
+import java.util.List;
 
 public class SearchResult {
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer")
-    private JsonPathCollection<VideoItem> mVideoItems = new JsonPathCollection<>(VideoItem.class);
+    private List<VideoItem> mVideoItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -14,7 +15,7 @@ public class SearchResult {
     @JsonPath("$.contents.sectionListRenderer.continuations[0].reloadContinuationData.continuation")
     private String mReloadPageKey;
 
-    public JsonPathCollection<VideoItem> getVideoItems() {
+    public List<VideoItem> getVideoItems() {
         return mVideoItems;
     }
 

@@ -1,4 +1,4 @@
 package com.liskovsoft.myvideotubeapi;
 
-public class MyVideoTubeService {
+public interface VideoItem {
 }

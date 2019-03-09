@@ -36,7 +36,7 @@ dependencies {
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
-    implementation project(':ext-sharedutils')
+    implementation project(':extension-sharedutils')
 
     implementation 'com.android.support:appcompat-v7:' + appCompatVersion
 

@@ -1,13 +1,9 @@
 project.ext {
-    // App version and version code.
-    releaseVersion = '0.0.1'
-    releaseVersionCode = 1
-
     // Important: App specifies a minSdkVersion of 17 because various
     // components provided by the library may be of use on older devices.
     // However, please note that the core media playback functionality provided
     // by the app requires API level 16 or greater.
-    minSdkVersion = 17
+    minSdkVersion = 14
     targetSdkVersion = 28
     compileSdkVersion = 28
 
@@ -28,6 +24,8 @@ project.ext {
     retrofitVersion = '2.5.0'
     gsonVersion = '2.8.2'
     jsonPathVersion = '2.4.0'
+    rxAndroidVersion = '2.1.1'
+    rxJavaVersion = '2.2.7'
 
     modulePrefix = ':'
     if (gradle.ext.has('appModulePrefix')) {

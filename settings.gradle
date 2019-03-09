@@ -1,4 +1,4 @@
-include ':youtubeapi'
+include ':youtubeapi', ':myvideotubeapi'
 
 gradle.ext.sharedUtilsRoot = '../SharedUtils'
 gradle.ext.sharedUtilsModulePrefix = 'ext-'

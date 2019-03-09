@@ -14,10 +14,11 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode 5
-        versionName "0.0.5"
+        versionCode 7
+        versionName "0.0.2"
 
-        consumerProguardFiles 'proguard-rules.txt'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -26,6 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -33,13 +35,11 @@ dependencies {
 
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
-    
+
     implementation project(':ext-sharedutils')
 
     implementation 'com.android.support:appcompat-v7:' + appCompatVersion
 
-    implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
-    implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
-    implementation 'com.google.code.gson:gson:' + gsonVersion
-    implementation 'com.jayway.jsonpath:json-path:' + jsonPathVersion
+    implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
+    implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 }

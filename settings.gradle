@@ -1,5 +1,5 @@
 include ':youtubeapi', ':myvideotubeapi'
 
 gradle.ext.sharedUtilsRoot = '../SharedUtils'
-gradle.ext.sharedUtilsModulePrefix = 'extension-'
+gradle.ext.sharedUtilsModulePrefix = 'ext-'
 apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')

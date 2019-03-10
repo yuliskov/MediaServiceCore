@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode 7
-        versionName "0.0.2"
+        versionCode 11
+        versionName "0.3.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,9 +36,7 @@ dependencies {
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
-    implementation project(':extension-sharedutils')
-
-    implementation 'com.android.support:appcompat-v7:' + appCompatVersion
+    implementation project(':ext-sharedutils')
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion

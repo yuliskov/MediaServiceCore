@@ -1,86 +1,113 @@
 package com.liskovsoft.youtubeapi.adapters;
 
 import com.liskovsoft.myvideotubeapi.Video;
+import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
 public class YouTubeVideo implements Video {
+    private static int id;
+    private String mTitle;
+    private int mId;
+    private String mDescription;
+    private String mCardImageUrl;
+    private String mBackgroundImageUrl;
+    private String mVideoUrl;
+    private String mContentType;
+    private boolean mIsLive;
+    private int mDuration;
+    private String mProductionDate;
+
+    public static Video from(VideoItem item) {
+        YouTubeVideo video = new YouTubeVideo();
+        video.setId(id++);
+        video.setTitle(item.getTitle());
+        video.setCardImageUrl(item.getThumbnails().get(0).getUrl());
+        video.setBackgroundImageUrl(item.getThumbnails().get(0).getUrl());
+        video.setProductionDate(item.getPublishedTime());
+        video.setVideoUrl(YouTubeHelper.toFullUrl(item.getVideoId()));
+        video.setDuration(YouTubeHelper.toMillis(item.getLengthText()));
+        video.setContentType("video/*");
+        return video;
+    }
+
     @Override
     public int getId() {
-        return 0;
+        return mId;
     }
 
     @Override
     public void setId(int id) {
-
+        mId = id;
     }
 
     @Override
-    public String getName() {
-        return null;
+    public String getTitle() {
+        return mTitle;
     }
 
     @Override
-    public void setName(String name) {
-
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return mDescription;
     }
 
     @Override
     public void setDescription(String description) {
-
+        mDescription = description;
     }
 
     @Override
     public String getCardImageUrl() {
-        return null;
+        return mCardImageUrl;
     }
 
     @Override
     public void setCardImageUrl(String cardImageUrl) {
-
+        mCardImageUrl = cardImageUrl;
     }
 
     @Override
     public String getBackgroundImageUrl() {
-        return null;
+        return mBackgroundImageUrl;
     }
 
     @Override
     public void setBackgroundImageUrl(String backgroundImageUrl) {
-
+        mBackgroundImageUrl = backgroundImageUrl;
     }
 
     @Override
     public String getVideoUrl() {
-        return null;
+        return mVideoUrl;
     }
 
     @Override
     public void setVideoUrl(String videoUrl) {
-
+        mVideoUrl = videoUrl;
     }
 
     @Override
     public String getContentType() {
-        return null;
+        return mContentType;
     }
 
     @Override
     public void setContentType(String contentType) {
-
+        mContentType = contentType;
     }
 
     @Override
     public boolean isLive() {
-        return false;
+        return mIsLive;
     }
 
     @Override
     public void setLive(boolean isLive) {
-
+        mIsLive = isLive;
     }
 
     @Override
@@ -155,21 +182,21 @@ public class YouTubeVideo implements Video {
 
     @Override
     public String getProductionDate() {
-        return null;
+        return mProductionDate;
     }
 
     @Override
     public void setProductionDate(String productionDate) {
-
+        mProductionDate = productionDate;
     }
 
     @Override
     public int getDuration() {
-        return 0;
+        return mDuration;
     }
 
     @Override
     public void setDuration(int duration) {
-
+        mDuration = duration;
     }
 }

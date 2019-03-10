@@ -26,9 +26,9 @@ public class VideoItem {
     @JsonPath("$.shortViewCountText.runs[0].text")
     private String shortViewCount;
     @JsonPath("$.lengthText.runs[0].text")
-    private String length;
+    private String lengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
-    private String accessibilityLength;
+    private String accessibilityLengthText;
     @JsonPath("$.badges[0].textBadge.label.runs[0].text")
     private String qualityBadge;
 
@@ -72,12 +72,12 @@ public class VideoItem {
         return shortViewCount;
     }
 
-    public String getLength() {
-        return length;
+    public String getLengthText() {
+        return lengthText;
     }
 
     public String getAccessibilityLength() {
-        return accessibilityLength;
+        return accessibilityLengthText;
     }
 
     public String getQualityBadge() {

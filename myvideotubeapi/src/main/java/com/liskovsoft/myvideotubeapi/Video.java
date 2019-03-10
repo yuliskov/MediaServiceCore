@@ -5,8 +5,8 @@ import android.media.Rating;
 public interface Video {
     int getId();
     void setId(int id);
-    String getName();
-    void setName(String name);
+    String getTitle();
+    void setTitle(String title);
     String getDescription();
     void setDescription(String description);
     String getCardImageUrl();

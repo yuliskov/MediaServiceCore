@@ -1,4 +1,4 @@
-apply from: '../constants.gradle'
+apply from: '../../SharedUtils/constants.gradle'
 apply plugin: 'com.android.library'
 
 android {

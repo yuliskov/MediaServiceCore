@@ -1,6 +1,2 @@
 gradle.ext.myVideoTubeApiRoot = settingsDir
 apply from: 'core_settings.gradle'
-
-gradle.ext.sharedUtilsRoot = '../SharedUtils'
-gradle.ext.sharedUtilsModulePrefix = 'ext-'
-apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')

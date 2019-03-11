@@ -1,5 +1,8 @@
 def rootDir = gradle.ext.myVideoTubeApiRoot
 
+gradle.ext.sharedUtilsRoot = new File(rootDir, '../SharedUtils')
+apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
+
 include ':myvideotubeapi', ':youtubeapi'
 project(':myvideotubeapi').projectDir = new File(rootDir, 'myvideotubeapi')
 project(':youtubeapi').projectDir = new File(rootDir, 'youtubeapi')

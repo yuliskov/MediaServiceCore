@@ -35,7 +35,7 @@ dependencies {
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
-    implementation project(':ext-sharedutils')
+    implementation project(':sharedutils')
     implementation project(':myvideotubeapi')
 
     implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion

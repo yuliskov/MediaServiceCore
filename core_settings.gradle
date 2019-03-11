@@ -1,0 +1,5 @@
+def rootDir = gradle.ext.myVideoTubeApiRoot
+
+include ':myvideotubeapi', ':youtubeapi'
+project(':myvideotubeapi').projectDir = new File(rootDir, 'myvideotubeapi')
+project(':youtubeapi').projectDir = new File(rootDir, 'youtubeapi')

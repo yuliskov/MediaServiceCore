@@ -8,6 +8,7 @@ import io.reactivex.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class YouTubeVideoService implements VideoService {
     private final FrontendService mService;
@@ -18,14 +19,23 @@ public class YouTubeVideoService implements VideoService {
 
     @Override
     public Observable<List<Video>> findVideos(String searchText) {
-        return Observable.fromCallable(() -> {
-            List<VideoItem> videoItems = findVideoItems(searchText);
-            return convertVideoItems(videoItems);
-        });
-    }
+        return Observable.fromCallable(new Callable<List<Video>>() {
+            private boolean mSecondSearch;
 
-    private List<VideoItem> findVideoItems(String searchText) {
-        return mService.startSearch(searchText);
+            @Override
+            public List<Video> call() {
+                List<VideoItem> videoItems;
+
+                if (!mSecondSearch) {
+                    videoItems = mService.startSearch(searchText);
+                    mSecondSearch = true;
+                } else {
+                    videoItems = mService.getNextSearchPage();
+                }
+
+                return convertVideoItems(videoItems);
+            }
+        });
     }
 
     private List<Video> convertVideoItems(List<VideoItem> items) {

@@ -17,8 +17,8 @@ public class YouTubeHelper {
         String[] timeParts = lengthText.split(":");
 
         int hours = timeParts.length == 3 ? Integer.parseInt(timeParts[0]) : 0;
-        int minutes = timeParts.length >= 2 ? Integer.parseInt(timeParts[1]) : 0;
-        int seconds = timeParts.length >= 2 ? Integer.parseInt(timeParts[2]) : 0;
+        int minutes = timeParts.length == 3 ? Integer.parseInt(timeParts[1]) : Integer.parseInt(timeParts[0]);
+        int seconds = timeParts.length == 3 ? Integer.parseInt(timeParts[2]) : Integer.parseInt(timeParts[1]);
 
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
     }

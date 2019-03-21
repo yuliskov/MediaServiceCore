@@ -1,10 +1,14 @@
 package com.liskovsoft.youtubeapi.adapters;
 
 import com.liskovsoft.myvideotubeapi.Video;
+import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
+import java.util.List;
+
 public class YouTubeVideo implements Video {
+    private static final String BULLET_SYMBOL = "\u2022";
     private static int id;
     private String mTitle;
     private int mId;
@@ -16,18 +20,52 @@ public class YouTubeVideo implements Video {
     private boolean mIsLive;
     private int mDuration;
     private String mProductionDate;
+    private int mWidth;
+    private int mHeight;
+    private String mAudioChannelConfig;
+    private String mPurchasePrice;
+    private String mRentalPrice;
+    private int mRatingStyle;
+    private double mRatingScore;
 
     public static Video from(VideoItem item) {
         YouTubeVideo video = new YouTubeVideo();
         video.setId(id++);
         video.setTitle(item.getTitle());
-        video.setCardImageUrl(item.getThumbnails().get(0).getUrl());
-        video.setBackgroundImageUrl(item.getThumbnails().get(0).getUrl());
+        video.setDescription(obtainDescription(item));
+        video.setCardImageUrl(obtainHighResThumbnailUrl(item));
+        video.setBackgroundImageUrl(obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getPublishedTime());
         video.setVideoUrl(YouTubeHelper.toFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.toMillis(item.getLengthText()));
-        video.setContentType("video/*");
+        video.setContentType("video/mp4");
+        video.setWidth(1280);
+        video.setHeight(720);
+        video.setAudioChannelConfig("2.0");
+        video.setPurchasePrice("$5.99");
+        video.setRentalPrice("$4.99");
+        video.setRatingStyle(5);
+        video.setRatingScore(4d);
         return video;
+    }
+
+    private static String obtainHighResThumbnailUrl(VideoItem item) {
+        List<Thumbnail> thumbnails = item.getThumbnails();
+
+        if (thumbnails.size() == 0) {
+            return null;
+        }
+
+        return thumbnails.get(thumbnails.size() - 1).getUrl();
+    }
+
+    private static String obtainDescription(VideoItem item) {
+        return String.format("%s %s %s %s %s",
+                item.getUserName(),
+                BULLET_SYMBOL,
+                item.getPublishedTime(),
+                BULLET_SYMBOL,
+                item.getShortViewCount());
     }
 
     @Override
@@ -112,72 +150,72 @@ public class YouTubeVideo implements Video {
 
     @Override
     public int getWidth() {
-        return 0;
+        return mWidth;
     }
 
     @Override
     public void setWidth(int width) {
-
+        mWidth = width;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return mHeight;
     }
 
     @Override
     public void setHeight(int height) {
-
+        mHeight = height;
     }
 
     @Override
     public String getAudioChannelConfig() {
-        return null;
+        return mAudioChannelConfig;
     }
 
     @Override
     public void setAudioChannelConfig(String audioChannelConfig) {
-
+        mAudioChannelConfig = audioChannelConfig;
     }
 
     @Override
     public String getPurchasePrice() {
-        return null;
+        return mPurchasePrice;
     }
 
     @Override
     public void setPurchasePrice(String purchasePrice) {
-
+        mPurchasePrice = purchasePrice;
     }
 
     @Override
     public String getRentalPrice() {
-        return null;
+        return mRentalPrice;
     }
 
     @Override
     public void setRentalPrice(String rentalPrice) {
-
+        mRentalPrice = rentalPrice;
     }
 
     @Override
     public int getRatingStyle() {
-        return 0;
+        return mRatingStyle;
     }
 
     @Override
     public void setRatingStyle(int ratingStyle) {
-
+        mRatingStyle = ratingStyle;
     }
 
     @Override
     public double getRatingScore() {
-        return 0;
+        return mRatingScore;
     }
 
     @Override
     public void setRatingScore(double ratingScore) {
-
+        mRatingScore = ratingScore;
     }
 
     @Override

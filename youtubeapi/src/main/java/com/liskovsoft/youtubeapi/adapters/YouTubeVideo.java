@@ -8,7 +8,6 @@ import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 import java.util.List;
 
 public class YouTubeVideo implements Video {
-    private static final String BULLET_SYMBOL = "\u2022";
     private static int id;
     private String mTitle;
     private int mId;
@@ -60,12 +59,11 @@ public class YouTubeVideo implements Video {
     }
 
     private static String obtainDescription(VideoItem item) {
-        return String.format("%s %s %s %s %s",
+        return YouTubeHelper.formatDescription(
                 item.getUserName(),
-                BULLET_SYMBOL,
                 item.getPublishedTime(),
-                BULLET_SYMBOL,
-                item.getShortViewCount());
+                item.getShortViewCount()
+        );
     }
 
     @Override

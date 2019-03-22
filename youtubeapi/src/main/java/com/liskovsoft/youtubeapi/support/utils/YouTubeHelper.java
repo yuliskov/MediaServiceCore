@@ -3,6 +3,8 @@ package com.liskovsoft.youtubeapi.support.utils;
 import java.util.concurrent.TimeUnit;
 
 public class YouTubeHelper {
+    private static final String BULLET_SYMBOL = "\u2022";
+
     public static String toFullUrl(String videoId) {
         return String.format("https://www.youtube.com/watch?v=%s", videoId);
     }
@@ -21,5 +23,23 @@ public class YouTubeHelper {
         int seconds = timeParts.length == 3 ? Integer.parseInt(timeParts[2]) : Integer.parseInt(timeParts[1]);
 
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
+    }
+
+    public static String formatDescription(String... items) {
+        String result = "";
+
+        for (String item : items) {
+            if (item == null) {
+                continue;
+            }
+
+            if (result.isEmpty()) {
+                result = item;
+            } else {
+                result = String.format("%s %s %s", result, BULLET_SYMBOL, item);
+            }
+        }
+
+        return result;
     }
 }

@@ -24,6 +24,12 @@ public class YouTubeVideoService implements VideoService {
     }
 
     @Override
+    public List<Video> getNextSearchPage() {
+        List<VideoItem> videoItems = mService.getNextSearchPage();
+        return convertVideoItems(videoItems);
+    }
+
+    @Override
     public Observable<List<Video>> findVideos(String searchText) {
         return Observable.fromCallable(new Callable<List<Video>>() {
             private boolean mSecondSearch;

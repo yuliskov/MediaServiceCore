@@ -35,8 +35,8 @@ public class YouTubeVideo implements Video {
         video.setCardImageUrl(obtainHighResThumbnailUrl(item));
         video.setBackgroundImageUrl(obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getPublishedTime());
-        video.setVideoUrl(YouTubeHelper.toFullUrl(item.getVideoId()));
-        video.setDuration(YouTubeHelper.toMillis(item.getLengthText()));
+        video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
+        video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
         video.setContentType("video/mp4");
         video.setWidth(1280);
         video.setHeight(720);
@@ -59,7 +59,7 @@ public class YouTubeVideo implements Video {
     }
 
     private static String obtainDescription(VideoItem item) {
-        return YouTubeHelper.formatDescription(
+        return YouTubeHelper.itemsToDescription(
                 item.getUserName(),
                 item.getPublishedTime(),
                 item.getShortViewCount()

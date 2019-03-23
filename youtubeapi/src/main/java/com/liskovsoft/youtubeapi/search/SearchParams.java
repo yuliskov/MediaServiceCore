@@ -22,7 +22,7 @@ public class SearchParams {
     }
 
     public static String getSearchQuery(String searchText) {
-        return String.format(JSON_DATA_TEMPLATE, searchText);
+        return String.format(JSON_DATA_TEMPLATE, escape(searchText));
     }
 
     /**
@@ -32,5 +32,11 @@ public class SearchParams {
      */
     public static String getNextSearchQuery(String nextPageKey) {
         return String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey);
+    }
+
+    private static String escape(String text) {
+        return text
+                .replaceAll("'", "\\\\'")
+                .replaceAll("\"", "\\\\\"");
     }
 }

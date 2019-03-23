@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 public class SearchManagerTest {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
+    private static final String SEARCH_TEXT_SPECIAL = "What's Trending";
     private SearchManager mService;
 
     @Before
@@ -31,6 +32,13 @@ public class SearchManagerTest {
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
         Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
+
+        assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
+    }
+
+    @Test
+    public void testThatSearchResultNotEmpty2() throws IOException {
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT_SPECIAL));
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }

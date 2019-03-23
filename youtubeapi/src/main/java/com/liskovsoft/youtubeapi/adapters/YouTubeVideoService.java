@@ -54,13 +54,9 @@ public class YouTubeVideoService implements VideoService {
         ArrayList<Video> result = new ArrayList<>();
 
         for (VideoItem item : items) {
-            result.add(convertVideo(item));
+            result.add(YouTubeVideo.from(item));
         }
 
         return result;
-    }
-
-    private Video convertVideo(VideoItem item) {
-        return YouTubeVideo.from(item);
     }
 }

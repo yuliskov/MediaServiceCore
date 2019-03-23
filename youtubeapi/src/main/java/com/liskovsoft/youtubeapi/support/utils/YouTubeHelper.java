@@ -17,6 +17,10 @@ public class YouTubeHelper {
      * @return length in milliseconds
      */
     public static int timeTextToMillis(String lengthText) {
+        if (lengthText == null) {
+            return 0;
+        }
+
         String[] timeParts = lengthText.split(TIME_TEXT_DELIM);
 
         int hours = timeParts.length == 3 ? Integer.parseInt(timeParts[0]) : 0;

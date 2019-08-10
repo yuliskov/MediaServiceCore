@@ -1,8 +1,5 @@
-smartyoutubetv.properties
-common.properties
-gradle.properties
-android.keystore
-android-upd2.keystore
+/android.keystore
+/android-upd2.keystore
 build.log
 notes.txt
 deps.txt
@@ -21,9 +18,8 @@ tmp/
 *.iml
 .gradle
 /local.properties
-/.idea/libraries
-/.idea/modules.xml
 /.idea/workspace.xml
+/.idea/libraries
 .DS_Store
 /build
 /captures

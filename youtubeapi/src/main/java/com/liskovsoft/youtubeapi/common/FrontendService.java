@@ -19,7 +19,7 @@ public class FrontendService {
     private SearchManager mSearchManager;
     private String mNextSearchPageKey;
 
-    public List<VideoItem> startSearch(String searchText) {
+    public List<VideoItem> getSearch(String searchText) {
         SearchManager manager = getSearchManager();
 
         Call<SearchResult> wrapper = manager.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(searchText));
@@ -36,10 +36,10 @@ public class FrontendService {
     }
 
     /**
-     * Method uses results from the {@link #startSearch(String)} call
+     * Method uses results from the {@link #getSearch(String)} call
      * @return video items
      */
-    public List<VideoItem> getNextSearchPage() {
+    public List<VideoItem> getNextSearch() {
         if (mNextSearchPageKey == null) {
             throw new IllegalStateException("Can't get next search page. Next search key is empty.");
         }

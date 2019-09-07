@@ -2,8 +2,6 @@ package com.liskovsoft.youtubeapi.adapters;
 
 import com.liskovsoft.myvideotubeapi.Video;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +28,7 @@ public class YouTubeVideoServiceTest {
      */
     @Test
     public void testThatFindReturnsMultiplePages() throws InterruptedException {
-        Observable<List<Video>> result = mService.findVideos("hello world");
+        Observable<List<Video>> result = mService.getSearchObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(2);
 

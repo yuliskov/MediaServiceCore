@@ -18,19 +18,19 @@ public class YouTubeVideoService implements VideoService {
     }
 
     @Override
-    public List<Video> findVideos2(String searchText) {
-        List<VideoItem> videoItems = mService.startSearch(searchText);
+    public List<Video> getSearch(String searchText) {
+        List<VideoItem> videoItems = mService.getSearch(searchText);
         return convertVideoItems(videoItems);
     }
 
     @Override
-    public List<Video> getNextSearchPage() {
-        List<VideoItem> videoItems = mService.getNextSearchPage();
+    public List<Video> getNextSearch() {
+        List<VideoItem> videoItems = mService.getNextSearch();
         return convertVideoItems(videoItems);
     }
 
     @Override
-    public Observable<List<Video>> findVideos(String searchText) {
+    public Observable<List<Video>> getSearchObserve(String searchText) {
         return Observable.fromCallable(new Callable<List<Video>>() {
             private boolean mSecondSearch;
 
@@ -39,10 +39,10 @@ public class YouTubeVideoService implements VideoService {
                 List<VideoItem> videoItems;
 
                 if (!mSecondSearch) {
-                    videoItems = mService.startSearch(searchText);
+                    videoItems = mService.getSearch(searchText);
                     mSecondSearch = true;
                 } else {
-                    videoItems = mService.getNextSearchPage();
+                    videoItems = mService.getNextSearch();
                 }
 
                 return convertVideoItems(videoItems);
@@ -58,5 +58,20 @@ public class YouTubeVideoService implements VideoService {
         }
 
         return result;
+    }
+
+    @Override
+    public Observable<List<Video>> getSubscriptions() {
+        return null;
+    }
+
+    @Override
+    public Observable<List<Video>> getHistory() {
+        return null;
+    }
+
+    @Override
+    public Observable<List<Video>> getRecommended() {
+        return null;
     }
 }

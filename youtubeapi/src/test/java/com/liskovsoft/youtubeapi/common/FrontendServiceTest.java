@@ -24,10 +24,10 @@ public class FrontendServiceTest {
 
     @Test
     public void testSearchNotEmpty() {
-        List<VideoItem> items = mService.startSearch("any search text");
+        List<VideoItem> items = mService.getSearch("any search text");
         assertTrue("search not empty?", items.size() != 0);
 
-        List<VideoItem> nextItems = mService.getNextSearchPage();
+        List<VideoItem> nextItems = mService.getNextSearch();
         assertTrue("next search not empty?", nextItems.size() != 0);
     }
 }

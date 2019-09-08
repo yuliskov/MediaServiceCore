@@ -61,7 +61,7 @@ public class SearchManagerTest {
         SearchResult result = wrapper.execute().body();
         String nextPageKey = result.getNextPageKey();
 
-        Call<NextSearchResult> wrapper2 = mService.getNextPage(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(nextPageKey));
+        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(nextPageKey));
         NextSearchResult result2 = wrapper2.execute().body();
 
         assertTrue("List > 3", result2.getVideoItems().size() > 3);

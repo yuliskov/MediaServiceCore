@@ -45,7 +45,7 @@ public class FrontendService {
         }
 
         SearchManager manager = getSearchManager();
-        Call<NextSearchResult> wrapper = manager.getNextPage(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(mNextSearchPageKey));
+        Call<NextSearchResult> wrapper = manager.getNextSearchResult(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(mNextSearchPageKey));
         NextSearchResult searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {

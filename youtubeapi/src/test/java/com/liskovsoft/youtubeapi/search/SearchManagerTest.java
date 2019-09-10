@@ -31,21 +31,21 @@ public class SearchManagerTest {
 
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT), SearchParams.getSearchKey());
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultNotEmpty2() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT_SPECIAL));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT_SPECIAL), SearchParams.getSearchKey());
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultFieldsNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT), SearchParams.getSearchKey());
         SearchResult searchResult = wrapper.execute().body();
         VideoItem videoItem = searchResult.getVideoItems().get(0);
 
@@ -57,11 +57,11 @@ public class SearchManagerTest {
 
     @Test
     public void testThatContinuationResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT), SearchParams.getSearchKey());
         SearchResult result = wrapper.execute().body();
         String nextPageKey = result.getNextPageKey();
 
-        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(nextPageKey));
+        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SearchParams.getNextSearchQuery(nextPageKey), SearchParams.getSearchKey());
         NextSearchResult result2 = wrapper2.execute().body();
 
         assertTrue("List > 3", result2.getVideoItems().size() > 3);

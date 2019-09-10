@@ -1,6 +1,7 @@
-package com.liskovsoft.youtubeapi.subscriptions;
+package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.subscriptions.models.Subscriptions;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,23 +17,40 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SubscriptionsManagerTest {
-    private SubscriptionsManager mService;
+public class BrowseManagerTest {
+    /**
+     * Note: valid period - one hour
+     */
+    private static final String AUTHORIZATION =
+            "Bearer ya29.Gl1_B10Mu_gNOjVSeIWX2pRvlIPN4m_zkpoT6vSiRdXHHpCPoua3tr3VSNPDBESi3AHGi81g3" +
+            "-By8YLkTDhlewH2E3sluVlPAH3h6Z4aJv19UbgJ6_S3N5g06sULuK4";
+    private BrowseManager mService;
 
     @Before
     public void setUp() {
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(SubscriptionsManager.class);
+        mService = RetrofitHelper.withJsonPath(BrowseManager.class);
     }
 
     @Test
     public void testThatSubscriptionsNotEmpty() throws IOException {
-        Call<Subscriptions> wrapper = mService.getSubscriptions(SubscriptionsParams.getBrowseQuery());
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), AUTHORIZATION);
 
-        Response<Subscriptions> execute = wrapper.execute();
-        assertNotNull("Items not null", execute.body());
-        assertTrue("List > 2", execute.body().getVideoItems().size() > 2);
+        BrowseResult execute = wrapper.execute().body();
+
+        assertNotNull("Items not null", execute);
+        assertTrue("List > 2", execute.getVideoItems().size() > 2);
+
+        String nextPageKey = execute.getNextPageKey();
+
+        assertNotNull("Item not null", nextPageKey);
+
+        Call<NextBrowseResult> browseResult = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), AUTHORIZATION);
+        NextBrowseResult body = browseResult.execute().body();
+
+        assertNotNull("Items not null", body);
+        assertTrue("List > 2", body.getVideoItems().size() > 2);
     }
 
     //@Test

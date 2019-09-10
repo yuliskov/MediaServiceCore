@@ -22,7 +22,7 @@ public class FrontendService {
     public List<VideoItem> getSearch(String searchText) {
         SearchManager manager = getSearchManager();
 
-        Call<SearchResult> wrapper = manager.getSearchResult(SearchParams.getSearchKey(), SearchParams.getSearchQuery(searchText));
+        Call<SearchResult> wrapper = manager.getSearchResult(SearchParams.getSearchQuery(searchText), SearchParams.getSearchKey());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -45,7 +45,7 @@ public class FrontendService {
         }
 
         SearchManager manager = getSearchManager();
-        Call<NextSearchResult> wrapper = manager.getNextSearchResult(SearchParams.getSearchKey(), SearchParams.getNextSearchQuery(mNextSearchPageKey));
+        Call<NextSearchResult> wrapper = manager.getNextSearchResult(SearchParams.getNextSearchQuery(mNextSearchPageKey), SearchParams.getSearchKey());
         NextSearchResult searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {

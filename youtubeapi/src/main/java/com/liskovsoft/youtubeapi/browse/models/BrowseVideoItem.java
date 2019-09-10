@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.subscriptions.models;
+package com.liskovsoft.youtubeapi.browse.models;
 
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;

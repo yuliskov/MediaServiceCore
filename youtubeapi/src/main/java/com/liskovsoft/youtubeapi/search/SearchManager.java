@@ -14,9 +14,9 @@ import retrofit2.http.Query;
 public interface SearchManager {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<SearchResult> getSearchResult(@Query("key") String key, @Body String searchQuery);
+    Call<SearchResult> getSearchResult(@Body String searchQuery, @Query("key") String key);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<NextSearchResult> getNextSearchResult(@Query("key") String key, @Body String searchQuery);
+    Call<NextSearchResult> getNextSearchResult(@Body String searchQuery, @Query("key") String key);
 }

@@ -1,10 +1,10 @@
-package com.liskovsoft.youtubeapi.subscriptions.models;
+package com.liskovsoft.youtubeapi.browse.models;
 
 import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class NextSubscriptions {
+public class NextBrowseResult {
     @JsonPath("$.continuationContents.gridContinuation.items[*].gridVideoRenderer")
     private List<BrowseVideoItem> mVideoItems;
 

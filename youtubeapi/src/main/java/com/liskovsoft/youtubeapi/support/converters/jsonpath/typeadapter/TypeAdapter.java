@@ -39,13 +39,20 @@ public class TypeAdapter<T> {
 
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
-        Object jsonContent;
+        Object jsonContent = null;
 
-        String jsonPath = getJsonPath(getGenericType());
+        String[] jsonPath = getJsonPath(getGenericType());
 
         if (jsonPath != null) { // annotation on the same collection class
             DocumentContext parser = mParser.parse(is);
-            jsonContent = parser.read(jsonPath);
+            for (String path : jsonPath) {
+                try {
+                    jsonContent = parser.read(path);
+                    break;
+                } catch (PathNotFoundException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
         } else { // annotation on field
             jsonContent = Helpers.toString(is);
         }
@@ -53,8 +60,11 @@ public class TypeAdapter<T> {
         return (T) readType(getGenericType(), jsonContent);
     }
 
-    @SuppressWarnings("unchecked")
     private Object readType(Class<?> type, Object jsonContent) {
+        if (type == null || jsonContent == null) {
+            return null;
+        }
+
         Object obj = null;
         boolean done = false;
 
@@ -68,18 +78,24 @@ public class TypeAdapter<T> {
 
             for (Field field : fields) {
                 field.setAccessible(true);
-                String jsonPath = getJsonPath(field);
+                String[] jsonPath = getJsonPath(field);
 
                 if (jsonPath == null) {
                     continue;
                 }
 
-                Object jsonVal;
+                Object jsonVal = null;
 
-                try {
-                    jsonVal = parser.read(jsonPath);
-                } catch (PathNotFoundException e) {
-                    Log.e(TAG, type.getSimpleName() + ": " + e.getMessage());
+                for (String path : jsonPath) {
+                    try {
+                        jsonVal = parser.read(path);
+                        break;
+                    } catch (PathNotFoundException e) {
+                        Log.e(TAG, type.getSimpleName() + ": " + e.getMessage());
+                    }
+                }
+
+                if (jsonVal == null) {
                     continue;
                 }
 
@@ -121,19 +137,19 @@ public class TypeAdapter<T> {
         return done ? obj : null;
     }
 
-    private String getJsonPath(Class<?> type) {
+    private String[] getJsonPath(Class<?> type) {
         Annotation[] annotations = type.getAnnotations();
 
         return getJsonPath(annotations);
     }
 
-    private String getJsonPath(Field field) {
+    private String[] getJsonPath(Field field) {
         Annotation[] annotations = field.getAnnotations();
 
         return getJsonPath(annotations);
     }
 
-    private String getJsonPath(Annotation[] annotations) {
+    private String[] getJsonPath(Annotation[] annotations) {
         for (Annotation annotation : annotations) {
             if (annotation instanceof JsonPath) {
                 return ((JsonPath) annotation).value();

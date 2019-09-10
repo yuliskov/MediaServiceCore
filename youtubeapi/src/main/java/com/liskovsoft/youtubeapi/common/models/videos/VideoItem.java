@@ -11,7 +11,7 @@ public class VideoItem {
     private List<Thumbnail> thumbnails;
     @JsonPath("$.channelThumbnail.thumbnails[0]")
     private String channelThumbnail;
-    @JsonPath("$.title.runs[0].text")
+    @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
     private String title;
     @JsonPath("$.longBylineText.runs[0].text")
     private String userName;
@@ -19,13 +19,13 @@ public class VideoItem {
     private String channelId;
     @JsonPath("$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")
     private String canonicalChannelUrl;
-    @JsonPath("$.publishedTimeText.runs[0].text")
+    @JsonPath({"$.publishedTimeText.runs[0].text", "$.publishedTimeText.simpleText"})
     private String publishedTime;
     @JsonPath("$.viewCountText.runs[0].text")
     private String viewCount;
     @JsonPath("$.shortViewCountText.runs[0].text")
     private String shortViewCount;
-    @JsonPath("$.lengthText.runs[0].text")
+    @JsonPath({"$.lengthText.runs[0].text", "$.lengthText.simpleText"})
     private String lengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
     private String accessibilityLengthText;

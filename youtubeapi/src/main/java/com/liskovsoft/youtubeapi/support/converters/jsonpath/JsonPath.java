@@ -11,5 +11,5 @@ public @interface JsonPath {
     /**
      * Path for the desired json element
      */
-    String value();
+    String[] value();
 }

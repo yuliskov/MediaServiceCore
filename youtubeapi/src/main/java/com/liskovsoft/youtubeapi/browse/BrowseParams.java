@@ -37,4 +37,8 @@ public class BrowseParams {
     public static String getNextBrowseQuery(String nextPageKey) {
         return String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey);
     }
+
+    public static String getHomeQuery() {
+        return String.format(JSON_DATA_TEMPLATE, HOME);
+    }
 }

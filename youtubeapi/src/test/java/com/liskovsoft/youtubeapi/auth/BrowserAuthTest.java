@@ -12,12 +12,18 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class BrowserAuthTest {
+    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1/dXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
+    private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
+    private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
+    private static final String GRANT_TYPE = "refresh_token";
+    private static final String REFRESH_TOKEN = "1/dXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
     private BrowserAuth mService;
 
     @Before
@@ -25,6 +31,34 @@ public class BrowserAuthTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mService = RetrofitHelper.withGson(BrowserAuth.class);
+    }
+
+    @Test
+    public void testThatUserIsAuthenticated() throws IOException {
+        Call<AccessToken> wrapper = mService.getAuthToken(RAW_POST_DATA);
+
+        Response<AccessToken> execute = wrapper.execute();
+
+        AccessToken token = execute.body();
+
+        assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
+        assertTrue("Token not null", token.getAccessToken().length() > 50);
+    }
+
+    @Test
+    public void testThatUserIsAuthenticated2() throws IOException {
+        Call<AccessToken> wrapper = mService.getAuthToken2(
+                CLIENT_ID,
+                CLIENT_SECRET,
+                GRANT_TYPE,
+                REFRESH_TOKEN);
+
+        Response<AccessToken> execute = wrapper.execute();
+
+        AccessToken token = execute.body();
+
+        assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
+        assertTrue("Token not null", token.getAccessToken().length() > 50);
     }
 
     @Test

@@ -29,4 +29,8 @@ public class AccessToken extends ErrorResponse {
     public String getRefreshToken() {
         return mRefreshToken;
     }
+
+    public int getExpiresIn() {
+        return mExpiresIn;
+    }
 }

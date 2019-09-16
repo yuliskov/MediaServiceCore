@@ -1,10 +1,13 @@
 package com.liskovsoft.youtubeapi.browse;
 
+import com.liskovsoft.youtubeapi.auth.BrowserAuth;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
+import okhttp3.RequestBody;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +27,29 @@ public class BrowseManagerTest {
     /**
      * Note: valid period - one hour
      */
-    private static final String AUTHORIZATION =
+    private static String AUTHORIZATION =
             "Bearer ya29.Gl2AB3K2aSTC-z_IyCjzMOhLkAiPlssW_sAehCk-2sIy6lYeCtiOh0-BkMFr8lAu0eC7NsKPAYH9hykxS_v-LdAym4PmrUFKSrZIjBdthf1E1X1tPclK2OkYO5g2Xyk";
     private BrowseManager mService;
+    private boolean mRunOnce;
+    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         ShadowLog.stream = System.out; // catch Log class output
 
         mService = RetrofitHelper.withJsonPath(BrowseManager.class);
+
+        if (!mRunOnce) {
+            mRunOnce = true;
+            initToken();
+        }
+    }
+
+    private void initToken() throws IOException {
+        BrowserAuth authService = RetrofitHelper.withGson(BrowserAuth.class);
+        Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(RAW_POST_DATA.getBytes()));
+        AccessToken token = wrapper.execute().body();
+        AUTHORIZATION = String.format("%s %s", token.getTokenType(), token.getAccessToken());
     }
 
     @Test
@@ -102,7 +119,7 @@ public class BrowseManagerTest {
 
         tabbedResultNotEmpty(browseResult1);
 
-        String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(2).getNextPageKey();
+        String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
         Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), AUTHORIZATION);

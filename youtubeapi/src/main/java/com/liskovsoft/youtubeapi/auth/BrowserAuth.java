@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.UserCode;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -30,5 +31,5 @@ public interface BrowserAuth {
 
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("https://www.youtube.com/o/oauth2/token")
-    Call<AccessToken> getAuthToken(@Body String rawBody);
+    Call<AccessToken> getAuthToken(@Body RequestBody rawBody);
 }

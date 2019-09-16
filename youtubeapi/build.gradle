@@ -45,4 +45,7 @@ dependencies {
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
+
+    implementation 'com.itkacher.okhttpprofiler:okhttpprofiler:' + okhttpProfilerVersion
+    implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpLoggerVersion
 }

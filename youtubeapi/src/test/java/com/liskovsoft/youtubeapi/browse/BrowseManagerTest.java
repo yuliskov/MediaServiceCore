@@ -47,7 +47,7 @@ public class BrowseManagerTest {
 
     private void initToken() throws IOException {
         BrowserAuth authService = RetrofitHelper.withGson(BrowserAuth.class);
-        Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(RAW_POST_DATA.getBytes()));
+        Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
         AccessToken token = wrapper.execute().body();
         AUTHORIZATION = String.format("%s %s", token.getTokenType(), token.getAccessToken());
     }

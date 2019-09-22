@@ -35,7 +35,7 @@ public class BrowserAuthTest {
 
     @Test
     public void testThatUserIsAuthenticated() throws IOException {
-        Call<AccessToken> wrapper = mService.getAuthToken(RequestBody.create(RAW_POST_DATA.getBytes()));
+        Call<AccessToken> wrapper = mService.getAuthToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
 
         Response<AccessToken> execute = wrapper.execute();
 

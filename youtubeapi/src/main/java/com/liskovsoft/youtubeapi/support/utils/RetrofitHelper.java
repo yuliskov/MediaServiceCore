@@ -54,7 +54,7 @@ public class RetrofitHelper {
             //okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.level(HttpLoggingInterceptor.Level.BODY);
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             okBuilder.addInterceptor(logging);
 
             OkHttpClient client = okBuilder.build();

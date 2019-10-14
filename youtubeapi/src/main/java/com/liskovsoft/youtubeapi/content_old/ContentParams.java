@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.content;
+package com.liskovsoft.youtubeapi.content_old;
 
 public class ContentParams {
     private static final String BODY_JSON = "{'context':{'client':{'clientName':'TVHTML5','clientVersion':'6.20180807','screenWidthPoints':1280," +

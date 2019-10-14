@@ -12,14 +12,14 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class FrontendServiceTest {
-    private FrontendService mService;
+public class SearchServiceTest {
+    private SearchService mService;
 
     @Before
     public void setUp() {
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = new FrontendService();
+        mService = new SearchService();
     }
 
     @Test

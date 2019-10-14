@@ -1,9 +1,9 @@
-package com.liskovsoft.youtubeapi.content;
+package com.liskovsoft.youtubeapi.content_old;
 
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.content.models.ContentTab;
-import com.liskovsoft.youtubeapi.content.models.ContentTabSection;
-import com.liskovsoft.youtubeapi.content.models.RootContent;
+import com.liskovsoft.youtubeapi.content_old.models.ContentTab;
+import com.liskovsoft.youtubeapi.content_old.models.ContentTabSection;
+import com.liskovsoft.youtubeapi.content_old.models.RootContent;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.content;
+package com.liskovsoft.youtubeapi.content_old;
 
-import com.liskovsoft.youtubeapi.content.models.RootContent;
+import com.liskovsoft.youtubeapi.content_old.models.RootContent;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;

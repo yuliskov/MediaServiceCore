@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common;
 
 import com.liskovsoft.youtubeapi.auth.BrowserAuth;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.content.ContentManager;
+import com.liskovsoft.youtubeapi.content_old.ContentManager;
 import com.liskovsoft.youtubeapi.search.SearchManager;
 import com.liskovsoft.youtubeapi.search.SearchParams;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Wraps result from the {@link BrowserAuth}, {@link ContentManager} and {@link SearchManager}
  */
-public class FrontendService {
+public class SearchService {
     private SearchManager mSearchManager;
     private String mNextSearchPageKey;
 

@@ -8,7 +8,10 @@ public interface VideoService {
     List<Video> getNextSearch();
     Observable<List<Video>> getSearchObserve(String searchText);
 
-    Observable<List<Video>> getSubscriptions();
-    Observable<List<Video>> getHistory();
-    Observable<List<Video>> getRecommended();
+    List<Video> getSubscriptions();
+    List<Video> getNextSubscriptions();
+
+    Observable<List<Video>> getSubscriptionsObserve();
+    Observable<List<Video>> getHistoryObserve();
+    Observable<List<Video>> getRecommendedObserve();
 }

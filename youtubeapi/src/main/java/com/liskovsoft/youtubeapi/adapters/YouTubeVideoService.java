@@ -2,7 +2,8 @@ package com.liskovsoft.youtubeapi.adapters;
 
 import com.liskovsoft.myvideotubeapi.Video;
 import com.liskovsoft.myvideotubeapi.VideoService;
-import com.liskovsoft.youtubeapi.common.FrontendService;
+import com.liskovsoft.youtubeapi.common.BrowseService;
+import com.liskovsoft.youtubeapi.common.SearchService;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import io.reactivex.Observable;
 
@@ -11,10 +12,12 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class YouTubeVideoService implements VideoService {
-    private final FrontendService mService;
+    private final SearchService mService;
+    private final BrowseService mBrowseService;
 
     public YouTubeVideoService() {
-        mService = new FrontendService();
+        mService = new SearchService();
+        mBrowseService = new BrowseService();
     }
 
     @Override
@@ -51,6 +54,10 @@ public class YouTubeVideoService implements VideoService {
     }
 
     private List<Video> convertVideoItems(List<VideoItem> items) {
+        if (items == null) {
+            return null;
+        }
+
         ArrayList<Video> result = new ArrayList<>();
 
         for (VideoItem item : items) {
@@ -61,17 +68,27 @@ public class YouTubeVideoService implements VideoService {
     }
 
     @Override
-    public Observable<List<Video>> getSubscriptions() {
+    public List<Video> getSubscriptions() {
+        return convertVideoItems(mBrowseService.getSubscriptions());
+    }
+
+    @Override
+    public List<Video> getNextSubscriptions() {
+        return convertVideoItems(mBrowseService.getNextSubscriptions());
+    }
+
+    @Override
+    public Observable<List<Video>> getSubscriptionsObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<Video>> getHistory() {
+    public Observable<List<Video>> getHistoryObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<Video>> getRecommended() {
+    public Observable<List<Video>> getRecommendedObserve() {
         return null;
     }
 }

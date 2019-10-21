@@ -11,6 +11,12 @@ public interface VideoService {
     List<Video> getSubscriptions();
     List<Video> getNextSubscriptions();
 
+    List<Video> getRecommended();
+    List<Video> getNextRecommended();
+
+    List<Video> getHistory();
+    List<Video> getNextHistory();
+
     Observable<List<Video>> getSubscriptionsObserve();
     Observable<List<Video>> getHistoryObserve();
     Observable<List<Video>> getRecommendedObserve();

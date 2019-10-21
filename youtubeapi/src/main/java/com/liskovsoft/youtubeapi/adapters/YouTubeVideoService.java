@@ -14,10 +14,19 @@ import java.util.concurrent.Callable;
 public class YouTubeVideoService implements VideoService {
     private final SearchService mService;
     private final BrowseService mBrowseService;
+    private static YouTubeVideoService sInstance;
 
     public YouTubeVideoService() {
         mService = new SearchService();
         mBrowseService = new BrowseService();
+    }
+
+    public static YouTubeVideoService instance() {
+        if (sInstance == null) {
+            sInstance = new YouTubeVideoService();
+        }
+
+        return sInstance;
     }
 
     @Override
@@ -75,6 +84,26 @@ public class YouTubeVideoService implements VideoService {
     @Override
     public List<Video> getNextSubscriptions() {
         return convertVideoItems(mBrowseService.getNextSubscriptions());
+    }
+
+    @Override
+    public List<Video> getRecommended() {
+        return convertVideoItems(mBrowseService.getRecommended());
+    }
+
+    @Override
+    public List<Video> getNextRecommended() {
+        return convertVideoItems(mBrowseService.getNextRecommended());
+    }
+
+    @Override
+    public List<Video> getHistory() {
+        return convertVideoItems(mBrowseService.getHistory());
+    }
+
+    @Override
+    public List<Video> getNextHistory() {
+        return convertVideoItems(mBrowseService.getNextHistory());
     }
 
     @Override

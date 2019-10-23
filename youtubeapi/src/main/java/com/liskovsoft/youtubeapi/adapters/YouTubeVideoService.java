@@ -63,11 +63,11 @@ public class YouTubeVideoService implements VideoService {
     }
 
     private List<Video> convertVideoItems(List<VideoItem> items) {
-        if (items == null) {
-            return null;
-        }
-
         ArrayList<Video> result = new ArrayList<>();
+
+        if (items == null) {
+            return result;
+        }
 
         for (VideoItem item : items) {
             result.add(YouTubeVideo.from(item));

@@ -17,7 +17,7 @@ public class YouTubeHelper {
      * @return length in milliseconds
      */
     public static int timeTextToMillis(String lengthText) {
-        if (lengthText == null) {
+        if (lengthText == null || !lengthText.contains(TIME_TEXT_DELIM)) {
             return 0;
         }
 

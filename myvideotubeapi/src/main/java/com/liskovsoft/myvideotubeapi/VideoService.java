@@ -17,6 +17,9 @@ public interface VideoService {
     List<Video> getHistory();
     List<Video> getNextHistory();
 
+    List<VideoSection> getHome();
+    Observable<List<VideoSection>> getHomeObserve();
+
     Observable<List<Video>> getSubscriptionsObserve();
     Observable<List<Video>> getHistoryObserve();
     Observable<List<Video>> getRecommendedObserve();

@@ -15,15 +15,15 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeVideoServiceTest {
-    private YouTubeVideoService mService;
+public class YouTubeVideoServiceSignedTest {
+    private YouTubeVideoServiceSigned mService;
 
     @Before
     public void setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-        mService = new YouTubeVideoService();
+        mService = new YouTubeVideoServiceSigned();
     }
 
     /**

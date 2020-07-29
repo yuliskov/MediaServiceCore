@@ -1,24 +1,23 @@
 package com.liskovsoft.youtubeapi.adapters;
 
 import com.liskovsoft.myvideotubeapi.Video;
+import com.liskovsoft.myvideotubeapi.VideoSection;
 import com.liskovsoft.myvideotubeapi.VideoService;
-import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.BrowseService;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.search.SearchService;
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import io.reactivex.Observable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class YouTubeVideoService implements VideoService {
-    private final SearchService mService;
-    private final BrowseServiceSigned mBrowseService;
     private static YouTubeVideoService sInstance;
+    private final BrowseService mBrowseService;
+    private final SearchService mService;
 
     public YouTubeVideoService() {
         mService = new SearchService();
-        mBrowseService = new BrowseServiceSigned();
+        mBrowseService = new BrowseService();
     }
 
     public static YouTubeVideoService instance() {
@@ -31,79 +30,58 @@ public class YouTubeVideoService implements VideoService {
 
     @Override
     public List<Video> getSearch(String searchText) {
-        List<VideoItem> videoItems = mService.getSearch(searchText);
-        return convertVideoItems(videoItems);
+        return null;
     }
 
     @Override
     public List<Video> getNextSearch() {
-        List<VideoItem> videoItems = mService.getNextSearch();
-        return convertVideoItems(videoItems);
+        return null;
     }
 
     @Override
     public Observable<List<Video>> getSearchObserve(String searchText) {
-        return Observable.fromCallable(new Callable<List<Video>>() {
-            private boolean mSecondSearch;
-
-            @Override
-            public List<Video> call() {
-                List<VideoItem> videoItems;
-
-                if (!mSecondSearch) {
-                    videoItems = mService.getSearch(searchText);
-                    mSecondSearch = true;
-                } else {
-                    videoItems = mService.getNextSearch();
-                }
-
-                return convertVideoItems(videoItems);
-            }
-        });
-    }
-
-    private List<Video> convertVideoItems(List<VideoItem> items) {
-        ArrayList<Video> result = new ArrayList<>();
-
-        if (items == null) {
-            return result;
-        }
-
-        for (VideoItem item : items) {
-            result.add(YouTubeVideo.from(item));
-        }
-
-        return result;
+        return null;
     }
 
     @Override
     public List<Video> getSubscriptions() {
-        return convertVideoItems(mBrowseService.getSubscriptions());
+        return null;
     }
 
     @Override
     public List<Video> getNextSubscriptions() {
-        return convertVideoItems(mBrowseService.getNextSubscriptions());
+        return null;
     }
 
     @Override
     public List<Video> getRecommended() {
-        return convertVideoItems(mBrowseService.getRecommended());
+        return null;
     }
 
     @Override
     public List<Video> getNextRecommended() {
-        return convertVideoItems(mBrowseService.getNextRecommended());
+        return null;
     }
 
     @Override
     public List<Video> getHistory() {
-        return convertVideoItems(mBrowseService.getHistory());
+        return null;
     }
 
     @Override
     public List<Video> getNextHistory() {
-        return convertVideoItems(mBrowseService.getNextHistory());
+        return null;
+    }
+
+    @Override
+    public List<VideoSection> getHome() {
+        List<BrowseTab> browseTabs = mBrowseService.getHomeTabs();
+        return YouTubeAdapterHelper.convertBrowseTabs(browseTabs);
+    }
+
+    @Override
+    public Observable<List<VideoSection>> getHomeObserve() {
+        return Observable.fromCallable(this::getHome);
     }
 
     @Override

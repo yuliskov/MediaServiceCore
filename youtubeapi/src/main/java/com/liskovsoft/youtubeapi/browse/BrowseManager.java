@@ -9,16 +9,19 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
+/**
+ * For unsigned users!
+ */
 public interface BrowseManager {
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<BrowseResult> getBrowseResult(@Body String browseQuery, @Header("Authorization") String auth);
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    Call<BrowseResult> getBrowseResult(@Body String browseQuery);
+
+    @Headers({"Content-Type: application/json", "X-Goog-Visitor-Id: Cgt5RFZlb1o3UWxfZyiSzIb5BQ"})
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    Call<NextBrowseResult> getNextBrowseResult(@Body String browseQuery);
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<NextBrowseResult> getNextBrowseResult(@Body String browseQuery, @Header("Authorization") String auth);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<TabbedBrowseResult> getTabbedBrowseResult(@Body String browseQuery, @Header("Authorization") String auth);
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    Call<TabbedBrowseResult> getTabbedBrowseResult(@Body String browseQuery);
 }

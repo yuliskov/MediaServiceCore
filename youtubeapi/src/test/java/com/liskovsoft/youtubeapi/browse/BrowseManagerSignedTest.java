@@ -1,9 +1,13 @@
 package com.liskovsoft.youtubeapi.browse;
 
+import com.liskovsoft.youtubeapi.auth.BrowserAuth;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
+import okhttp3.RequestBody;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +23,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowseManagerTest {
-    private BrowseManager mService;
+public class BrowseManagerSignedTest {
+    /**
+     * Note: valid period - one hour
+     */
+    private static String AUTHORIZATION =
+            "Bearer ya29.Gl2AB3K2aSTC-z_IyCjzMOhLkAiPlssW_sAehCk-2sIy6lYeCtiOh0-BkMFr8lAu0eC7NsKPAYH9hykxS_v-LdAym4PmrUFKSrZIjBdthf1E1X1tPclK2OkYO5g2Xyk";
+    private BrowseManagerSigned mService;
+    private boolean mRunOnce;
+    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
 
     @Before
     public void setUp() throws IOException {
@@ -30,12 +41,44 @@ public class BrowseManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(BrowseManager.class);
+        mService = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
+
+        if (!mRunOnce) {
+            mRunOnce = true;
+            initToken();
+        }
+    }
+
+    private void initToken() throws IOException {
+        BrowserAuth authService = RetrofitHelper.withGson(BrowserAuth.class);
+        Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
+        AccessToken token = wrapper.execute().body();
+        AUTHORIZATION = String.format("%s %s", token.getTokenType(), token.getAccessToken());
+    }
+
+    @Test
+    public void testThatSubscriptionsNotEmpty() throws IOException {
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), AUTHORIZATION);
+
+        BrowseResult browseResult1 = wrapper.execute().body();
+
+        assertNotNull("Items not null", browseResult1);
+        assertTrue("List > 2", browseResult1.getVideoItems().size() > 2);
+
+        String nextPageKey = browseResult1.getNextPageKey();
+
+        assertNotNull("Item not null", nextPageKey);
+
+        Call<NextBrowseResult> browseResult2 = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), AUTHORIZATION);
+        NextBrowseResult body = browseResult2.execute().body();
+
+        assertNotNull("Items not null", body);
+        assertTrue("List > 2", body.getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatRequiredFieldsExist() throws IOException {
-        VideoItem videoItem = getRecommended().get(0);
+        VideoItem videoItem = getSubscriptions().get(0);
 
         testFields(videoItem);
 
@@ -44,8 +87,19 @@ public class BrowseManagerTest {
         testFields(videoItem);
     }
 
+    private List<VideoItem> getSubscriptions() throws IOException {
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), AUTHORIZATION);
+
+        BrowseResult browseResult1 = wrapper.execute().body();
+
+        assertNotNull("Items not null", browseResult1);
+        assertTrue("List > 2", browseResult1.getVideoItems().size() > 2);
+
+        return browseResult1.getVideoItems();
+    }
+
     private List<VideoItem> getRecommended() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), AUTHORIZATION);
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -63,7 +117,7 @@ public class BrowseManagerTest {
 
     @Test
     public void testThatTabbedResultNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), AUTHORIZATION);
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -72,7 +126,7 @@ public class BrowseManagerTest {
         String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey));
+        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), AUTHORIZATION);
         Response<NextBrowseResult> execute = next.execute();
         NextBrowseResult browseResult2 = execute.body();
 

@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.adapters;
 
 import com.liskovsoft.myvideotubeapi.Video;
 import com.liskovsoft.myvideotubeapi.VideoService;
-import com.liskovsoft.youtubeapi.common.BrowseService;
-import com.liskovsoft.youtubeapi.common.SearchService;
+import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import io.reactivex.Observable;
 
@@ -13,12 +13,12 @@ import java.util.concurrent.Callable;
 
 public class YouTubeVideoService implements VideoService {
     private final SearchService mService;
-    private final BrowseService mBrowseService;
+    private final BrowseServiceSigned mBrowseService;
     private static YouTubeVideoService sInstance;
 
     public YouTubeVideoService() {
         mService = new SearchService();
-        mBrowseService = new BrowseService();
+        mBrowseService = new BrowseServiceSigned();
     }
 
     public static YouTubeVideoService instance() {

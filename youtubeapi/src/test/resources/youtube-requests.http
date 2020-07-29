@@ -1,0 +1,282 @@
+# Browse home page unsigned
+POST https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+Content-Type: application/json
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CAYQtSwYAiITCPOIqL3bweQCFYGimwod1FcD9DIKZy1wZXJzb25hbA=="}},"browseId":"FEtopics"}
+
+###
+
+# Continuation browse home page unsingned
+POST https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+Content-Type: application/json
+X-Goog-Visitor-Id: Cgt5RFZlb1o3UWxfZyiSzIb5BQ
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CNkIEMm3AiITCJCMppLaxOQCFcdimwodFqUFqA=="}},"continuation":"4qmFsgLRARIIRkV0b3BpY3MaxAE2Z09QQVVWdGEwdE1kMEZCV2xjMFFVRldWa0pCUVVaV1VWRkJRa0ZGV2taa01taG9aRVk1TUdJeE9UTlpXRkpxWVVGQlFrRkJRVUpCVVdOQlFVRkJRa0ZCUlVGQlFVVkNSVUZaV1VKVFFVWkxhVzlMU1ZGdlprNUVSbTFpUkdSTVZGWlpNRk5VUWxaWk1HUnJWVVU1ZW1KdFJqVlRia3BhV2xkc2NFMHdPVk5aZUdsQ2REbDZZblZUTkhjNFNtMUlkWGRO"}
+
+###
+
+# Access token (step 1). Get device code.
+# Use https://youtube.com/activate to apply the code
+# Params:
+# client_id: ??? (could be hardcoded?)
+POST https://www.youtube.com/o/oauth2/device/code
+Content-Type: application/x-www-form-urlencoded
+
+client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&scope=http%3A%2F%2Fgdata.youtube.com%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube-paid-content
+
+###
+
+# Access token (step 2). Get access token.
+# Params:
+# client_id: ??? (could be hardcoded?)
+# code: device_code (from above step)
+# Returns:
+# auth token: used in all personal requests
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&code=AH-1Ng1K8lBZcrMezwnEzpZ23VwfE8Hn7HEuNL-GbQIMYrSZhBF1j3KZ-h47-bqBB4rC6-W9xG2WHM67ZGttecz_ALOZ-JoxDQ&grant_type=http%3A%2F%2Foauth.net%2Fgrant_type%2Fdevice%2F1.0
+
+###
+
+# Access token (step 2). Alt version.
+# Params:
+# refresh_token: ???
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J
+
+###
+
+# Home, Subscriptions, Library
+# Params:
+# authorization: auth token obtained from steps above!
+# browseId: topic id e.g. FEsubscriptions, FEmy_youtube, FEtopics
+# Descriptions:
+# FEmy_youtube: Library page. Content: History, My videos, Watch later, Purchases and Playlists
+# FEsubscriptions: Subscriptions page
+# FEtopics (or default): Home page
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+Authorization: Bearer ya29.Gl1_BwmRhbJp44uft5Pcv8Pgq1OcPPidBBQGNzlfp5rofTnCgI7Ub6MwY5Fi3YTDdOkLQVK217ob0slumxlZGJvQI4OKqyQNBhBiZwbkduvhDM8Jn9G0qluhh7JaKGc
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CAYQtSwYAiITCPOIqL3bweQCFYGimwod1FcD9DIKZy1wZXJzb25hbA=="}},"browseId":"FEtopics"}
+
+<> 2019-09-08T114616.401.json
+<> 2019-09-08T114234.403.json
+<> 2019-09-08T113627.405.html
+<> 2019-09-08T113604.405.html
+<> 2019-09-08T113528.405.html
+
+###
+
+# Library page
+# Params:
+# authorization: auth token obtained from steps above!
+# browseId: topic id e.g. FEsubscriptions, FEmy_youtube
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+Authorization: Bearer ya29.Gl1_B10Mu_gNOjVSeIWX2pRvlIPN4m_zkpoT6vSiRdXHHpCPoua3tr3VSNPDBESi3AHGi81g3-By8YLkTDhlewH2E3sluVlPAH3h6Z4aJv19UbgJ6_S3N5g06sULuK4
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CAYQtSwYAiITCPOIqL3bweQCFYGimwod1FcD9DIKZy1wZXJzb25hbA=="}},"browseId":"FEmy_youtube"}
+
+###
+
+# Next Page (Home, Subscriptions, Library)
+# Params:
+# contnuation (?): contents.sectionListRenderer.continuations[0].nextContinuationData.continuation (from prev response)
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+Authorization: Bearer ya29.Gl2AB3K2aSTC-z_IyCjzMOhLkAiPlssW_sAehCk-2sIy6lYeCtiOh0-BkMFr8lAu0eC7NsKPAYH9hykxS_v-LdAym4PmrUFKSrZIjBdthf1E1X1tPclK2OkYO5g2Xyk
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CNkIEMm3AiITCKiTwbLrxeQCFcdimwodv1oF3w=="}},"continuation":"4qmFsgJ4EghGRXRvcGljcxpsNmdOT1JXcG5TMHhuUVVGYVZ6UkJRVlpXUWtGQlJsWlJVVUZDUVVWYVJtUXlhR2hrUmprd1lqRTVNMWxZVW1waFFVRkNRVUZCUWtGUlkwRkJRVVZCUVZGQlFVRlJSVkZCYUdkWlNVSm5jVUZC"}
+
+###
+
+# Subscriptions (not signed)
+# Params:
+# query key: key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+POST https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+Content-Type: application/json
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180807","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":120,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"livingRoomAppMode":"LIVING_ROOM_APP_MODE_MAIN","appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","deviceMake":"LG","deviceModel":"43LK5760PTA","platform":"TV"},"request":{},"user":{"enableSafetyMode":false}},"browseId":"FEtopics"}
+
+###
+
+# Search (not signed)
+# Params:
+# query key: key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+# data key: query = 'thrones season 8 trailer'
+POST https://www.youtube.com/youtubei/v1/search?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+Content-Type: application/json
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180807","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":120,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"livingRoomAppMode":"LIVING_ROOM_APP_MODE_MAIN","appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION","isFirstLaunch":true},"acceptRegion":"UA","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{},"user":{"enableSafetyMode":false}},"query":"thrones season 8 trailer","supportsVoiceSearch":false}
+
+###
+
+# Next Search (not signed)
+# Params:
+# query key: key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+# contnuation param: contents.sectionListRenderer.continuations[0].nextContinuationData.continuation (from prev response)
+# next continuation param: continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation (from this response)
+POST https://www.youtube.com/youtubei/v1/search?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+Content-Type: application/json
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180807","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":120,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"livingRoomAppMode":"LIVING_ROOM_APP_MODE_MAIN","appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CAQQybcCIhMIyI2g4f3t4AIV13SyCh1LPghk"}},"continuation":"EpgDEhh0aHJvbmVzIHNlYXNvbiA4IHRyYWlsZXIa-AJTQlNDQVF0RU9URnFaRlZ1VjA5VE1JSUJDMkozWTB4UWNucDZSMlU0Z2dFTE0wOW9hVzB3U25OS1ZXLUNBUXR0YjNwbFZrVTVSMU4yTklJQkMxOUVXV055YjNkYWIwaFJnZ0VMUm1JMFVsWTVjbmN0TVZXQ0FRdExhR0paVGpReFJXaE5XWUlCQzFWcVNHMVJhMmN4TVhjNGdnRUxMVUpOVDJsTU5XUlRhbXVDQVF0NWFYcFdjbWwxV0hvM1JZSUJDMFJZYnpaRFZISkZPVlF3Z2dFTGJFUjJMV3BHUTJ0aExUQ0NBUXRRVTNVeVp6Y3lWVmxFVllJQkMwVmhaelZQVTNoNFNtNWpnZ0VMYlZSM1QzbzVkV2x5U1hPQ0FRc3dOMVoyWlROcWVsUllaNElCQzBadWRFOUtWWE01VnpaSmdnRUxMVFZCV1ZaYWJqaFFRMFdDQVF0eU9YbEVTRTlPY1VoVFk0SUJDMlJUWDFCYUxVTnZaM0JCqAEAGLze6Bg%3D"}
+
+###
+
+# Search (signed)
+# Params:
+# word to search: twice
+POST https://www.youtube.com/youtubei/v1/search
+Content-Type: application/json
+Authorization: Bearer ya29.Gl2HBzo-kSMPqFvQzHFEgdrc-D7xwad4QCgGHsK4HGx-3jGENmWbk7dxCQ2HoVxIcw9X_WEiXypCXaXdC6ZR4v5nO_TxfvNjR6VVsW31fTrmR-AVNjNwvI_ZOgbOUeM
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false}},"query":"twice","supportsVoiceSearch":false}
+
+###
+
+# Next Search (signed)
+# Params:
+# contnuation param: contents.sectionListRenderer.continuations[0].nextContinuationData.continuation (from prev response)
+POST https://www.youtube.com/youtubei/v1/search
+Content-Type: application/json
+Authorization: Bearer ya29.Gl2HBzo-kSMPqFvQzHFEgdrc-D7xwad4QCgGHsK4HGx-3jGENmWbk7dxCQ2HoVxIcw9X_WEiXypCXaXdC6ZR4v5nO_TxfvNjR6VVsW31fTrmR-AVNjNwvI_ZOgbOUeM
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CAQQybcCIhMI4JSrnIzb5AIVaCWbCh3InQVK"}},"continuation":"ErEDEgV0d2ljZRqkA1NCU0NBUXRyVDBoQ09EVjJSSFZ2ZDRJQkdsSkVSVTEwWVhwNFpYaFBhVTVaUVhsbVdFVk9Ralk0WDB4M2dnRVlWVU42WjNoNFgwUk5Na1JqWWpsWk1YTndZamx0VlVwQmdnRUxWR2RHYlhGSk56ZFVNM09DQVF0elpEZHhXRlpPVVU5bGM0SUJDMnBUT0doaFRFVnBVQzFqZ2dFTGRGWmtNMGxxYUVveVZVbUNBUXRXTW1oc1VXdFdTbHBvUllJQkMxcGtTMWxwTldWcmMyaE5nZ0VMYlVGTGMxb3lObE5oWWxHQ0FRdHBNSEF4WW0xeU1FVnRSWUlCQzJWUWNGQldSUzFIUjBwM2dnRUxSbTAxYVZBd1V6RjZPWGVDQVF0ak4zSkRlV3hzTlVGbFdZSUJDemhuUmpCSWQzRjBMV1ZKZ2dFTE1ISjBWalZsYzFGVU5rbUNBUXR5VW5wNFJXbENURkZEUVlJQkMybFNaMWxYVlZaQ1EyTkpnZ0VMTFhwbk1qVXlUMW81V1dPQ0FRdG9kbTF5VkV4VFNUSk5adyUzRCUzRKgBABi83ugY"}
+
+###
+
+# Accounts page
+POST https://www.youtube.com/youtubei/v1/account/accounts_list
+Content-Type: application/json
+Authorization: Bearer ya29.Gl2HB7mqwYsCcxbZDFg-ZR-M20iQR8IRFk9sVIbjkXnErjDftcP5ldBK3-R_Wrm4mWbvuN6cNXLeBep9KRv6jdml26TSaGxfhrB8CKji9Ke--2Flm3oGmomHc1qAUuU
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false}}}
+
+###
+
+# Add to favorites
+# Params:
+# addedVideoId: video id
+# playlistId: playlistId
+POST https://www.youtube.com/youtubei/v1/browse/edit_playlist
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"playlistId":"PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz","actions":[{"action":"ACTION_ADD_VIDEO","addedVideoId":"kOHB85vDuow"}]}
+
+###
+
+# Remove from favorites
+# Params:
+# removedVideoId: video id
+# playlistId: playlistId
+POST https://www.youtube.com/youtubei/v1/browse/edit_playlist
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"playlistId":"PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz","actions":[{"action":"ACTION_REMOVE_VIDEO_BY_VIDEO_ID","removedVideoId":"kOHB85vDuow"}]}
+
+###
+
+# Add like
+# Params:
+# videoId: video id
+POST https://www.youtube.com/youtubei/v1/like/like
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"target":{"videoId":"kOHB85vDuow"}}
+
+###
+
+# Remove like
+# Params:
+# videoId: video id
+POST https://www.youtube.com/youtubei/v1/like/removelike
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"target":{"videoId":"kOHB85vDuow"}}
+
+###
+
+# Subscribe
+# Params:
+# channelIds: channel id
+POST https://www.youtube.com/youtubei/v1/subscription/subscribe
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"channelIds":["UCaO6TYtlC8U5ttz62hTrZgg"]}
+
+###
+
+# Unsubscribe
+# Params:
+# channelIds: channel id
+POST https://www.youtube.com/youtubei/v1/subscription/unsubscribe
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[{"encryptedTokenJarContents":"QUFTNTA0eWY1TzFCRG9LV2RkR3F3VEJGRy1WWkJZMWx6QVljT1hLOGVTdGYxVUVnRDdEbnlJTDBvRnpDRjUwZXozUld1Tjh5UEw2Rmc2djhreUJ4cVdSYmJjNnhFV19RSnhBeEhUbXNqajl0M2Y4bGFleWYzcjVXVzVidmUwSkhLWUt6aFVRRzNhd0M4RDdqelE=","expirationSeconds":"300"}]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"channelIds":["UCaO6TYtlC8U5ttz62hTrZgg"]}
+
+###
+
+# Guide (all topics)
+# Params:
+# channelIds: channel id
+POST https://www.youtube.com/youtubei/v1/guide
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false}}}
+
+###
+
+# Suggestions and current video info
+# Params:
+# videoId: video id
+POST https://www.youtube.com/youtubei/v1/next
+Content-Type: application/json
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clickTracking":{"clickTrackingParams":"CHMQlDUYACITCNqriKLI3eQCFQdMsgod1RcJvjILZy10b3BpYy1yZWNaD0ZFd2hhdF90b193YXRjaA=="}},"params":"6gILTVNrMmNlTXdXM1nqAgs0cF8wQkozWmY3MOoCC05MbTljODhKWWxn6gILSGo4MGQ1dTZsM0XqAgtSRzlUTW4xRkp6Y-oCC3U5MUdtNmdpYk1r6gILMWwyb1l6QzhSaDjqAgtFTS16eFlxQkJlMOoCC2dUbFhaQUFkV0hz6gILb3ExTzNjbjJWaDTqAgtUT3hraTVYTVg4Y-oCC1U3Rm9WblRYZ2Zz6gILbW1QNUlaSzYydVHqAgsydDItY0E2VXEzOOoCCzdVRmxuNUI0OEpR6gILZklRUE1sYm1EU0XqAgtVMUVvNFhNajEyMOoCC1gyZTdSNGtydkJF6gILZ1FISjVYbzFtTDTqAgtySkN5SXBDRmY3QeoCC2RrR0YwMk96Wklv6gILUjRpUlU4b21OMnfqAgt1ZGsxc2tFbVR6VfoCC1JlY29tbWVuZGVk","videoId":"Lv_TPm_SglE","racyCheckOk":true,"contentCheckOk":true}
+
+###
+
+# Add to the watch history
+# Params:
+GET https://www.youtube.com/api/stats/watchtime?ns=yt&el=leanback&cpn=jyOZQoOVoBFNgZpd&docid=kOHB85vDuow&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=30.931&ei=-cWDXbDnL5zi7QS1gYqQAg&fmt=247&fs=0&rt=16&of=oC0Op2muXk4J3yaKIdR8iQ&euri=https%3A%2F%2Fwww.youtube.com%2Ftv%23%2Fzylon-surface%3Fc%3Ddefault%26resume&lact=13849&cl=269594195&state=paused&vm=CAMQARgBKiBKVmpsYXZfam82SzE4RG14NWNMSDZTSzV3VUdadnFtQg&volume=100&c=TVHTML5&cver=6.20180913&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV&hl=en_US&cr=UA&len=218.661&feature=search&list=RDkOHB85vDuow&afmt=251&idpj=-5&ldpj=-24&rti=16&muted=0&st=30.931&et=30.931&conn=1&cc=.en
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+###
+
+# Get video source info (dash-mpeg playlist etc)
+# Params:
+# video_id: video id
+GET https://www.youtube.com/get_video_info?html5=1&video_id=kOHB85vDuow&cpn=8rXSY4iPFzrC-6AJ&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv%23%2Fzylon-surface%3Fc%3Ddefault%26resume&ps=leanback&el=leanback&hl=en_US&list=RDkOHB85vDuow&sts=18156&lact=112&c=TVHTML5&cver=6.20180913&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV&access_token=ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL&itct=CBkQhbwCGAAiEwitrJPyuN3kAhX4PJsKHQKQBh4yBnNlYXJjaFIFdHdpY2U%3D&width=1280&height=720&ei=6b6DXY6YPMvHyQX-l7bQAg
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+###
+
+# Get search Suggestions
+# Params: ???
+GET https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&hl=uk_UA&xhr=t&oe=utf-8&gl=ru&nonce=1569652656274&q=hdr&pq=hdr&pq_sec=0&tok=lKH9MkOS2o5Te-HpyGi4NA
+Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+
+###
+
+
+
+
+
+
+
+
+
+
+

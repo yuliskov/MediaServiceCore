@@ -1,11 +1,9 @@
-package com.liskovsoft.youtubeapi.common;
+package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.BrowserAuth;
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;
-import com.liskovsoft.youtubeapi.browse.BrowseManager;
-import com.liskovsoft.youtubeapi.browse.BrowseParams;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -20,15 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Wraps result from the {@link BrowserAuth} and {@link BrowseManager}
+ * For auth users only!<br/>
+ * Wraps result from the {@link BrowserAuth} and {@link BrowseManagerSigned}
  */
-public class BrowseService {
-    private static final String TAG = BrowseService.class.getSimpleName();
-    private BrowseManager mBrowseManager;
+public class BrowseServiceSigned {
+    private static final String TAG = BrowseServiceSigned.class.getSimpleName();
+    private BrowseManagerSigned mBrowseManager;
     private String mNextPageKey;
     private String mAuthorization;
 
-    public BrowseService() {
+    public BrowseServiceSigned() {
         initToken();
     }
 
@@ -60,9 +59,9 @@ public class BrowseService {
         return getNextAuthSection();
     }
 
-    private BrowseManager getBrowseManager() {
+    private BrowseManagerSigned getBrowseManager() {
         if (mBrowseManager == null) {
-            mBrowseManager = RetrofitHelper.withJsonPath(BrowseManager.class);
+            mBrowseManager = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
         }
 
         return mBrowseManager;
@@ -94,7 +93,7 @@ public class BrowseService {
             return new ArrayList<>();
         }
 
-        BrowseManager manager = getBrowseManager();
+        BrowseManagerSigned manager = getBrowseManager();
 
         Call<BrowseResult> wrapper = manager.getBrowseResult(query, mAuthorization);
 
@@ -121,7 +120,7 @@ public class BrowseService {
             return new ArrayList<>();
         }
 
-        BrowseManager manager = getBrowseManager();
+        BrowseManagerSigned manager = getBrowseManager();
         Call<NextBrowseResult> wrapper = manager.getNextBrowseResult(BrowseParams.getNextBrowseQuery(mNextPageKey), mAuthorization);
         NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -141,7 +140,7 @@ public class BrowseService {
             return new ArrayList<>();
         }
 
-        BrowseManager manager = getBrowseManager();
+        BrowseManagerSigned manager = getBrowseManager();
 
         Call<TabbedBrowseResult> wrapper = manager.getTabbedBrowseResult(query, mAuthorization);
 

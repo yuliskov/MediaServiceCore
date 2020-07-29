@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common;
+package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.auth.BrowserAuth;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;

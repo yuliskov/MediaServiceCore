@@ -16,7 +16,6 @@ public class BrowseSection {
     private List<MusicItem> musicItems;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridChannelRenderer")
     private List<ChannelItem> channelItems;
-
     @JsonPath("$.content.horizontalListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 

@@ -17,9 +17,9 @@ public interface BrowseManager {
     @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
     Call<BrowseResult> getBrowseResult(@Body String browseQuery);
 
-    @Headers({"Content-Type: application/json", "X-Goog-Visitor-Id: Cgt5RFZlb1o3UWxfZyiSzIb5BQ"})
+    @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
-    Call<NextBrowseResult> getNextBrowseResult(@Body String browseQuery);
+    Call<NextBrowseResult> getNextBrowseResult(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")

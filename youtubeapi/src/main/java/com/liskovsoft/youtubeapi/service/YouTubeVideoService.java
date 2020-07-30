@@ -1,10 +1,11 @@
-package com.liskovsoft.youtubeapi.adapters;
+package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.myvideotubeapi.Video;
-import com.liskovsoft.myvideotubeapi.VideoSection;
-import com.liskovsoft.myvideotubeapi.VideoService;
+import com.liskovsoft.videoserviceinterfaces.Video;
+import com.liskovsoft.videoserviceinterfaces.VideoSection;
+import com.liskovsoft.videoserviceinterfaces.VideoService;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import io.reactivex.Observable;
 
@@ -74,14 +75,24 @@ public class YouTubeVideoService implements VideoService {
     }
 
     @Override
-    public List<VideoSection> getHome() {
+    public List<VideoSection> getHomeSections() {
         List<BrowseTab> browseTabs = mBrowseService.getHomeTabs();
-        return YouTubeAdapterHelper.convertBrowseTabs(browseTabs);
+        return VideoServiceHelper.convertBrowseTabs(browseTabs);
     }
 
     @Override
-    public Observable<List<VideoSection>> getHomeObserve() {
-        return Observable.fromCallable(this::getHome);
+    public Observable<List<VideoSection>> getHomeSectionsObserve() {
+        return Observable.fromCallable(this::getHomeSections);
+    }
+
+    @Override
+    public List<Video> continueHomeSection(int sectionIndex) {
+        return VideoServiceHelper.convertVideoItems(mBrowseService.continueHomeSection(sectionIndex));
+    }
+
+    @Override
+    public Observable<List<Video>> continueHomeSectionObserve(int sectionIndex) {
+        return Observable.fromCallable(() -> continueHomeSection(sectionIndex));
     }
 
     @Override

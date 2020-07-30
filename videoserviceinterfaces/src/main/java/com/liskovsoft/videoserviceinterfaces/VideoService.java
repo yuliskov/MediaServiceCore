@@ -1,4 +1,4 @@
-package com.liskovsoft.myvideotubeapi;
+package com.liskovsoft.videoserviceinterfaces;
 
 import io.reactivex.Observable;
 import java.util.List;
@@ -17,8 +17,11 @@ public interface VideoService {
     List<Video> getHistory();
     List<Video> getNextHistory();
 
-    List<VideoSection> getHome();
-    Observable<List<VideoSection>> getHomeObserve();
+    List<VideoSection> getHomeSections();
+    Observable<List<VideoSection>> getHomeSectionsObserve();
+
+    List<Video> continueHomeSection(int sectionIndex);
+    Observable<List<Video>> continueHomeSectionObserve(int sectionIndex);
 
     Observable<List<Video>> getSubscriptionsObserve();
     Observable<List<Video>> getHistoryObserve();

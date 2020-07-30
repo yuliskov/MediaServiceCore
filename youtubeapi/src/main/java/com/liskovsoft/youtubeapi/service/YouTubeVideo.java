@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.adapters;
+package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.myvideotubeapi.Video;
+import com.liskovsoft.videoserviceinterfaces.Video;
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;

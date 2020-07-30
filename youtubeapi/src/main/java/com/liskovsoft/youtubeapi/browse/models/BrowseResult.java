@@ -15,6 +15,9 @@ public class BrowseResult {
     @JsonPath("$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs[0].tabRenderer.content.tvSurfaceContentRenderer.continuation.reloadContinuationData.continuation")
     private String mReloadPageKey;
 
+    @JsonPath("$.responseContext.visitorData")
+    private String mVisitorData;
+
     public List<VideoItem> getVideoItems() {
         return mVideoItems;
     }
@@ -25,5 +28,9 @@ public class BrowseResult {
 
     public String getReloadPageKey() {
         return mReloadPageKey;
+    }
+
+    public String getVisitorData() {
+        return mVisitorData;
     }
 }

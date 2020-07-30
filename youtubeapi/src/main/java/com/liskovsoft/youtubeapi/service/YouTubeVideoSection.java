@@ -1,7 +1,7 @@
-package com.liskovsoft.youtubeapi.adapters;
+package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.myvideotubeapi.Video;
-import com.liskovsoft.myvideotubeapi.VideoSection;
+import com.liskovsoft.videoserviceinterfaces.Video;
+import com.liskovsoft.videoserviceinterfaces.VideoSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 

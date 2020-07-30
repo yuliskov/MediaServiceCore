@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.adapters;
+package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.myvideotubeapi.Video;
+import com.liskovsoft.videoserviceinterfaces.Video;
 import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Test;

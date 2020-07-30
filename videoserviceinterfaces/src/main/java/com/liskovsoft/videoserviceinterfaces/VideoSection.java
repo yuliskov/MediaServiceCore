@@ -1,4 +1,4 @@
-package com.liskovsoft.myvideotubeapi;
+package com.liskovsoft.videoserviceinterfaces;
 
 import java.util.List;
 

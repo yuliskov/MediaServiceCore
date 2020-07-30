@@ -1,15 +1,18 @@
-package com.liskovsoft.youtubeapi.adapters;
+package com.liskovsoft.youtubeapi.common;
 
-import com.liskovsoft.myvideotubeapi.Video;
-import com.liskovsoft.myvideotubeapi.VideoSection;
+import com.liskovsoft.videoserviceinterfaces.Video;
+import com.liskovsoft.videoserviceinterfaces.VideoSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.youtubeapi.service.YouTubeVideo;
+import com.liskovsoft.youtubeapi.service.YouTubeVideoSection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-final class YouTubeAdapterHelper {
+public final class VideoServiceHelper {
     public static List<Video> convertVideoItems(List<VideoItem> items) {
         ArrayList<Video> result = new ArrayList<>();
 
@@ -32,6 +35,28 @@ final class YouTubeAdapterHelper {
             List<BrowseSection> sections = browseTab.getSections();
             for (BrowseSection section : sections) {
                 result.add(YouTubeVideoSection.from(section));
+            }
+        }
+
+        return result;
+    }
+
+    public static BrowseSection getSection(TabbedBrowseResult browseResult, int sectionIndex) {
+        BrowseSection result = null;
+
+        if (browseResult != null) {
+            List<BrowseTab> browseTabs = browseResult.getBrowseTabs();
+
+            if (browseTabs != null) {
+                BrowseTab browseTab = browseTabs.get(0);
+
+                if (browseTab != null) {
+                    List<BrowseSection> sections = browseTab.getSections();
+
+                    if (sections != null && sections.size() > sectionIndex) {
+                        result = sections.get(sectionIndex);
+                    }
+                }
             }
         }
 

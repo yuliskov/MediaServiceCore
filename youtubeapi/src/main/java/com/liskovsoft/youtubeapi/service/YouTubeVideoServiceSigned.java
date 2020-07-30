@@ -1,9 +1,10 @@
-package com.liskovsoft.youtubeapi.adapters;
+package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.myvideotubeapi.Video;
-import com.liskovsoft.myvideotubeapi.VideoSection;
-import com.liskovsoft.myvideotubeapi.VideoService;
+import com.liskovsoft.videoserviceinterfaces.Video;
+import com.liskovsoft.videoserviceinterfaces.VideoSection;
+import com.liskovsoft.videoserviceinterfaces.VideoService;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import io.reactivex.Observable;
@@ -32,13 +33,13 @@ public class YouTubeVideoServiceSigned implements VideoService {
     @Override
     public List<Video> getSearch(String searchText) {
         List<VideoItem> videoItems = mService.getSearch(searchText);
-        return YouTubeAdapterHelper.convertVideoItems(videoItems);
+        return VideoServiceHelper.convertVideoItems(videoItems);
     }
 
     @Override
     public List<Video> getNextSearch() {
         List<VideoItem> videoItems = mService.getNextSearch();
-        return YouTubeAdapterHelper.convertVideoItems(videoItems);
+        return VideoServiceHelper.convertVideoItems(videoItems);
     }
 
     @Override
@@ -57,39 +58,39 @@ public class YouTubeVideoServiceSigned implements VideoService {
                     videoItems = mService.getNextSearch();
                 }
 
-                return YouTubeAdapterHelper.convertVideoItems(videoItems);
+                return VideoServiceHelper.convertVideoItems(videoItems);
             }
         });
     }
 
     @Override
     public List<Video> getSubscriptions() {
-        return YouTubeAdapterHelper.convertVideoItems(mBrowseService.getSubscriptions());
+        return VideoServiceHelper.convertVideoItems(mBrowseService.getSubscriptions());
     }
 
     @Override
     public List<Video> getNextSubscriptions() {
-        return YouTubeAdapterHelper.convertVideoItems(mBrowseService.getNextSubscriptions());
+        return VideoServiceHelper.convertVideoItems(mBrowseService.getNextSubscriptions());
     }
 
     @Override
     public List<Video> getRecommended() {
-        return YouTubeAdapterHelper.convertVideoItems(mBrowseService.getRecommended());
+        return VideoServiceHelper.convertVideoItems(mBrowseService.getRecommended());
     }
 
     @Override
     public List<Video> getNextRecommended() {
-        return YouTubeAdapterHelper.convertVideoItems(mBrowseService.getNextRecommended());
+        return VideoServiceHelper.convertVideoItems(mBrowseService.getNextRecommended());
     }
 
     @Override
     public List<Video> getHistory() {
-        return YouTubeAdapterHelper.convertVideoItems(mBrowseService.getHistory());
+        return VideoServiceHelper.convertVideoItems(mBrowseService.getHistory());
     }
 
     @Override
     public List<Video> getNextHistory() {
-        return YouTubeAdapterHelper.convertVideoItems(mBrowseService.getNextHistory());
+        return VideoServiceHelper.convertVideoItems(mBrowseService.getNextHistory());
     }
 
     @Override
@@ -108,12 +109,22 @@ public class YouTubeVideoServiceSigned implements VideoService {
     }
 
     @Override
-    public List<VideoSection> getHome() {
+    public List<VideoSection> getHomeSections() {
         return null;
     }
 
     @Override
-    public Observable<List<VideoSection>> getHomeObserve() {
+    public Observable<List<VideoSection>> getHomeSectionsObserve() {
+        return null;
+    }
+
+    @Override
+    public List<Video> continueHomeSection(int sectionIndex) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<Video>> continueHomeSectionObserve(int sectionIndex) {
         return null;
     }
 }

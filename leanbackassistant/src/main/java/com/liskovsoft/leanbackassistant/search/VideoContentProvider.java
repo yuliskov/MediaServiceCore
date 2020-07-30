@@ -11,12 +11,12 @@ import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.videoserviceinterfaces.Video;
-import com.liskovsoft.videoserviceinterfaces.VideoService;
+import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
 import com.liskovsoft.sharedutils.rx.SchedulerProvider;
-import com.liskovsoft.youtubeapi.service.YouTubeVideoServiceSigned;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceSigned;
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import java.util.List;
 public class VideoContentProvider extends ContentProvider {
     private static final String TAG = VideoContentProvider.class.getSimpleName();
     private static final int SEARCH_LIMIT = 40;
-    private VideoService mService;
+    private MediaService mService;
 
     // UriMatcher constant for search suggestions
     private static final int SEARCH_SUGGEST = 1;
@@ -60,11 +60,11 @@ public class VideoContentProvider extends ContentProvider {
     };
     private CompositeDisposable mDisposable;
     private SchedulerProvider mSchedulerProvider;
-    private static List<Video> mCachedVideos;
+    private static List<VideoItem> mCachedVideos;
 
     @Override
     public boolean onCreate() {
-        mService = new YouTubeVideoServiceSigned();
+        mService = new YouTubeMediaServiceSigned();
         mUriMatcher = buildUriMatcher();
 
         return true;
@@ -114,12 +114,12 @@ public class VideoContentProvider extends ContentProvider {
         }
     }
 
-    public static Video findVideoWithId(int id) {
+    public static VideoItem findVideoWithId(int id) {
         if (mCachedVideos == null) {
             return null;
         }
 
-        for (Video video : mCachedVideos) {
+        for (VideoItem video : mCachedVideos) {
             if (video.getId() == id) {
                 return video;
             }
@@ -129,7 +129,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private Cursor search(String query, int limit) {
-        List<Video> videos = mService.getSearch(query);
+        List<VideoItem> videos = mService.getSearch(query);
 
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
@@ -143,18 +143,18 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        List<Video> videos = mService.getNextSearch();
+        List<VideoItem> videos = mService.getNextSearch();
 
         Log.d(TAG, "Next search result received: " + videos);
 
         apply(cursor, videos, limit);
     }
 
-    private void apply(MatrixCursor matrixCursor, List<Video> videos, int limit) {
+    private void apply(MatrixCursor matrixCursor, List<VideoItem> videos, int limit) {
         if (videos != null) {
             int idx = 0;
 
-            for (Video video : videos) {
+            for (VideoItem video : videos) {
                 matrixCursor.addRow(convertVideoIntoRow(video));
                 idx++;
             }
@@ -183,7 +183,7 @@ public class VideoContentProvider extends ContentProvider {
         return mDisposable;
     }
 
-    private Object[] convertVideoIntoRow(Video movie) {
+    private Object[] convertVideoIntoRow(VideoItem movie) {
         return new Object[] {
             movie.getId(),
             movie.getTitle(),

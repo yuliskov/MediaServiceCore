@@ -1,13 +1,10 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.videoserviceinterfaces.Video;
-import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
-import java.util.List;
-
-public class YouTubeVideo implements Video {
+public class YouTubeVideoItem implements VideoItem {
     private static int id;
     private String mTitle;
     private int mId;
@@ -27,13 +24,13 @@ public class YouTubeVideo implements Video {
     private int mRatingStyle;
     private double mRatingScore;
 
-    public static Video from(VideoItem item) {
-        YouTubeVideo video = new YouTubeVideo();
+    public static VideoItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
+        YouTubeVideoItem video = new YouTubeVideoItem();
         video.setId(id++);
         video.setTitle(item.getTitle());
-        video.setDescription(obtainDescription(item));
-        video.setCardImageUrl(obtainHighResThumbnailUrl(item));
-        video.setBackgroundImageUrl(obtainHighResThumbnailUrl(item));
+        video.setDescription(VideoServiceHelper.obtainDescription(item));
+        video.setCardImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setBackgroundImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getPublishedTime());
         video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
@@ -46,24 +43,6 @@ public class YouTubeVideo implements Video {
         video.setRatingStyle(5);
         video.setRatingScore(4d);
         return video;
-    }
-
-    private static String obtainHighResThumbnailUrl(VideoItem item) {
-        List<Thumbnail> thumbnails = item.getThumbnails();
-
-        if (thumbnails.size() == 0) {
-            return null;
-        }
-
-        return thumbnails.get(thumbnails.size() - 1).getUrl();
-    }
-
-    private static String obtainDescription(VideoItem item) {
-        return YouTubeHelper.itemsToDescription(
-                item.getUserName(),
-                item.getPublishedTime(),
-                item.getShortViewCount()
-        );
     }
 
     @Override

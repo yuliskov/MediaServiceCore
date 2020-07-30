@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.videoserviceinterfaces.Video;
+import com.liskovsoft.mediaserviceinterfaces.VideoItem;
 import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,15 +15,15 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeVideoServiceSignedTest {
-    private YouTubeVideoServiceSigned mService;
+public class YouTubeMediaServiceSignedTest {
+    private YouTubeMediaServiceSigned mService;
 
     @Before
     public void setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-        mService = new YouTubeVideoServiceSigned();
+        mService = new YouTubeMediaServiceSigned();
     }
 
     /**
@@ -31,22 +31,22 @@ public class YouTubeVideoServiceSignedTest {
      */
     @Test
     public void testThatFindReturnsMultiplePages() throws InterruptedException {
-        Observable<List<Video>> result = mService.getSearchObserve("hello world");
+        Observable<List<VideoItem>> result = mService.getSearchObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(2);
 
-        List<Video> list = new ArrayList<>();
+        List<VideoItem> list = new ArrayList<>();
 
         result.subscribe(videos -> {
-            Video video = videos.get(0);
+            VideoItem video = videos.get(0);
             list.add(video);
             assertNotNull(video);
             finish.countDown();
         }, throwable -> fail());
 
         result.subscribe(videos -> {
-            Video video = videos.get(0);
-            Video video2 = list.get(0);
+            VideoItem video = videos.get(0);
+            VideoItem video2 = list.get(0);
             assertTrue(!video.getTitle().equals(video2.getTitle()));
             finish.countDown();
         }, throwable -> fail());

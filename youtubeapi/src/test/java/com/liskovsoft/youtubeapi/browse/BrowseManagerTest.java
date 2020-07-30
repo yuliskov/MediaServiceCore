@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
@@ -15,6 +16,8 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -59,6 +62,39 @@ public class BrowseManagerTest {
         assertNotNull("Field not null", videoItem.getTitle());
         assertNotNull("Field not null", videoItem.getUserName());
         assertNotNull("Field not null", videoItem.getThumbnails());
+    }
+
+    @Test
+    public void testEnsureNextResultIsUnique() throws IOException {
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+
+        TabbedBrowseResult browseResult = wrapper.execute().body();
+
+        tabbedResultNotEmpty(browseResult);
+
+        BrowseSection firstSection = browseResult.getBrowseTabs().get(0).getSections().get(0);
+
+        String nextPageKey = firstSection.getNextPageKey();
+        assertNotNull("Next page key not null", nextPageKey);
+
+        String visitorId = browseResult.getVisitorData();
+        assertNotNull("Next page key not null", visitorId);
+
+        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), visitorId);
+        Response<NextBrowseResult> execute = next.execute();
+        NextBrowseResult nextBrowseResult = execute.body();
+
+        List<VideoItem> videoItems = firstSection.getVideoItems();
+        List<VideoItem> nextVideoItems = nextBrowseResult.getVideoItems();
+
+        for (int i = 0; i < videoItems.size(); i++) {
+            VideoItem first = videoItems.get(i);
+
+            for (int j = 0; j < nextVideoItems.size(); j++) {
+                VideoItem second = nextVideoItems.get(j);
+                assertNotEquals("All items are unique", first.getTitle(), second.getTitle());
+            }
+        }
     }
 
     @Test

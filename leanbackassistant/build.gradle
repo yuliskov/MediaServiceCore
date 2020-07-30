@@ -39,7 +39,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':sharedutils')
-    implementation project(':videoserviceinterfaces')
+    implementation project(':mediaserviceinterfaces')
     implementation project(':youtubeapi')
 
     //implementation 'com.android.support:leanback-v17:' + supportLibraryVersion

@@ -9,17 +9,15 @@ public class MusicItem {
     private String videoId;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> thumbnails;
-    @JsonPath("$.primaryText.runs[0].text")
+    @JsonPath({"$.primaryText.simpleText", "$.primaryText.runs[0].text"})
     private String title;
-    @JsonPath("$.secondaryText.runs[0].text")
+    @JsonPath({"$.secondaryText.simpleText", "$.secondaryText.runs[0].text"})
     private String userName;
     @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
     private String playlistId;
-    @JsonPath("$.tertiaryText.runs[2].text")
-    private String publishedTime;
-    @JsonPath("$.tertiaryText.runs[0].text")
-    private String viewCount;
-    @JsonPath("$.lengthText.runs[0].text")
+    @JsonPath("$.tertiaryText.simpleText")
+    private String viewsAndPublished;
+    @JsonPath({"$.lengthText.simpleText", "$.lengthText.runs[0].text"})
     private String length;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
     private String accessibilityLength;
@@ -44,12 +42,8 @@ public class MusicItem {
         return playlistId;
     }
 
-    public String getPublishedTime() {
-        return publishedTime;
-    }
-
-    public String getViewCount() {
-        return viewCount;
+    public String getViewsAndPublished() {
+        return viewsAndPublished;
     }
 
     public String getLength() {

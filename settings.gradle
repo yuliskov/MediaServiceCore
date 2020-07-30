@@ -1,2 +1,2 @@
-gradle.ext.videoServiceCoreRoot = settingsDir
+gradle.ext.mediaServiceCoreRoot = settingsDir
 apply from: 'core_settings.gradle'

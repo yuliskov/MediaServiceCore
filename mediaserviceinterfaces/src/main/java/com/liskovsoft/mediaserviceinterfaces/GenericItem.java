@@ -1,18 +1,12 @@
-package com.liskovsoft.videoserviceinterfaces;
+package com.liskovsoft.mediaserviceinterfaces;
 
 import android.media.Rating;
 
-public interface Video {
+public interface GenericItem {
     int getId();
     void setId(int id);
     String getTitle();
     void setTitle(String title);
-    String getDescription();
-    void setDescription(String description);
-    String getCardImageUrl();
-    void setCardImageUrl(String cardImageUrl);
-    String getBackgroundImageUrl();
-    void setBackgroundImageUrl(String backgroundImageUrl);
     String getVideoUrl();
     void setVideoUrl(String videoUrl);
     String getContentType();
@@ -22,8 +16,18 @@ public interface Video {
      * @param contentType content type
      */
     void setContentType(String contentType);
-    boolean isLive();
-    void setLive(boolean isLive);
+    int getDuration();
+    /**
+     * Set video duration in millis.<br/>
+     * @param duration duration millis
+     */
+    void setDuration(int duration);
+    String getProductionDate();
+    void setProductionDate(String productionDate);
+    String getCardImageUrl();
+    void setCardImageUrl(String cardImageUrl);
+    String getBackgroundImageUrl();
+    void setBackgroundImageUrl(String backgroundImageUrl);
     int getWidth();
     void setWidth(int width);
     int getHeight();
@@ -58,12 +62,4 @@ public interface Video {
      * @param ratingScore score
      */
     void setRatingScore(double ratingScore);
-    String getProductionDate();
-    void setProductionDate(String productionDate);
-    int getDuration();
-    /**
-     * Set video duration in millis.<br/>
-     * @param duration duration millis
-     */
-    void setDuration(int duration);
 }

@@ -3,8 +3,8 @@ package com.liskovsoft.leanbackassistant.media;
 import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.videoserviceinterfaces.Video;
-import com.liskovsoft.youtubeapi.service.YouTubeVideoServiceSigned;
+import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceSigned;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,8 @@ public class ClipService {
     }
 
     public Playlist getSubscriptionsPlaylist() {
-        YouTubeVideoServiceSigned service = YouTubeVideoServiceSigned.instance();
-        List<Video> subscriptions = service.getSubscriptions();
+        YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
+        List<VideoItem> subscriptions = service.getSubscriptions();
 
         Playlist playlist = new Playlist(
                 mContext.getResources().getString(R.string.subscriptions_playlist_name),
@@ -64,8 +64,8 @@ public class ClipService {
     }
 
     public Playlist getHistoryPlaylist() {
-        YouTubeVideoServiceSigned service = YouTubeVideoServiceSigned.instance();
-        List<Video> history = service.getHistory();
+        YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
+        List<VideoItem> history = service.getHistory();
 
         Playlist playlist = new Playlist(
                 mContext.getResources().getString(R.string.history_playlist_name),
@@ -90,8 +90,8 @@ public class ClipService {
     }
 
     public Playlist getRecommendedPlaylist() {
-        YouTubeVideoServiceSigned service = YouTubeVideoServiceSigned.instance();
-        List<Video> recommended = service.getRecommended();
+        YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
+        List<VideoItem> recommended = service.getRecommended();
 
         Playlist playlist = new Playlist(
                 mContext.getResources().getString(R.string.recommended_playlist_name),
@@ -115,11 +115,11 @@ public class ClipService {
         return playlist;
     }
 
-    private List<Clip> convertToClips(List<Video> videos) {
+    private List<Clip> convertToClips(List<VideoItem> videos) {
         if (videos != null) {
             List<Clip> clips = new ArrayList<>();
 
-            for (Video v : videos) {
+            for (VideoItem v : videos) {
                 clips.add(new Clip(
                         v.getTitle(),
                         v.getDescription(),

@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.videoserviceinterfaces.Video;
-import com.liskovsoft.videoserviceinterfaces.VideoSection;
-import com.liskovsoft.videoserviceinterfaces.VideoService;
+import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaSection;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
@@ -11,102 +11,102 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-public class YouTubeVideoService implements VideoService {
-    private static YouTubeVideoService sInstance;
+public class YouTubeMediaService implements MediaService {
+    private static YouTubeMediaService sInstance;
     private final BrowseService mBrowseService;
     private final SearchService mService;
 
-    public YouTubeVideoService() {
+    public YouTubeMediaService() {
         mService = new SearchService();
         mBrowseService = new BrowseService();
     }
 
-    public static YouTubeVideoService instance() {
+    public static YouTubeMediaService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeVideoService();
+            sInstance = new YouTubeMediaService();
         }
 
         return sInstance;
     }
 
     @Override
-    public List<Video> getSearch(String searchText) {
+    public List<VideoItem> getSearch(String searchText) {
         return null;
     }
 
     @Override
-    public List<Video> getNextSearch() {
+    public List<VideoItem> getNextSearch() {
         return null;
     }
 
     @Override
-    public Observable<List<Video>> getSearchObserve(String searchText) {
+    public Observable<List<VideoItem>> getSearchObserve(String searchText) {
         return null;
     }
 
     @Override
-    public List<Video> getSubscriptions() {
+    public List<VideoItem> getSubscriptions() {
         return null;
     }
 
     @Override
-    public List<Video> getNextSubscriptions() {
+    public List<VideoItem> getNextSubscriptions() {
         return null;
     }
 
     @Override
-    public List<Video> getRecommended() {
+    public List<VideoItem> getRecommended() {
         return null;
     }
 
     @Override
-    public List<Video> getNextRecommended() {
+    public List<VideoItem> getNextRecommended() {
         return null;
     }
 
     @Override
-    public List<Video> getHistory() {
+    public List<VideoItem> getHistory() {
         return null;
     }
 
     @Override
-    public List<Video> getNextHistory() {
+    public List<VideoItem> getNextHistory() {
         return null;
     }
 
     @Override
-    public List<VideoSection> getHomeSections() {
+    public List<MediaSection> getHomeSections() {
         List<BrowseTab> browseTabs = mBrowseService.getHomeTabs();
         return VideoServiceHelper.convertBrowseTabs(browseTabs);
     }
 
     @Override
-    public Observable<List<VideoSection>> getHomeSectionsObserve() {
+    public Observable<List<MediaSection>> getHomeSectionsObserve() {
         return Observable.fromCallable(this::getHomeSections);
     }
 
     @Override
-    public List<Video> continueHomeSection(int sectionIndex) {
+    public List<VideoItem> continueHomeSection(int sectionIndex) {
         return VideoServiceHelper.convertVideoItems(mBrowseService.continueHomeSection(sectionIndex));
     }
 
     @Override
-    public Observable<List<Video>> continueHomeSectionObserve(int sectionIndex) {
+    public Observable<List<VideoItem>> continueHomeSectionObserve(int sectionIndex) {
         return Observable.fromCallable(() -> continueHomeSection(sectionIndex));
     }
 
     @Override
-    public Observable<List<Video>> getSubscriptionsObserve() {
+    public Observable<List<VideoItem>> getSubscriptionsObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<Video>> getHistoryObserve() {
+    public Observable<List<VideoItem>> getHistoryObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<Video>> getRecommendedObserve() {
+    public Observable<List<VideoItem>> getRecommendedObserve() {
         return null;
     }
 }

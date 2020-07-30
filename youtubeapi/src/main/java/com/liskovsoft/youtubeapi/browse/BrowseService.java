@@ -20,7 +20,7 @@ public class BrowseService {
     private BrowseManager mBrowseManager;
     private String mNextPageKey;
     private TabbedBrowseResult mHomeTabs;
-    private Map<Integer, NextBrowseResult> mNextHomeResultMap = new HashMap<>();
+    private final Map<Integer, NextBrowseResult> mNextHomeResultMap = new HashMap<>();
 
     public List<BrowseTab> getHomeTabs() {
         mHomeTabs = getTabbedResult(BrowseParams.getHomeQuery());

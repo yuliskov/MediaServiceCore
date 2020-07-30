@@ -1,9 +1,10 @@
-def rootDir = gradle.ext.myVideoTubeApiRoot
+def rootDir = gradle.ext.videoServiceCoreRoot
 
 // prepare for git submodules
 gradle.ext.sharedUtilsRoot = new File(rootDir, '../SharedUtils').exists() ? new File(rootDir, '../SharedUtils') : new File(rootDir, './SharedUtils')
 apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
 
-include ':videoserviceinterfaces', ':youtubeapi'
+include ':videoserviceinterfaces', ':youtubeapi', ':leanbackassistant'
 project(':videoserviceinterfaces').projectDir = new File(rootDir, 'videoserviceinterfaces')
 project(':youtubeapi').projectDir = new File(rootDir, 'youtubeapi')
+project(':leanbackassistant').projectDir = new File(rootDir, 'leanbackassistant')

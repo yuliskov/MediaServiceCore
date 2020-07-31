@@ -18,6 +18,7 @@ public interface MediaService {
     List<MediaItem> getNextHistory();
 
     List<MediaTab> getHomeTabs();
+    List<MediaTab> getNextHomeTabs();
     Observable<List<MediaTab>> getHomeTabsObserve();
 
     List<MediaItem> continueHomeTab(int tabIndex);

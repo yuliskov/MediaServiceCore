@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
@@ -76,8 +77,14 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public List<MediaTab> getHomeTabs() {
-        List<BrowseTab> browseTabs = mBrowseService.getHomeTabs();
-        return VideoServiceHelper.convertBrowseTabs(browseTabs);
+        List<BrowseSection> browseTabs = mBrowseService.getHomeSections();
+        return VideoServiceHelper.convertBrowseSections(browseTabs);
+    }
+
+    @Override
+    public List<MediaTab> getNextHomeTabs() {
+        List<BrowseSection> browseTabs = mBrowseService.getNextHomeSections();
+        return VideoServiceHelper.convertBrowseSections(browseTabs);
     }
 
     @Override

@@ -113,6 +113,11 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
+    public List<MediaTab> getNextHomeTabs() {
+        return null;
+    }
+
+    @Override
     public Observable<List<MediaTab>> getHomeTabsObserve() {
         return null;
     }

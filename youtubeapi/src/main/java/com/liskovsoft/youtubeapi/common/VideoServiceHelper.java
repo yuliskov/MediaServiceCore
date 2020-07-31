@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItem;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaSection;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaTab;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
 import java.util.ArrayList;
@@ -28,14 +28,12 @@ public final class VideoServiceHelper {
         return result;
     }
 
-    public static List<MediaTab> convertBrowseTabs(List<BrowseTab> browseTabs) {
+    public static List<MediaTab> convertBrowseSections(List<BrowseSection> sections) {
         List<MediaTab> result = new ArrayList<>();
 
-        if (browseTabs != null && browseTabs.size() > 0) {
-            BrowseTab browseTab = browseTabs.get(0);
-            List<BrowseSection> sections = browseTab.getSections();
+        if (sections != null && sections.size() > 0) {
             for (BrowseSection section : sections) {
-                result.add(YouTubeMediaSection.from(section));
+                result.add(YouTubeMediaTab.from(section));
             }
         }
 

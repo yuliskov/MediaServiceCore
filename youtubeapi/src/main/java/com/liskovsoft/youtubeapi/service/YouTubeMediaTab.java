@@ -7,12 +7,12 @@ import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaSection implements MediaTab {
+public class YouTubeMediaTab implements MediaTab {
     private List<MediaItem> mVideos;
     private String mTitle;
 
     public static MediaTab from(BrowseSection section) {
-        YouTubeMediaSection youTubeVideoSection = new YouTubeMediaSection();
+        YouTubeMediaTab youTubeVideoSection = new YouTubeMediaTab();
         youTubeVideoSection.setTitle(section.getTitle());
 
         ArrayList<MediaItem> videos = new ArrayList<>();

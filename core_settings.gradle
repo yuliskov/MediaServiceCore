@@ -1,8 +1,8 @@
 def rootDir = gradle.ext.mediaServiceCoreRoot
 
 // prepare for git submodules
-gradle.ext.sharedUtilsRoot = new File(rootDir, '../SharedUtils').exists() ? new File(rootDir, '../SharedUtils') : new File(rootDir, './SharedUtils')
-apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
+gradle.ext.sharedModulesRoot = new File(rootDir, '../SharedModules').exists() ? new File(rootDir, '../SharedModules') : new File(rootDir, './SharedModules')
+apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
 include ':mediaserviceinterfaces', ':youtubeapi', ':leanbackassistant'
 project(':mediaserviceinterfaces').projectDir = new File(rootDir, 'mediaserviceinterfaces')

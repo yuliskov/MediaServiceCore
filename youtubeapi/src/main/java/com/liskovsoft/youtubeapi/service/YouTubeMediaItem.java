@@ -1,10 +1,10 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
-public class YouTubeVideoItem implements VideoItem {
+public class YouTubeMediaItem implements MediaItem {
     private static int id;
     private String mTitle;
     private int mId;
@@ -23,9 +23,11 @@ public class YouTubeVideoItem implements VideoItem {
     private String mRentalPrice;
     private int mRatingStyle;
     private double mRatingScore;
+    private int mMediaItemType;
 
-    public static VideoItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
-        YouTubeVideoItem video = new YouTubeVideoItem();
+    public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+        video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.setId(id++);
         video.setTitle(item.getTitle());
         video.setDescription(VideoServiceHelper.obtainDescription(item));
@@ -34,6 +36,27 @@ public class YouTubeVideoItem implements VideoItem {
         video.setProductionDate(item.getPublishedTime());
         video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
+        video.setContentType("video/mp4");
+        video.setWidth(1280);
+        video.setHeight(720);
+        video.setAudioChannelConfig("2.0");
+        video.setPurchasePrice("$5.99");
+        video.setRentalPrice("$4.99");
+        video.setRatingStyle(5);
+        video.setRatingScore(4d);
+        return video;
+    }
+
+    public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.MusicItem item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+        video.mMediaItemType = MediaItem.TYPE_MUSIC;
+        video.setId(id++);
+        video.setTitle(item.getTitle());
+        video.setCardImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setBackgroundImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setProductionDate(item.getViewsAndPublished());
+        video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
+        video.setDuration(YouTubeHelper.timeTextToMillis(item.getLength()));
         video.setContentType("video/mp4");
         video.setWidth(1280);
         video.setHeight(720);
@@ -63,6 +86,11 @@ public class YouTubeVideoItem implements VideoItem {
     @Override
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    @Override
+    public int getType() {
+        return mMediaItemType;
     }
 
     @Override

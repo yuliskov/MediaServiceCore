@@ -1,12 +1,12 @@
 package com.liskovsoft.youtubeapi.common;
 
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
-import com.liskovsoft.youtubeapi.service.YouTubeVideoItem;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaSection;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
@@ -14,15 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class VideoServiceHelper {
-    public static List<VideoItem> convertVideoItems(List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> items) {
-        ArrayList<VideoItem> result = new ArrayList<>();
+    public static List<MediaItem> convertVideoItems(List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> items) {
+        ArrayList<MediaItem> result = new ArrayList<>();
 
         if (items == null) {
             return result;
         }
 
         for (com.liskovsoft.youtubeapi.common.models.videos.VideoItem item : items) {
-            result.add(YouTubeVideoItem.from(item));
+            result.add(YouTubeMediaItem.from(item));
         }
 
         return result;

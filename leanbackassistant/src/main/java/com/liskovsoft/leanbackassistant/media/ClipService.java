@@ -3,7 +3,7 @@ package com.liskovsoft.leanbackassistant.media;
 import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceSigned;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class ClipService {
 
     public Playlist getSubscriptionsPlaylist() {
         YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
-        List<VideoItem> subscriptions = service.getSubscriptions();
+        List<MediaItem> subscriptions = service.getSubscriptions();
 
         Playlist playlist = new Playlist(
                 mContext.getResources().getString(R.string.subscriptions_playlist_name),
@@ -65,7 +65,7 @@ public class ClipService {
 
     public Playlist getHistoryPlaylist() {
         YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
-        List<VideoItem> history = service.getHistory();
+        List<MediaItem> history = service.getHistory();
 
         Playlist playlist = new Playlist(
                 mContext.getResources().getString(R.string.history_playlist_name),
@@ -91,7 +91,7 @@ public class ClipService {
 
     public Playlist getRecommendedPlaylist() {
         YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
-        List<VideoItem> recommended = service.getRecommended();
+        List<MediaItem> recommended = service.getRecommended();
 
         Playlist playlist = new Playlist(
                 mContext.getResources().getString(R.string.recommended_playlist_name),
@@ -115,11 +115,11 @@ public class ClipService {
         return playlist;
     }
 
-    private List<Clip> convertToClips(List<VideoItem> videos) {
+    private List<Clip> convertToClips(List<MediaItem> videos) {
         if (videos != null) {
             List<Clip> clips = new ArrayList<>();
 
-            for (VideoItem v : videos) {
+            for (MediaItem v : videos) {
                 clips.add(new Clip(
                         v.getTitle(),
                         v.getDescription(),

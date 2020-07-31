@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
@@ -60,7 +60,7 @@ public class VideoContentProvider extends ContentProvider {
     };
     private CompositeDisposable mDisposable;
     private SchedulerProvider mSchedulerProvider;
-    private static List<VideoItem> mCachedVideos;
+    private static List<MediaItem> mCachedVideos;
 
     @Override
     public boolean onCreate() {
@@ -114,12 +114,12 @@ public class VideoContentProvider extends ContentProvider {
         }
     }
 
-    public static VideoItem findVideoWithId(int id) {
+    public static MediaItem findVideoWithId(int id) {
         if (mCachedVideos == null) {
             return null;
         }
 
-        for (VideoItem video : mCachedVideos) {
+        for (MediaItem video : mCachedVideos) {
             if (video.getId() == id) {
                 return video;
             }
@@ -129,7 +129,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private Cursor search(String query, int limit) {
-        List<VideoItem> videos = mService.getSearch(query);
+        List<MediaItem> videos = mService.getSearch(query);
 
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
@@ -143,18 +143,18 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        List<VideoItem> videos = mService.getNextSearch();
+        List<MediaItem> videos = mService.getNextSearch();
 
         Log.d(TAG, "Next search result received: " + videos);
 
         apply(cursor, videos, limit);
     }
 
-    private void apply(MatrixCursor matrixCursor, List<VideoItem> videos, int limit) {
+    private void apply(MatrixCursor matrixCursor, List<MediaItem> videos, int limit) {
         if (videos != null) {
             int idx = 0;
 
-            for (VideoItem video : videos) {
+            for (MediaItem video : videos) {
                 matrixCursor.addRow(convertVideoIntoRow(video));
                 idx++;
             }
@@ -183,7 +183,7 @@ public class VideoContentProvider extends ContentProvider {
         return mDisposable;
     }
 
-    private Object[] convertVideoIntoRow(VideoItem movie) {
+    private Object[] convertVideoIntoRow(MediaItem movie) {
         return new Object[] {
             movie.getId(),
             movie.getTitle(),

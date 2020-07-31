@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,22 +31,22 @@ public class YouTubeMediaServiceSignedTest {
      */
     @Test
     public void testThatFindReturnsMultiplePages() throws InterruptedException {
-        Observable<List<VideoItem>> result = mService.getSearchObserve("hello world");
+        Observable<List<MediaItem>> result = mService.getSearchObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(2);
 
-        List<VideoItem> list = new ArrayList<>();
+        List<MediaItem> list = new ArrayList<>();
 
         result.subscribe(videos -> {
-            VideoItem video = videos.get(0);
+            MediaItem video = videos.get(0);
             list.add(video);
             assertNotNull(video);
             finish.countDown();
         }, throwable -> fail());
 
         result.subscribe(videos -> {
-            VideoItem video = videos.get(0);
-            VideoItem video2 = list.get(0);
+            MediaItem video = videos.get(0);
+            MediaItem video2 = list.get(0);
             assertTrue(!video.getTitle().equals(video2.getTitle()));
             finish.countDown();
         }, throwable -> fail());

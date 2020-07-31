@@ -2,7 +2,19 @@ package com.liskovsoft.mediaserviceinterfaces;
 
 import android.media.Rating;
 
-public interface GenericItem {
+public interface MediaItem {
+    int TYPE_VIDEO = 0;
+    int TYPE_MUSIC = 1;
+    int TYPE_CHANNEL = 2;
+    int getType();
+
+    // Video specific props
+    String getDescription();
+    void setDescription(String description);
+    boolean isLive();
+    void setLive(boolean isLive);
+
+    // Generic props
     int getId();
     void setId(int id);
     String getTitle();

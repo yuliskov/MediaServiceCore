@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.liskovsoft.leanbackassistant.utils.AppUtil;
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import static androidx.core.content.IntentCompat.EXTRA_START_PLAYBACK;
@@ -43,7 +43,7 @@ public class SearchableActivity extends Activity {
     }
 
     private String obtainVideoUrl(int id) {
-        VideoItem video = VideoContentProvider.findVideoWithId(id);
+        MediaItem video = VideoContentProvider.findVideoWithId(id);
 
         if (video != null) {
             return video.getVideoUrl();

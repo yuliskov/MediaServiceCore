@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaSection;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
@@ -30,47 +30,47 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public List<VideoItem> getSearch(String searchText) {
+    public List<MediaItem> getSearch(String searchText) {
         return null;
     }
 
     @Override
-    public List<VideoItem> getNextSearch() {
+    public List<MediaItem> getNextSearch() {
         return null;
     }
 
     @Override
-    public Observable<List<VideoItem>> getSearchObserve(String searchText) {
+    public Observable<List<MediaItem>> getSearchObserve(String searchText) {
         return null;
     }
 
     @Override
-    public List<VideoItem> getSubscriptions() {
+    public List<MediaItem> getSubscriptions() {
         return null;
     }
 
     @Override
-    public List<VideoItem> getNextSubscriptions() {
+    public List<MediaItem> getNextSubscriptions() {
         return null;
     }
 
     @Override
-    public List<VideoItem> getRecommended() {
+    public List<MediaItem> getRecommended() {
         return null;
     }
 
     @Override
-    public List<VideoItem> getNextRecommended() {
+    public List<MediaItem> getNextRecommended() {
         return null;
     }
 
     @Override
-    public List<VideoItem> getHistory() {
+    public List<MediaItem> getHistory() {
         return null;
     }
 
     @Override
-    public List<VideoItem> getNextHistory() {
+    public List<MediaItem> getNextHistory() {
         return null;
     }
 
@@ -86,27 +86,27 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public List<VideoItem> continueHomeSection(int sectionIndex) {
+    public List<MediaItem> continueHomeSection(int sectionIndex) {
         return VideoServiceHelper.convertVideoItems(mBrowseService.continueHomeSection(sectionIndex));
     }
 
     @Override
-    public Observable<List<VideoItem>> continueHomeSectionObserve(int sectionIndex) {
+    public Observable<List<MediaItem>> continueHomeSectionObserve(int sectionIndex) {
         return Observable.fromCallable(() -> continueHomeSection(sectionIndex));
     }
 
     @Override
-    public Observable<List<VideoItem>> getSubscriptionsObserve() {
+    public Observable<List<MediaItem>> getSubscriptionsObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<VideoItem>> getHistoryObserve() {
+    public Observable<List<MediaItem>> getHistoryObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<VideoItem>> getRecommendedObserve() {
+    public Observable<List<MediaItem>> getRecommendedObserve() {
         return null;
     }
 }

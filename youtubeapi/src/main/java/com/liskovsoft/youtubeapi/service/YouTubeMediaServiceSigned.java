@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.VideoItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaSection;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
@@ -30,24 +30,24 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<VideoItem> getSearch(String searchText) {
+    public List<MediaItem> getSearch(String searchText) {
         List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> videoItems = mService.getSearch(searchText);
         return VideoServiceHelper.convertVideoItems(videoItems);
     }
 
     @Override
-    public List<VideoItem> getNextSearch() {
+    public List<MediaItem> getNextSearch() {
         List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> videoItems = mService.getNextSearch();
         return VideoServiceHelper.convertVideoItems(videoItems);
     }
 
     @Override
-    public Observable<List<VideoItem>> getSearchObserve(String searchText) {
-        return Observable.fromCallable(new Callable<List<VideoItem>>() {
+    public Observable<List<MediaItem>> getSearchObserve(String searchText) {
+        return Observable.fromCallable(new Callable<List<MediaItem>>() {
             private boolean mSecondSearch;
 
             @Override
-            public List<VideoItem> call() {
+            public List<MediaItem> call() {
                 List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> videoItems;
 
                 if (!mSecondSearch) {
@@ -63,47 +63,47 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<VideoItem> getSubscriptions() {
+    public List<MediaItem> getSubscriptions() {
         return VideoServiceHelper.convertVideoItems(mBrowseService.getSubscriptions());
     }
 
     @Override
-    public List<VideoItem> getNextSubscriptions() {
+    public List<MediaItem> getNextSubscriptions() {
         return VideoServiceHelper.convertVideoItems(mBrowseService.getNextSubscriptions());
     }
 
     @Override
-    public List<VideoItem> getRecommended() {
+    public List<MediaItem> getRecommended() {
         return VideoServiceHelper.convertVideoItems(mBrowseService.getRecommended());
     }
 
     @Override
-    public List<VideoItem> getNextRecommended() {
+    public List<MediaItem> getNextRecommended() {
         return VideoServiceHelper.convertVideoItems(mBrowseService.getNextRecommended());
     }
 
     @Override
-    public List<VideoItem> getHistory() {
+    public List<MediaItem> getHistory() {
         return VideoServiceHelper.convertVideoItems(mBrowseService.getHistory());
     }
 
     @Override
-    public List<VideoItem> getNextHistory() {
+    public List<MediaItem> getNextHistory() {
         return VideoServiceHelper.convertVideoItems(mBrowseService.getNextHistory());
     }
 
     @Override
-    public Observable<List<VideoItem>> getSubscriptionsObserve() {
+    public Observable<List<MediaItem>> getSubscriptionsObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<VideoItem>> getHistoryObserve() {
+    public Observable<List<MediaItem>> getHistoryObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<VideoItem>> getRecommendedObserve() {
+    public Observable<List<MediaItem>> getRecommendedObserve() {
         return null;
     }
 
@@ -118,12 +118,12 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<VideoItem> continueHomeSection(int sectionIndex) {
+    public List<MediaItem> continueHomeSection(int sectionIndex) {
         return null;
     }
 
     @Override
-    public Observable<List<VideoItem>> continueHomeSectionObserve(int sectionIndex) {
+    public Observable<List<MediaItem>> continueHomeSectionObserve(int sectionIndex) {
         return null;
     }
 }

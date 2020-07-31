@@ -123,12 +123,12 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<MediaItem> continueHomeTab(int tabIndex) {
+    public List<MediaItem> continueHomeTab(MediaTab mediaTab) {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> continueHomeTabObserve(int tabIndex) {
+    public Observable<List<MediaItem>> continueHomeTabObserve(MediaTab mediaTab) {
         return null;
     }
 }

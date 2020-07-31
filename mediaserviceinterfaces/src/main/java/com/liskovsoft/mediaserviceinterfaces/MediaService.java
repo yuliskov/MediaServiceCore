@@ -21,8 +21,8 @@ public interface MediaService {
     List<MediaTab> getNextHomeTabs();
     Observable<List<MediaTab>> getHomeTabsObserve();
 
-    List<MediaItem> continueHomeTab(int tabIndex);
-    Observable<List<MediaItem>> continueHomeTabObserve(int tabIndex);
+    List<MediaItem> continueHomeTab(MediaTab mediaTab);
+    Observable<List<MediaItem>> continueHomeTabObserve(MediaTab mediaTab);
 
     Observable<List<MediaItem>> getSubscriptionsObserve();
     Observable<List<MediaItem>> getHistoryObserve();

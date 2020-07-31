@@ -10,10 +10,12 @@ import java.util.List;
 public class YouTubeMediaTab implements MediaTab {
     private List<MediaItem> mVideos;
     private String mTitle;
+    private int mPosition;
+    public static int sPosition;
 
     public static MediaTab from(BrowseSection section) {
-        YouTubeMediaTab youTubeVideoSection = new YouTubeMediaTab();
-        youTubeVideoSection.setTitle(section.getTitle());
+        YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
+        youTubeMediaTab.setTitle(section.getTitle());
 
         ArrayList<MediaItem> videos = new ArrayList<>();
 
@@ -25,9 +27,10 @@ public class YouTubeMediaTab implements MediaTab {
             videos.add(YouTubeMediaItem.from(item));
         }
 
-        youTubeVideoSection.setMediaItems(videos);
+        youTubeMediaTab.setMediaItems(videos);
+        youTubeMediaTab.mPosition = sPosition++;
 
-        return youTubeVideoSection;
+        return youTubeMediaTab;
     }
 
     @Override
@@ -48,5 +51,10 @@ public class YouTubeMediaTab implements MediaTab {
     @Override
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    @Override
+    public int getPosition() {
+        return mPosition;
     }
 }

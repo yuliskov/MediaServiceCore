@@ -7,4 +7,5 @@ public interface MediaTab {
     void setMediaItems(List<MediaItem> items);
     String getTitle();
     void setTitle(String title);
+    int getPosition();
 }

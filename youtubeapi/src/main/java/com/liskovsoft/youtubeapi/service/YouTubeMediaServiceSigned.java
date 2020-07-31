@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaSection;
+import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
@@ -108,22 +108,22 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<MediaSection> getHomeSections() {
+    public List<MediaTab> getHomeTabs() {
         return null;
     }
 
     @Override
-    public Observable<List<MediaSection>> getHomeSectionsObserve() {
+    public Observable<List<MediaTab>> getHomeTabsObserve() {
         return null;
     }
 
     @Override
-    public List<MediaItem> continueHomeSection(int sectionIndex) {
+    public List<MediaItem> continueHomeTab(int tabIndex) {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> continueHomeSectionObserve(int sectionIndex) {
+    public Observable<List<MediaItem>> continueHomeTabObserve(int tabIndex) {
         return null;
     }
 }

@@ -33,6 +33,8 @@ public class BrowseManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
+        RetrofitHelper.sForceEnableProfiler = true;
+
         mService = RetrofitHelper.withJsonPath(BrowseManager.class);
     }
 
@@ -59,9 +61,15 @@ public class BrowseManagerTest {
     }
 
     private void testFields(VideoItem videoItem) {
-        assertNotNull("Field not null", videoItem.getTitle());
-        assertNotNull("Field not null", videoItem.getUserName());
-        assertNotNull("Field not null", videoItem.getThumbnails());
+        assertNotNull("Title not null", videoItem.getTitle());
+        String videoId = videoItem.getVideoId();
+        assertNotNull("Id not null", videoId);
+        assertNotNull("Time not null: " + videoId, videoItem.getPublishedTime());
+        assertNotNull("Views not null: " + videoId, videoItem.getViewCount());
+        assertNotNull("Length not null: " + videoId, videoItem.getLengthText());
+        assertNotNull("Channel not null: " + videoId, videoItem.getChannelId());
+        assertNotNull("User not null: " + videoId, videoItem.getUserName());
+        assertNotNull("Thumbs not null: " + videoId, videoItem.getThumbnails());
     }
 
     @Test
@@ -116,6 +124,22 @@ public class BrowseManagerTest {
         NextBrowseResult browseResult2 = execute.body();
 
         tabbedNextResultNotEmpty(browseResult2);
+    }
+
+    @Test
+    public void testThatAllTabsSectionHaveTitles() throws IOException {
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+
+        Response<TabbedBrowseResult> execute = wrapper.execute();
+        TabbedBrowseResult browseResult = execute.body();
+
+        tabbedResultNotEmpty(browseResult);
+
+        List<BrowseSection> sections = browseResult.getBrowseTabs().get(0).getSections();
+
+        for (BrowseSection section : sections) {
+            assertNotNull("All sections should have names", section.getTitle());
+        }
     }
 
     private void tabbedNextResultNotEmpty(NextBrowseResult browseResult2) {

@@ -15,7 +15,7 @@ public class VideoItem {
     private String title;
     @JsonPath("$.longBylineText.runs[0].text")
     private String userName;
-    @JsonPath({"$.menu.menuRenderer.items[0].navigationEndpoint.browseEndpoint.browseId",
+    @JsonPath({"$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId"})
     private String channelId;
     @JsonPath("$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")

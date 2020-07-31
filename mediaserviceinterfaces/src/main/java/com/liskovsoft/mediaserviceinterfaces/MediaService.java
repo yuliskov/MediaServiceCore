@@ -17,11 +17,11 @@ public interface MediaService {
     List<MediaItem> getHistory();
     List<MediaItem> getNextHistory();
 
-    List<MediaSection> getHomeSections();
-    Observable<List<MediaSection>> getHomeSectionsObserve();
+    List<MediaTab> getHomeTabs();
+    Observable<List<MediaTab>> getHomeTabsObserve();
 
-    List<MediaItem> continueHomeSection(int sectionIndex);
-    Observable<List<MediaItem>> continueHomeSectionObserve(int sectionIndex);
+    List<MediaItem> continueHomeTab(int tabIndex);
+    Observable<List<MediaItem>> continueHomeTabObserve(int tabIndex);
 
     Observable<List<MediaItem>> getSubscriptionsObserve();
     Observable<List<MediaItem>> getHistoryObserve();

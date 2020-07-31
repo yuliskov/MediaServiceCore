@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaSection;
+import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
@@ -75,24 +75,24 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public List<MediaSection> getHomeSections() {
+    public List<MediaTab> getHomeTabs() {
         List<BrowseTab> browseTabs = mBrowseService.getHomeTabs();
         return VideoServiceHelper.convertBrowseTabs(browseTabs);
     }
 
     @Override
-    public Observable<List<MediaSection>> getHomeSectionsObserve() {
-        return Observable.fromCallable(this::getHomeSections);
+    public Observable<List<MediaTab>> getHomeTabsObserve() {
+        return Observable.fromCallable(this::getHomeTabs);
     }
 
     @Override
-    public List<MediaItem> continueHomeSection(int sectionIndex) {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.continueHomeSection(sectionIndex));
+    public List<MediaItem> continueHomeTab(int tabIndex) {
+        return VideoServiceHelper.convertVideoItems(mBrowseService.continueHomeSection(tabIndex));
     }
 
     @Override
-    public Observable<List<MediaItem>> continueHomeSectionObserve(int sectionIndex) {
-        return Observable.fromCallable(() -> continueHomeSection(sectionIndex));
+    public Observable<List<MediaItem>> continueHomeTabObserve(int tabIndex) {
+        return Observable.fromCallable(() -> continueHomeTab(tabIndex));
     }
 
     @Override

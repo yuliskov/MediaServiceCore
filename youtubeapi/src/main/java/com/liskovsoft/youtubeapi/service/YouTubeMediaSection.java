@@ -1,17 +1,17 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaSection;
+import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaSection implements MediaSection {
+public class YouTubeMediaSection implements MediaTab {
     private List<MediaItem> mVideos;
     private String mTitle;
 
-    public static MediaSection from(BrowseSection section) {
+    public static MediaTab from(BrowseSection section) {
         YouTubeMediaSection youTubeVideoSection = new YouTubeMediaSection();
         youTubeVideoSection.setTitle(section.getTitle());
 
@@ -25,18 +25,18 @@ public class YouTubeMediaSection implements MediaSection {
             videos.add(YouTubeMediaItem.from(item));
         }
 
-        youTubeVideoSection.setVideoItems(videos);
+        youTubeVideoSection.setMediaItems(videos);
 
         return youTubeVideoSection;
     }
 
     @Override
-    public List<MediaItem> getVideoItems() {
+    public List<MediaItem> getMediaItems() {
         return mVideos;
     }
 
     @Override
-    public void setVideoItems(List<MediaItem> items) {
+    public void setMediaItems(List<MediaItem> items) {
         mVideos = items;
     }
 

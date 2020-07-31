@@ -2,9 +2,6 @@ package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.auth.BrowserAuth;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.content_old.ContentManager;
-import com.liskovsoft.youtubeapi.search.SearchManager;
-import com.liskovsoft.youtubeapi.search.SearchParams;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
@@ -13,7 +10,7 @@ import retrofit2.Call;
 import java.util.List;
 
 /**
- * Wraps result from the {@link BrowserAuth}, {@link ContentManager} and {@link SearchManager}
+ * Wraps result from the {@link BrowserAuth} and {@link SearchManager}
  */
 public class SearchService {
     private SearchManager mSearchManager;

@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class RetrofitHelper {
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com"; // ignored when specified url is full
+    public static boolean sForceEnableProfiler;
 
     public static <T> T withGson(Class<T> clazz) {
         Retrofit.Builder builder = createBuilder();
@@ -51,7 +52,9 @@ public class RetrofitHelper {
         if (BuildConfig.DEBUG) {
             OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-            //okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+            if (sForceEnableProfiler) {
+                okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+            }
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);

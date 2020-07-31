@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaSection;
+import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
@@ -28,8 +28,8 @@ public final class VideoServiceHelper {
         return result;
     }
 
-    public static List<MediaSection> convertBrowseTabs(List<BrowseTab> browseTabs) {
-        List<MediaSection> result = new ArrayList<>();
+    public static List<MediaTab> convertBrowseTabs(List<BrowseTab> browseTabs) {
+        List<MediaTab> result = new ArrayList<>();
 
         if (browseTabs != null && browseTabs.size() > 0) {
             BrowseTab browseTab = browseTabs.get(0);

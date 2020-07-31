@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
 import java.util.List;
 
 public class BrowseSection {
-    @JsonPath("$.title.runs[0].text")
+    @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String title;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")
     private List<VideoItem> videoItems;

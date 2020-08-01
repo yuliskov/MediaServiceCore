@@ -37,7 +37,8 @@ public class YouTubeSignInManager implements SignInManager {
         return mIsSigned;
     }
 
-    public String getRefreshToken() {
-        return mRefreshToken;
+    public String getAuthorization() {
+        // get or create authorization on fly
+        return null;
     }
 }

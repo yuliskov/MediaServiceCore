@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
-import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
+import com.liskovsoft.youtubeapi.auth.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
@@ -11,7 +11,6 @@ import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 
 import java.util.List;
@@ -49,6 +48,7 @@ public class BrowseServiceSigned {
         return mBrowseManager;
     }
 
+    // TODO: Authorization should be updated periodically (see expire_in field)
     private void initToken() {
         if (GlobalPreferences.sInstance == null) {
             return;
@@ -60,9 +60,7 @@ public class BrowseServiceSigned {
             return;
         }
 
-        AuthManager authService = RetrofitHelper.withGson(AuthManager.class);
-        Call<RefreshTokenResult> wrapper = authService.getRefreshToken(RequestBody.create(null, rawAuthData.getBytes()));
-        RefreshTokenResult token = RetrofitHelper.get(wrapper);
+        RefreshTokenResult token = AuthService.instance().getRawRefreshToken(rawAuthData);
 
         if (token != null) {
             mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());

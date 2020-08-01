@@ -66,7 +66,7 @@ public class VideoContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mService = new YouTubeMediaServiceSigned();
+        mService = YouTubeMediaServiceSigned.instance();
         mUriMatcher = buildUriMatcher();
 
         return true;

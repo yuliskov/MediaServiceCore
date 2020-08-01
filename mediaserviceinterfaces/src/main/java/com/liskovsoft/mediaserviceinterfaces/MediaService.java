@@ -23,4 +23,5 @@ public interface MediaService {
     MediaTab continueTab(MediaTab mediaTab);
     Observable<MediaTab> continueTabObserve(MediaTab mediaTab);
 
+    SignInManager getSignInManager();
 }

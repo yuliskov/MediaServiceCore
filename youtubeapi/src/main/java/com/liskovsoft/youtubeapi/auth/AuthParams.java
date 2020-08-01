@@ -1,24 +1,30 @@
 package com.liskovsoft.youtubeapi.auth;
 
 public class AuthParams {
-    private static final String DEFAULT_APP_CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
-    private static final String DEFAULT_APP_SCOPE = "http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content";
-    private static final String DEFAULT_APP_CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
-    private static final String DEFAULT_APP_GRANT_TYPE = "http://oauth.net/grant_type/device/1.0";
+    private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
+    // TODO: find out how to obtain unique client secret
+    private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
+    private static final String APP_SCOPE = "http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content";
+    private static final String GRANT_TYPE_DEFAULT = "http://oauth.net/grant_type/device/1.0";
+    private static final String GRANT_TYPE_REFRESH = "refresh_token";
 
     public static String getClientId() {
-        return DEFAULT_APP_CLIENT_ID;
+        return CLIENT_ID;
     }
 
     public static String getAppScope() {
-        return DEFAULT_APP_SCOPE;
+        return APP_SCOPE;
     }
 
     public static String getClientSecret() {
-        return DEFAULT_APP_CLIENT_SECRET;
+        return CLIENT_SECRET;
     }
 
-    public static String getGrantType() {
-        return DEFAULT_APP_GRANT_TYPE;
+    public static String getAccessGrantType() {
+        return GRANT_TYPE_DEFAULT;
+    }
+
+    public static String getRefreshGrantType() {
+        return GRANT_TYPE_REFRESH;
     }
 }

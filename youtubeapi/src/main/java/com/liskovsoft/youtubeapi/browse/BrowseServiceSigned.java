@@ -3,7 +3,8 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
-import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
+import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -60,8 +61,8 @@ public class BrowseServiceSigned {
         }
 
         AuthManager authService = RetrofitHelper.withGson(AuthManager.class);
-        Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(null, rawAuthData.getBytes()));
-        AccessToken token = RetrofitHelper.get(wrapper);
+        Call<RefreshTokenResult> wrapper = authService.getRefreshToken(RequestBody.create(null, rawAuthData.getBytes()));
+        RefreshTokenResult token = RetrofitHelper.get(wrapper);
 
         if (token != null) {
             mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());

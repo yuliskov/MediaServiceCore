@@ -24,7 +24,7 @@ public class YouTubeMediaServiceSignedTest {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-        mService = new YouTubeMediaServiceSigned();
+        mService = YouTubeMediaServiceSigned.instance();
     }
 
     /**

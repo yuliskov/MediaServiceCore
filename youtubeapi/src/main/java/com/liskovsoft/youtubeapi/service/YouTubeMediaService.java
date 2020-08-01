@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -19,7 +19,7 @@ public class YouTubeMediaService implements MediaService {
     private final BrowseService mBrowseService;
     private final SearchService mService;
 
-    public YouTubeMediaService() {
+    private YouTubeMediaService() {
         mService = new SearchService();
         mBrowseService = new BrowseService();
     }
@@ -131,6 +131,11 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public Observable<MediaTab> getRecommendedObserve() {
+        return null;
+    }
+
+    @Override
+    public SignInManager getSignInManager() {
         return null;
     }
 }

@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.auth.AuthManager;
-import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
+import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
@@ -51,8 +52,8 @@ public class BrowseManagerSignedTest {
 
     private void initToken() throws IOException {
         AuthManager authService = RetrofitHelper.withGson(AuthManager.class);
-        Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
-        AccessToken token = wrapper.execute().body();
+        Call<RefreshTokenResult> wrapper = authService.getRefreshToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
+        RefreshTokenResult token = wrapper.execute().body();
         AUTHORIZATION = String.format("%s %s", token.getTokenType(), token.getAccessToken());
     }
 

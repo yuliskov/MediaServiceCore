@@ -44,17 +44,30 @@ client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.c
 POST https://www.youtube.com/o/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&code=AH-1Ng1K8lBZcrMezwnEzpZ23VwfE8Hn7HEuNL-GbQIMYrSZhBF1j3KZ-h47-bqBB4rC6-W9xG2WHM67ZGttecz_ALOZ-JoxDQ&grant_type=http%3A%2F%2Foauth.net%2Fgrant_type%2Fdevice%2F1.0
+code=AH-1Ng1DOzMH80DRKMul5hX6IOiRx-9ZMEjnfZmEBl7sC_sBfG4DZT-w9fDSvhUdgZClvUZbMFhFDmMJG9H7BTK1x2bi261SHQ&client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=http%3A%2F%2Foauth.net%2Fgrant_type%2Fdevice%2F1.0
 
 ###
 
-# Access token (step 2). Alt version.
+# Refresh token (after prev expire)
 # Params:
-# refresh_token: ???
+# refresh_token: (from above step)
 POST https://www.youtube.com/o/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
 client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J
+
+###
+
+# Refresh token (after prev expire)
+# Params:
+# client_id: ??? (could be hardcoded?)
+# code: device_code (from above step)
+# Returns:
+# auth token: used in all personal requests
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1%2F%2F0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY&grant_type=refresh_token
 
 ###
 

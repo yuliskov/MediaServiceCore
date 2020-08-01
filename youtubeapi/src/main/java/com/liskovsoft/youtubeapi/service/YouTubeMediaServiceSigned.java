@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
@@ -11,15 +11,15 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class YouTubeMediaServiceSigned implements MediaService {
     private static final String TAG = YouTubeMediaServiceSigned.class.getSimpleName();
     private final SearchService mSearchService;
     private final BrowseServiceSigned mBrowseService;
     private static YouTubeMediaServiceSigned sInstance;
+    private SignInManager mAuthManager;
 
-    public YouTubeMediaServiceSigned() {
+    private YouTubeMediaServiceSigned() {
         mSearchService = new SearchService();
         mBrowseService = new BrowseServiceSigned();
     }
@@ -102,5 +102,10 @@ public class YouTubeMediaServiceSigned implements MediaService {
     @Override
     public Observable<MediaTab> continueTabObserve(MediaTab mediaTab) {
         return Observable.fromCallable(() -> continueTab(mediaTab));
+    }
+
+    @Override
+    public SignInManager getSignInManager() {
+        return mAuthManager;
     }
 }

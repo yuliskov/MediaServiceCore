@@ -2,24 +2,22 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.auth.BrowserAuth;
+import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * For auth users only!<br/>
- * Wraps result from the {@link BrowserAuth} and {@link BrowseManagerSigned}
+ * Wraps result from the {@link AuthManager} and {@link BrowseManagerSigned}
  */
 public class BrowseServiceSigned {
     private static final String TAG = BrowseServiceSigned.class.getSimpleName();
@@ -61,7 +59,7 @@ public class BrowseServiceSigned {
             return;
         }
 
-        BrowserAuth authService = RetrofitHelper.withGson(BrowserAuth.class);
+        AuthManager authService = RetrofitHelper.withGson(AuthManager.class);
         Call<AccessToken> wrapper = authService.getAuthToken(RequestBody.create(null, rawAuthData.getBytes()));
         AccessToken token = RetrofitHelper.get(wrapper);
 

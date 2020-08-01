@@ -10,7 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface BrowserAuth {
+public interface AuthManager {
     @FormUrlEncoded
     @POST("https://www.youtube.com/o/oauth2/device/code")
     Call<UserCode> getUserCode(@Field("client_id") String clientId, @Field("scope") String scope);

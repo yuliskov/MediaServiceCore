@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.common;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
@@ -10,7 +9,6 @@ import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaTab;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
 
@@ -18,20 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class VideoServiceHelper {
-    public static List<MediaItem> convertVideoItems(List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> items) {
-        ArrayList<MediaItem> result = new ArrayList<>();
-
-        if (items == null) {
-            return result;
-        }
-
-        for (com.liskovsoft.youtubeapi.common.models.videos.VideoItem item : items) {
-            result.add(YouTubeMediaItem.from(item));
-        }
-
-        return result;
-    }
-
     public static MediaTab convertBrowseResult(BrowseResult browseResult, int type) {
         MediaTab result = null;
 
@@ -86,6 +70,10 @@ public final class VideoServiceHelper {
 
     public static MediaTab convertBrowseSection(BrowseSection section) {
         return YouTubeMediaTab.from(section);
+    }
+
+    public static MediaTab convertTabs(List<MediaTab> mediaTabs, int type) {
+        return YouTubeMediaTab.from(mediaTabs, type);
     }
 
     public static BrowseSection getSection(TabbedBrowseResult browseResult, int sectionIndex) {

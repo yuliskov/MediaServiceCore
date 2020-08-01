@@ -1,13 +1,13 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.youtubeapi.auth.BrowserAuth;
+import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import retrofit2.Call;
 
 /**
- * Wraps result from the {@link BrowserAuth} and {@link SearchManager}
+ * Wraps result from the {@link AuthManager} and {@link SearchManager}
  */
 public class SearchService {
     private SearchManager mSearchManager;

@@ -9,8 +9,9 @@ public interface MediaTab {
     int TYPE_HISTORY = 3;
     int TYPE_SUBSCRIPTIONS = 4;
     int getType();
+    void setType(int type);
     List<MediaItem> getMediaItems();
-    void setMediaItems(List<MediaItem> items);
+    void setMediaItems(List<MediaItem> tabs);
     String getTitle();
     void setTitle(String title);
 }

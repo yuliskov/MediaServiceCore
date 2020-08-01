@@ -18,19 +18,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowserAuthTest {
+public class AuthManagerTest {
     private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
     private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
     private static final String GRANT_TYPE = "refresh_token";
     private static final String REFRESH_TOKEN = "1/dXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
-    private BrowserAuth mService;
+    private AuthManager mService;
 
     @Before
     public void setUp() {
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withGson(BrowserAuth.class);
+        mService = RetrofitHelper.withGson(AuthManager.class);
     }
 
     @Test

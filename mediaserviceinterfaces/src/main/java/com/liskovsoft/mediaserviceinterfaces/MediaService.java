@@ -1,6 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
 import io.reactivex.Observable;
+
 import java.util.List;
 
 public interface MediaService {

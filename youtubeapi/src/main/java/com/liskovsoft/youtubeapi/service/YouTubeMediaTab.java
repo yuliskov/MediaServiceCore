@@ -16,6 +16,7 @@ public class YouTubeMediaTab implements MediaTab {
     private String mTitle;
     public String mNextPageKey;
     private int mType = MediaTab.TYPE_HOME;
+    private List<MediaTab> mNestedTabs;
 
     public static MediaTab from(BrowseSection section) {
         YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
@@ -99,6 +100,15 @@ public class YouTubeMediaTab implements MediaTab {
         return youTubeMediaTab;
     }
 
+    public static MediaTab from(List<MediaTab> tabs, int type) {
+        YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
+
+        youTubeMediaTab.mType = type;
+        youTubeMediaTab.mNestedTabs = tabs;
+
+        return youTubeMediaTab;
+    }
+
     @Override
     public List<MediaItem> getMediaItems() {
         return mMediaItems;
@@ -122,5 +132,18 @@ public class YouTubeMediaTab implements MediaTab {
     @Override
     public int getType() {
         return mType;
+    }
+
+    @Override
+    public void setType(int type) {
+        mType = type;
+    }
+
+    public List<MediaTab> getNestedTabs() {
+        return mNestedTabs;
+    }
+
+    public void setNestedTabs(List<MediaTab> tabs) {
+        mNestedTabs = tabs;
     }
 }

@@ -1,22 +1,18 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.auth.BrowserAuth;
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import retrofit2.Call;
-
-import java.util.List;
 
 /**
  * Wraps result from the {@link BrowserAuth} and {@link SearchManager}
  */
 public class SearchService {
     private SearchManager mSearchManager;
-    private String mNextSearchPageKey;
 
-    public List<VideoItem> getSearch(String searchText) {
+    public SearchResult getSearch(String searchText) {
         SearchManager manager = getSearchManager();
 
         Call<SearchResult> wrapper = manager.getSearchResult(SearchParams.getSearchQuery(searchText), SearchParams.getSearchKey());
@@ -27,31 +23,27 @@ public class SearchService {
             throw new IllegalStateException("Invalid search result for text " + searchText);
         }
 
-        mNextSearchPageKey = searchResult.getNextPageKey();
-
-        return searchResult.getVideoItems();
+        return searchResult;
     }
 
     /**
      * Method uses results from the {@link #getSearch(String)} call
      * @return video items
      */
-    public List<VideoItem> getNextSearch() {
-        if (mNextSearchPageKey == null) {
+    public NextSearchResult continueSearch(String nextSearchPageKey) {
+        if (nextSearchPageKey == null) {
             throw new IllegalStateException("Can't get next search page. Next search key is empty.");
         }
 
         SearchManager manager = getSearchManager();
-        Call<NextSearchResult> wrapper = manager.getNextSearchResult(SearchParams.getNextSearchQuery(mNextSearchPageKey), SearchParams.getSearchKey());
+        Call<NextSearchResult> wrapper = manager.getNextSearchResult(SearchParams.getNextSearchQuery(nextSearchPageKey), SearchParams.getSearchKey());
         NextSearchResult searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {
-            throw new IllegalStateException("Invalid next page search result for key " + mNextSearchPageKey);
+            throw new IllegalStateException("Invalid next page search result for key " + nextSearchPageKey);
         }
 
-        mNextSearchPageKey = searchResult.getNextPageKey();
-
-        return searchResult.getVideoItems();
+        return searchResult;
     }
 
     private SearchManager getSearchManager() {

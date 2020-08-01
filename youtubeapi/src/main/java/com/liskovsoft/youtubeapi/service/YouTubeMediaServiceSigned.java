@@ -3,21 +3,24 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
+import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 
 public class YouTubeMediaServiceSigned implements MediaService {
-    private final SearchService mService;
+    private static final String TAG = YouTubeMediaServiceSigned.class.getSimpleName();
+    private final SearchService mSearchService;
     private final BrowseServiceSigned mBrowseService;
     private static YouTubeMediaServiceSigned sInstance;
 
     public YouTubeMediaServiceSigned() {
-        mService = new SearchService();
+        mSearchService = new SearchService();
         mBrowseService = new BrowseServiceSigned();
     }
 
@@ -30,80 +33,43 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<MediaItem> getSearch(String searchText) {
-        List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> videoItems = mService.getSearch(searchText);
-        return VideoServiceHelper.convertVideoItems(videoItems);
+    public MediaTab getSearch(String searchText) {
+        SearchResult searchResult = mSearchService.getSearch(searchText);
+        return VideoServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
     }
 
     @Override
-    public List<MediaItem> getNextSearch() {
-        List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> videoItems = mService.getNextSearch();
-        return VideoServiceHelper.convertVideoItems(videoItems);
+    public Observable<MediaTab> getSearchObserve(String searchText) {
+        return Observable.fromCallable(() -> VideoServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
     }
 
     @Override
-    public Observable<List<MediaItem>> getSearchObserve(String searchText) {
-        return Observable.fromCallable(new Callable<List<MediaItem>>() {
-            private boolean mSecondSearch;
-
-            @Override
-            public List<MediaItem> call() {
-                List<com.liskovsoft.youtubeapi.common.models.videos.VideoItem> videoItems;
-
-                if (!mSecondSearch) {
-                    videoItems = mService.getSearch(searchText);
-                    mSecondSearch = true;
-                } else {
-                    videoItems = mService.getNextSearch();
-                }
-
-                return VideoServiceHelper.convertVideoItems(videoItems);
-            }
-        });
+    public MediaTab getSubscriptions() {
+        return VideoServiceHelper.convertBrowseResult(mBrowseService.getSubscriptions(), MediaTab.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
-    public List<MediaItem> getSubscriptions() {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.getSubscriptions());
+    public MediaTab getRecommended() {
+        return VideoServiceHelper.convertBrowseSection(mBrowseService.getRecommended());
     }
 
     @Override
-    public List<MediaItem> getNextSubscriptions() {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.getNextSubscriptions());
+    public MediaTab getHistory() {
+        return VideoServiceHelper.convertBrowseResult(mBrowseService.getHistory(), MediaTab.TYPE_HISTORY);
     }
 
     @Override
-    public List<MediaItem> getRecommended() {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.getRecommended());
-    }
-
-    @Override
-    public List<MediaItem> getNextRecommended() {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.getNextRecommended());
-    }
-
-    @Override
-    public List<MediaItem> getHistory() {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.getHistory());
-    }
-
-    @Override
-    public List<MediaItem> getNextHistory() {
-        return VideoServiceHelper.convertVideoItems(mBrowseService.getNextHistory());
-    }
-
-    @Override
-    public Observable<List<MediaItem>> getSubscriptionsObserve() {
+    public Observable<MediaTab> getSubscriptionsObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> getHistoryObserve() {
+    public Observable<MediaTab> getHistoryObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> getRecommendedObserve() {
+    public Observable<MediaTab> getRecommendedObserve() {
         return null;
     }
 
@@ -113,22 +79,28 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public List<MediaTab> getNextHomeTabs() {
-        return null;
-    }
-
-    @Override
     public Observable<List<MediaTab>> getHomeTabsObserve() {
         return null;
     }
 
     @Override
-    public List<MediaItem> continueHomeTab(MediaTab mediaTab) {
-        return null;
+    public MediaTab continueTab(MediaTab mediaTab) {
+        Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
+
+        if (mediaTab.getType() == MediaTab.TYPE_SEARCH) {
+            return VideoServiceHelper.convertNextSearchResult(
+                    mSearchService.continueSearch(VideoServiceHelper.extractNextKey(mediaTab)),
+                    mediaTab);
+        }
+
+        return VideoServiceHelper.convertNextBrowseResult(
+                mBrowseService.continueSection(VideoServiceHelper.extractNextKey(mediaTab)),
+                mediaTab
+        );
     }
 
     @Override
-    public Observable<List<MediaItem>> continueHomeTabObserve(MediaTab mediaTab) {
-        return null;
+    public Observable<MediaTab> continueTabObserve(MediaTab mediaTab) {
+        return Observable.fromCallable(() -> continueTab(mediaTab));
     }
 }

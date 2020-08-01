@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
 import com.liskovsoft.sharedutils.rx.SchedulerProvider;
@@ -61,6 +62,7 @@ public class VideoContentProvider extends ContentProvider {
     private CompositeDisposable mDisposable;
     private SchedulerProvider mSchedulerProvider;
     private static List<MediaItem> mCachedVideos;
+    private MediaTab mSearch;
 
     @Override
     public boolean onCreate() {
@@ -129,25 +131,27 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private Cursor search(String query, int limit) {
-        List<MediaItem> videos = mService.getSearch(query);
+        mSearch = mService.getSearch(query);
+        List<MediaItem> mediaItems = mSearch.getMediaItems();
 
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
-        Log.d(TAG, "Search result received: " + videos);
+        Log.d(TAG, "Search result received: " + mediaItems);
 
         mCachedVideos = new ArrayList<>();
 
-        apply(matrixCursor, videos, limit);
+        apply(matrixCursor, mediaItems, limit);
 
         return matrixCursor;
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        List<MediaItem> videos = mService.getNextSearch();
+        mSearch = mService.continueTab(mSearch);
+        List<MediaItem> mediaItems = mSearch.getMediaItems();
 
-        Log.d(TAG, "Next search result received: " + videos);
+        Log.d(TAG, "Next search result received: " + mediaItems);
 
-        apply(cursor, videos, limit);
+        apply(cursor, mediaItems, limit);
     }
 
     private void apply(MatrixCursor matrixCursor, List<MediaItem> videos, int limit) {

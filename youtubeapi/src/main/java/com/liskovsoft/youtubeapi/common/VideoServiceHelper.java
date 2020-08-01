@@ -2,10 +2,14 @@ package com.liskovsoft.youtubeapi.common;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
+import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaTab;
 import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
@@ -28,6 +32,46 @@ public final class VideoServiceHelper {
         return result;
     }
 
+    public static MediaTab convertBrowseResult(BrowseResult browseResult, int type) {
+        MediaTab result = null;
+
+        if (browseResult != null) {
+            result = YouTubeMediaTab.from(browseResult, type);
+        }
+
+        return result;
+    }
+
+    public static MediaTab convertSearchResult(SearchResult searchResult, int type) {
+        MediaTab result = null;
+
+        if (searchResult != null) {
+            result = YouTubeMediaTab.from(searchResult, type);
+        }
+
+        return result;
+    }
+
+    public static MediaTab convertNextBrowseResult(NextBrowseResult nextBrowseResult, MediaTab tab) {
+        MediaTab result = null;
+
+        if (nextBrowseResult != null) {
+            result = YouTubeMediaTab.from(nextBrowseResult, tab);
+        }
+
+        return result;
+    }
+
+    public static MediaTab convertNextSearchResult(NextSearchResult nextSearchResult, MediaTab tab) {
+        MediaTab result = null;
+
+        if (nextSearchResult != null) {
+            result = YouTubeMediaTab.from(nextSearchResult, tab);
+        }
+
+        return result;
+    }
+
     public static List<MediaTab> convertBrowseSections(List<BrowseSection> sections) {
         List<MediaTab> result = new ArrayList<>();
 
@@ -38,6 +82,10 @@ public final class VideoServiceHelper {
         }
 
         return result;
+    }
+
+    public static MediaTab convertBrowseSection(BrowseSection section) {
+        return YouTubeMediaTab.from(section);
     }
 
     public static BrowseSection getSection(TabbedBrowseResult browseResult, int sectionIndex) {
@@ -88,5 +136,15 @@ public final class VideoServiceHelper {
                 item.getPublishedTime(),
                 item.getShortViewCount()
         );
+    }
+
+    public static String extractNextKey(MediaTab mediaTab) {
+        String result = null;
+
+        if (mediaTab instanceof YouTubeMediaTab) {
+            result = ((YouTubeMediaTab) mediaTab).mNextPageKey;
+        }
+
+        return result;
     }
 }

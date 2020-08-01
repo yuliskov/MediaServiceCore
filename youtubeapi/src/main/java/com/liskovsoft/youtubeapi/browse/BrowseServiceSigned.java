@@ -24,39 +24,22 @@ import java.util.List;
 public class BrowseServiceSigned {
     private static final String TAG = BrowseServiceSigned.class.getSimpleName();
     private BrowseManagerSigned mBrowseManager;
-    private String mNextPageKey;
     private String mAuthorization;
 
     public BrowseServiceSigned() {
         initToken();
     }
 
-    public List<VideoItem> getSubscriptions() {
+    public BrowseResult getSubscriptions() {
         return getAuthSection(BrowseParams.getSubscriptionsQuery());
     }
 
-    /**
-     * Method uses results from the {@link #getSubscriptions()} call
-     * @return video items
-     */
-    public List<VideoItem> getNextSubscriptions() {
-        return getNextAuthSection();
-    }
-
-    public List<VideoItem> getRecommended() {
+    public BrowseSection getRecommended() {
         return getTabbedAuthSection(BrowseParams.getHomeQuery());
     }
 
-    public List<VideoItem> getNextRecommended() {
-        return getNextAuthSection();
-    }
-
-    public List<VideoItem> getHistory() {
+    public BrowseResult getHistory() {
         return getAuthSection(BrowseParams.getHistoryQuery());
-    }
-
-    public List<VideoItem> getNextHistory() {
-        return getNextAuthSection();
     }
 
     private BrowseManagerSigned getBrowseManager() {
@@ -87,10 +70,10 @@ public class BrowseServiceSigned {
         }
     }
 
-    private List<VideoItem> getAuthSection(String query) {
+    private BrowseResult getAuthSection(String query) {
         if (mAuthorization == null) {
             Log.e(TAG, "getAuthSection: authorization is null.");
-            return new ArrayList<>();
+            return null;
         }
 
         BrowseManagerSigned manager = getBrowseManager();
@@ -101,43 +84,37 @@ public class BrowseServiceSigned {
 
         if (browseResult == null) {
             Log.e(TAG, "getAuthSection: browse result is null");
-            return new ArrayList<>();
         }
 
-        mNextPageKey = browseResult.getNextPageKey();
-
-        return browseResult.getVideoItems();
+        return browseResult;
     }
 
-    private List<VideoItem> getNextAuthSection() {
+    private NextBrowseResult getNextAuthSection(String nextPageKey) {
         if (mAuthorization == null) {
             Log.e(TAG, "getNextAuthSection: authorization is null.");
-            return new ArrayList<>();
+            return null;
         }
 
-        if (mNextPageKey == null) {
+        if (nextPageKey == null) {
             Log.e(TAG, "getNextAuthSection: next search key is null.");
-            return new ArrayList<>();
+            return null;
         }
 
         BrowseManagerSigned manager = getBrowseManager();
-        Call<NextBrowseResult> wrapper = manager.getNextBrowseResult(BrowseParams.getNextBrowseQuery(mNextPageKey), mAuthorization);
+        Call<NextBrowseResult> wrapper = manager.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), mAuthorization);
         NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
         if (browseResult == null) {
-            Log.e(TAG, "getNextAuthSection: browseResult is null. Maybe invalid next key: " + mNextPageKey);
-            return new ArrayList<>();
+            Log.e(TAG, "getNextAuthSection: browseResult is null. Maybe invalid next key: " + nextPageKey);
         }
 
-        mNextPageKey = browseResult.getNextPageKey();
-
-        return browseResult.getVideoItems();
+        return browseResult;
     }
 
-    private List<VideoItem> getTabbedAuthSection(String query) {
+    private BrowseSection getTabbedAuthSection(String query) {
         if (mAuthorization == null) {
             Log.e(TAG, "getTabbedAuthSection: authorization is null.");
-            return new ArrayList<>();
+            return null;
         }
 
         BrowseManagerSigned manager = getBrowseManager();
@@ -149,19 +126,14 @@ public class BrowseServiceSigned {
 
         if (browseResult == null) {
             Log.e(TAG, "getTabbedAuthSection: browseResult is null");
-            return new ArrayList<>();
+            return null;
         }
 
         List<BrowseTab> browseTabs = browseResult.getBrowseTabs();
 
         BrowseSection browseSection = getFirstTabbedSection(browseTabs);
 
-        if (browseSection != null) {
-            mNextPageKey = browseSection.getNextPageKey();
-            return browseSection.getVideoItems();
-        }
-
-        return new ArrayList<>();
+        return browseSection;
     }
 
     // TODO: maybe choose other section
@@ -179,5 +151,9 @@ public class BrowseServiceSigned {
         }
 
         return null;
+    }
+
+    public NextBrowseResult continueSection(String nextKey) {
+        return getNextAuthSection(nextKey);
     }
 }

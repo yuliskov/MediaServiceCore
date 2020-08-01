@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import io.reactivex.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeMediaService implements MediaService {
@@ -32,70 +33,50 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public List<MediaItem> getSearch(String searchText) {
+    public MediaTab getSearch(String searchText) {
         return null;
     }
 
     @Override
-    public List<MediaItem> getNextSearch() {
+    public Observable<MediaTab> getSearchObserve(String searchText) {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> getSearchObserve(String searchText) {
+    public MediaTab getSubscriptions() {
         return null;
     }
 
     @Override
-    public List<MediaItem> getSubscriptions() {
+    public MediaTab getRecommended() {
         return null;
     }
 
     @Override
-    public List<MediaItem> getNextSubscriptions() {
-        return null;
-    }
-
-    @Override
-    public List<MediaItem> getRecommended() {
-        return null;
-    }
-
-    @Override
-    public List<MediaItem> getNextRecommended() {
-        return null;
-    }
-
-    @Override
-    public List<MediaItem> getHistory() {
-        return null;
-    }
-
-    @Override
-    public List<MediaItem> getNextHistory() {
+    public MediaTab getHistory() {
         return null;
     }
 
     @Override
     public List<MediaTab> getHomeTabs() {
-        Log.d(TAG, "Emitting home tabs...");
-        List<BrowseSection> browseTabs = mBrowseService.getHomeSections();
-        return VideoServiceHelper.convertBrowseSections(browseTabs);
-    }
+        List<MediaTab> result = new ArrayList<>();
 
-    @Override
-    public List<MediaTab> getNextHomeTabs() {
-        Log.d(TAG, "Emitting next home tabs...");
-        List<BrowseSection> browseTabs = mBrowseService.getNextHomeSections();
-        return VideoServiceHelper.convertBrowseSections(browseTabs);
+        List<MediaTab> tabs = getFirstHomeTabs();
+
+        while (!tabs.isEmpty()) {
+            result.addAll(tabs);
+            tabs = getNextHomeTabs();
+        }
+
+        return result;
     }
 
     @Override
     public Observable<List<MediaTab>> getHomeTabsObserve() {
         return Observable.create(emitter -> {
-            List<MediaTab> tabs = getHomeTabs();
+            List<MediaTab> tabs = getFirstHomeTabs();
 
-            while (tabs != null && !tabs.isEmpty()) {
+            while (!tabs.isEmpty()) {
                 emitter.onNext(tabs);
                 tabs = getNextHomeTabs();
             }
@@ -104,20 +85,34 @@ public class YouTubeMediaService implements MediaService {
         });
     }
 
-    @Override
-    public List<MediaItem> continueHomeTab(MediaTab mediaTab) {
-        Log.d(TAG, "Continue home tab at index " + mediaTab.getPosition() + "...");
-        return VideoServiceHelper.convertVideoItems(mBrowseService.continueHomeSection(mediaTab.getPosition()));
+    private List<MediaTab> getFirstHomeTabs() {
+        Log.d(TAG, "Emitting first home tabs...");
+        List<BrowseSection> browseTabs = mBrowseService.getHomeSections();
+        return VideoServiceHelper.convertBrowseSections(browseTabs);
+    }
+
+    private List<MediaTab> getNextHomeTabs() {
+        Log.d(TAG, "Emitting next home tabs...");
+        List<BrowseSection> browseTabs = mBrowseService.getNextHomeSections();
+        return VideoServiceHelper.convertBrowseSections(browseTabs);
     }
 
     @Override
-    public Observable<List<MediaItem>> continueHomeTabObserve(MediaTab mediaTab) {
-        return Observable.create(emitter -> {
-            List<MediaItem> mediaItems = continueHomeTab(mediaTab);
+    public MediaTab continueTab(MediaTab mediaTab) {
+        Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
+        return VideoServiceHelper.convertNextBrowseResult(
+                mBrowseService.continueSection(VideoServiceHelper.extractNextKey(mediaTab)),
+                mediaTab
+        );
+    }
 
-            while (mediaItems != null && !mediaItems.isEmpty()) {
-                emitter.onNext(mediaItems);
-                mediaItems = continueHomeTab(mediaTab);
+    @Override
+    public Observable<MediaTab> continueTabObserve(MediaTab mediaTab) {
+        return Observable.create(emitter -> {
+            MediaTab newMediaTab = continueTab(mediaTab);
+
+            if (newMediaTab != null) {
+                emitter.onNext(newMediaTab);
             }
 
             emitter.onComplete();
@@ -125,17 +120,17 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public Observable<List<MediaItem>> getSubscriptionsObserve() {
+    public Observable<MediaTab> getSubscriptionsObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> getHistoryObserve() {
+    public Observable<MediaTab> getHistoryObserve() {
         return null;
     }
 
     @Override
-    public Observable<List<MediaItem>> getRecommendedObserve() {
+    public Observable<MediaTab> getRecommendedObserve() {
         return null;
     }
 }

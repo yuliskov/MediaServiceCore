@@ -4,27 +4,22 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public interface MediaService {
-    List<MediaItem> getSearch(String searchText);
-    List<MediaItem> getNextSearch();
-    Observable<List<MediaItem>> getSearchObserve(String searchText);
+    MediaTab getSearch(String searchText);
+    Observable<MediaTab> getSearchObserve(String searchText);
 
-    List<MediaItem> getSubscriptions();
-    List<MediaItem> getNextSubscriptions();
+    MediaTab getSubscriptions();
+    Observable<MediaTab> getSubscriptionsObserve();
 
-    List<MediaItem> getRecommended();
-    List<MediaItem> getNextRecommended();
+    MediaTab getRecommended();
+    Observable<MediaTab> getRecommendedObserve();
 
-    List<MediaItem> getHistory();
-    List<MediaItem> getNextHistory();
+    MediaTab getHistory();
+    Observable<MediaTab> getHistoryObserve();
 
     List<MediaTab> getHomeTabs();
-    List<MediaTab> getNextHomeTabs();
     Observable<List<MediaTab>> getHomeTabsObserve();
 
-    List<MediaItem> continueHomeTab(MediaTab mediaTab);
-    Observable<List<MediaItem>> continueHomeTabObserve(MediaTab mediaTab);
+    MediaTab continueTab(MediaTab mediaTab);
+    Observable<MediaTab> continueTabObserve(MediaTab mediaTab);
 
-    Observable<List<MediaItem>> getSubscriptionsObserve();
-    Observable<List<MediaItem>> getHistoryObserve();
-    Observable<List<MediaItem>> getRecommendedObserve();
 }

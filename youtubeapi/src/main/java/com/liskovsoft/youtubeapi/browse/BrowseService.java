@@ -6,70 +6,55 @@ import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.NextTabbedBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
-import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
 import retrofit2.Call;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BrowseService {
     private static final String TAG = BrowseService.class.getSimpleName();
     private BrowseManager mBrowseManager;
-    private String mNextPageKey;
-    private TabbedBrowseResult mHomeTabs;
-    private NextTabbedBrowseResult mNextHomeTabs;
-    private final Map<Integer, NextBrowseResult> mNextHomeResultMap = new HashMap<>();
+    private String mVisitorData;
+    private String mNextHomeTabsKey;
 
     public List<BrowseSection> getHomeSections() {
-        mHomeTabs = getTabbedResult(BrowseParams.getHomeQuery());
+        TabbedBrowseResult homeTabs = getTabbedResult(BrowseParams.getHomeQuery());
 
-        if (mHomeTabs == null) {
+        if (homeTabs == null) {
             Log.e(TAG, "HomeTabs are empty");
             return new ArrayList<>();
         }
 
-        return findHomeTab().getSections();
+        mVisitorData = homeTabs.getVisitorData();
+        mNextHomeTabsKey = findHomeTab(homeTabs).getNextPageKey();
+
+        return findHomeTab(homeTabs).getSections();
     }
 
     public List<BrowseSection> getNextHomeSections() {
-        if (mNextHomeTabs == null) {
-            mNextHomeTabs = getNextTabbedResult(findHomeTab().getNextPageKey(), mHomeTabs.getVisitorData());
-        } else {
-            mNextHomeTabs = getNextTabbedResult(mNextHomeTabs.getNextPageKey(), mHomeTabs.getVisitorData());
+        NextTabbedBrowseResult nextHomeTabs = null;
+
+        if (mNextHomeTabsKey != null) {
+            nextHomeTabs = getNextTabbedResult(mNextHomeTabsKey, mVisitorData);
+
+            if (nextHomeTabs != null) {
+                mNextHomeTabsKey = nextHomeTabs.getNextPageKey();
+            } else {
+                mNextHomeTabsKey = null;
+            }
         }
 
-        if (mNextHomeTabs == null) {
+        if (nextHomeTabs == null) {
             Log.e(TAG, "NextHomeTabs are empty");
             return new ArrayList<>();
         }
 
-        return mNextHomeTabs.getSections();
+        return nextHomeTabs.getSections();
     }
 
-    public List<VideoItem> continueHomeSection(int sectionIndex) {
-        List<VideoItem> result  = null;
-        NextBrowseResult browseResult = null;
-
-        if (mNextHomeResultMap.containsKey(sectionIndex)) {
-            browseResult = getNextResult(mNextHomeResultMap.get(sectionIndex).getNextPageKey(), mHomeTabs.getVisitorData());
-        } else {
-            BrowseSection videoSection = VideoServiceHelper.getSection(mHomeTabs, sectionIndex);
-
-            if (videoSection != null) {
-                browseResult = getNextResult(videoSection.getNextPageKey(), mHomeTabs.getVisitorData());
-            }
-        }
-
-        if (browseResult != null) {
-            result = browseResult.getVideoItems();
-            mNextHomeResultMap.put(sectionIndex, browseResult);
-        }
-
-        return result;
+    public NextBrowseResult continueSection(String nextPageKey) {
+        return getNextResult(nextPageKey, mVisitorData);
     }
 
     private BrowseManager getBrowseManager() {
@@ -115,7 +100,7 @@ public class BrowseService {
         return browseResult;
     }
 
-    private BrowseTab findHomeTab() {
-        return mHomeTabs.getBrowseTabs().get(0);
+    private BrowseTab findHomeTab(TabbedBrowseResult homeTabs) {
+        return homeTabs.getBrowseTabs().get(0);
     }
 }

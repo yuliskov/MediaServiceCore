@@ -1,14 +1,12 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.search.SearchService;
+import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
-
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,10 +27,10 @@ public class SearchServiceTest {
 
     @Test
     public void testSearchNotEmpty() {
-        List<VideoItem> items = mService.getSearch("any search text");
-        assertTrue("search not empty?", items.size() != 0);
+        SearchResult searchResult = mService.getSearch("any search text");
+        assertTrue("search not empty?", searchResult.getVideoItems().size() != 0);
 
-        List<VideoItem> nextItems = mService.getNextSearch();
-        assertTrue("next search not empty?", nextItems.size() != 0);
+        NextSearchResult nextSearchResult = mService.continueSearch(searchResult.getNextPageKey());
+        assertTrue("next search not empty?", nextSearchResult.getVideoItems().size() != 0);
     }
 }

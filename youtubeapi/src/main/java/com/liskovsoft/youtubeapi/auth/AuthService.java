@@ -9,9 +9,10 @@ import retrofit2.Call;
 
 public class AuthService {
     private static AuthService sInstance;
-    private AuthManager mAuthManager;
+    private final AuthManager mAuthManager;
 
     private AuthService() {
+        mAuthManager = RetrofitHelper.withGson(AuthManager.class);
     }
 
     public static AuthService instance() {
@@ -20,14 +21,6 @@ public class AuthService {
         }
 
         return sInstance;
-    }
-
-    private AuthManager getAuthManager() {
-        if (mAuthManager == null) {
-            mAuthManager = RetrofitHelper.withGson(AuthManager.class);
-        }
-
-        return mAuthManager;
     }
 
     public UserCodeResult getUserCode() {

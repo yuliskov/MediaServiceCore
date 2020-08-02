@@ -60,13 +60,13 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public MediaTab getHistory() {
-        return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaTab.TYPE_HISTORY);
+    public Observable<MediaTab> getRecommendedObserve() {
+        return Observable.fromCallable(this::getRecommended);
     }
 
     @Override
-    public Observable<MediaTab> getSubscriptionsObserve() {
-        return Observable.fromCallable(this::getSubscriptions);
+    public MediaTab getHistory() {
+        return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaTab.TYPE_HISTORY);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public Observable<MediaTab> getRecommendedObserve() {
-        return Observable.fromCallable(this::getRecommended);
+    public Observable<MediaTab> getSubscriptionsObserve() {
+        return Observable.fromCallable(this::getSubscriptions);
     }
 
     @Override

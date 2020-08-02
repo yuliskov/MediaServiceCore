@@ -93,14 +93,13 @@ public class SynchronizeDatabaseJobService extends JobService {
         SynchronizeDatabaseTask(Context context, JobParameters jobParameters) {
             mContext = context;
             mJobParameters = jobParameters;
+            Log.d(TAG, "Creating GlobalPreferences...");
             mPrefs = GlobalPreferences.instance(mContext);
             mService = ClipService.instance(mContext);
         }
 
         @Override
         protected Exception doInBackground(Void... params) {
-            Log.d(TAG, "Syncing channels...");
-
             updateChannels();
             updateRecommendations();
 
@@ -110,9 +109,12 @@ public class SynchronizeDatabaseJobService extends JobService {
         private void updateChannels() {
             if (Helpers.isATVChannelsSupported(mContext)) {
                 try {
-                    updateOrPublishChannel(mService.getSubscriptionsPlaylist());
+                    Playlist subscriptions = mService.getSubscriptionsPlaylist();
+                    updateOrPublishChannel(subscriptions);
                     updateOrPublishChannel(mService.getRecommendedPlaylist());
                     updateOrPublishChannel(mService.getHistoryPlaylist());
+
+                    Log.d(TAG, "Syncing channels... " + subscriptions.getClips().size());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                     e.printStackTrace();
@@ -137,6 +139,8 @@ public class SynchronizeDatabaseJobService extends JobService {
                     }
 
                     updateOrPublishRecommendations(playlist);
+
+                    Log.d(TAG, "Syncing recommended... " + playlist.getClips().size());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                     e.printStackTrace();

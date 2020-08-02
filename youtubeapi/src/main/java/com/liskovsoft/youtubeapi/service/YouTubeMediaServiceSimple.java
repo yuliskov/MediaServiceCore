@@ -58,7 +58,7 @@ public class YouTubeMediaServiceSimple implements MediaService {
 
     @Override
     public Observable<MediaTab> getRecommendedObserve() {
-        return null;
+        return Observable.fromCallable(this::getRecommended);
     }
 
     @Override

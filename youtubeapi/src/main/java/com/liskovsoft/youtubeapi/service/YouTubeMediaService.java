@@ -4,16 +4,20 @@ import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import io.reactivex.Observable;
 
 import java.util.List;
 
 public class YouTubeMediaService implements MediaService {
+    private static final String TAG = YouTubeMediaService.class.getSimpleName();
     private static YouTubeMediaService sInstance;
     private MediaService mMediaService;
     private YouTubeSignInManager mAuthManager;
 
     private YouTubeMediaService() {
+        Log.d(TAG, "Starting...");
+
         checkSigned();
     }
 
@@ -41,6 +45,8 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public MediaTab getSubscriptions() {
+        Log.d(TAG, "Getting subscriptions...");
+
         checkSigned();
 
         return mMediaService.getSubscriptions();
@@ -55,6 +61,8 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public MediaTab getRecommended() {
+        Log.d(TAG, "Getting recommended...");
+
         checkSigned();
 
         return mMediaService.getRecommended();
@@ -69,6 +77,8 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public MediaTab getHistory() {
+        Log.d(TAG, "Getting history...");
+
         checkSigned();
 
         return mMediaService.getHistory();
@@ -127,9 +137,13 @@ public class YouTubeMediaService implements MediaService {
         }
 
         if (mAuthManager.isSigned()) {
+            Log.d(TAG, "User signed.");
+
             mMediaService = YouTubeMediaServiceSigned.instance();
             YouTubeMediaServiceSimple.unhold();
         } else {
+            Log.d(TAG, "User doesn't signed.");
+
             mMediaService = YouTubeMediaServiceSimple.instance();
             YouTubeMediaServiceSigned.unhold();
         }

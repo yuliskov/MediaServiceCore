@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
@@ -8,6 +9,7 @@ import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
 import io.reactivex.Observable;
 
 public class YouTubeSignInManager implements SignInManager {
+    private static final String TAG = YouTubeSignInManager.class.getSimpleName();
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;
     private boolean mIsSigned;
@@ -19,7 +21,7 @@ public class YouTubeSignInManager implements SignInManager {
     private YouTubeSignInManager() {
         mAuthService = AuthService.instance();
 
-        updateAuthorizationHeader();
+        GlobalPreferences.setOnInit(this::updateAuthorizationHeader);
     }
 
     public static YouTubeSignInManager instance() {
@@ -67,12 +69,14 @@ public class YouTubeSignInManager implements SignInManager {
         // We don't have context, so can't create instance here.
         // Let's hope someone already created one for us.
         if (GlobalPreferences.sInstance == null) {
+            Log.e(TAG, "GlobalPreferences is null!");
             return;
         }
 
         String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
 
         if (rawAuthData == null) {
+            Log.e(TAG, "RawAuthData is null!");
             return;
         }
 
@@ -81,6 +85,8 @@ public class YouTubeSignInManager implements SignInManager {
         if (token != null) {
             mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
             mLastUpdateTime = System.currentTimeMillis();
+        } else {
+            Log.e(TAG, "Token is null!");
         }
     }
 }

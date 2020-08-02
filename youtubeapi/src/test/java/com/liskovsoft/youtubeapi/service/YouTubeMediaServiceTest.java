@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import io.reactivex.Observable;
 import org.junit.Before;
@@ -16,43 +17,57 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeMediaServiceSignedTest {
-    private YouTubeMediaServiceSigned mService;
+public class YouTubeMediaServiceTest {
+    private MediaService mService;
 
     @Before
     public void setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-        mService = YouTubeMediaServiceSigned.instance();
+        mService = YouTubeMediaService.instance();
     }
 
     /**
      * <a href="https://www.ibm.com/developerworks/ru/library/j-5things5/index.html">More info about concurrent utils...</a>
      */
     @Test
-    public void testThatFindReturnsMultiplePages() throws InterruptedException {
+    public void testThatSearchNotEmpty() throws InterruptedException {
         Observable<MediaTab> result = mService.getSearchObserve("hello world");
 
-        CountDownLatch finish = new CountDownLatch(2);
+        CountDownLatch finish = new CountDownLatch(1);
 
         List<MediaItem> list = new ArrayList<>();
 
         result.subscribe(mediaTab -> {
-            MediaItem video = mediaTab.getMediaItems().get(0);
-            list.add(video);
-            assertNotNull(video);
-            finish.countDown();
-        }, throwable -> fail());
-
-        result.subscribe(mediaTab -> {
-            MediaItem video = mediaTab.getMediaItems().get(0);
-            MediaItem video2 = list.get(0);
-            assertTrue(!video.getTitle().equals(video2.getTitle()));
+            MediaItem mediaItem = mediaTab.getMediaItems().get(0);
+            list.add(mediaItem);
+            assertNotNull(mediaItem);
             finish.countDown();
         }, throwable -> fail());
 
         boolean await = finish.await(5_000, TimeUnit.MILLISECONDS);
         assertTrue("Counter not zero", await);
+        assertTrue("Has media items", list.size() > 0);
+    }
+
+    @Test
+    public void testThatRecommendedNotEmpty() throws InterruptedException {
+        Observable<MediaTab> result = mService.getRecommendedObserve();
+
+        CountDownLatch finish = new CountDownLatch(1);
+
+        List<MediaItem> list = new ArrayList<>();
+
+        result.subscribe(mediaTab -> {
+            MediaItem mediaItem = mediaTab.getMediaItems().get(0);
+            list.add(mediaItem);
+            assertNotNull(mediaItem);
+            finish.countDown();
+        }, throwable -> fail());
+
+        boolean await = finish.await(5_000, TimeUnit.MILLISECONDS);
+        assertTrue("Counter not zero", await);
+        assertTrue("Has media items", list.size() > 0);
     }
 }

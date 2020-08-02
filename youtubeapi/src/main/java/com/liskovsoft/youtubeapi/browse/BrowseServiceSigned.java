@@ -22,22 +22,21 @@ import java.util.List;
 public class BrowseServiceSigned {
     private static final String TAG = BrowseServiceSigned.class.getSimpleName();
     private BrowseManagerSigned mBrowseManager;
-    private String mAuthorization;
 
     public BrowseServiceSigned() {
-        initToken();
+        //initToken();
     }
 
-    public BrowseResult getSubscriptions() {
-        return getAuthSection(BrowseParams.getSubscriptionsQuery());
+    public BrowseResult getSubscriptions(String authorization) {
+        return getAuthSection(BrowseParams.getSubscriptionsQuery(), authorization);
     }
 
-    public BrowseSection getRecommended() {
-        return getTabbedAuthSection(BrowseParams.getHomeQuery());
+    public BrowseSection getRecommended(String authorization) {
+        return getTabbedAuthSection(BrowseParams.getHomeQuery(), authorization);
     }
 
-    public BrowseResult getHistory() {
-        return getAuthSection(BrowseParams.getHistoryQuery());
+    public BrowseResult getHistory(String authorization) {
+        return getAuthSection(BrowseParams.getHistoryQuery(), authorization);
     }
 
     private BrowseManagerSigned getBrowseManager() {
@@ -48,34 +47,15 @@ public class BrowseServiceSigned {
         return mBrowseManager;
     }
 
-    // TODO: Authorization should be updated periodically (see expire_in field)
-    private void initToken() {
-        if (GlobalPreferences.sInstance == null) {
-            return;
-        }
-
-        String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
-
-        if (rawAuthData == null) {
-            return;
-        }
-
-        RefreshTokenResult token = AuthService.instance().getRawRefreshToken(rawAuthData);
-
-        if (token != null) {
-            mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
-        }
-    }
-
-    private BrowseResult getAuthSection(String query) {
-        if (mAuthorization == null) {
+    private BrowseResult getAuthSection(String query, String authorization) {
+        if (authorization == null) {
             Log.e(TAG, "getAuthSection: authorization is null.");
             return null;
         }
 
         BrowseManagerSigned manager = getBrowseManager();
 
-        Call<BrowseResult> wrapper = manager.getBrowseResult(query, mAuthorization);
+        Call<BrowseResult> wrapper = manager.getBrowseResult(query, authorization);
 
         BrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -86,8 +66,8 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private NextBrowseResult getNextAuthSection(String nextPageKey) {
-        if (mAuthorization == null) {
+    private NextBrowseResult getNextAuthSection(String nextPageKey, String authorization) {
+        if (authorization == null) {
             Log.e(TAG, "getNextAuthSection: authorization is null.");
             return null;
         }
@@ -98,7 +78,7 @@ public class BrowseServiceSigned {
         }
 
         BrowseManagerSigned manager = getBrowseManager();
-        Call<NextBrowseResult> wrapper = manager.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), mAuthorization);
+        Call<NextBrowseResult> wrapper = manager.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), authorization);
         NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
         if (browseResult == null) {
@@ -108,15 +88,15 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private BrowseSection getTabbedAuthSection(String query) {
-        if (mAuthorization == null) {
+    private BrowseSection getTabbedAuthSection(String query, String authorization) {
+        if (authorization == null) {
             Log.e(TAG, "getTabbedAuthSection: authorization is null.");
             return null;
         }
 
         BrowseManagerSigned manager = getBrowseManager();
 
-        Call<TabbedBrowseResult> wrapper = manager.getTabbedBrowseResult(query, mAuthorization);
+        Call<TabbedBrowseResult> wrapper = manager.getTabbedBrowseResult(query, authorization);
 
         TabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -150,7 +130,7 @@ public class BrowseServiceSigned {
         return null;
     }
 
-    public NextBrowseResult continueSection(String nextKey) {
-        return getNextAuthSection(nextKey);
+    public NextBrowseResult continueSection(String nextKey, String authorization) {
+        return getNextAuthSection(nextKey, authorization);
     }
 }

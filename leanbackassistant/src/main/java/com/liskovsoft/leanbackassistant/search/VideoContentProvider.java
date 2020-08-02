@@ -17,7 +17,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
 import com.liskovsoft.sharedutils.rx.SchedulerProvider;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceSigned;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class VideoContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mService = YouTubeMediaServiceSigned.instance();
+        mService = YouTubeMediaService.instance();
         mUriMatcher = buildUriMatcher();
 
         return true;

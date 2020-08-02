@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
@@ -15,13 +16,14 @@ import java.util.List;
 public class YouTubeMediaServiceSigned implements MediaService {
     private static final String TAG = YouTubeMediaServiceSigned.class.getSimpleName();
     private final SearchService mSearchService;
-    private final BrowseServiceSigned mBrowseService;
+    private final BrowseServiceSigned mBrowseServiceSigned;
+    private final YouTubeSignInManager mSignInManager;
     private static YouTubeMediaServiceSigned sInstance;
-    private SignInManager mAuthManager;
 
     private YouTubeMediaServiceSigned() {
         mSearchService = new SearchService();
-        mBrowseService = new BrowseServiceSigned();
+        mBrowseServiceSigned = new BrowseServiceSigned();
+        mSignInManager = YouTubeSignInManager.instance();
     }
 
     public static YouTubeMediaServiceSigned instance() {
@@ -30,6 +32,10 @@ public class YouTubeMediaServiceSigned implements MediaService {
         }
 
         return sInstance;
+    }
+
+    public static void unhold() {
+        sInstance = null;
     }
 
     @Override
@@ -45,41 +51,43 @@ public class YouTubeMediaServiceSigned implements MediaService {
 
     @Override
     public MediaTab getSubscriptions() {
-        return VideoServiceHelper.convertBrowseResult(mBrowseService.getSubscriptions(), MediaTab.TYPE_SUBSCRIPTIONS);
+        return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaTab.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
     public MediaTab getRecommended() {
-        return VideoServiceHelper.convertBrowseSection(mBrowseService.getRecommended());
+        return VideoServiceHelper.convertBrowseSection(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
     }
 
     @Override
     public MediaTab getHistory() {
-        return VideoServiceHelper.convertBrowseResult(mBrowseService.getHistory(), MediaTab.TYPE_HISTORY);
+        return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaTab.TYPE_HISTORY);
     }
 
     @Override
     public Observable<MediaTab> getSubscriptionsObserve() {
-        return null;
+        return Observable.fromCallable(this::getSubscriptions);
     }
 
     @Override
     public Observable<MediaTab> getHistoryObserve() {
-        return null;
+        return Observable.fromCallable(this::getHistory);
     }
 
     @Override
     public Observable<MediaTab> getRecommendedObserve() {
-        return null;
+        return Observable.fromCallable(this::getRecommended);
     }
 
     @Override
     public List<MediaTab> getHomeTabs() {
+        // TODO: not implemented
         return null;
     }
 
     @Override
     public Observable<List<MediaTab>> getHomeTabsObserve() {
+        // TODO: not implemented
         return null;
     }
 
@@ -94,7 +102,7 @@ public class YouTubeMediaServiceSigned implements MediaService {
         }
 
         return VideoServiceHelper.convertNextBrowseResult(
-                mBrowseService.continueSection(VideoServiceHelper.extractNextKey(mediaTab)),
+                mBrowseServiceSigned.continueSection(VideoServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
                 mediaTab
         );
     }
@@ -106,6 +114,11 @@ public class YouTubeMediaServiceSigned implements MediaService {
 
     @Override
     public SignInManager getSignInManager() {
-        return mAuthManager;
+        return mSignInManager;
+    }
+
+    @Override
+    public MediaTabManager getMediaTabManager() {
+        return null;
     }
 }

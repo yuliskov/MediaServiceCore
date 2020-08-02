@@ -4,8 +4,9 @@ import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceSigned;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class ClipService {
     }
 
     public Playlist getSubscriptionsPlaylist() {
-        YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
+        MediaService service = YouTubeMediaService.instance();
         MediaTab subscriptions = service.getSubscriptions();
         List<MediaItem> mediaItems = subscriptions.getMediaItems();
 
@@ -66,7 +67,7 @@ public class ClipService {
     }
 
     public Playlist getHistoryPlaylist() {
-        YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
+        MediaService service = YouTubeMediaService.instance();
         MediaTab history = service.getHistory();
         List<MediaItem> mediaItems = history.getMediaItems();
 
@@ -93,7 +94,7 @@ public class ClipService {
     }
 
     public Playlist getRecommendedPlaylist() {
-        YouTubeMediaServiceSigned service = YouTubeMediaServiceSigned.instance();
+        MediaService service = YouTubeMediaService.instance();
         MediaTab recommended = service.getRecommended();
         List<MediaItem> mediaItems = recommended.getMediaItems();
 

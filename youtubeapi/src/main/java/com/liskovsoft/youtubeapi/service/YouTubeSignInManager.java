@@ -1,18 +1,25 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.auth.AuthService;
+import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
+import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
+import io.reactivex.Observable;
 
 public class YouTubeSignInManager implements SignInManager {
     private static YouTubeSignInManager sInstance;
+    private final AuthService mAuthService;
     private boolean mIsSigned;
     private String mRefreshToken;
+    private String mAuthorization;
+    private long mLastUpdateTime;
+    private static final long UPDATE_PERIOD_MS = 30 * 60 * 1000; // 30 minutes
 
     private YouTubeSignInManager() {
-        // mRefreshToken = prefs.getRefreshToken();
+        mAuthService = AuthService.instance();
 
-        if (mRefreshToken != null) {
-            mIsSigned = true;
-        }
+        updateAuthorizationHeader();
     }
 
     public static YouTubeSignInManager instance() {
@@ -25,20 +32,55 @@ public class YouTubeSignInManager implements SignInManager {
 
     @Override
     public String getUserCode() {
-        return null;
+        UserCodeResult userCodeResult = mAuthService.getUserCode();
+        return userCodeResult.getUserCode();
     }
 
     @Override
-    public void applyResult() {
-
+    public Observable<String> getUserCodeObserve() {
+        return null;
     }
 
     public boolean isSigned() {
-        return mIsSigned;
+        return mAuthorization != null;
     }
 
     public String getAuthorization() {
         // get or create authorization on fly
-        return null;
+        updateAuthorizationHeader();
+
+        return mAuthorization;
+    }
+
+    /**
+     * Authorization should be updated periodically (see expire_in field in response)
+     */
+    private void updateAuthorizationHeader() {
+        if (mAuthorization != null) {
+            long currentTime = System.currentTimeMillis();
+
+            if ((currentTime - mLastUpdateTime) < UPDATE_PERIOD_MS) {
+                return;
+            }
+        }
+
+        // We don't have context, so can't create instance here.
+        // Let's hope someone already created one for us.
+        if (GlobalPreferences.sInstance == null) {
+            return;
+        }
+
+        String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
+
+        if (rawAuthData == null) {
+            return;
+        }
+
+        RefreshTokenResult token = mAuthService.getRawRefreshToken(rawAuthData);
+
+        if (token != null) {
+            mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
+            mLastUpdateTime = System.currentTimeMillis();
+        }
     }
 }

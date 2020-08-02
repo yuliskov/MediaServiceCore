@@ -50,16 +50,6 @@ code=AH-1Ng1DOzMH80DRKMul5hX6IOiRx-9ZMEjnfZmEBl7sC_sBfG4DZT-w9fDSvhUdgZClvUZbMFh
 
 # Refresh token (after prev expire)
 # Params:
-# refresh_token: (from above step)
-POST https://www.youtube.com/o/oauth2/token
-Content-Type: application/x-www-form-urlencoded
-
-client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J
-
-###
-
-# Refresh token (after prev expire)
-# Params:
 # client_id: ??? (could be hardcoded?)
 # code: device_code (from above step)
 # Returns:

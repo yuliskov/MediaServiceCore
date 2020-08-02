@@ -4,7 +4,7 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-public interface MediaService {
+public interface MediaTabManager {
     MediaTab getSearch(String searchText);
     Observable<MediaTab> getSearchObserve(String searchText);
 
@@ -22,8 +22,4 @@ public interface MediaService {
 
     MediaTab continueTab(MediaTab mediaTab);
     Observable<MediaTab> continueTabObserve(MediaTab mediaTab);
-
-    SignInManager getSignInManager();
-
-    MediaTabManager getMediaTabManager();
 }

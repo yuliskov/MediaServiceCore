@@ -18,6 +18,38 @@ public class YouTubeMediaTab implements MediaTab {
     private int mType = MediaTab.TYPE_HOME;
     private List<MediaTab> mNestedTabs;
 
+    public static MediaTab EMPTY_TAB = new MediaTab() {
+        @Override
+        public int getType() {
+            return TYPE_UNDEFINED;
+        }
+
+        @Override
+        public void setType(int type) {
+
+        }
+
+        @Override
+        public List<MediaItem> getMediaItems() {
+            return null;
+        }
+
+        @Override
+        public void setMediaItems(List<MediaItem> tabs) {
+
+        }
+
+        @Override
+        public String getTitle() {
+            return null;
+        }
+
+        @Override
+        public void setTitle(String title) {
+
+        }
+    };
+
     public static MediaTab from(BrowseSection section) {
         YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
 

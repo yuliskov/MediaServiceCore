@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.browse.models.sections;
 import com.liskovsoft.youtubeapi.common.models.videos.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.videos.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.support.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 

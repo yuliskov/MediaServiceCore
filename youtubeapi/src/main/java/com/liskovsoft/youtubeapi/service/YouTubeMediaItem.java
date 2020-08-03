@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
-import com.liskovsoft.youtubeapi.support.utils.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.VideoServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class YouTubeMediaItem implements MediaItem {
     private static int id;

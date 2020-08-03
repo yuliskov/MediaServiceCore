@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.NextTabbedBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

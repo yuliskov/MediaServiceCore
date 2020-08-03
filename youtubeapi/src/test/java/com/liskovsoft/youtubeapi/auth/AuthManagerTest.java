@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.auth;
 import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
-import com.liskovsoft.youtubeapi.support.utils.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import okhttp3.RequestBody;
 import org.junit.Before;
 import org.junit.Test;

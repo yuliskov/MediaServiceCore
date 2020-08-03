@@ -7,7 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.common.VideoServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common.converters.querystring.converter;
 
 import android.util.Log;
-import com.liskovsoft.youtubeapi.common.converters.querystring.typeadapter.TypeAdapter;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;
@@ -10,9 +10,9 @@ import retrofit2.internal.EverythingIsNonNull;
 public class QueryStringRequestBodyConverter<T> implements Converter<T, RequestBody> {
     private static final String TAG = QueryStringRequestBodyConverter.class.getSimpleName();
     private static final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
-    private final TypeAdapter<T> mAdapter;
+    private final JsonPathTypeAdapter<T> mAdapter;
 
-    public QueryStringRequestBodyConverter(TypeAdapter<T> adapter) {
+    public QueryStringRequestBodyConverter(JsonPathTypeAdapter<T> adapter) {
         mAdapter = adapter;
     }
 

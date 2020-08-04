@@ -1,22 +1,17 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
-import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-/**
- * Example url: https://www.youtube.com/youtubei/v1/search?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
- */
 public interface VideoInfoManager {
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<SearchResult> getSearchResult(@Body String searchQuery, @Query("key") String key);
+    @Headers("Accept-Encoding: gzip, deflate, br")
+    @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
+    Call<VideoInfoResult> getVideoInfo(@Query("video_id") String videoId, @Query("sts") String sts);
 
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<NextSearchResult> getNextSearchResult(@Body String searchQuery, @Query("key") String key);
+    @Headers("Accept-Encoding: gzip, deflate, br")
+    @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
+    Call<VideoInfoResult> getVideoInfo(@Query("video_id") String videoId);
 }

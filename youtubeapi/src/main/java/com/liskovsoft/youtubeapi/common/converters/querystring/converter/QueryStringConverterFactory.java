@@ -5,7 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
-import com.liskovsoft.youtubeapi.common.converters.querystring.typeadapter.TypeAdapter;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -45,7 +45,7 @@ public final class QueryStringConverterFactory extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
                                                             Annotation[] annotations,
                                                             Retrofit retrofit) {
-        return new QueryStringResponseBodyConverter<>(new TypeAdapter<>(mParser, type));
+        return new QueryStringResponseBodyConverter<>(new JsonPathTypeAdapter<>(mParser, type));
     }
 
     @Override
@@ -53,6 +53,6 @@ public final class QueryStringConverterFactory extends Converter.Factory {
                                                           Annotation[] parameterAnnotations,
                                                           Annotation[] methodAnnotations,
                                                           Retrofit retrofit) {
-        return new QueryStringRequestBodyConverter<>(new TypeAdapter<>(mParser, type));
+        return new QueryStringRequestBodyConverter<>(new JsonPathTypeAdapter<>(mParser, type));
     }
 }

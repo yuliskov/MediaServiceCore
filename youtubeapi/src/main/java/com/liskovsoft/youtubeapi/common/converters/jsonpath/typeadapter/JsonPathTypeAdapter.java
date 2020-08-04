@@ -18,17 +18,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeAdapter<T> {
-    private static final String TAG = TypeAdapter.class.getSimpleName();
+public class JsonPathTypeAdapter<T> {
+    private static final String TAG = JsonPathTypeAdapter.class.getSimpleName();
     private final ParseContext mParser;
     private final Class<?> mType;
 
-    public TypeAdapter(ParseContext parser, Class<?> type) {
+    public JsonPathTypeAdapter(ParseContext parser, Class<?> type) {
         mParser = parser;
         mType = type;
     }
 
-    public TypeAdapter(ParseContext parser, Type type) {
+    public JsonPathTypeAdapter(ParseContext parser, Type type) {
         mParser = parser;
         mType = (Class<?>) type;
     }

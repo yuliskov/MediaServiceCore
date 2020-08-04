@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 import com.liskovsoft.youtubeapi.browse.BrowseManager;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
 public class VideoInfoManagerTest {
@@ -41,7 +43,9 @@ public class VideoInfoManagerTest {
         VideoInfoResult result = wrapper.execute().body();
 
         assertNotNull("Result not null", result);
-        assertTrue("Formats not empty", result.getAdaptiveFormats().size() > 0);
+        List<AdaptiveFormat> formats = result.getAdaptiveFormats();
+        assertTrue("Formats not empty", formats.size() > 0);
+        assertNotNull("Range not null", formats.get(0).getIndexRange());
         assertNotNull("Has watch tracking url", result.getVideostatsWatchtimeUrl());
     }
 }

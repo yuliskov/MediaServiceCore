@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 public class ReflectionHelper {
-    public static Class<?> getGenericParam(Field field) {
+    public static Class<?> getGenericParamType(Field field) {
         Type[] params = getGenericParams(field);
 
         if (params != null && params.length == 1) {

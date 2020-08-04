@@ -77,6 +77,11 @@ public final class ITag {
         return type.equals(realType);
     }
 
+    public static boolean belongsToType(String type, int iTag) {
+        String realType = getRealType(String.valueOf(iTag));
+        return type.equals(realType);
+    }
+
     private static String getRealType(String iTag) {
         if (sOrderedITagsAVC.contains(iTag)) {
             return AVC;

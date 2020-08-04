@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.models;
+package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryString;
@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.videoinfo.old.misc.ITag;
 
 import java.util.List;
 
-public class AdaptiveFormat {
+public class BaseVideoFormat {
     private static final String FORMAT_STREAM_TYPE_OTF = "FORMAT_STREAM_TYPE_OTF";
 
     // Common params
@@ -38,24 +38,9 @@ public class AdaptiveFormat {
     // Regular video params
     public static final String QUALITY = "quality";
     // End Regular params
-
-    private static class Range {
-        @JsonPath("$.start")
-        String start;
-        @JsonPath("$.end")
-        String end;
-
-        @NonNull
-        public String toString() {
-            if (start == null || end == null) {
-                return "";
-            }
-
-            return String.format("%s-%s", start, end);
-        }
-    }
+    
     @JsonPath("$.itag")
-    private String mITag;
+    private int mITag;
     @JsonPath("$.url")
     private String mUrl;
     @JsonPath("$.cipher")
@@ -66,22 +51,16 @@ public class AdaptiveFormat {
     @JsonPath("$.contentLength")
     private String mClen;
     @JsonPath("$.bitrate")
-    private String mBitrate;
+    private int mBitrate;
     private String mProjectionType;
     private String mXtags;
     @JsonPath("$.width")
-    private String mWidth;
+    private int mWidth;
     @JsonPath("$.height")
-    private String mHeight;
+    private int mHeight;
     private String mSize;
-    @JsonPath("$.indexRange")
-    private Range mIndexRange;
-    @JsonPath("$.initRange")
-    private Range mInitRange;
-    private String mIndex;
-    private String mInit;
     @JsonPath("$.fps")
-    private String mFps;
+    private int mFps;
     private String mLmt;
     @JsonPath("$.qualityLabel")
     private String mQualityLabel;
@@ -143,11 +122,11 @@ public class AdaptiveFormat {
         mType = type;
     }
 
-    public String getITag() {
+    public int getITag() {
         return mITag;
     }
 
-    public void setITag(String itag) {
+    public void setITag(int itag) {
         mITag = itag;
     }
 
@@ -159,11 +138,11 @@ public class AdaptiveFormat {
         mClen = clen;
     }
 
-    public String getBitrate() {
+    public int getBitrate() {
         return mBitrate;
     }
 
-    public void setBitrate(String bitrate) {
+    public void setBitrate(int bitrate) {
         mBitrate = bitrate;
     }
 
@@ -184,7 +163,7 @@ public class AdaptiveFormat {
     }
 
     public String getSize() {
-        if (mSize == null && mWidth != null && mHeight != null) {
+        if (mSize == null && mWidth != 0 && mHeight != 0) {
             return String.format("%sx%s", mWidth, mHeight);
         }
 
@@ -195,35 +174,11 @@ public class AdaptiveFormat {
         mSize = size;
     }
 
-    public String getIndex() {
-        if (mIndex == null && mIndexRange != null) {
-            mIndex = mIndexRange.toString();
-        }
-
-        return mIndex;
-    }
-
-    public void setIndex(String index) {
-        mIndex = index;
-    }
-
-    public String getInit() {
-        if (mInit == null && mInitRange != null) {
-            mInit = mInitRange.toString();
-        }
-
-        return mInit;
-    }
-
-    public void setInit(String init) {
-        mInit = init;
-    }
-
-    public String getFps() {
+    public int getFps() {
         return mFps;
     }
 
-    public void setFps(String fps) {
+    public void setFps(int fps) {
         mFps = fps;
     }
 

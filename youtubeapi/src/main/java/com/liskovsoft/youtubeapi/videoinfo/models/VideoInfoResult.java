@@ -1,12 +1,14 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularFormat;
 
 import java.util.List;
 
 public class VideoInfoResult {
     @JsonPath("$.streamingData.formats[*]")
-    private List<AdaptiveFormat> mFormats;
+    private List<RegularFormat> mRegularFormats;
 
     @JsonPath("$.streamingData.adaptiveFormats[*]")
     private List<AdaptiveFormat> mAdaptiveFormats;
@@ -57,7 +59,7 @@ public class VideoInfoResult {
         return mPlayerStoryboardSpec;
     }
 
-    public List<AdaptiveFormat> getFormats() {
-        return mFormats;
+    public List<RegularFormat> getRegularFormats() {
+        return mRegularFormats;
     }
 }

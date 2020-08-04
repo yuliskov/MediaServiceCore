@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
@@ -16,6 +17,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JsonPathTypeAdapter<T> {
@@ -74,7 +76,7 @@ public class JsonPathTypeAdapter<T> {
 
             DocumentContext parser = mParser.parse((String) jsonContent);
 
-            Field[] fields = type.getDeclaredFields();
+            List<Field> fields = getAllFields(type);
 
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -101,7 +103,7 @@ public class JsonPathTypeAdapter<T> {
 
                 if (jsonVal instanceof JsonArray) {
                     List<Object> list = new ArrayList<>();
-                    Class<?> myType = ReflectionHelper.getGenericParam(field);
+                    Class<?> myType = ReflectionHelper.getGenericParamType(field);
 
                     if (myType == null) {
                         throw new IllegalStateException("Please, supply generic field for the list type: " + field);
@@ -125,6 +127,9 @@ public class JsonPathTypeAdapter<T> {
                         val = ((JsonPrimitive) jsonVal).getAsString();
                     }
 
+                    field.set(obj, val);
+                } else if (jsonVal instanceof JsonObject) {
+                    Object val = readType(field.getType(), jsonVal.toString());
                     field.set(obj, val);
                 }
 
@@ -157,5 +162,18 @@ public class JsonPathTypeAdapter<T> {
         }
 
         return null;
+    }
+
+    private List<Field> getAllFields(Class<?> type) {
+        Field[] fields = type.getDeclaredFields();
+
+        List<Field> result = new ArrayList<>(Arrays.asList(fields));
+
+        while (type.getSuperclass() != null) { // null if superclass is object
+            type = type.getSuperclass();
+            result.addAll(Arrays.asList(type.getDeclaredFields()));
+        }
+
+        return result;
     }
 }

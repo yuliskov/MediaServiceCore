@@ -38,14 +38,16 @@ public class VideoInfoManagerTest {
     }
 
     @Test
-    public void testThatVideoInfoNotEmpty() throws IOException {
+    public void testThatVideoInfoContainsAllRequiredFields() throws IOException {
         Call<VideoInfoResult> wrapper = mService.getVideoInfo(VIDEO_ID);
         VideoInfoResult result = wrapper.execute().body();
 
         assertNotNull("Result not null", result);
         List<AdaptiveFormat> formats = result.getAdaptiveFormats();
         assertTrue("Formats not empty", formats.size() > 0);
-        assertNotNull("Range not null", formats.get(0).getIndexRange());
+        assertNotNull("Contains range", formats.get(0).getIndexRange());
+        assertTrue("Contains fps", formats.get(0).getFps() != 0);
+        assertTrue("Contains bitrate", formats.get(0).getBitrate() != 0);
         assertNotNull("Has watch tracking url", result.getVideostatsWatchtimeUrl());
     }
 }

@@ -49,9 +49,12 @@ public class BaseVideoFormat {
     @JsonPath("$.mimeType")
     private String mType;
     @JsonPath("$.contentLength")
-    private String mClen;
+    private String mContentLength;
     @JsonPath("$.bitrate")
     private int mBitrate;
+    @JsonPath("$.averageBitrate")
+    private int mAverageBitrate;
+    @JsonPath("$.projectionType")
     private String mProjectionType;
     private String mXtags;
     @JsonPath("$.width")
@@ -81,6 +84,10 @@ public class BaseVideoFormat {
     private String mSignatureCipher;
     private String mTemplateMetadataUrl;
     private String mTemplateSegmentUrl;
+    @JsonPath("$.approxDurationMs")
+    private String mApproxDurationMs;
+    @JsonPath("$.lastModified")
+    private String mLastModified;
 
     //@Override
     //public boolean equals(Object obj) {
@@ -130,12 +137,12 @@ public class BaseVideoFormat {
         mITag = itag;
     }
 
-    public String getClen() {
-        return mClen;
+    public String getContentLength() {
+        return mContentLength;
     }
 
-    public void setClen(String clen) {
-        mClen = clen;
+    public void setContentLength(String contentLength) {
+        mContentLength = contentLength;
     }
 
     public int getBitrate() {
@@ -304,8 +311,20 @@ public class BaseVideoFormat {
                 getUrl(),
                 getSourceURL(),
                 getSignature(),
-                getClen(),
+                getContentLength(),
                 getSize(),
                 getITag());
+    }
+
+    public String getApproxDurationMs() {
+        return mApproxDurationMs;
+    }
+
+    public int getAverageBitrate() {
+        return mAverageBitrate;
+    }
+
+    public String getLastModified() {
+        return mLastModified;
     }
 }

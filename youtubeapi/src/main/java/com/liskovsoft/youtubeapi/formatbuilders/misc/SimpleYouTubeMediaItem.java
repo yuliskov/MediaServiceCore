@@ -1,10 +1,10 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.misc;
 
 import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryString;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryStringFactory;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 
 import java.util.List;
 

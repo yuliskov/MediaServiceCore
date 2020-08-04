@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.parsers;
+package com.liskovsoft.youtubeapi.formatbuilders.parsers;
 
 import android.net.Uri;
 import com.google.gson.JsonArray;

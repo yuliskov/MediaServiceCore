@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.misc;
 
 import java.io.InputStream;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.interfaces;
+package com.liskovsoft.youtubeapi.formatbuilders.interfaces;
 
 import android.content.Intent;
 

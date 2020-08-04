@@ -1,17 +1,17 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.GenericInfo;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.Subtitle;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.ITag;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.MediaItemComparator;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.MediaItemUtils;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.SimpleYouTubeGenericInfo;
-import com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder.OtfSegmentParser.OtfSegment;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.GenericInfo;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemComparator;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemUtils;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.SimpleYouTubeGenericInfo;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.OtfSegmentParser.OtfSegment;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;

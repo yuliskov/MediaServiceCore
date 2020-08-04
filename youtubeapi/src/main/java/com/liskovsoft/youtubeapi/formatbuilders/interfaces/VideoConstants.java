@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.interfaces;
+package com.liskovsoft.youtubeapi.formatbuilders.interfaces;
 
 public interface VideoConstants {
     String BUTTON_FAVORITES = "button_favorites";

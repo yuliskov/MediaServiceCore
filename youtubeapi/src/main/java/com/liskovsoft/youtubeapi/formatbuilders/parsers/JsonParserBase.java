@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.parsers;
+package com.liskovsoft.youtubeapi.formatbuilders.parsers;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.liskovsoft.sharedutils.mylogger.Log;

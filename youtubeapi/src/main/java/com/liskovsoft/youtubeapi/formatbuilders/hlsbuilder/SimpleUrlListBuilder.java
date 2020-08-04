@@ -1,8 +1,8 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.hlsbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.MediaItemComparator;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.MediaItemUtils;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemComparator;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.hlsbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 
 import java.util.List;
 

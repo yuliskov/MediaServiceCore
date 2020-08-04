@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;

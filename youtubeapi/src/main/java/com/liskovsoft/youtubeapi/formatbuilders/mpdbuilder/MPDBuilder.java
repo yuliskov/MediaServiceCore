@@ -1,7 +1,7 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.Subtitle;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
 
 import java.io.InputStream;
 import java.util.List;

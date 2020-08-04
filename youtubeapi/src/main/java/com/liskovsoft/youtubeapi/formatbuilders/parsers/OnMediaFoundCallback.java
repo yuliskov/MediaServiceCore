@@ -1,9 +1,9 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.parsers;
+package com.liskovsoft.youtubeapi.formatbuilders.parsers;
 
 import android.net.Uri;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.GenericInfo;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.VideoMetadata;
-import com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder.MPDBuilder;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.GenericInfo;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.VideoMetadata;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MPDBuilder;
 
 import java.util.List;
 

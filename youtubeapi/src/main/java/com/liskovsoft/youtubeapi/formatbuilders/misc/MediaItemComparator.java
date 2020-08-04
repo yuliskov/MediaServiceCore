@@ -1,7 +1,7 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.misc;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 
 import java.util.Comparator;
 

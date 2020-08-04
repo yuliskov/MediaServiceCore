@@ -1,9 +1,9 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.parsers;
+package com.liskovsoft.youtubeapi.formatbuilders.parsers;
 
 import android.net.Uri;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.GenericInfo;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.Subtitle;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.GenericInfo;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
 
 public abstract class YouTubeInfoVisitor {
     public void onMediaItem(MediaItem mediaItem){}

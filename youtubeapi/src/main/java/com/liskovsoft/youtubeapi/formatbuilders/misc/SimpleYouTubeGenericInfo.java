@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.misc;
 
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.GenericInfo;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.GenericInfo;
 
 import java.util.Random;
 

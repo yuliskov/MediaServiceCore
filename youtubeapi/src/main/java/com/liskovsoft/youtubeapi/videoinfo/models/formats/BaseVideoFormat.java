@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryString;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.ITag;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
 
 import java.util.List;
 

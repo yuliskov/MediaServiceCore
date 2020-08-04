@@ -1,8 +1,8 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
-import com.liskovsoft.youtubeapi.videoinfo.old.interfaces.MediaItem;
-import com.liskovsoft.youtubeapi.videoinfo.old.misc.SimpleYouTubeMediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.SimpleYouTubeMediaItem;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

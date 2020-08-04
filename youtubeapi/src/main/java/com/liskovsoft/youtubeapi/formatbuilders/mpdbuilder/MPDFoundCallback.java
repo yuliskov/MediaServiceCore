@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.old.mpdbuilder;
+package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import java.io.InputStream;
 

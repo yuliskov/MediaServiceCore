@@ -48,6 +48,8 @@ public class VideoInfoManagerTest {
         assertNotNull("Contains range", formats.get(0).getIndexRange());
         assertTrue("Contains fps", formats.get(0).getFps() != 0);
         assertTrue("Contains bitrate", formats.get(0).getBitrate() != 0);
-        assertNotNull("Has watch tracking url", result.getVideostatsWatchtimeUrl());
+        assertNotNull("Contains tracking url", result.getVideostatsWatchtimeUrl());
+        assertNotNull("Contains captions", result.getCaptionTracks());
+        assertNotNull("Contains video details", result.getVideoDetails());
     }
 }

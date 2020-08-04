@@ -25,8 +25,8 @@ public class VideoInfoResult {
     @JsonPath("$.streamingData.dashManifestUrl")
     private String mDashManifestUrl;
 
-    @JsonPath("$.videoDetails.lengthSeconds")
-    private String mLengthSeconds;
+    @JsonPath("$.videoDetails")
+    private VideoDetails mVideoDetails;
 
     @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
     private String mPlayerStoryboardSpec;
@@ -51,15 +51,15 @@ public class VideoInfoResult {
         return mDashManifestUrl;
     }
 
-    public String getLengthSeconds() {
-        return mLengthSeconds;
-    }
-
     public String getPlayerStoryboardSpec() {
         return mPlayerStoryboardSpec;
     }
 
     public List<RegularFormat> getRegularFormats() {
         return mRegularFormats;
+    }
+
+    public VideoDetails getVideoDetails() {
+        return mVideoDetails;
     }
 }

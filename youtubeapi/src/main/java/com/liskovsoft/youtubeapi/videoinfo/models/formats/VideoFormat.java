@@ -12,14 +12,14 @@ public class VideoFormat {
     private static final String FORMAT_STREAM_TYPE_OTF = "FORMAT_STREAM_TYPE_OTF";
 
     // Common params
-    public static final String URL = "url";
-    public static final String CIPHER = "cipher";
-    public static final String TYPE = "type";
-    public static final String ITAG = "itag";
-    public static final String S = "s";
-    public static final String SIGNATURE = "signature";
-    public static final String SIGNATURE2 = "sig";
-    public static final String SIGNATURE2_MARK = "lsig";
+    public static final String PARAM_URL = "url";
+    public static final String PARAM_S = "s";
+    public static final String PARAM_CIPHER = "cipher";
+    public static final String PARAM_TYPE = "type";
+    public static final String PARAM_ITAG = "itag";
+    public static final String PARAM_SIGNATURE = "signature";
+    public static final String PARAM_SIGNATURE2 = "sig";
+    public static final String PARAM_SIGNATURE2_MARK = "lsig";
     // End Common params
 
     // DASH params
@@ -45,7 +45,8 @@ public class VideoFormat {
     private String mUrl;
     @JsonPath("$.cipher")
     private String mCipher;
-    private String mSignatureCiphered;
+    @JsonPath("$.signatureCipher")
+    private String mSignatureCipher;
     @JsonPath("$.mimeType")
     private String mType;
     @JsonPath("$.contentLength")
@@ -80,8 +81,6 @@ public class VideoFormat {
      */
     @JsonPath("$.type")
     private String mFormat;
-    @JsonPath("$.signatureCipher")
-    private String mSignatureCipher;
     private String mTemplateMetadataUrl;
     private String mTemplateSegmentUrl;
     @JsonPath("$.approxDurationMs")
@@ -102,8 +101,6 @@ public class VideoFormat {
     //}
 
     public String getUrl() {
-        parseCipher();
-
         return mUrl;
     }
 
@@ -112,13 +109,15 @@ public class VideoFormat {
     }
 
     public String getSignatureCipher() {
-        parseCipher();
-
-        return mSignatureCiphered;
+        return parseCipher();
     }
 
-    public void setSignatureCipher(String s) {
-        mSignatureCiphered = s;
+    public void setSignature(String signature) {
+        mRealSignature = signature;
+    }
+
+    public String getSignature() {
+        return mRealSignature;
     }
 
     public String getType() {
@@ -217,14 +216,6 @@ public class VideoFormat {
         return type == null || ITag.belongsToType(type, getITag());
     }
 
-    public void setSignature(String signature) {
-        mRealSignature = signature;
-    }
-
-    public String getSignature() {
-        return mRealSignature;
-    }
-
     public void setAudioSamplingRate(String audioSamplingRate) {
         mAudioSamplingRate = audioSamplingRate;
     }
@@ -284,16 +275,20 @@ public class VideoFormat {
         return mTemplateSegmentUrl;
     }
 
-    private void parseCipher() {
-        if (mUrl == null && mSignatureCiphered == null) {
+    private String parseCipher() {
+        String result = null;
+
+        if (mUrl == null) { // items signatures are ciphered
             String cipherUri = mCipher == null ? mSignatureCipher : mCipher;
 
             if (cipherUri != null) {
                 MyQueryString queryString = MyQueryStringFactory.parse(cipherUri);
-                mUrl = queryString.get(URL);
-                mSignatureCiphered = queryString.get(S);
+                mUrl = queryString.get(PARAM_URL);
+                result = queryString.get(PARAM_S);
             }
         }
+
+        return result;
     }
 
     //public int compareTo(MediaItem item) {

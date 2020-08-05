@@ -21,6 +21,20 @@ public class AppService {
      * Decipher strings using js code
      */
     public List<String> decipher(List<String> ciphered) {
-        return ciphered;
+        if (isAllNulls(ciphered)) {
+            return ciphered;
+        }
+
+        return null;
+    }
+
+    private static boolean isAllNulls(List<String> ciphered) {
+        for (String cipher : ciphered) {
+            if (cipher != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

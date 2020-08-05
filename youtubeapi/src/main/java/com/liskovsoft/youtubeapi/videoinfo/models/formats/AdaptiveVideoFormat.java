@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 import androidx.annotation.NonNull;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
-public class AdaptiveFormat extends BaseVideoFormat {
+public class AdaptiveVideoFormat extends VideoFormat {
     public static class Range {
         @JsonPath("$.start")
         private String start;

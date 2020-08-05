@@ -1,9 +1,8 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
-import com.liskovsoft.youtubeapi.browse.BrowseManager;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
-import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +42,7 @@ public class VideoInfoManagerTest {
         VideoInfoResult result = wrapper.execute().body();
 
         assertNotNull("Result not null", result);
-        List<AdaptiveFormat> formats = result.getAdaptiveFormats();
+        List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
         assertTrue("Formats not empty", formats.size() > 0);
         assertNotNull("Contains range", formats.get(0).getIndexRange());
         assertTrue("Contains fps", formats.get(0).getFps() != 0);

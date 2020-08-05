@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
 
 import java.util.List;
 
-public class BaseVideoFormat {
+public class VideoFormat {
     private static final String FORMAT_STREAM_TYPE_OTF = "FORMAT_STREAM_TYPE_OTF";
 
     // Common params

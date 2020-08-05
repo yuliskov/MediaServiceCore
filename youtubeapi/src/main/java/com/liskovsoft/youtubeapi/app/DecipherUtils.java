@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.formatbuilders.misc;
+package com.liskovsoft.youtubeapi.app;
 
 import java.io.InputStream;
 import java.util.Scanner;

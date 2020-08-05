@@ -57,7 +57,7 @@ public class YouTubeSignInManager implements SignInManager {
     /**
      * Authorization should be updated periodically (see expire_in field in response)
      */
-    private void updateAuthorizationHeader() {
+    private synchronized void updateAuthorizationHeader() {
         if (mAuthorization != null) {
             long currentTime = System.currentTimeMillis();
 

@@ -6,10 +6,10 @@ public class DecipherFunction {
     /**
      * Return JS decipher function as string
      */
-    @RegExp("var [_$A-Za-z]{2}=\\{.*\\n.*\\n.*\\nfunction [_$A-Za-z]{2}\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
-    private String mFunctionContent;
+    @RegExp("var [_$A-Za-z]{2}=\\{.*\\n.*\\n.*\\n(function [_$A-Za-z]{2}\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\})")
+    private String mContent;
 
-    public String getFunctionContent() {
-        return mFunctionContent;
+    public String getContent() {
+        return mContent;
     }
 }

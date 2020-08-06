@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.DecipherFunction;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import retrofit2.Call;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -30,12 +32,33 @@ public class AppManagerTest {
     }
 
     @Test
-    public void testThatPlayerInfoContainsAllRequiredFields() throws IOException {
-        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
-        AppInfo playerInfo = wrapper.execute().body();
+    public void testThatAppInfoContainsAllRequiredFields() throws IOException {
+        AppInfo appInfo = getAppInfo();
 
-        String playerUrl = playerInfo.getPlayerUrl();
+        String playerUrl = appInfo.getPlayerUrl();
         assertNotNull("Player url not null", playerUrl);
         assertTrue("Player url should ends with js", playerUrl.endsWith(".js"));
+    }
+
+    @Test
+    public void testThatDecipherFunctionNotNull() throws IOException {
+        AppInfo appInfo = getAppInfo();
+
+        String playerUrl = appInfo.getPlayerUrl();
+
+        assertNotNull("Player url not null", playerUrl);
+
+        Call<DecipherFunction> wrapper = mManager.getDecipherFunction(AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/"));
+        DecipherFunction decipherFunction = wrapper.execute().body();
+
+        String decipherFunctionContent = decipherFunction.getContent();
+        assertNotNull("Decipher function not null", decipherFunctionContent);
+        assertFalse("Decipher function is not empty", decipherFunctionContent.isEmpty());
+        assertTrue("Decipher function has proper signature", decipherFunctionContent.startsWith("function ") && decipherFunctionContent.endsWith("}"));
+    }
+
+    private AppInfo getAppInfo() throws IOException {
+        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
+        return wrapper.execute().body();
     }
 }

@@ -50,4 +50,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpLoggerVersion
 
     implementation 'androidx.annotation:annotation:' + appCompatXLibraryVersion
+
+    // js interpreter
+    implementation 'com.squareup.duktape:duktape-android:' + duktapeVersion
 }

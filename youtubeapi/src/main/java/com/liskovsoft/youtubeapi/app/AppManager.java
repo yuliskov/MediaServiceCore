@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.youtubeapi.app.models.DecipherFunction;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.DecipherFunction;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 public interface AppManager {
     /**
@@ -20,6 +20,6 @@ public interface AppManager {
      * Return JS decipher function as string<br/>
      * Player full url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
-    @GET("https://www.youtube.com{player_url}")
-    Call<DecipherFunction> getDecipherFunction(@Path("player_url") String playerUrl);
+    @GET
+    Call<DecipherFunction> getDecipherFunction(@Url String playerUrl);
 }

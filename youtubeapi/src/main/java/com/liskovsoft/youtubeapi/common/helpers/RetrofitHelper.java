@@ -4,6 +4,7 @@ import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
+import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -41,6 +42,16 @@ public class RetrofitHelper {
 
         Retrofit retrofit = builder
                 .addConverterFactory(QueryStringConverterFactory.create())
+                .build();
+
+        return retrofit.create(clazz);
+    }
+
+    public static <T> T withRegExp(Class<T> clazz) {
+        Retrofit.Builder builder = createBuilder();
+
+        Retrofit retrofit = builder
+                .addConverterFactory(RegExpConverterFactory.create())
                 .build();
 
         return retrofit.create(clazz);

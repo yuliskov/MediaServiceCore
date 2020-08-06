@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app;
+package com.liskovsoft.youtubeapi.app.models;
 
 import java.io.InputStream;
 import java.util.Scanner;

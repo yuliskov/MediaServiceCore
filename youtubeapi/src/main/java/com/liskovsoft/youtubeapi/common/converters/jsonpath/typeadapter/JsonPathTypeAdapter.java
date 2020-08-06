@@ -76,7 +76,7 @@ public class JsonPathTypeAdapter<T> {
 
             DocumentContext parser = mParser.parse((String) jsonContent);
 
-            List<Field> fields = getAllFields(type);
+            List<Field> fields = ReflectionHelper.getAllFields(type);
 
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -162,18 +162,5 @@ public class JsonPathTypeAdapter<T> {
         }
 
         return null;
-    }
-
-    private List<Field> getAllFields(Class<?> type) {
-        Field[] fields = type.getDeclaredFields();
-
-        List<Field> result = new ArrayList<>(Arrays.asList(fields));
-
-        while (type.getSuperclass() != null) { // null if superclass is object
-            type = type.getSuperclass();
-            result.addAll(Arrays.asList(type.getDeclaredFields()));
-        }
-
-        return result;
     }
 }

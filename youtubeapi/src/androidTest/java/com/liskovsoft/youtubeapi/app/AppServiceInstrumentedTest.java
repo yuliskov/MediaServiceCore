@@ -13,6 +13,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Note: Robolectric doesn't support loading native libraries (*.so)
+ */
 public class AppServiceInstrumentedTest {
     private AppService mAppService;
 
@@ -24,7 +27,9 @@ public class AppServiceInstrumentedTest {
         mAppService = AppService.instance();
     }
 
-    // Fail: Robolectric doesn't support loading native libraries
+    /**
+     * Note: Robolectric doesn't support loading native libraries (*.so)
+     */
     @Test
     public void testThatItemsDecipheredCorrectly() {
         List<String> ciphered = new ArrayList<>();

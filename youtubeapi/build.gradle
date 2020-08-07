@@ -17,7 +17,11 @@ android {
         versionCode 15
         versionName "0.1.5"
 
-        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" // androidTest support
+        // required for androidTest support
+        // more info: https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests
+        // small tests: https://stackoverflow.com/questions/4671923/what-is-the-purpose-of-smalltest-mediumtest-and-largetest-annotations-in-an
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         // consumerProguardFiles 'proguard-rules.txt' // embed this file to aar
     }
 
@@ -34,6 +38,10 @@ dependencies {
 
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
+
+    androidTestImplementation 'junit:junit:' + junitVersion
+    androidTestImplementation 'androidx.test:runner:' + testXSupportLibraryVersion
+    androidTestImplementation 'androidx.test:rules:' + testXSupportLibraryVersion
 
     implementation project(':sharedutils')
     implementation project(':mediaserviceinterfaces')

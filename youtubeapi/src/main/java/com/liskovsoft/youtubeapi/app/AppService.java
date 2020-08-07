@@ -64,7 +64,7 @@ public class AppService {
             String playerUrl = appInfo.getPlayerUrl();
 
             if (playerUrl != null) {
-                Call<DecipherFunction> decipherWrapper = mAppManager.getDecipherFunction(playerUrl);
+                Call<DecipherFunction> decipherWrapper = mAppManager.getDecipherFunction(AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/"));
                 DecipherFunction decipherFunction = RetrofitHelper.get(decipherWrapper);
 
                 if (decipherFunction != null) {
@@ -92,7 +92,7 @@ public class AppService {
         result.append("var result = [];");
 
         for (String cipher : ciphered) {
-            result.append(String.format("result.push(decipherSignature(%s));", cipher));
+            result.append(String.format("result.push(decipherSignature('%s'));", cipher));
         }
 
         result.append("result.toString();");

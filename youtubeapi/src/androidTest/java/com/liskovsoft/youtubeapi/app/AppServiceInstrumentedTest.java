@@ -1,28 +1,26 @@
 package com.liskovsoft.youtubeapi.app;
 
+import android.Manifest;
+import androidx.test.rule.GrantPermissionRule;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
-@RunWith(RobolectricTestRunner.class)
-public class AppServiceTest {
+public class AppServiceInstrumentedTest {
     private AppService mAppService;
 
+    @Rule
+    public GrantPermissionRule mInternetPermissionRule = GrantPermissionRule.grant(Manifest.permission.INTERNET);
+
     @Before
-    public void setUp() throws Exception {
-        // fix issue: No password supplied for PKCS#12 KeyStore
-        // https://github.com/robolectric/robolectric/issues/5115
-        System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-
-        ShadowLog.stream = System.out; // catch Log class output
-
+    public void setUp() {
         mAppService = AppService.instance();
     }
 

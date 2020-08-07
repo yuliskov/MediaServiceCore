@@ -6,6 +6,7 @@ import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ public class ClipService {
 
     public Playlist getSubscriptionsPlaylist() {
         MediaService service = YouTubeMediaService.instance();
-        MediaTab subscriptions = service.getSubscriptions();
+        MediaTabManager mediaTabManager = service.getMediaTabManager();
+        MediaTab subscriptions = mediaTabManager.getSubscriptionsTab();
         List<MediaItem> mediaItems = subscriptions.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -54,9 +56,9 @@ public class ClipService {
 
         if (mediaItems != null && !mediaItems.isEmpty()) {
             if (mediaItems.size() < 20) {
-                mediaItems.addAll(service.continueTab(subscriptions).getMediaItems());
-                mediaItems.addAll(service.continueTab(subscriptions).getMediaItems());
-                mediaItems.addAll(service.continueTab(subscriptions).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(subscriptions).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(subscriptions).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(subscriptions).getMediaItems());
             }
 
             List<Clip> clips = convertToClips(mediaItems);
@@ -68,7 +70,8 @@ public class ClipService {
 
     public Playlist getHistoryPlaylist() {
         MediaService service = YouTubeMediaService.instance();
-        MediaTab history = service.getHistory();
+        MediaTabManager mediaTabManager = service.getMediaTabManager();
+        MediaTab history = mediaTabManager.getHistoryTab();
         List<MediaItem> mediaItems = history.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -81,9 +84,9 @@ public class ClipService {
 
         if (mediaItems != null && !mediaItems.isEmpty()) {
             if (mediaItems.size() < 20) {
-                mediaItems.addAll(service.continueTab(history).getMediaItems());
-                mediaItems.addAll(service.continueTab(history).getMediaItems());
-                mediaItems.addAll(service.continueTab(history).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(history).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(history).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(history).getMediaItems());
             }
 
             List<Clip> clips = convertToClips(mediaItems);
@@ -95,7 +98,8 @@ public class ClipService {
 
     public Playlist getRecommendedPlaylist() {
         MediaService service = YouTubeMediaService.instance();
-        MediaTab recommended = service.getRecommended();
+        MediaTabManager mediaTabManager = service.getMediaTabManager();
+        MediaTab recommended = mediaTabManager.getRecommendedTab();
         List<MediaItem> mediaItems = recommended.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -108,9 +112,9 @@ public class ClipService {
 
         if (mediaItems != null && !mediaItems.isEmpty()) {
             if (mediaItems.size() < 20) {
-                mediaItems.addAll(service.continueTab(recommended).getMediaItems());
-                mediaItems.addAll(service.continueTab(recommended).getMediaItems());
-                mediaItems.addAll(service.continueTab(recommended).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(recommended).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(recommended).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueTab(recommended).getMediaItems());
             }
 
             List<Clip> clips = convertToClips(mediaItems);

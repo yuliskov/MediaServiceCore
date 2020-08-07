@@ -33,7 +33,7 @@ public class YouTubeMediaServiceTest {
      */
     @Test
     public void testThatSearchNotEmpty() throws InterruptedException {
-        Observable<MediaTab> result = mService.getSearchObserve("hello world");
+        Observable<MediaTab> result = mService.getMediaTabManager().getSearchTabObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(1);
 
@@ -53,7 +53,7 @@ public class YouTubeMediaServiceTest {
 
     @Test
     public void testThatRecommendedNotEmpty() throws InterruptedException {
-        Observable<MediaTab> result = mService.getRecommendedObserve();
+        Observable<MediaTab> result = mService.getMediaTabManager().getRecommendedTabObserve();
 
         CountDownLatch finish = new CountDownLatch(1);
 

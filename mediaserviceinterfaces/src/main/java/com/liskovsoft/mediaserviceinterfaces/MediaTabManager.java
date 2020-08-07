@@ -5,17 +5,17 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public interface MediaTabManager {
-    MediaTab getSearch(String searchText);
-    Observable<MediaTab> getSearchObserve(String searchText);
+    MediaTab getSearchTab(String searchText);
+    Observable<MediaTab> getSearchTabObserve(String searchText);
 
-    MediaTab getSubscriptions();
-    Observable<MediaTab> getSubscriptionsObserve();
+    MediaTab getSubscriptionsTab();
+    Observable<MediaTab> getSubscriptionsTabObserve();
 
-    MediaTab getRecommended();
-    Observable<MediaTab> getRecommendedObserve();
+    MediaTab getRecommendedTab();
+    Observable<MediaTab> getRecommendedTabObserve();
 
-    MediaTab getHistory();
-    Observable<MediaTab> getHistoryObserve();
+    MediaTab getHistoryTab();
+    Observable<MediaTab> getHistoryTabObserve();
 
     List<MediaTab> getHomeTabs();
     Observable<List<MediaTab>> getHomeTabsObserve();

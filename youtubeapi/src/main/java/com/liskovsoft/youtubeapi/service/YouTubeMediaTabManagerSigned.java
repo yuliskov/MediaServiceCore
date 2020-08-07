@@ -1,9 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
-import com.liskovsoft.mediaserviceinterfaces.SignInManager;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.common.helpers.VideoServiceHelper;
@@ -13,22 +11,22 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-public class YouTubeMediaServiceSigned implements MediaService {
-    private static final String TAG = YouTubeMediaServiceSigned.class.getSimpleName();
+public class YouTubeMediaTabManagerSigned implements MediaTabManager {
+    private static final String TAG = YouTubeMediaTabManagerSigned.class.getSimpleName();
     private final SearchService mSearchService;
     private final BrowseServiceSigned mBrowseServiceSigned;
     private final YouTubeSignInManager mSignInManager;
-    private static YouTubeMediaServiceSigned sInstance;
+    private static YouTubeMediaTabManagerSigned sInstance;
 
-    private YouTubeMediaServiceSigned() {
+    private YouTubeMediaTabManagerSigned() {
         mSearchService = new SearchService();
         mBrowseServiceSigned = new BrowseServiceSigned();
         mSignInManager = YouTubeSignInManager.instance();
     }
 
-    public static YouTubeMediaServiceSigned instance() {
+    public static YouTubeMediaTabManagerSigned instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaServiceSigned();
+            sInstance = new YouTubeMediaTabManagerSigned();
         }
 
         return sInstance;
@@ -39,44 +37,44 @@ public class YouTubeMediaServiceSigned implements MediaService {
     }
 
     @Override
-    public MediaTab getSearch(String searchText) {
+    public MediaTab getSearchTab(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
         return VideoServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
     }
 
     @Override
-    public Observable<MediaTab> getSearchObserve(String searchText) {
+    public Observable<MediaTab> getSearchTabObserve(String searchText) {
         return Observable.fromCallable(() -> VideoServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
     }
 
     @Override
-    public MediaTab getSubscriptions() {
+    public MediaTab getSubscriptionsTab() {
         return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaTab.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
-    public MediaTab getRecommended() {
+    public MediaTab getRecommendedTab() {
         return VideoServiceHelper.convertBrowseSection(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
     }
 
     @Override
-    public Observable<MediaTab> getRecommendedObserve() {
-        return Observable.fromCallable(this::getRecommended);
+    public Observable<MediaTab> getRecommendedTabObserve() {
+        return Observable.fromCallable(this::getRecommendedTab);
     }
 
     @Override
-    public MediaTab getHistory() {
+    public MediaTab getHistoryTab() {
         return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaTab.TYPE_HISTORY);
     }
 
     @Override
-    public Observable<MediaTab> getHistoryObserve() {
-        return Observable.fromCallable(this::getHistory);
+    public Observable<MediaTab> getHistoryTabObserve() {
+        return Observable.fromCallable(this::getHistoryTab);
     }
 
     @Override
-    public Observable<MediaTab> getSubscriptionsObserve() {
-        return Observable.fromCallable(this::getSubscriptions);
+    public Observable<MediaTab> getSubscriptionsTabObserve() {
+        return Observable.fromCallable(this::getSubscriptionsTab);
     }
 
     @Override
@@ -110,15 +108,5 @@ public class YouTubeMediaServiceSigned implements MediaService {
     @Override
     public Observable<MediaTab> continueTabObserve(MediaTab mediaTab) {
         return Observable.fromCallable(() -> continueTab(mediaTab));
-    }
-
-    @Override
-    public SignInManager getSignInManager() {
-        return mSignInManager;
-    }
-
-    @Override
-    public MediaTabManager getMediaTabManager() {
-        return null;
     }
 }

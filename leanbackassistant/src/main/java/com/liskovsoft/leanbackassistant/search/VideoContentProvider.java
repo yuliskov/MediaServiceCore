@@ -131,7 +131,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private Cursor search(String query, int limit) {
-        mSearch = mService.getSearch(query);
+        mSearch = mService.getMediaTabManager().getSearchTab(query);
         List<MediaItem> mediaItems = mSearch.getMediaItems();
 
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
@@ -146,7 +146,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        mSearch = mService.continueTab(mSearch);
+        mSearch = mService.getMediaTabManager().continueTab(mSearch);
         List<MediaItem> mediaItems = mSearch.getMediaItems();
 
         Log.d(TAG, "Next search result received: " + mediaItems);

@@ -1,9 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
-import com.liskovsoft.mediaserviceinterfaces.SignInManager;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -15,20 +13,20 @@ import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaServiceSimple implements MediaService {
-    private static final String TAG = YouTubeMediaServiceSimple.class.getSimpleName();
-    private static YouTubeMediaServiceSimple sInstance;
+public class YouTubeMediaTabManagerSimple implements MediaTabManager {
+    private static final String TAG = YouTubeMediaTabManagerSimple.class.getSimpleName();
+    private static YouTubeMediaTabManagerSimple sInstance;
     private final BrowseService mBrowseService;
     private final SearchService mSearchService;
 
-    private YouTubeMediaServiceSimple() {
+    private YouTubeMediaTabManagerSimple() {
         mSearchService = new SearchService();
         mBrowseService = new BrowseService();
     }
 
-    public static YouTubeMediaServiceSimple instance() {
+    public static YouTubeMediaTabManagerSimple instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaServiceSimple();
+            sInstance = new YouTubeMediaTabManagerSimple();
         }
 
         return sInstance;
@@ -39,26 +37,26 @@ public class YouTubeMediaServiceSimple implements MediaService {
     }
 
     @Override
-    public MediaTab getSearch(String searchText) {
+    public MediaTab getSearchTab(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
         return VideoServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
     }
 
     @Override
-    public Observable<MediaTab> getSearchObserve(String searchText) {
+    public Observable<MediaTab> getSearchTabObserve(String searchText) {
         return Observable.fromCallable(() -> VideoServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
     }
 
     @Override
-    public MediaTab getRecommended() {
+    public MediaTab getRecommendedTab() {
         List<MediaTab> tabs = getFirstHomeTabs();
 
         return tabs.get(0); // first one is Recommended tab
     }
 
     @Override
-    public Observable<MediaTab> getRecommendedObserve() {
-        return Observable.fromCallable(this::getRecommended);
+    public Observable<MediaTab> getRecommendedTabObserve() {
+        return Observable.fromCallable(this::getRecommendedTab);
     }
 
     @Override
@@ -126,34 +124,22 @@ public class YouTubeMediaServiceSimple implements MediaService {
     // SHOULD BE EMPTY FOR UNSIGNED
 
     @Override
-    public MediaTab getSubscriptions() {
+    public MediaTab getSubscriptionsTab() {
         return YouTubeMediaTab.EMPTY_TAB;
     }
 
     @Override
-    public MediaTab getHistory() {
+    public MediaTab getHistoryTab() {
         return YouTubeMediaTab.EMPTY_TAB;
     }
 
     @Override
-    public Observable<MediaTab> getSubscriptionsObserve() {
-        return Observable.fromCallable(this::getSubscriptions);
+    public Observable<MediaTab> getSubscriptionsTabObserve() {
+        return Observable.fromCallable(this::getSubscriptionsTab);
     }
 
     @Override
-    public Observable<MediaTab> getHistoryObserve() {
-        return Observable.fromCallable(this::getHistory);
-    }
-
-    @Override
-    public SignInManager getSignInManager() {
-        return null;
-    }
-
-    // END SHOULD BE EMPTY FOR UNSIGNED
-
-    @Override
-    public MediaTabManager getMediaTabManager() {
-        return null;
+    public Observable<MediaTab> getHistoryTabObserve() {
+        return Observable.fromCallable(this::getHistoryTab);
     }
 }

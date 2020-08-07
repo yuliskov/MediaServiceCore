@@ -14,7 +14,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import java.util.ArrayList;
 import java.util.List;
 
-final class YouTubeMediaServiceHelper {
+public final class YouTubeMediaServiceHelper {
     public static MediaTab convertBrowseResult(BrowseResult browseResult, int type) {
         MediaTab result = null;
 

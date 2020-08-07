@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
 import io.reactivex.Observable;
 
-class YouTubeSignInManager implements SignInManager {
+public class YouTubeSignInManager implements SignInManager {
     private static final String TAG = YouTubeSignInManager.class.getSimpleName();
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;

@@ -10,7 +10,7 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-class YouTubeMediaTabManagerSigned implements MediaTabManager {
+public class YouTubeMediaTabManagerSigned implements MediaTabManager {
     private static final String TAG = YouTubeMediaTabManagerSigned.class.getSimpleName();
     private final SearchService mSearchService;
     private final BrowseServiceSigned mBrowseServiceSigned;

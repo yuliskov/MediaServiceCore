@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
-class YouTubeMediaItem implements MediaItem {
+public class YouTubeMediaItem implements MediaItem {
     private static int id;
     private String mTitle;
     private int mId;

@@ -5,7 +5,6 @@ import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.common.helpers.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
@@ -13,7 +12,7 @@ import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaTabManagerSimple implements MediaTabManager {
+class YouTubeMediaTabManagerSimple implements MediaTabManager {
     private static final String TAG = YouTubeMediaTabManagerSimple.class.getSimpleName();
     private static YouTubeMediaTabManagerSimple sInstance;
     private final BrowseService mBrowseService;
@@ -39,12 +38,12 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
     @Override
     public MediaTab getSearchTab(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
-        return VideoServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
+        return YouTubeMediaServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
     }
 
     @Override
     public Observable<MediaTab> getSearchTabObserve(String searchText) {
-        return Observable.fromCallable(() -> VideoServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
+        return Observable.fromCallable(() -> YouTubeMediaServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
     }
 
     @Override
@@ -90,20 +89,20 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
     private List<MediaTab> getFirstHomeTabs() {
         Log.d(TAG, "Emitting first home tabs...");
         List<BrowseSection> browseTabs = mBrowseService.getHomeSections();
-        return VideoServiceHelper.convertBrowseSections(browseTabs);
+        return YouTubeMediaServiceHelper.convertBrowseSections(browseTabs);
     }
 
     private List<MediaTab> getNextHomeTabs() {
         Log.d(TAG, "Emitting next home tabs...");
         List<BrowseSection> browseTabs = mBrowseService.getNextHomeSections();
-        return VideoServiceHelper.convertBrowseSections(browseTabs);
+        return YouTubeMediaServiceHelper.convertBrowseSections(browseTabs);
     }
 
     @Override
     public MediaTab continueTab(MediaTab mediaTab) {
         Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
-        return VideoServiceHelper.convertNextBrowseResult(
-                mBrowseService.continueSection(VideoServiceHelper.extractNextKey(mediaTab)),
+        return YouTubeMediaServiceHelper.convertNextBrowseResult(
+                mBrowseService.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
                 mediaTab
         );
     }

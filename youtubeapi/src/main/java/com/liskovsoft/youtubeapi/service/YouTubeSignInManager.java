@@ -8,12 +8,10 @@ import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
 import io.reactivex.Observable;
 
-public class YouTubeSignInManager implements SignInManager {
+class YouTubeSignInManager implements SignInManager {
     private static final String TAG = YouTubeSignInManager.class.getSimpleName();
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;
-    private boolean mIsSigned;
-    private String mRefreshToken;
     private String mAuthorization;
     private long mLastUpdateTime;
     private static final long UPDATE_PERIOD_MS = 30 * 60 * 1000; // 30 minutes

@@ -11,7 +11,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaTab implements MediaTab {
+class YouTubeMediaTab implements MediaTab {
     private List<MediaItem> mMediaItems;
     private String mTitle;
     public String mNextPageKey;

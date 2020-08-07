@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.helpers;
+package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
@@ -6,15 +6,15 @@ import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaTab;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class VideoServiceHelper {
+final class YouTubeMediaServiceHelper {
     public static MediaTab convertBrowseResult(BrowseResult browseResult, int type) {
         MediaTab result = null;
 

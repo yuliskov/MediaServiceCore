@@ -1,10 +1,9 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.youtubeapi.common.helpers.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
-public class YouTubeMediaItem implements MediaItem {
+class YouTubeMediaItem implements MediaItem {
     private static int id;
     private String mTitle;
     private int mId;
@@ -30,9 +29,9 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.setId(id++);
         video.setTitle(item.getTitle());
-        video.setDescription(VideoServiceHelper.obtainDescription(item));
-        video.setCardImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
-        video.setBackgroundImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setDescription(YouTubeMediaServiceHelper.obtainDescription(item));
+        video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getPublishedTime());
         video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
@@ -52,8 +51,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
         video.setId(id++);
         video.setTitle(item.getTitle());
-        video.setCardImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
-        video.setBackgroundImageUrl(VideoServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
+        video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getViewsAndPublished());
         video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLength()));

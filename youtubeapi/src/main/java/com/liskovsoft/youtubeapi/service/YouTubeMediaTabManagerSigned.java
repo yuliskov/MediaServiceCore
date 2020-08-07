@@ -4,14 +4,13 @@ import com.liskovsoft.mediaserviceinterfaces.MediaTab;
 import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.common.helpers.VideoServiceHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
 
 import java.util.List;
 
-public class YouTubeMediaTabManagerSigned implements MediaTabManager {
+class YouTubeMediaTabManagerSigned implements MediaTabManager {
     private static final String TAG = YouTubeMediaTabManagerSigned.class.getSimpleName();
     private final SearchService mSearchService;
     private final BrowseServiceSigned mBrowseServiceSigned;
@@ -39,22 +38,22 @@ public class YouTubeMediaTabManagerSigned implements MediaTabManager {
     @Override
     public MediaTab getSearchTab(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
-        return VideoServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
+        return YouTubeMediaServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
     }
 
     @Override
     public Observable<MediaTab> getSearchTabObserve(String searchText) {
-        return Observable.fromCallable(() -> VideoServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
+        return Observable.fromCallable(() -> YouTubeMediaServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
     }
 
     @Override
     public MediaTab getSubscriptionsTab() {
-        return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaTab.TYPE_SUBSCRIPTIONS);
+        return YouTubeMediaServiceHelper.convertBrowseResult(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaTab.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
     public MediaTab getRecommendedTab() {
-        return VideoServiceHelper.convertBrowseSection(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
+        return YouTubeMediaServiceHelper.convertBrowseSection(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
     }
 
     @Override
@@ -64,7 +63,7 @@ public class YouTubeMediaTabManagerSigned implements MediaTabManager {
 
     @Override
     public MediaTab getHistoryTab() {
-        return VideoServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaTab.TYPE_HISTORY);
+        return YouTubeMediaServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaTab.TYPE_HISTORY);
     }
 
     @Override
@@ -94,13 +93,13 @@ public class YouTubeMediaTabManagerSigned implements MediaTabManager {
         Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
 
         if (mediaTab.getType() == MediaTab.TYPE_SEARCH) {
-            return VideoServiceHelper.convertNextSearchResult(
-                    mSearchService.continueSearch(VideoServiceHelper.extractNextKey(mediaTab)),
+            return YouTubeMediaServiceHelper.convertNextSearchResult(
+                    mSearchService.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
                     mediaTab);
         }
 
-        return VideoServiceHelper.convertNextBrowseResult(
-                mBrowseServiceSigned.continueSection(VideoServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
+        return YouTubeMediaServiceHelper.convertNextBrowseResult(
+                mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
                 mediaTab
         );
     }

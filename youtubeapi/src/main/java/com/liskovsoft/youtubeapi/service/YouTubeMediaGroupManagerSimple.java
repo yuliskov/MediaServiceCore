@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaTab;
-import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -12,20 +12,20 @@ import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaTabManagerSimple implements MediaTabManager {
-    private static final String TAG = YouTubeMediaTabManagerSimple.class.getSimpleName();
-    private static YouTubeMediaTabManagerSimple sInstance;
+public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
+    private static final String TAG = YouTubeMediaGroupManagerSimple.class.getSimpleName();
+    private static YouTubeMediaGroupManagerSimple sInstance;
     private final BrowseService mBrowseService;
     private final SearchService mSearchService;
 
-    private YouTubeMediaTabManagerSimple() {
+    private YouTubeMediaGroupManagerSimple() {
         mSearchService = new SearchService();
         mBrowseService = new BrowseService();
     }
 
-    public static YouTubeMediaTabManagerSimple instance() {
+    public static YouTubeMediaGroupManagerSimple instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaTabManagerSimple();
+            sInstance = new YouTubeMediaGroupManagerSimple();
         }
 
         return sInstance;
@@ -36,33 +36,33 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
     }
 
     @Override
-    public MediaTab getSearchTab(String searchText) {
+    public MediaGroup getSearchGroup(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
-        return YouTubeMediaServiceHelper.convertSearchResult(searchResult, MediaTab.TYPE_SEARCH);
+        return YouTubeMediaServiceHelper.convertSearchResult(searchResult, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
-    public Observable<MediaTab> getSearchTabObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaTab.TYPE_SEARCH));
+    public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
+        return Observable.fromCallable(() -> YouTubeMediaServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaGroup.TYPE_SEARCH));
     }
 
     @Override
-    public MediaTab getRecommendedTab() {
-        List<MediaTab> tabs = getFirstHomeTabs();
+    public MediaGroup getRecommendedGroup() {
+        List<MediaGroup> tabs = getFirstHomeTabs();
 
         return tabs.get(0); // first one is Recommended tab
     }
 
     @Override
-    public Observable<MediaTab> getRecommendedTabObserve() {
-        return Observable.fromCallable(this::getRecommendedTab);
+    public Observable<MediaGroup> getRecommendedGroupObserve() {
+        return Observable.fromCallable(this::getRecommendedGroup);
     }
 
     @Override
-    public List<MediaTab> getHomeTabs() {
-        List<MediaTab> result = new ArrayList<>();
+    public List<MediaGroup> getHomeGroups() {
+        List<MediaGroup> result = new ArrayList<>();
 
-        List<MediaTab> tabs = getFirstHomeTabs();
+        List<MediaGroup> tabs = getFirstHomeTabs();
 
         while (!tabs.isEmpty()) {
             result.addAll(tabs);
@@ -73,9 +73,9 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
     }
 
     @Override
-    public Observable<List<MediaTab>> getHomeTabsObserve() {
+    public Observable<List<MediaGroup>> getHomeGroupsObserve() {
         return Observable.create(emitter -> {
-            List<MediaTab> tabs = getFirstHomeTabs();
+            List<MediaGroup> tabs = getFirstHomeTabs();
 
             while (!tabs.isEmpty()) {
                 emitter.onNext(tabs);
@@ -86,20 +86,20 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
         });
     }
 
-    private List<MediaTab> getFirstHomeTabs() {
+    private List<MediaGroup> getFirstHomeTabs() {
         Log.d(TAG, "Emitting first home tabs...");
         List<BrowseSection> browseTabs = mBrowseService.getHomeSections();
         return YouTubeMediaServiceHelper.convertBrowseSections(browseTabs);
     }
 
-    private List<MediaTab> getNextHomeTabs() {
+    private List<MediaGroup> getNextHomeTabs() {
         Log.d(TAG, "Emitting next home tabs...");
         List<BrowseSection> browseTabs = mBrowseService.getNextHomeSections();
         return YouTubeMediaServiceHelper.convertBrowseSections(browseTabs);
     }
 
     @Override
-    public MediaTab continueTab(MediaTab mediaTab) {
+    public MediaGroup continueGroup(MediaGroup mediaTab) {
         Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
         return YouTubeMediaServiceHelper.convertNextBrowseResult(
                 mBrowseService.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
@@ -108,9 +108,9 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
     }
 
     @Override
-    public Observable<MediaTab> continueTabObserve(MediaTab mediaTab) {
+    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab) {
         return Observable.create(emitter -> {
-            MediaTab newMediaTab = continueTab(mediaTab);
+            MediaGroup newMediaTab = continueGroup(mediaTab);
 
             if (newMediaTab != null) {
                 emitter.onNext(newMediaTab);
@@ -123,22 +123,22 @@ public class YouTubeMediaTabManagerSimple implements MediaTabManager {
     // SHOULD BE EMPTY FOR UNSIGNED
 
     @Override
-    public MediaTab getSubscriptionsTab() {
-        return YouTubeMediaTab.EMPTY_TAB;
+    public MediaGroup getSubscriptionsGroup() {
+        return YouTubeMediaGroup.EMPTY_TAB;
     }
 
     @Override
-    public MediaTab getHistoryTab() {
-        return YouTubeMediaTab.EMPTY_TAB;
+    public MediaGroup getHistoryGroup() {
+        return YouTubeMediaGroup.EMPTY_TAB;
     }
 
     @Override
-    public Observable<MediaTab> getSubscriptionsTabObserve() {
-        return Observable.fromCallable(this::getSubscriptionsTab);
+    public Observable<MediaGroup> getSubscriptionsGroupObserve() {
+        return Observable.fromCallable(this::getSubscriptionsGroup);
     }
 
     @Override
-    public Observable<MediaTab> getHistoryTabObserve() {
-        return Observable.fromCallable(this::getHistoryTab);
+    public Observable<MediaGroup> getHistoryGroupObserve() {
+        return Observable.fromCallable(this::getHistoryGroup);
     }
 }

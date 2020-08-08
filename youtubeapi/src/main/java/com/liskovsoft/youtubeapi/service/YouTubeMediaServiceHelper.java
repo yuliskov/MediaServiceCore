@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -15,64 +15,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class YouTubeMediaServiceHelper {
-    public static MediaTab convertBrowseResult(BrowseResult browseResult, int type) {
-        MediaTab result = null;
+    public static MediaGroup convertBrowseResult(BrowseResult browseResult, int type) {
+        MediaGroup result = null;
 
         if (browseResult != null) {
-            result = YouTubeMediaTab.from(browseResult, type);
+            result = YouTubeMediaGroup.from(browseResult, type);
         }
 
         return result;
     }
 
-    public static MediaTab convertSearchResult(SearchResult searchResult, int type) {
-        MediaTab result = null;
+    public static MediaGroup convertSearchResult(SearchResult searchResult, int type) {
+        MediaGroup result = null;
 
         if (searchResult != null) {
-            result = YouTubeMediaTab.from(searchResult, type);
+            result = YouTubeMediaGroup.from(searchResult, type);
         }
 
         return result;
     }
 
-    public static MediaTab convertNextBrowseResult(NextBrowseResult nextBrowseResult, MediaTab tab) {
-        MediaTab result = null;
+    public static MediaGroup convertNextBrowseResult(NextBrowseResult nextBrowseResult, MediaGroup tab) {
+        MediaGroup result = null;
 
         if (nextBrowseResult != null) {
-            result = YouTubeMediaTab.from(nextBrowseResult, tab);
+            result = YouTubeMediaGroup.from(nextBrowseResult, tab);
         }
 
         return result;
     }
 
-    public static MediaTab convertNextSearchResult(NextSearchResult nextSearchResult, MediaTab tab) {
-        MediaTab result = null;
+    public static MediaGroup convertNextSearchResult(NextSearchResult nextSearchResult, MediaGroup tab) {
+        MediaGroup result = null;
 
         if (nextSearchResult != null) {
-            result = YouTubeMediaTab.from(nextSearchResult, tab);
+            result = YouTubeMediaGroup.from(nextSearchResult, tab);
         }
 
         return result;
     }
 
-    public static List<MediaTab> convertBrowseSections(List<BrowseSection> sections) {
-        List<MediaTab> result = new ArrayList<>();
+    public static List<MediaGroup> convertBrowseSections(List<BrowseSection> sections) {
+        List<MediaGroup> result = new ArrayList<>();
 
         if (sections != null && sections.size() > 0) {
             for (BrowseSection section : sections) {
-                result.add(YouTubeMediaTab.from(section));
+                result.add(YouTubeMediaGroup.from(section));
             }
         }
 
         return result;
     }
 
-    public static MediaTab convertBrowseSection(BrowseSection section) {
-        return YouTubeMediaTab.from(section);
+    public static MediaGroup convertBrowseSection(BrowseSection section) {
+        return YouTubeMediaGroup.from(section);
     }
 
-    public static MediaTab convertTabs(List<MediaTab> mediaTabs, int type) {
-        return YouTubeMediaTab.from(mediaTabs, type);
+    public static MediaGroup convertTabs(List<MediaGroup> mediaTabs, int type) {
+        return YouTubeMediaGroup.from(mediaTabs, type);
     }
 
     public static BrowseSection getSection(TabbedBrowseResult browseResult, int sectionIndex) {
@@ -125,11 +125,11 @@ public final class YouTubeMediaServiceHelper {
         );
     }
 
-    public static String extractNextKey(MediaTab mediaTab) {
+    public static String extractNextKey(MediaGroup mediaTab) {
         String result = null;
 
-        if (mediaTab instanceof YouTubeMediaTab) {
-            result = ((YouTubeMediaTab) mediaTab).mNextPageKey;
+        if (mediaTab instanceof YouTubeMediaGroup) {
+            result = ((YouTubeMediaGroup) mediaTab).mNextPageKey;
         }
 
         return result;

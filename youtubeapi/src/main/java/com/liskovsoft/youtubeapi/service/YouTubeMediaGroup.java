@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -11,14 +11,14 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaTab implements MediaTab {
+public class YouTubeMediaGroup implements MediaGroup {
     private List<MediaItem> mMediaItems;
     private String mTitle;
     public String mNextPageKey;
-    private int mType = MediaTab.TYPE_HOME;
-    private List<MediaTab> mNestedTabs;
+    private int mType = MediaGroup.TYPE_HOME;
+    private List<MediaGroup> mNestedTabs;
 
-    public static MediaTab EMPTY_TAB = new MediaTab() {
+    public static MediaGroup EMPTY_TAB = new MediaGroup() {
         @Override
         public int getType() {
             return TYPE_UNDEFINED;
@@ -50,8 +50,8 @@ public class YouTubeMediaTab implements MediaTab {
         }
     };
 
-    public static MediaTab from(BrowseSection section) {
-        YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
+    public static MediaGroup from(BrowseSection section) {
+        YouTubeMediaGroup youTubeMediaTab = new YouTubeMediaGroup();
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
@@ -70,8 +70,8 @@ public class YouTubeMediaTab implements MediaTab {
         return youTubeMediaTab;
     }
 
-    public static MediaTab from(NextBrowseResult nextBrowseResult, MediaTab tab) {
-        YouTubeMediaTab youTubeMediaTab = (YouTubeMediaTab) tab;
+    public static MediaGroup from(NextBrowseResult nextBrowseResult, MediaGroup tab) {
+        YouTubeMediaGroup youTubeMediaTab = (YouTubeMediaGroup) tab;
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
@@ -85,8 +85,8 @@ public class YouTubeMediaTab implements MediaTab {
         return youTubeMediaTab;
     }
 
-    public static MediaTab from(NextSearchResult nextSearchResult, MediaTab tab) {
-        YouTubeMediaTab youTubeMediaTab = (YouTubeMediaTab) tab;
+    public static MediaGroup from(NextSearchResult nextSearchResult, MediaGroup tab) {
+        YouTubeMediaGroup youTubeMediaTab = (YouTubeMediaGroup) tab;
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
@@ -100,8 +100,8 @@ public class YouTubeMediaTab implements MediaTab {
         return youTubeMediaTab;
     }
 
-    public static MediaTab from(BrowseResult browseResult, int type) {
-        YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
+    public static MediaGroup from(BrowseResult browseResult, int type) {
+        YouTubeMediaGroup youTubeMediaTab = new YouTubeMediaGroup();
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
@@ -116,8 +116,8 @@ public class YouTubeMediaTab implements MediaTab {
         return youTubeMediaTab;
     }
 
-    public static MediaTab from(SearchResult searchResult, int type) {
-        YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
+    public static MediaGroup from(SearchResult searchResult, int type) {
+        YouTubeMediaGroup youTubeMediaTab = new YouTubeMediaGroup();
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
@@ -132,8 +132,8 @@ public class YouTubeMediaTab implements MediaTab {
         return youTubeMediaTab;
     }
 
-    public static MediaTab from(List<MediaTab> tabs, int type) {
-        YouTubeMediaTab youTubeMediaTab = new YouTubeMediaTab();
+    public static MediaGroup from(List<MediaGroup> tabs, int type) {
+        YouTubeMediaGroup youTubeMediaTab = new YouTubeMediaGroup();
 
         youTubeMediaTab.mType = type;
         youTubeMediaTab.mNestedTabs = tabs;
@@ -171,11 +171,11 @@ public class YouTubeMediaTab implements MediaTab {
         mType = type;
     }
 
-    public List<MediaTab> getNestedTabs() {
+    public List<MediaGroup> getNestedTabs() {
         return mNestedTabs;
     }
 
-    public void setNestedTabs(List<MediaTab> tabs) {
+    public void setNestedTabs(List<MediaGroup> tabs) {
         mNestedTabs = tabs;
     }
 }

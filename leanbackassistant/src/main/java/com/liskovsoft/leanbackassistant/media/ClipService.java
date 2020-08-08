@@ -5,8 +5,8 @@ import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
-import com.liskovsoft.mediaserviceinterfaces.MediaTab;
-import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 
 import java.util.ArrayList;
@@ -42,8 +42,8 @@ public class ClipService {
 
     public Playlist getSubscriptionsPlaylist() {
         MediaService service = YouTubeMediaService.instance();
-        MediaTabManager mediaTabManager = service.getMediaTabManager();
-        MediaTab subscriptions = mediaTabManager.getSubscriptionsTab();
+        MediaGroupManager mediaTabManager = service.getMediaGroupManager();
+        MediaGroup subscriptions = mediaTabManager.getSubscriptionsGroup();
         List<MediaItem> mediaItems = subscriptions.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -56,9 +56,9 @@ public class ClipService {
 
         if (mediaItems != null && !mediaItems.isEmpty()) {
             if (mediaItems.size() < 20) {
-                mediaItems.addAll(mediaTabManager.continueTab(subscriptions).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueTab(subscriptions).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueTab(subscriptions).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(subscriptions).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(subscriptions).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(subscriptions).getMediaItems());
             }
 
             List<Clip> clips = convertToClips(mediaItems);
@@ -70,8 +70,8 @@ public class ClipService {
 
     public Playlist getHistoryPlaylist() {
         MediaService service = YouTubeMediaService.instance();
-        MediaTabManager mediaTabManager = service.getMediaTabManager();
-        MediaTab history = mediaTabManager.getHistoryTab();
+        MediaGroupManager mediaTabManager = service.getMediaGroupManager();
+        MediaGroup history = mediaTabManager.getHistoryGroup();
         List<MediaItem> mediaItems = history.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -84,9 +84,9 @@ public class ClipService {
 
         if (mediaItems != null && !mediaItems.isEmpty()) {
             if (mediaItems.size() < 20) {
-                mediaItems.addAll(mediaTabManager.continueTab(history).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueTab(history).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueTab(history).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(history).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(history).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(history).getMediaItems());
             }
 
             List<Clip> clips = convertToClips(mediaItems);
@@ -98,8 +98,8 @@ public class ClipService {
 
     public Playlist getRecommendedPlaylist() {
         MediaService service = YouTubeMediaService.instance();
-        MediaTabManager mediaTabManager = service.getMediaTabManager();
-        MediaTab recommended = mediaTabManager.getRecommendedTab();
+        MediaGroupManager mediaTabManager = service.getMediaGroupManager();
+        MediaGroup recommended = mediaTabManager.getRecommendedGroup();
         List<MediaItem> mediaItems = recommended.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -112,9 +112,9 @@ public class ClipService {
 
         if (mediaItems != null && !mediaItems.isEmpty()) {
             if (mediaItems.size() < 20) {
-                mediaItems.addAll(mediaTabManager.continueTab(recommended).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueTab(recommended).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueTab(recommended).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(recommended).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(recommended).getMediaItems());
+                mediaItems.addAll(mediaTabManager.continueGroup(recommended).getMediaItems());
             }
 
             List<Clip> clips = convertToClips(mediaItems);

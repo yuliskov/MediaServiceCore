@@ -3,7 +3,7 @@ package com.liskovsoft.mediaserviceinterfaces;
 public interface MediaService {
     SignInManager getSignInManager();
 
-    MediaTabManager getMediaTabManager();
+    MediaGroupManager getMediaGroupManager();
 
-    MediaInfoManager getMediaInfoManager();
+    MediaItemManager getMediaItemManager();
 }

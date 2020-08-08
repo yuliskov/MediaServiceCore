@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
-import com.liskovsoft.mediaserviceinterfaces.MediaTab;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class YouTubeMediaServiceTest {
      */
     @Test
     public void testThatSearchNotEmpty() throws InterruptedException {
-        Observable<MediaTab> result = mService.getMediaTabManager().getSearchTabObserve("hello world");
+        Observable<MediaGroup> result = mService.getMediaGroupManager().getSearchGroupObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(1);
 
@@ -53,7 +53,7 @@ public class YouTubeMediaServiceTest {
 
     @Test
     public void testThatRecommendedNotEmpty() throws InterruptedException {
-        Observable<MediaTab> result = mService.getMediaTabManager().getRecommendedTabObserve();
+        Observable<MediaGroup> result = mService.getMediaGroupManager().getRecommendedGroupObserve();
 
         CountDownLatch finish = new CountDownLatch(1);
 

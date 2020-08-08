@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaInfoManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
-import com.liskovsoft.mediaserviceinterfaces.MediaTabManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
@@ -10,13 +10,13 @@ public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInManager mSignInManager;
-    private final MediaTabManager mMediaTabManager;
+    private final MediaGroupManager mMediaTabManager;
 
     private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
-        mMediaTabManager = YouTubeMediaTabManager.instance();
+        mMediaTabManager = YouTubeMediaGroupManager.instance();
     }
 
     public static MediaService instance() {
@@ -33,12 +33,12 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public MediaTabManager getMediaTabManager() {
+    public MediaGroupManager getMediaGroupManager() {
         return mMediaTabManager;
     }
 
     @Override
-    public MediaInfoManager getMediaInfoManager() {
+    public MediaItemManager getMediaItemManager() {
         return null;
     }
 }

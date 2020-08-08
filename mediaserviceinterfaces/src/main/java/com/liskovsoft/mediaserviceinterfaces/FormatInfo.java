@@ -1,4 +1,4 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
-public interface MediaInfo {
+public interface FormatInfo {
 }

@@ -4,4 +4,5 @@ import java.util.ArrayList;
 
 public interface FormatInfo {
     ArrayList<MediaFormat> getAdaptiveFormats();
+    FormatMetadata getMetadata();
 }

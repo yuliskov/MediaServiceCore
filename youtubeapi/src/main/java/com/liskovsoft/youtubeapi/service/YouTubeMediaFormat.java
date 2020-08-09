@@ -5,9 +5,14 @@ import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 
 import java.util.List;
 
+/**
+ * TODO: not implemented
+ */
 public class YouTubeMediaFormat implements MediaFormat {
     private String mIndex;
     private String mIndexRange;
+    private String mUrl;
+    private String mSignatureCipher;
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
         YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
@@ -21,22 +26,22 @@ public class YouTubeMediaFormat implements MediaFormat {
 
     @Override
     public String getUrl() {
-        return null;
+        return mUrl;
     }
 
     @Override
     public void setUrl(String url) {
-
+        mUrl = url;
     }
 
     @Override
     public String getSignatureCipher() {
-        return null;
+        return mSignatureCipher;
     }
 
     @Override
-    public void setSignatureCipher(String s) {
-
+    public void setSignatureCipher(String cipher) {
+        mSignatureCipher = cipher;
     }
 
     @Override

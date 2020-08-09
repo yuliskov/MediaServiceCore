@@ -1,13 +1,17 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
+import retrofit2.Call;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VideoInfoService {
+    private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final AppService mAppService;
     private final VideoInfoManager mVideoInfoManager;
@@ -25,13 +29,17 @@ public class VideoInfoService {
         return sInstance;
     }
 
-    private List<VideoFormat> decipherFormats(List<VideoFormat> formats) {
+    private void decipherFormats(List<? extends VideoFormat> formats) {
+        if (formats == null) {
+            return;
+        }
+
         List<String> ciphered = extractCipheredStrings(formats);
         List<String> deciphered = mAppService.decipher(ciphered);
-        return applyDecipheredStrings(deciphered, formats);
+        applyDecipheredStrings(deciphered, formats);
     }
 
-    private static List<String> extractCipheredStrings(List<VideoFormat> formats) {
+    private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
         List<String> result = new ArrayList<>();
 
         for (VideoFormat format : formats) {
@@ -41,7 +49,7 @@ public class VideoInfoService {
         return result;
     }
 
-    private static List<VideoFormat> applyDecipheredStrings(List<String> deciphered, List<VideoFormat> formats) {
+    private static void applyDecipheredStrings(List<String> deciphered, List<? extends VideoFormat> formats) {
         if (deciphered.size() != formats.size()) {
             throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
         }
@@ -49,7 +57,20 @@ public class VideoInfoService {
         for (int i = 0; i < formats.size(); i++) {
             formats.get(i).setSignature(deciphered.get(i));
         }
+    }
 
-        return formats;
+    public VideoInfoResult getVideoInfo(String videoId) {
+        Call<VideoInfoResult> wrapper = mVideoInfoManager.getVideoInfo(videoId);
+
+        VideoInfoResult result = RetrofitHelper.get(wrapper);
+
+        if (result != null) {
+            decipherFormats(result.getAdaptiveFormats());
+            decipherFormats(result.getRegularFormats());
+        } else {
+            Log.e(TAG, "Can't get video info for videoId " + videoId);
+        }
+
+        return result;
     }
 }

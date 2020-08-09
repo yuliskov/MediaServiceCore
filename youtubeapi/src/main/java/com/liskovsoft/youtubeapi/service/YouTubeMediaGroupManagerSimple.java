@@ -38,17 +38,17 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     @Override
     public MediaGroup getSearchGroup(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
-        return YouTubeMediaServiceHelper.convertSearchResult(searchResult, MediaGroup.TYPE_SEARCH);
+        return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
     public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaGroup.TYPE_SEARCH));
+        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchService.getSearch(searchText), MediaGroup.TYPE_SEARCH));
     }
 
     @Override
     public MediaGroup getRecommendedGroup() {
-        List<MediaGroup> tabs = getFirstHomeTabs();
+        List<MediaGroup> tabs = getFirstHomeGroups();
 
         return tabs.get(0); // first one is Recommended tab
     }
@@ -62,11 +62,11 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     public MediaGroup getHomeGroup() {
         List<MediaGroup> result = new ArrayList<>();
 
-        List<MediaGroup> tabs = getFirstHomeTabs();
+        List<MediaGroup> tabs = getFirstHomeGroups();
 
         while (!tabs.isEmpty()) {
             result.addAll(tabs);
-            tabs = getNextHomeTabs();
+            tabs = getNextHomeGroups();
         }
 
         return YouTubeMediaGroup.from(result, MediaGroup.TYPE_HOME);
@@ -75,33 +75,33 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     @Override
     public Observable<MediaGroup> getHomeGroupObserve() {
         return Observable.create(emitter -> {
-            List<MediaGroup> tabs = getFirstHomeTabs();
+            List<MediaGroup> tabs = getFirstHomeGroups();
 
             while (!tabs.isEmpty()) {
                 emitter.onNext(YouTubeMediaGroup.from(tabs, MediaGroup.TYPE_HOME));
-                tabs = getNextHomeTabs();
+                tabs = getNextHomeGroups();
             }
 
             emitter.onComplete();
         });
     }
 
-    private List<MediaGroup> getFirstHomeTabs() {
+    private List<MediaGroup> getFirstHomeGroups() {
         Log.d(TAG, "Emitting first home tabs...");
         List<BrowseSection> browseTabs = mBrowseService.getHomeSections();
-        return YouTubeMediaServiceHelper.convertBrowseSections(browseTabs);
+        return YouTubeMediaGroup.from(browseTabs);
     }
 
-    private List<MediaGroup> getNextHomeTabs() {
+    private List<MediaGroup> getNextHomeGroups() {
         Log.d(TAG, "Emitting next home tabs...");
         List<BrowseSection> browseTabs = mBrowseService.getNextHomeSections();
-        return YouTubeMediaServiceHelper.convertBrowseSections(browseTabs);
+        return YouTubeMediaGroup.from(browseTabs);
     }
 
     @Override
     public MediaGroup continueGroup(MediaGroup mediaTab) {
         Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
-        return YouTubeMediaServiceHelper.convertNextBrowseResult(
+        return YouTubeMediaGroup.from(
                 mBrowseService.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
                 mediaTab
         );

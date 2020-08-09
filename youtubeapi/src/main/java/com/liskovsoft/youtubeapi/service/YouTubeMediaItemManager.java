@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.FormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static MediaItemManager sInstance;
@@ -23,10 +24,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public FormatInfo getFormatInfo(MediaItem item) {
-        // TODO: not implemented
+        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(item.getVideoUrl());
 
-        //mVideoInfoService.getVideoInfo(item.getVideoUrl());
-
-        return null;
+        return YouTubeFormatInfo.from(videoInfo);
     }
 }

@@ -35,6 +35,10 @@ public class VideoInfoResult {
         return mAdaptiveFormats;
     }
 
+    public List<RegularVideoFormat> getRegularFormats() {
+        return mRegularFormats;
+    }
+
     public String getHlsManifestUrl() {
         return mHlsManifestUrl;
     }
@@ -53,10 +57,6 @@ public class VideoInfoResult {
 
     public String getPlayerStoryboardSpec() {
         return mPlayerStoryboardSpec;
-    }
-
-    public List<RegularVideoFormat> getRegularFormats() {
-        return mRegularFormats;
     }
 
     public VideoDetails getVideoDetails() {

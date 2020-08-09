@@ -36,22 +36,22 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     @Override
     public MediaGroup getSearchGroup(String searchText) {
         SearchResult searchResult = mSearchService.getSearch(searchText);
-        return YouTubeMediaServiceHelper.convertSearchResult(searchResult, MediaGroup.TYPE_SEARCH);
+        return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
     public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaServiceHelper.convertSearchResult(mSearchService.getSearch(searchText), MediaGroup.TYPE_SEARCH));
+        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchService.getSearch(searchText), MediaGroup.TYPE_SEARCH));
     }
 
     @Override
     public MediaGroup getSubscriptionsGroup() {
-        return YouTubeMediaServiceHelper.convertBrowseResult(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaGroup.TYPE_SUBSCRIPTIONS);
+        return YouTubeMediaGroup.from(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaGroup.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
     public MediaGroup getRecommendedGroup() {
-        return YouTubeMediaServiceHelper.convertBrowseSection(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
+        return YouTubeMediaGroup.from(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
     @Override
     public MediaGroup getHistoryGroup() {
-        return YouTubeMediaServiceHelper.convertBrowseResult(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaGroup.TYPE_HISTORY);
+        return YouTubeMediaGroup.from(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaGroup.TYPE_HISTORY);
     }
 
     @Override
@@ -91,12 +91,12 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
         Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
 
         if (mediaTab.getType() == MediaGroup.TYPE_SEARCH) {
-            return YouTubeMediaServiceHelper.convertNextSearchResult(
+            return YouTubeMediaGroup.from(
                     mSearchService.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
                     mediaTab);
         }
 
-        return YouTubeMediaServiceHelper.convertNextBrowseResult(
+        return YouTubeMediaGroup.from(
                 mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
                 mediaTab
         );

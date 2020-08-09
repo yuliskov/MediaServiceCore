@@ -4,8 +4,12 @@ import io.reactivex.Observable;
 
 public interface SignInManager {
     /**
-     * This code user should enter on service web page (e.g. https://www.youtube.com/activate)
+     * Trying to login using 2-factor authentication
+     * @return user code, user should apply this code on service web page (e.g. https://www.youtube.com/activate)
      */
-    String getUserCode();
-    Observable<String> getUserCodeObserve();
+    String logIn();
+    Observable<String> logInObserve();
+
+    void logOut();
+    Observable<Void> logOutObserve();
 }

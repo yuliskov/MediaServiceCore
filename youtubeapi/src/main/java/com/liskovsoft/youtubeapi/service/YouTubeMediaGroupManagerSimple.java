@@ -19,8 +19,8 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     private final SearchService mSearchService;
 
     private YouTubeMediaGroupManagerSimple() {
-        mSearchService = new SearchService();
-        mBrowseService = new BrowseService();
+        mSearchService = SearchService.instance();
+        mBrowseService = BrowseService.instance();
     }
 
     public static YouTubeMediaGroupManagerSimple instance() {
@@ -59,7 +59,7 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     }
 
     @Override
-    public List<MediaGroup> getHomeGroups() {
+    public MediaGroup getHomeGroup() {
         List<MediaGroup> result = new ArrayList<>();
 
         List<MediaGroup> tabs = getFirstHomeTabs();
@@ -69,16 +69,16 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
             tabs = getNextHomeTabs();
         }
 
-        return result;
+        return YouTubeMediaGroup.from(result, MediaGroup.TYPE_HOME);
     }
 
     @Override
-    public Observable<List<MediaGroup>> getHomeGroupsObserve() {
+    public Observable<MediaGroup> getHomeGroupObserve() {
         return Observable.create(emitter -> {
             List<MediaGroup> tabs = getFirstHomeTabs();
 
             while (!tabs.isEmpty()) {
-                emitter.onNext(tabs);
+                emitter.onNext(YouTubeMediaGroup.from(tabs, MediaGroup.TYPE_HOME));
                 tabs = getNextHomeTabs();
             }
 
@@ -124,12 +124,12 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
 
     @Override
     public MediaGroup getSubscriptionsGroup() {
-        return YouTubeMediaGroup.EMPTY_TAB;
+        return YouTubeMediaGroup.EMPTY_GROUP;
     }
 
     @Override
     public MediaGroup getHistoryGroup() {
-        return YouTubeMediaGroup.EMPTY_TAB;
+        return YouTubeMediaGroup.EMPTY_GROUP;
     }
 
     @Override

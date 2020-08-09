@@ -66,6 +66,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
         initXmlSerializer();
     }
 
+    public static MPDBuilder from(com.liskovsoft.mediaserviceinterfaces.MediaItem mediaItem) {
+        return null;
+    }
+
     private void initXmlSerializer() {
         mXmlSerializer = Xml.newSerializer();
         mWriter = new StringWriter();

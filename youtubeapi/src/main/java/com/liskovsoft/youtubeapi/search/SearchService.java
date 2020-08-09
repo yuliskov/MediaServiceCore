@@ -1,21 +1,32 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.auth.AuthManager;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
 /**
  * Wraps result from the {@link AuthManager} and {@link SearchManager}
  */
 public class SearchService {
-    private SearchManager mSearchManager;
+    private static SearchService sInstance;
+    private final SearchManager mSearchManager;
+
+    private SearchService() {
+        mSearchManager = RetrofitHelper.withJsonPath(SearchManager.class);
+    }
+
+    public static SearchService instance() {
+        if (sInstance == null) {
+            sInstance = new SearchService();
+        }
+
+        return sInstance;
+    }
 
     public SearchResult getSearch(String searchText) {
-        SearchManager manager = getSearchManager();
-
-        Call<SearchResult> wrapper = manager.getSearchResult(SearchParams.getSearchQuery(searchText), SearchParams.getSearchKey());
+        Call<SearchResult> wrapper = mSearchManager.getSearchResult(SearchParams.getSearchQuery(searchText), SearchParams.getSearchKey());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -34,9 +45,8 @@ public class SearchService {
         if (nextSearchPageKey == null) {
             throw new IllegalStateException("Can't get next search page. Next search key is empty.");
         }
-
-        SearchManager manager = getSearchManager();
-        Call<NextSearchResult> wrapper = manager.getNextSearchResult(SearchParams.getNextSearchQuery(nextSearchPageKey), SearchParams.getSearchKey());
+        
+        Call<NextSearchResult> wrapper = mSearchManager.getNextSearchResult(SearchParams.getNextSearchQuery(nextSearchPageKey), SearchParams.getSearchKey());
         NextSearchResult searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {
@@ -44,13 +54,5 @@ public class SearchService {
         }
 
         return searchResult;
-    }
-
-    private SearchManager getSearchManager() {
-        if (mSearchManager == null) {
-            mSearchManager = RetrofitHelper.withJsonPath(SearchManager.class);
-        }
-
-        return mSearchManager;
     }
 }

@@ -8,8 +8,6 @@ import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
 
-import java.util.List;
-
 public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();
     private final SearchService mSearchService;
@@ -18,7 +16,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     private static YouTubeMediaGroupManagerSigned sInstance;
 
     private YouTubeMediaGroupManagerSigned() {
-        mSearchService = new SearchService();
+        mSearchService = SearchService.instance();
         mBrowseServiceSigned = new BrowseServiceSigned();
         mSignInManager = YouTubeSignInManager.instance();
     }
@@ -77,13 +75,13 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     }
 
     @Override
-    public List<MediaGroup> getHomeGroups() {
+    public MediaGroup getHomeGroup() {
         // TODO: not implemented
         return null;
     }
 
     @Override
-    public Observable<List<MediaGroup>> getHomeGroupsObserve() {
+    public Observable<MediaGroup> getHomeGroupObserve() {
         // TODO: not implemented
         return null;
     }

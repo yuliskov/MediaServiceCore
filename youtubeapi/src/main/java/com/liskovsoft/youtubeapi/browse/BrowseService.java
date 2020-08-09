@@ -14,9 +14,22 @@ import java.util.List;
 
 public class BrowseService {
     private static final String TAG = BrowseService.class.getSimpleName();
-    private BrowseManager mBrowseManager;
+    private static BrowseService sInstance;
+    private final BrowseManager mBrowseManager;
     private String mVisitorData;
     private String mNextHomeTabsKey;
+
+    private BrowseService() {
+        mBrowseManager = RetrofitHelper.withJsonPath(BrowseManager.class);
+    }
+
+    public static BrowseService instance() {
+        if (sInstance == null) {
+            sInstance = new BrowseService();
+        }
+
+        return sInstance;
+    }
 
     public List<BrowseSection> getHomeSections() {
         TabbedBrowseResult homeTabs = getTabbedResult(BrowseParams.getHomeQuery());
@@ -57,18 +70,8 @@ public class BrowseService {
         return getNextResult(nextPageKey, mVisitorData);
     }
 
-    private BrowseManager getBrowseManager() {
-        if (mBrowseManager == null) {
-            mBrowseManager = RetrofitHelper.withJsonPath(BrowseManager.class);
-        }
-
-        return mBrowseManager;
-    }
-
     private TabbedBrowseResult getTabbedResult(String query) {
-        BrowseManager manager = getBrowseManager();
-
-        Call<TabbedBrowseResult> wrapper = manager.getTabbedBrowseResult(query);
+        Call<TabbedBrowseResult> wrapper = mBrowseManager.getTabbedBrowseResult(query);
 
         TabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -78,9 +81,7 @@ public class BrowseService {
     private NextTabbedBrowseResult getNextTabbedResult(String nextKey, String visitorData) {
         String query = BrowseParams.getNextBrowseQuery(nextKey);
 
-        BrowseManager manager = getBrowseManager();
-
-        Call<NextTabbedBrowseResult> wrapper = manager.getNextTabbedBrowseResult(query, visitorData);
+        Call<NextTabbedBrowseResult> wrapper = mBrowseManager.getNextTabbedBrowseResult(query, visitorData);
 
         NextTabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -90,10 +91,8 @@ public class BrowseService {
     private NextBrowseResult getNextResult(String nextKey, String visitorData) {
         String query = BrowseParams.getNextBrowseQuery(nextKey);
 
-        BrowseManager manager = getBrowseManager();
-
         Call<NextBrowseResult> wrapper =
-                manager.getNextBrowseResult(query, visitorData);
+                mBrowseManager.getNextBrowseResult(query, visitorData);
 
         NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
 

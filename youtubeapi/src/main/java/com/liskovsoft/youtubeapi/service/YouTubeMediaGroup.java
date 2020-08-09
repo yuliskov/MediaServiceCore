@@ -18,7 +18,7 @@ public class YouTubeMediaGroup implements MediaGroup {
     private int mType = MediaGroup.TYPE_HOME;
     private List<MediaGroup> mNestedTabs;
 
-    public static MediaGroup EMPTY_TAB = new MediaGroup() {
+    public static MediaGroup EMPTY_GROUP = new MediaGroup() {
         @Override
         public int getType() {
             return TYPE_UNDEFINED;

@@ -5,8 +5,6 @@ import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import io.reactivex.Observable;
 
-import java.util.List;
-
 public class YouTubeMediaGroupManager implements MediaGroupManager {
     private static final String TAG = YouTubeMediaGroupManager.class.getSimpleName();
     private static YouTubeMediaGroupManager sInstance;
@@ -91,17 +89,17 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
-    public List<MediaGroup> getHomeGroups() {
+    public MediaGroup getHomeGroup() {
         checkSigned();
 
-        return mMediaTabManagerReal.getHomeGroups();
+        return mMediaTabManagerReal.getHomeGroup();
     }
 
     @Override
-    public Observable<List<MediaGroup>> getHomeGroupsObserve() {
+    public Observable<MediaGroup> getHomeGroupObserve() {
         checkSigned();
 
-        return mMediaTabManagerReal.getHomeGroupsObserve();
+        return mMediaTabManagerReal.getHomeGroupObserve();
     }
 
     @Override

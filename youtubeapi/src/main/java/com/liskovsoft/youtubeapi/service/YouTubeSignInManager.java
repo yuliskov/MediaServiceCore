@@ -31,14 +31,27 @@ public class YouTubeSignInManager implements SignInManager {
     }
 
     @Override
-    public String getUserCode() {
+    public String logIn() {
         UserCodeResult userCodeResult = mAuthService.getUserCode();
         return userCodeResult.getUserCode();
     }
 
     @Override
-    public Observable<String> getUserCodeObserve() {
-        return null;
+    public Observable<String> logInObserve() {
+        return Observable.fromCallable(this::logIn);
+    }
+
+    @Override
+    public void logOut() {
+        // TODO: not implemented
+    }
+
+    @Override
+    public Observable<Void> logOutObserve() {
+        return Observable.create(emitter -> {
+            logOut();
+            emitter.onComplete();
+        });
     }
 
     public boolean isSigned() {

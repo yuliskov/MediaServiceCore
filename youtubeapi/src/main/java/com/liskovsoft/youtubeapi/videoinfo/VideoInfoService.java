@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
 import java.util.ArrayList;
@@ -9,9 +10,11 @@ import java.util.List;
 public class VideoInfoService {
     private static VideoInfoService sInstance;
     private final AppService mAppService;
+    private final VideoInfoManager mVideoInfoManager;
 
     private VideoInfoService() {
         mAppService = AppService.instance();
+        mVideoInfoManager = RetrofitHelper.withQueryString(VideoInfoManager.class);
     }
 
     public static VideoInfoService instance() {

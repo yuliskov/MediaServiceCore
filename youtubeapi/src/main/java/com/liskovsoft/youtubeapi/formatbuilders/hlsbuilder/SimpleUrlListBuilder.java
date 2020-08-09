@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
-import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemComparator;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemUtils;
+import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatComparator;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,16 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class SimpleUrlListBuilder implements UrlListBuilder {
-    private final Set<MediaItem> mVideos;
+    private final Set<MediaFormat> mVideos;
 
     public SimpleUrlListBuilder() {
-        MediaItemComparator comp = new MediaItemComparator(MediaItemComparator.ORDER_ASCENDANT);
+        MediaFormatComparator comp = new MediaFormatComparator(MediaFormatComparator.ORDER_ASCENDANT);
         mVideos = new TreeSet<>(comp);
     }
 
     @Override
-    public void append(MediaItem mediaItem) {
-        if (!MediaItemUtils.isDash(mediaItem)) {
+    public void append(MediaFormat mediaItem) {
+        if (!MediaFormatUtils.isDash(mediaItem)) {
             mVideos.add(mediaItem);
         }
     }
@@ -34,7 +34,7 @@ public class SimpleUrlListBuilder implements UrlListBuilder {
         List<String> list = new ArrayList<>();
 
         // put hq items on top
-        for (MediaItem item : mVideos) {
+        for (MediaFormat item : mVideos) {
             list.add(0, item.getUrl());
         }
 

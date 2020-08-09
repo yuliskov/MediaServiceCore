@@ -17,7 +17,7 @@ public class YouTubeMediaGroup implements MediaGroup {
     private String mTitle;
     public String mNextPageKey;
     private int mType = MediaGroup.TYPE_HOME;
-    private List<MediaGroup> mNestedTabs;
+    private List<MediaGroup> mNestedGroups;
 
     public static MediaGroup EMPTY_GROUP = new MediaGroup() {
         @Override
@@ -48,6 +48,11 @@ public class YouTubeMediaGroup implements MediaGroup {
         @Override
         public void setTitle(String title) {
 
+        }
+
+        @Override
+        public List<MediaGroup> getNestedGroups() {
+            return null;
         }
     };
 
@@ -134,7 +139,7 @@ public class YouTubeMediaGroup implements MediaGroup {
 
         YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
 
-        youTubeMediaGroup.mNestedTabs = groups;
+        youTubeMediaGroup.mNestedGroups = groups;
 
         return youTubeMediaGroup;
     }
@@ -181,12 +186,13 @@ public class YouTubeMediaGroup implements MediaGroup {
         mType = type;
     }
 
-    public List<MediaGroup> getNestedTabs() {
-        return mNestedTabs;
+    @Override
+    public List<MediaGroup> getNestedGroups() {
+        return mNestedGroups;
     }
 
-    public void setNestedTabs(List<MediaGroup> tabs) {
-        mNestedTabs = tabs;
+    public void setNestedGroups(List<MediaGroup> tabs) {
+        mNestedGroups = tabs;
     }
 
     private static YouTubeMediaGroup create(YouTubeMediaGroup baseGroup, List<VideoItem> videoItems, String nextPageKey) {

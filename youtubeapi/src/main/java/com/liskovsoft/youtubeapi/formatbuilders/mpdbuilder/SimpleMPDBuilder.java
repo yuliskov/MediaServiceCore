@@ -1,15 +1,16 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
+import com.liskovsoft.mediaserviceinterfaces.FormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.interfaces.GenericInfo;
-import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
 import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemComparator;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaItemUtils;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatComparator;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.OtfSegmentParser.OtfSegment;
 import org.xmlpull.v1.XmlSerializer;
@@ -40,10 +41,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
-    private final Set<MediaItem> mMP4Audios;
-    private final Set<MediaItem> mMP4Videos;
-    private final Set<MediaItem> mWEBMAudios;
-    private final Set<MediaItem> mWEBMVideos;
+    private final Set<MediaFormat> mMP4Audios;
+    private final Set<MediaFormat> mMP4Videos;
+    private final Set<MediaFormat> mWEBMAudios;
+    private final Set<MediaFormat> mWEBMVideos;
     private final List<Subtitle> mSubs;
     private final OtfSegmentParser mSegmentParser;
     private String mLimitVideoCodec;
@@ -55,7 +56,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     public SimpleMPDBuilder(GenericInfo info) {
         mInfo = info;
-        MediaItemComparator comp = new MediaItemComparator();
+        MediaFormatComparator comp = new MediaFormatComparator();
         mMP4Audios = new TreeSet<>(comp);
         mMP4Videos = new TreeSet<>(comp);
         mWEBMAudios = new TreeSet<>(comp);
@@ -66,7 +67,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
         initXmlSerializer();
     }
 
-    public static MPDBuilder from(com.liskovsoft.mediaserviceinterfaces.MediaItem mediaItem) {
+    public static MPDBuilder from(FormatInfo formatInfo) {
+        // TODO: not implemented
         return null;
     }
 
@@ -165,25 +167,25 @@ public class SimpleMPDBuilder implements MPDBuilder {
         for (Subtitle sub : subs) {
             writeMediaListPrologue(sub);
 
-            writeMediaItemTag(sub);
+            writeMediaFormatTag(sub);
 
             writeMediaListEpilogue();
         }
     }
 
-    private void writeMediaTagsForGroup(Set<MediaItem> items) {
+    private void writeMediaTagsForGroup(Set<MediaFormat> items) {
         if (items.size() == 0) {
             return;
         }
 
-        List<MediaItem> filtered = filterOtfItems(items);
+        List<MediaFormat> filtered = filterOtfItems(items);
 
         if (filtered.size() == 0) {
             return;
         }
 
-        MediaItem firstItem = null;
-        for (MediaItem item : filtered) {
+        MediaFormat firstItem = null;
+        for (MediaFormat item : filtered) {
             firstItem = item;
             break;
         }
@@ -191,7 +193,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem));
 
         // Representation
-        for (MediaItem item : filtered) {
+        for (MediaFormat item : filtered) {
             if (mLimitVideoCodec != null && isVideo(item) && !item.getType().contains(mLimitVideoCodec)) {
                 continue;
             }
@@ -205,13 +207,13 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 continue;
             }
 
-            writeMediaItemTag(item);
+            writeMediaFormatTag(item);
         }
 
         writeMediaListEpilogue();
     }
 
-    private void writeGlobalSegmentList(MediaItem item) {
+    private void writeGlobalSegmentList(MediaFormat format) {
         startTag("", "SegmentList");
 
         attribute("", "startNumber", "0");
@@ -220,7 +222,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         startTag("", "SegmentTimeline");
 
         // SegmentURL tag
-        for (String segment : item.getGlobalSegmentList()) {
+        for (String segment : format.getGlobalSegmentList()) {
             startTag("", "S");
             attribute("", "d", segment);
             endTag("", "S");
@@ -313,20 +315,20 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     @Override
-    public void append(MediaItem mediaItem) {
-        if (!MediaItemUtils.checkMediaUrl(mediaItem)) {
+    public void append(MediaFormat mediaItem) {
+        if (!MediaFormatUtils.checkMediaUrl(mediaItem)) {
             Log.e(TAG, "Media item doesn't contain required url field!");
             return;
         }
 
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
-        if (!MediaItemUtils.isDash(mediaItem)) {
+        if (!MediaFormatUtils.isDash(mediaItem)) {
             return;
         }
 
         //fixOTF(mediaItem);
 
-        Set<MediaItem> placeholder = null;
+        Set<MediaFormat> placeholder = null;
         String mimeType = extractMimeType(mediaItem);
         if (mimeType != null) {
             switch (mimeType) {
@@ -360,7 +362,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         mSubs.add(sub);
     }
 
-    private String extractMimeType(MediaItem item) {
+    private String extractMimeType(MediaFormat item) {
         if (item.getGlobalSegmentList() != null) {
             return item.getType();
         }
@@ -387,35 +389,35 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return null;
     }
 
-    private void writeMediaItemTag(MediaItem item) {
+    private void writeMediaFormatTag(MediaFormat format) {
         startTag("", "Representation");
 
-        attribute("", "id", item.getITag());
-        attribute("", "codecs", extractCodecs(item));
+        attribute("", "id", format.getITag());
+        attribute("", "codecs", extractCodecs(format));
         attribute("", "startWithSAP", "1");
-        attribute("", "bandwidth", item.getBitrate());
+        attribute("", "bandwidth", format.getBitrate());
 
-        if (isVideo(item)) {
+        if (isVideo(format)) {
             // video attrs
-            attribute("", "width", MediaItemUtils.getWidth(item));
-            attribute("", "height", MediaItemUtils.getHeight(item));
+            attribute("", "width", MediaFormatUtils.getWidth(format));
+            attribute("", "height", MediaFormatUtils.getHeight(format));
             attribute("", "maxPlayoutRate", "1");
-            attribute("", "frameRate", item.getFps());
+            attribute("", "frameRate", format.getFps());
         } else {
             // audio attrs
-            attribute("", "audioSamplingRate", ITag.getAudioRateByTag(item.getITag()));
+            attribute("", "audioSamplingRate", ITag.getAudioRateByTag(format.getITag()));
         }
 
-        if (item.isOTF()) {
-            writeOtfSegmentTemplate(item);
+        if (format.isOTF()) {
+            writeOtfSegmentTemplate(format);
         } else {
             startTag("", "BaseURL");
 
-            if (item.getClen() != null && !item.getClen().equals(NULL_CONTENT_LENGTH)) {
-                attribute("", "yt:contentLength", item.getClen());
+            if (format.getClen() != null && !format.getClen().equals(NULL_CONTENT_LENGTH)) {
+                attribute("", "yt:contentLength", format.getClen());
             }
 
-            text(item.getUrl());
+            text(format.getUrl());
 
             endTag("", "BaseURL");
         }
@@ -423,17 +425,17 @@ public class SimpleMPDBuilder implements MPDBuilder {
         // SegmentList tag
         if (isLive()) {
             writeLiveMediaSegmentList();
-        } else if (item.getSegmentUrlList() != null) {
-            writeSegmentList(item);
-        } else if (item.getIndex() != null &&
-                !item.getIndex().equals(NULL_INDEX_RANGE)) { // json format fix: index is null
-            writeSegmentBase(item);
+        } else if (format.getSegmentUrlList() != null) {
+            writeSegmentList(format);
+        } else if (format.getIndex() != null &&
+                !format.getIndex().equals(NULL_INDEX_RANGE)) { // json format fix: index is null
+            writeSegmentBase(format);
         }
 
         endTag("", "Representation");
     }
 
-    private void writeSegmentBase(MediaItem item) {
+    private void writeSegmentBase(MediaFormat item) {
         // SegmentBase
         startTag("", "SegmentBase");
 
@@ -451,7 +453,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "SegmentBase");
     }
 
-    private void writeSegmentList(MediaItem item) {
+    private void writeSegmentList(MediaFormat item) {
         startTag("", "SegmentList");
 
         // Initialization tag
@@ -488,7 +490,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "SegmentList");
     }
 
-    private void writeMediaItemTag(Subtitle sub) {
+    private void writeMediaFormatTag(Subtitle sub) {
         String bandwidth = "268";
 
         startTag("", "Representation");
@@ -508,11 +510,11 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "Representation");
     }
 
-    private boolean isVideo(MediaItem item) {
+    private boolean isVideo(MediaFormat item) {
         return item.getSize() != null;
     }
 
-    private boolean isAudio(MediaItem item) {
+    private boolean isAudio(MediaFormat item) {
         return item.getType() != null && item.getType().contains("audio");
     }
 
@@ -524,7 +526,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
     }
 
-    private String extractCodecs(MediaItem item) {
+    private String extractCodecs(MediaFormat item) {
         // input example: video/mp4;+codecs="avc1.640033"
         Matcher matcher = CODECS_PATTERN.matcher(item.getType());
         matcher.find();
@@ -543,7 +545,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
      */
     private String extractDurationFromTrack() {
         String url = null;
-        for (MediaItem item : mMP4Videos) {
+        for (MediaFormat item : mMP4Videos) {
             url = item.getUrl();
             break; // get first item
         }
@@ -611,18 +613,18 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private boolean isLive() {
-        for (MediaItem item : mMP4Videos) {
+        for (MediaFormat item : mMP4Videos) {
             return isLiveMedia(item);
         }
 
-        for (MediaItem item : mWEBMVideos) {
+        for (MediaFormat item : mWEBMVideos) {
             return isLiveMedia(item);
         }
 
         return false;
     }
 
-    private boolean isLiveMedia(MediaItem item) {
+    private boolean isLiveMedia(MediaFormat item) {
         boolean isLive =
                 item.getUrl().contains("live=1") ||
                         item.getUrl().contains("yt_live_broadcast");
@@ -630,7 +632,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return isLive;
     }
 
-    private void fixOTF(MediaItem mediaItem) {
+    private void fixOTF(MediaFormat mediaItem) {
         if (mediaItem.isOTF()) {
             if (mediaItem.getUrl() != null) {
                 // exo: fix 404 code
@@ -645,7 +647,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     /**
      * TODO: improve segment calculation
      */
-    private void writeOtfSegmentTemplateOld(MediaItem item) {
+    private void writeOtfSegmentTemplateOld(MediaFormat item) {
         //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
         //  <SegmentTimeline>
         //    <S t="0" d="180000" r="394"/>
@@ -664,7 +666,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "SegmentTemplate");
     }
 
-    private void writeOtfSegmentTemplate(MediaItem item) {
+    private void writeOtfSegmentTemplate(MediaFormat item) {
         //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
         //  <SegmentTimeline>
         //    <S t="0" d="180000" r="394"/>
@@ -721,10 +723,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
     /**
      * Filter unplayable videos (init block is unavailable - youtube bug)
      */
-    private List<MediaItem> filterOtfItems(Set<MediaItem> items) {
-        List<MediaItem> result = new ArrayList<>();
+    private List<MediaFormat> filterOtfItems(Set<MediaFormat> items) {
+        List<MediaFormat> result = new ArrayList<>();
 
-        for (MediaItem item : items) {
+        for (MediaFormat item : items) {
             if (item.isOTF() && mSegmentParser.parse(item.getOtfInitUrl()) == null) {
                 continue;
             }

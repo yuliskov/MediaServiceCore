@@ -1,20 +1,20 @@
 package com.liskovsoft.youtubeapi.formatbuilders.misc;
 
+import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 
 import java.util.Comparator;
 
-public class MediaItemComparator implements Comparator<MediaItem> {
+public class MediaFormatComparator implements Comparator<MediaFormat> {
     public static final int ORDER_DESCENDANT = 0;
     public static final int ORDER_ASCENDANT = 1;
     private int mOrderType = ORDER_DESCENDANT;
 
-    public MediaItemComparator() {
+    public MediaFormatComparator() {
         
     }
 
-    public MediaItemComparator(int orderType) {
+    public MediaFormatComparator(int orderType) {
         mOrderType = orderType;
     }
 
@@ -22,14 +22,14 @@ public class MediaItemComparator implements Comparator<MediaItem> {
      * NOTE: Descendant sorting (better on top). High quality playback on external player.
      */
     @Override
-    public int compare(MediaItem leftItem, MediaItem rightItem) {
+    public int compare(MediaFormat leftItem, MediaFormat rightItem) {
         if (leftItem.getGlobalSegmentList() != null ||
             rightItem.getGlobalSegmentList() != null) {
             return 1;
         }
 
         if (mOrderType == ORDER_ASCENDANT) {
-            MediaItem tmpItem = leftItem;
+            MediaFormat tmpItem = leftItem;
             leftItem = rightItem;
             rightItem = tmpItem;
         }
@@ -37,8 +37,8 @@ public class MediaItemComparator implements Comparator<MediaItem> {
         int leftItemBitrate = leftItem.getBitrate() == null ? 0 : parseInt(leftItem.getBitrate());
         int rightItemBitrate = rightItem.getBitrate() == null ? 0 : parseInt(rightItem.getBitrate());
 
-        int leftItemHeight = leftItem.getSize() == null ? 0 : parseInt(MediaItemUtils.getHeight(leftItem));
-        int rightItemHeight = rightItem.getSize() == null ? 0 : parseInt(MediaItemUtils.getHeight(rightItem));
+        int leftItemHeight = leftItem.getSize() == null ? 0 : parseInt(MediaFormatUtils.getHeight(leftItem));
+        int rightItemHeight = rightItem.getSize() == null ? 0 : parseInt(MediaFormatUtils.getHeight(rightItem));
 
         int delta = rightItemHeight - leftItemHeight;
 

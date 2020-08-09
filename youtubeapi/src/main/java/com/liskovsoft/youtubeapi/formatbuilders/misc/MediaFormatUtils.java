@@ -1,10 +1,11 @@
 package com.liskovsoft.youtubeapi.formatbuilders.misc;
 
+import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 
-public class MediaItemUtils {
-    public static String getHeight(MediaItem item) {
+public class MediaFormatUtils {
+    public static String getHeight(MediaFormat item) {
         String size = item.getSize();
 
         if (size == null) {
@@ -20,7 +21,7 @@ public class MediaItemUtils {
         return widthHeight[1];
     }
 
-    public static String getWidth(MediaItem item) {
+    public static String getWidth(MediaFormat item) {
         String size = item.getSize();
 
         if (size == null) {
@@ -36,7 +37,7 @@ public class MediaItemUtils {
         return widthHeight[0];
     }
 
-    public static boolean isDash(MediaItem mediaItem) {
+    public static boolean isDash(MediaFormat mediaItem) {
         if (mediaItem.getITag() == null) {
             return false;
         }
@@ -50,7 +51,7 @@ public class MediaItemUtils {
         return Helpers.isDash(id);
     }
 
-    public static boolean checkMediaUrl(MediaItem mediaItem) {
+    public static boolean checkMediaUrl(MediaFormat mediaItem) {
         return mediaItem != null && mediaItem.getUrl() != null;
     }
 }

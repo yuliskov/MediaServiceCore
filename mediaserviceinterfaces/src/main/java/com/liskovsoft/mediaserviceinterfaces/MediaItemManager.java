@@ -1,5 +1,5 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
 public interface MediaItemManager {
-    FormatInfo getFormatInfo(MediaItem item);
+    MediaItemDetails getMediaItemDetails(MediaItem item);
 }

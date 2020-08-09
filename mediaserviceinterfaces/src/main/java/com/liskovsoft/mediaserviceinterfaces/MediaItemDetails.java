@@ -1,6 +1,10 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
-public interface FormatMetadata {
+import java.util.ArrayList;
+
+public interface MediaItemDetails {
+    ArrayList<MediaFormat> getAdaptiveFormats();
+
     String getLengthSeconds();
     void setLengthSeconds(String lengthSeconds);
     String getTitle();

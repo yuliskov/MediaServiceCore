@@ -1,9 +1,16 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.FormatMetadata;
+import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 
-public class YouTubeMediaMetadata implements FormatMetadata {
+import java.util.ArrayList;
+
+public class YouTubeMediaItemDetails implements MediaItemDetails {
+    private ArrayList<MediaFormat> mAdaptiveFormats;
+
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
@@ -14,19 +21,36 @@ public class YouTubeMediaMetadata implements FormatMetadata {
     private String mChannelId;
     private boolean mIsLive;
 
-    public static FormatMetadata from(VideoDetails videoDetails) {
-        YouTubeMediaMetadata metadata = new YouTubeMediaMetadata();
+    public static MediaItemDetails from(VideoInfoResult videoInfo) {
+        YouTubeMediaItemDetails formatInfo = new YouTubeMediaItemDetails();
 
-        metadata.mLengthSeconds = videoDetails.getLengthSeconds();
-        metadata.mVideoId = videoDetails.getVideoId();
-        metadata.mViewCount = videoDetails.getViewCount();
-        metadata.mTitle = videoDetails.getTitle();
-        metadata.mDescription = videoDetails.getShortDescription();
-        metadata.mChannelId = videoDetails.getChannelId();
-        metadata.mAuthor = videoDetails.getAuthor();
-        metadata.mIsLive = videoDetails.isLiveContent();
+        if (videoInfo.getAdaptiveFormats() != null) {
+            formatInfo.mAdaptiveFormats = new ArrayList<>();
 
-        return metadata;
+            for (AdaptiveVideoFormat format : videoInfo.getAdaptiveFormats()) {
+                formatInfo.mAdaptiveFormats.add(YouTubeMediaFormat.from(format));
+            }
+        }
+
+        VideoDetails videoDetails = videoInfo.getVideoDetails();
+
+        if (videoDetails != null) {
+            formatInfo.mLengthSeconds = videoDetails.getLengthSeconds();
+            formatInfo.mVideoId = videoDetails.getVideoId();
+            formatInfo.mViewCount = videoDetails.getViewCount();
+            formatInfo.mTitle = videoDetails.getTitle();
+            formatInfo.mDescription = videoDetails.getShortDescription();
+            formatInfo.mChannelId = videoDetails.getChannelId();
+            formatInfo.mAuthor = videoDetails.getAuthor();
+            formatInfo.mIsLive = videoDetails.isLiveContent();
+        }
+
+        return formatInfo;
+    }
+
+    @Override
+    public ArrayList<MediaFormat> getAdaptiveFormats() {
+        return mAdaptiveFormats;
     }
 
     @Override

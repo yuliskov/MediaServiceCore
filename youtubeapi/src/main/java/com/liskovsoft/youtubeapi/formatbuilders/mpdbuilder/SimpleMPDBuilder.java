@@ -1,8 +1,7 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
-import com.liskovsoft.mediaserviceinterfaces.FormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.FormatMetadata;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -36,7 +35,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
     private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
-    private final FormatMetadata mInfo;
+    private final MediaItemDetails mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
@@ -49,7 +48,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private String mLimitVideoCodec;
     private String mLimitAudioCodec;
 
-    public SimpleMPDBuilder(FormatMetadata info) {
+    public SimpleMPDBuilder(MediaItemDetails info) {
         mInfo = info;
         MediaFormatComparator comp = new MediaFormatComparator();
         mMP4Audios = new TreeSet<>(comp);
@@ -62,8 +61,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
         initXmlSerializer();
     }
 
-    public static MPDBuilder from(FormatInfo formatInfo) {
-        MPDBuilder builder = new SimpleMPDBuilder(formatInfo.getMetadata());
+    public static MPDBuilder from(MediaItemDetails formatInfo) {
+        MPDBuilder builder = new SimpleMPDBuilder(formatInfo);
 
         for (MediaFormat format : formatInfo.getAdaptiveFormats()) {
             builder.append(format);
@@ -558,7 +557,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
      * <br/>
      * Required fields are:
      * <br/>
-     * {@link FormatMetadata#getLengthSeconds() FormatMetadata#getLengthSeconds()}
+     * {@link MediaItemDetails#getLengthSeconds() MediaItemDetails#getLengthSeconds()}
      */
     private boolean ensureRequiredFieldsAreSet() {
         return ensureLengthIsSet();
@@ -569,8 +568,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
      */
     private boolean ensureLengthIsSet() {
         if (mInfo == null) {
-            //throw new IllegalStateException("FormatMetadata not initialized");
-            Log.e(TAG, "FormatMetadata not initialized");
+            //throw new IllegalStateException("MediaItemDetails not initialized");
+            Log.e(TAG, "MediaItemDetails not initialized");
             return false;
         }
 

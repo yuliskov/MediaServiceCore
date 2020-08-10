@@ -18,8 +18,8 @@ public class VideoFormat {
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_ITAG = "itag";
     public static final String PARAM_SIGNATURE = "signature";
-    public static final String PARAM_SIGNATURE2 = "sig";
-    public static final String PARAM_SIGNATURE2_MARK = "lsig";
+    public static final String PARAM_SIGNATURE_SPECIAL = "sig";
+    public static final String PARAM_SIGNATURE_SPECIAL_MARK = "lsig";
     // End Common params
 
     // DASH params
@@ -113,6 +113,18 @@ public class VideoFormat {
     }
 
     public void setSignature(String signature) {
+        if (signature != null) {
+            MyQueryString url = MyQueryStringFactory.parse(mUrl);
+
+            if (url.contains(PARAM_SIGNATURE_SPECIAL_MARK)) {
+                url.set(PARAM_SIGNATURE_SPECIAL, signature);
+            } else {
+                url.set(PARAM_SIGNATURE, signature);
+            }
+
+            mUrl = url.toString();
+        }
+
         mRealSignature = signature;
     }
 

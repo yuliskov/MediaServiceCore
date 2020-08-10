@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import okhttp3.Response;
 import org.junit.Before;
@@ -19,10 +19,12 @@ import static org.junit.Assert.*;
 
 public class SimpleMPDBuilderInstrumentedTest {
     private MediaService mService;
+    private OkHttpManager mOkHttpHelper;
 
     @Before
     public void setUp() {
         mService = YouTubeMediaService.instance();
+        mOkHttpHelper = OkHttpManager.instance();
     }
 
     @Test
@@ -70,7 +72,7 @@ public class SimpleMPDBuilderInstrumentedTest {
 
         String url = mediaItemDetails.getAdaptiveFormats().get(0).getUrl();
 
-        Response response = OkHttpHelpers.doGetOkHttpRequest(url);
+        Response response = mOkHttpHelper.doGetOkHttpRequest(url);
 
         assertNotNull("Video url is working", response);
     }

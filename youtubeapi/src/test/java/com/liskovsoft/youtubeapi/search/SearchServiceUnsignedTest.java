@@ -11,8 +11,8 @@ import org.robolectric.shadows.ShadowLog;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchServiceTest {
-    private SearchService mService;
+public class SearchServiceUnsignedTest {
+    private SearchServiceUnsigned mService;
 
     @Before
     public void setUp() {
@@ -22,7 +22,7 @@ public class SearchServiceTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = SearchService.instance();
+        mService = SearchServiceUnsigned.instance();
     }
 
     @Test

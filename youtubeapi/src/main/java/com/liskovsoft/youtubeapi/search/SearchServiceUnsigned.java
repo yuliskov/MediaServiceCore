@@ -9,17 +9,17 @@ import retrofit2.Call;
 /**
  * Wraps result from the {@link AuthManager} and {@link SearchManager}
  */
-public class SearchService {
-    private static SearchService sInstance;
+public class SearchServiceUnsigned {
+    private static SearchServiceUnsigned sInstance;
     private final SearchManager mSearchManager;
 
-    private SearchService() {
+    private SearchServiceUnsigned() {
         mSearchManager = RetrofitHelper.withJsonPath(SearchManager.class);
     }
 
-    public static SearchService instance() {
+    public static SearchServiceUnsigned instance() {
         if (sInstance == null) {
-            sInstance = new SearchService();
+            sInstance = new SearchServiceUnsigned();
         }
 
         return sInstance;

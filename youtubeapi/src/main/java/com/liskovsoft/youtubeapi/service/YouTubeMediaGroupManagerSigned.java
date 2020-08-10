@@ -4,20 +4,24 @@ import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.search.SearchService;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();
-    private final SearchService mSearchService;
+    private final SearchServiceUnsigned mSearchServiceUnsigned;
     private final BrowseServiceSigned mBrowseServiceSigned;
     private final YouTubeSignInManager mSignInManager;
     private static YouTubeMediaGroupManagerSigned sInstance;
 
     private YouTubeMediaGroupManagerSigned() {
-        mSearchService = SearchService.instance();
-        mBrowseServiceSigned = new BrowseServiceSigned();
+        mSearchServiceUnsigned = SearchServiceUnsigned.instance();
+        mBrowseServiceSigned = BrowseServiceSigned.instance();
         mSignInManager = YouTubeSignInManager.instance();
     }
 
@@ -35,13 +39,13 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
     @Override
     public MediaGroup getSearchGroup(String searchText) {
-        SearchResult searchResult = mSearchService.getSearch(searchText);
+        SearchResult searchResult = mSearchServiceUnsigned.getSearch(searchText);
         return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
     public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchService.getSearch(searchText), MediaGroup.TYPE_SEARCH));
+        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchServiceUnsigned.getSearch(searchText), MediaGroup.TYPE_SEARCH));
     }
 
     @Override
@@ -76,14 +80,42 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
     @Override
     public MediaGroup getHomeGroup() {
-        // TODO: not implemented
-        return null;
+        List<MediaGroup> result = new ArrayList<>();
+
+        List<MediaGroup> groups = getFirstHomeGroups();
+
+        while (!groups.isEmpty()) {
+            result.addAll(groups);
+            groups = getNextHomeGroups();
+        }
+
+        return YouTubeMediaGroup.from(result, MediaGroup.TYPE_HOME);
     }
 
     @Override
     public Observable<MediaGroup> getHomeGroupObserve() {
-        // TODO: not implemented
-        return null;
+        return Observable.create(emitter -> {
+            List<MediaGroup> groups = getFirstHomeGroups();
+
+            while (!groups.isEmpty()) {
+                emitter.onNext(YouTubeMediaGroup.from(groups, MediaGroup.TYPE_HOME));
+                groups = getNextHomeGroups();
+            }
+
+            emitter.onComplete();
+        });
+    }
+
+    private List<MediaGroup> getFirstHomeGroups() {
+        Log.d(TAG, "Emitting first home tabs...");
+        List<BrowseSection> browseTabs = mBrowseServiceSigned.getHomeSections(mSignInManager.getAuthorization());
+        return YouTubeMediaGroup.from(browseTabs);
+    }
+
+    private List<MediaGroup> getNextHomeGroups() {
+        Log.d(TAG, "Emitting next home tabs...");
+        List<BrowseSection> browseTabs = mBrowseServiceSigned.getNextHomeSections(mSignInManager.getAuthorization());
+        return YouTubeMediaGroup.from(browseTabs);
     }
 
     @Override
@@ -92,7 +124,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
         if (mediaTab.getType() == MediaGroup.TYPE_SEARCH) {
             return YouTubeMediaGroup.from(
-                    mSearchService.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
+                    mSearchServiceUnsigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
                     mediaTab);
         }
 

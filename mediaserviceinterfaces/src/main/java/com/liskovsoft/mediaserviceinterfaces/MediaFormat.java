@@ -35,7 +35,7 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     String getQualityLabel();
     void setQualityLabel(String qualityLabel);
     String getFormat();
-    boolean isOTF();
+    boolean isOtf();
     String getOtfInitUrl();
     String getOtfTemplateUrl();
 
@@ -47,8 +47,8 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     String getSignature();
     void setAudioSamplingRate(String audioSamplingRate);
     String getAudioSamplingRate();
-    void setSourceURL(String sourceURL);
-    String getSourceURL();
+    void setSourceUrl(String sourceURL);
+    String getSourceUrl();
     List<String> getSegmentUrlList();
     void setSegmentUrlList(List<String> urls);
     List<String> getGlobalSegmentList();

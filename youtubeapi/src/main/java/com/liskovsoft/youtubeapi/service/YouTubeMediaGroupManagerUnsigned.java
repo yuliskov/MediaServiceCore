@@ -3,29 +3,29 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.BrowseService;
+import com.liskovsoft.youtubeapi.browse.BrowseServiceUnsigned;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.search.SearchService;
+import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import io.reactivex.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
-    private static final String TAG = YouTubeMediaGroupManagerSimple.class.getSimpleName();
-    private static YouTubeMediaGroupManagerSimple sInstance;
-    private final BrowseService mBrowseService;
-    private final SearchService mSearchService;
+public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
+    private static final String TAG = YouTubeMediaGroupManagerUnsigned.class.getSimpleName();
+    private static YouTubeMediaGroupManagerUnsigned sInstance;
+    private final BrowseServiceUnsigned mBrowseService;
+    private final SearchServiceUnsigned mSearchService;
 
-    private YouTubeMediaGroupManagerSimple() {
-        mSearchService = SearchService.instance();
-        mBrowseService = BrowseService.instance();
+    private YouTubeMediaGroupManagerUnsigned() {
+        mSearchService = SearchServiceUnsigned.instance();
+        mBrowseService = BrowseServiceUnsigned.instance();
     }
 
-    public static YouTubeMediaGroupManagerSimple instance() {
+    public static YouTubeMediaGroupManagerUnsigned instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaGroupManagerSimple();
+            sInstance = new YouTubeMediaGroupManagerUnsigned();
         }
 
         return sInstance;
@@ -62,11 +62,11 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     public MediaGroup getHomeGroup() {
         List<MediaGroup> result = new ArrayList<>();
 
-        List<MediaGroup> tabs = getFirstHomeGroups();
+        List<MediaGroup> groups = getFirstHomeGroups();
 
-        while (!tabs.isEmpty()) {
-            result.addAll(tabs);
-            tabs = getNextHomeGroups();
+        while (!groups.isEmpty()) {
+            result.addAll(groups);
+            groups = getNextHomeGroups();
         }
 
         return YouTubeMediaGroup.from(result, MediaGroup.TYPE_HOME);
@@ -75,11 +75,11 @@ public class YouTubeMediaGroupManagerSimple implements MediaGroupManager {
     @Override
     public Observable<MediaGroup> getHomeGroupObserve() {
         return Observable.create(emitter -> {
-            List<MediaGroup> tabs = getFirstHomeGroups();
+            List<MediaGroup> groups = getFirstHomeGroups();
 
-            while (!tabs.isEmpty()) {
-                emitter.onNext(YouTubeMediaGroup.from(tabs, MediaGroup.TYPE_HOME));
-                tabs = getNextHomeGroups();
+            while (!groups.isEmpty()) {
+                emitter.onNext(YouTubeMediaGroup.from(groups, MediaGroup.TYPE_HOME));
+                groups = getNextHomeGroups();
             }
 
             emitter.onComplete();

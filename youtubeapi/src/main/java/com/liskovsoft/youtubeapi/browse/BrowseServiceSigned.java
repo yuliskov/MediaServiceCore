@@ -6,10 +6,12 @@ import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.NextTabbedBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,41 +20,41 @@ import java.util.List;
  */
 public class BrowseServiceSigned {
     private static final String TAG = BrowseServiceSigned.class.getSimpleName();
-    private BrowseManagerSigned mBrowseManager;
+    private final BrowseManagerSigned mBrowseManagerSigned;
+    private static BrowseServiceSigned sInstance;
+    private String mNextHomeTabsKey;
 
-    public BrowseServiceSigned() {
-        //initToken();
+    private BrowseServiceSigned() {
+        mBrowseManagerSigned = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
+    }
+
+    public static BrowseServiceSigned instance() {
+        if (sInstance == null) {
+            sInstance = new BrowseServiceSigned();
+        }
+
+        return sInstance;
     }
 
     public BrowseResult getSubscriptions(String authorization) {
-        return getAuthSection(BrowseParams.getSubscriptionsQuery(), authorization);
+        return getSection(BrowseParams.getSubscriptionsQuery(), authorization);
     }
 
     public BrowseSection getRecommended(String authorization) {
-        return getTabbedAuthSection(BrowseParams.getHomeQuery(), authorization);
+        return getTabbedSection(BrowseParams.getHomeQuery(), authorization);
     }
 
     public BrowseResult getHistory(String authorization) {
-        return getAuthSection(BrowseParams.getHistoryQuery(), authorization);
+        return getSection(BrowseParams.getHistoryQuery(), authorization);
     }
 
-    private BrowseManagerSigned getBrowseManager() {
-        if (mBrowseManager == null) {
-            mBrowseManager = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
-        }
-
-        return mBrowseManager;
-    }
-
-    private BrowseResult getAuthSection(String query, String authorization) {
+    private BrowseResult getSection(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getAuthSection: authorization is null.");
             return null;
         }
 
-        BrowseManagerSigned manager = getBrowseManager();
-
-        Call<BrowseResult> wrapper = manager.getBrowseResult(query, authorization);
+        Call<BrowseResult> wrapper = mBrowseManagerSigned.getBrowseResult(query, authorization);
 
         BrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -63,7 +65,7 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private NextBrowseResult getNextAuthSection(String nextPageKey, String authorization) {
+    private NextBrowseResult getNextSection(String nextPageKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getNextAuthSection: authorization is null.");
             return null;
@@ -74,8 +76,7 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        BrowseManagerSigned manager = getBrowseManager();
-        Call<NextBrowseResult> wrapper = manager.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), authorization);
+        Call<NextBrowseResult> wrapper = mBrowseManagerSigned.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), authorization);
         NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
         if (browseResult == null) {
@@ -85,15 +86,13 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private BrowseSection getTabbedAuthSection(String query, String authorization) {
+    private BrowseSection getTabbedSection(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getTabbedAuthSection: authorization is null.");
             return null;
         }
 
-        BrowseManagerSigned manager = getBrowseManager();
-
-        Call<TabbedBrowseResult> wrapper = manager.getTabbedBrowseResult(query, authorization);
+        Call<TabbedBrowseResult> wrapper = mBrowseManagerSigned.getTabbedBrowseResult(query, authorization);
 
         TabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -128,6 +127,82 @@ public class BrowseServiceSigned {
     }
 
     public NextBrowseResult continueSection(String nextKey, String authorization) {
-        return getNextAuthSection(nextKey, authorization);
+        return getNextSection(nextKey, authorization);
+    }
+
+    public List<BrowseSection> getHomeSections(String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getHomeSections: authorization is null.");
+            return null;
+        }
+
+        TabbedBrowseResult homeTabs = getTabbedResult(BrowseParams.getHomeQuery(), authorization);
+
+        if (homeTabs == null) {
+            Log.e(TAG, "Home tabs are empty");
+            return new ArrayList<>();
+        }
+        
+        mNextHomeTabsKey = findHomeTab(homeTabs).getNextPageKey();
+
+        return findHomeTab(homeTabs).getSections();
+    }
+
+    public List<BrowseSection> getNextHomeSections(String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getNextHomeSections: authorization is null.");
+            return null;
+        }
+
+        NextTabbedBrowseResult nextHomeTabs = null;
+
+        if (mNextHomeTabsKey != null) {
+            nextHomeTabs = getNextTabbedResult(mNextHomeTabsKey, authorization);
+
+            if (nextHomeTabs != null) {
+                mNextHomeTabsKey = nextHomeTabs.getNextPageKey();
+            } else {
+                mNextHomeTabsKey = null;
+            }
+        }
+
+        if (nextHomeTabs == null) {
+            Log.e(TAG, "NextHomeTabs are empty");
+            return new ArrayList<>();
+        }
+
+        return nextHomeTabs.getSections();
+    }
+
+    private TabbedBrowseResult getTabbedResult(String query, String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getTabbedResult: authorization is null.");
+            return null;
+        }
+
+        Call<TabbedBrowseResult> wrapper = mBrowseManagerSigned.getTabbedBrowseResult(query, authorization);
+
+        TabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
+
+        return browseResult;
+    }
+
+    private NextTabbedBrowseResult getNextTabbedResult(String nextKey, String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getNextTabbedResult: authorization is null.");
+            return null;
+        }
+
+        String query = BrowseParams.getNextBrowseQuery(nextKey);
+
+        Call<NextTabbedBrowseResult> wrapper = mBrowseManagerSigned.getNextTabbedBrowseResult(query, authorization);
+
+        NextTabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
+
+        return browseResult;
+    }
+
+    private BrowseTab findHomeTab(TabbedBrowseResult homeTabs) {
+        return homeTabs.getBrowseTabs().get(0);
     }
 }

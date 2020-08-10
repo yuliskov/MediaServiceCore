@@ -23,8 +23,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowseManagerTest {
-    private BrowseManager mService;
+public class BrowseManagerUnsignedTest {
+    private BrowseManagerUnsigned mService;
 
     @Before
     public void setUp() throws IOException {
@@ -36,7 +36,7 @@ public class BrowseManagerTest {
 
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withJsonPath(BrowseManager.class);
+        mService = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
     }
 
     @Test

@@ -25,13 +25,12 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 public class BrowseManagerSignedTest {
     /**
-     * Note: valid period - one hour
+     * Authorization should be updated each hour
      */
-    private static String AUTHORIZATION =
-            "Bearer ya29.Gl2AB3K2aSTC-z_IyCjzMOhLkAiPlssW_sAehCk-2sIy6lYeCtiOh0-BkMFr8lAu0eC7NsKPAYH9hykxS_v-LdAym4PmrUFKSrZIjBdthf1E1X1tPclK2OkYO5g2Xyk";
+    private String mAuthorization; // type: Bearer
     private BrowseManagerSigned mService;
     private boolean mRunOnce;
-    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
+    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1%2F%2F0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY&grant_type=refresh_token";
 
     @Before
     public void setUp() throws IOException {
@@ -53,12 +52,12 @@ public class BrowseManagerSignedTest {
         AuthManager authService = RetrofitHelper.withGson(AuthManager.class);
         Call<RefreshTokenResult> wrapper = authService.getRefreshToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
         RefreshTokenResult token = wrapper.execute().body();
-        AUTHORIZATION = String.format("%s %s", token.getTokenType(), token.getAccessToken());
+        mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
     }
 
     @Test
     public void testThatSubscriptionsNotEmpty() throws IOException {
-        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), AUTHORIZATION);
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), mAuthorization);
 
         BrowseResult browseResult1 = wrapper.execute().body();
 
@@ -69,7 +68,7 @@ public class BrowseManagerSignedTest {
 
         assertNotNull("Item not null", nextPageKey);
 
-        Call<NextBrowseResult> browseResult2 = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), AUTHORIZATION);
+        Call<NextBrowseResult> browseResult2 = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), mAuthorization);
         NextBrowseResult body = browseResult2.execute().body();
 
         assertNotNull("Items not null", body);
@@ -88,7 +87,7 @@ public class BrowseManagerSignedTest {
     }
 
     private List<VideoItem> getSubscriptions() throws IOException {
-        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), AUTHORIZATION);
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), mAuthorization);
 
         BrowseResult browseResult1 = wrapper.execute().body();
 
@@ -99,7 +98,7 @@ public class BrowseManagerSignedTest {
     }
 
     private List<VideoItem> getRecommended() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), AUTHORIZATION);
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), mAuthorization);
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -116,8 +115,8 @@ public class BrowseManagerSignedTest {
     }
 
     @Test
-    public void testThatTabbedResultNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), AUTHORIZATION);
+    public void testThatHomeNotEmpty() throws IOException {
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), mAuthorization);
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -126,7 +125,7 @@ public class BrowseManagerSignedTest {
         String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), AUTHORIZATION);
+        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), mAuthorization);
         Response<NextBrowseResult> execute = next.execute();
         NextBrowseResult browseResult2 = execute.body();
 

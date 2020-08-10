@@ -407,7 +407,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
             attribute("", "audioSamplingRate", ITag.getAudioRateByTag(format.getITag()));
         }
 
-        if (format.isOTF()) {
+        if (format.isOtf()) {
             writeOtfSegmentTemplate(format);
         } else {
             startTag("", "BaseURL");
@@ -456,9 +456,9 @@ public class SimpleMPDBuilder implements MPDBuilder {
         startTag("", "SegmentList");
 
         // Initialization tag
-        if (item.getSourceURL() != null) {
+        if (item.getSourceUrl() != null) {
             startTag("", "Initialization");
-            attribute("", "sourceURL", item.getSourceURL());
+            attribute("", "sourceURL", item.getSourceUrl());
             endTag("", "Initialization");
         }
 
@@ -632,7 +632,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private void fixOTF(MediaFormat mediaItem) {
-        if (mediaItem.isOTF()) {
+        if (mediaItem.isOtf()) {
             if (mediaItem.getUrl() != null) {
                 // exo: fix 404 code
                 mediaItem.setUrl(mediaItem.getUrl() + "&sq=7");
@@ -726,7 +726,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         List<MediaFormat> result = new ArrayList<>();
 
         for (MediaFormat item : items) {
-            if (item.isOTF() && mSegmentParser.parse(item.getOtfInitUrl()) == null) {
+            if (item.isOtf() && mSegmentParser.parse(item.getOtfInitUrl()) == null) {
                 continue;
             }
 

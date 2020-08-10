@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 /**
  * For unsigned users!
  */
-public interface BrowseManager {
+public interface BrowseManagerUnsigned {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
     Call<BrowseResult> getBrowseResult(@Body String browseQuery);

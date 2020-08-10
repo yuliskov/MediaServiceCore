@@ -12,20 +12,20 @@ import retrofit2.Call;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrowseService {
-    private static final String TAG = BrowseService.class.getSimpleName();
-    private static BrowseService sInstance;
-    private final BrowseManager mBrowseManager;
+public class BrowseServiceUnsigned {
+    private static final String TAG = BrowseServiceUnsigned.class.getSimpleName();
+    private static BrowseServiceUnsigned sInstance;
+    private final BrowseManagerUnsigned mBrowseManager;
     private String mVisitorData;
     private String mNextHomeTabsKey;
 
-    private BrowseService() {
-        mBrowseManager = RetrofitHelper.withJsonPath(BrowseManager.class);
+    private BrowseServiceUnsigned() {
+        mBrowseManager = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
     }
 
-    public static BrowseService instance() {
+    public static BrowseServiceUnsigned instance() {
         if (sInstance == null) {
-            sInstance = new BrowseService();
+            sInstance = new BrowseServiceUnsigned();
         }
 
         return sInstance;
@@ -35,7 +35,7 @@ public class BrowseService {
         TabbedBrowseResult homeTabs = getTabbedResult(BrowseParams.getHomeQuery());
 
         if (homeTabs == null) {
-            Log.e(TAG, "HomeTabs are empty");
+            Log.e(TAG, "Home tabs are empty");
             return new ArrayList<>();
         }
 

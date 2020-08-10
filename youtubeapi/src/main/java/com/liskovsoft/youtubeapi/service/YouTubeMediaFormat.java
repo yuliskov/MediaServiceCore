@@ -1,25 +1,59 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 
 import java.util.List;
 
-/**
- * TODO: not implemented
- */
 public class YouTubeMediaFormat implements MediaFormat {
     private String mIndex;
     private String mIndexRange;
     private String mUrl;
     private String mSignatureCipher;
+    private String mType;
+    private String mITag;
+    private String mClen;
+    private String mBitrate;
+    private String mProjectionType;
+    private String mXtags;
+    private String mSize;
+    private String mInit;
+    private String mFps;
+    private String mLmt;
+    private String mQualityLabel;
+    private String mFormat;
+    private boolean mIsOtf;
+    private String mOtfInitUrl;
+    private String mOtfTemplateUrl;
+    private String mSourceUrl;
+    private List<String> mSegmentUrlList;
+    private List<String> mGlobalSegmentList;
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
         YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
         mediaFormat.mIndex = format.getIndex();
         mediaFormat.mIndexRange = format.getIndexRange().toString();
-
-        // TODO: not implemented
+        mediaFormat.mUrl = format.getUrl();
+        mediaFormat.mSignatureCipher = format.getSignatureCipher();
+        mediaFormat.mType = format.getType();
+        String iTag = format.getITag() == 0 ? "" : String.valueOf(format.getITag());
+        mediaFormat.mITag = iTag;
+        mediaFormat.mClen = format.getContentLength();
+        String bitrate = format.getBitrate() == 0 ? "" : String.valueOf(format.getBitrate());
+        mediaFormat.mBitrate = bitrate;
+        mediaFormat.mSize = format.getSize();
+        mediaFormat.mInit = format.getInit();
+        String fps = format.getFps() == 0 ? "" : String.valueOf(format.getFps());
+        mediaFormat.mFps = fps;
+        mediaFormat.mFormat = format.getFormat();
+        mediaFormat.mIsOtf = format.isOTF();
+        mediaFormat.mOtfInitUrl = format.getOtfInitUrl();
+        mediaFormat.mOtfTemplateUrl = format.getOtfTemplateUrl();
+        mediaFormat.mSourceUrl = format.getSourceURL();
+        mediaFormat.mSegmentUrlList = format.getSegmentUrlList();
+        mediaFormat.mGlobalSegmentList = format.getGlobalSegmentList();
 
         return mediaFormat;
     }
@@ -46,142 +80,142 @@ public class YouTubeMediaFormat implements MediaFormat {
 
     @Override
     public String getType() {
-        return null;
+        return mType;
     }
 
     @Override
     public void setType(String type) {
-
+        mType = type;
     }
 
     @Override
     public String getITag() {
-        return null;
+        return mITag;
     }
 
     @Override
     public void setITag(String itag) {
-
+        mITag = itag;
     }
 
     @Override
     public String getClen() {
-        return null;
+        return mClen;
     }
 
     @Override
     public void setClen(String clen) {
-
+        mClen = clen;
     }
 
     @Override
     public String getBitrate() {
-        return null;
+        return mBitrate;
     }
 
     @Override
     public void setBitrate(String bitrate) {
-
+        mBitrate = bitrate;
     }
 
     @Override
     public String getProjectionType() {
-        return null;
+        return mProjectionType;
     }
 
     @Override
     public void setProjectionType(String projectionType) {
-
+        mProjectionType = projectionType;
     }
 
     @Override
     public String getXtags() {
-        return null;
+        return mXtags;
     }
 
     @Override
     public void setXtags(String xtags) {
-
+        mXtags = xtags;
     }
 
     @Override
     public String getSize() {
-        return null;
+        return mSize;
     }
 
     @Override
     public void setSize(String size) {
-
+        mSize = size;
     }
 
     @Override
     public String getIndex() {
-        return null;
+        return mIndex;
     }
 
     @Override
     public void setIndex(String index) {
-
+        mIndex = index;
     }
 
     @Override
     public String getInit() {
-        return null;
+        return mInit;
     }
 
     @Override
     public void setInit(String init) {
-
+        mInit = init;
     }
 
     @Override
     public String getFps() {
-        return null;
+        return mFps;
     }
 
     @Override
     public void setFps(String fps) {
-
+        mFps = fps;
     }
 
     @Override
     public String getLmt() {
-        return null;
+        return mLmt;
     }
 
     @Override
     public void setLmt(String lmt) {
-
+        mLmt = lmt;
     }
 
     @Override
     public String getQualityLabel() {
-        return null;
+        return mQualityLabel;
     }
 
     @Override
     public void setQualityLabel(String qualityLabel) {
-
+        mQualityLabel = qualityLabel;
     }
 
     @Override
     public String getFormat() {
-        return null;
+        return mFormat;
     }
 
     @Override
-    public boolean isOTF() {
-        return false;
+    public boolean isOtf() {
+        return mIsOtf;
     }
 
     @Override
     public String getOtfInitUrl() {
-        return null;
+        return mOtfInitUrl;
     }
 
     @Override
     public String getOtfTemplateUrl() {
-        return null;
+        return mOtfTemplateUrl;
     }
 
     @Override
@@ -220,37 +254,62 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     @Override
-    public void setSourceURL(String sourceURL) {
-
+    public void setSourceUrl(String sourceUrl) {
+        mSourceUrl = sourceUrl;
     }
 
     @Override
-    public String getSourceURL() {
-        return null;
+    public String getSourceUrl() {
+        return mSourceUrl;
     }
 
     @Override
     public List<String> getSegmentUrlList() {
-        return null;
+        return mSegmentUrlList;
     }
 
     @Override
     public void setSegmentUrlList(List<String> urls) {
-
+        mSegmentUrlList = urls;
     }
 
     @Override
     public List<String> getGlobalSegmentList() {
-        return null;
+        return mGlobalSegmentList;
     }
 
     @Override
     public void setGlobalSegmentList(List<String> segments) {
+        mGlobalSegmentList = segments;
+    }
 
+    public String getIndexRange() {
+        return mIndexRange;
+    }
+
+    public void setIndexRange(String indexRange) {
+        mIndexRange = indexRange;
     }
 
     @Override
     public int compareTo(MediaFormat format) {
-        return 0;
+        if (format == null) {
+            return 1;
+        }
+
+        return ITag.compare(getITag(), format.getITag());
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(
+                "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Size: %s, ITag: %s}",
+                getUrl(),
+                getSourceUrl(),
+                getSignature(),
+                getClen(),
+                getSize(),
+                getITag());
     }
 }

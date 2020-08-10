@@ -7,9 +7,8 @@ import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatComparator;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatUtils;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.OtfSegmentParser.OtfSegment;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -404,7 +403,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
             attribute("", "frameRate", format.getFps());
         } else {
             // audio attrs
-            attribute("", "audioSamplingRate", ITag.getAudioRateByTag(format.getITag()));
+            attribute("", "audioSamplingRate", ITagUtils.getAudioRateByTag(format.getITag()));
         }
 
         if (format.isOtf()) {

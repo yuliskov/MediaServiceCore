@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 
 import java.util.List;
@@ -33,8 +33,13 @@ public class YouTubeMediaFormat implements MediaFormat {
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
         YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
+
         mediaFormat.mIndex = format.getIndex();
-        mediaFormat.mIndexRange = format.getIndexRange().toString();
+
+        if (format.getIndexRange() != null) {
+            mediaFormat.mIndexRange = format.getIndexRange().toString();
+        }
+
         mediaFormat.mUrl = format.getUrl();
         mediaFormat.mSignatureCipher = format.getSignatureCipher();
         mediaFormat.mType = format.getType();
@@ -297,7 +302,7 @@ public class YouTubeMediaFormat implements MediaFormat {
             return 1;
         }
 
-        return ITag.compare(getITag(), format.getITag());
+        return ITagUtils.compare(getITag(), format.getITag());
     }
 
     @NonNull

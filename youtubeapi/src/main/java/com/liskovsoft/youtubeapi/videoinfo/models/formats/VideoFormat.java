@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryString;
 import com.liskovsoft.sharedutils.querystringparser.MyQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.ITag;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 
 import java.util.List;
 
@@ -213,7 +213,7 @@ public class VideoFormat {
     }
 
     public boolean belongsToType(String type) {
-        return type == null || ITag.belongsToType(type, getITag());
+        return type == null || ITagUtils.belongsToType(type, getITag());
     }
 
     public void setAudioSamplingRate(String audioSamplingRate) {

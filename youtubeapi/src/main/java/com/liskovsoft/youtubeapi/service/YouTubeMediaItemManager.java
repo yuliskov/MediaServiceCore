@@ -24,7 +24,14 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public MediaItemDetails getMediaItemDetails(MediaItem item) {
-        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(item.getVideoUrl());
+        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(item.getVideoId());
+
+        return YouTubeMediaItemDetails.from(videoInfo);
+    }
+
+    @Override
+    public MediaItemDetails getMediaItemDetails(String videoId) {
+        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(videoId);
 
         return YouTubeMediaItemDetails.from(videoInfo);
     }

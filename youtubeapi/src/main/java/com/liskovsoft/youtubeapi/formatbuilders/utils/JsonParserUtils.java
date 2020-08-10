@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.formatbuilders.parsers;
+package com.liskovsoft.youtubeapi.formatbuilders.utils;
 
 import android.net.Uri;
 import com.google.gson.JsonArray;
@@ -15,16 +15,16 @@ import com.liskovsoft.sharedutils.querystringparser.MyQueryString;
 
 import java.io.InputStream;
 
-public final class ParserUtils {
+public final class JsonParserUtils {
 
-    private static final String TAG = ParserUtils.class.getSimpleName();
+    private static final String TAG = JsonParserUtils.class.getSimpleName();
 
     private static final Configuration JSON_PATH_CONFIGURATION = Configuration.builder()
             .mappingProvider(new GsonMappingProvider())
             .jsonProvider(new GsonJsonProvider())
             .build();
 
-    private ParserUtils() {
+    private JsonParserUtils() {
     }
 
     public static String extractParam(String queryParam, String content) {
@@ -79,19 +79,19 @@ public final class ParserUtils {
     }
 
     public static boolean contains(String jsonPath, DocumentContext parser) {
-        return ParserUtils.<Object>extractType(jsonPath, parser) != null;
+        return JsonParserUtils.<Object>extractType(jsonPath, parser) != null;
     }
 
     public static Integer extractInt(String jsonPath, DocumentContext parser) {
-        return ParserUtils.<Integer>extractType(jsonPath, parser);
+        return JsonParserUtils.<Integer>extractType(jsonPath, parser);
     }
 
     public static String extractString(String jsonPath, DocumentContext parser) {
-        return ParserUtils.<String>extractType(jsonPath, parser);
+        return JsonParserUtils.<String>extractType(jsonPath, parser);
     }
 
     public static Boolean extractBool(String jsonPath, DocumentContext parser) {
-        return ParserUtils.<Boolean>extractType(jsonPath, parser);
+        return JsonParserUtils.<Boolean>extractType(jsonPath, parser);
     }
 
     private static <T> T extractType(String jsonPath, DocumentContext parser) {

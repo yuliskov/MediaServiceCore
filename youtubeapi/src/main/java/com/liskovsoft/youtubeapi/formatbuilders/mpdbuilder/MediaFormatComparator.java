@@ -1,7 +1,8 @@
-package com.liskovsoft.youtubeapi.formatbuilders.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 
 import java.util.Comparator;
 

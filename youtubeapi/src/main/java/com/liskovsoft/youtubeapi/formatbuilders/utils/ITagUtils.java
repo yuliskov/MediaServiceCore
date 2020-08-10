@@ -1,9 +1,9 @@
-package com.liskovsoft.youtubeapi.formatbuilders.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.utils;
 
 import java.util.Arrays;
 import java.util.List;
 
-public final class ITag {
+public final class ITagUtils {
     public final static String AUDIO_68K_WEBM = "249";
     public final static String AUDIO_89K_WEBM = "250";
     public final static String AUDIO_133K_WEBM = "171";

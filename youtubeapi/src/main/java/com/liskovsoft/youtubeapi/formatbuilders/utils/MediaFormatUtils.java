@@ -1,8 +1,7 @@
-package com.liskovsoft.youtubeapi.formatbuilders.misc;
+package com.liskovsoft.youtubeapi.formatbuilders.utils;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.formatbuilders.interfaces.MediaItem;
 
 public class MediaFormatUtils {
     public static String getHeight(MediaFormat item) {

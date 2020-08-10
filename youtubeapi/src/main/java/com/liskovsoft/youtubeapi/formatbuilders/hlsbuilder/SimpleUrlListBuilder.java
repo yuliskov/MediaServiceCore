@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatComparator;
-import com.liskovsoft.youtubeapi.formatbuilders.misc.MediaFormatUtils;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MediaFormatComparator;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;

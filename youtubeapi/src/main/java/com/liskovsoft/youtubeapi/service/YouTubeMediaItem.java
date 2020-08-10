@@ -23,9 +23,11 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
+    private String mVideoId;
 
     public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
+
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.setId(id++);
         video.setTitle(item.getTitle());
@@ -33,6 +35,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getPublishedTime());
+        video.setVideoId(item.getVideoId());
         video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
         video.setContentType("video/mp4");
@@ -130,6 +133,16 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public void setVideoUrl(String videoUrl) {
         mVideoUrl = videoUrl;
+    }
+
+    @Override
+    public String getVideoId() {
+        return mVideoId;
+    }
+
+    @Override
+    public void setVideoId(String videoId) {
+        mVideoId = videoId;
     }
 
     @Override

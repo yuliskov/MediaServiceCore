@@ -11,12 +11,14 @@ public class YouTubeMediaService implements MediaService {
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInManager mSignInManager;
     private final MediaGroupManager mMediaTabManager;
+    private final MediaItemManager mMediaItemManager;
 
     private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
         mMediaTabManager = YouTubeMediaGroupManager.instance();
+        mMediaItemManager = YouTubeMediaItemManager.instance();
     }
 
     public static MediaService instance() {
@@ -39,6 +41,6 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public MediaItemManager getMediaItemManager() {
-        return null;
+        return mMediaItemManager;
     }
 }

@@ -21,6 +21,8 @@ public interface MediaItem {
     void setTitle(String title);
     String getVideoUrl();
     void setVideoUrl(String videoUrl);
+    String getVideoId();
+    void setVideoId(String videoId);
     String getContentType();
     /**
      * Set mime content type.<br/>

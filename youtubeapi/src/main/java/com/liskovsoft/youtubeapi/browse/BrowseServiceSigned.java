@@ -3,10 +3,10 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.models.sections.NextTabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
@@ -65,7 +65,7 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private NextBrowseResult getNextSection(String nextPageKey, String authorization) {
+    private BrowseResultContinuation getNextSection(String nextPageKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getNextAuthSection: authorization is null.");
             return null;
@@ -76,8 +76,8 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        Call<NextBrowseResult> wrapper = mBrowseManagerSigned.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), authorization);
-        NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
+        Call<BrowseResultContinuation> wrapper = mBrowseManagerSigned.continueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), authorization);
+        BrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
 
         if (browseResult == null) {
             Log.e(TAG, "getNextAuthSection: browseResult is null. Maybe invalid next key: " + nextPageKey);
@@ -126,7 +126,7 @@ public class BrowseServiceSigned {
         return null;
     }
 
-    public NextBrowseResult continueSection(String nextKey, String authorization) {
+    public BrowseResultContinuation continueSection(String nextKey, String authorization) {
         return getNextSection(nextKey, authorization);
     }
 
@@ -154,7 +154,7 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        NextTabbedBrowseResult nextHomeTabs = null;
+        TabbedBrowseResultContinuation nextHomeTabs = null;
 
         if (mNextHomeTabsKey != null) {
             nextHomeTabs = getNextTabbedResult(mNextHomeTabsKey, authorization);
@@ -187,7 +187,7 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private NextTabbedBrowseResult getNextTabbedResult(String nextKey, String authorization) {
+    private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getNextTabbedResult: authorization is null.");
             return null;
@@ -195,9 +195,9 @@ public class BrowseServiceSigned {
 
         String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
-        Call<NextTabbedBrowseResult> wrapper = mBrowseManagerSigned.getNextTabbedBrowseResult(query, authorization);
+        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerSigned.continueTabbedBrowseResult(query, authorization);
 
-        NextTabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
+        TabbedBrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
 
         return browseResult;
     }

@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
@@ -68,8 +68,8 @@ public class BrowseManagerSignedTest {
 
         assertNotNull("Item not null", nextPageKey);
 
-        Call<NextBrowseResult> browseResult2 = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), mAuthorization);
-        NextBrowseResult body = browseResult2.execute().body();
+        Call<BrowseResultContinuation> browseResult2 = mService.continueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), mAuthorization);
+        BrowseResultContinuation body = browseResult2.execute().body();
 
         assertNotNull("Items not null", body);
         assertTrue("List > 2", body.getVideoItems().size() > 2);
@@ -125,14 +125,14 @@ public class BrowseManagerSignedTest {
         String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), mAuthorization);
-        Response<NextBrowseResult> execute = next.execute();
-        NextBrowseResult browseResult2 = execute.body();
+        Call<BrowseResultContinuation> next = mService.continueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), mAuthorization);
+        Response<BrowseResultContinuation> execute = next.execute();
+        BrowseResultContinuation browseResult2 = execute.body();
 
         tabbedNextResultNotEmpty(browseResult2);
     }
 
-    private void tabbedNextResultNotEmpty(NextBrowseResult browseResult2) {
+    private void tabbedNextResultNotEmpty(BrowseResultContinuation browseResult2) {
         assertNotNull("Tabbed result not empty", browseResult2);
         assertNotNull("Video list not empty", browseResult2.getVideoItems());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());

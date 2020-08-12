@@ -3,10 +3,10 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         return youTubeMediaGroup;
     }
 
-    public static MediaGroup from(NextBrowseResult nextBrowseResult, MediaGroup baseGroup) {
+    public static MediaGroup from(BrowseResultContinuation nextBrowseResult, MediaGroup baseGroup) {
         if (nextBrowseResult == null) {
             return null;
         }
@@ -99,7 +99,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
     }
 
-    public static MediaGroup from(NextSearchResult nextSearchResult, MediaGroup baseGroup) {
+    public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {
         if (nextSearchResult == null) {
             return null;
         }

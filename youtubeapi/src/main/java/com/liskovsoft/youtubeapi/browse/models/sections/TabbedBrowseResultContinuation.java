@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class NextTabbedBrowseResult {
+public class TabbedBrowseResultContinuation {
     /**
      * Sections == Rows in web app version
      */

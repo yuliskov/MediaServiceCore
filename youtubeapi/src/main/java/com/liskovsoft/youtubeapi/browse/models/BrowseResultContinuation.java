@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class NextBrowseResult {
+public class BrowseResultContinuation {
     @JsonPath({"$.continuationContents.gridContinuation.items[*].gridVideoRenderer",
                "$.continuationContents.horizontalListContinuation.items[*].gridVideoRenderer"})
     private List<VideoItem> mVideoItems;

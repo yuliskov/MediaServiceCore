@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.suggest;
+package com.liskovsoft.youtubeapi.next;
 
-public class SuggestManagerParams {
+public class WatchNextManagerParams {
     private static final String JSON_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"6.20180913\"," +
             "\"screenWidthPoints\":1280,\"screenHeightPoints\":720,\"screenPixelDensity\":1,\"theme\":\"CLASSIC\",\"utcOffsetMinutes\":180," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\"}," +
@@ -15,15 +15,15 @@ public class SuggestManagerParams {
             "\"user\":{\"enableSafetyMode\":false},\"clickTracking\":{\"clickTrackingParams\":\"CNkIEMm3AiITCJCMppLaxOQCFcdimwodFqUFqA==\"}}," +
             "\"continuation\":\"%s\"}";
 
-    public static String getSuggestQuery(String videoId) {
-        return getSuggestQuery(videoId, null, null);
+    public static String getWatchNextQuery(String videoId) {
+        return getWatchNextQuery(videoId, null, null);
     }
 
-    public static String getSuggestQuery(String videoId, String playlistId) {
-        return getSuggestQuery(videoId, playlistId, null);
+    public static String getWatchNextQuery(String videoId, String playlistId) {
+        return getWatchNextQuery(videoId, playlistId, null);
     }
 
-    public static String getSuggestQuery(String videoId, String playlistId, String lang) {
+    public static String getWatchNextQuery(String videoId, String playlistId, String lang) {
         // always presents
         String videoData = String.format("\"videoId\":\"%s\",", videoId);
 

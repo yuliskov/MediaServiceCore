@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.browse.models.sections.NextTabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
@@ -89,9 +89,9 @@ public class BrowseManagerUnsignedTest {
         String visitorId = browseResult.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
-        Response<NextBrowseResult> execute = next.execute();
-        NextBrowseResult nextBrowseResult = execute.body();
+        Call<BrowseResultContinuation> next = mService.getContinueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
+        Response<BrowseResultContinuation> execute = next.execute();
+        BrowseResultContinuation nextBrowseResult = execute.body();
 
         List<VideoItem> videoItems = firstSection.getVideoItems();
         List<VideoItem> nextVideoItems = nextBrowseResult.getVideoItems();
@@ -120,16 +120,16 @@ public class BrowseManagerUnsignedTest {
         String visitorId = browseResult1.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
-        Response<NextBrowseResult> execute = next.execute();
-        NextBrowseResult browseResult2 = execute.body();
+        Call<BrowseResultContinuation> next = mService.getContinueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
+        Response<BrowseResultContinuation> execute = next.execute();
+        BrowseResultContinuation browseResult2 = execute.body();
 
         nextSectionResultNotEmpty(browseResult2);
 
         String nextTabbedPageKey = browseResult1.getBrowseTabs().get(0).getNextPageKey();
-        Call<NextTabbedBrowseResult> nextTabbed = mService.getNextTabbedBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
-        Response<NextTabbedBrowseResult> executeTabbed = nextTabbed.execute();
-        NextTabbedBrowseResult browseTabbedResult2 = executeTabbed.body();
+        Call<TabbedBrowseResultContinuation> nextTabbed = mService.getContinueTabbedBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
+        Response<TabbedBrowseResultContinuation> executeTabbed = nextTabbed.execute();
+        TabbedBrowseResultContinuation browseTabbedResult2 = executeTabbed.body();
 
         nextTabbedResultNotEmpty(browseTabbedResult2);
     }
@@ -150,14 +150,14 @@ public class BrowseManagerUnsignedTest {
         }
     }
 
-    private void nextSectionResultNotEmpty(NextBrowseResult browseResult) {
+    private void nextSectionResultNotEmpty(BrowseResultContinuation browseResult) {
         assertNotNull("Section result: not empty", browseResult);
         assertNotNull("Section result: video list not empty", browseResult.getVideoItems());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
         assertTrue("Section result: video list > 2", browseResult.getVideoItems().size() > 2);
     }
 
-    private void nextTabbedResultNotEmpty(NextTabbedBrowseResult browseResult) {
+    private void nextTabbedResultNotEmpty(TabbedBrowseResultContinuation browseResult) {
         assertNotNull("Tabbed result: not empty", browseResult);
         assertNotNull("Tabbed result: video list not empty", browseResult.getSections());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());

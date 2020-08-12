@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
-import com.liskovsoft.youtubeapi.search.models.NextSearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
@@ -65,8 +65,8 @@ public class SearchManagerUnsignedTest {
         SearchResult result = wrapper.execute().body();
         String nextPageKey = result.getNextPageKey();
 
-        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SearchManagerParams.getNextSearchQuery(nextPageKey));
-        NextSearchResult result2 = wrapper2.execute().body();
+        Call<SearchResultContinuation> wrapper2 = mService.continueSearchResult(SearchManagerParams.getNextSearchQuery(nextPageKey));
+        SearchResultContinuation result2 = wrapper2.execute().body();
 
         assertTrue("List > 3", result2.getVideoItems().size() > 3);
     }

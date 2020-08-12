@@ -14,15 +14,16 @@ public class SuggestManagerParams {
             "\"deviceMake\":\"LG\",\"deviceModel\":\"42LA660S-ZA\",\"platform\":\"TV\"},\"request\":{\"consistencyTokenJars\":[]}," +
             "\"user\":{\"enableSafetyMode\":false},\"clickTracking\":{\"clickTrackingParams\":\"CNkIEMm3AiITCJCMppLaxOQCFcdimwodFqUFqA==\"}}," +
             "\"continuation\":\"%s\"}";
-    private static final String SUBSCRIPTIONS = "FEsubscriptions";
-    private static final String HISTORY = "FEmy_youtube";
-    private static final String HOME = "FEtopics";
 
-    public static String getSuggestionQuery(String videoId) {
-        return getSuggestionQuery(videoId, null, null);
+    public static String getSuggestQuery(String videoId) {
+        return getSuggestQuery(videoId, null, null);
     }
 
-    public static String getSuggestionQuery(String videoId, String playlistId, String lang) {
+    public static String getSuggestQuery(String videoId, String playlistId) {
+        return getSuggestQuery(videoId, playlistId, null);
+    }
+
+    public static String getSuggestQuery(String videoId, String playlistId, String lang) {
         // always presents
         String videoData = String.format("\"videoId\":\"%s\",", videoId);
 

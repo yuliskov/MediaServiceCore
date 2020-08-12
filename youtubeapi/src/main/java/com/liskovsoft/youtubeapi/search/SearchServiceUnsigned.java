@@ -7,14 +7,14 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import retrofit2.Call;
 
 /**
- * Wraps result from the {@link AuthManager} and {@link SearchManager}
+ * Wraps result from the {@link AuthManager} and {@link SearchManagerUnsigned}
  */
 public class SearchServiceUnsigned {
     private static SearchServiceUnsigned sInstance;
-    private final SearchManager mSearchManager;
+    private final SearchManagerUnsigned mSearchManager;
 
     private SearchServiceUnsigned() {
-        mSearchManager = RetrofitHelper.withJsonPath(SearchManager.class);
+        mSearchManager = RetrofitHelper.withJsonPath(SearchManagerUnsigned.class);
     }
 
     public static SearchServiceUnsigned instance() {
@@ -26,7 +26,7 @@ public class SearchServiceUnsigned {
     }
 
     public SearchResult getSearch(String searchText) {
-        Call<SearchResult> wrapper = mSearchManager.getSearchResult(SearchParams.getSearchQuery(searchText), SearchParams.getSearchKey());
+        Call<SearchResult> wrapper = mSearchManager.getSearchResult(SearchManagerParams.getSearchQuery(searchText));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -46,7 +46,7 @@ public class SearchServiceUnsigned {
             throw new IllegalStateException("Can't get next search page. Next search key is empty.");
         }
         
-        Call<NextSearchResult> wrapper = mSearchManager.getNextSearchResult(SearchParams.getNextSearchQuery(nextSearchPageKey), SearchParams.getSearchKey());
+        Call<NextSearchResult> wrapper = mSearchManager.getNextSearchResult(SearchManagerParams.getNextSearchQuery(nextSearchPageKey));
         NextSearchResult searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {

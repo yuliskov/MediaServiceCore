@@ -51,7 +51,7 @@ public class BrowseManagerUnsignedTest {
     }
 
     private List<VideoItem> getRecommended() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -75,7 +75,7 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testEnsureNextResultIsUnique() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
 
         TabbedBrowseResult browseResult = wrapper.execute().body();
 
@@ -89,7 +89,7 @@ public class BrowseManagerUnsignedTest {
         String visitorId = browseResult.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), visitorId);
+        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
         Response<NextBrowseResult> execute = next.execute();
         NextBrowseResult nextBrowseResult = execute.body();
 
@@ -108,7 +108,7 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatTabbedResultNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -120,14 +120,14 @@ public class BrowseManagerUnsignedTest {
         String visitorId = browseResult1.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), visitorId);
+        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
         Response<NextBrowseResult> execute = next.execute();
         NextBrowseResult browseResult2 = execute.body();
 
         nextSectionResultNotEmpty(browseResult2);
 
         String nextTabbedPageKey = browseResult1.getBrowseTabs().get(0).getNextPageKey();
-        Call<NextTabbedBrowseResult> nextTabbed = mService.getNextTabbedBrowseResult(BrowseParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
+        Call<NextTabbedBrowseResult> nextTabbed = mService.getNextTabbedBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
         Response<NextTabbedBrowseResult> executeTabbed = nextTabbed.execute();
         NextTabbedBrowseResult browseTabbedResult2 = executeTabbed.body();
 
@@ -136,7 +136,7 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatAllTabsSectionHaveTitles() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery());
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
 
         Response<TabbedBrowseResult> execute = wrapper.execute();
         TabbedBrowseResult browseResult = execute.body();

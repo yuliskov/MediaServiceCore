@@ -57,7 +57,7 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatSubscriptionsNotEmpty() throws IOException {
-        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), mAuthorization);
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseManagerParams.getSubscriptionsQuery(), mAuthorization);
 
         BrowseResult browseResult1 = wrapper.execute().body();
 
@@ -68,7 +68,7 @@ public class BrowseManagerSignedTest {
 
         assertNotNull("Item not null", nextPageKey);
 
-        Call<NextBrowseResult> browseResult2 = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), mAuthorization);
+        Call<NextBrowseResult> browseResult2 = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), mAuthorization);
         NextBrowseResult body = browseResult2.execute().body();
 
         assertNotNull("Items not null", body);
@@ -87,7 +87,7 @@ public class BrowseManagerSignedTest {
     }
 
     private List<VideoItem> getSubscriptions() throws IOException {
-        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseParams.getSubscriptionsQuery(), mAuthorization);
+        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseManagerParams.getSubscriptionsQuery(), mAuthorization);
 
         BrowseResult browseResult1 = wrapper.execute().body();
 
@@ -98,7 +98,7 @@ public class BrowseManagerSignedTest {
     }
 
     private List<VideoItem> getRecommended() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), mAuthorization);
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery(), mAuthorization);
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -116,7 +116,7 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatHomeNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseParams.getHomeQuery(), mAuthorization);
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery(), mAuthorization);
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
@@ -125,7 +125,7 @@ public class BrowseManagerSignedTest {
         String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), mAuthorization);
+        Call<NextBrowseResult> next = mService.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), mAuthorization);
         Response<NextBrowseResult> execute = next.execute();
         NextBrowseResult browseResult2 = execute.body();
 

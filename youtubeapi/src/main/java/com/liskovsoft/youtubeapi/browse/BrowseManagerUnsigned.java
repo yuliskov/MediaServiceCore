@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.browse;
 
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.NextBrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.NextTabbedBrowseResult;
@@ -15,18 +16,18 @@ import retrofit2.http.POST;
  */
 public interface BrowseManagerUnsigned {
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
     Call<BrowseResult> getBrowseResult(@Body String browseQuery);
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
     Call<NextBrowseResult> getNextBrowseResult(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
     Call<TabbedBrowseResult> getTabbedBrowseResult(@Body String browseQuery);
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8")
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
     Call<NextTabbedBrowseResult> getNextTabbedBrowseResult(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
 }

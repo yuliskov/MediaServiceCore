@@ -32,7 +32,7 @@ public class BrowseServiceUnsigned {
     }
 
     public List<BrowseSection> getHomeSections() {
-        TabbedBrowseResult homeTabs = getTabbedResult(BrowseParams.getHomeQuery());
+        TabbedBrowseResult homeTabs = getTabbedResult(BrowseManagerParams.getHomeQuery());
 
         if (homeTabs == null) {
             Log.e(TAG, "Home tabs are empty");
@@ -79,7 +79,7 @@ public class BrowseServiceUnsigned {
     }
 
     private NextTabbedBrowseResult getNextTabbedResult(String nextKey, String visitorData) {
-        String query = BrowseParams.getNextBrowseQuery(nextKey);
+        String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
         Call<NextTabbedBrowseResult> wrapper = mBrowseManager.getNextTabbedBrowseResult(query, visitorData);
 
@@ -89,7 +89,7 @@ public class BrowseServiceUnsigned {
     }
 
     private NextBrowseResult getNextResult(String nextKey, String visitorData) {
-        String query = BrowseParams.getNextBrowseQuery(nextKey);
+        String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
         Call<NextBrowseResult> wrapper =
                 mBrowseManager.getNextBrowseResult(query, visitorData);

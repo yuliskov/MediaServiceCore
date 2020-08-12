@@ -17,10 +17,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchManagerTest {
+public class SearchManagerUnsignedTest {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
     private static final String SEARCH_TEXT_SPECIAL = "What's Trending";
-    private SearchManager mService;
+    private SearchManagerUnsigned mService;
 
     @Before
     public void setUp() {
@@ -30,26 +30,26 @@ public class SearchManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(SearchManager.class);
+        mService = RetrofitHelper.withJsonPath(SearchManagerUnsigned.class);
     }
 
     @Test
     public void testThatSearchResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT), SearchParams.getSearchKey());
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT));
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultNotEmpty2() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT_SPECIAL), SearchParams.getSearchKey());
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_SPECIAL));
 
         assertTrue("List > 2", wrapper.execute().body().getVideoItems().size() > 2);
     }
 
     @Test
     public void testThatSearchResultFieldsNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT), SearchParams.getSearchKey());
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT));
         SearchResult searchResult = wrapper.execute().body();
         VideoItem videoItem = searchResult.getVideoItems().get(0);
 
@@ -61,11 +61,11 @@ public class SearchManagerTest {
 
     @Test
     public void testThatContinuationResultNotEmpty() throws IOException {
-        Call<SearchResult> wrapper = mService.getSearchResult(SearchParams.getSearchQuery(SEARCH_TEXT), SearchParams.getSearchKey());
+        Call<SearchResult> wrapper = mService.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT));
         SearchResult result = wrapper.execute().body();
         String nextPageKey = result.getNextPageKey();
 
-        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SearchParams.getNextSearchQuery(nextPageKey), SearchParams.getSearchKey());
+        Call<NextSearchResult> wrapper2 = mService.getNextSearchResult(SearchManagerParams.getNextSearchQuery(nextPageKey));
         NextSearchResult result2 = wrapper2.execute().body();
 
         assertTrue("List > 3", result2.getVideoItems().size() > 3);

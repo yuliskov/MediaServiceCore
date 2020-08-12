@@ -37,15 +37,15 @@ public class BrowseServiceSigned {
     }
 
     public BrowseResult getSubscriptions(String authorization) {
-        return getSection(BrowseParams.getSubscriptionsQuery(), authorization);
+        return getSection(BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 
     public BrowseSection getRecommended(String authorization) {
-        return getTabbedSection(BrowseParams.getHomeQuery(), authorization);
+        return getTabbedSection(BrowseManagerParams.getHomeQuery(), authorization);
     }
 
     public BrowseResult getHistory(String authorization) {
-        return getSection(BrowseParams.getHistoryQuery(), authorization);
+        return getSection(BrowseManagerParams.getHistoryQuery(), authorization);
     }
 
     private BrowseResult getSection(String query, String authorization) {
@@ -76,7 +76,7 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        Call<NextBrowseResult> wrapper = mBrowseManagerSigned.getNextBrowseResult(BrowseParams.getNextBrowseQuery(nextPageKey), authorization);
+        Call<NextBrowseResult> wrapper = mBrowseManagerSigned.getNextBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), authorization);
         NextBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
         if (browseResult == null) {
@@ -136,7 +136,7 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        TabbedBrowseResult homeTabs = getTabbedResult(BrowseParams.getHomeQuery(), authorization);
+        TabbedBrowseResult homeTabs = getTabbedResult(BrowseManagerParams.getHomeQuery(), authorization);
 
         if (homeTabs == null) {
             Log.e(TAG, "Home tabs are empty");
@@ -193,7 +193,7 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        String query = BrowseParams.getNextBrowseQuery(nextKey);
+        String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
         Call<NextTabbedBrowseResult> wrapper = mBrowseManagerSigned.getNextTabbedBrowseResult(query, authorization);
 

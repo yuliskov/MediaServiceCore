@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.models;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
-public class DecipherFunction {
+public class DecipherFunctionResult {
     /**
      * Return JS decipher function as string
      */

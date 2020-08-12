@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.DecipherFunction;
+import com.liskovsoft.youtubeapi.app.models.AppInfoResult;
+import com.liskovsoft.youtubeapi.app.models.DecipherFunctionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.squareup.duktape.Duktape;
 import retrofit2.Call;
@@ -57,15 +57,15 @@ public class AppService {
             return mCachedDecipherFunction;
         }
 
-        Call<AppInfo> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
-        AppInfo appInfo = RetrofitHelper.get(wrapper);
+        Call<AppInfoResult> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
+        AppInfoResult appInfo = RetrofitHelper.get(wrapper);
 
         if (appInfo != null) {
             String playerUrl = appInfo.getPlayerUrl();
 
             if (playerUrl != null) {
-                Call<DecipherFunction> decipherWrapper = mAppManager.getDecipherFunction(AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/"));
-                DecipherFunction decipherFunction = RetrofitHelper.get(decipherWrapper);
+                Call<DecipherFunctionResult> decipherWrapper = mAppManager.getDecipherFunction(AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/"));
+                DecipherFunctionResult decipherFunction = RetrofitHelper.get(decipherWrapper);
 
                 if (decipherFunction != null) {
                     String content = decipherFunction.getContent();

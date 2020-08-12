@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.models;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
-public class AppInfo {
+public class AppInfoResult {
     /**
      * Return JS decipher function as string<br/>
      * Player path example: <b>/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.DecipherFunction;
+import com.liskovsoft.youtubeapi.app.models.AppInfoResult;
+import com.liskovsoft.youtubeapi.app.models.DecipherFunctionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class AppManagerTest {
 
     @Test
     public void testThatAppInfoContainsAllRequiredFields() throws IOException {
-        AppInfo appInfo = getAppInfo();
+        AppInfoResult appInfo = getAppInfo();
 
         String playerUrl = appInfo.getPlayerUrl();
         assertNotNull("Player url not null", playerUrl);
@@ -42,14 +42,14 @@ public class AppManagerTest {
 
     @Test
     public void testThatDecipherFunctionNotNull() throws IOException {
-        AppInfo appInfo = getAppInfo();
+        AppInfoResult appInfo = getAppInfo();
 
         String playerUrl = appInfo.getPlayerUrl();
 
         assertNotNull("Player url not null", playerUrl);
 
-        Call<DecipherFunction> wrapper = mManager.getDecipherFunction(AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/"));
-        DecipherFunction decipherFunction = wrapper.execute().body();
+        Call<DecipherFunctionResult> wrapper = mManager.getDecipherFunction(AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/"));
+        DecipherFunctionResult decipherFunction = wrapper.execute().body();
 
         String decipherFunctionContent = decipherFunction.getContent();
         assertNotNull("Decipher function not null", decipherFunctionContent);
@@ -57,8 +57,8 @@ public class AppManagerTest {
         assertTrue("Decipher function has proper signature", decipherFunctionContent.startsWith("function ") && decipherFunctionContent.endsWith("}"));
     }
 
-    private AppInfo getAppInfo() throws IOException {
-        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
+    private AppInfoResult getAppInfo() throws IOException {
+        Call<AppInfoResult> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
         return wrapper.execute().body();
     }
 }

@@ -19,7 +19,7 @@ public class WatchNextItem {
     @JsonPath("$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")
     private String mCanonicalChannelUrl;
     @JsonPath({"$.viewCountText.runs[0].text", "$.viewCountText.simpleText"})
-    private String mViewCount;
+    private String mViewCountText;
     @JsonPath({"$.lengthText.runs[0].text", "$.lengthText.simpleText"})
     private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
@@ -51,8 +51,8 @@ public class WatchNextItem {
         return mCanonicalChannelUrl;
     }
 
-    public String getViewCount() {
-        return mViewCount;
+    public String getViewCountText() {
+        return mViewCountText;
     }
 
     public String getLengthText() {

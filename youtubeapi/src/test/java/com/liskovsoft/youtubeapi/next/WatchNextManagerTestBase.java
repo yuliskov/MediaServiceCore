@@ -26,13 +26,14 @@ public class WatchNextManagerTestBase {
     }
 
     private void checkFields(WatchNextItem watchNextItem) {
-        assertNotNull("Watch next item has title", watchNextItem.getTitle());
-        assertNotNull("Watch next item has video id", watchNextItem.getVideoId());
-        assertNotNull("Watch next item has user name", watchNextItem.getUserName());
-        assertNotNull("Watch next item has channel id", watchNextItem.getChannelId());
-        assertNotNull("Watch next item has view count", watchNextItem.getViewCount());
-        assertNotNull("Watch next item has length", watchNextItem.getLengthText());
-        assertNotNull("Watch next item has thumbnails", watchNextItem.getThumbnails());
-        assertTrue("Watch next item thumbnails not empty", watchNextItem.getThumbnails().size() > 0);
+        String videoId = watchNextItem.getVideoId();
+        assertNotNull("Watch next item has title: " + videoId, watchNextItem.getTitle());
+        assertNotNull("Watch next item has video id: " + videoId, videoId);
+        assertNotNull("Watch next item has user name: " + videoId, watchNextItem.getUserName());
+        assertNotNull("Watch next item has channel id: " + videoId, watchNextItem.getChannelId());
+        assertNotNull("Watch next item has view count: " + videoId, watchNextItem.getViewCountText());
+        assertNotNull("Watch next item has length: " + videoId, watchNextItem.getLengthText());
+        assertNotNull("Watch next item has thumbnails: " + videoId, watchNextItem.getThumbnails());
+        assertTrue("Watch next item thumbnails not empty: " + videoId, watchNextItem.getThumbnails().size() > 0);
     }
 }

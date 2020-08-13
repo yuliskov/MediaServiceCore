@@ -5,83 +5,95 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import java.util.List;
 
 public class VideoItem {
+    private static final String THUMBNAIL_STYLE_LIVE = "LIVE";
+    private static final String THUMBNAIL_STYLE_DEFAULT = "DEFAULT";
     @JsonPath("$.videoId")
-    private String videoId;
+    private String mVideoId;
     @JsonPath("$.thumbnail.thumbnails[*]")
-    private List<Thumbnail> thumbnails;
+    private List<Thumbnail> mThumbnails;
     @JsonPath("$.channelThumbnail.thumbnails[0]")
-    private String channelThumbnail;
+    private String mChannelThumbnail;
     @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
-    private String title;
+    private String mTitle;
     @JsonPath("$.longBylineText.runs[0].text")
-    private String userName;
+    private String mUserName;
     @JsonPath({"$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId"})
-    private String channelId;
+    private String mChannelId;
     @JsonPath("$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")
-    private String canonicalChannelUrl;
+    private String mCanonicalChannelUrl;
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
-    private String publishedTime;
+    private String mPublishedTime;
     @JsonPath({"$.viewCountText.simpleText", "$.viewCountText.runs[0].text"})
-    private String viewCount;
+    private String mViewCount;
     @JsonPath({"$.shortViewCountText.simpleText", "$.shortViewCountText.runs[0].text"})
-    private String shortViewCount;
+    private String mShortViewCount;
     @JsonPath({"$.lengthText.simpleText", "$.lengthText.runs[0].text"})
-    private String lengthText;
+    private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
-    private String accessibilityLengthText;
+    private String mAccessibilityLengthText;
     @JsonPath("$.badges[0].textBadge.label.runs[0].text")
-    private String qualityBadge;
+    private String mQualityBadge;
+    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style")
+    private String mThumbnailStyle;
 
     public String getVideoId() {
-        return videoId;
+        return mVideoId;
     }
 
     public List<Thumbnail> getThumbnails() {
-        return thumbnails;
+        return mThumbnails;
     }
 
     public String getChannelThumbnail() {
-        return channelThumbnail;
+        return mChannelThumbnail;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getUserName() {
-        return userName;
+        return mUserName;
     }
 
     public String getChannelId() {
-        return channelId;
+        return mChannelId;
     }
 
     public String getCanonicalChannelUrl() {
-        return canonicalChannelUrl;
+        return mCanonicalChannelUrl;
     }
 
     public String getPublishedTime() {
-        return publishedTime;
+        return mPublishedTime;
     }
 
     public String getViewCount() {
-        return viewCount;
+        return mViewCount;
     }
 
     public String getShortViewCount() {
-        return shortViewCount;
+        return mShortViewCount;
     }
 
     public String getLengthText() {
-        return lengthText;
+        return mLengthText;
     }
 
     public String getAccessibilityLength() {
-        return accessibilityLengthText;
+        return mAccessibilityLengthText;
     }
 
     public String getQualityBadge() {
-        return qualityBadge;
+        return mQualityBadge;
+    }
+
+    public String getThumbnailStyle() {
+        return mThumbnailStyle;
+    }
+
+    public boolean isLive() {
+        return THUMBNAIL_STYLE_LIVE.equals(mThumbnailStyle);
     }
 }

@@ -65,7 +65,7 @@ public class BrowseManagerUnsignedTest {
         assertNotNull("Title not null", videoItem.getTitle());
         String videoId = videoItem.getVideoId();
         assertNotNull("Id not null", videoId);
-        assertNotNull("Time not null: " + videoId, videoItem.getPublishedTime());
+        assertTrue("Time not null: " + videoId, videoItem.getPublishedTime() != null || videoItem.isLive());
         assertNotNull("Views not null: " + videoId, videoItem.getViewCount());
         assertNotNull("Length not null: " + videoId, videoItem.getLengthText());
         assertNotNull("Channel not null: " + videoId, videoItem.getChannelId());

@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
 import java.util.List;
 
 public class WatchNextItem {
+    private static final String BADGE_STYLE_LIVE = "LIVE";
     @JsonPath("$.videoId")
     private String mVideoId;
     @JsonPath("$.thumbnail.thumbnails[*]")
@@ -26,6 +27,8 @@ public class WatchNextItem {
     private String mAccessibilityLengthText;
     @JsonPath("$.trackingParams")
     private String mTrackingParams;
+    @JsonPath("$.badges[0].liveBadge.label.runs[0].text")
+    private String mBadgeStyle;
 
     public String getVideoId() {
         return mVideoId;
@@ -65,5 +68,13 @@ public class WatchNextItem {
 
     public String getTrackingParams() {
         return mTrackingParams;
+    }
+
+    public String getBadgeStyle() {
+        return mBadgeStyle;
+    }
+
+    public boolean isLive() {
+        return BADGE_STYLE_LIVE.equals(mBadgeStyle);
     }
 }

@@ -102,7 +102,7 @@ public class JsonPathTypeAdapter<T> {
                 }
 
                 if (jsonVal instanceof JsonArray) {
-                    List<Object> list = new ArrayList<>();
+                    List<Object> list = null;
                     Class<?> myType = ReflectionHelper.getGenericParamType(field);
 
                     if (myType == null) {
@@ -119,6 +119,10 @@ public class JsonPathTypeAdapter<T> {
                         }
 
                         if (item != null) {
+                            if (list == null) {
+                                list = new ArrayList<>();
+                            }
+
                             list.add(item);
                         }
                     }

@@ -9,30 +9,30 @@ import java.util.List;
 
 public class BrowseSection {
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
-    private String title;
+    private String mTitle;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")
-    private List<VideoItem> videoItems;
+    private List<VideoItem> mVideoItems;
     @JsonPath("$.content.horizontalListRenderer.items[*].tvMusicVideoRenderer")
-    private List<MusicItem> musicItems;
+    private List<MusicItem> mMusicItems;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridChannelRenderer")
-    private List<ChannelItem> channelItems;
+    private List<ChannelItem> mChannelItems;
     @JsonPath("$.content.horizontalListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public List<VideoItem> getVideoItems() {
-        return videoItems;
+        return mVideoItems;
     }
 
     public List<MusicItem> getMusicItems() {
-        return musicItems;
+        return mMusicItems;
     }
 
     public List<ChannelItem> getChannelItems() {
-        return channelItems;
+        return mChannelItems;
     }
 
     public String getNextPageKey() {

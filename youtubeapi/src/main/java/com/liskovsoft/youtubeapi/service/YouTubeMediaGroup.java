@@ -73,12 +73,16 @@ public class YouTubeMediaGroup implements MediaGroup {
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
-        for (com.liskovsoft.youtubeapi.common.models.videos.VideoItem item : section.getVideoItems()) {
-            mediaItems.add(YouTubeMediaItem.from(item));
+        if (section.getVideoItems() != null) {
+            for (com.liskovsoft.youtubeapi.common.models.videos.VideoItem item : section.getVideoItems()) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
         }
 
-        for (com.liskovsoft.youtubeapi.common.models.videos.MusicItem item : section.getMusicItems()) {
-            mediaItems.add(YouTubeMediaItem.from(item));
+        if (section.getMusicItems() != null) {
+            for (com.liskovsoft.youtubeapi.common.models.videos.MusicItem item : section.getMusicItems()) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
         }
 
         youTubeMediaGroup.mTitle = section.getTitle();

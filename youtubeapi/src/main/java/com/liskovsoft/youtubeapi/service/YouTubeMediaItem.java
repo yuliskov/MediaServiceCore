@@ -58,7 +58,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getViewsAndPublished());
         video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
-        video.setDuration(YouTubeHelper.timeTextToMillis(item.getLength()));
+        video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
         video.setContentType("video/mp4");
         video.setWidth(1280);
         video.setHeight(720);

@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.common.models.videos.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
@@ -41,24 +42,31 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatRequiredFieldsExist() throws IOException {
-        VideoItem videoItem = getRecommended().get(0);
+        BrowseSection recommended = getRecommended();
+        List<VideoItem> videoItems = recommended.getVideoItems();
 
-        testFields(videoItem);
+        if (videoItems != null) {
+            testFields(videoItems.get(0));
+        }
 
-        videoItem = getRecommended().get(0);
+        List<MusicItem> musicItems = recommended.getMusicItems();
 
-        testFields(videoItem);
+        if (musicItems != null) {
+            testFields(musicItems.get(0));
+        }
     }
 
-    private List<VideoItem> getRecommended() throws IOException {
+    private BrowseSection getRecommended() throws IOException {
         Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
 
         TabbedBrowseResult browseResult1 = wrapper.execute().body();
 
         assertNotNull("Items not null", browseResult1);
-        assertTrue("List > 2", browseResult1.getBrowseTabs().get(0).getSections().get(0).getVideoItems().size() > 2);
+        BrowseSection section = browseResult1.getBrowseTabs().get(0).getSections().get(0);
+        assertTrue("List > 2",
+                section.getVideoItems().size() > 2 || section.getMusicItems().size() > 2 || section.getChannelItems().size() > 2);
 
-        return browseResult1.getBrowseTabs().get(0).getSections().get(0).getVideoItems();
+        return section;
     }
 
     private void testFields(VideoItem videoItem) {
@@ -71,6 +79,18 @@ public class BrowseManagerUnsignedTest {
         assertNotNull("Channel not null: " + videoId, videoItem.getChannelId());
         assertNotNull("User not null: " + videoId, videoItem.getUserName());
         assertNotNull("Thumbs not null: " + videoId, videoItem.getThumbnails());
+    }
+
+    private void testFields(MusicItem musicItem) {
+        assertNotNull("Title not null", musicItem.getTitle());
+        String videoId = musicItem.getVideoId();
+        assertNotNull("Id not null", videoId);
+        assertTrue("Time not null: " + videoId, musicItem.getPublishedTime() != null);
+        assertNotNull("Views not null: " + videoId, musicItem.getViewCount());
+        assertNotNull("Length not null: " + videoId, musicItem.getLengthText());
+        assertNotNull("Channel not null: " + videoId, musicItem.getChannelId());
+        assertNotNull("User not null: " + videoId, musicItem.getUserName());
+        assertNotNull("Thumbs not null: " + videoId, musicItem.getThumbnails());
     }
 
     @Test

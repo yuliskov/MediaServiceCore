@@ -151,17 +151,19 @@ public class BrowseManagerUnsignedTest {
     }
 
     private void nextSectionResultNotEmpty(BrowseResultContinuation browseResult) {
-        assertNotNull("Section result: not empty", browseResult);
-        assertNotNull("Section result: video list not empty", browseResult.getVideoItems());
+        assertNotNull("Next section result: not empty", browseResult);
+        assertNotNull("Next section result: item list not empty", browseResult.getVideoItems());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
-        assertTrue("Section result: video list > 2", browseResult.getVideoItems().size() > 2);
+        assertTrue("Next section result: item list > 2", browseResult.getVideoItems().size() > 2 || browseResult.getPlaylistItems().size() > 2);
     }
 
     private void nextTabbedResultNotEmpty(TabbedBrowseResultContinuation browseResult) {
         assertNotNull("Tabbed result: not empty", browseResult);
-        assertNotNull("Tabbed result: video list not empty", browseResult.getSections());
+        assertNotNull("Tabbed result: media item list not empty", browseResult.getSections());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
-        assertTrue("Tabbed result: video list > 2", browseResult.getSections().get(0).getVideoItems().size() > 2);
+        BrowseSection section = browseResult.getSections().get(0);
+        assertTrue("Tabbed result: media item list > 2",
+                section.getVideoItems().size() > 2 || section.getMusicItems().size() > 2 || section.getChannelItems().size() > 2);
     }
 
     private void tabbedResultNotEmpty(TabbedBrowseResult browseResult1) {

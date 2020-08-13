@@ -6,7 +6,6 @@ import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -18,8 +17,8 @@ public class WatchNextManagerTestBase {
 
         WatchNextSection firstRow = allRows.get(0);
 
-        assertFalse("Row has title", firstRow.getTitle().isEmpty());
-        assertFalse("Row has continuation data", firstRow.getNextPageKey().isEmpty());
+        assertNotNull("Row has title", firstRow.getTitle());
+        assertNotNull("Row has continuation data", firstRow.getNextPageKey());
 
         WatchNextItem watchNextItem = firstRow.getWatchNextItems().get(0);
 
@@ -27,12 +26,13 @@ public class WatchNextManagerTestBase {
     }
 
     private void checkFields(WatchNextItem watchNextItem) {
-        assertFalse("Watch next item has title", watchNextItem.getTitle().isEmpty());
-        assertFalse("Watch next item has video id", watchNextItem.getVideoId().isEmpty());
-        assertFalse("Watch next item has user name", watchNextItem.getUserName().isEmpty());
-        assertFalse("Watch next item has channel id", watchNextItem.getChannelId().isEmpty());
-        assertFalse("Watch next item has view count", watchNextItem.getViewCount().isEmpty());
-        assertFalse("Watch next item has length", watchNextItem.getLengthText().isEmpty());
-        assertTrue("Watch next item has thumbnails", watchNextItem.getThumbnails().size() > 0);
+        assertNotNull("Watch next item has title", watchNextItem.getTitle());
+        assertNotNull("Watch next item has video id", watchNextItem.getVideoId());
+        assertNotNull("Watch next item has user name", watchNextItem.getUserName());
+        assertNotNull("Watch next item has channel id", watchNextItem.getChannelId());
+        assertNotNull("Watch next item has view count", watchNextItem.getViewCount());
+        assertNotNull("Watch next item has length", watchNextItem.getLengthText());
+        assertNotNull("Watch next item has thumbnails", watchNextItem.getThumbnails());
+        assertTrue("Watch next item thumbnails not empty", watchNextItem.getThumbnails().size() > 0);
     }
 }

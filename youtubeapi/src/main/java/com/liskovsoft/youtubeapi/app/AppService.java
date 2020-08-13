@@ -13,12 +13,24 @@ import java.util.List;
 public class AppService {
     private static AppService sInstance;
     private final AppManager mAppManager;
-    private final Duktape mDuktape;
+    private Duktape mDuktape;
     private String mCachedDecipherFunction;
 
     private AppService() {
         mAppManager = RetrofitHelper.withRegExp(AppManager.class);
-        mDuktape = Duktape.create();
+    }
+
+    /**
+     * Js evaluator. Contains native *.so libs.<br/>
+     * Note, lazy init for easy testing.<br/>
+     * Could be tested only inside instrumented tests!
+     */
+    private Duktape getDuktape() {
+        if (mDuktape == null) {
+            mDuktape = Duktape.create(); // js evaluator, contains native *.so libs
+        }
+
+        return mDuktape;
     }
 
     public static AppService instance() {
@@ -101,7 +113,7 @@ public class AppService {
     }
 
     private List<String> runDecipherCode(String decipherCode) {
-        String result = mDuktape.evaluate(decipherCode).toString();
+        String result = getDuktape().evaluate(decipherCode).toString();
 
         String[] values = result.split(",");
 

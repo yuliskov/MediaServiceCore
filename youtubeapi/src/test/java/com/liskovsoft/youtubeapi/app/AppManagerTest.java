@@ -41,7 +41,7 @@ public class AppManagerTest {
     }
 
     @Test
-    public void testThatDecipherFunctionNotNull() throws IOException {
+    public void testThatDecipherFunctionIsValid() throws IOException {
         AppInfoResult appInfo = getAppInfo();
 
         String playerUrl = appInfo.getPlayerUrl();
@@ -54,7 +54,8 @@ public class AppManagerTest {
         String decipherFunctionContent = decipherFunction.getContent();
         assertNotNull("Decipher function not null", decipherFunctionContent);
         assertFalse("Decipher function is not empty", decipherFunctionContent.isEmpty());
-        assertTrue("Decipher function has proper signature", decipherFunctionContent.startsWith("function ") && decipherFunctionContent.endsWith("}"));
+        assertTrue("Decipher function has proper content",
+                decipherFunctionContent.startsWith("var ") && decipherFunctionContent.contains("function ") && decipherFunctionContent.endsWith("}"));
     }
 
     private AppInfoResult getAppInfo() throws IOException {

@@ -93,7 +93,7 @@ public class JsonPathTypeAdapter<T> {
                         jsonVal = parser.read(path);
                         break;
                     } catch (PathNotFoundException e) {
-                        Log.e(TAG, type.getSimpleName() + ": " + e.getMessage());
+                        Log.e(TAG, type.getSimpleName() + ": Path not found: " + path);
                     }
                 }
 
@@ -110,7 +110,13 @@ public class JsonPathTypeAdapter<T> {
                     }
 
                     for (Object jsonObj : (JsonArray) jsonVal) {
-                        Object item = readType(myType, jsonObj.toString());
+                        Object item;
+
+                        if (jsonObj instanceof JsonPrimitive) {
+                            item = parsePrimitive((JsonPrimitive) jsonObj);
+                        } else {
+                            item = readType(myType, jsonObj.toString());
+                        }
 
                         if (item != null) {
                             list.add(item);
@@ -119,13 +125,7 @@ public class JsonPathTypeAdapter<T> {
 
                     field.set(obj, list);
                 } else if (jsonVal instanceof JsonPrimitive) {
-                    Object val = null;
-
-                    if (((JsonPrimitive) jsonVal).isNumber()) {
-                        val = ((JsonPrimitive) jsonVal).getAsInt();
-                    } else if (((JsonPrimitive) jsonVal).isString()) {
-                        val = ((JsonPrimitive) jsonVal).getAsString();
-                    }
+                    Object val = parsePrimitive((JsonPrimitive) jsonVal);
 
                     field.set(obj, val);
                 } else if (jsonVal instanceof JsonObject) {
@@ -162,5 +162,19 @@ public class JsonPathTypeAdapter<T> {
         }
 
         return null;
+    }
+
+    private Object parsePrimitive(JsonPrimitive jsonVal) {
+        Object val;
+
+        if (jsonVal.isNumber()) {
+            val = jsonVal.getAsInt(); // Integer
+        } else if (jsonVal.isBoolean()) {
+            val = jsonVal.getAsBoolean(); // Boolean
+        } else {
+            val = jsonVal.getAsString(); // String
+        }
+
+        return val;
     }
 }

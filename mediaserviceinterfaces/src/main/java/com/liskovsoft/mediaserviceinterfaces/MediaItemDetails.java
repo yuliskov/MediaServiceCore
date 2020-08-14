@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface MediaItemDetails {
     ArrayList<MediaFormat> getAdaptiveFormats();
-
+    ArrayList<MediaFormat> getRegularFormats();
     // video metadata
     String getLengthSeconds();
     void setLengthSeconds(String lengthSeconds);
@@ -22,4 +22,6 @@ public interface MediaItemDetails {
     void setVideoId(String videoId);
     String getChannelId();
     void setChannelId(String channelId);
+    boolean containsDashInfo();
+    boolean containsRegularInfo();
 }

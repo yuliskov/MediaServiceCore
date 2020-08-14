@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MediaFormatComparator;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 
@@ -15,6 +16,20 @@ public class SimpleUrlListBuilder implements UrlListBuilder {
     public SimpleUrlListBuilder() {
         MediaFormatComparator comp = new MediaFormatComparator(MediaFormatComparator.ORDER_ASCENDANT);
         mVideos = new TreeSet<>(comp);
+    }
+
+    public static UrlListBuilder from(MediaItemDetails formatInfo) {
+        if (!formatInfo.containsRegularInfo()) {
+            return null;
+        }
+
+        UrlListBuilder builder = new SimpleUrlListBuilder();
+
+        for (MediaFormat format : formatInfo.getRegularFormats()) {
+            builder.append(format);
+        }
+
+        return builder;
     }
 
     @Override
@@ -39,6 +54,8 @@ public class SimpleUrlListBuilder implements UrlListBuilder {
         }
 
         // remain only first item as ExoPlayer doesn't support adaptive streaming for url list
-        return list.subList(0, 1);
+        //return list.subList(0, 1);
+
+        return list;
     }
 }

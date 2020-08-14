@@ -61,6 +61,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     public static MPDBuilder from(MediaItemDetails formatInfo) {
+        if (!formatInfo.containsDashInfo()) {
+            return null;
+        }
+
         MPDBuilder builder = new SimpleMPDBuilder(formatInfo);
 
         for (MediaFormat format : formatInfo.getAdaptiveFormats()) {
@@ -192,11 +196,11 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         // Representation
         for (MediaFormat item : filtered) {
-            if (mLimitVideoCodec != null && isVideo(item) && !item.getType().contains(mLimitVideoCodec)) {
+            if (mLimitVideoCodec != null && isVideo(item) && !item.getMimeType().contains(mLimitVideoCodec)) {
                 continue;
             }
 
-            if (mLimitAudioCodec != null && isAudio(item) && !item.getType().contains(mLimitAudioCodec)) {
+            if (mLimitAudioCodec != null && isAudio(item) && !item.getMimeType().contains(mLimitAudioCodec)) {
                 continue;
             }
 
@@ -362,7 +366,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     private String extractMimeType(MediaFormat item) {
         if (item.getGlobalSegmentList() != null) {
-            return item.getType();
+            return item.getMimeType();
         }
 
         String codecs = extractCodecs(item);
@@ -513,7 +517,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private boolean isAudio(MediaFormat item) {
-        return item.getType() != null && item.getType().contains("audio");
+        return item.getMimeType() != null && item.getMimeType().contains("audio");
     }
 
     private XmlSerializer text(String url) {
@@ -526,7 +530,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     private String extractCodecs(MediaFormat item) {
         // input example: video/mp4;+codecs="avc1.640033"
-        Matcher matcher = CODECS_PATTERN.matcher(item.getType());
+        Matcher matcher = CODECS_PATTERN.matcher(item.getMimeType());
         matcher.find();
         return matcher.group(1);
     }

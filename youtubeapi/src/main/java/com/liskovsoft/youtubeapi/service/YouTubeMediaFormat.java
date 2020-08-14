@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mIndexRange;
     private String mUrl;
     private String mSignatureCipher;
-    private String mType;
+    private String mMimeType;
     private String mITag;
     private String mClen;
     private String mBitrate;
@@ -30,9 +32,13 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mSourceUrl;
     private List<String> mSegmentUrlList;
     private List<String> mGlobalSegmentList;
+    private String mAudioQuality;
+    private int mFormatType;
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
-        YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
+        YouTubeMediaFormat mediaFormat = createBaseFormat(format);
+
+        mediaFormat.mFormatType = FORMAT_TYPE_DASH;
 
         mediaFormat.mIndex = format.getIndex();
 
@@ -40,16 +46,33 @@ public class YouTubeMediaFormat implements MediaFormat {
             mediaFormat.mIndexRange = format.getIndexRange().toString();
         }
 
+        mediaFormat.mInit = format.getInit();
+
+        return mediaFormat;
+    }
+
+    public static MediaFormat from(RegularVideoFormat format) {
+        YouTubeMediaFormat mediaFormat = createBaseFormat(format);
+
+        mediaFormat.mFormatType = FORMAT_TYPE_REGULAR;
+
+        mediaFormat.mAudioQuality = format.getAudioQuality();
+
+        return mediaFormat;
+    }
+
+    private static YouTubeMediaFormat createBaseFormat(VideoFormat format) {
+        YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
+
         mediaFormat.mUrl = format.getUrl();
         mediaFormat.mSignatureCipher = format.getSignatureCipher();
-        mediaFormat.mType = format.getType();
+        mediaFormat.mMimeType = format.getMimeType();
         String iTag = format.getITag() == 0 ? "" : String.valueOf(format.getITag());
         mediaFormat.mITag = iTag;
         mediaFormat.mClen = format.getContentLength();
         String bitrate = format.getBitrate() == 0 ? "" : String.valueOf(format.getBitrate());
         mediaFormat.mBitrate = bitrate;
         mediaFormat.mSize = format.getSize();
-        mediaFormat.mInit = format.getInit();
         String fps = format.getFps() == 0 ? "" : String.valueOf(format.getFps());
         mediaFormat.mFps = fps;
         mediaFormat.mFormat = format.getFormat();
@@ -84,13 +107,13 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     @Override
-    public String getType() {
-        return mType;
+    public String getMimeType() {
+        return mMimeType;
     }
 
     @Override
-    public void setType(String type) {
-        mType = type;
+    public void setMimeType(String mimeType) {
+        mMimeType = mimeType;
     }
 
     @Override
@@ -316,5 +339,13 @@ public class YouTubeMediaFormat implements MediaFormat {
                 getClen(),
                 getSize(),
                 getITag());
+    }
+
+    public String getAudioQuality() {
+        return mAudioQuality;
+    }
+
+    public int getFormatType() {
+        return mFormatType;
     }
 }

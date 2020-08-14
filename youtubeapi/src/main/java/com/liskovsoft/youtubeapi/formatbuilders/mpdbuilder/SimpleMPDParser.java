@@ -131,7 +131,7 @@ public class SimpleMPDParser implements MPDParser {
     private MediaFormat readSpecialMediaItem(XmlPullParser parser, String mimeType) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_SEGMENT_LIST);
         MediaFormat item = new YouTubeMediaFormat();
-        item.setType(mimeType);
+        item.setMimeType(mimeType);
 
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -186,7 +186,7 @@ public class SimpleMPDParser implements MPDParser {
 
         // common tags
         item.setITag(parser.getAttributeValue(ns, "id"));
-        item.setType(String.format("%s;+codecs=\"%s\"", mimeType, parser.getAttributeValue(ns, "codecs")));
+        item.setMimeType(String.format("%s;+codecs=\"%s\"", mimeType, parser.getAttributeValue(ns, "codecs")));
         item.setBitrate(parser.getAttributeValue(ns, "bandwidth"));
 
         String frameRate = parser.getAttributeValue(ns, "frameRate");

@@ -48,7 +48,7 @@ public class VideoFormat {
     @JsonPath("$.signatureCipher")
     private String mSignatureCipher;
     @JsonPath("$.mimeType")
-    private String mType;
+    private String mMimeType;
     @JsonPath("$.contentLength")
     private String mContentLength;
     @JsonPath("$.bitrate")
@@ -132,12 +132,12 @@ public class VideoFormat {
         return mRealSignature;
     }
 
-    public String getType() {
-        return mType;
+    public String getMimeType() {
+        return mMimeType;
     }
 
-    public void setType(String type) {
-        mType = type;
+    public void setMimeType(String mimeType) {
+        mMimeType = mimeType;
     }
 
     public int getITag() {

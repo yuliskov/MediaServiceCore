@@ -3,13 +3,15 @@ package com.liskovsoft.mediaserviceinterfaces;
 import java.util.List;
 
 public interface MediaFormat extends Comparable<MediaFormat> {
+    int FORMAT_TYPE_DASH = 0;
+    int FORMAT_TYPE_REGULAR = 1;
     // Common
     String getUrl();
     void setUrl(String url);
     String getSignatureCipher();
     void setSignatureCipher(String s);
-    String getType();
-    void setType(String type);
+    String getMimeType();
+    void setMimeType(String mimeType);
     String getITag();
     void setITag(String itag);
 

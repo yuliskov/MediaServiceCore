@@ -5,12 +5,11 @@ import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
 import java.util.ArrayList;
 
 public class YouTubeMediaItemDetails implements MediaItemDetails {
-    private ArrayList<MediaFormat> mAdaptiveFormats;
-
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
@@ -20,6 +19,8 @@ public class YouTubeMediaItemDetails implements MediaItemDetails {
     private String mVideoId;
     private String mChannelId;
     private boolean mIsLive;
+    private ArrayList<MediaFormat> mAdaptiveFormats;
+    private ArrayList<MediaFormat> mRegularFormats;
 
     public static MediaItemDetails from(VideoInfoResult videoInfo) {
         YouTubeMediaItemDetails formatInfo = new YouTubeMediaItemDetails();
@@ -29,6 +30,14 @@ public class YouTubeMediaItemDetails implements MediaItemDetails {
 
             for (AdaptiveVideoFormat format : videoInfo.getAdaptiveFormats()) {
                 formatInfo.mAdaptiveFormats.add(YouTubeMediaFormat.from(format));
+            }
+        }
+
+        if (videoInfo.getRegularFormats() != null) {
+            formatInfo.mRegularFormats = new ArrayList<>();
+
+            for (RegularVideoFormat format : videoInfo.getRegularFormats()) {
+                formatInfo.mRegularFormats.add(YouTubeMediaFormat.from(format));
             }
         }
 
@@ -51,6 +60,11 @@ public class YouTubeMediaItemDetails implements MediaItemDetails {
     @Override
     public ArrayList<MediaFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
+    }
+
+    @Override
+    public ArrayList<MediaFormat> getRegularFormats() {
+        return mRegularFormats;
     }
 
     @Override
@@ -135,5 +149,15 @@ public class YouTubeMediaItemDetails implements MediaItemDetails {
 
     public boolean isLive() {
         return mIsLive;
+    }
+
+    @Override
+    public boolean containsDashInfo() {
+        return mAdaptiveFormats != null;
+    }
+
+    @Override
+    public boolean containsRegularInfo() {
+        return mRegularFormats != null;
     }
 }

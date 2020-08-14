@@ -172,7 +172,7 @@ public class BrowseManagerUnsignedTest {
 
     private void nextSectionResultNotEmpty(BrowseResultContinuation browseResult) {
         assertNotNull("Next section result: not empty", browseResult);
-        assertNotNull("Next section result: item list not empty", browseResult.getVideoItems());
+        assertTrue("Next section result: item list not empty", browseResult.getVideoItems() != null || browseResult.getPlaylistItems() != null);
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
         assertTrue("Next section result: item list > 2", browseResult.getVideoItems().size() > 2 || browseResult.getPlaylistItems().size() > 2);
     }

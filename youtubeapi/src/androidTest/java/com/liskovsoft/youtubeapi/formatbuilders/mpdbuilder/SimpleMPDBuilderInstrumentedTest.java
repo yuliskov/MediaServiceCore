@@ -30,18 +30,20 @@ public class SimpleMPDBuilderInstrumentedTest {
     @Test
     public void testThatCipheredFormatIsValid() throws IOException {
         // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
-        testVideoFormat("0YEZiDtnbdA");
+        testVideoFormatUrl("0YEZiDtnbdA");
     }
 
     @Test
     public void testThatSimpleFormatIsValid() throws IOException {
         // Mafia: Definitive Edition - Official Story Trailer | Summer of Gaming 2020
-        testVideoFormat("s2lGEhSlOTY");
+        testVideoFormatUrl("s2lGEhSlOTY");
     }
 
     @Test
     public void testThatMpdNotEmpty() {
         MediaItemDetails mediaItemDetails = getMediaItemDetails();
+
+        assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 
         MPDBuilder builder = SimpleMPDBuilder.from(mediaItemDetails);
 
@@ -64,7 +66,7 @@ public class SimpleMPDBuilderInstrumentedTest {
         return mService.getMediaItemManager().getMediaItemDetails(mediaItem);
     }
 
-    private void testVideoFormat(String videoId) {
+    private void testVideoFormatUrl(String videoId) {
         MediaItemDetails mediaItemDetails = mService.getMediaItemManager().getMediaItemDetails(videoId);
 
         assertNotNull("Format info not empty", mediaItemDetails);

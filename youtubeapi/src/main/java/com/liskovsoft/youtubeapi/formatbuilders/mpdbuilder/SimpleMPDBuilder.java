@@ -61,14 +61,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     public static MPDBuilder from(MediaItemDetails formatInfo) {
-        if (!formatInfo.containsDashInfo()) {
-            return null;
-        }
-
         MPDBuilder builder = new SimpleMPDBuilder(formatInfo);
 
-        for (MediaFormat format : formatInfo.getAdaptiveFormats()) {
-            builder.append(format);
+        if (formatInfo.containsDashInfo()) {
+            for (MediaFormat format : formatInfo.getAdaptiveFormats()) {
+                builder.append(format);
+            }
         }
 
         return builder;
@@ -595,6 +593,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     @Override
     public InputStream build() {
+        if (!mInfo.containsDashInfo()) {
+            return null;
+        }
+
         if (ensureRequiredFieldsAreSet()) {
             writePrologue();
 

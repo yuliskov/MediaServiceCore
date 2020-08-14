@@ -12,18 +12,16 @@ import java.util.TreeSet;
 
 public class SimpleUrlListBuilder implements UrlListBuilder {
     private final Set<MediaFormat> mVideos;
+    private final MediaItemDetails mInfo;
 
-    public SimpleUrlListBuilder() {
+    public SimpleUrlListBuilder(MediaItemDetails formatInfo) {
+        mInfo = formatInfo;
         MediaFormatComparator comp = new MediaFormatComparator(MediaFormatComparator.ORDER_ASCENDANT);
         mVideos = new TreeSet<>(comp);
     }
 
     public static UrlListBuilder from(MediaItemDetails formatInfo) {
-        if (!formatInfo.containsRegularInfo()) {
-            return null;
-        }
-
-        UrlListBuilder builder = new SimpleUrlListBuilder();
+        UrlListBuilder builder = new SimpleUrlListBuilder(formatInfo);
 
         for (MediaFormat format : formatInfo.getRegularFormats()) {
             builder.append(format);
@@ -46,6 +44,10 @@ public class SimpleUrlListBuilder implements UrlListBuilder {
 
     @Override
     public List<String> buildUriList() {
+        if (!mInfo.containsUrlListInfo()) {
+            return null;
+        }
+
         List<String> list = new ArrayList<>();
 
         // put hq items on top

@@ -3,8 +3,13 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
+import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.SimpleUrlListBuilder;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.SimpleMPDBuilder;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+
+import java.io.InputStream;
+import java.util.List;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static MediaItemManager sInstance;
@@ -34,5 +39,15 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(videoId);
 
         return YouTubeMediaItemDetails.from(videoInfo);
+    }
+
+    @Override
+    public InputStream getMpdStream(MediaItemDetails mediaItemDetails) {
+        return SimpleMPDBuilder.from(mediaItemDetails).build();
+    }
+
+    @Override
+    public List<String> getUrlList(MediaItemDetails mediaItemDetails) {
+        return SimpleUrlListBuilder.from(mediaItemDetails).buildUriList();
     }
 }

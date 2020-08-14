@@ -157,7 +157,7 @@ public class YouTubeMediaItemDetails implements MediaItemDetails {
     }
 
     @Override
-    public boolean containsRegularInfo() {
+    public boolean containsUrlListInfo() {
         return mRegularFormats != null;
     }
 }

@@ -18,6 +18,12 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class SimpleMPDBuilderInstrumentedTest {
+    // Mafia: Definitive Edition - Official Story Trailer | Summer of Gaming 2020
+    private static final String VIDEO_ID_SIMPLE = "s2lGEhSlOTY";
+
+    // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
+    private static final String VIDEO_ID_CIPHERED = "0YEZiDtnbdA";
+
     private MediaService mService;
     private OkHttpManager mOkHttpHelper;
 
@@ -29,25 +35,21 @@ public class SimpleMPDBuilderInstrumentedTest {
 
     @Test
     public void testThatCipheredFormatIsValid() throws IOException {
-        // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
-        testVideoFormatUrl("0YEZiDtnbdA");
+        testVideoFormatUrl(VIDEO_ID_CIPHERED);
     }
 
     @Test
     public void testThatSimpleFormatIsValid() throws IOException {
-        // Mafia: Definitive Edition - Official Story Trailer | Summer of Gaming 2020
-        testVideoFormatUrl("s2lGEhSlOTY");
+        testVideoFormatUrl(VIDEO_ID_SIMPLE);
     }
 
     @Test
     public void testThatMpdNotEmpty() {
-        MediaItemDetails mediaItemDetails = getMediaItemDetails();
+        MediaItemDetails mediaItemDetails = mService.getMediaItemManager().getMediaItemDetails(VIDEO_ID_SIMPLE);
 
         assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 
-        MPDBuilder builder = SimpleMPDBuilder.from(mediaItemDetails);
-
-        InputStream mpdStream = builder.build();
+        InputStream mpdStream = mService.getMediaItemManager().getMpdStream(mediaItemDetails);
 
         assertNotNull("Mpd stream not null", mpdStream);
         String mpdContent = Helpers.toString(mpdStream);

@@ -23,5 +23,5 @@ public interface MediaItemDetails {
     String getChannelId();
     void setChannelId(String channelId);
     boolean containsDashInfo();
-    boolean containsRegularInfo();
+    boolean containsUrlListInfo();
 }

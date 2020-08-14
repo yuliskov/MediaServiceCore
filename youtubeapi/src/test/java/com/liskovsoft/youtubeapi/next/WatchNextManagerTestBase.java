@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class WatchNextManagerTestBase {
     public void checkWatchNextResultFields(WatchNextResult watchNextResult) {
         assertNotNull("Watch next not empty", watchNextResult);
-        List<WatchNextSection> allRows = watchNextResult.getSections();
+        List<WatchNextSection> allRows = watchNextResult.getWatchNextSections();
         assertNotNull("Watch next contains rows", allRows);
 
         WatchNextSection firstRow = allRows.get(0);

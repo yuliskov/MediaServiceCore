@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MediaFormatComparator;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 
@@ -12,15 +12,15 @@ import java.util.TreeSet;
 
 public class SimpleUrlListBuilder implements UrlListBuilder {
     private final Set<MediaFormat> mVideos;
-    private final MediaItemDetails mInfo;
+    private final MediaItemFormatDetails mInfo;
 
-    public SimpleUrlListBuilder(MediaItemDetails formatInfo) {
+    public SimpleUrlListBuilder(MediaItemFormatDetails formatInfo) {
         mInfo = formatInfo;
         MediaFormatComparator comp = new MediaFormatComparator(MediaFormatComparator.ORDER_ASCENDANT);
         mVideos = new TreeSet<>(comp);
     }
 
-    public static UrlListBuilder from(MediaItemDetails formatInfo) {
+    public static UrlListBuilder from(MediaItemFormatDetails formatInfo) {
         UrlListBuilder builder = new SimpleUrlListBuilder(formatInfo);
 
         for (MediaFormat format : formatInfo.getRegularFormats()) {

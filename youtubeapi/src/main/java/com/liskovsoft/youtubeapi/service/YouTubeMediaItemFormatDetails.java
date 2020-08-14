@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
 import java.util.ArrayList;
 
-public class YouTubeMediaItemDetails implements MediaItemDetails {
+public class YouTubeMediaItemFormatDetails implements MediaItemFormatDetails {
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
@@ -22,8 +22,8 @@ public class YouTubeMediaItemDetails implements MediaItemDetails {
     private ArrayList<MediaFormat> mAdaptiveFormats;
     private ArrayList<MediaFormat> mRegularFormats;
 
-    public static MediaItemDetails from(VideoInfoResult videoInfo) {
-        YouTubeMediaItemDetails formatInfo = new YouTubeMediaItemDetails();
+    public static MediaItemFormatDetails from(VideoInfoResult videoInfo) {
+        YouTubeMediaItemFormatDetails formatInfo = new YouTubeMediaItemFormatDetails();
 
         if (videoInfo.getAdaptiveFormats() != null) {
             formatInfo.mAdaptiveFormats = new ArrayList<>();

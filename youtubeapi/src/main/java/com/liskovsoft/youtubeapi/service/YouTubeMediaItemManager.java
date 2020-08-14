@@ -1,8 +1,9 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemSuggestions;
 import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.SimpleUrlListBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.SimpleMPDBuilder;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
@@ -14,9 +15,11 @@ import java.util.List;
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static MediaItemManager sInstance;
     private final VideoInfoService mVideoInfoService;
+    private final YouTubeSignInManager mSignInManager;
 
     private YouTubeMediaItemManager() {
         mVideoInfoService = VideoInfoService.instance();
+        mSignInManager = YouTubeSignInManager.instance();
     }
 
     public static MediaItemManager instance() {
@@ -28,26 +31,40 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public MediaItemDetails getMediaItemDetails(MediaItem item) {
+    public MediaItemFormatDetails getFormatDetails(MediaItem item) {
         VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(item.getVideoId());
 
-        return YouTubeMediaItemDetails.from(videoInfo);
+        return YouTubeMediaItemFormatDetails.from(videoInfo);
     }
 
     @Override
-    public MediaItemDetails getMediaItemDetails(String videoId) {
+    public MediaItemFormatDetails getFormatDetails(String videoId) {
         VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(videoId);
 
-        return YouTubeMediaItemDetails.from(videoInfo);
+        return YouTubeMediaItemFormatDetails.from(videoInfo);
     }
 
     @Override
-    public InputStream getMpdStream(MediaItemDetails mediaItemDetails) {
-        return SimpleMPDBuilder.from(mediaItemDetails).build();
+    public InputStream getMpdStream(MediaItemFormatDetails formatDetails) {
+        return SimpleMPDBuilder.from(formatDetails).build();
     }
 
     @Override
-    public List<String> getUrlList(MediaItemDetails mediaItemDetails) {
-        return SimpleUrlListBuilder.from(mediaItemDetails).buildUriList();
+    public List<String> getUrlList(MediaItemFormatDetails formatDetails) {
+        return SimpleUrlListBuilder.from(formatDetails).buildUriList();
+    }
+
+    @Override
+    public MediaItemSuggestions getSuggestions(MediaItem item) {
+        // TODO: not implemented
+
+        return null;
+    }
+
+    @Override
+    public MediaItemSuggestions getSuggestions(String videoId) {
+        // TODO: not implemented
+
+        return null;
     }
 }

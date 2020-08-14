@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemDetails;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
@@ -45,7 +45,7 @@ public class SimpleMPDBuilderInstrumentedTest {
 
     @Test
     public void testThatMpdNotEmpty() {
-        MediaItemDetails mediaItemDetails = mService.getMediaItemManager().getMediaItemDetails(VIDEO_ID_SIMPLE);
+        MediaItemFormatDetails mediaItemDetails = mService.getMediaItemManager().getFormatDetails(VIDEO_ID_SIMPLE);
 
         assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 
@@ -56,7 +56,7 @@ public class SimpleMPDBuilderInstrumentedTest {
         assertFalse("Mpd content not empty", mpdContent.isEmpty());
     }
 
-    private MediaItemDetails getMediaItemDetails() {
+    private MediaItemFormatDetails getMediaItemDetails() {
         MediaGroup homeGroup = mService.getMediaGroupManager().getHomeGroup();
 
         List<MediaItem> mediaItems = homeGroup.getNestedGroups().get(0).getMediaItems();
@@ -65,11 +65,11 @@ public class SimpleMPDBuilderInstrumentedTest {
 
         MediaItem mediaItem = mediaItems.get(0);
 
-        return mService.getMediaItemManager().getMediaItemDetails(mediaItem);
+        return mService.getMediaItemManager().getFormatDetails(mediaItem);
     }
 
     private void testVideoFormatUrl(String videoId) {
-        MediaItemDetails mediaItemDetails = mService.getMediaItemManager().getMediaItemDetails(videoId);
+        MediaItemFormatDetails mediaItemDetails = mService.getMediaItemManager().getFormatDetails(videoId);
 
         assertNotNull("Format info not empty", mediaItemDetails);
         assertTrue("Format list not empty", mediaItemDetails.getAdaptiveFormats().size() > 0);

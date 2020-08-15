@@ -57,9 +57,9 @@ public class SimpleMPDBuilderInstrumentedTest {
     }
 
     private MediaItemFormatInfo getMediaItemDetails() {
-        MediaGroup homeGroup = mService.getMediaGroupManager().getHomeGroup();
+        List<MediaGroup> homeGroups = mService.getMediaGroupManager().getHomeGroup();
 
-        List<MediaItem> mediaItems = homeGroup.getNestedGroups().get(0).getMediaItems();
+        List<MediaItem> mediaItems = homeGroups.get(0).getMediaItems();
 
         assertTrue("Media item not empty", mediaItems != null && mediaItems.size() > 0);
 

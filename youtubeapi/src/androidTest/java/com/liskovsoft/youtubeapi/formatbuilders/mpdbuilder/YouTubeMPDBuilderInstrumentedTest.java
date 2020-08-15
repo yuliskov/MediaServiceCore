@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class SimpleMPDBuilderInstrumentedTest {
+public class YouTubeMPDBuilderInstrumentedTest {
     private MediaService mService;
     private OkHttpManager mOkHttpHelper;
 
@@ -44,7 +44,7 @@ public class SimpleMPDBuilderInstrumentedTest {
 
         assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 
-        InputStream mpdStream = mService.getMediaItemManager().getMpdStream(mediaItemDetails);
+        InputStream mpdStream = mediaItemDetails.getMpdStream();
 
         assertNotNull("Mpd stream not null", mpdStream);
         String mpdContent = Helpers.toString(mpdStream);

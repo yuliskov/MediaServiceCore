@@ -13,15 +13,15 @@ import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OtfSegmentParser {
-    private static final String TAG = OtfSegmentParser.class.getSimpleName();
+public class YouTubeOtfSegmentParser {
+    private static final String TAG = YouTubeOtfSegmentParser.class.getSimpleName();
     private static final Pattern SEGMENT_PATTERN = Pattern.compile("Segment-Durations-Ms: (.*)");
     private static final Pattern DIGIT_PATTERN = Pattern.compile("\\d+");
     private final boolean mCached;
     private List<OtfSegment> mCachedSegments;
     private boolean mAlreadyParsed;
 
-    public OtfSegmentParser(boolean cached) {
+    public YouTubeOtfSegmentParser(boolean cached) {
         mCached = cached;
     }
 

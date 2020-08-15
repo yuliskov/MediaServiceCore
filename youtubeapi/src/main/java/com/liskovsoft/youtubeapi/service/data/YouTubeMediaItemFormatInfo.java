@@ -2,12 +2,18 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.SimpleUrlListBuilder;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
+import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mLengthSeconds;
@@ -19,8 +25,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mVideoId;
     private String mChannelId;
     private boolean mIsLive;
-    private ArrayList<MediaFormat> mAdaptiveFormats;
-    private ArrayList<MediaFormat> mRegularFormats;
+    private List<MediaFormat> mAdaptiveFormats;
+    private List<MediaFormat> mRegularFormats;
+    private List<MediaSubtitle> mSubtitles;
     private String mDashManifestUrl;
     private String mHlsManifestUrl;
 
@@ -59,17 +66,32 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
         formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
 
+        List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
+
+        if (captionTracks != null) {
+            formatInfo.mSubtitles = new ArrayList<>();
+
+            for (CaptionTrack track : captionTracks) {
+                formatInfo.mSubtitles.add(YouTubeMediaSubtitle.from(track));
+            }
+        }
+
         return formatInfo;
     }
 
     @Override
-    public ArrayList<MediaFormat> getAdaptiveFormats() {
+    public List<MediaFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
     }
 
     @Override
-    public ArrayList<MediaFormat> getRegularFormats() {
+    public List<MediaFormat> getRegularFormats() {
         return mRegularFormats;
+    }
+
+    @Override
+    public List<MediaSubtitle> getSubtitles() {
+        return mSubtitles;
     }
 
     @Override
@@ -174,5 +196,15 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public String getDashManifestUrl() {
         return mDashManifestUrl;
+    }
+
+    @Override
+    public InputStream getMpdStream() {
+        return YouTubeMPDBuilder.from(this).build();
+    }
+
+    @Override
+    public List<String> getUrlList() {
+        return SimpleUrlListBuilder.from(this).buildUriList();
     }
 }

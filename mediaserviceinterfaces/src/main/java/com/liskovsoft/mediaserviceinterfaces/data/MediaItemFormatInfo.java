@@ -1,10 +1,12 @@
 package com.liskovsoft.mediaserviceinterfaces.data;
 
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.util.List;
 
 public interface MediaItemFormatInfo {
-    ArrayList<MediaFormat> getAdaptiveFormats();
-    ArrayList<MediaFormat> getRegularFormats();
+    List<MediaFormat> getAdaptiveFormats();
+    List<MediaFormat> getRegularFormats();
+    List<MediaSubtitle> getSubtitles();
     String getHlsManifestUrl();
     String getDashManifestUrl();
     // video metadata
@@ -26,4 +28,6 @@ public interface MediaItemFormatInfo {
     void setChannelId(String channelId);
     boolean containsDashInfo();
     boolean containsUrlListInfo();
+    InputStream getMpdStream();
+    List<String> getUrlList();
 }

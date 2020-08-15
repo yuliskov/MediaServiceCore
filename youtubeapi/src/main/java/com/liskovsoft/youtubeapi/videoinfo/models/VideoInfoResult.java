@@ -13,14 +13,14 @@ public class VideoInfoResult {
     @JsonPath("$.streamingData.adaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mAdaptiveFormats;
 
+    @JsonPath("$.captions.playerCaptionsTracklistRenderer.captionTracks[*]")
+    private List<CaptionTrack> mCaptionTracks;
+
     @JsonPath("$.streamingData.hlsManifestUrl")
     private String mHlsManifestUrl;
 
     @JsonPath("$.playbackTracking.videostatsWatchtimeUrl.baseUrl")
     private String mVideoStatsWatchTimeUrl;
-
-    @JsonPath("$.captions.playerCaptionsTracklistRenderer.captionTracks[*]")
-    private List<CaptionTrack> mCaptionTracks;
 
     @JsonPath("$.streamingData.dashManifestUrl")
     private String mDashManifestUrl;

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
-import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 
 import java.io.InputStream;
 import java.util.List;
@@ -12,8 +12,8 @@ public interface MPDBuilder {
     InputStream build();
     boolean isEmpty();
     void append(MediaFormat mediaItem);
-    void append(List<Subtitle> subs);
-    void append(Subtitle sub);
+    void append(List<MediaSubtitle> subs);
+    void append(MediaSubtitle sub);
     boolean isDynamic();
     void limitVideoCodec(String codec);
     void limitAudioCodec(String codec);

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import okhttp3.RequestBody;
@@ -40,5 +41,9 @@ public class TestHelpers {
         mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
 
         return mAuthorization;
+    }
+
+    public static boolean urlExists(String url) {
+        return OkHttpHelpers.doGetOkHttpRequest(url) != null;
     }
 }

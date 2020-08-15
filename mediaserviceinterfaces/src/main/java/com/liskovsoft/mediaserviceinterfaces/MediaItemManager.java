@@ -10,8 +10,6 @@ import java.util.List;
 public interface MediaItemManager {
     MediaItemFormatInfo getFormatInfo(MediaItem item);
     MediaItemFormatInfo getFormatInfo(String videoId);
-    InputStream getMpdStream(MediaItemFormatInfo formatInfo);
-    List<String> getUrlList(MediaItemFormatInfo formatInfo);
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
 }

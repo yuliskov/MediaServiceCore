@@ -3,6 +3,10 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 public class CaptionTrack {
+    private static final String VTT_MIME_TYPE = "text/vtt";
+    private static final String VTT_PARAM = "vtt";
+    private static final String VTT_CODECS = "wvtt";
+
     /**
      * Example: "https://www.youtube.com/api/timedtext?caps=&key=yt…&sparams=caps%2Cv%2Cxorp%2Cexpire&lang=en&name=en"
      */
@@ -23,113 +27,45 @@ public class CaptionTrack {
      */
     @JsonPath("$.vssId")
     private String mVssId;
+    @JsonPath("$.name.simpleText")
+    private String mName;
     /**
-     * Example: see {@link Name} class
+     * E.g. asr (Automatic Speech Recognition)
      */
-    @JsonPath("$.name")
-    private Name2 mName;
-    private String mMimeType;
-    private String mCodecs;
+    @JsonPath("$.kind")
+    private String mType;
+    private String mMimeType = VTT_MIME_TYPE;
+    private String mCodecs = VTT_CODECS;
 
     public String getBaseUrl() {
-        return mBaseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        mBaseUrl = baseUrl;
+        return String.format("%s&fmt=%s", mBaseUrl, VTT_PARAM);
     }
 
     public boolean isTranslatable() {
         return mIsTranslatable;
     }
 
-    public void setTranslatable(boolean translatable) {
-        mIsTranslatable = translatable;
-    }
-
     public String getLanguageCode() {
         return mLanguageCode;
-    }
-
-    public void setLanguageCode(String languageCode) {
-        mLanguageCode = languageCode;
     }
 
     public String getVssId() {
         return mVssId;
     }
 
-    public void setVssId(String vssId) {
-        mVssId = vssId;
-    }
-
     public String getName() {
-        if (mName == null || mName.getTitles() == null) {
-            return null;
-        }
-
-        return mName.getTitles()[0].getText();
+        return mName;
     }
 
-    public void setName(String name) {
-        if (mName == null || mName.getTitles() == null) {
-            return;
-        }
-
-        mName.getTitles()[0].setText(name);
+    public String getType() {
+        return mType;
     }
 
     public String getMimeType() {
         return mMimeType;
     }
 
-    public void setMimeType(String mimeType) {
-        mMimeType = mimeType;
-    }
-
     public String getCodecs() {
         return mCodecs;
-    }
-
-    public void setCodecs(String codecs) {
-        mCodecs = codecs;
-    }
-
-    public static class Name {
-        /**
-         * Example: "English+-+en"
-         */
-        @JsonPath("$.simpleText")
-        private String mSimpleText;
-
-        public String getSimpleText() {
-            return mSimpleText;
-        }
-
-        public void setSimpleText(String simpleText) {
-            mSimpleText = simpleText;
-        }
-    }
-
-    public static class Name2 {
-        @JsonPath("$.runs[*]")
-        private Title[] mTitles;
-
-        public Title[] getTitles() {
-            return mTitles;
-        }
-
-        private static class Title {
-            @JsonPath("$.text")
-            private String mText;
-
-            public String getText() {
-                return mText;
-            }
-
-            public void setText(String text) {
-                mText = text;
-            }
-        }
     }
 }

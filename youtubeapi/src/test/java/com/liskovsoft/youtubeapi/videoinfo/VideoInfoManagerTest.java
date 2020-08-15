@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
@@ -60,5 +61,25 @@ public class VideoInfoManagerTest {
         assertNotNull("Result not null", result);
         assertNotNull("Contains dash url", result.getDashManifestUrl());
         assertNotNull("Contains hls url", result.getHlsManifestUrl());
+    }
+
+    @Test
+    public void testThatSubtitleContainsAllRequiredFields() throws IOException {
+        Call<VideoInfoResult> wrapper = mService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
+        VideoInfoResult result = wrapper.execute().body();
+
+        assertNotNull("Result not null", result);
+        List<CaptionTrack> captionTracks = result.getCaptionTracks();
+        assertNotNull("Contains captions", captionTracks);
+        CaptionTrack track = captionTracks.get(0);
+
+        assertNotNull("Contains name", track.getName());
+        assertNotNull("Contains base url", track.getBaseUrl());
+        assertNotNull("Contains vss id", track.getVssId());
+        assertNotNull("Contains lang", track.getLanguageCode());
+        assertNotNull("Contains mime type", track.getMimeType());
+        assertNotNull("Contains codecs", track.getCodecs());
+
+        assertTrue("Subtitle url exists", TestHelpers.urlExists(track.getBaseUrl()));
     }
 }

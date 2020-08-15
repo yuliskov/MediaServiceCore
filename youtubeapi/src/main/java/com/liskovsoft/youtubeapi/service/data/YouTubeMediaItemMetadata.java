@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemSuggestionGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemSuggestions;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
@@ -23,6 +23,37 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mChannelId;
     private int mPercentWatched;
     private MediaItemMetadata mNextVideo;
+
+    public static MediaItemMetadata from(WatchNextResult watchNextResult) {
+        YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
+
+        VideoMetadata videoMetadata = watchNextResult.getVideoMetadata();
+        VideoOwner videoOwner = watchNextResult.getVideoOwner();
+
+        mediaItemMetadata.mTitle = videoMetadata.getTitle();
+        mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
+        mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
+        mediaItemMetadata.mChannelId = videoOwner.getChannelId();
+        mediaItemMetadata.mDescription = videoMetadata.getDescription();
+        mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
+        mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
+        mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
+        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
+        mediaItemMetadata.mSubscribed = videoOwner.isSubscribed();
+
+        switch (videoMetadata.getLikeStatus()) {
+            case VideoMetadata.LIKE_STATUS_LIKE:
+                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
+                break;
+            case VideoMetadata.LIKE_STATUS_DISLIKE:
+                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
+                break;
+        }
+
+        List<WatchNextSection> watchNextSections = watchNextResult.getWatchNextSections();
+
+        return mediaItemMetadata;
+    }
 
     @Override
     public String getTitle() {
@@ -155,38 +186,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public List<MediaItemSuggestionGroup> getSuggestions() {
+    public List<MediaItemSuggestions> getSuggestions() {
         return null;
-    }
-
-    public static MediaItemMetadata from(WatchNextResult watchNextResult) {
-        YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
-
-        VideoMetadata videoMetadata = watchNextResult.getVideoMetadata();
-        VideoOwner videoOwner = watchNextResult.getVideoOwner();
-
-        mediaItemMetadata.mTitle = videoMetadata.getTitle();
-        mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
-        mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
-        mediaItemMetadata.mChannelId = videoOwner.getChannelId();
-        mediaItemMetadata.mDescription = videoMetadata.getDescription();
-        mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
-        mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
-        mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
-        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
-        mediaItemMetadata.mSubscribed = videoOwner.isSubscribed();
-
-        switch (videoMetadata.getLikeStatus()) {
-            case VideoMetadata.LIKE_STATUS_LIKE:
-                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
-                break;
-            case VideoMetadata.LIKE_STATUS_DISLIKE:
-                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
-                break;
-        }
-
-        List<WatchNextSection> watchNextSections = watchNextResult.getWatchNextSections();
-
-        return mediaItemMetadata;
     }
 }

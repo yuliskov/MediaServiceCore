@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleMPDParser implements MPDParser {
+public class YouTubeMPDParser implements MPDParser {
     // We don't use namespaces
     private static final String ns = null;
     private static final String TAG_MPD = "MPD";
@@ -27,7 +27,7 @@ public class SimpleMPDParser implements MPDParser {
     private InputStream mMpdContent;
     private XmlPullParser mParser;
 
-    public SimpleMPDParser(InputStream mpdContent) {
+    public YouTubeMPDParser(InputStream mpdContent) {
         try {
             initParser(mpdContent);
         } catch (Exception e) {

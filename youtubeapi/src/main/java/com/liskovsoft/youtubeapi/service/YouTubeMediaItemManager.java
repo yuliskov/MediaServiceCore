@@ -42,20 +42,6 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public InputStream getMpdStream(MediaItemFormatInfo formatInfo) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getMpdStream(formatInfo);
-    }
-
-    @Override
-    public List<String> getUrlList(MediaItemFormatInfo formatInfo) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getUrlList(formatInfo);
-    }
-
-    @Override
     public MediaItemMetadata getMetadata(MediaItem item) {
         checkSigned();
 

@@ -3,13 +3,13 @@ package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 import android.util.Xml;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
-import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.OtfSegmentParser.OtfSegment;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeOtfSegmentParser.OtfSegment;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -25,14 +25,14 @@ import java.util.regex.Pattern;
 /**
  * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
  */
-public class SimpleMPDBuilder implements MPDBuilder {
+public class YouTubeMPDBuilder implements MPDBuilder {
     private static final String MIME_WEBM_AUDIO = "audio/webm";
     private static final String MIME_WEBM_VIDEO = "video/webm";
     private static final String MIME_MP4_AUDIO = "audio/mp4";
     private static final String MIME_MP4_VIDEO = "video/mp4";
     private static final String NULL_INDEX_RANGE = "0-0";
     private static final String NULL_CONTENT_LENGTH = "0";
-    private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
+    private static final String TAG = YouTubeMPDBuilder.class.getSimpleName();
     private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
     private final MediaItemFormatInfo mInfo;
     private XmlSerializer mXmlSerializer;
@@ -42,12 +42,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private final Set<MediaFormat> mMP4Videos;
     private final Set<MediaFormat> mWEBMAudios;
     private final Set<MediaFormat> mWEBMVideos;
-    private final List<Subtitle> mSubs;
-    private final OtfSegmentParser mSegmentParser;
+    private final List<MediaSubtitle> mSubs;
+    private final YouTubeOtfSegmentParser mSegmentParser;
     private String mLimitVideoCodec;
     private String mLimitAudioCodec;
 
-    public SimpleMPDBuilder(MediaItemFormatInfo info) {
+    public YouTubeMPDBuilder(MediaItemFormatInfo info) {
         mInfo = info;
         MediaFormatComparator comp = new MediaFormatComparator();
         mMP4Audios = new TreeSet<>(comp);
@@ -55,17 +55,21 @@ public class SimpleMPDBuilder implements MPDBuilder {
         mWEBMAudios = new TreeSet<>(comp);
         mWEBMVideos = new TreeSet<>(comp);
         mSubs = new ArrayList<>();
-        mSegmentParser = new OtfSegmentParser(true);
+        mSegmentParser = new YouTubeOtfSegmentParser(true);
 
         initXmlSerializer();
     }
 
     public static MPDBuilder from(MediaItemFormatInfo formatInfo) {
-        MPDBuilder builder = new SimpleMPDBuilder(formatInfo);
+        MPDBuilder builder = new YouTubeMPDBuilder(formatInfo);
 
         if (formatInfo.containsDashInfo()) {
             for (MediaFormat format : formatInfo.getAdaptiveFormats()) {
                 builder.append(format);
+            }
+
+            if (formatInfo.getSubtitles() != null) {
+                builder.append(formatInfo.getSubtitles());
             }
         }
 
@@ -159,12 +163,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "SegmentList");
     }
 
-    private void writeMediaTagsForGroup(List<Subtitle> subs) {
+    private void writeMediaTagsForGroup(List<MediaSubtitle> subs) {
         if (subs.size() == 0) {
             return;
         }
 
-        for (Subtitle sub : subs) {
+        for (MediaSubtitle sub : subs) {
             writeMediaListPrologue(sub);
 
             writeMediaFormatTag(sub);
@@ -296,7 +300,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "Role");
     }
 
-    private void writeMediaListPrologue(Subtitle sub) {
+    private void writeMediaListPrologue(MediaSubtitle sub) {
         String id = String.valueOf(mId++);
 
         startTag("", "AdaptationSet");
@@ -353,12 +357,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     @Override
-    public void append(List<Subtitle> subs) {
+    public void append(List<MediaSubtitle> subs) {
         mSubs.addAll(subs);
     }
 
     @Override
-    public void append(Subtitle sub) {
+    public void append(MediaSubtitle sub) {
         mSubs.add(sub);
     }
 
@@ -490,7 +494,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "SegmentList");
     }
 
-    private void writeMediaFormatTag(Subtitle sub) {
+    private void writeMediaFormatTag(MediaSubtitle sub) {
         String bandwidth = "268";
 
         startTag("", "Representation");

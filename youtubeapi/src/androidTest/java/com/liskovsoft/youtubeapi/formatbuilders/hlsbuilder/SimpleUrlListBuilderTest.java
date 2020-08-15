@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
+import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import okhttp3.Response;
 import org.junit.Before;
@@ -13,12 +14,6 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 
 public class SimpleUrlListBuilderTest {
-    // Mafia: Definitive Edition - Official Story Trailer | Summer of Gaming 2020
-    private static final String VIDEO_ID_SIMPLE = "s2lGEhSlOTY";
-
-    // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
-    private static final String VIDEO_ID_CIPHERED = "0YEZiDtnbdA";
-
     private MediaService mService;
     private OkHttpManager mOkHttpHelper;
 
@@ -30,12 +25,12 @@ public class SimpleUrlListBuilderTest {
 
     @Test
     public void testThatUrlListNotEmpty() {
-        testUrlList(VIDEO_ID_SIMPLE);
+        testUrlList(TestHelpers.VIDEO_ID_SIMPLE);
     }
 
     @Test
     public void testThatCipheredUrlListNotEmpty() {
-        testUrlList(VIDEO_ID_CIPHERED);
+        testUrlList(TestHelpers.VIDEO_ID_CIPHERED);
     }
 
     private void testUrlList(String videoId) {

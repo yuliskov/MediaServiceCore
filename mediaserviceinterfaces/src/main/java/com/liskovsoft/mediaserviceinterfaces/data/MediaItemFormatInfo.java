@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public interface MediaItemFormatInfo {
     ArrayList<MediaFormat> getAdaptiveFormats();
     ArrayList<MediaFormat> getRegularFormats();
+    String getHlsManifestUrl();
+    String getDashManifestUrl();
     // video metadata
     String getLengthSeconds();
     void setLengthSeconds(String lengthSeconds);

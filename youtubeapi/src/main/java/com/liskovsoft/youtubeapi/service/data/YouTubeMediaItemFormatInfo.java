@@ -21,6 +21,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsLive;
     private ArrayList<MediaFormat> mAdaptiveFormats;
     private ArrayList<MediaFormat> mRegularFormats;
+    private String mDashManifestUrl;
+    private String mHlsManifestUrl;
 
     public static MediaItemFormatInfo from(VideoInfoResult videoInfo) {
         YouTubeMediaItemFormatInfo formatInfo = new YouTubeMediaItemFormatInfo();
@@ -53,6 +55,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             formatInfo.mAuthor = videoDetails.getAuthor();
             formatInfo.mIsLive = videoDetails.isLiveContent();
         }
+
+        formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
+        formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
 
         return formatInfo;
     }
@@ -159,5 +164,15 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean containsUrlListInfo() {
         return mRegularFormats != null;
+    }
+
+    @Override
+    public String getHlsManifestUrl() {
+        return mHlsManifestUrl;
+    }
+
+    @Override
+    public String getDashManifestUrl() {
+        return mDashManifestUrl;
     }
 }

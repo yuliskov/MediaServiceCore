@@ -10,24 +10,27 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
+import java.io.IOException;
+
 @RunWith(RobolectricTestRunner.class)
-public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
-    private WatchNextManagerUnsigned mManager;
+public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
+    private WatchNextManagerSigned mManager;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mManager = RetrofitHelper.withJsonPath(WatchNextManagerUnsigned.class);
+        mManager = RetrofitHelper.withJsonPath(WatchNextManagerSigned.class);
     }
 
     @Test
-    public void testThatWatchNextContainsAllRequiredFields() {
-        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SIMPLE));
+    public void testThatWatchNextContainsAllRequiredFields() throws IOException {
+        Call<WatchNextResult> wrapper =
+                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SIMPLE), TestHelpers.getAuthorization());
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkWatchNextResultFields(watchNextResult);

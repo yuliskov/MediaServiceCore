@@ -95,7 +95,7 @@ public class CaptionTrack {
         mCodecs = codecs;
     }
 
-    public class Name {
+    public static class Name {
         /**
          * Example: "English+-+en"
          */
@@ -111,7 +111,7 @@ public class CaptionTrack {
         }
     }
 
-    public class Name2 {
+    public static class Name2 {
         @JsonPath("$.runs[*]")
         private Title[] mTitles;
 
@@ -119,7 +119,7 @@ public class CaptionTrack {
             return mTitles;
         }
 
-        private class Title {
+        private static class Title {
             @JsonPath("$.text")
             private String mText;
 

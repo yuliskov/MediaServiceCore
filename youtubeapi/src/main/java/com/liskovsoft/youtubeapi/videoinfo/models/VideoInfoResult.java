@@ -17,7 +17,7 @@ public class VideoInfoResult {
     private String mHlsManifestUrl;
 
     @JsonPath("$.playbackTracking.videostatsWatchtimeUrl.baseUrl")
-    private String mVideostatsWatchtimeUrl;
+    private String mVideoStatsWatchTimeUrl;
 
     @JsonPath("$.captions.playerCaptionsTracklistRenderer.captionTracks[*]")
     private List<CaptionTrack> mCaptionTracks;
@@ -43,8 +43,8 @@ public class VideoInfoResult {
         return mHlsManifestUrl;
     }
 
-    public String getVideostatsWatchtimeUrl() {
-        return mVideostatsWatchtimeUrl;
+    public String getVideoStatsWatchTimeUrl() {
+        return mVideoStatsWatchTimeUrl;
     }
 
     public List<CaptionTrack> getCaptionTracks() {

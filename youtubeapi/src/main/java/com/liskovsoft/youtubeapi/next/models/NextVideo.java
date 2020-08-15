@@ -7,27 +7,27 @@ import java.util.List;
 
 public class NextVideo {
     @JsonPath("$.maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId")
-    private String mNextVideoId;
+    private String mVideoId;
     @JsonPath("$.maybeHistoryEndpointRenderer.item.previewButtonRenderer.title.runs[0].text")
-    private String mNextVideoTitle;
+    private String mTitle;
     @JsonPath("$.maybeHistoryEndpointRenderer.item.previewButtonRenderer.byline.runs[0].text")
-    private String mNextVideoAuthor;
+    private String mAuthor;
     @JsonPath("$.maybeHistoryEndpointRenderer.item.previewButtonRenderer.thumbnail.thumbnails[*]")
-    private List<Thumbnail> mNextVideoThumbnails;
+    private List<Thumbnail> mThumbnails;
 
-    public String getNextVideoId() {
-        return mNextVideoId;
+    public String getVideoId() {
+        return mVideoId;
     }
 
-    public String getNextVideoTitle() {
-        return mNextVideoTitle;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public String getNextVideoAuthor() {
-        return mNextVideoAuthor;
+    public String getAuthor() {
+        return mAuthor;
     }
 
-    public List<Thumbnail> getNextVideoThumbnails() {
-        return mNextVideoThumbnails;
+    public List<Thumbnail> getThumbnails() {
+        return mThumbnails;
     }
 }

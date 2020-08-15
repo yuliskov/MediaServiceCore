@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
@@ -21,7 +22,6 @@ import java.util.List;
 @RunWith(RobolectricTestRunner.class)
 public class VideoInfoManagerTest {
     private VideoInfoManager mService;
-    private static final String VIDEO_ID = "npXw2ddniHM";
 
     @Before
     public void setUp() {
@@ -38,7 +38,7 @@ public class VideoInfoManagerTest {
 
     @Test
     public void testThatVideoInfoContainsAllRequiredFields() throws IOException {
-        Call<VideoInfoResult> wrapper = mService.getVideoInfo(VIDEO_ID);
+        Call<VideoInfoResult> wrapper = mService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
         VideoInfoResult result = wrapper.execute().body();
 
         assertNotNull("Result not null", result);
@@ -47,8 +47,18 @@ public class VideoInfoManagerTest {
         assertNotNull("Contains range", formats.get(0).getIndexRange());
         assertTrue("Contains fps", formats.get(0).getFps() != 0);
         assertTrue("Contains bitrate", formats.get(0).getBitrate() != 0);
-        assertNotNull("Contains tracking url", result.getVideostatsWatchtimeUrl());
+        assertNotNull("Contains tracking url", result.getVideoStatsWatchTimeUrl());
         assertNotNull("Contains captions", result.getCaptionTracks());
         assertNotNull("Contains video details", result.getVideoDetails());
+    }
+
+    @Test
+    public void testThatLiveVideoContainsSpecificFields()  throws IOException {
+        Call<VideoInfoResult> wrapper = mService.getVideoInfo(TestHelpers.VIDEO_ID_LIVE);
+        VideoInfoResult result = wrapper.execute().body();
+
+        assertNotNull("Result not null", result);
+        assertNotNull("Contains dash url", result.getDashManifestUrl());
+        assertNotNull("Contains hls url", result.getHlsManifestUrl());
     }
 }

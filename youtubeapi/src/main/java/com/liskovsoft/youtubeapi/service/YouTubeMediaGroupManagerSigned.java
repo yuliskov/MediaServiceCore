@@ -1,12 +1,13 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import io.reactivex.Observable;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
     public static void unhold() {
         sInstance = null;
+        BrowseServiceSigned.unhold();
+        SearchServiceUnsigned.unhold();
     }
 
     @Override

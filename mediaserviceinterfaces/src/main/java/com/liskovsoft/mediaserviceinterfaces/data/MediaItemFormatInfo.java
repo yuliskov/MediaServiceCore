@@ -1,8 +1,8 @@
-package com.liskovsoft.mediaserviceinterfaces;
+package com.liskovsoft.mediaserviceinterfaces.data;
 
 import java.util.ArrayList;
 
-public interface MediaItemFormatDetails {
+public interface MediaItemFormatInfo {
     ArrayList<MediaFormat> getAdaptiveFormats();
     ArrayList<MediaFormat> getRegularFormats();
     // video metadata

@@ -3,9 +3,9 @@ package com.liskovsoft.leanbackassistant.media;
 import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.mediaserviceinterfaces.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
-import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 
@@ -134,7 +134,7 @@ public class ClipService {
                         v.getDescription(),
                         v.getBackgroundImageUrl(),
                         v.getCardImageUrl(),
-                        v.getVideoUrl(),
+                        v.getMediaUrl(),
                         null,
                         false,
                         null,

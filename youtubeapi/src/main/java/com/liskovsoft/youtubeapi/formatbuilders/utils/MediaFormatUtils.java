@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.formatbuilders.utils;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class MediaFormatUtils {

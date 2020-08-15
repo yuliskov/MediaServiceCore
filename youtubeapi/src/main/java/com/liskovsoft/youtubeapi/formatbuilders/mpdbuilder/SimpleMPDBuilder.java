@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
-import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -34,7 +34,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
     private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
-    private final MediaItemFormatDetails mInfo;
+    private final MediaItemFormatInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
@@ -47,7 +47,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private String mLimitVideoCodec;
     private String mLimitAudioCodec;
 
-    public SimpleMPDBuilder(MediaItemFormatDetails info) {
+    public SimpleMPDBuilder(MediaItemFormatInfo info) {
         mInfo = info;
         MediaFormatComparator comp = new MediaFormatComparator();
         mMP4Audios = new TreeSet<>(comp);
@@ -60,7 +60,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         initXmlSerializer();
     }
 
-    public static MPDBuilder from(MediaItemFormatDetails formatInfo) {
+    public static MPDBuilder from(MediaItemFormatInfo formatInfo) {
         MPDBuilder builder = new SimpleMPDBuilder(formatInfo);
 
         if (formatInfo.containsDashInfo()) {
@@ -558,7 +558,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
      * <br/>
      * Required fields are:
      * <br/>
-     * {@link MediaItemFormatDetails#getLengthSeconds() MediaItemDetails#getLengthSeconds()}
+     * {@link MediaItemFormatInfo#getLengthSeconds() MediaItemDetails#getLengthSeconds()}
      */
     private boolean ensureRequiredFieldsAreSet() {
         return ensureLengthIsSet();

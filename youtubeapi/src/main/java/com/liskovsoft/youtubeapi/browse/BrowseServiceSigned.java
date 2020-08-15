@@ -36,6 +36,10 @@ public class BrowseServiceSigned {
         return sInstance;
     }
 
+    public static void unhold() {
+        sInstance = null;
+    }
+
     public BrowseResult getSubscriptions(String authorization) {
         return getSection(BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
@@ -104,26 +108,10 @@ public class BrowseServiceSigned {
 
         List<BrowseTab> browseTabs = browseResult.getBrowseTabs();
 
-        BrowseSection browseSection = getFirstTabbedSection(browseTabs);
+        // TODO: maybe choose other section
+        BrowseSection browseSection = getTabbedSection(browseTabs, 0);
 
         return browseSection;
-    }
-
-    // TODO: maybe choose other section
-    private BrowseSection getFirstTabbedSection(List<BrowseTab> browseTabs) {
-        if (browseTabs != null) {
-            BrowseTab browseTab = browseTabs.get(0);
-
-            if (browseTab != null) {
-                List<BrowseSection> sections = browseTab.getSections();
-
-                if (sections != null) {
-                    return sections.get(0);
-                }
-            }
-        }
-
-        return null;
     }
 
     public BrowseResultContinuation continueSection(String nextKey, String authorization) {
@@ -202,7 +190,23 @@ public class BrowseServiceSigned {
         return browseResult;
     }
 
-    private BrowseTab findHomeTab(TabbedBrowseResult homeTabs) {
+    private static BrowseTab findHomeTab(TabbedBrowseResult homeTabs) {
         return homeTabs.getBrowseTabs().get(0);
+    }
+
+    private static BrowseSection getTabbedSection(List<BrowseTab> browseTabs, int sectionIndex) {
+        if (browseTabs != null) {
+            BrowseTab browseTab = browseTabs.get(sectionIndex);
+
+            if (browseTab != null) {
+                List<BrowseSection> sections = browseTab.getSections();
+
+                if (sections != null) {
+                    return sections.get(0);
+                }
+            }
+        }
+
+        return null;
     }
 }

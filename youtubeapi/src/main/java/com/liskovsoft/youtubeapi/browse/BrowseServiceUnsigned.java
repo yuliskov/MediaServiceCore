@@ -15,12 +15,12 @@ import java.util.List;
 public class BrowseServiceUnsigned {
     private static final String TAG = BrowseServiceUnsigned.class.getSimpleName();
     private static BrowseServiceUnsigned sInstance;
-    private final BrowseManagerUnsigned mBrowseManager;
+    private final BrowseManagerUnsigned mBrowseManagerUnsigned;
     private String mVisitorData;
     private String mNextHomeTabsKey;
 
     private BrowseServiceUnsigned() {
-        mBrowseManager = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
+        mBrowseManagerUnsigned = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
     }
 
     public static BrowseServiceUnsigned instance() {
@@ -29,6 +29,10 @@ public class BrowseServiceUnsigned {
         }
 
         return sInstance;
+    }
+
+    public static void unhold() {
+        sInstance = null;
     }
 
     public List<BrowseSection> getHomeSections() {
@@ -71,7 +75,7 @@ public class BrowseServiceUnsigned {
     }
 
     private TabbedBrowseResult getTabbedResult(String query) {
-        Call<TabbedBrowseResult> wrapper = mBrowseManager.getTabbedBrowseResult(query);
+        Call<TabbedBrowseResult> wrapper = mBrowseManagerUnsigned.getTabbedBrowseResult(query);
 
         TabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
 
@@ -81,7 +85,7 @@ public class BrowseServiceUnsigned {
     private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String visitorData) {
         String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
-        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManager.getContinueTabbedBrowseResult(query, visitorData);
+        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerUnsigned.getContinueTabbedBrowseResult(query, visitorData);
 
         TabbedBrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
 
@@ -92,7 +96,7 @@ public class BrowseServiceUnsigned {
         String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
         Call<BrowseResultContinuation> wrapper =
-                mBrowseManager.getContinueBrowseResult(query, visitorData);
+                mBrowseManagerUnsigned.getContinueBrowseResult(query, visitorData);
 
         BrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
 

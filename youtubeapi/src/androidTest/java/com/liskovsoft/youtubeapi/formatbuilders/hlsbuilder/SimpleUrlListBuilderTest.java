@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
@@ -39,7 +39,7 @@ public class SimpleUrlListBuilderTest {
     }
 
     private void testUrlList(String videoId) {
-        MediaItemFormatDetails mediaItemDetails = mService.getMediaItemManager().getFormatDetails(videoId);
+        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(videoId);
 
         List<String> urlList = mService.getMediaItemManager().getUrlList(mediaItemDetails);
 

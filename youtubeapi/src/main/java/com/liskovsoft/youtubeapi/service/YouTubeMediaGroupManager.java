@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import io.reactivex.Observable;
@@ -9,7 +9,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     private static final String TAG = YouTubeMediaGroupManager.class.getSimpleName();
     private static YouTubeMediaGroupManager sInstance;
     private final YouTubeSignInManager mSignInManager;
-    private MediaGroupManager mMediaTabManagerReal;
+    private MediaGroupManager mMediaGroupManagerReal;
 
     private YouTubeMediaGroupManager() {
         Log.d(TAG, "Starting...");
@@ -30,14 +30,14 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     public MediaGroup getSearchGroup(String searchText) {
         checkSigned();
 
-        return mMediaTabManagerReal.getSearchGroup(searchText);
+        return mMediaGroupManagerReal.getSearchGroup(searchText);
     }
 
     @Override
     public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
         checkSigned();
 
-        return mMediaTabManagerReal.getSearchGroupObserve(searchText);
+        return mMediaGroupManagerReal.getSearchGroupObserve(searchText);
     }
 
     @Override
@@ -46,14 +46,14 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         checkSigned();
 
-        return mMediaTabManagerReal.getSubscriptionsGroup();
+        return mMediaGroupManagerReal.getSubscriptionsGroup();
     }
 
     @Override
     public Observable<MediaGroup> getSubscriptionsGroupObserve() {
         checkSigned();
 
-        return mMediaTabManagerReal.getSubscriptionsGroupObserve();
+        return mMediaGroupManagerReal.getSubscriptionsGroupObserve();
     }
 
     @Override
@@ -62,14 +62,14 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         checkSigned();
 
-        return mMediaTabManagerReal.getRecommendedGroup();
+        return mMediaGroupManagerReal.getRecommendedGroup();
     }
 
     @Override
     public Observable<MediaGroup> getRecommendedGroupObserve() {
         checkSigned();
 
-        return mMediaTabManagerReal.getRecommendedGroupObserve();
+        return mMediaGroupManagerReal.getRecommendedGroupObserve();
     }
 
     @Override
@@ -78,54 +78,54 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         checkSigned();
 
-        return mMediaTabManagerReal.getHistoryGroup();
+        return mMediaGroupManagerReal.getHistoryGroup();
     }
 
     @Override
     public Observable<MediaGroup> getHistoryGroupObserve() {
         checkSigned();
 
-        return mMediaTabManagerReal.getHistoryGroupObserve();
+        return mMediaGroupManagerReal.getHistoryGroupObserve();
     }
 
     @Override
     public MediaGroup getHomeGroup() {
         checkSigned();
 
-        return mMediaTabManagerReal.getHomeGroup();
+        return mMediaGroupManagerReal.getHomeGroup();
     }
 
     @Override
     public Observable<MediaGroup> getHomeGroupObserve() {
         checkSigned();
 
-        return mMediaTabManagerReal.getHomeGroupObserve();
+        return mMediaGroupManagerReal.getHomeGroupObserve();
     }
 
     @Override
     public MediaGroup continueGroup(MediaGroup mediaTab) {
         checkSigned();
 
-        return mMediaTabManagerReal.continueGroup(mediaTab);
+        return mMediaGroupManagerReal.continueGroup(mediaTab);
     }
 
     @Override
     public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab) {
         checkSigned();
 
-        return mMediaTabManagerReal.continueGroupObserve(mediaTab);
+        return mMediaGroupManagerReal.continueGroupObserve(mediaTab);
     }
 
     private void checkSigned() {
         if (mSignInManager.isSigned()) {
             Log.d(TAG, "User signed.");
 
-            mMediaTabManagerReal = YouTubeMediaGroupManagerSigned.instance();
+            mMediaGroupManagerReal = YouTubeMediaGroupManagerSigned.instance();
             YouTubeMediaGroupManagerUnsigned.unhold();
         } else {
             Log.d(TAG, "User doesn't signed.");
 
-            mMediaTabManagerReal = YouTubeMediaGroupManagerUnsigned.instance();
+            mMediaGroupManagerReal = YouTubeMediaGroupManagerUnsigned.instance();
             YouTubeMediaGroupManagerSigned.unhold();
         }
     }

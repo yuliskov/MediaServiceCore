@@ -1,4 +1,4 @@
-package com.liskovsoft.mediaserviceinterfaces;
+package com.liskovsoft.mediaserviceinterfaces.data;
 
 import android.media.Rating;
 
@@ -19,10 +19,10 @@ public interface MediaItem {
     void setId(int id);
     String getTitle();
     void setTitle(String title);
-    String getVideoUrl();
-    void setVideoUrl(String videoUrl);
-    String getVideoId();
-    void setVideoId(String videoId);
+    String getMediaUrl();
+    void setMediaUrl(String mediaUrl);
+    String getMediaId();
+    void setMediaId(String mediaId);
     String getContentType();
     /**
      * Set mime content type.<br/>

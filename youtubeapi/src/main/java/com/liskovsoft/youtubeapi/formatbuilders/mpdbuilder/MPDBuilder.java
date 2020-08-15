@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.youtubeapi.formatbuilders.interfaces.Subtitle;
 
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.liskovsoft.mediaserviceinterfaces;
+package com.liskovsoft.mediaserviceinterfaces.data;
 
 import java.util.List;
 

@@ -1,16 +1,18 @@
-package com.liskovsoft.youtubeapi.service;
+package com.liskovsoft.youtubeapi.service.data;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
     private static int id;
     private String mTitle;
     private int mId;
+    private String mMediaId;
+    private String mMediaUrl;
     private String mDescription;
     private String mCardImageUrl;
     private String mBackgroundImageUrl;
-    private String mVideoUrl;
     private String mContentType;
     private boolean mIsLive;
     private int mDuration;
@@ -23,7 +25,6 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
-    private String mVideoId;
 
     public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
@@ -35,8 +36,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getPublishedTime());
-        video.setVideoId(item.getVideoId());
-        video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
+        video.setMediaId(item.getVideoId());
+        video.setMediaUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
         video.setContentType("video/mp4");
         video.setWidth(1280);
@@ -57,7 +58,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
         video.setProductionDate(item.getViewsAndPublished());
-        video.setVideoUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
+        video.setMediaUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
         video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
         video.setContentType("video/mp4");
         video.setWidth(1280);
@@ -126,23 +127,23 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getVideoUrl() {
-        return mVideoUrl;
+    public String getMediaUrl() {
+        return mMediaUrl;
     }
 
     @Override
-    public void setVideoUrl(String videoUrl) {
-        mVideoUrl = videoUrl;
+    public void setMediaUrl(String mediaUrl) {
+        mMediaUrl = mediaUrl;
     }
 
     @Override
-    public String getVideoId() {
-        return mVideoId;
+    public String getMediaId() {
+        return mMediaId;
     }
 
     @Override
-    public void setVideoId(String videoId) {
-        mVideoId = videoId;
+    public void setMediaId(String mediaId) {
+        mMediaId = mediaId;
     }
 
     @Override

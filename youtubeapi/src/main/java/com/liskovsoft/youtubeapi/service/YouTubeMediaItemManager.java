@@ -1,24 +1,21 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItemFormatDetails;
-import com.liskovsoft.mediaserviceinterfaces.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemSuggestions;
-import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.SimpleUrlListBuilder;
-import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.SimpleMPDBuilder;
-import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.io.InputStream;
 import java.util.List;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
+    private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
     private static MediaItemManager sInstance;
-    private final VideoInfoService mVideoInfoService;
     private final YouTubeSignInManager mSignInManager;
+    private MediaItemManager mMediaItemManagerReal;
 
     private YouTubeMediaItemManager() {
-        mVideoInfoService = VideoInfoService.instance();
         mSignInManager = YouTubeSignInManager.instance();
     }
 
@@ -31,40 +28,58 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public MediaItemFormatDetails getFormatDetails(MediaItem item) {
-        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(item.getVideoId());
+    public MediaItemFormatInfo getFormatInfo(MediaItem item) {
+        checkSigned();
 
-        return YouTubeMediaItemFormatDetails.from(videoInfo);
+        return mMediaItemManagerReal.getFormatInfo(item);
     }
 
     @Override
-    public MediaItemFormatDetails getFormatDetails(String videoId) {
-        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(videoId);
+    public MediaItemFormatInfo getFormatInfo(String videoId) {
+        checkSigned();
 
-        return YouTubeMediaItemFormatDetails.from(videoInfo);
+        return mMediaItemManagerReal.getFormatInfo(videoId);
     }
 
     @Override
-    public InputStream getMpdStream(MediaItemFormatDetails formatDetails) {
-        return SimpleMPDBuilder.from(formatDetails).build();
+    public InputStream getMpdStream(MediaItemFormatInfo formatInfo) {
+        checkSigned();
+
+        return mMediaItemManagerReal.getMpdStream(formatInfo);
     }
 
     @Override
-    public List<String> getUrlList(MediaItemFormatDetails formatDetails) {
-        return SimpleUrlListBuilder.from(formatDetails).buildUriList();
+    public List<String> getUrlList(MediaItemFormatInfo formatInfo) {
+        checkSigned();
+
+        return mMediaItemManagerReal.getUrlList(formatInfo);
     }
 
     @Override
-    public MediaItemSuggestions getSuggestions(MediaItem item) {
-        // TODO: not implemented
+    public MediaItemMetadata getMetadata(MediaItem item) {
+        checkSigned();
 
-        return null;
+        return mMediaItemManagerReal.getMetadata(item);
     }
 
     @Override
-    public MediaItemSuggestions getSuggestions(String videoId) {
-        // TODO: not implemented
+    public MediaItemMetadata getMetadata(String videoId) {
+        checkSigned();
 
-        return null;
+        return mMediaItemManagerReal.getMetadata(videoId);
+    }
+
+    private void checkSigned() {
+        if (mSignInManager.isSigned()) {
+            Log.d(TAG, "User signed.");
+
+            mMediaItemManagerReal = YouTubeMediaItemManagerSigned.instance();
+            YouTubeMediaItemManagerUnsigned.unhold();
+        } else {
+            Log.d(TAG, "User doesn't signed.");
+
+            mMediaItemManagerReal = YouTubeMediaItemManagerUnsigned.instance();
+            YouTubeMediaItemManagerSigned.unhold();
+        }
     }
 }

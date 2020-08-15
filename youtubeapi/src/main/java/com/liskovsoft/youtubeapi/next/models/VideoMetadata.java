@@ -3,6 +3,9 @@ package com.liskovsoft.youtubeapi.next.models;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 public class VideoMetadata {
+    public static final String LIKE_STATUS_LIKE = "LIKE";
+    public static final String LIKE_STATUS_DISLIKE = "DISLIKE";
+    public static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
     @JsonPath("$.videoId")
     private String mVideoId;
     @JsonPath("$.likeStatus")

@@ -82,7 +82,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     }
 
     @Override
-    public MediaGroup getHomeGroup() {
+    public List<MediaGroup> getHomeGroup() {
         List<MediaGroup> result = new ArrayList<>();
 
         List<MediaGroup> groups = getFirstHomeGroups();
@@ -92,16 +92,16 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
             groups = getNextHomeGroups();
         }
 
-        return YouTubeMediaGroup.from(result, MediaGroup.TYPE_HOME);
+        return result;
     }
 
     @Override
-    public Observable<MediaGroup> getHomeGroupObserve() {
+    public Observable<List<MediaGroup>> getHomeGroupObserve() {
         return Observable.create(emitter -> {
             List<MediaGroup> groups = getFirstHomeGroups();
 
             while (!groups.isEmpty()) {
-                emitter.onNext(YouTubeMediaGroup.from(groups, MediaGroup.TYPE_HOME));
+                emitter.onNext(groups);
                 groups = getNextHomeGroups();
             }
 

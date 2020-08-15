@@ -1,9 +1,13 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemSuggestionGroup;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
+
+import java.util.List;
 
 public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mTitle;
@@ -150,6 +154,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mLikeStatus = likeStatus;
     }
 
+    @Override
+    public List<MediaItemSuggestionGroup> getSuggestions() {
+        return null;
+    }
+
     public static MediaItemMetadata from(WatchNextResult watchNextResult) {
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
 
@@ -175,6 +184,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
                 break;
         }
+
+        List<WatchNextSection> watchNextSections = watchNextResult.getWatchNextSections();
 
         return mediaItemMetadata;
     }

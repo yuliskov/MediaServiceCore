@@ -3,6 +3,8 @@ package com.liskovsoft.mediaserviceinterfaces;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import io.reactivex.Observable;
 
+import java.util.List;
+
 public interface MediaGroupManager {
     MediaGroup getSearchGroup(String searchText);
     Observable<MediaGroup> getSearchGroupObserve(String searchText);
@@ -16,8 +18,8 @@ public interface MediaGroupManager {
     MediaGroup getHistoryGroup();
     Observable<MediaGroup> getHistoryGroupObserve();
 
-    MediaGroup getHomeGroup();
-    Observable<MediaGroup> getHomeGroupObserve();
+    List<MediaGroup> getHomeGroup();
+    Observable<List<MediaGroup>> getHomeGroupObserve();
 
     MediaGroup continueGroup(MediaGroup mediaTab);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);

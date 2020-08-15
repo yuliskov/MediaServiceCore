@@ -1,5 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces.data;
 
+import java.util.List;
+
 public interface MediaItemMetadata {
     int LIKE_STATUS_INDIFFERENT = 0;
     int LIKE_STATUS_LIKE = 1;
@@ -30,4 +32,5 @@ public interface MediaItemMetadata {
     void setPercentWatched(Integer percentWatched);
     int getLikeStatus();
     void setLikeStatus(int likeStatus);
+    List<MediaItemSuggestionGroup> getSuggestions();
 }

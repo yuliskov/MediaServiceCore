@@ -31,6 +31,11 @@ public class VideoInfoResult {
     @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
     private String mPlayerStoryboardSpec;
 
+    /**
+     * Value is used in tracking actions
+     */
+    private String mEventId;
+
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
     }
@@ -61,5 +66,17 @@ public class VideoInfoResult {
 
     public VideoDetails getVideoDetails() {
         return mVideoDetails;
+    }
+
+    public String getEventId() {
+        if (mEventId == null) {
+            if (mAdaptiveFormats != null) {
+                mEventId = mAdaptiveFormats.get(0).getEventId();
+            } else if (mRegularFormats != null) {
+                mEventId = mRegularFormats.get(0).getEventId();
+            }
+        }
+
+        return mEventId;
     }
 }

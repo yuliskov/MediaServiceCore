@@ -30,4 +30,6 @@ public interface MediaItemFormatInfo {
     boolean containsUrlListInfo();
     InputStream getMpdStream();
     List<String> getUrlList();
+    String getEventId();
+    void setEventId(String eventId);
 }

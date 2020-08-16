@@ -20,6 +20,7 @@ public class VideoFormat {
     public static final String PARAM_SIGNATURE = "signature";
     public static final String PARAM_SIGNATURE_SPECIAL = "sig";
     public static final String PARAM_SIGNATURE_SPECIAL_MARK = "lsig";
+    public static final String PARAM_EVENT_ID = "ei";
     // End Common params
 
     // DASH params
@@ -87,18 +88,7 @@ public class VideoFormat {
     private String mApproxDurationMs;
     @JsonPath("$.lastModified")
     private String mLastModified;
-
-    //@Override
-    //public boolean equals(Object obj) {
-    //    if (obj == null) {
-    //        return false;
-    //    }
-    //    if (!(obj instanceof MediaItem)) {
-    //        return false;
-    //    }
-    //    MediaItem rightItem = (MediaItem) obj;
-    //    return getITag().equals(rightItem.getITag());
-    //}
+    private String mEventId;
 
     public String getUrl() {
         return mUrl;
@@ -123,9 +113,9 @@ public class VideoFormat {
             }
 
             mUrl = url.toString();
-        }
 
-        mRealSignature = signature;
+            mRealSignature = signature;
+        }
     }
 
     public String getSignature() {
@@ -303,13 +293,27 @@ public class VideoFormat {
         return result;
     }
 
-    //public int compareTo(MediaItem item) {
-    //    if (item == null) {
-    //        return 1;
-    //    }
-    //
-    //    return ITag.compare(getITag(), item.getITag());
-    //}
+    public String getApproxDurationMs() {
+        return mApproxDurationMs;
+    }
+
+    public int getAverageBitrate() {
+        return mAverageBitrate;
+    }
+
+    public String getLastModified() {
+        return mLastModified;
+    }
+
+    public String getEventId() {
+        if (mEventId == null && mUrl != null) {
+            MyQueryString queryString = MyQueryStringFactory.parse(mUrl);
+
+            mEventId = queryString.get(PARAM_EVENT_ID);
+        }
+
+        return mEventId;
+    }
 
     @NonNull
     public String toString() {
@@ -321,17 +325,5 @@ public class VideoFormat {
                 getContentLength(),
                 getSize(),
                 getITag());
-    }
-
-    public String getApproxDurationMs() {
-        return mApproxDurationMs;
-    }
-
-    public int getAverageBitrate() {
-        return mAverageBitrate;
-    }
-
-    public String getLastModified() {
-        return mLastModified;
     }
 }

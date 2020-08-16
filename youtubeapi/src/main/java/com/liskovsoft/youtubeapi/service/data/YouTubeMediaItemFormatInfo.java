@@ -30,6 +30,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private List<MediaSubtitle> mSubtitles;
     private String mDashManifestUrl;
     private String mHlsManifestUrl;
+    private String mEventId; // used in tracking
 
     public static MediaItemFormatInfo from(VideoInfoResult videoInfo) {
         YouTubeMediaItemFormatInfo formatInfo = new YouTubeMediaItemFormatInfo();
@@ -65,6 +66,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
         formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
         formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
+        formatInfo.mEventId = videoInfo.getEventId();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -206,5 +208,15 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public List<String> getUrlList() {
         return SimpleUrlListBuilder.from(this).buildUriList();
+    }
+
+    @Override
+    public String getEventId() {
+        return mEventId;
+    }
+
+    @Override
+    public void setEventId(String eventId) {
+        mEventId = eventId;
     }
 }

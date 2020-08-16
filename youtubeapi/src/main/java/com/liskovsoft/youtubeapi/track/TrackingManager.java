@@ -50,6 +50,8 @@ public interface TrackingManager {
     //    st: 4.841,112.795
     //    et: 6.753,119.405
 
+    // https://www.youtube.com/api/stats/watchtime?ns=yt&cpn=gTdSeB6WpIvUxxnP&docid=AgqZaq_IQ8k&ver=2&cmt=71.572&ei=90Q5X5-bOIGZ7ATGuabYAQ&len=671.0&st=71.572&et=71.572
+    // https://www.youtube.com/api/stats/watchtime?ns=yt&cpn=gTdSeB6WpIvUxxnP&docid=AgqZaq_IQ8k&ver=2&cmt=71.572&ei=90Q5X5-bOIGZ7ATGuabYAQ&final=1&len=671.0&st=71.572&et=71.572
 
     @GET("https://www.youtube.com/api/stats/watchtime")
     Call<ResponseBody> updateWatchHistory(

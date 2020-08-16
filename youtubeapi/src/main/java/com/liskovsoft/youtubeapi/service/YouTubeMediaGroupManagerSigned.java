@@ -41,48 +41,48 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     }
 
     @Override
-    public MediaGroup getSearchGroup(String searchText) {
+    public MediaGroup getSearch(String searchText) {
         SearchResult searchResult = mSearchServiceUnsigned.getSearch(searchText);
         return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
-    public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
+    public Observable<MediaGroup> getSearchObserve(String searchText) {
         return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchServiceUnsigned.getSearch(searchText), MediaGroup.TYPE_SEARCH));
     }
 
     @Override
-    public MediaGroup getSubscriptionsGroup() {
+    public MediaGroup getSubscriptions() {
         return YouTubeMediaGroup.from(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorization()), MediaGroup.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
-    public MediaGroup getRecommendedGroup() {
+    public MediaGroup getRecommended() {
         return YouTubeMediaGroup.from(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorization()));
     }
 
     @Override
-    public Observable<MediaGroup> getRecommendedGroupObserve() {
-        return Observable.fromCallable(this::getRecommendedGroup);
+    public Observable<MediaGroup> getRecommendedObserve() {
+        return Observable.fromCallable(this::getRecommended);
     }
 
     @Override
-    public MediaGroup getHistoryGroup() {
+    public MediaGroup getHistory() {
         return YouTubeMediaGroup.from(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorization()), MediaGroup.TYPE_HISTORY);
     }
 
     @Override
-    public Observable<MediaGroup> getHistoryGroupObserve() {
-        return Observable.fromCallable(this::getHistoryGroup);
+    public Observable<MediaGroup> getHistoryObserve() {
+        return Observable.fromCallable(this::getHistory);
     }
 
     @Override
-    public Observable<MediaGroup> getSubscriptionsGroupObserve() {
-        return Observable.fromCallable(this::getSubscriptionsGroup);
+    public Observable<MediaGroup> getSubscriptionsObserve() {
+        return Observable.fromCallable(this::getSubscriptions);
     }
 
     @Override
-    public List<MediaGroup> getHomeGroup() {
+    public List<MediaGroup> getHome() {
         List<MediaGroup> result = new ArrayList<>();
 
         List<MediaGroup> groups = getFirstHomeGroups();
@@ -96,7 +96,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     }
 
     @Override
-    public Observable<List<MediaGroup>> getHomeGroupObserve() {
+    public Observable<List<MediaGroup>> getHomeObserve() {
         return Observable.create(emitter -> {
             List<MediaGroup> groups = getFirstHomeGroups();
 

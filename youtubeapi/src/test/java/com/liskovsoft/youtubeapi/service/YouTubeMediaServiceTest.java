@@ -34,7 +34,7 @@ public class YouTubeMediaServiceTest {
      */
     @Test
     public void testThatSearchNotEmpty() throws InterruptedException {
-        Observable<MediaGroup> result = mService.getMediaGroupManager().getSearchGroupObserve("hello world");
+        Observable<MediaGroup> result = mService.getMediaGroupManager().getSearchObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(1);
 
@@ -54,7 +54,7 @@ public class YouTubeMediaServiceTest {
 
     @Test
     public void testThatRecommendedNotEmpty() throws InterruptedException {
-        Observable<MediaGroup> result = mService.getMediaGroupManager().getRecommendedGroupObserve();
+        Observable<MediaGroup> result = mService.getMediaGroupManager().getRecommendedObserve();
 
         CountDownLatch finish = new CountDownLatch(1);
 

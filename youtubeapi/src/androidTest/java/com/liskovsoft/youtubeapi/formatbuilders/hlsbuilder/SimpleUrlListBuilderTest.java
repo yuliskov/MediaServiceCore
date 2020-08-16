@@ -12,15 +12,14 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleUrlListBuilderTest {
     private MediaService mService;
-    private OkHttpManager mOkHttpHelper;
 
     @Before
     public void setUp() {
         mService = YouTubeMediaService.instance();
-        mOkHttpHelper = OkHttpManager.instance();
     }
 
     @Test
@@ -36,18 +35,12 @@ public class SimpleUrlListBuilderTest {
     private void testUrlList(String videoId) {
         MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(videoId);
 
-        List<String> urlList = mService.getMediaItemManager().getUrlList(mediaItemDetails);
+        List<String> urlList = mediaItemDetails.getUrlList();
 
         assertNotNull("Url list not empty", urlList);
 
         for (String url : urlList) {
-            testUrl(url);
+            assertTrue("Video url is working", TestHelpers.urlExists(url));
         }
-    }
-
-    private void testUrl(String url) {
-        Response response = mOkHttpHelper.doGetOkHttpRequest(url);
-
-        assertNotNull("Video url is working", response);
     }
 }

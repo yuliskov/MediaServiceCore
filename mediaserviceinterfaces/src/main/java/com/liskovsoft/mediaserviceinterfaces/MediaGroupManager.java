@@ -6,20 +6,20 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public interface MediaGroupManager {
-    MediaGroup getSearchGroup(String searchText);
-    Observable<MediaGroup> getSearchGroupObserve(String searchText);
+    MediaGroup getSearch(String searchText);
+    Observable<MediaGroup> getSearchObserve(String searchText);
 
-    MediaGroup getSubscriptionsGroup();
-    Observable<MediaGroup> getSubscriptionsGroupObserve();
+    MediaGroup getSubscriptions();
+    Observable<MediaGroup> getSubscriptionsObserve();
 
-    MediaGroup getRecommendedGroup();
-    Observable<MediaGroup> getRecommendedGroupObserve();
+    MediaGroup getRecommended();
+    Observable<MediaGroup> getRecommendedObserve();
 
-    MediaGroup getHistoryGroup();
-    Observable<MediaGroup> getHistoryGroupObserve();
+    MediaGroup getHistory();
+    Observable<MediaGroup> getHistoryObserve();
 
-    List<MediaGroup> getHomeGroup();
-    Observable<List<MediaGroup>> getHomeGroupObserve();
+    List<MediaGroup> getHome();
+    Observable<List<MediaGroup>> getHomeObserve();
 
     MediaGroup continueGroup(MediaGroup mediaTab);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);

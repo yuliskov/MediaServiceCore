@@ -1,14 +1,12 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
-import okhttp3.Response;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,16 +14,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class YouTubeMPDBuilderInstrumentedTest {
     private MediaService mService;
-    private OkHttpManager mOkHttpHelper;
 
     @Before
     public void setUp() {
         mService = YouTubeMediaService.instance();
-        mOkHttpHelper = OkHttpManager.instance();
     }
 
     @Test
@@ -52,7 +50,7 @@ public class YouTubeMPDBuilderInstrumentedTest {
     }
 
     private MediaItemFormatInfo getMediaItemDetails() {
-        List<MediaGroup> homeGroups = mService.getMediaGroupManager().getHomeGroup();
+        List<MediaGroup> homeGroups = mService.getMediaGroupManager().getHome();
 
         List<MediaItem> mediaItems = homeGroups.get(0).getMediaItems();
 
@@ -71,8 +69,6 @@ public class YouTubeMPDBuilderInstrumentedTest {
 
         String url = mediaItemDetails.getAdaptiveFormats().get(0).getUrl();
 
-        Response response = mOkHttpHelper.doGetOkHttpRequest(url);
-
-        assertNotNull("Video url is working", response);
+        assertTrue("Video url is working", TestHelpers.urlExists(url));
     }
 }

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import okhttp3.RequestBody;
@@ -44,6 +44,7 @@ public class TestHelpers {
     }
 
     public static boolean urlExists(String url) {
-        return OkHttpHelpers.doGetOkHttpRequest(url) != null;
+        // disable profiler because it could cause out of memory error
+        return OkHttpManager.instance(false).doGetOkHttpRequest(url) != null;
     }
 }

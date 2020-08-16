@@ -131,7 +131,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private Cursor search(String query, int limit) {
-        mSearch = mService.getMediaGroupManager().getSearchGroup(query);
+        mSearch = mService.getMediaGroupManager().getSearch(query);
         List<MediaItem> mediaItems = mSearch.getMediaItems();
 
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);

@@ -29,79 +29,79 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
-    public MediaGroup getSearchGroup(String searchText) {
+    public MediaGroup getSearch(String searchText) {
         checkSigned();
 
-        return mMediaGroupManagerReal.getSearchGroup(searchText);
+        return mMediaGroupManagerReal.getSearch(searchText);
     }
 
     @Override
-    public Observable<MediaGroup> getSearchGroupObserve(String searchText) {
+    public Observable<MediaGroup> getSearchObserve(String searchText) {
         checkSigned();
 
-        return mMediaGroupManagerReal.getSearchGroupObserve(searchText);
+        return mMediaGroupManagerReal.getSearchObserve(searchText);
     }
 
     @Override
-    public MediaGroup getSubscriptionsGroup() {
+    public MediaGroup getSubscriptions() {
         Log.d(TAG, "Getting subscriptions...");
 
         checkSigned();
 
-        return mMediaGroupManagerReal.getSubscriptionsGroup();
+        return mMediaGroupManagerReal.getSubscriptions();
     }
 
     @Override
-    public Observable<MediaGroup> getSubscriptionsGroupObserve() {
+    public Observable<MediaGroup> getSubscriptionsObserve() {
         checkSigned();
 
-        return mMediaGroupManagerReal.getSubscriptionsGroupObserve();
+        return mMediaGroupManagerReal.getSubscriptionsObserve();
     }
 
     @Override
-    public MediaGroup getRecommendedGroup() {
+    public MediaGroup getRecommended() {
         Log.d(TAG, "Getting recommended...");
 
         checkSigned();
 
-        return mMediaGroupManagerReal.getRecommendedGroup();
+        return mMediaGroupManagerReal.getRecommended();
     }
 
     @Override
-    public Observable<MediaGroup> getRecommendedGroupObserve() {
+    public Observable<MediaGroup> getRecommendedObserve() {
         checkSigned();
 
-        return mMediaGroupManagerReal.getRecommendedGroupObserve();
+        return mMediaGroupManagerReal.getRecommendedObserve();
     }
 
     @Override
-    public MediaGroup getHistoryGroup() {
+    public MediaGroup getHistory() {
         Log.d(TAG, "Getting history...");
 
         checkSigned();
 
-        return mMediaGroupManagerReal.getHistoryGroup();
+        return mMediaGroupManagerReal.getHistory();
     }
 
     @Override
-    public Observable<MediaGroup> getHistoryGroupObserve() {
+    public Observable<MediaGroup> getHistoryObserve() {
         checkSigned();
 
-        return mMediaGroupManagerReal.getHistoryGroupObserve();
+        return mMediaGroupManagerReal.getHistoryObserve();
     }
 
     @Override
-    public List<MediaGroup> getHomeGroup() {
+    public List<MediaGroup> getHome() {
         checkSigned();
 
-        return mMediaGroupManagerReal.getHomeGroup();
+        return mMediaGroupManagerReal.getHome();
     }
 
     @Override
-    public Observable<List<MediaGroup>> getHomeGroupObserve() {
+    public Observable<List<MediaGroup>> getHomeObserve() {
         checkSigned();
 
-        return mMediaGroupManagerReal.getHomeGroupObserve();
+        return mMediaGroupManagerReal.getHomeObserve();
     }
 
     @Override

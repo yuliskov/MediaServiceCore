@@ -6,7 +6,7 @@ public class ClientPlaybackNonceFunctionResult {
     /**
      * Returns Client Playback Nonce (CPN) function used in tracking as string
      */
-    @RegExp("\\nfunction [_$A-Za-z]\\(\\)\\{for\\(var .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
+    @RegExp(";function [_$A-Za-z]{2}\\(\\)\\{if\\(window.crypto.*\\nfunction [_$A-Za-z]\\(\\)\\{for\\(var .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
     private String mContent;
 
     public String getContent() {

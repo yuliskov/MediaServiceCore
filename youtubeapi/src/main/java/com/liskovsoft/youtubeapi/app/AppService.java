@@ -23,6 +23,14 @@ public class AppService {
         mAppManager = RetrofitHelper.withRegExp(AppManager.class);
     }
 
+    public static AppService instance() {
+        if (sInstance == null) {
+            sInstance = new AppService();
+        }
+
+        return sInstance;
+    }
+
     /**
      * Js evaluator. Contains native *.so libs.<br/>
      * Note, lazy init for easy testing.<br/>
@@ -34,14 +42,6 @@ public class AppService {
         }
 
         return mDuktape;
-    }
-
-    public static AppService instance() {
-        if (sInstance == null) {
-            sInstance = new AppService();
-        }
-
-        return sInstance;
     }
 
     /**
@@ -60,7 +60,7 @@ public class AppService {
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
-    public String getClientPlaybackNonce() {
+    public String generateClientPlaybackNonce() {
         String code = createClientPlaybackNonceCode();
 
         if (code == null) {
@@ -118,7 +118,7 @@ public class AppService {
                 String content = playbackNonceFunction.getContent();
 
                 if (content != null) {
-                    mCachedClientPlaybackNonceFunction = Helpers.replace(content, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce");
+                    mCachedClientPlaybackNonceFunction = Helpers.replace(content, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
                 }
             }
         }
@@ -180,6 +180,6 @@ public class AppService {
             return null;
         }
 
-        return playbackNonceFunction + "getClientPlaybackNonce();";
+        return AppConstants.FUNCTION_RANDOM_BYTES + playbackNonceFunction + "getClientPlaybackNonce();";
     }
 }

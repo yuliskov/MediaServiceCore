@@ -1,5 +1,5 @@
 package com.liskovsoft.youtubeapi.track.models;
 
-public class UpdateWatchTimeResult {
+public class WatchTimeResult {
     // Should be empty
 }

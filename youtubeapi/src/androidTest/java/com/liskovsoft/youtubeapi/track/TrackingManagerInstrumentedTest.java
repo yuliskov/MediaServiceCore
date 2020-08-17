@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.track;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
-import com.liskovsoft.youtubeapi.track.models.UpdateWatchTimeResult;
+import com.liskovsoft.youtubeapi.track.models.WatchTimeResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import org.junit.Before;
@@ -33,14 +33,25 @@ public class TrackingManagerInstrumentedTest {
         String playbackNonce = mAppService.generateClientPlaybackNonce();
         VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
 
-        Call<UpdateWatchTimeResult> wrapper = mTrackingManager.updateWatchTime(
-                videoInfo.getVideoDetails().getVideoId(),
-                videoInfo.getVideoDetails().getLengthSeconds(),
-                10, 10, 10,
-                playbackNonce, videoInfo.getEventId(), TestHelpers.getAuthorization());
+        String videoId = videoInfo.getVideoDetails().getVideoId();
+        float lengthSeconds = Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds());
+        float currentTimeSeconds = 10;
+        String authorization = TestHelpers.getAuthorization();
 
-        Response<UpdateWatchTimeResult> response = wrapper.execute();
+        Call<WatchTimeResult> wrapper = mTrackingManager.initWatchTime(
+                videoId, lengthSeconds, currentTimeSeconds, currentTimeSeconds, currentTimeSeconds,
+                playbackNonce, videoInfo.getEventId(), authorization);
 
-        assertTrue("Watch time success", response.isSuccessful());
+        Response<WatchTimeResult> response = wrapper.execute();
+
+        assertTrue("Watch time init success", response.isSuccessful());
+
+        wrapper = mTrackingManager.updateWatchTime(
+                videoId, lengthSeconds, currentTimeSeconds, currentTimeSeconds, currentTimeSeconds,
+                playbackNonce, videoInfo.getEventId(), authorization);
+
+        response = wrapper.execute();
+
+        assertTrue("Watch time update success", response.isSuccessful());
     }
 }

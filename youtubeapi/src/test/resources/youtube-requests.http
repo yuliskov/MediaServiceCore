@@ -335,8 +335,53 @@ Authorization: Bearer ya29.a0AfH6SMBJqjxJwUaHuZk3NM_hT8puBbFS4mDMe1o11IRJNEZvi11
 GET https://www.youtube.com/api/stats/watchtime?ns=yt&cpn=hBt2a1dJ9yaPS_jZ&docid=buWzWtXHimk&ver=2&cmt=553.263&ei=Tf46X8HhDtTU7QT5yKuQAg&final=1&len=4948.0&st=553.263&et=553.263
 Authorization: Bearer ya29.a0AfH6SMC3jB2_4za-2d3u32WKM2wDtsJreFoC2f3lvbWWz7IybkkohC3WpvcTvmGfNSXJi2rgBNd96TrykVj5mV4UsGQ163HGPwF-AkvER1NYzS2ze3UxXECU5tYs7ALfvFc9ZyoWNsUt7jXnCtmaTraPzs1Sj1Asf87RUC43oMAvuw
 
+###
 
+# Watch history WEB
+GET https://www.youtube.com/api/stats/watchtime?ns=yt&el=detailpage&cpn=gwnIsUGLezoE2izq&docid=TIjK17v9vj4&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D9TY_9BImp3Y&cmt=202.677&ei=ilA9X5iROP-B0u8P9oGggA0&fmt=398&fs=0&rt=53.047&of=tR4dk986LPDLNAoDV1EZuQ&euri&lact=538&cl=327101833&state=paused&vm=CAMQARgBKixQUXZlck9uQ3RMa0JqdnliMENGN1lnZmR0Qk1nREYtSWp0RmVfd0ttT2FJPToyQUdiNlo4UFEzRE5CMm9CQjFVNG1tSUJBMnJ4TXN6Q0g1QldZamIzVU1kdWc3WEtwX3c&volume=15&cbr=Chrome&cbrver=84.0.4147.125&c=WEB&cver=2.20200814.00.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&final=1&hl=en_US&cr=US&len=267.201&feature=related&afmt=251&idpj=-9&ldpj=-19&muted=0&st=201.63&et=202.677
+accept: image/webp,image/apng,image/*,*/*;q=0.8
+accept-encoding: gzip, deflate, br
+accept-language: en-US,en;q=0.9,ru;q=0.8,uk;q=0.7
+cookie: VISITOR_INFO1_LIVE=9k6TV4hk4n4; LOGIN_INFO=AFmmF2swRQIgNMQXVMsx1nxe6RfQGMVibY5deIFqmkIy6ZJm6uBFZRYCIQDfMvDxbsrqEuE2leTVo4lFHCs1USQQPmVkCtTnxRFahw:QUQ3MjNmeWtaSTVRWTQ3VXZHcGNqbFh2U3ZLT3U1QU9rRExvZEtXTFdibXlHSFBCanBma1RKN0VPblNPRjRoc0JuTGFtZkR2N3VESFVfT05RdXlYZ3NadVQzTlc2dDZ4S1RrMmpTMmRNVUozeXdjelZhWlBhZ01uUnFPSWk2enpGSHBVZHRvQTdsNXBGS2dSaGJ0NVg3Ny02Mmk5UDVIZnF4R2FEY29XY1hDU1VEbU9ES3ljZUFLc2xIU2ltQnNFTTdmQU9hbDNFcXhDdzBsbHgtNDhjTFdVdXE2UG45RTJHVFhadnYwYkJ0Y3RtdnZNRGI3ZGlORC1QWDNTTzlvZHJUbDkzZDFrMHVLSg==; PREF=gl=US&f5=30&f3=8&hl=en&al=en; APISID=2Nf6ViXnRmku75ym/AVkQSLJ_iS-NybuR8; HSID=AV_51Qh30WEXw8veF; SAPISID=Q-IFdOpxEqOAu8jK/A7IMahDV3-Qe61djy; SSID=AlCXQ4h3ctJZChtm7; __Secure-3PAPISID=Q-IFdOpxEqOAu8jK/A7IMahDV3-Qe61djy; SID=0QfMe3dDxMcTZhZj6nWpmIDszJHtThYgZsk5N3LFW0-pxANPNgI-Z7xCkdBuvM3Bof2hxA.; __Secure-3PSID=0QfMe3dDxMcTZhZj6nWpmIDszJHtThYgZsk5N3LFW0-pxANP3JWJ1hejJ5RP66Y9zQftbQ.; YSC=HcVreatBEgw; GPS=1; yt-dev.storage-integrity=true; yt-dev.account-credentials-c=%7B%22102307470137119736718%22%3A%7B%22gaiaId%22%3A%22102307470137119736718%22%2C%22oAuthClientIdName%22%3A%22device%22%2C%22refreshToken%22%3A%221//0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY%22%7D%7D; yt-dev.active-account-c=%7B%22gaiaId%22%3A%22102307470137119736718%22%2C%22ownerGaiaId%22%3A%22102307470137119736718%22%2C%22delegateRelationship%22%3A0%7D; yt-dev.token-time-c=%7B%22active-account%22%3A1597853647052%2C%22account-credentials%22%3A1597853647046%7D; SIDCC=AJi4QfGFWsorwb_7p9sIJXhDi6idcrHPW610eatwifV18N8mhTwoaqvayUgrrQu37rLd3Xmfxlkh
+dnt: 1
+referer: https://www.youtube.com/watch?v=9TY_9BImp3Y
+sec-fetch-dest: image
+sec-fetch-mode: no-cors
+sec-fetch-site: same-origin
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+x-client-data: CJC2yQEIprbJAQjEtskBCKmdygEIqaHKAQiGtcoBCJm1ygEI5sbKAQjnyMoBCOnIygEItMvKAQiV1soB
 
+###
+
+# History
+GET https://www.youtube.com/api/stats/playback?ns=yt&el=detailpage&cpn=tuzJUKK041_DJ8go&docid=_YcWiPO6arc&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2F&cmt=0.011&ei=wWE9X4rJNpuCv_IPjN6H8Ak&fmt=244&fs=0&rt=0.639&of=VcaUUyFBdp6i4vqASAUeJw&euri&lact=1456&cl=327101833&mos=0&vm=CAEQARgEKixQUXZlck9uQ3RMa0JqdnliMENGN1lnZmR0Qk1nREYtSWp0RmVfd0ttT2FJPToyQUdiNlo4TkNTUlR4ZzQ0SktVTkxhVlJlems1LTNoV0lMWWRTUG9QTDFQbV9IWnJjVnc&volume=57&cbr=Chrome&cbrver=84.0.4147.125&c=WEB&cver=2.20200814.00.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=152&fexp=23744176%2C23804281%2C23827034%2C23839597%2C23856950%2C23857949%2C23859802%2C23862346%2C23868335%2C23882503%2C23884386%2C23890959%2C23895671%2C23902511%2C23908666%2C23911055%2C23915480%2C23916074%2C23916148%2C23918597%2C23921357%2C23924577%2C23926165%2C23927501%2C23928508%2C23928545%2C23929928%2C23930220%2C23931939%2C23931993%2C23934047%2C23934970%2C23935178%2C23935184%2C23936436%2C24590231%2C3300112%2C3300134%2C3300164%2C3313321%2C3313597%2C3313833%2C3316358%2C3316377%2C3318630%2C3318887%2C3318889%2C3319024%2C3319220%2C3320597%2C9449243&rtn=2&feature=g-high-rec&afmt=251&inview=NaN
+accept-encoding: gzip, deflate, br
+accept-language: en-US,en;q=0.9,ru;q=0.8,uk;q=0.7
+cookie: VISITOR_INFO1_LIVE=9k6TV4hk4n4; LOGIN_INFO=AFmmF2swRQIgNMQXVMsx1nxe6RfQGMVibY5deIFqmkIy6ZJm6uBFZRYCIQDfMvDxbsrqEuE2leTVo4lFHCs1USQQPmVkCtTnxRFahw:QUQ3MjNmeWtaSTVRWTQ3VXZHcGNqbFh2U3ZLT3U1QU9rRExvZEtXTFdibXlHSFBCanBma1RKN0VPblNPRjRoc0JuTGFtZkR2N3VESFVfT05RdXlYZ3NadVQzTlc2dDZ4S1RrMmpTMmRNVUozeXdjelZhWlBhZ01uUnFPSWk2enpGSHBVZHRvQTdsNXBGS2dSaGJ0NVg3Ny02Mmk5UDVIZnF4R2FEY29XY1hDU1VEbU9ES3ljZUFLc2xIU2ltQnNFTTdmQU9hbDNFcXhDdzBsbHgtNDhjTFdVdXE2UG45RTJHVFhadnYwYkJ0Y3RtdnZNRGI3ZGlORC1QWDNTTzlvZHJUbDkzZDFrMHVLSg==; PREF=gl=US&f5=30&f3=8&hl=en&al=en; APISID=2Nf6ViXnRmku75ym/AVkQSLJ_iS-NybuR8; HSID=AV_51Qh30WEXw8veF; SAPISID=Q-IFdOpxEqOAu8jK/A7IMahDV3-Qe61djy; SSID=AlCXQ4h3ctJZChtm7; __Secure-3PAPISID=Q-IFdOpxEqOAu8jK/A7IMahDV3-Qe61djy; SID=0QfMe3dDxMcTZhZj6nWpmIDszJHtThYgZsk5N3LFW0-pxANPNgI-Z7xCkdBuvM3Bof2hxA.; __Secure-3PSID=0QfMe3dDxMcTZhZj6nWpmIDszJHtThYgZsk5N3LFW0-pxANP3JWJ1hejJ5RP66Y9zQftbQ.; YSC=HcVreatBEgw; yt-dev.storage-integrity=true; yt-dev.account-credentials-c=%7B%22102307470137119736718%22%3A%7B%22gaiaId%22%3A%22102307470137119736718%22%2C%22oAuthClientIdName%22%3A%22device%22%2C%22refreshToken%22%3A%221//0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY%22%7D%7D; yt-dev.active-account-c=%7B%22gaiaId%22%3A%22102307470137119736718%22%2C%22ownerGaiaId%22%3A%22102307470137119736718%22%2C%22delegateRelationship%22%3A0%7D; yt-dev.token-time-c=%7B%22active-account%22%3A1597853647052%2C%22account-credentials%22%3A1597853647046%7D; SIDCC=AJi4QfHjZ7CxIa2EQLZB1bGUl3T_sfyobtQslGChf3K9P8-VqF4zLLZffqeGQ_Vc0FLs75XRWSlx
+dnt: 1
+referer: https://www.youtube.com/watch?v=tFHhLM-v8ls
+sec-fetch-dest: empty
+sec-fetch-mode: cors
+sec-fetch-site: same-origin
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+x-client-data: CJC2yQEIprbJAQjEtskBCKmdygEIqaHKAQiGtcoBCJm1ygEI5sbKAQjnyMoBCOnIygEI8MnKAQi0y8oBCJXWygE=
+x-goog-pageid: 102307470137119736718
+x-youtube-ad-signals: dt=1597857196827&flash=0&frm&u_tz=180&u_his=50&u_java&u_h=1050&u_w=1680&u_ah=1010&u_aw=1680&u_cd=24&u_nplug=3&u_nmime=4&bc=31&bih=425&biw=1663&brdim=0%2C0%2C0%2C0%2C1680%2C0%2C1680%2C1010%2C1680%2C425&vis=1&wgl=true&ca_type=image
+x-youtube-client-name: 1
+x-youtube-client-version: 2.20200814.00.00
+x-youtube-device: cbr=Chrome&cbrver=84.0.4147.125&ceng=WebKit&cengver=537.36&cos=Windows&cosver=10.0
+x-youtube-identity-token: QUFFLUhqbExycmJDdXlESGFIdEdrdWNhV2JfTFJsS0l5d3w=
+x-youtube-page-cl: 326505813
+x-youtube-page-label: youtube.ytfe.desktop_20200813_0_RC0
+x-youtube-time-zone: Europe/Kiev
+x-youtube-utc-offset: 180
+x-youtube-variants-checksum: 4c997b459ce23193669a775076cf0f8d
+
+###
+
+# History 2
+GET https://www.youtube.com/api/stats/playback?ns=yt&el=detailpage&cpn=2P74-a9LJw9gc1Xs&docid=l76YMR5cSSo&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2F&cmt=0.035&ei=SWM9X6z8AcnxyQW6rbuACw&fmt=134&fs=0&rt=1.136&of=sT13QLgyr3g2IXyX24LBGA&euri&lact=4439&cl=327101833&mos=0&vm=CAEQARgEKixaZkdEdkxJSVZabU1BZ1BIcUZLUW9YZUxfcGhKNElMenNodmUxa295SWlJPToyQUdiNlo4T1VjRDNvbHZ5eVhLRDY4c243cUVwbC11VEtYNUtDU2VMTjRRN3VNdkd3U3c&volume=57&subscribed=1&cbr=Chrome&cbrver=84.0.4147.125&c=WEB&cver=2.20200814.00.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=21544.981&fexp=23744176%2C23804281%2C23827034%2C23839597%2C23856950%2C23857949%2C23859802%2C23862346%2C23868335%2C23882503%2C23884386%2C23890959%2C23895671%2C23902511%2C23908666%2C23911055%2C23915480%2C23916074%2C23916148%2C23918597%2C23921357%2C23924577%2C23926165%2C23927501%2C23928508%2C23928545%2C23929928%2C23930220%2C23931939%2C23931993%2C23934047%2C23934970%2C23935178%2C23935184%2C23936436%2C24590231%2C3300112%2C3300134%2C3300164%2C3313321%2C3313597%2C3313833%2C3316358%2C3316377%2C3318630%2C3318887%2C3318889%2C3319024%2C3319220%2C3320597%2C9449243&rtn=7&feature=g-high-crv&afmt=251&inview=NaN
+Authorization: Bearer ya29.a0AfH6SMDuDnVtpdqBOP1qDkUTINxlpZjRIoBw3I5xPHtvZl-HIRXao3BS1BHy57bzS25ElHiAgtmGlG7G-ACpezZNiNPfAXID4SOG0rWRsK8yz4oTt9qdcILjXxuhRv6DWBaplrskEbnw5tRzXkYQWqrW9Xzwh0sqF2w66qb9EljVgA
 
 
 

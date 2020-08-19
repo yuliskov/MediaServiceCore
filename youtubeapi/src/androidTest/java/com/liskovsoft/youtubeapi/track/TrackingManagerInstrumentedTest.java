@@ -39,22 +39,15 @@ public class TrackingManagerInstrumentedTest {
         String videoId = videoInfo.getVideoDetails().getVideoId();
         float lengthSec = Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds());
         float positionSec = 10;
+        String vm = "CAEQARgEKiB1bnk3SDdPbWtzNlMtcXhfMFlWdjc2Sk5sTm13V19JWjoyQUdiNlo4UDVweWd4ZjMxY1F0S3dmVTdHM2ZYUjJ1Yk02ZjQ3Z3B1c3A4U1lzX0lMbXc";
         String authorization = TestHelpers.getAuthorization();
 
-        Call<WatchTimeResult> wrapper = mTrackingManager.updateWatchTime(
-                videoId, lengthSec, positionSec, positionSec, positionSec,
-                playbackNonce, videoInfo.getEventId(), authorization);
+        Call<WatchTimeResult> wrapper = mTrackingManager.updateWatchTime2(
+                videoId, lengthSec, positionSec, playbackNonce, videoInfo.getEventId(), vm, authorization
+        );
 
         Response<WatchTimeResult> response = wrapper.execute();
 
         assertTrue("Watch time update success", response.isSuccessful());
-
-        //Map<String, String> headers = new HashMap<>();
-        //headers.put("Authorization", "Bearer ya29.a0AfH6SMC3jB2_4za-2d3u32WKM2wDtsJreFoC2f3lvbWWz7IybkkohC3WpvcTvmGfNSXJi2rgBNd96TrykVj5mV4UsGQ163HGPwF-AkvER1NYzS2ze3UxXECU5tYs7ALfvFc9ZyoWNsUt7jXnCtmaTraPzs1Sj1Asf87RUC43oMAvuw");
-        //
-        //OkHttpHelpers.doGetOkHttpRequest(
-        //        "https://www.youtube.com/api/stats/watchtime?ns=yt&ver=2&final=1" +
-        //                "&docid=" + videoId + "&len=" + lengthSec + "&cmt=" + positionSec + "&st=" + positionSec +
-        //                "&et=" + positionSec + "&cpn=" + playbackNonce + "&ei=" + videoInfo.getEventId(), headers);
     }
 }

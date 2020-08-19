@@ -380,8 +380,17 @@ x-youtube-variants-checksum: 4c997b459ce23193669a775076cf0f8d
 ###
 
 # History 2
-GET https://www.youtube.com/api/stats/playback?ns=yt&el=detailpage&cpn=2P74-a9LJw9gc1Xs&docid=l76YMR5cSSo&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2F&cmt=0.035&ei=SWM9X6z8AcnxyQW6rbuACw&fmt=134&fs=0&rt=1.136&of=sT13QLgyr3g2IXyX24LBGA&euri&lact=4439&cl=327101833&mos=0&vm=CAEQARgEKixaZkdEdkxJSVZabU1BZ1BIcUZLUW9YZUxfcGhKNElMenNodmUxa295SWlJPToyQUdiNlo4T1VjRDNvbHZ5eVhLRDY4c243cUVwbC11VEtYNUtDU2VMTjRRN3VNdkd3U3c&volume=57&subscribed=1&cbr=Chrome&cbrver=84.0.4147.125&c=WEB&cver=2.20200814.00.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=21544.981&fexp=23744176%2C23804281%2C23827034%2C23839597%2C23856950%2C23857949%2C23859802%2C23862346%2C23868335%2C23882503%2C23884386%2C23890959%2C23895671%2C23902511%2C23908666%2C23911055%2C23915480%2C23916074%2C23916148%2C23918597%2C23921357%2C23924577%2C23926165%2C23927501%2C23928508%2C23928545%2C23929928%2C23930220%2C23931939%2C23931993%2C23934047%2C23934970%2C23935178%2C23935184%2C23936436%2C24590231%2C3300112%2C3300134%2C3300164%2C3313321%2C3313597%2C3313833%2C3316358%2C3316377%2C3318630%2C3318887%2C3318889%2C3319024%2C3319220%2C3320597%2C9449243&rtn=7&feature=g-high-crv&afmt=251&inview=NaN
-Authorization: Bearer ya29.a0AfH6SMDuDnVtpdqBOP1qDkUTINxlpZjRIoBw3I5xPHtvZl-HIRXao3BS1BHy57bzS25ElHiAgtmGlG7G-ACpezZNiNPfAXID4SOG0rWRsK8yz4oTt9qdcILjXxuhRv6DWBaplrskEbnw5tRzXkYQWqrW9Xzwh0sqF2w66qb9EljVgA
+GET https://www.youtube.com/api/stats/playback?ns=yt&cpn=2P74-a9LJw9gc1Xs&docid=l76YMR5cSSo&ver=2&ei=SWM9X6z8AcnxyQW6rbuACw&vm=CAEQARgEKixaZkdEdkxJSVZabU1BZ1BIcUZLUW9YZUxfcGhKNElMenNodmUxa295SWlJPToyQUdiNlo4T1VjRDNvbHZ5eVhLRDY4c243cUVwbC11VEtYNUtDU2VMTjRRN3VNdkd3U3c
+Authorization: Bearer ya29.a0AfH6SMAPf4Zu8jnNDCdlMZc9AzWXOqniN_xHiMIzWgx1y9q1J1aoEwQ_kXsinukQR5d07fGo7Bn5DacRDnlhuxeWC8Q86plJb3WFc9IUemNFBxOD56uxlw_7V85e_pTfdlzK84mJq2Pd2Bwgr1-svkcg9ra3EHQBVObgBzf0DUGDWQ
+
+###
+
+# Browse test
+GET https://www.youtube.com/youtubei/v1/browse?t=PHDJ3IE8ygxFybs9
+Content-Type: application/json
+Authorization: Bearer ya29.a0AfH6SMAPf4Zu8jnNDCdlMZc9AzWXOqniN_xHiMIzWgx1y9q1J1aoEwQ_kXsinukQR5d07fGo7Bn5DacRDnlhuxeWC8Q86plJb3WFc9IUemNFBxOD56uxlw_7V85e_pTfdlzK84mJq2Pd2Bwgr1-svkcg9ra3EHQBVObgBzf0DUGDWQ
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1920,"screenHeightPoints":1080,"screenPixelDensity":2,"theme":"CLASSIC","utcOffsetMinutes":330,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION","zylonLeftNav":true},"acceptRegion":"IN","experimentsToken":"GgIQAA%3D%3D","deviceMake":"Samsung","deviceModel":"SmartTV","osName":"Tizen","osVersion":"2.3","browserName":"Safari","platform":"TV","acceptLanguage":"en"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false}}}
 
 
 

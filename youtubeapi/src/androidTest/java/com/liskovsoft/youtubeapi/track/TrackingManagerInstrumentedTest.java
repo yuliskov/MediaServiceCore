@@ -34,13 +34,10 @@ public class TrackingManagerInstrumentedTest {
         VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
 
         String videoId = videoInfo.getVideoDetails().getVideoId();
-        float lengthSec = Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds());
-        float positionSec = 10;
-        String vm = "CAEQARgEKiB1bnk3SDdPbWtzNlMtcXhfMFlWdjc2Sk5sTm13V19JWjoyQUdiNlo4UDVweWd4ZjMxY1F0S3dmVTdHM2ZYUjJ1Yk02ZjQ3Z3B1c3A4U1lzX0lMbXc";
         String authorization = TestHelpers.getAuthorization();
 
         Call<WatchTimeResult> wrapper = mTrackingManager.createWatchRecord(
-                videoId, lengthSec, positionSec, playbackNonce, videoInfo.getEventId(), vm, authorization
+                videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVM(), authorization
         );
 
         Response<WatchTimeResult> response = wrapper.execute();

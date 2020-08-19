@@ -15,8 +15,6 @@ public interface TrackingManager {
     @GET("https://www.youtube.com/api/stats/playback?ns=yt&ver=2")
     Call<WatchTimeResult> createWatchRecord(
             @Query("docid") String videoId,
-            @Query("len") float lengthSec,               // e.g. 526.91
-            @Query("cmt") float positionSec,             // e.g. 119.405
             @Query("cpn") String clientPlaybackNonce,    // generated code for each query (see AppService)
             @Query("ei") String eventId,                 // ei param from get_video_info
             @Query("vm") String vm,                      // ???

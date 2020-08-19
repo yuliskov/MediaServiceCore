@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 
 import androidx.annotation.NonNull;
-import com.liskovsoft.sharedutils.querystringparser.MyQueryString;
-import com.liskovsoft.sharedutils.querystringparser.MyQueryStringFactory;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 
@@ -104,7 +104,7 @@ public class VideoFormat {
 
     public void setSignature(String signature) {
         if (signature != null) {
-            MyQueryString url = MyQueryStringFactory.parse(mUrl);
+            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
             if (url.contains(PARAM_SIGNATURE_SPECIAL_MARK)) {
                 url.set(PARAM_SIGNATURE_SPECIAL, signature);
@@ -284,7 +284,7 @@ public class VideoFormat {
             String cipherUri = mCipher == null ? mSignatureCipher : mCipher;
 
             if (cipherUri != null) {
-                MyQueryString queryString = MyQueryStringFactory.parse(cipherUri);
+                UrlQueryString queryString = UrlQueryStringFactory.parse(cipherUri);
                 mUrl = queryString.get(PARAM_URL);
                 result = queryString.get(PARAM_S);
             }
@@ -303,16 +303,6 @@ public class VideoFormat {
 
     public String getLastModified() {
         return mLastModified;
-    }
-
-    public String getEventId() {
-        if (mEventId == null && mUrl != null) {
-            MyQueryString queryString = MyQueryStringFactory.parse(mUrl);
-
-            mEventId = queryString.get(PARAM_EVENT_ID);
-        }
-
-        return mEventId;
     }
 
     @NonNull

@@ -12,6 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Note: Robolectric doesn't support loading native libraries (*.so)
@@ -46,5 +47,12 @@ public class AppServiceInstrumentedTest {
         for (String decipher : deciphered) {
              assertNotEquals("Cipher and decipher not the same", decipher, cipher);
         }
+    }
+
+    @Test
+    public void testPlaybackNonce() {
+        String playbackNonce = mAppService.generateClientPlaybackNonce();
+
+        assertTrue("Playback nonce not empty", playbackNonce != null && !playbackNonce.isEmpty());
     }
 }

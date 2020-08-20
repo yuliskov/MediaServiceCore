@@ -37,7 +37,7 @@ public class TrackingManagerInstrumentedTest {
         String authorization = TestHelpers.getAuthorization();
 
         Call<WatchTimeResult> wrapper = mTrackingManager.createWatchRecord(
-                videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVM(), authorization
+                videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), authorization
         );
 
         Response<WatchTimeResult> response = wrapper.execute();

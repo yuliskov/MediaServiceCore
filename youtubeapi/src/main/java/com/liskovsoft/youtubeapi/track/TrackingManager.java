@@ -14,10 +14,10 @@ public interface TrackingManager {
      */
     @GET("https://www.youtube.com/api/stats/playback?ns=yt&ver=2")
     Call<WatchTimeResult> createWatchRecord(
-            @Query("docid") String videoId,
-            @Query("cpn") String clientPlaybackNonce,    // generated code for each query (see AppService)
-            @Query("ei") String eventId,                 // ei param from get_video_info
-            @Query("vm") String vm,                      // ???
+            @Query("docid") String videoId,              // Video Id
+            @Query("cpn") String clientPlaybackNonce,    // Client Playback Nonce, unique hash code for each query (see AppService)
+            @Query("ei") String eventId,                 // Event Id, ei param from get_video_info
+            @Query("vm") String vm,                      // Visitor Monitoring?, vm param from get_video_info
             @Header("Authorization") String auth
     );
 
@@ -29,13 +29,13 @@ public interface TrackingManager {
      */
     @GET("https://www.youtube.com/api/stats/watchtime?ns=yt&ver=2&final=1")
     Call<WatchTimeResult> updateWatchTime(
-            @Query("docid") String videoId,
+            @Query("docid") String videoId,              // Video Id
             @Query("len") float lengthSec,               // e.g. 526.91
             @Query("cmt") float positionSec,             // e.g. 119.405
             @Query("st") float jumpToPositionSec,        // e.g. 0,119.405 or 119.405
             @Query("et") float jumpToPositionAltSec,     // e.g. 0,119.405 or 119.405
-            @Query("cpn") String clientPlaybackNonce,    // generated code for each query (see AppService)
-            @Query("ei") String eventId,                 // ei param from get_video_info
+            @Query("cpn") String clientPlaybackNonce,    // Client Playback Nonce, unique hash code for each query (see AppService)
+            @Query("ei") String eventId,                 // Event Id, ei param from get_video_info
             @Header("Authorization") String auth
     );
 }

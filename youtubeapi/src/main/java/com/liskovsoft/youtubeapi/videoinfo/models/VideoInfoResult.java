@@ -44,7 +44,7 @@ public class VideoInfoResult {
 
     // Values used in tracking actions
     private String mEventId;
-    private String mVM;
+    private String mVisitorMonitoringData;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -84,10 +84,10 @@ public class VideoInfoResult {
         return mEventId;
     }
 
-    public String getVM() {
+    public String getVisitorMonitoringData() {
         parseTrackingParams();
 
-        return mVM;
+        return mVisitorMonitoringData;
     }
 
     public String getPlaybackUrl() {
@@ -99,13 +99,13 @@ public class VideoInfoResult {
     }
 
     private void parseTrackingParams() {
-        boolean parseDone = mEventId != null || mVM != null;
+        boolean parseDone = mEventId != null || mVisitorMonitoringData != null;
 
         if (!parseDone && mWatchTimeUrl != null) {
             UrlQueryString queryString = UrlQueryStringFactory.parse(mWatchTimeUrl);
 
             mEventId = queryString.get(PARAM_EVENT_ID);
-            mVM = queryString.get(PARAM_VM);
+            mVisitorMonitoringData = queryString.get(PARAM_VM);
         }
     }
 }

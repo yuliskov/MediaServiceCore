@@ -52,7 +52,7 @@ public class VideoInfoManagerTest {
         assertNotNull("Contains captions", result.getCaptionTracks());
         assertNotNull("Contains video details", result.getVideoDetails());
         assertNotNull("Contains event id", result.getEventId());
-        assertNotNull("Contains vm tracking param", result.getVM());
+        assertNotNull("Contains vm tracking param", result.getVisitorMonitoringData());
     }
 
     @Test

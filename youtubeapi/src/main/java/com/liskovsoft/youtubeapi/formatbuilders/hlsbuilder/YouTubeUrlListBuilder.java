@@ -10,18 +10,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class SimpleUrlListBuilder implements UrlListBuilder {
+public class YouTubeUrlListBuilder implements UrlListBuilder {
     private final Set<MediaFormat> mVideos;
     private final MediaItemFormatInfo mInfo;
 
-    public SimpleUrlListBuilder(MediaItemFormatInfo formatInfo) {
+    public YouTubeUrlListBuilder(MediaItemFormatInfo formatInfo) {
         mInfo = formatInfo;
         MediaFormatComparator comp = new MediaFormatComparator(MediaFormatComparator.ORDER_ASCENDANT);
         mVideos = new TreeSet<>(comp);
     }
 
     public static UrlListBuilder from(MediaItemFormatInfo formatInfo) {
-        UrlListBuilder builder = new SimpleUrlListBuilder(formatInfo);
+        UrlListBuilder builder = new YouTubeUrlListBuilder(formatInfo);
 
         for (MediaFormat format : formatInfo.getRegularFormats()) {
             builder.append(format);

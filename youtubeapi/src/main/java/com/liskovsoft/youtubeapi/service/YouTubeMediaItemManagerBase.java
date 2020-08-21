@@ -4,14 +4,14 @@ import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
-import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
+import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 
 public abstract class YouTubeMediaItemManagerBase implements MediaItemManager {
-    private final VideoInfoService mVideoInfoService;
+    private final VideoInfoServiceUnsigned mVideoInfoService;
 
     protected YouTubeMediaItemManagerBase() {
-        mVideoInfoService = VideoInfoService.instance();
+        mVideoInfoService = VideoInfoServiceUnsigned.instance();
     }
 
     @Override

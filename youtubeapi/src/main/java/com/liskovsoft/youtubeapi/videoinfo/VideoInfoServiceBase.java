@@ -1,35 +1,20 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
-import retrofit2.Call;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoInfoService {
-    private static final String TAG = VideoInfoService.class.getSimpleName();
-    private static VideoInfoService sInstance;
+public abstract class VideoInfoServiceBase {
+    private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
     private final AppService mAppService;
-    private final VideoInfoManager mVideoInfoManager;
 
-    private VideoInfoService() {
+    protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
-        mVideoInfoManager = RetrofitHelper.withQueryString(VideoInfoManager.class);
     }
 
-    public static VideoInfoService instance() {
-        if (sInstance == null) {
-            sInstance = new VideoInfoService();
-        }
-
-        return sInstance;
-    }
-
-    private void decipherFormats(List<? extends VideoFormat> formats) {
+    protected void decipherFormats(List<? extends VideoFormat> formats) {
         if (formats == null) {
             return;
         }
@@ -57,20 +42,5 @@ public class VideoInfoService {
         for (int i = 0; i < formats.size(); i++) {
             formats.get(i).setSignature(deciphered.get(i));
         }
-    }
-
-    public VideoInfoResult getVideoInfo(String videoId) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManager.getVideoInfo(videoId);
-
-        VideoInfoResult result = RetrofitHelper.get(wrapper);
-
-        if (result != null) {
-            decipherFormats(result.getAdaptiveFormats());
-            decipherFormats(result.getRegularFormats());
-        } else {
-            Log.e(TAG, "Can't get video info for videoId " + videoId);
-        }
-
-        return result;
     }
 }

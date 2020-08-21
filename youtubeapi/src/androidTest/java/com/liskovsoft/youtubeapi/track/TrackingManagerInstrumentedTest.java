@@ -1,10 +1,11 @@
 package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.auth.AuthService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeResult;
-import com.liskovsoft.youtubeapi.videoinfo.VideoInfoService;
+import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,19 +20,25 @@ import static org.junit.Assert.assertTrue;
 public class TrackingManagerInstrumentedTest {
     private AppService mAppService;
     private TrackingManager mTrackingManager;
-    private VideoInfoService mVideoInfoService;
+    private VideoInfoServiceSigned mVideoInfoServiceSigned;
+    private AuthService mAuthService;
+    private static String mAuthorization;
 
     @Before
     public void setUp() {
-        mAppService = AppService.instance();
-        mVideoInfoService = VideoInfoService.instance();
         mTrackingManager = RetrofitHelper.withJsonPath(TrackingManager.class);
+        mAppService = AppService.instance();
+        mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mAuthService = AuthService.instance();
+        if (mAuthorization == null) {
+            mAuthorization = TestHelpers.getAuthorization();
+        }
     }
 
     @Test
     public void testUpdateWatchTime() throws IOException {
         String playbackNonce = mAppService.generateClientPlaybackNonce();
-        VideoInfoResult videoInfo = mVideoInfoService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
+        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE, mAuthorization);
 
         String videoId = videoInfo.getVideoDetails().getVideoId();
         String authorization = TestHelpers.getAuthorization();

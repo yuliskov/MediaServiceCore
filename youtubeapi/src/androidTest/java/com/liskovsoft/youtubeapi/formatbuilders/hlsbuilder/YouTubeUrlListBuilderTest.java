@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class SimpleUrlListBuilderTest {
+public class YouTubeUrlListBuilderTest {
     private MediaService mService;
 
     @Before

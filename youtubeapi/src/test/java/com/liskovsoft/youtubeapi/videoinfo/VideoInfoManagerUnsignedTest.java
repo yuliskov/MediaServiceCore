@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-public class VideoInfoManagerTest {
-    private VideoInfoManager mService;
+public class VideoInfoManagerUnsignedTest {
+    private VideoInfoManagerUnsigned mService;
 
     @Before
     public void setUp() {
@@ -34,7 +34,7 @@ public class VideoInfoManagerTest {
 
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withQueryString(VideoInfoManager.class);
+        mService = RetrofitHelper.withQueryString(VideoInfoManagerUnsigned.class);
     }
 
     @Test

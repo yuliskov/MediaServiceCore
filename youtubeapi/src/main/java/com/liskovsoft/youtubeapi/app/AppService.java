@@ -60,7 +60,7 @@ public class AppService {
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
-    public String generateClientPlaybackNonce() {
+    public String getClientPlaybackNonce() {
         String code = createClientPlaybackNonceCode();
 
         if (code == null) {

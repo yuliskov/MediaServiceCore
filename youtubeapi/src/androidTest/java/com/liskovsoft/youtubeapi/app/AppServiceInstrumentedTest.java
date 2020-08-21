@@ -51,7 +51,7 @@ public class AppServiceInstrumentedTest {
 
     @Test
     public void testPlaybackNonce() {
-        String playbackNonce = mAppService.generateClientPlaybackNonce();
+        String playbackNonce = mAppService.getClientPlaybackNonce();
 
         assertTrue("Playback nonce not empty", playbackNonce != null && !playbackNonce.isEmpty());
     }

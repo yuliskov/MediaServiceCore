@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.auth;
 
 public class AuthParams {
     private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
-    // TODO: find out how to obtain unique client secret
+    // TODO: client secret is hardcoded
     private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
     private static final String APP_SCOPE = "http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content";
     private static final String GRANT_TYPE_DEFAULT = "http://oauth.net/grant_type/device/1.0";

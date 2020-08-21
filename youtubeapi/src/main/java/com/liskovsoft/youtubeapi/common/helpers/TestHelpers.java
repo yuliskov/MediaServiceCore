@@ -14,6 +14,9 @@ public class TestHelpers {
     // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
     public static final String VIDEO_ID_CIPHERED = "0YEZiDtnbdA";
 
+    // GECID.com
+    public static final String CHANNEL_ID_SIMPLE = "UC3PyIqYQ7lw7YKHRLqIvXlw";
+
     // NEWS ONE
     public static final String VIDEO_ID_LIVE = "3e0FsU1N6OQ";
 

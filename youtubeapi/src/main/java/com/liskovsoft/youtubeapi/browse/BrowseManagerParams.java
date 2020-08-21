@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 
 public class BrowseManagerParams {
+    // TODO: too many hardcoded params: clickTrackingParams, deviceModel, clientVersion, webpSupport, animatedWebpSupport (preview animations)
     private static final String JSON_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20190214\"," +
             "\"screenWidthPoints\":1280,\"screenHeightPoints\":720,\"screenPixelDensity\":1,\"theme\":\"CLASSIC\",\"utcOffsetMinutes\":180," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\"}," +

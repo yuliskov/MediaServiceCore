@@ -2,8 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
@@ -11,7 +10,6 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManager {
@@ -20,12 +18,14 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManager {
     private final YouTubeSignInManager mSignInManager;
     private final TrackingService mTrackingService;
     private final VideoInfoServiceSigned mVideoInfoServiceSigned;
+    private final ActionsService mActionsService;
 
     private YouTubeMediaItemManagerSigned() {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
         mSignInManager = YouTubeSignInManager.instance();
         mTrackingService = TrackingService.instance();
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mActionsService = ActionsService.instance();
     }
 
     public static MediaItemManager instance() {
@@ -103,5 +103,35 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManager {
         mTrackingService.updateWatchTime(
                 formatInfo.getVideoId(), positionSec, Float.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
                 formatInfo.getVisitorMonitoringData(), mSignInManager.getAuthorization());
+    }
+
+    @Override
+    public void setLike(MediaItem item) {
+        mActionsService.setLike(item.getMediaId(), mSignInManager.getAuthorization());
+    }
+
+    @Override
+    public void removeLike(MediaItem item) {
+        mActionsService.removeLike(item.getMediaId(), mSignInManager.getAuthorization());
+    }
+
+    @Override
+    public void setDislike(MediaItem item) {
+        mActionsService.setDislike(item.getMediaId(), mSignInManager.getAuthorization());
+    }
+
+    @Override
+    public void removeDislike(MediaItem item) {
+        mActionsService.removeDislike(item.getMediaId(), mSignInManager.getAuthorization());
+    }
+
+    @Override
+    public void subscribe(MediaItem item) {
+        mActionsService.subscribe(item.getChannelId(), mSignInManager.getAuthorization());
+    }
+
+    @Override
+    public void unsubscribe(MediaItem item) {
+        mActionsService.unsubscribe(item.getChannelId(), mSignInManager.getAuthorization());
     }
 }

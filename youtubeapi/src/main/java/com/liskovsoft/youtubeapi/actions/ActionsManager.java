@@ -21,6 +21,10 @@ public interface ActionsManager {
     Call<ActionResult> setDislike(@Body String actionQuery, @Header("Authorization") String auth);
 
     @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/like/removedislike")
+    Call<ActionResult> removeDislike(@Body String actionQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/subscription/subscribe")
     Call<ActionResult> subscribe(@Body String actionQuery, @Header("Authorization") String auth);
 

@@ -75,4 +75,34 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             YouTubeMediaItemManagerSigned.unhold();
         }
     }
+
+    @Override
+    public void setLike(MediaItem item) {
+        mMediaItemManagerReal.setLike(item);
+    }
+
+    @Override
+    public void removeLike(MediaItem item) {
+        mMediaItemManagerReal.removeLike(item);
+    }
+
+    @Override
+    public void setDislike(MediaItem item) {
+        mMediaItemManagerReal.setDislike(item);
+    }
+
+    @Override
+    public void removeDislike(MediaItem item) {
+        mMediaItemManagerReal.removeDislike(item);
+    }
+
+    @Override
+    public void subscribe(MediaItem item) {
+        mMediaItemManagerReal.subscribe(item);
+    }
+
+    @Override
+    public void unsubscribe(MediaItem item) {
+        mMediaItemManagerReal.unsubscribe(item);
+    }
 }

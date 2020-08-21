@@ -90,4 +90,34 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
     public void updateHistoryPosition(String videoId, float positionSec) {
         // Do nothing, user is unsigned
     }
+
+    @Override
+    public void setLike(MediaItem item) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void removeLike(MediaItem item) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void setDislike(MediaItem item) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void removeDislike(MediaItem item) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void subscribe(MediaItem item) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void unsubscribe(MediaItem item) {
+        // Do nothing, user is unsigned
+    }
 }

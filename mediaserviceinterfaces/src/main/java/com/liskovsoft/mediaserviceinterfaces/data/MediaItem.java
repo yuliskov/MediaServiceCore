@@ -76,4 +76,6 @@ public interface MediaItem {
      * @param ratingScore score
      */
     void setRatingScore(double ratingScore);
+    String getChannelId();
+    void setChannelId(String channelId);
 }

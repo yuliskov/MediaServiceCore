@@ -27,9 +27,23 @@ public class ActionsService {
         RetrofitHelper.get(wrapper); // ignore result
     }
 
+    public void removeLike(String videoId, String authorization) {
+        Call<ActionResult> wrapper =
+                mActionsManager.removeLike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
+
     public void setDislike(String videoId, String authorization) {
         Call<ActionResult> wrapper =
                 mActionsManager.setDislike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
+
+    public void removeDislike(String videoId, String authorization) {
+        Call<ActionResult> wrapper =
+                mActionsManager.removeDislike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }

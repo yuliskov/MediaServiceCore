@@ -10,6 +10,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mTitle;
     private int mId;
     private String mMediaId;
+    private String mChannelId;
     private String mMediaUrl;
     private String mDescription;
     private String mCardImageUrl;
@@ -29,48 +30,54 @@ public class YouTubeMediaItem implements MediaItem {
     private YouTubeMediaItemFormatInfo mFormatInfo;
     private YouTubeMediaItemMetadata mMetadata;
 
-    public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
+    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
-        video.setId(id++);
-        video.setTitle(item.getTitle());
-        video.setDescription(YouTubeMediaServiceHelper.obtainDescription(item));
-        video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
-        video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
-        video.setProductionDate(item.getPublishedTime());
-        video.setMediaId(item.getVideoId());
-        video.setMediaUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
-        video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
-        video.setContentType("video/mp4");
-        video.setWidth(1280);
-        video.setHeight(720);
-        video.setAudioChannelConfig("2.0");
-        video.setPurchasePrice("$5.99");
-        video.setRentalPrice("$4.99");
-        video.setRatingStyle(5);
-        video.setRatingScore(4d);
+        video.mId = id++;
+        video.mTitle = item.getTitle();
+        video.mDescription = YouTubeMediaServiceHelper.obtainDescription(item);
+        video.mCardImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
+        video.mProductionDate = item.getPublishedTime();
+        video.mMediaId = item.getVideoId();
+        video.mChannelId = item.getChannelId();
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mContentType = "video/mp4";
+        video.mWidth = 1280;
+        video.mHeight = 720;
+        video.mAudioChannelConfig = "2.0";
+        video.mPurchasePrice = "$5.99";
+        video.mRentalPrice = "$4.99";
+        video.mRatingStyle = 5;
+        video.mRatingScore = 4d;
+
         return video;
     }
 
-    public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.MusicItem item) {
+    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.videos.MusicItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
+
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
-        video.setId(id++);
-        video.setTitle(item.getTitle());
-        video.setCardImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
-        video.setBackgroundImageUrl(YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item));
-        video.setProductionDate(item.getViewsAndPublished());
-        video.setMediaUrl(YouTubeHelper.videoIdToFullUrl(item.getVideoId()));
-        video.setDuration(YouTubeHelper.timeTextToMillis(item.getLengthText()));
-        video.setContentType("video/mp4");
-        video.setWidth(1280);
-        video.setHeight(720);
-        video.setAudioChannelConfig("2.0");
-        video.setPurchasePrice("$5.99");
-        video.setRentalPrice("$4.99");
-        video.setRatingStyle(5);
-        video.setRatingScore(4d);
+        video.mId = id++;
+        video.mTitle = item.getTitle();
+        video.mCardImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
+        video.mProductionDate = item.getViewsAndPublished();
+        video.mMediaId = item.getVideoId();
+        video.mChannelId = item.getChannelId();
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mContentType = "video/mp4";
+        video.mWidth = 1280;
+        video.mHeight = 720;
+        video.mAudioChannelConfig = "2.0";
+        video.mPurchasePrice = "$5.99";
+        video.mRentalPrice = "$4.99";
+        video.mRatingStyle = 5;
+        video.mRatingScore = 4d;
+
         return video;
     }
 
@@ -257,6 +264,16 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public void setDuration(int duration) {
         mDuration = duration;
+    }
+
+    @Override
+    public String getChannelId() {
+        return mChannelId;
+    }
+
+    @Override
+    public void setChannelId(String channelId) {
+        mChannelId = channelId;
     }
 
     public YouTubeMediaItemFormatInfo getFormatInfo() {

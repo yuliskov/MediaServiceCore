@@ -6,9 +6,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
-import java.io.InputStream;
-import java.util.List;
-
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
     private static MediaItemManager sInstance;
@@ -53,6 +50,16 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         checkSigned();
 
         return mMediaItemManagerReal.getMetadata(videoId);
+    }
+
+    @Override
+    public void updateHistoryPosition(MediaItem item, float positionSec) {
+        mMediaItemManagerReal.updateHistoryPosition(item, positionSec);
+    }
+
+    @Override
+    public void updateHistoryPosition(String videoId, float positionSec) {
+        mMediaItemManagerReal.updateHistoryPosition(videoId, positionSec);
     }
 
     private void checkSigned() {

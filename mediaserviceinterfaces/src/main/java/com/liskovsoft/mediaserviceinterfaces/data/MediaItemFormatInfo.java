@@ -29,7 +29,5 @@ public interface MediaItemFormatInfo {
     boolean containsDashInfo();
     boolean containsUrlListInfo();
     InputStream getMpdStream();
-    List<String> getUrlList();
-    String getEventId();
-    void setEventId(String eventId);
+    List<String> getUrlList();;
 }

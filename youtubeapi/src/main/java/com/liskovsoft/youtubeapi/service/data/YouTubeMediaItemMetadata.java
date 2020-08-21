@@ -24,7 +24,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private int mPercentWatched;
     private MediaItemMetadata mNextVideo;
 
-    public static MediaItemMetadata from(WatchNextResult watchNextResult) {
+    public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
 
         VideoMetadata videoMetadata = watchNextResult.getVideoMetadata();

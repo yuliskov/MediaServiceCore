@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
@@ -25,6 +26,8 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
+    private YouTubeMediaItemFormatInfo mFormatInfo;
+    private YouTubeMediaItemMetadata mMetadata;
 
     public static MediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
@@ -254,5 +257,21 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public void setDuration(int duration) {
         mDuration = duration;
+    }
+
+    public YouTubeMediaItemFormatInfo getFormatInfo() {
+        return mFormatInfo;
+    }
+
+    public void setFormatInfo(YouTubeMediaItemFormatInfo formatInfo) {
+        mFormatInfo = formatInfo;
+    }
+
+    public YouTubeMediaItemMetadata getMetadata() {
+        return mMetadata;
+    }
+
+    public void setMetadata(YouTubeMediaItemMetadata metadata) {
+        mMetadata = metadata;
     }
 }

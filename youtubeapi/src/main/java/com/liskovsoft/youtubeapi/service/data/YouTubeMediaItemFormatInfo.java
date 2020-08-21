@@ -31,8 +31,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mDashManifestUrl;
     private String mHlsManifestUrl;
     private String mEventId; // used in tracking
+    private String mVisitorMonitoringData; // used in tracking
 
-    public static MediaItemFormatInfo from(VideoInfoResult videoInfo) {
+    public static YouTubeMediaItemFormatInfo from(VideoInfoResult videoInfo) {
         YouTubeMediaItemFormatInfo formatInfo = new YouTubeMediaItemFormatInfo();
 
         if (videoInfo.getAdaptiveFormats() != null) {
@@ -67,6 +68,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
         formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
         formatInfo.mEventId = videoInfo.getEventId();
+        formatInfo.mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -210,13 +212,19 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return YouTubeUrlListBuilder.from(this).buildUriList();
     }
 
-    @Override
     public String getEventId() {
         return mEventId;
     }
 
-    @Override
     public void setEventId(String eventId) {
         mEventId = eventId;
+    }
+
+    public String getVisitorMonitoringData() {
+        return mVisitorMonitoringData;
+    }
+
+    public void setVisitorMonitoringData(String visitorMonitoringData) {
+        mVisitorMonitoringData = visitorMonitoringData;
     }
 }

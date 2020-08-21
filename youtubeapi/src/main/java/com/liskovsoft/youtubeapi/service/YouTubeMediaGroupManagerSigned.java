@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
@@ -15,13 +16,13 @@ import java.util.List;
 
 public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();
-    private final SearchServiceUnsigned mSearchServiceUnsigned;
+    private final SearchServiceSigned mSearchServiceSigned;
     private final BrowseServiceSigned mBrowseServiceSigned;
     private final YouTubeSignInManager mSignInManager;
     private static YouTubeMediaGroupManagerSigned sInstance;
 
     private YouTubeMediaGroupManagerSigned() {
-        mSearchServiceUnsigned = SearchServiceUnsigned.instance();
+        mSearchServiceSigned = SearchServiceSigned.instance();
         mBrowseServiceSigned = BrowseServiceSigned.instance();
         mSignInManager = YouTubeSignInManager.instance();
     }
@@ -42,13 +43,13 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
     @Override
     public MediaGroup getSearch(String searchText) {
-        SearchResult searchResult = mSearchServiceUnsigned.getSearch(searchText);
+        SearchResult searchResult = mSearchServiceSigned.getSearch(searchText, mSignInManager.getAuthorization());
         return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchServiceUnsigned.getSearch(searchText), MediaGroup.TYPE_SEARCH));
+        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchServiceSigned.getSearch(searchText, mSignInManager.getAuthorization()), MediaGroup.TYPE_SEARCH));
     }
 
     @Override
@@ -127,7 +128,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
         if (mediaTab.getType() == MediaGroup.TYPE_SEARCH) {
             return YouTubeMediaGroup.from(
-                    mSearchServiceUnsigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
+                    mSearchServiceSigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
                     mediaTab);
         }
 

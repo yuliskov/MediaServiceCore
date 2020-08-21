@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import retrofit2.Call;
 
 /**
- * Wraps result from the {@link AuthManager} and {@link SearchManagerUnsigned}
+ * Wraps result from the {@link SearchManagerUnsigned}
  */
 public class SearchServiceUnsigned {
     private static SearchServiceUnsigned sInstance;

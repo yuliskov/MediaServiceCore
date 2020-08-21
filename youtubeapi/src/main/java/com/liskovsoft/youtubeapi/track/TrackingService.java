@@ -27,6 +27,19 @@ public class TrackingService {
         return sInstance;
     }
 
+    public void updateWatchTime(String videoId, float positionSec, float lengthSeconds,
+                                String eventId, String visitorMonitoringData, String authorization) {
+        updateWatchTime(
+                videoId,
+                lengthSeconds,
+                positionSec,
+                mAppService.getClientPlaybackNonce(),
+                eventId,
+                visitorMonitoringData,
+                authorization
+        );
+    }
+
     public void updateWatchTime(String videoId, float positionSec, String authorization) {
         VideoInfoResult videoInfoResult = mVideoInfoServiceSigned.getVideoInfo(videoId, authorization);
 

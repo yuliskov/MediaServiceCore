@@ -43,14 +43,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
-        video.mContentType = "video/mp4";
-        video.mWidth = 1280;
-        video.mHeight = 720;
-        video.mAudioChannelConfig = "2.0";
-        video.mPurchasePrice = "$5.99";
-        video.mRentalPrice = "$4.99";
-        video.mRatingStyle = 5;
-        video.mRatingScore = 4d;
+        addCommonProps(video);
 
         return video;
     }
@@ -69,14 +62,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
-        video.mContentType = "video/mp4";
-        video.mWidth = 1280;
-        video.mHeight = 720;
-        video.mAudioChannelConfig = "2.0";
-        video.mPurchasePrice = "$5.99";
-        video.mRentalPrice = "$4.99";
-        video.mRatingStyle = 5;
-        video.mRatingScore = 4d;
+        addCommonProps(video);
 
         return video;
     }
@@ -84,13 +70,19 @@ public class YouTubeMediaItem implements MediaItem {
     public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
-        video.mMediaItemType = MediaItem.TYPE_VIDEO;
+        video.mMediaItemType = MediaItem.TYPE_CHANNEL;
         video.mId = id++;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
         video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
         video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
         video.mChannelId = item.getChannelId();
+        addCommonProps(video);
+
+        return video;
+    }
+
+    private static void addCommonProps(YouTubeMediaItem video) {
         video.mContentType = "video/mp4";
         video.mWidth = 1280;
         video.mHeight = 720;
@@ -99,8 +91,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mRentalPrice = "$4.99";
         video.mRatingStyle = 5;
         video.mRatingScore = 4d;
-
-        return video;
     }
 
     @Override

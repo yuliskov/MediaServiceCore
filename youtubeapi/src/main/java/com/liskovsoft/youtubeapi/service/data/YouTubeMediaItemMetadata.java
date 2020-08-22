@@ -166,12 +166,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public Integer getPercentWatched() {
+    public int getPercentWatched() {
         return mPercentWatched;
     }
 
     @Override
-    public void setPercentWatched(Integer percentWatched) {
+    public void setPercentWatched(int percentWatched) {
         mPercentWatched = percentWatched;
     }
 

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.models.videos;
+package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 

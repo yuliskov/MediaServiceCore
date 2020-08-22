@@ -49,7 +49,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchServiceSigned.getSearch(searchText, mSignInManager.getAuthorization()), MediaGroup.TYPE_SEARCH));
+        return Observable.fromCallable(() -> getSearch(searchText));
     }
 
     @Override
@@ -111,35 +111,35 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManager {
     }
 
     private List<MediaGroup> getFirstHomeGroups() {
-        Log.d(TAG, "Emitting first home tabs...");
+        Log.d(TAG, "Emitting first home groups...");
         List<BrowseSection> browseTabs = mBrowseServiceSigned.getHomeSections(mSignInManager.getAuthorization());
         return YouTubeMediaGroup.from(browseTabs);
     }
 
     private List<MediaGroup> getNextHomeGroups() {
-        Log.d(TAG, "Emitting next home tabs...");
+        Log.d(TAG, "Emitting next home groups...");
         List<BrowseSection> browseTabs = mBrowseServiceSigned.getNextHomeSections(mSignInManager.getAuthorization());
         return YouTubeMediaGroup.from(browseTabs);
     }
 
     @Override
-    public MediaGroup continueGroup(MediaGroup mediaTab) {
-        Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
+    public MediaGroup continueGroup(MediaGroup mediaGroup) {
+        Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
-        if (mediaTab.getType() == MediaGroup.TYPE_SEARCH) {
+        if (mediaGroup.getType() == MediaGroup.TYPE_SEARCH) {
             return YouTubeMediaGroup.from(
-                    mSearchServiceSigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
-                    mediaTab);
+                    mSearchServiceSigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup), mSignInManager.getAuthorization()),
+                    mediaGroup);
         }
 
         return YouTubeMediaGroup.from(
-                mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab), mSignInManager.getAuthorization()),
-                mediaTab
+                mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup), mSignInManager.getAuthorization()),
+                mediaGroup
         );
     }
 
     @Override
-    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab) {
-        return Observable.fromCallable(() -> continueGroup(mediaTab));
+    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
+        return Observable.fromCallable(() -> continueGroup(mediaGroup));
     }
 }

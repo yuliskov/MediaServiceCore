@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.browse.models.sections;
 
-import com.liskovsoft.youtubeapi.common.models.videos.ChannelItem;
-import com.liskovsoft.youtubeapi.common.models.videos.MusicItem;
-import com.liskovsoft.youtubeapi.common.models.videos.VideoItem;
+import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;

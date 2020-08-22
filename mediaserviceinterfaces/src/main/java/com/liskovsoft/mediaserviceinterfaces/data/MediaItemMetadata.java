@@ -28,8 +28,8 @@ public interface MediaItemMetadata {
     void setSubscribed(Boolean subscribed);
     String getChannelId();
     void setChannelId(String channelId);
-    Integer getPercentWatched();
-    void setPercentWatched(Integer percentWatched);
+    int getPercentWatched();
+    void setPercentWatched(int percentWatched);
     int getLikeStatus();
     void setLikeStatus(int likeStatus);
     List<MediaItemSuggestions> getSuggestions();

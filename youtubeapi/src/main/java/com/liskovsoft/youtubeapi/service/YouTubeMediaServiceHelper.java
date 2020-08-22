@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
-import com.liskovsoft.youtubeapi.common.models.videos.Thumbnail;
+import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
 import java.util.List;
@@ -33,31 +33,50 @@ public final class YouTubeMediaServiceHelper {
         return result;
     }
 
-    public static String obtainHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
+    public static String findHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.items.VideoItem item) {
         List<Thumbnail> thumbnails = item.getThumbnails();
 
-        if (thumbnails.size() == 0) {
+        return getHiResThumb(thumbnails);
+    }
+
+    public static String findHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.items.MusicItem item) {
+        List<Thumbnail> thumbnails = item.getThumbnails();
+
+        return getHiResThumb(thumbnails);
+    }
+
+    public static String findHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
+        List<Thumbnail> thumbnails = item.getThumbnails();
+
+        return getHiResThumb(thumbnails);
+    }
+
+    private static String getHiResThumb(List<Thumbnail> thumbnails) {
+        if (thumbnails == null || thumbnails.size() == 0) {
             return null;
         }
 
         return thumbnails.get(thumbnails.size() - 1).getUrl();
     }
 
-    public static String obtainHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.videos.MusicItem item) {
-        List<Thumbnail> thumbnails = item.getThumbnails();
-
-        if (thumbnails.size() == 0) {
-            return null;
-        }
-
-        return thumbnails.get(thumbnails.size() - 1).getUrl();
-    }
-
-    public static String obtainDescription(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
+    public static String createDescription(com.liskovsoft.youtubeapi.common.models.items.VideoItem item) {
         return YouTubeHelper.itemsToDescription(
                 item.getUserName(),
                 item.getPublishedTime(),
                 item.getShortViewCount()
+        );
+    }
+
+    public static String createDescription(com.liskovsoft.youtubeapi.common.models.items.MusicItem item) {
+        return YouTubeHelper.itemsToDescription(
+                item.getUserName(),
+                item.getViewsAndPublished()
+        );
+    }
+
+    public static String createDescription(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
+        return YouTubeHelper.itemsToDescription(
+                item.getSubscriberCountText()
         );
     }
 

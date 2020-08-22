@@ -10,10 +10,10 @@ import retrofit2.Call;
  */
 public class SearchServiceSigned {
     private static SearchServiceSigned sInstance;
-    private final SearchManagerSigned mSearchManager;
+    private final SearchManagerSigned mSearchManagerSigned;
 
     private SearchServiceSigned() {
-        mSearchManager = RetrofitHelper.withJsonPath(SearchManagerSigned.class);
+        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchManagerSigned.class);
     }
 
     public static SearchServiceSigned instance() {
@@ -29,7 +29,7 @@ public class SearchServiceSigned {
     }
 
     public SearchResult getSearch(String searchText, String authorization) {
-        Call<SearchResult> wrapper = mSearchManager.getSearchResult(SearchManagerParams.getSearchQuery(searchText), authorization);
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText), authorization);
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -49,7 +49,7 @@ public class SearchServiceSigned {
             throw new IllegalStateException("Can't get next search page. Next search key is empty.");
         }
         
-        Call<SearchResultContinuation> wrapper = mSearchManager.continueSearchResult(SearchManagerParams.getNextSearchQuery(nextSearchPageKey), authorization);
+        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getNextSearchQuery(nextSearchPageKey), authorization);
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {

@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
@@ -30,15 +29,15 @@ public class YouTubeMediaItem implements MediaItem {
     private YouTubeMediaItemFormatInfo mFormatInfo;
     private YouTubeMediaItemMetadata mMetadata;
 
-    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.videos.VideoItem item) {
+    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mId = id++;
         video.mTitle = item.getTitle();
-        video.mDescription = YouTubeMediaServiceHelper.obtainDescription(item);
-        video.mCardImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
         video.mProductionDate = item.getPublishedTime();
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
@@ -56,19 +55,42 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
-    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.videos.MusicItem item) {
+    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.MusicItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
         video.mId = id++;
         video.mTitle = item.getTitle();
-        video.mCardImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.obtainHighResThumbnailUrl(item);
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
         video.mProductionDate = item.getViewsAndPublished();
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mContentType = "video/mp4";
+        video.mWidth = 1280;
+        video.mHeight = 720;
+        video.mAudioChannelConfig = "2.0";
+        video.mPurchasePrice = "$5.99";
+        video.mRentalPrice = "$4.99";
+        video.mRatingStyle = 5;
+        video.mRatingScore = 4d;
+
+        return video;
+    }
+
+    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+
+        video.mMediaItemType = MediaItem.TYPE_VIDEO;
+        video.mId = id++;
+        video.mTitle = item.getTitle();
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mChannelId = item.getChannelId();
         video.mContentType = "video/mp4";
         video.mWidth = 1280;
         video.mHeight = 720;

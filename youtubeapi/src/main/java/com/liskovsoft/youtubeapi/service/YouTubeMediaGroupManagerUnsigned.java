@@ -46,7 +46,7 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return Observable.fromCallable(() -> YouTubeMediaGroup.from(mSearchServiceUnsigned.getSearch(searchText), MediaGroup.TYPE_SEARCH));
+        return Observable.fromCallable(() -> getSearch(searchText));
     }
 
     @Override
@@ -90,37 +90,36 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
     }
 
     private List<MediaGroup> getFirstHomeGroups() {
-        Log.d(TAG, "Emitting first home tabs...");
+        Log.d(TAG, "Emitting first home groups...");
         List<BrowseSection> browseTabs = mBrowseServiceUnsigned.getHomeSections();
         return YouTubeMediaGroup.from(browseTabs);
     }
 
     private List<MediaGroup> getNextHomeGroups() {
-        Log.d(TAG, "Emitting next home tabs...");
+        Log.d(TAG, "Emitting next home groups...");
         List<BrowseSection> browseTabs = mBrowseServiceUnsigned.getNextHomeSections();
         return YouTubeMediaGroup.from(browseTabs);
     }
 
     @Override
-    public MediaGroup continueGroup(MediaGroup mediaTab) {
-        Log.d(TAG, "Continue tab " + mediaTab.getTitle() + "...");
+    public MediaGroup continueGroup(MediaGroup mediaGroup) {
+        Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
+
+        if (mediaGroup.getType() == MediaGroup.TYPE_SEARCH) {
+            return YouTubeMediaGroup.from(
+                    mSearchServiceUnsigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                    mediaGroup);
+        }
+
         return YouTubeMediaGroup.from(
-                mBrowseServiceUnsigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaTab)),
-                mediaTab
+                mBrowseServiceUnsigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                mediaGroup
         );
     }
 
     @Override
-    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab) {
-        return Observable.create(emitter -> {
-            MediaGroup newMediaTab = continueGroup(mediaTab);
-
-            if (newMediaTab != null) {
-                emitter.onNext(newMediaTab);
-            }
-
-            emitter.onComplete();
-        });
+    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
+        return Observable.fromCallable(() -> continueGroup(mediaGroup));
     }
 
     // SHOULD BE EMPTY FOR UNSIGNED

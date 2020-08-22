@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.models.videos;
+package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
@@ -7,16 +7,14 @@ import java.util.List;
 public class ChannelItem {
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> thumbnails;
-    @JsonPath("$.title.runs[0].text")
+    @JsonPath({"$.title.runs[0].text", "$.displayName.runs[0].text"})
     private String title;
-    @JsonPath("$.channelId")
+    @JsonPath({"$.channelId", "$.navigationEndpoint.browseEndpoint.browseId"})
     private String channelId;
-    @JsonPath("$.navigationEndpoint.browseEndpoint.browseId")
-    private String browseId;
     @JsonPath("$.videoCountText.runs[0].text")
     private String videoCount;
     @JsonPath("$.subscriberCountText.runs[0].text")
-    private String subscriberCount;
+    private String subscriberCountText;
 
     public List<Thumbnail> getThumbnails() {
         return thumbnails;
@@ -30,15 +28,11 @@ public class ChannelItem {
         return channelId;
     }
 
-    public String getBrowseId() {
-        return browseId;
-    }
-
     public String getVideoCount() {
         return videoCount;
     }
 
-    public String getSubscriberCount() {
-        return subscriberCount;
+    public String getSubscriberCountText() {
+        return subscriberCountText;
     }
 }

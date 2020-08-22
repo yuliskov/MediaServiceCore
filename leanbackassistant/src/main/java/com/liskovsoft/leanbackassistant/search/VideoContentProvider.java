@@ -61,7 +61,7 @@ public class VideoContentProvider extends ContentProvider {
     };
     private CompositeDisposable mDisposable;
     private SchedulerProvider mSchedulerProvider;
-    private static List<MediaItem> mCachedVideos;
+    private static List<MediaItem> sCachedMediaItems = new ArrayList<>();
     private MediaGroup mSearch;
 
     @Override
@@ -117,11 +117,11 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     public static MediaItem findVideoWithId(int id) {
-        if (mCachedVideos == null) {
+        if (sCachedMediaItems == null) {
             return null;
         }
 
-        for (MediaItem video : mCachedVideos) {
+        for (MediaItem video : sCachedMediaItems) {
             if (video.getId() == id) {
                 return video;
             }
@@ -131,39 +131,50 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private Cursor search(String query, int limit) {
-        mSearch = mService.getMediaGroupManager().getSearch(query);
-        List<MediaItem> mediaItems = mSearch.getMediaItems();
-
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
-        Log.d(TAG, "Search result received: " + mediaItems);
+        mSearch = mService.getMediaGroupManager().getSearch(query);
 
-        mCachedVideos = new ArrayList<>();
+        if (mSearch != null) {
+            List<MediaItem> mediaItems = mSearch.getMediaItems();
 
-        apply(matrixCursor, mediaItems, limit);
+            Log.d(TAG, "Search result received: " + mediaItems);
+
+            sCachedMediaItems.clear();
+
+            apply(matrixCursor, mediaItems, limit);
+        } else {
+            Log.e(TAG, "Search is empty");
+        }
+
 
         return matrixCursor;
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
         mSearch = mService.getMediaGroupManager().continueGroup(mSearch);
-        List<MediaItem> mediaItems = mSearch.getMediaItems();
 
-        Log.d(TAG, "Next search result received: " + mediaItems);
+        if (mSearch != null) {
+            List<MediaItem> mediaItems = mSearch.getMediaItems();
 
-        apply(cursor, mediaItems, limit);
+            Log.d(TAG, "Next search result received: " + mediaItems);
+
+            apply(cursor, mediaItems, limit);
+        } else {
+            Log.e(TAG, "Next search is empty");
+        }
     }
 
-    private void apply(MatrixCursor matrixCursor, List<MediaItem> videos, int limit) {
-        if (videos != null) {
+    private void apply(MatrixCursor matrixCursor, List<MediaItem> mediaItems, int limit) {
+        if (mediaItems != null) {
             int idx = 0;
 
-            for (MediaItem video : videos) {
-                matrixCursor.addRow(convertVideoIntoRow(video));
+            for (MediaItem mediaItem : mediaItems) {
+                matrixCursor.addRow(convertVideoIntoRow(mediaItem));
                 idx++;
             }
 
-            mCachedVideos.addAll(videos);
+            sCachedMediaItems.addAll(mediaItems);
 
             if (idx < limit) {
                 nextSearch(matrixCursor, limit - idx);
@@ -187,25 +198,25 @@ public class VideoContentProvider extends ContentProvider {
         return mDisposable;
     }
 
-    private Object[] convertVideoIntoRow(MediaItem movie) {
+    private Object[] convertVideoIntoRow(MediaItem mediaItem) {
         return new Object[] {
-            movie.getId(),
-            movie.getTitle(),
-            movie.getDescription(),
-            movie.getCardImageUrl(),
-            movie.getContentType(),
-            movie.isLive(),
-            movie.getWidth(),
-            movie.getHeight(),
-            movie.getAudioChannelConfig(),
-            movie.getPurchasePrice(),
-            movie.getRentalPrice(),
-            movie.getRatingStyle(),
-            movie.getRatingScore(),
-            movie.getProductionDate(),
-            movie.getDuration(),
+            mediaItem.getId(),
+            mediaItem.getTitle(),
+            mediaItem.getDescription(),
+            mediaItem.getCardImageUrl(),
+            mediaItem.getContentType(),
+            mediaItem.isLive(),
+            mediaItem.getWidth(),
+            mediaItem.getHeight(),
+            mediaItem.getAudioChannelConfig(),
+            mediaItem.getPurchasePrice(),
+            mediaItem.getRentalPrice(),
+            mediaItem.getRatingStyle(),
+            mediaItem.getRatingScore(),
+            mediaItem.getProductionDate(),
+            mediaItem.getDuration(),
             "GLOBALSEARCH",
-            movie.getId()
+            mediaItem.getId()
         };
     }
 

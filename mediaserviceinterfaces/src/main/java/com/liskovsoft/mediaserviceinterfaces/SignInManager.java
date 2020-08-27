@@ -8,8 +8,9 @@ public interface SignInManager {
      * @return user code, user should apply this code on service web page (e.g. https://www.youtube.com/activate)
      */
     String logIn();
-    Observable<String> logInObserve();
-
     void logOut();
+
+    // RxJava interfaces
+    Observable<String> logInObserve();
     Observable<Void> logOutObserve();
 }

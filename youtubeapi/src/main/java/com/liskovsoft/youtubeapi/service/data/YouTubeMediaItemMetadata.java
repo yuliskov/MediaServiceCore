@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemSuggestions;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;

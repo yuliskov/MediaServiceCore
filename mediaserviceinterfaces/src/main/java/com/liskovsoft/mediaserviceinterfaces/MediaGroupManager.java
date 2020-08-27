@@ -7,20 +7,17 @@ import java.util.List;
 
 public interface MediaGroupManager {
     MediaGroup getSearch(String searchText);
-    Observable<MediaGroup> getSearchObserve(String searchText);
-
     MediaGroup getSubscriptions();
-    Observable<MediaGroup> getSubscriptionsObserve();
-
     MediaGroup getRecommended();
-    Observable<MediaGroup> getRecommendedObserve();
-
     MediaGroup getHistory();
-    Observable<MediaGroup> getHistoryObserve();
-
     List<MediaGroup> getHome();
-    Observable<List<MediaGroup>> getHomeObserve();
-
     MediaGroup continueGroup(MediaGroup mediaTab);
+
+    // RxJava interfaces
+    Observable<MediaGroup> getSearchObserve(String searchText);
+    Observable<MediaGroup> getSubscriptionsObserve();
+    Observable<MediaGroup> getRecommendedObserve();
+    Observable<MediaGroup> getHistoryObserve();
+    Observable<List<MediaGroup>> getHomeObserve();
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
 }

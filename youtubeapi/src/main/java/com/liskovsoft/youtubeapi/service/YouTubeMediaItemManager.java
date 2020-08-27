@@ -54,6 +54,16 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
+        return mMediaItemManagerReal.getFormatInfoObserve(item);
+    }
+
+    @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
+        return mMediaItemManagerReal.getFormatInfoObserve(videoId);
+    }
+
+    @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
         checkSigned();
 

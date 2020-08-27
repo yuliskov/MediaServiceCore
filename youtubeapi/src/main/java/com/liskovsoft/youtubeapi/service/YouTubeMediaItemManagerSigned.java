@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
@@ -97,6 +98,16 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManager {
         VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorization());
 
         return YouTubeMediaItemFormatInfo.from(videoInfo);
+    }
+
+    @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
+        return Observable.fromCallable(() -> getFormatInfo(item));
+    }
+
+    @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
+        return Observable.fromCallable(() -> getFormatInfo(videoId));
     }
 
     @Override

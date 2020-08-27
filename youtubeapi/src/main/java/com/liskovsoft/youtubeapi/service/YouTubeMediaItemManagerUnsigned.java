@@ -93,6 +93,16 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
     }
 
     @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
+        return Observable.fromCallable(() -> getFormatInfo(item));
+    }
+
+    @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
+        return Observable.fromCallable(() -> getFormatInfo(videoId));
+    }
+
+    @Override
     public void updateHistoryPosition(MediaItem item, float positionSec) {
         // Do nothing, user is unsigned
     }

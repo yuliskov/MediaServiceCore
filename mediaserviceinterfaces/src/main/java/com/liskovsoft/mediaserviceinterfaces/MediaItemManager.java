@@ -10,8 +10,6 @@ public interface MediaItemManager {
     MediaItemFormatInfo getFormatInfo(String videoId);
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
-    Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
-    Observable<MediaItemMetadata> getMetadataObserve(String videoId);
     void updateHistoryPosition(MediaItem item, float positionSec);
     void updateHistoryPosition(String videoId, float positionSec);
     void setLike(MediaItem item);
@@ -20,4 +18,10 @@ public interface MediaItemManager {
     void removeDislike(MediaItem item);
     void subscribe(MediaItem item);
     void unsubscribe(MediaItem item);
+
+    // RxJava interfaces
+    Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
+    Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
+    Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
+    Observable<MediaItemMetadata> getMetadataObserve(String videoId);
 }

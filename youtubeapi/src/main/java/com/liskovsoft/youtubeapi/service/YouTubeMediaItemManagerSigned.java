@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
@@ -11,6 +12,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import io.reactivex.Observable;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManager {
     private static MediaItemManager sInstance;
@@ -61,6 +63,16 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManager {
         WatchNextResult watchNextResult = mWatchNextServiceSigned.getWatchNextResult(videoId, mSignInManager.getAuthorization());
 
         return YouTubeMediaItemMetadata.from(watchNextResult);
+    }
+
+    @Override
+    public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
+        return Observable.fromCallable(()->getMetadata(item));
+    }
+
+    @Override
+    public Observable<MediaItemMetadata> getMetadataObserve(String videoId) {
+        return Observable.fromCallable(()->getMetadata(videoId));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service.data;
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemSuggestions;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
@@ -7,6 +8,7 @@ import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeMediaItemMetadata implements MediaItemMetadata {
@@ -23,6 +25,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mChannelId;
     private int mPercentWatched;
     private MediaItemMetadata mNextVideo;
+    private List<MediaGroup> mSuggestions;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
@@ -51,6 +54,14 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         }
 
         List<WatchNextSection> watchNextSections = watchNextResult.getWatchNextSections();
+
+        if (watchNextSections != null) {
+            mediaItemMetadata.mSuggestions = new ArrayList<>();
+
+            for (WatchNextSection section : watchNextSections) {
+                mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
+            }
+        }
 
         return mediaItemMetadata;
     }
@@ -186,7 +197,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public List<MediaItemSuggestions> getSuggestions() {
-        return null;
+    public List<MediaGroup> getSuggestions() {
+        return mSuggestions;
+    }
+
+    @Override
+    public void setSuggestions(List<MediaGroup> suggestions) {
+        mSuggestions = suggestions;
     }
 }

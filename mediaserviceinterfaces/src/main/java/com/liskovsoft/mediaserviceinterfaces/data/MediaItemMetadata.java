@@ -32,5 +32,6 @@ public interface MediaItemMetadata {
     void setPercentWatched(int percentWatched);
     int getLikeStatus();
     void setLikeStatus(int likeStatus);
-    List<MediaItemSuggestions> getSuggestions();
+    List<MediaGroup> getSuggestions();
+    void setSuggestions(List<MediaGroup> suggestions);
 }

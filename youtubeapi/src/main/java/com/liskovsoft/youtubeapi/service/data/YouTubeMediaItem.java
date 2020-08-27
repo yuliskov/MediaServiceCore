@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
@@ -35,9 +36,13 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mId = id++;
         video.mTitle = item.getTitle();
-        video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(
+                item.getUserName(),
+                item.getPublishedTime(),
+                item.getShortViewCount());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mProductionDate = item.getPublishedTime();
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
@@ -54,9 +59,12 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
         video.mId = id++;
         video.mTitle = item.getTitle();
-        video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(
+                item.getUserName(),
+                item.getViewsAndPublished());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mProductionDate = item.getViewsAndPublished();
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
@@ -73,9 +81,10 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_CHANNEL;
         video.mId = id++;
         video.mTitle = item.getTitle();
-        video.mDescription = YouTubeMediaServiceHelper.createDescription(item);
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item);
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getSubscriberCountText());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mChannelId = item.getChannelId();
         addCommonProps(video);
 
@@ -91,6 +100,25 @@ public class YouTubeMediaItem implements MediaItem {
         video.mRentalPrice = "$4.99";
         video.mRatingStyle = 5;
         video.mRatingScore = 4d;
+    }
+
+    public static MediaItem from(WatchNextItem item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+
+        video.mMediaItemType = MediaItem.TYPE_VIDEO;
+        video.mId = id++;
+        video.mTitle = item.getTitle();
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mMediaId = item.getVideoId();
+        video.mChannelId = item.getChannelId();
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        addCommonProps(video);
+
+        return video;
     }
 
     @Override

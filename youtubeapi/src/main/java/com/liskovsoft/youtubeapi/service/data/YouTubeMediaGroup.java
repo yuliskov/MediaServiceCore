@@ -7,6 +7,8 @@ import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
+import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
@@ -81,7 +83,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         }
 
         youTubeMediaGroup.mTitle = section.getTitle();
-        youTubeMediaGroup.mMediaItems = mediaItems;
+        youTubeMediaGroup.mMediaItems = mediaItems.isEmpty() ? null : mediaItems;
         youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
 
         return youTubeMediaGroup;
@@ -130,6 +132,27 @@ public class YouTubeMediaGroup implements MediaGroup {
         String nextPageKey = searchResult.getNextPageKey();
 
         return create(new YouTubeMediaGroup(type), videoItems, nextPageKey);
+    }
+
+    public static MediaGroup from(WatchNextSection section) {
+        if (section == null) {
+            return null;
+        }
+
+        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup();
+
+        if (section.getWatchNextItems() != null) {
+            youTubeMediaGroup.mMediaItems = new ArrayList<>();
+
+            for (WatchNextItem item : section.getWatchNextItems()) {
+                youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
+
+        youTubeMediaGroup.mTitle = section.getTitle();
+        youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
+
+        return youTubeMediaGroup;
     }
 
     public static List<MediaGroup> from(List<BrowseSection> sections) {

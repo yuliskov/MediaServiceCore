@@ -33,25 +33,7 @@ public final class YouTubeMediaServiceHelper {
         return result;
     }
 
-    public static String findHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.items.VideoItem item) {
-        List<Thumbnail> thumbnails = item.getThumbnails();
-
-        return getHiResThumb(thumbnails);
-    }
-
-    public static String findHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.items.MusicItem item) {
-        List<Thumbnail> thumbnails = item.getThumbnails();
-
-        return getHiResThumb(thumbnails);
-    }
-
-    public static String findHighResThumbnailUrl(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
-        List<Thumbnail> thumbnails = item.getThumbnails();
-
-        return getHiResThumb(thumbnails);
-    }
-
-    private static String getHiResThumb(List<Thumbnail> thumbnails) {
+    public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null || thumbnails.size() == 0) {
             return null;
         }
@@ -59,25 +41,8 @@ public final class YouTubeMediaServiceHelper {
         return thumbnails.get(thumbnails.size() - 1).getUrl();
     }
 
-    public static String createDescription(com.liskovsoft.youtubeapi.common.models.items.VideoItem item) {
-        return YouTubeHelper.itemsToDescription(
-                item.getUserName(),
-                item.getPublishedTime(),
-                item.getShortViewCount()
-        );
-    }
-
-    public static String createDescription(com.liskovsoft.youtubeapi.common.models.items.MusicItem item) {
-        return YouTubeHelper.itemsToDescription(
-                item.getUserName(),
-                item.getViewsAndPublished()
-        );
-    }
-
-    public static String createDescription(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
-        return YouTubeHelper.itemsToDescription(
-                item.getSubscriberCountText()
-        );
+    public static String createDescription(String... items) {
+        return YouTubeHelper.itemsToDescription(items);
     }
 
     public static String extractNextKey(MediaGroup mediaTab) {

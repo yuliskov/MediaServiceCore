@@ -11,6 +11,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import io.reactivex.Observable;
 
 public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
     private static MediaItemManager sInstance;
@@ -55,6 +56,16 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
         WatchNextResult watchNextResult = mWatchNextServiceUnsigned.getWatchNextResult(videoId);
 
         return YouTubeMediaItemMetadata.from(watchNextResult);
+    }
+
+    @Override
+    public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
+        return Observable.fromCallable(()->getMetadata(item));
+    }
+
+    @Override
+    public Observable<MediaItemMetadata> getMetadataObserve(String videoId) {
+        return Observable.fromCallable(()->getMetadata(videoId));
     }
 
     @Override

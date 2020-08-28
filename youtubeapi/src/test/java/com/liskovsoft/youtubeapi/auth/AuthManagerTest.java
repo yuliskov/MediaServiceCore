@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.auth;
 
-import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
+import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import okhttp3.RequestBody;
@@ -41,11 +41,11 @@ public class AuthManagerTest {
     // Fail
     //@Test
     public void testThatUserIsAuthenticated() throws IOException {
-        Call<RefreshTokenResult> wrapper = mService.getRefreshToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
+        Call<AccessTokenResult> wrapper = mService.getAccessToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
 
-        Response<RefreshTokenResult> execute = wrapper.execute();
+        Response<AccessTokenResult> execute = wrapper.execute();
 
-        RefreshTokenResult token = execute.body();
+        AccessTokenResult token = execute.body();
 
         assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
         assertTrue("Token not null", token.getAccessToken().length() > 50);
@@ -53,13 +53,13 @@ public class AuthManagerTest {
     
     @Test
     public void testThatUserCanRefreshToken() throws IOException {
-        Call<RefreshTokenResult> wrapper = mService.getRefreshToken(REFRESH_TOKEN, CLIENT_ID,
+        Call<AccessTokenResult> wrapper = mService.getAccessToken(REFRESH_TOKEN, CLIENT_ID,
                 CLIENT_SECRET,
                 GRANT_TYPE);
 
-        Response<RefreshTokenResult> execute = wrapper.execute();
+        Response<AccessTokenResult> execute = wrapper.execute();
 
-        RefreshTokenResult token = execute.body();
+        AccessTokenResult token = execute.body();
 
         assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
         assertTrue("Token not null", token.getAccessToken().length() > 50);
@@ -74,7 +74,7 @@ public class AuthManagerTest {
 
     @Test
     public void testThatUserStillNotSignedIn() throws IOException {
-        AccessTokenResult token = getAccessToken();
+        RefreshTokenResult token = getAccessToken();
         assertEquals("authorization_pending", token.getError());
     }
 
@@ -89,12 +89,12 @@ public class AuthManagerTest {
         return response.body();
     }
 
-    private AccessTokenResult getAccessToken() throws IOException {
+    private RefreshTokenResult getAccessToken() throws IOException {
         UserCodeResult userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<AccessTokenResult> token = mService.getAuthToken(userCode.getDeviceCode(), AuthParams.getClientId(), AuthParams.getClientSecret(), AuthParams.getAccessGrantType());
-        Response<AccessTokenResult> response = token.execute();
+        Call<RefreshTokenResult> token = mService.getRefreshToken(userCode.getDeviceCode(), AuthParams.getClientId(), AuthParams.getClientSecret(), AuthParams.getAccessGrantType());
+        Response<RefreshTokenResult> response = token.execute();
         return response.body();
     }
 }

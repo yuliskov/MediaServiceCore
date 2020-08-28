@@ -2,11 +2,32 @@ package com.liskovsoft.youtubeapi.auth.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AccessTokenResult extends RefreshTokenResult {
-    @SerializedName("refresh_token")
-    private String mRefreshToken;
+public class AccessTokenResult extends ErrorResponse {
+    @SerializedName("access_token")
+    private String mAccessToken;
 
-    public String getRefreshToken() {
-        return mRefreshToken;
+    @SerializedName("expires_in")
+    private int mExpiresIn;
+
+    @SerializedName("scope")
+    private String mScope;
+
+    @SerializedName("token_type")
+    private String mTokenType;
+
+    public String getAccessToken() {
+        return mAccessToken;
+    }
+
+    public int getExpiresIn() {
+        return mExpiresIn;
+    }
+
+    public String getScope() {
+        return mScope;
+    }
+
+    public String getTokenType() {
+        return mTokenType;
     }
 }

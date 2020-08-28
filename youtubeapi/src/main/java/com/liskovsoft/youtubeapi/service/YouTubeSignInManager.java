@@ -1,12 +1,14 @@
 package com.liskovsoft.youtubeapi.service;
 
+import android.annotation.SuppressLint;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthService;
-import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
+import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 public class YouTubeSignInManager implements SignInManager {
     private static final String TAG = YouTubeSignInManager.class.getSimpleName();
@@ -30,9 +32,22 @@ public class YouTubeSignInManager implements SignInManager {
         return sInstance;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public String signIn() {
         UserCodeResult userCodeResult = mAuthService.getUserCode();
+
+        mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(refreshTokenResult -> {
+                    if (refreshTokenResult != null) {
+                        Log.d(TAG, "Success. Refresh token successfully created!");
+                        storeRefreshToken(refreshTokenResult.getRefreshToken());
+                    } else {
+                        Log.e(TAG, "Error. Refresh token is empty!");
+                    }
+                });
+
         return userCodeResult.getUserCode();
     }
 
@@ -78,6 +93,41 @@ public class YouTubeSignInManager implements SignInManager {
             }
         }
 
+        AccessTokenResult token = obtainAccessToken();
+
+        if (token != null) {
+            mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
+            mLastUpdateTime = System.currentTimeMillis();
+        } else {
+            Log.e(TAG, "Access token is null!");
+        }
+    }
+
+    private AccessTokenResult obtainAccessToken() {
+        // We don't have context, so can't create instance here.
+        // Let's hope someone already created one for us.
+        if (GlobalPreferences.sInstance == null) {
+            Log.e(TAG, "GlobalPreferences is null!");
+            return null;
+        }
+
+        String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
+        String mediaServiceRefreshToken = GlobalPreferences.sInstance.getMediaServiceRefreshToken();
+
+        AccessTokenResult token = null;
+
+        if (rawAuthData != null) {
+            token = mAuthService.getAccessTokenRaw(rawAuthData);
+        } else if (mediaServiceRefreshToken != null) {
+            token = mAuthService.getAccessToken(mediaServiceRefreshToken);
+        } else {
+            Log.e(TAG, "Refresh token data doesn't stored in the app registry!");
+        }
+
+        return token;
+    }
+
+    private void storeRefreshToken(String refreshToken) {
         // We don't have context, so can't create instance here.
         // Let's hope someone already created one for us.
         if (GlobalPreferences.sInstance == null) {
@@ -85,20 +135,6 @@ public class YouTubeSignInManager implements SignInManager {
             return;
         }
 
-        String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
-
-        if (rawAuthData == null) {
-            Log.e(TAG, "RawAuthData is null!");
-            return;
-        }
-
-        RefreshTokenResult token = mAuthService.getRawRefreshToken(rawAuthData);
-
-        if (token != null) {
-            mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
-            mLastUpdateTime = System.currentTimeMillis();
-        } else {
-            Log.e(TAG, "Token is null!");
-        }
+        GlobalPreferences.sInstance.setMediaServiceRefreshToken(refreshToken);
     }
 }

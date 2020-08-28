@@ -71,6 +71,9 @@ public class YouTubeSignInManager implements SignInManager {
 
     @Override
     public boolean isSigned() {
+        // get or create authorization on fly
+        updateAuthorizationHeader();
+
         return mAuthorization != null;
     }
 
@@ -136,5 +139,6 @@ public class YouTubeSignInManager implements SignInManager {
         }
 
         GlobalPreferences.sInstance.setMediaServiceRefreshToken(refreshToken);
+        Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
 }

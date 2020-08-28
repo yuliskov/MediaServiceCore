@@ -55,11 +55,15 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
+        checkSigned();
+
         return mMediaItemManagerReal.getFormatInfoObserve(item);
     }
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
+        checkSigned();
+
         return mMediaItemManagerReal.getFormatInfoObserve(videoId);
     }
 
@@ -79,12 +83,58 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public void updateHistoryPosition(MediaItem item, float positionSec) {
+        checkSigned();
+
         mMediaItemManagerReal.updateHistoryPosition(item, positionSec);
     }
 
     @Override
     public void updateHistoryPosition(String videoId, float positionSec) {
+        checkSigned();
+
         mMediaItemManagerReal.updateHistoryPosition(videoId, positionSec);
+    }
+
+    @Override
+    public void setLike(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.setLike(item);
+    }
+
+    @Override
+    public void removeLike(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.removeLike(item);
+    }
+
+    @Override
+    public void setDislike(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.setDislike(item);
+    }
+
+    @Override
+    public void removeDislike(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.removeDislike(item);
+    }
+
+    @Override
+    public void subscribe(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.subscribe(item);
+    }
+
+    @Override
+    public void unsubscribe(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.unsubscribe(item);
     }
 
     private void checkSigned() {
@@ -99,35 +149,5 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             mMediaItemManagerReal = YouTubeMediaItemManagerUnsigned.instance();
             YouTubeMediaItemManagerSigned.unhold();
         }
-    }
-
-    @Override
-    public void setLike(MediaItem item) {
-        mMediaItemManagerReal.setLike(item);
-    }
-
-    @Override
-    public void removeLike(MediaItem item) {
-        mMediaItemManagerReal.removeLike(item);
-    }
-
-    @Override
-    public void setDislike(MediaItem item) {
-        mMediaItemManagerReal.setDislike(item);
-    }
-
-    @Override
-    public void removeDislike(MediaItem item) {
-        mMediaItemManagerReal.removeDislike(item);
-    }
-
-    @Override
-    public void subscribe(MediaItem item) {
-        mMediaItemManagerReal.subscribe(item);
-    }
-
-    @Override
-    public void unsubscribe(MediaItem item) {
-        mMediaItemManagerReal.unsubscribe(item);
     }
 }

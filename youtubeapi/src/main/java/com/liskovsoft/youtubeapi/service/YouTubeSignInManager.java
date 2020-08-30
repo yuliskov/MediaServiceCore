@@ -143,6 +143,11 @@ public class YouTubeSignInManager implements SignInManager {
             return;
         }
 
+        if (refreshToken == null) {
+            Log.e(TAG, "Refresh token is null");
+            return;
+        }
+
         GlobalPreferences.sInstance.setMediaServiceRefreshToken(refreshToken);
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }

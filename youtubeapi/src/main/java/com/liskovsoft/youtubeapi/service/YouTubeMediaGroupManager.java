@@ -17,7 +17,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
-        checkSigned();
+        //checkSigned();
     }
 
     public static MediaGroupManager instance() {
@@ -37,9 +37,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        checkSigned();
-
-        return mMediaGroupManagerReal.getSearchObserve(searchText);
+        return Observable.fromCallable(() -> getSearch(searchText));
     }
 
     @Override
@@ -53,9 +51,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
-        checkSigned();
-
-        return mMediaGroupManagerReal.getSubscriptionsObserve();
+        return Observable.fromCallable(this::getSubscriptions);
     }
 
     @Override
@@ -69,9 +65,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getRecommendedObserve() {
-        checkSigned();
-
-        return mMediaGroupManagerReal.getRecommendedObserve();
+        return Observable.fromCallable(this::getRecommended);
     }
 
     @Override
@@ -85,9 +79,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
-        checkSigned();
-
-        return mMediaGroupManagerReal.getHistoryObserve();
+        return Observable.fromCallable(this::getHistory);
     }
 
     @Override
@@ -99,23 +91,19 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {
-        checkSigned();
-
-        return mMediaGroupManagerReal.getHomeObserve();
+        return Observable.fromCallable(this::getHome);
     }
 
     @Override
-    public MediaGroup continueGroup(MediaGroup mediaTab) {
+    public MediaGroup continueGroup(MediaGroup mediaGroup) {
         checkSigned();
 
-        return mMediaGroupManagerReal.continueGroup(mediaTab);
+        return mMediaGroupManagerReal.continueGroup(mediaGroup);
     }
 
     @Override
-    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab) {
-        checkSigned();
-
-        return mMediaGroupManagerReal.continueGroupObserve(mediaTab);
+    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
+        return Observable.fromCallable(() -> this.continueGroup(mediaGroup));
     }
 
     private void checkSigned() {

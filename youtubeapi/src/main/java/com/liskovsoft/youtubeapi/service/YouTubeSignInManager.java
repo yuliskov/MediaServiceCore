@@ -77,6 +77,11 @@ public class YouTubeSignInManager implements SignInManager {
         return mAuthorization != null;
     }
 
+    @Override
+    public Observable<Boolean> isSignedObserve() {
+        return Observable.fromCallable(this::isSigned);
+    }
+
     public String getAuthorization() {
         // get or create authorization on fly
         updateAuthorizationHeader();

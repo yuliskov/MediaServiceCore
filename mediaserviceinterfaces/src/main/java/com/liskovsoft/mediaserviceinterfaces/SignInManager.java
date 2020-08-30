@@ -14,4 +14,5 @@ public interface SignInManager {
     // RxJava interfaces
     Observable<String> signInObserve();
     Observable<Void> signOutObserve();
+    Observable<Boolean> isSignedObserve();
 }

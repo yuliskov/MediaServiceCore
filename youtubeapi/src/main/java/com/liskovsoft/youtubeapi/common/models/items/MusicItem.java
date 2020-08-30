@@ -18,6 +18,10 @@ public class MusicItem {
     private String mPlaylistId;
     @JsonPath("$.tertiaryText.simpleText")
     private String mViewsAndPublished;
+    @JsonPath("$.tertiaryText.runs[0].text")
+    private String mViewCountText;
+    @JsonPath("$.tertiaryText.runs[2].text")
+    private String mPublishedText;
     @JsonPath({"$.lengthText.simpleText", "$.lengthText.runs[0].text"})
     private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
@@ -49,7 +53,11 @@ public class MusicItem {
         return mViewsAndPublished;
     }
 
-    public String getViewCount() {
+    public String getViewCountText() {
+        if (mViewCountText != null) {
+            return mViewCountText;
+        }
+
         if (mViewsAndPublished == null || !mViewsAndPublished.contains(TERTIARY_TEXT_DELIM)) {
             return null;
         }
@@ -57,7 +65,11 @@ public class MusicItem {
         return mViewsAndPublished.split(TERTIARY_TEXT_DELIM)[0];
     }
 
-    public String getPublishedTime() {
+    public String getPublishedText() {
+        if (mPublishedText != null) {
+            return mPublishedText;
+        }
+
         if (mViewsAndPublished == null || !mViewsAndPublished.contains(TERTIARY_TEXT_DELIM)) {
             return null;
         }

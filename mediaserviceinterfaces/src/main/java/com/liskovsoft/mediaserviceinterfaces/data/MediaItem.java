@@ -6,13 +6,18 @@ public interface MediaItem {
     int TYPE_VIDEO = 0;
     int TYPE_MUSIC = 1;
     int TYPE_CHANNEL = 2;
+    int TYPE_PLAYLIST = 3;
     int getType();
 
-    // Video specific props
+    // Video props
     String getDescription();
     void setDescription(String description);
     boolean isLive();
     void setLive(boolean isLive);
+
+    // Playlist props
+    String getPlaylistId();
+    void setPlaylistId(String playlistId);
 
     // Generic props
     int getId();

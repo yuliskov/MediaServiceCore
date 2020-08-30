@@ -10,9 +10,12 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
+import static org.junit.Assert.assertTrue;
+
 @RunWith(RobolectricTestRunner.class)
 public class SearchManagerUnsignedTest extends SearchManagerTestBase {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
+    private static final String SEARCH_TEXT_2 = "miley cyrus";
     private static final String SEARCH_TEXT_SPECIAL_CHAR = "What's Trending";
     private SearchManagerUnsigned mSearchManagerUnsigned;
 
@@ -52,4 +55,13 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
         checkSearchResultContinuation(result2);
     }
 
+    @Test
+    public void testThatResultContainsMultipleItems() {
+        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
+        SearchResult searchResult = RetrofitHelper.get(wrapper);
+
+        assertTrue("Contains multiple music items", searchResult.getMusicItems().size() > 5);
+
+        checkSearchResultMusicItem(searchResult.getMusicItems().get(0));
+    }
 }

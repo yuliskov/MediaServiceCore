@@ -6,6 +6,8 @@ import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
 import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
@@ -128,10 +130,12 @@ public class YouTubeMediaGroup implements MediaGroup {
         }
 
         List<VideoItem> videoItems = searchResult.getVideoItems();
+        List<MusicItem> musicItems = searchResult.getMusicItems();
         List<ChannelItem> channelItems = searchResult.getChannelItems();
+        List<PlaylistItem> playlistItems = searchResult.getPlaylistItems();
         String nextPageKey = searchResult.getNextPageKey();
 
-        return create(new YouTubeMediaGroup(type), videoItems, nextPageKey);
+        return create(new YouTubeMediaGroup(type), videoItems, musicItems, channelItems, playlistItems, nextPageKey);
     }
 
     public static MediaGroup from(WatchNextSection section) {
@@ -198,10 +202,16 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     private static YouTubeMediaGroup create(YouTubeMediaGroup baseGroup, List<VideoItem> videoItems, String nextPageKey) {
-        return create(baseGroup, videoItems, null, nextPageKey);
+        return create(baseGroup, videoItems, null, null, null, nextPageKey);
     }
 
-    private static YouTubeMediaGroup create(YouTubeMediaGroup baseGroup, List<VideoItem> videoItems, List<ChannelItem> channelItems, String nextPageKey) {
+    private static YouTubeMediaGroup create(
+            YouTubeMediaGroup baseGroup,
+            List<VideoItem> videoItems,
+            List<MusicItem> musicItems,
+            List<ChannelItem> channelItems,
+            List<PlaylistItem> playlistItems,
+            String nextPageKey) {
         YouTubeMediaGroup youTubeMediaGroup = baseGroup;
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
@@ -212,8 +222,20 @@ public class YouTubeMediaGroup implements MediaGroup {
             }
         }
 
+        if (musicItems != null) {
+            for (MusicItem item : musicItems) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
+
         if (channelItems != null) {
             for (ChannelItem item : channelItems) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
+
+        if (playlistItems != null) {
+            for (PlaylistItem item : playlistItems) {
                 mediaItems.add(YouTubeMediaItem.from(item));
             }
         }

@@ -2,15 +2,20 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
-    private static int id;
+    private static int sId;
     private String mTitle;
     private int mId;
     private String mMediaId;
     private String mChannelId;
+    private String mPlaylistId;
     private String mMediaUrl;
     private String mDescription;
     private String mCardImageUrl;
@@ -30,11 +35,10 @@ public class YouTubeMediaItem implements MediaItem {
     private YouTubeMediaItemFormatInfo mFormatInfo;
     private YouTubeMediaItemMetadata mMetadata;
 
-    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.VideoItem item) {
+    public static YouTubeMediaItem from(VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
-        video.mId = id++;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(
                 item.getUserName(),
@@ -53,11 +57,10 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
-    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.MusicItem item) {
+    public static YouTubeMediaItem from(MusicItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
-        video.mId = id++;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(
                 item.getUserName(),
@@ -75,11 +78,10 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
-    public static YouTubeMediaItem from(com.liskovsoft.youtubeapi.common.models.items.ChannelItem item) {
+    public static YouTubeMediaItem from(ChannelItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_CHANNEL;
-        video.mId = id++;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getSubscriberCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
@@ -91,7 +93,23 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
+    public static YouTubeMediaItem from(PlaylistItem item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+
+        video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
+        video.mTitle = item.getTitle();
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getVideoCountText());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mPlaylistId = item.getPlaylistId();
+        addCommonProps(video);
+
+        return video;
+    }
+
     private static void addCommonProps(YouTubeMediaItem video) {
+        video.mId = sId++;
         video.mContentType = "video/mp4";
         video.mWidth = 1280;
         video.mHeight = 720;
@@ -106,7 +124,7 @@ public class YouTubeMediaItem implements MediaItem {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
-        video.mId = id++;
+        video.mId = sId++;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
@@ -314,6 +332,16 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public void setChannelId(String channelId) {
         mChannelId = channelId;
+    }
+
+    @Override
+    public String getPlaylistId() {
+        return mPlaylistId;
+    }
+
+    @Override
+    public void setPlaylistId(String playlistId) {
+        mPlaylistId = playlistId;
     }
 
     public YouTubeMediaItemFormatInfo getFormatInfo() {

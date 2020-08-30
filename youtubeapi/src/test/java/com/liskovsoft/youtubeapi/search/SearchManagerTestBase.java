@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -28,6 +29,15 @@ public class SearchManagerTestBase {
         checkSearchResultVideoItem(videoItem);
         ChannelItem channelItem = searchResult.getChannelItems().get(0);
         checkSearchResultChannelItem(channelItem);
+    }
+
+    protected void checkSearchResultMusicItem(MusicItem videoItem) {
+        assertNotNull("Search result item not null", videoItem);
+        assertNotNull("Search result item contains video id", videoItem.getVideoId());
+        assertNotNull("Search result item contains title", videoItem.getTitle());
+        //assertNotNull("Search result item contains channel id", videoItem.getChannelId()); // not exists in search result
+        assertNotNull("Search result item contains view count", videoItem.getViewCountText());
+        assertNotNull("Search result item contains date", videoItem.getPublishedText());
     }
 
     protected void checkSearchResultVideoItem(VideoItem videoItem) {

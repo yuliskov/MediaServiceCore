@@ -1,19 +1,17 @@
-package com.liskovsoft.youtubeapi.service;
+package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceUnsigned;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
-import io.reactivex.Observable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
+public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     private static final String TAG = YouTubeMediaGroupManagerUnsigned.class.getSimpleName();
     private static YouTubeMediaGroupManagerUnsigned sInstance;
     private final BrowseServiceUnsigned mBrowseServiceUnsigned;
@@ -45,11 +43,6 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
     }
 
     @Override
-    public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return Observable.fromCallable(() -> getSearch(searchText));
-    }
-
-    @Override
     public MediaGroup getRecommended() {
         List<MediaGroup> tabs = getFirstHomeGroups();
 
@@ -57,45 +50,14 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
     }
 
     @Override
-    public Observable<MediaGroup> getRecommendedObserve() {
-        return Observable.fromCallable(this::getRecommended);
-    }
-
-    @Override
-    public List<MediaGroup> getHome() {
-        List<MediaGroup> result = new ArrayList<>();
-
-        List<MediaGroup> groups = getFirstHomeGroups();
-
-        while (!groups.isEmpty()) {
-            result.addAll(groups);
-            groups = getNextHomeGroups();
-        }
-
-        return result;
-    }
-
-    @Override
-    public Observable<List<MediaGroup>> getHomeObserve() {
-        return Observable.create(emitter -> {
-            List<MediaGroup> groups = getFirstHomeGroups();
-
-            while (!groups.isEmpty()) {
-                emitter.onNext(groups);
-                groups = getNextHomeGroups();
-            }
-
-            emitter.onComplete();
-        });
-    }
-
-    private List<MediaGroup> getFirstHomeGroups() {
+    public List<MediaGroup> getFirstHomeGroups() {
         Log.d(TAG, "Emitting first home groups...");
         List<BrowseSection> browseTabs = mBrowseServiceUnsigned.getHomeSections();
         return YouTubeMediaGroup.from(browseTabs);
     }
 
-    private List<MediaGroup> getNextHomeGroups() {
+    @Override
+    public List<MediaGroup> getNextHomeGroups() {
         Log.d(TAG, "Emitting next home groups...");
         List<BrowseSection> browseTabs = mBrowseServiceUnsigned.getNextHomeSections();
         return YouTubeMediaGroup.from(browseTabs);
@@ -117,11 +79,6 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
         );
     }
 
-    @Override
-    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
-        return Observable.fromCallable(() -> continueGroup(mediaGroup));
-    }
-
     // SHOULD BE EMPTY FOR UNSIGNED
 
     @Override
@@ -132,15 +89,5 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManager {
     @Override
     public MediaGroup getHistory() {
         return YouTubeMediaGroup.EMPTY_GROUP;
-    }
-
-    @Override
-    public Observable<MediaGroup> getSubscriptionsObserve() {
-        return Observable.fromCallable(this::getSubscriptions);
-    }
-
-    @Override
-    public Observable<MediaGroup> getHistoryObserve() {
-        return Observable.fromCallable(this::getHistory);
     }
 }

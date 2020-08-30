@@ -1,9 +1,6 @@
-package com.liskovsoft.youtubeapi.service;
+package com.liskovsoft.youtubeapi.service.internal;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceUnsigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
@@ -11,10 +8,9 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
-import io.reactivex.Observable;
 
-public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
-    private static MediaItemManager sInstance;
+public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
+    private static YouTubeMediaItemManagerUnsigned sInstance;
     private final WatchNextServiceUnsigned mWatchNextServiceUnsigned;
     private final VideoInfoServiceUnsigned mVideoInfoServiceUnsigned;
 
@@ -23,7 +19,7 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
        mVideoInfoServiceUnsigned = VideoInfoServiceUnsigned.instance();
     }
 
-    public static MediaItemManager instance() {
+    public static YouTubeMediaItemManagerUnsigned instance() {
         if (sInstance == null) {
             sInstance = new YouTubeMediaItemManagerUnsigned();
         }
@@ -36,36 +32,26 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
         WatchNextServiceUnsigned.unhold();
     }
 
-    @Override
-    public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
-        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-
-        YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
-
-        if (metadata == null) {
-            metadata = getMetadata(item.getMediaId());
-
-            ytMediaItem.setMetadata(metadata);
-        }
-
-        return metadata;
-    }
+    //@Override
+    //public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
+    //    YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
+    //
+    //    YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
+    //
+    //    if (metadata == null) {
+    //        metadata = getMetadata(item.getMediaId());
+    //
+    //        ytMediaItem.setMetadata(metadata);
+    //    }
+    //
+    //    return metadata;
+    //}
 
     @Override
     public YouTubeMediaItemMetadata getMetadata(String videoId) {
         WatchNextResult watchNextResult = mWatchNextServiceUnsigned.getWatchNextResult(videoId);
 
         return YouTubeMediaItemMetadata.from(watchNextResult);
-    }
-
-    @Override
-    public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
-        return Observable.fromCallable(()->getMetadata(item));
-    }
-
-    @Override
-    public Observable<MediaItemMetadata> getMetadataObserve(String videoId) {
-        return Observable.fromCallable(()->getMetadata(videoId));
     }
 
     @Override
@@ -90,16 +76,6 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManager {
         VideoInfoResult videoInfo = mVideoInfoServiceUnsigned.getVideoInfo(videoId);
 
         return YouTubeMediaItemFormatInfo.from(videoInfo);
-    }
-
-    @Override
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
-        return Observable.fromCallable(() -> getFormatInfo(item));
-    }
-
-    @Override
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
-        return Observable.fromCallable(() -> getFormatInfo(videoId));
     }
 
     @Override

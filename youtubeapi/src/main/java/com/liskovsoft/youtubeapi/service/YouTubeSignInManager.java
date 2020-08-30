@@ -82,7 +82,7 @@ public class YouTubeSignInManager implements SignInManager {
         return Observable.fromCallable(this::isSigned);
     }
 
-    public String getAuthorization() {
+    public String getAuthorizationHeader() {
         // get or create authorization on fly
         updateAuthorizationHeader();
 
@@ -100,6 +100,8 @@ public class YouTubeSignInManager implements SignInManager {
                 return;
             }
         }
+
+        Log.d(TAG, "Updating authorization header...");
 
         AccessTokenResult token = obtainAccessToken();
 

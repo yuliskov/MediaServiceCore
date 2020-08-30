@@ -5,13 +5,18 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
+import com.liskovsoft.youtubeapi.service.internal.MediaItemManagerInt;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerSigned;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerUnsigned;
 import io.reactivex.Observable;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
     private static MediaItemManager sInstance;
     private final YouTubeSignInManager mSignInManager;
-    private MediaItemManager mMediaItemManagerReal;
+    private MediaItemManagerInt mMediaItemManagerReal;
 
     private YouTubeMediaItemManager() {
         mSignInManager = YouTubeSignInManager.instance();
@@ -40,45 +45,45 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public MediaItemMetadata getMetadata(MediaItem item) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getMetadata(item);
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
+        return Observable.fromCallable(() -> getFormatInfo(item));
     }
 
     @Override
-    public MediaItemMetadata getMetadata(String videoId) {
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
+        return Observable.fromCallable(() -> getFormatInfo(videoId));
+    }
+
+    @Override
+    public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
+        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
+
+        YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
+
+        if (metadata == null) {
+            metadata = getMetadata(item.getMediaId());
+
+            ytMediaItem.setMetadata(metadata);
+        }
+
+        return metadata;
+    }
+
+    @Override
+    public YouTubeMediaItemMetadata getMetadata(String videoId) {
         checkSigned();
 
         return mMediaItemManagerReal.getMetadata(videoId);
     }
 
     @Override
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getFormatInfoObserve(item);
-    }
-
-    @Override
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getFormatInfoObserve(videoId);
-    }
-
-    @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getMetadataObserve(item);
+        return Observable.fromCallable(() -> getMetadata(item));
     }
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(String videoId) {
-        checkSigned();
-
-        return mMediaItemManagerReal.getMetadataObserve(videoId);
+        return Observable.fromCallable(() -> getMetadata(videoId));
     }
 
     @Override

@@ -3,21 +3,24 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerInt;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerSigned;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerUnsigned;
 import io.reactivex.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeMediaGroupManager implements MediaGroupManager {
     private static final String TAG = YouTubeMediaGroupManager.class.getSimpleName();
     private static YouTubeMediaGroupManager sInstance;
     private final YouTubeSignInManager mSignInManager;
-    private MediaGroupManager mMediaGroupManagerReal;
+    private MediaGroupManagerInt mMediaGroupManagerReal;
 
     private YouTubeMediaGroupManager() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
-        //checkSigned();
     }
 
     public static MediaGroupManager instance() {
@@ -86,12 +89,32 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     public List<MediaGroup> getHome() {
         checkSigned();
 
-        return mMediaGroupManagerReal.getHome();
+        List<MediaGroup> result = new ArrayList<>();
+
+        List<MediaGroup> groups = mMediaGroupManagerReal.getFirstHomeGroups();
+
+        while (!groups.isEmpty()) {
+            result.addAll(groups);
+            groups = mMediaGroupManagerReal.getNextHomeGroups();
+        }
+
+        return result;
     }
 
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {
-        return Observable.fromCallable(this::getHome);
+        return Observable.create(emitter -> {
+            checkSigned();
+
+            List<MediaGroup> groups = mMediaGroupManagerReal.getFirstHomeGroups();
+
+            while (!groups.isEmpty()) {
+                emitter.onNext(groups);
+                groups = mMediaGroupManagerReal.getNextHomeGroups();
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override

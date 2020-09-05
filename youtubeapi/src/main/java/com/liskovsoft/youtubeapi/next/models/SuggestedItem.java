@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 
-public class WatchNextItem {
+public class SuggestedItem {
     private static final String BADGE_STYLE_LIVE = "LIVE";
     @JsonPath("$.videoId")
     private String mVideoId;

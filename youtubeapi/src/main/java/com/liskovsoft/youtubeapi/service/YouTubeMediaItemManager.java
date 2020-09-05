@@ -101,6 +101,22 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec) {
+        return Observable.create(emitter -> {
+            updateHistoryPosition(item, positionSec);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
+    public Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec) {
+        return Observable.create(emitter -> {
+            updateHistoryPosition(videoId, positionSec);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
     public void setLike(MediaItem item) {
         checkSigned();
 

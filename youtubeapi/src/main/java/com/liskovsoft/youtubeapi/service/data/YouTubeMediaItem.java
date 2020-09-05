@@ -6,7 +6,8 @@ import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
+import com.liskovsoft.youtubeapi.next.models.NextVideo;
+import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
@@ -120,7 +121,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mRatingScore = 4d;
     }
 
-    public static MediaItem from(WatchNextItem item) {
+    public static MediaItem from(SuggestedItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
@@ -134,6 +135,25 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        addCommonProps(video);
+
+        return video;
+    }
+
+    public static MediaItem from(NextVideo item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+
+        video.mMediaItemType = MediaItem.TYPE_VIDEO;
+        video.mId = sId++;
+        video.mTitle = item.getTitle();
+        //video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mMediaId = item.getVideoId();
+        //video.mChannelId = item.getChannelId();
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        //video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
         addCommonProps(video);
 
         return video;

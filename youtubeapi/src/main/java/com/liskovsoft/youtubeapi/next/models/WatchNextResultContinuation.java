@@ -6,11 +6,11 @@ import java.util.List;
 
 public class WatchNextResultContinuation {
     @JsonPath("$.continuationContents.horizontalListContinuation.items[*].pivotVideoRenderer")
-    private List<WatchNextItem> mWatchNextItems;
+    private List<SuggestedItem> mWatchNextItems;
     @JsonPath("$.continuationContents.horizontalListContinuation.continuations[1].nextContinuationData.continuation")
     private String mNextPageKey;
 
-    public List<WatchNextItem> getWatchNextItems() {
+    public List<SuggestedItem> getWatchNextItems() {
         return mWatchNextItems;
     }
 

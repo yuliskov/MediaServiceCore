@@ -1,11 +1,12 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mMediaId;
     private String mChannelId;
     private int mPercentWatched;
-    private MediaItemMetadata mNextVideo;
+    private MediaItem mNextVideo;
     private List<MediaGroup> mSuggestions;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
@@ -39,9 +40,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mDescription = videoMetadata.getDescription();
         mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
         mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
+        mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
         mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
         mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
         mediaItemMetadata.mSubscribed = videoOwner.isSubscribed();
+
+        mediaItemMetadata.mNextVideo = YouTubeMediaItem.from(watchNextResult.getNextVideo());
 
         switch (videoMetadata.getLikeStatus()) {
             case VideoMetadata.LIKE_STATUS_LIKE:
@@ -52,12 +56,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 break;
         }
 
-        List<WatchNextSection> watchNextSections = watchNextResult.getWatchNextSections();
+        List<SuggestedSection> watchNextSections = watchNextResult.getSuggestedSections();
 
         if (watchNextSections != null) {
             mediaItemMetadata.mSuggestions = new ArrayList<>();
 
-            for (WatchNextSection section : watchNextSections) {
+            for (SuggestedSection section : watchNextSections) {
                 mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
             }
         }
@@ -71,18 +75,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
-    @Override
     public String getAuthor() {
         return mAuthor;
-    }
-
-    @Override
-    public void setAuthor(String author) {
-        mAuthor = author;
     }
 
     @Override
@@ -91,18 +85,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public void setViewCount(String viewCount) {
-        mViewCount = viewCount;
-    }
-
-    @Override
     public String getLikesCount() {
         return mLikesCount;
-    }
-
-    @Override
-    public void setLikesCount(String likesCount) {
-        mLikesCount = likesCount;
     }
 
     @Override
@@ -111,18 +95,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public void setDislikesCount(String dislikesCount) {
-        mDislikesCount = dislikesCount;
-    }
-
-    @Override
     public String getDescription() {
         return mDescription;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        mDescription = description;
     }
 
     @Override
@@ -131,28 +105,13 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public void setPublishedDate(String publishedDate) {
-        mPublishedDate = publishedDate;
-    }
-
-    @Override
     public String getMediaId() {
         return mMediaId;
     }
 
     @Override
-    public void setMediaId(String mediaId) {
-        mMediaId = mediaId;
-    }
-
-    @Override
-    public MediaItemMetadata getNextVideo() {
+    public MediaItem getNextVideo() {
         return mNextVideo;
-    }
-
-    @Override
-    public void setNextVideo(MediaItemMetadata autoplayMetadata) {
-        mNextVideo = autoplayMetadata;
     }
 
     @Override
@@ -161,18 +120,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public void setSubscribed(Boolean subscribed) {
-        mSubscribed = subscribed;
-    }
-
-    @Override
     public String getChannelId() {
         return mChannelId;
-    }
-
-    @Override
-    public void setChannelId(String channelId) {
-        mChannelId = channelId;
     }
 
     @Override
@@ -181,27 +130,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public void setPercentWatched(int percentWatched) {
-        mPercentWatched = percentWatched;
-    }
-
-    @Override
     public int getLikeStatus() {
         return mLikeStatus;
     }
 
     @Override
-    public void setLikeStatus(int likeStatus) {
-        mLikeStatus = likeStatus;
-    }
-
-    @Override
     public List<MediaGroup> getSuggestions() {
         return mSuggestions;
-    }
-
-    @Override
-    public void setSuggestions(List<MediaGroup> suggestions) {
-        mSuggestions = suggestions;
     }
 }

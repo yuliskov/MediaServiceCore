@@ -9,8 +9,8 @@ import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
-import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
+import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
@@ -138,17 +138,17 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create(new YouTubeMediaGroup(type), videoItems, musicItems, channelItems, playlistItems, nextPageKey);
     }
 
-    public static MediaGroup from(WatchNextSection section) {
+    public static MediaGroup from(SuggestedSection section) {
         if (section == null) {
             return null;
         }
 
         YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup();
 
-        if (section.getWatchNextItems() != null) {
+        if (section.getSuggestedItems() != null) {
             youTubeMediaGroup.mMediaItems = new ArrayList<>();
 
-            for (WatchNextItem item : section.getWatchNextItems()) {
+            for (SuggestedItem item : section.getSuggestedItems()) {
                 youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
             }
         }

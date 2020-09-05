@@ -4,11 +4,11 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class WatchNextSection {
+public class SuggestedSection {
     @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
     private String mTitle;
     @JsonPath("$.content.horizontalListRenderer.items[*].pivotVideoRenderer")
-    private List<WatchNextItem> mWatchNextItems;
+    private List<SuggestedItem> mSuggestedItems;
     @JsonPath("$.content.horizontalListRenderer.continuations[*].nextContinuationData.continuation")
     private List<String> mNextPageKey;
 
@@ -16,8 +16,8 @@ public class WatchNextSection {
         return mTitle;
     }
 
-    public List<WatchNextItem> getWatchNextItems() {
-        return mWatchNextItems;
+    public List<SuggestedItem> getSuggestedItems() {
+        return mSuggestedItems;
     }
 
     public String getNextPageKey() {

@@ -3,9 +3,9 @@ package com.liskovsoft.youtubeapi.next;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
-import com.liskovsoft.youtubeapi.next.models.WatchNextItem;
+import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.models.WatchNextSection;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public class WatchNextManagerTestBase {
         checkFields(watchNextResult.getVideoMetadata());
         checkFields(watchNextResult.getVideoOwner());
         checkFields(watchNextResult.getNextVideo());
-        checkFields(watchNextResult.getWatchNextSections());
+        checkFields(watchNextResult.getSuggestedSections());
     }
 
-    private void checkFields(WatchNextItem watchNextItem) {
+    private void checkFields(SuggestedItem watchNextItem) {
         String videoId = watchNextItem.getVideoId();
         assertNotNull("Watch next item has title: " + videoId, watchNextItem.getTitle());
         assertNotNull("Watch next item has video id: " + videoId, videoId);
@@ -34,15 +34,15 @@ public class WatchNextManagerTestBase {
         assertTrue("Watch next item thumbnails not empty: " + videoId, watchNextItem.getThumbnails().size() > 0);
     }
 
-    private void checkFields(List<WatchNextSection> watchNextSections) {
+    private void checkFields(List<SuggestedSection> watchNextSections) {
         assertNotNull("Watch next contains rows", watchNextSections);
 
-        WatchNextSection firstRow = watchNextSections.get(0);
+        SuggestedSection firstRow = watchNextSections.get(0);
 
         assertNotNull("Row has title", firstRow.getTitle());
         assertNotNull("Row has continuation data", firstRow.getNextPageKey());
 
-        WatchNextItem watchNextItem = firstRow.getWatchNextItems().get(0);
+        SuggestedItem watchNextItem = firstRow.getSuggestedItems().get(0);
 
         checkFields(watchNextItem);
     }

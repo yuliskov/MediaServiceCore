@@ -24,4 +24,6 @@ public interface MediaItemManager {
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
     Observable<MediaItemMetadata> getMetadataObserve(String videoId);
+    Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec);
+    Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec);
 }

@@ -165,18 +165,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setId(int id) {
-        mId = id;
-    }
-
-    @Override
     public String getTitle() {
         return mTitle;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        mTitle = title;
     }
 
     @Override
@@ -190,18 +180,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setDescription(String description) {
-        mDescription = description;
-    }
-
-    @Override
     public String getCardImageUrl() {
         return mCardImageUrl;
-    }
-
-    @Override
-    public void setCardImageUrl(String cardImageUrl) {
-        mCardImageUrl = cardImageUrl;
     }
 
     @Override
@@ -210,18 +190,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setBackgroundImageUrl(String backgroundImageUrl) {
-        mBackgroundImageUrl = backgroundImageUrl;
-    }
-
-    @Override
     public String getMediaUrl() {
         return mMediaUrl;
-    }
-
-    @Override
-    public void setMediaUrl(String mediaUrl) {
-        mMediaUrl = mediaUrl;
     }
 
     @Override
@@ -230,18 +200,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setMediaId(String mediaId) {
-        mMediaId = mediaId;
-    }
-
-    @Override
     public String getContentType() {
         return mContentType;
-    }
-
-    @Override
-    public void setContentType(String contentType) {
-        mContentType = contentType;
     }
 
     @Override
@@ -250,18 +210,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setLive(boolean isLive) {
-        mIsLive = isLive;
-    }
-
-    @Override
     public int getWidth() {
         return mWidth;
-    }
-
-    @Override
-    public void setWidth(int width) {
-        mWidth = width;
     }
 
     @Override
@@ -270,18 +220,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setHeight(int height) {
-        mHeight = height;
-    }
-
-    @Override
     public String getAudioChannelConfig() {
         return mAudioChannelConfig;
-    }
-
-    @Override
-    public void setAudioChannelConfig(String audioChannelConfig) {
-        mAudioChannelConfig = audioChannelConfig;
     }
 
     @Override
@@ -290,18 +230,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setPurchasePrice(String purchasePrice) {
-        mPurchasePrice = purchasePrice;
-    }
-
-    @Override
     public String getRentalPrice() {
         return mRentalPrice;
-    }
-
-    @Override
-    public void setRentalPrice(String rentalPrice) {
-        mRentalPrice = rentalPrice;
     }
 
     @Override
@@ -310,18 +240,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setRatingStyle(int ratingStyle) {
-        mRatingStyle = ratingStyle;
-    }
-
-    @Override
     public double getRatingScore() {
         return mRatingScore;
-    }
-
-    @Override
-    public void setRatingScore(double ratingScore) {
-        mRatingScore = ratingScore;
     }
 
     @Override
@@ -330,18 +250,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setProductionDate(String productionDate) {
-        mProductionDate = productionDate;
-    }
-
-    @Override
-    public int getDuration() {
+    public int getDurationMs() {
         return mDuration;
-    }
-
-    @Override
-    public void setDuration(int duration) {
-        mDuration = duration;
     }
 
     @Override
@@ -350,18 +260,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public void setChannelId(String channelId) {
-        mChannelId = channelId;
-    }
-
-    @Override
     public String getPlaylistId() {
         return mPlaylistId;
-    }
-
-    @Override
-    public void setPlaylistId(String playlistId) {
-        mPlaylistId = playlistId;
     }
 
     public YouTubeMediaItemFormatInfo getFormatInfo() {

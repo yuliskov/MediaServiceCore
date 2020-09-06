@@ -214,7 +214,7 @@ public class VideoContentProvider extends ContentProvider {
             mediaItem.getRatingStyle(),
             mediaItem.getRatingScore(),
             mediaItem.getProductionDate(),
-            mediaItem.getDuration(),
+            mediaItem.getDurationMs(),
             "GLOBALSEARCH",
             mediaItem.getId()
         };

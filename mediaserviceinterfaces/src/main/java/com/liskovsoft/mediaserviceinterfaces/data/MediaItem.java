@@ -10,77 +10,54 @@ public interface MediaItem {
     int getType();
 
     // Video props
-    String getDescription();
-    void setDescription(String description);
     boolean isLive();
-    void setLive(boolean isLive);
 
     // Playlist props
     String getPlaylistId();
-    void setPlaylistId(String playlistId);
 
     // Generic props
     int getId();
-    void setId(int id);
     String getTitle();
-    void setTitle(String title);
+    /**
+     * Additional video info such as user, published etc.
+     */
+    String getDescription();
     String getMediaUrl();
-    void setMediaUrl(String mediaUrl);
     String getMediaId();
-    void setMediaId(String mediaId);
+    /**
+     * Mime content type.<br/>
+     * Example: <b>"video/mp4"</b>
+     */
     String getContentType();
     /**
-     * Set mime content type.<br/>
-     * Example: <b>"video/mp4"</b>
-     * @param contentType content type
+     * Video duration in millis.<br/>
      */
-    void setContentType(String contentType);
-    int getDuration();
-    /**
-     * Set video duration in millis.<br/>
-     * @param duration duration millis
-     */
-    void setDuration(int duration);
+    int getDurationMs();
     String getProductionDate();
-    void setProductionDate(String productionDate);
     String getCardImageUrl();
-    void setCardImageUrl(String cardImageUrl);
     String getBackgroundImageUrl();
-    void setBackgroundImageUrl(String backgroundImageUrl);
     int getWidth();
-    void setWidth(int width);
     int getHeight();
-    void setHeight(int height);
-    String getAudioChannelConfig();
     /**
-     * Set num of audio channels.<br/>
+     * Num of audio channels.<br/>
      * Example: <b>"2.0"</b>
-     * @param audioChannelConfig num of channels
      */
-    void setAudioChannelConfig(String audioChannelConfig);
-    String getPurchasePrice();
+    String getAudioChannelConfig();
     /**
      * Price in local currency.<br/>
      * Example: <b>"$19.99"</b>
-     * @param purchasePrice price
      */
-    void setPurchasePrice(String purchasePrice);
+    String getPurchasePrice();
     String getRentalPrice();
-    void setRentalPrice(String rentalPrice);
+    /**
+     * Video rating max points.<br/>
+     * Example: {@link Rating#RATING_5_STARS}
+     */
     int getRatingStyle();
     /**
-     * Set video rating max points.<br/>
-     * Example: {@link Rating#RATING_5_STARS}
-     * @param ratingStyle rating style
-     */
-    void setRatingStyle(int ratingStyle);
-    double getRatingScore();
-    /**
-     * Set video rating.<br/>
+     * Video rating score.<br/>
      * Example: <b>4.05f</b>
-     * @param ratingScore score
      */
-    void setRatingScore(double ratingScore);
+    double getRatingScore();
     String getChannelId();
-    void setChannelId(String channelId);
 }

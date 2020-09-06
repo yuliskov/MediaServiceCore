@@ -3,10 +3,11 @@ package com.liskovsoft.youtubeapi.service.data;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mViewCount;
     private String mLikesCount;
     private String mDislikesCount;
-    private String mDescription;
+    private String mFullDescription;
     private String mPublishedDate;
     private boolean mSubscribed;
     private int mLikeStatus;
@@ -26,6 +27,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private int mPercentWatched;
     private MediaItem mNextVideo;
     private List<MediaGroup> mSuggestions;
+    private String mDescription;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
@@ -34,10 +36,14 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         VideoOwner videoOwner = watchNextResult.getVideoOwner();
 
         mediaItemMetadata.mTitle = videoMetadata.getTitle();
+        mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
+                videoOwner.getVideoAuthor(),
+                videoMetadata.getPublishedDateAlt(),
+                videoMetadata.getShortViewCount());
         mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
         mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
         mediaItemMetadata.mChannelId = videoOwner.getChannelId();
-        mediaItemMetadata.mDescription = videoMetadata.getDescription();
+        mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
         mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
         mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
         mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
@@ -95,8 +101,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public String getDescription() {
-        return mDescription;
+    public String getFullDescription() {
+        return mFullDescription;
     }
 
     @Override
@@ -137,5 +143,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public List<MediaGroup> getSuggestions() {
         return mSuggestions;
+    }
+
+    @Override
+    public String getDescription() {
+        return mDescription;
     }
 }

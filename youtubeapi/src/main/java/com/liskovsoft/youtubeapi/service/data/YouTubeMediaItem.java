@@ -11,6 +11,7 @@ import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
+    private static int sId;
     private String mTitle;
     private int mId;
     private String mMediaId;
@@ -52,6 +53,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+
         addCommonProps(video);
 
         return video;
@@ -73,6 +75,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+
         addCommonProps(video);
 
         return video;
@@ -88,6 +91,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mChannelId = item.getChannelId();
+
         addCommonProps(video);
 
         return video;
@@ -103,13 +107,14 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mPlaylistId = item.getPlaylistId();
+
         addCommonProps(video);
 
         return video;
     }
 
     private static void addCommonProps(YouTubeMediaItem video) {
-        video.mId = video.mMediaId.hashCode();
+        video.mId = createId(video);
         video.mContentType = "video/mp4";
         video.mWidth = 1280;
         video.mHeight = 720;
@@ -154,6 +159,20 @@ public class YouTubeMediaItem implements MediaItem {
         addCommonProps(video);
 
         return video;
+    }
+
+    private static int createId(YouTubeMediaItem item) {
+        int id;
+
+        if (item.mMediaId != null) {
+            id = item.mMediaId.hashCode();
+        } else if (item.mChannelId != null) {
+            id = item.mChannelId.hashCode();
+        } else {
+            id = sId++;
+        }
+
+        return id;
     }
 
     @Override

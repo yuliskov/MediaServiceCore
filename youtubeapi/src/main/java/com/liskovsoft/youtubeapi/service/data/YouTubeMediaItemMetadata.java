@@ -39,7 +39,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
                 videoOwner.getVideoAuthor(),
                 videoMetadata.getPublishedDateAlt(),
-                videoMetadata.getShortViewCount());
+                videoMetadata.getShortViewCount(),
+                videoMetadata.getLiveBadge());
         mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
         mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
         mediaItemMetadata.mChannelId = videoOwner.getChannelId();

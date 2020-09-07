@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.next.models;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 public class VideoMetadata {
+    private static final String BADGE_LIVE = "LIVE";
     public static final String LIKE_STATUS_LIKE = "LIKE";
     public static final String LIKE_STATUS_DISLIKE = "DISLIKE";
     public static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
@@ -28,6 +29,8 @@ public class VideoMetadata {
     private String mPublishedDate;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
+    @JsonPath("$.badges[0].liveBadge.label.runs[0].text")
+    private String mLiveBadge;
 
     public String getVideoId() {
         return mVideoId;
@@ -71,5 +74,13 @@ public class VideoMetadata {
 
     public int getPercentWatched() {
         return mPercentWatched;
+    }
+
+    public String getLiveBadge() {
+        return mLiveBadge;
+    }
+
+    public boolean isLive() {
+        return BADGE_LIVE.equals(mLiveBadge);
     }
 }

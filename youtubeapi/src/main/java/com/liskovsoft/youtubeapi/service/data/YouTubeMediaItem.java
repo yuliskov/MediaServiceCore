@@ -11,7 +11,6 @@ import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
-    private static int sId;
     private String mTitle;
     private int mId;
     private String mMediaId;
@@ -110,7 +109,7 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     private static void addCommonProps(YouTubeMediaItem video) {
-        video.mId = sId++;
+        video.mId = video.mMediaId.hashCode();
         video.mContentType = "video/mp4";
         video.mWidth = 1280;
         video.mHeight = 720;
@@ -125,7 +124,6 @@ public class YouTubeMediaItem implements MediaItem {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
-        video.mId = sId++;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
@@ -144,7 +142,6 @@ public class YouTubeMediaItem implements MediaItem {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
-        video.mId = sId++;
         video.mTitle = item.getTitle();
         //video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());

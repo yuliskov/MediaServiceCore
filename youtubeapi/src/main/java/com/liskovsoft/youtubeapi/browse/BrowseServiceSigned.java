@@ -52,6 +52,22 @@ public class BrowseServiceSigned {
         return getSection(BrowseManagerParams.getHistoryQuery(), authorization);
     }
 
+    public BrowseTab getHome(String authorization) {
+        return getTab(BrowseManagerParams.getHomeQuery(), authorization);
+    }
+
+    public BrowseTab getGaming(String authorization) {
+        return getTab(BrowseManagerParams.getGamingQuery(), authorization);
+    }
+
+    public BrowseTab getNews(String authorization) {
+        return getTab(BrowseManagerParams.getNewsQuery(), authorization);
+    }
+
+    public BrowseTab getMusic(String authorization) {
+        return getTab(BrowseManagerParams.getMusicQuery(), authorization);
+    }
+
     private BrowseResult getSection(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getAuthSection: authorization is null.");
@@ -208,5 +224,59 @@ public class BrowseServiceSigned {
         }
 
         return null;
+    }
+
+    private BrowseTab getTab(String query, String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getTab: authorization is null. Query: " + query);
+            return null;
+        }
+
+        TabbedBrowseResult tabs = getTabbedResult(query, authorization);
+
+        if (tabs == null) {
+            Log.e(TAG, "getTab: tabs result is empty");
+            return null;
+        }
+
+        return firstNotEmpty(tabs);
+    }
+
+    private BrowseTab firstNotEmpty(TabbedBrowseResult tabs) {
+        BrowseTab result = null;
+
+        if (tabs.getBrowseTabs() != null) {
+            // find first not empty tab
+            for (BrowseTab browseTab : tabs.getBrowseTabs()) {
+                if (browseTab.getSections() != null) {
+                    result = browseTab;
+                    break;
+                }
+            }
+        } else {
+            Log.e(TAG, "firstNotEmpty: tabs are empty");
+        }
+
+        return result;
+    }
+
+    public TabbedBrowseResultContinuation continueTab(String nextKey, String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getNextTab: authorization is null.");
+            return null;
+        }
+
+        TabbedBrowseResultContinuation nextHomeTabs = null;
+
+        if (nextKey != null) {
+            nextHomeTabs = getNextTabbedResult(nextKey, authorization);
+        }
+
+        if (nextHomeTabs == null) {
+            Log.e(TAG, "getNextTab: tabs are empty");
+            return null;
+        }
+
+        return nextHomeTabs;
     }
 }

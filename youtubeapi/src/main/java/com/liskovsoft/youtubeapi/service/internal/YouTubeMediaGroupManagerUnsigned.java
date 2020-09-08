@@ -4,6 +4,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceUnsigned;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
@@ -89,5 +91,29 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     @Override
     public MediaGroup getHistory() {
         return YouTubeMediaGroup.EMPTY_GROUP;
+    }
+
+    @Override
+    public BrowseTab getMusicTab() {
+        Log.d(TAG, "Emitting music group...");
+        return mBrowseServiceUnsigned.getMusic();
+    }
+
+    @Override
+    public BrowseTab getNewsTab() {
+        Log.d(TAG, "Emitting news group...");
+        return mBrowseServiceUnsigned.getNews();
+    }
+
+    @Override
+    public BrowseTab getGamingTab() {
+        Log.d(TAG, "Emitting gaming group...");
+        return mBrowseServiceUnsigned.getGaming();
+    }
+
+    @Override
+    public TabbedBrowseResultContinuation continueTab(String nextPageKey) {
+        Log.d(TAG, "Continue tab...");
+        return mBrowseServiceUnsigned.continueTab(nextPageKey);
     }
 }

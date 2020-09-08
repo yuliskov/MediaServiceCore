@@ -9,6 +9,9 @@ public interface MediaGroup {
     int TYPE_RECOMMENDED = 2;
     int TYPE_HISTORY = 3;
     int TYPE_SUBSCRIPTIONS = 4;
+    int TYPE_MUSIC = 5;
+    int TYPE_NEWS = 6;
+    int TYPE_GAMING = 7;
     int getType();
     void setType(int type);
     List<MediaItem> getMediaItems();

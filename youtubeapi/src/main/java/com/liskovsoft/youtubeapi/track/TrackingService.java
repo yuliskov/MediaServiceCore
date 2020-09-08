@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.track;
 
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
@@ -8,6 +9,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import retrofit2.Call;
 
 public class TrackingService {
+    private static final String TAG = TrackingService.class.getSimpleName();
     private static TrackingService sInstance;
     private final TrackingManager mTrackingManager;
     private final AppService mAppService;
@@ -70,6 +72,9 @@ public class TrackingService {
 
     private void updateWatchTime(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
                                  String eventId, String visitorMonitoringData, String authorization) {
+
+        Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
+
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
                 videoId,
                 clientPlaybackNonce,

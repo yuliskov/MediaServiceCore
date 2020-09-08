@@ -19,5 +19,8 @@ public interface MediaGroupManager {
     Observable<MediaGroup> getRecommendedObserve(); // Note, that recommended is a part of Home
     Observable<MediaGroup> getHistoryObserve();
     Observable<List<MediaGroup>> getHomeObserve();
+    Observable<List<MediaGroup>> getMusicObserve();
+    Observable<List<MediaGroup>> getNewsObserve();
+    Observable<List<MediaGroup>> getGamingObserve();
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
 }

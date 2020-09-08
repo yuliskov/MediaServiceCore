@@ -84,6 +84,18 @@ public class YouTubeMediaGroup implements MediaGroup {
             }
         }
 
+        if (section.getChannelItems() != null) {
+            for (com.liskovsoft.youtubeapi.common.models.items.ChannelItem item : section.getChannelItems()) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
+
+        if (section.getPlaylistItems() != null) {
+            for (com.liskovsoft.youtubeapi.common.models.items.PlaylistItem item : section.getPlaylistItems()) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
+
         youTubeMediaGroup.mTitle = section.getTitle();
         youTubeMediaGroup.mMediaItems = mediaItems.isEmpty() ? null : mediaItems;
         youTubeMediaGroup.mNextPageKey = section.getNextPageKey();

@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
@@ -170,6 +171,16 @@ public class BrowseManagerUnsignedTest {
         }
     }
 
+    @Test
+    public void testThatMusicTabNotEmpty() throws IOException {
+        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getMusicQuery());
+
+        Response<TabbedBrowseResult> execute = wrapper.execute();
+        TabbedBrowseResult browseResult = execute.body();
+
+        tabbedResultNotEmpty(browseResult);
+    }
+
     private void nextSectionResultNotEmpty(BrowseResultContinuation browseResult) {
         assertNotNull("Next section result: not empty", browseResult);
         assertTrue("Next section result: item list not empty", browseResult.getVideoItems() != null || browseResult.getPlaylistItems() != null);
@@ -186,10 +197,22 @@ public class BrowseManagerUnsignedTest {
                 section.getVideoItems() != null || section.getMusicItems() != null || section.getChannelItems() != null);
     }
 
-    private void tabbedResultNotEmpty(TabbedBrowseResult browseResult1) {
-        assertNotNull("Tabbed result not empty", browseResult1);
-        assertNotNull("Tabs list not empty", browseResult1.getBrowseTabs());
-        assertTrue("Tabs list > 2", browseResult1.getBrowseTabs().size() > 2);
-        assertTrue("Tabs sections > 2", browseResult1.getBrowseTabs().get(0).getSections().size() > 2);
+    private void tabbedResultNotEmpty(TabbedBrowseResult browseResult) {
+        assertNotNull("Tabbed result not empty", browseResult);
+        assertNotNull("Tabs list not empty", browseResult.getBrowseTabs());
+        assertTrue("Tabs list > 2", browseResult.getBrowseTabs().size() > 2);
+
+        BrowseTab browseTab = null;
+
+        // get first not empty
+        for (BrowseTab tab : browseResult.getBrowseTabs()) {
+            if (tab.getSections() != null) {
+                browseTab = tab;
+                break;
+            }
+        }
+
+        assertNotNull("Tab is not null", browseTab);
+        assertTrue("Tabs sections > 2", browseTab.getSections().size() > 2);
     }
 }

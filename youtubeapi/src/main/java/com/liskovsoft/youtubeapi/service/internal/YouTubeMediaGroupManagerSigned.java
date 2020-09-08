@@ -4,6 +4,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -89,5 +91,29 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
                 mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup), mSignInManager.getAuthorizationHeader()),
                 mediaGroup
         );
+    }
+
+    @Override
+    public BrowseTab getMusicTab() {
+        Log.d(TAG, "Emitting music group...");
+        return mBrowseServiceSigned.getMusic(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public BrowseTab getNewsTab() {
+        Log.d(TAG, "Emitting news group...");
+        return mBrowseServiceSigned.getNews(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public BrowseTab getGamingTab() {
+        Log.d(TAG, "Emitting gaming group...");
+        return mBrowseServiceSigned.getGaming(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public TabbedBrowseResultContinuation continueTab(String nextPageKey) {
+        Log.d(TAG, "Continue tab...");
+        return mBrowseServiceSigned.continueTab(nextPageKey, mSignInManager.getAuthorizationHeader());
     }
 }

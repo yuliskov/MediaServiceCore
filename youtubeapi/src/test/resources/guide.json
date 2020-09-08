@@ -1,0 +1,234 @@
+{
+  "responseContext": {
+    "serviceTrackingParams": [
+      {
+        "service": "GFEEDBACK",
+        "params": [
+          {
+            "key": "e",
+            "value": "23744176,23804281,23839597,23856950,23857949,23862346,23882503,23884386,23895671,23911055,23916148,23918597,23921357,23928508,23928545,23930220,23931993,23934970,23939554,23940704,23942364,23942434,23942750,23943055,23943502,23944554,24590231,9449243"
+          },
+          {
+            "key": "logged_in",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "service": "SUGGEST",
+        "params": [
+          {
+            "key": "suggest_token",
+            "value": "yE34BPmILIQB85CpTq1Tug"
+          }
+        ]
+      }
+    ]
+  },
+  "trackingParams": "CAAQumkiEwj63-H3udnrAhU7yxEIHdl7CCk=",
+  "items": [
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideAccountEntryRenderer": {
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Account"
+                  }
+                },
+                "simpleText": "firsthash"
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/-8IknGOhvhJs/AAAAAAAAAAI/AAAAAAAAAAA/c28TTuyJbDo/s88-c-k-no-mo-rj-c0xffffff/photo.jpg",
+                    "width": 88,
+                    "height": 88
+                  }
+                ]
+              },
+              "navigationEndpoint": {
+                "clickTrackingParams": "CA0QtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "signalNavigationEndpoint": {
+                  "signal": "ACCOUNT_SETTINGS"
+                }
+              },
+              "trackingParams": "CA0QtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+            }
+          }
+        ],
+        "trackingParams": "CAwQ5isYACITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+      }
+    },
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAsQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "searchEndpoint": {
+                  "query": ""
+                }
+              },
+              "title": "Search",
+              "icon": {
+                "iconType": "SEARCH"
+              },
+              "trackingParams": "CAsQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "Search"
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAoQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "browseEndpoint": {
+                  "browseId": "FEtopics"
+                }
+              },
+              "title": "Home",
+              "icon": {
+                "iconType": "WHAT_TO_WATCH"
+              },
+              "trackingParams": "CAoQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "Home"
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAkQtSwYAiITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "browseEndpoint": {
+                  "browseId": "FEtopics",
+                  "params": "-gIGZ2FtaW5n"
+                }
+              },
+              "title": "Gaming",
+              "icon": {
+                "iconType": "GAMING"
+              },
+              "trackingParams": "CAkQtSwYAiITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "Gaming"
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAgQtSwYAyITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "browseEndpoint": {
+                  "browseId": "FEtopics",
+                  "params": "-gINaGFwcGVuaW5nX25vdw%3D%3D"
+                }
+              },
+              "title": "News",
+              "icon": {
+                "iconType": "NEWS"
+              },
+              "trackingParams": "CAgQtSwYAyITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "News"
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAcQtSwYBCITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "browseEndpoint": {
+                  "browseId": "FEtopics",
+                  "params": "-gIFbXVzaWM%3D"
+                }
+              },
+              "title": "Music",
+              "icon": {
+                "iconType": "YOUTUBE_MUSIC"
+              },
+              "trackingParams": "CAcQtSwYBCITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "Music"
+              }
+            }
+          }
+        ],
+        "trackingParams": "CAYQ5isYASITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+      }
+    },
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAUQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "browseEndpoint": {
+                  "browseId": "FEsubscriptions"
+                }
+              },
+              "title": "Subscriptions",
+              "icon": {
+                "iconType": "SUBSCRIPTIONS"
+              },
+              "trackingParams": "CAUQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "Subscriptions"
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAQQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "browseEndpoint": {
+                  "browseId": "FEmy_youtube"
+                }
+              },
+              "title": "Library",
+              "icon": {
+                "iconType": "TAB_LIBRARY"
+              },
+              "trackingParams": "CAQQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "formattedTitle": {
+                "simpleText": "Library"
+              }
+            }
+          }
+        ],
+        "trackingParams": "CAMQ5isYAiITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+      }
+    }
+  ],
+  "footer": {
+    "guideSectionRenderer": {
+      "items": [
+        {
+          "guideEntryRenderer": {
+            "navigationEndpoint": {
+              "clickTrackingParams": "CAIQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "applicationSettingsEndpoint": {
+                "hack": true
+              }
+            },
+            "title": "Settings",
+            "icon": {
+              "iconType": "SETTINGS"
+            },
+            "trackingParams": "CAIQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+            "formattedTitle": {
+              "simpleText": "Settings"
+            }
+          }
+        }
+      ],
+      "trackingParams": "CAEQ5isiEwj63-H3udnrAhU7yxEIHdl7CCk="
+    }
+  }
+}

@@ -35,6 +35,22 @@ public class BrowseServiceUnsigned {
         sInstance = null;
     }
 
+    public BrowseTab getHome() {
+        return getTab(BrowseManagerParams.getHomeQuery());
+    }
+
+    public BrowseTab getGaming() {
+        return getTab(BrowseManagerParams.getGamingQuery());
+    }
+
+    public BrowseTab getNews() {
+        return getTab(BrowseManagerParams.getNewsQuery());
+    }
+
+    public BrowseTab getMusic() {
+        return getTab(BrowseManagerParams.getMusicQuery());
+    }
+
     public List<BrowseSection> getHomeSections() {
         TabbedBrowseResult homeTabs = getTabbedResult(BrowseManagerParams.getHomeQuery());
 
@@ -104,6 +120,64 @@ public class BrowseServiceUnsigned {
     }
 
     private BrowseTab findHomeTab(TabbedBrowseResult homeTabs) {
-        return homeTabs.getBrowseTabs().get(0);
+        BrowseTab result = null;
+
+        if (homeTabs != null) {
+            result = homeTabs.getBrowseTabs().get(0);
+        } else {
+            Log.e(TAG, "findRootTab: tabs are empty");
+        }
+
+        return result;
+    }
+
+    private BrowseTab getTab(String query) {
+        TabbedBrowseResult tabs = getTabbedResult(query);
+
+        if (tabs == null) {
+            Log.e(TAG, "getTabs: tabs result is empty");
+            return null;
+        }
+
+        mVisitorData = tabs.getVisitorData();
+
+        return firstNotEmpty(tabs);
+    }
+
+    private BrowseTab firstNotEmpty(TabbedBrowseResult tabs) {
+        BrowseTab result = null;
+
+        if (tabs.getBrowseTabs() != null) {
+            // find first not empty tab
+            for (BrowseTab browseTab : tabs.getBrowseTabs()) {
+                if (browseTab.getSections() != null) {
+                    result = browseTab;
+                    break;
+                }
+            }
+        } else {
+            Log.e(TAG, "firstNotEmpty: tabs are empty");
+        }
+
+        return result;
+    }
+
+    public TabbedBrowseResultContinuation continueTab(String nextPageKey) {
+        TabbedBrowseResultContinuation nextHomeTabs = null;
+
+        if (mVisitorData == null) {
+            Log.e(TAG, "continueTab: visitor data is null");
+        }
+
+        if (nextPageKey != null) {
+            nextHomeTabs = getNextTabbedResult(nextPageKey, mVisitorData);
+        }
+
+        if (nextHomeTabs == null) {
+            Log.e(TAG, "NextHomeTabs are empty");
+            return null;
+        }
+
+        return nextHomeTabs;
     }
 }

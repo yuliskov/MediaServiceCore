@@ -3,10 +3,14 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerUnsigned;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +119,57 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
             emitter.onComplete();
         });
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getMusicObserve() {
+        return Observable.create(emitter -> {
+            checkSigned();
+
+            BrowseTab tab = mMediaGroupManagerReal.getMusicTab();
+
+            emitGroups(emitter, tab);
+        });
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getNewsObserve() {
+        return Observable.create(emitter -> {
+            checkSigned();
+
+            BrowseTab tab = mMediaGroupManagerReal.getNewsTab();
+
+            emitGroups(emitter, tab);
+        });
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getGamingObserve() {
+        return Observable.create(emitter -> {
+            checkSigned();
+
+            BrowseTab tab = mMediaGroupManagerReal.getGamingTab();
+
+            emitGroups(emitter, tab);
+        });
+    }
+
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, BrowseTab tab) {
+        String nextPageKey = tab.getNextPageKey();
+        List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections());
+
+        if (groups.isEmpty()) {
+            Log.e(TAG, "Music group is empty");
+        }
+
+        while (!groups.isEmpty()) {
+            emitter.onNext(groups);
+            TabbedBrowseResultContinuation continuation = mMediaGroupManagerReal.continueTab(nextPageKey);
+            nextPageKey = continuation.getNextPageKey();
+            groups = YouTubeMediaGroup.from(continuation.getSections());
+        }
+
+        emitter.onComplete();
     }
 
     @Override

@@ -11,6 +11,11 @@ public class Thumbnail {
     private int height;
 
     public String getUrl() {
+        // Glide: fix urls without prefix
+        if (url != null && url.startsWith("//")) {
+            url = "https:" + url;
+        }
+
         return url;
     }
 

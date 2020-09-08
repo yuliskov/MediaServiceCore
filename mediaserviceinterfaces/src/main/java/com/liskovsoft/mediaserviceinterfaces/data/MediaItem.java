@@ -9,8 +9,9 @@ public interface MediaItem {
     int TYPE_PLAYLIST = 3;
     int getType();
 
-    // Video props
+    // Music/Video props
     boolean isLive();
+    int getPercentWatched();
 
     // Playlist props
     String getPlaylistId();

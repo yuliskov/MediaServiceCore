@@ -29,6 +29,8 @@ public class SuggestedItem {
     private String mTrackingParams;
     @JsonPath("$.badges[0].liveBadge.label.runs[0].text")
     private String mLiveBadge;
+    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
+    private int mPercentWatched;
 
     public String getVideoId() {
         return mVideoId;
@@ -76,5 +78,9 @@ public class SuggestedItem {
 
     public boolean isLive() {
         return BADGE_LIVE.equals(mLiveBadge);
+    }
+
+    public int getPercentWatched() {
+        return mPercentWatched;
     }
 }

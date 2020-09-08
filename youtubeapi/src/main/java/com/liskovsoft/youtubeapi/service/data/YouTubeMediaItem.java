@@ -35,6 +35,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mMediaItemType;
     private YouTubeMediaItemFormatInfo mFormatInfo;
     private YouTubeMediaItemMetadata mMetadata;
+    private int mPercentWatched;
 
     public static YouTubeMediaItem from(VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
@@ -53,6 +54,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mPercentWatched = item.getPercentWatched();
 
         addCommonProps(video);
 
@@ -75,6 +77,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mPercentWatched = item.getPercentWatched();
 
         addCommonProps(video);
 
@@ -278,6 +281,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getPlaylistId() {
         return mPlaylistId;
+    }
+
+    @Override
+    public int getPercentWatched() {
+        return mPercentWatched;
     }
 
     public YouTubeMediaItemFormatInfo getFormatInfo() {

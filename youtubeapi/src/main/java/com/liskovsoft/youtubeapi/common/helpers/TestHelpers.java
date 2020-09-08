@@ -11,6 +11,15 @@ public class TestHelpers {
     // Mafia: Definitive Edition - Official Story Trailer | Summer of Gaming 2020
     public static final String VIDEO_ID_SIMPLE = "s2lGEhSlOTY";
 
+    // Strana: Yasno i ponyatno
+    public static final String VIDEO_ID_SIMPLE_2 = "ftrpxWYDIJU";
+
+    // News One
+    public static final String VIDEO_ID_SIMPLE_3 = "x26FXCaUR7E";
+
+    // Kvartal 95
+    public static final String VIDEO_ID_SIMPLE_4 = "XemGObKTF0o";
+
     // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
     public static final String VIDEO_ID_CIPHERED = "0YEZiDtnbdA";
 

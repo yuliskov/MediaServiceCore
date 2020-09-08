@@ -28,6 +28,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private MediaItem mNextVideo;
     private List<MediaGroup> mSuggestions;
     private String mDescription;
+    private boolean mIsLive;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
@@ -42,14 +43,15 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 videoMetadata.getShortViewCount(),
                 videoMetadata.getLiveBadge());
         mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
-        mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
-        mediaItemMetadata.mChannelId = videoOwner.getChannelId();
         mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
         mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
         mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
         mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
         mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
         mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
+        mediaItemMetadata.mIsLive = videoMetadata.isLive();
+        mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
+        mediaItemMetadata.mChannelId = videoOwner.getChannelId();
         mediaItemMetadata.mSubscribed = videoOwner.isSubscribed();
 
         mediaItemMetadata.mNextVideo = YouTubeMediaItem.from(watchNextResult.getNextVideo());
@@ -124,6 +126,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public Boolean isSubscribed() {
         return mSubscribed;
+    }
+
+    @Override
+    public boolean isLive() {
+        return mIsLive;
     }
 
     @Override

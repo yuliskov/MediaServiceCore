@@ -28,6 +28,8 @@ public class MusicItem {
     private String mAccessibilityLength;
     @JsonPath("$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId")
     private String mChannelId;
+    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
+    private int mPercentWatched;
 
     public String getVideoId() {
         return mVideoId;
@@ -87,5 +89,9 @@ public class MusicItem {
 
     public String getChannelId() {
         return mChannelId;
+    }
+
+    public int getPercentWatched() {
+        return mPercentWatched;
     }
 }

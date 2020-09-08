@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import java.util.List;
 
 public class VideoItem {
-    private static final String THUMBNAIL_STYLE_LIVE = "LIVE";
+    private static final String THUMBNAIL_LIVE = "LIVE";
     private static final String THUMBNAIL_STYLE_DEFAULT = "DEFAULT";
     @JsonPath("$.videoId")
     private String mVideoId;
@@ -36,6 +36,8 @@ public class VideoItem {
     private String mQualityBadge;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style")
     private String mThumbnailStyle;
+    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
+    private int mPercentWatched;
 
     public String getVideoId() {
         return mVideoId;
@@ -94,6 +96,10 @@ public class VideoItem {
     }
 
     public boolean isLive() {
-        return THUMBNAIL_STYLE_LIVE.equals(mThumbnailStyle);
+        return THUMBNAIL_LIVE.equals(mThumbnailStyle);
+    }
+
+    public int getPercentWatched() {
+        return mPercentWatched;
     }
 }

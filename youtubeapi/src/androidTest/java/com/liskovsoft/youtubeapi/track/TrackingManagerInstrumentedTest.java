@@ -6,6 +6,9 @@ import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
+import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
@@ -27,6 +30,7 @@ public class TrackingManagerInstrumentedTest {
     private AuthService mAuthService;
     private static String sAuthorization;
     private BrowseServiceSigned mBrowseServiceSigned;
+    private WatchNextServiceSigned mWatchNextServiceSigned;
 
     @Before
     public void setUp() {
@@ -38,26 +42,94 @@ public class TrackingManagerInstrumentedTest {
             sAuthorization = TestHelpers.getAuthorization();
         }
         mBrowseServiceSigned = BrowseServiceSigned.instance();
+        mWatchNextServiceSigned = WatchNextServiceSigned.instance();
     }
 
+    //@Test
+    //public void testCreateWatchRecord() throws IOException {
+    //    Response<WatchTimeEmptyResult> response = createWatchRecord(TestHelpers.VIDEO_ID_SIMPLE);
+    //
+    //    assertTrue("Create watch record response successful", response.isSuccessful());
+    //
+    //    BrowseResult history = mBrowseServiceSigned.getHistory(sAuthorization);
+    //    String newVideoId = history.getVideoItems().get(0).getVideoId();
+    //
+    //    assertEquals("History updated", TestHelpers.VIDEO_ID_SIMPLE, newVideoId);
+    //}
+
     @Test
-    public void testUpdateWatchTime() throws IOException {
+    public void testUpdateWatchTime() throws IOException, InterruptedException {
         String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE, sAuthorization);
+        String videoIdSimple = TestHelpers.VIDEO_ID_SIMPLE_3;
 
-        String authorization = TestHelpers.getAuthorization();
+        Response<WatchTimeEmptyResult> response;
 
-        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
-                TestHelpers.VIDEO_ID_SIMPLE, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), authorization
-        );
+        response = createWatchRecord(videoIdSimple, playbackNonce);
 
-        Response<WatchTimeEmptyResult> response = wrapper.execute();
+        assertTrue("Create watch record response successful", response.isSuccessful());
 
-        assertTrue("Watch time response successful", response.isSuccessful());
+        response = updateWatchTimeAlt(videoIdSimple, 100.4f, playbackNonce);
+
+        assertTrue("Update watch time response successful", response.isSuccessful());
 
         BrowseResult history = mBrowseServiceSigned.getHistory(sAuthorization);
-        String newVideoId = history.getVideoItems().get(0).getVideoId();
 
-        assertEquals("History updated", TestHelpers.VIDEO_ID_SIMPLE, newVideoId);
+        VideoItem historyItem = history.getVideoItems().get(0);
+
+        assertEquals("History updated", videoIdSimple, historyItem.getVideoId());
+
+        //WatchNextResult watchNextResult = mWatchNextServiceSigned.getWatchNextResult(videoIdSimple, sAuthorization);
+        //
+        //int percentWatched = watchNextResult.getVideoMetadata().getPercentWatched();
+
+        int percentWatched = historyItem.getPercentWatched();
+
+        assertTrue("Watch time position update successful. Percent watched: " + percentWatched, percentWatched > 0);
+    }
+
+    private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, String playbackNonce) throws IOException {
+        //String playbackNonce = mAppService.getClientPlaybackNonce();
+        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
+                videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
+        );
+
+        return wrapper.execute();
+    }
+
+    //private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, float positionSec) throws IOException {
+    //    String playbackNonce = mAppService.getClientPlaybackNonce();
+    //    VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+    //
+    //    Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
+    //            videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec, positionSec, positionSec,
+    //            playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
+    //    );
+    //
+    //    return wrapper.execute();
+    //}
+
+    private Response<WatchTimeEmptyResult> updateWatchTime(String videoId, float positionSec, String playbackNonce) throws IOException {
+        //String playbackNonce = mAppService.getClientPlaybackNonce();
+        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
+                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec, positionSec,
+                positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization
+        );
+
+        return wrapper.execute();
+    }
+
+    private Response<WatchTimeEmptyResult> updateWatchTimeAlt(String videoId, float positionSec, String playbackNonce) throws IOException {
+        //String playbackNonce = mAppService.getClientPlaybackNonce();
+        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
+                videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization
+        );
+
+        return wrapper.execute();
     }
 }

@@ -7,7 +7,6 @@ import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
-import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
@@ -45,7 +44,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mDescription = YouTubeMediaServiceHelper.createDescription(
                 item.getUserName(),
                 item.getPublishedTime(),
-                item.getShortViewCount());
+                item.getViewCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
@@ -60,6 +59,24 @@ public class YouTubeMediaItem implements MediaItem {
 
         return video;
     }
+
+    //public static MediaItem from(SuggestedItem item) {
+    //    YouTubeMediaItem video = new YouTubeMediaItem();
+    //
+    //    video.mMediaItemType = MediaItem.TYPE_VIDEO;
+    //    video.mTitle = item.getTitle();
+    //    video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
+    //    String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+    //    video.mCardImageUrl = highResThumbnailUrl;
+    //    video.mBackgroundImageUrl = highResThumbnailUrl;
+    //    video.mMediaId = item.getVideoId();
+    //    video.mChannelId = item.getChannelId();
+    //    video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+    //    video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+    //    addCommonProps(video);
+    //
+    //    return video;
+    //}
 
     public static YouTubeMediaItem from(MusicItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
@@ -126,24 +143,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mRentalPrice = "$4.99";
         video.mRatingStyle = 5;
         video.mRatingScore = 4d;
-    }
-
-    public static MediaItem from(SuggestedItem item) {
-        YouTubeMediaItem video = new YouTubeMediaItem();
-
-        video.mMediaItemType = MediaItem.TYPE_VIDEO;
-        video.mTitle = item.getTitle();
-        video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
-        video.mMediaId = item.getVideoId();
-        video.mChannelId = item.getChannelId();
-        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
-        video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
-        addCommonProps(video);
-
-        return video;
     }
 
     public static MediaItem from(NextVideo item) {

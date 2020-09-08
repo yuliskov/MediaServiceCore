@@ -15,17 +15,19 @@ public class VideoItem {
     private String mChannelThumbnail;
     @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
     private String mTitle;
-    @JsonPath("$.longBylineText.runs[0].text")
+    @JsonPath({"$.longBylineText.runs[0].text", "$.shortBylineText.runs[0].text"})
     private String mUserName;
-    @JsonPath({"$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId",
-               "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId"})
+    @JsonPath({"$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
+               "$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
+               "$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId"})
     private String mChannelId;
-    @JsonPath("$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl")
+    @JsonPath({"$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl",
+               "$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl"})
     private String mCanonicalChannelUrl;
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
     private String mPublishedTime;
     @JsonPath({"$.viewCountText.simpleText", "$.viewCountText.runs[0].text"})
-    private String mViewCount;
+    private String mViewCountText;
     @JsonPath({"$.shortViewCountText.simpleText", "$.shortViewCountText.runs[0].text"})
     private String mShortViewCount;
     @JsonPath({"$.lengthText.simpleText", "$.lengthText.runs[0].text"})
@@ -36,6 +38,10 @@ public class VideoItem {
     private String mQualityBadge;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style")
     private String mThumbnailStyle;
+    @JsonPath("$.badges[0].liveBadge.label.runs[0].text")
+    private String mLiveBadge;
+    @JsonPath("$.trackingParams")
+    private String mTrackingParams;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
 
@@ -71,8 +77,8 @@ public class VideoItem {
         return mPublishedTime;
     }
 
-    public String getViewCount() {
-        return mViewCount;
+    public String getViewCountText() {
+        return mViewCountText;
     }
 
     public String getShortViewCount() {
@@ -96,10 +102,18 @@ public class VideoItem {
     }
 
     public boolean isLive() {
-        return THUMBNAIL_LIVE.equals(mThumbnailStyle);
+        return THUMBNAIL_LIVE.equals(mLiveBadge);
     }
 
     public int getPercentWatched() {
         return mPercentWatched;
+    }
+
+    public String getTrackingParams() {
+        return mTrackingParams;
+    }
+
+    public String getLiveBadge() {
+        return mLiveBadge;
     }
 }

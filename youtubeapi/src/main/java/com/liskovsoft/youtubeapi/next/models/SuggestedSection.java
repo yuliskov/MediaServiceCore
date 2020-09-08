@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.next.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class SuggestedSection {
     @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
     private String mTitle;
     @JsonPath("$.content.horizontalListRenderer.items[*].pivotVideoRenderer")
-    private List<SuggestedItem> mSuggestedItems;
+    private List<VideoItem> mVideoSuggestions;
     @JsonPath("$.content.horizontalListRenderer.continuations[*].nextContinuationData.continuation")
     private List<String> mNextPageKey;
 
@@ -16,8 +17,8 @@ public class SuggestedSection {
         return mTitle;
     }
 
-    public List<SuggestedItem> getSuggestedItems() {
-        return mSuggestedItems;
+    public List<VideoItem> getVideoSuggestions() {
+        return mVideoSuggestions;
     }
 
     public String getNextPageKey() {

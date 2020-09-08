@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
@@ -9,10 +9,9 @@ import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,10 +156,10 @@ public class YouTubeMediaGroup implements MediaGroup {
 
         YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup();
 
-        if (section.getSuggestedItems() != null) {
+        if (section.getVideoSuggestions() != null) {
             youTubeMediaGroup.mMediaItems = new ArrayList<>();
 
-            for (SuggestedItem item : section.getSuggestedItems()) {
+            for (VideoItem item : section.getVideoSuggestions()) {
                 youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
             }
         }

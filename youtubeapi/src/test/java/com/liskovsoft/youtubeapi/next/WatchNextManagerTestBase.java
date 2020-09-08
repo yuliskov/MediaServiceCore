@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.next;
 
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
-import com.liskovsoft.youtubeapi.next.models.SuggestedItem;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 
 import java.util.List;
 
@@ -22,7 +22,20 @@ public class WatchNextManagerTestBase {
         checkFields(watchNextResult.getSuggestedSections());
     }
 
-    private void checkFields(SuggestedItem watchNextItem) {
+    private void checkFields(List<SuggestedSection> watchNextSections) {
+        assertNotNull("Watch next contains rows", watchNextSections);
+
+        SuggestedSection firstRow = watchNextSections.get(0);
+
+        assertNotNull("Row has title", firstRow.getTitle());
+        assertNotNull("Row has continuation data", firstRow.getNextPageKey());
+
+        VideoItem watchNextItem = firstRow.getVideoSuggestions().get(0);
+
+        checkFields(watchNextItem);
+    }
+
+    private void checkFields(VideoItem watchNextItem) {
         String videoId = watchNextItem.getVideoId();
         assertNotNull("Watch next item has title: " + videoId, watchNextItem.getTitle());
         assertNotNull("Watch next item has video id: " + videoId, videoId);
@@ -32,19 +45,6 @@ public class WatchNextManagerTestBase {
         assertTrue("Watch next item has length: " + videoId, watchNextItem.getLengthText() != null || watchNextItem.isLive());
         assertNotNull("Watch next item has thumbnails: " + videoId, watchNextItem.getThumbnails());
         assertTrue("Watch next item thumbnails not empty: " + videoId, watchNextItem.getThumbnails().size() > 0);
-    }
-
-    private void checkFields(List<SuggestedSection> watchNextSections) {
-        assertNotNull("Watch next contains rows", watchNextSections);
-
-        SuggestedSection firstRow = watchNextSections.get(0);
-
-        assertNotNull("Row has title", firstRow.getTitle());
-        assertNotNull("Row has continuation data", firstRow.getNextPageKey());
-
-        SuggestedItem watchNextItem = firstRow.getSuggestedItems().get(0);
-
-        checkFields(watchNextItem);
     }
 
     private void checkFields(VideoMetadata videoMetadata) {

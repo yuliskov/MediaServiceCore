@@ -65,12 +65,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 break;
         }
 
-        List<SuggestedSection> watchNextSections = watchNextResult.getSuggestedSections();
+        List<SuggestedSection> suggestedSections = watchNextResult.getSuggestedSections();
 
-        if (watchNextSections != null) {
+        if (suggestedSections != null) {
             mediaItemMetadata.mSuggestions = new ArrayList<>();
 
-            for (SuggestedSection section : watchNextSections) {
+            for (SuggestedSection section : suggestedSections) {
                 mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
             }
         }

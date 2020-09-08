@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
+import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
@@ -111,6 +112,22 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mChannelId = item.getChannelId();
+
+        addCommonProps(video);
+
+        return video;
+    }
+
+    public static YouTubeMediaItem from(RadioItem item) {
+        YouTubeMediaItem video = new YouTubeMediaItem();
+
+        video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
+        video.mTitle = item.getTitle();
+        video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getVideoCountText());
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = highResThumbnailUrl;
+        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mPlaylistId = item.getPlaylistId();
 
         addCommonProps(video);
 

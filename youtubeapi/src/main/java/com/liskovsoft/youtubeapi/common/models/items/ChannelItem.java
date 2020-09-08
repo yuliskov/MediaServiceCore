@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
+// root element: pivotChannelRenderer
 public class ChannelItem {
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> thumbnails;

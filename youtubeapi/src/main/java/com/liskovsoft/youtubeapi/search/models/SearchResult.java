@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.search.models;
 
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
-import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
+import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
@@ -19,7 +19,7 @@ public class SearchResult {
     private List<ChannelItem> mChannelItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactRadioRenderer")
-    private List<PlaylistItem> mPlaylistItems;
+    private List<RadioItem> mPlaylistItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -39,7 +39,7 @@ public class SearchResult {
         return mChannelItems;
     }
 
-    public List<PlaylistItem> getPlaylistItems() {
+    public List<RadioItem> getPlaylistItems() {
         return mPlaylistItems;
     }
 

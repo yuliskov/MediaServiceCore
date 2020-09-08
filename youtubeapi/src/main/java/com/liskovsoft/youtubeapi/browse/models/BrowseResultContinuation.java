@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.models;
 
-import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
+import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
@@ -13,7 +13,7 @@ public class BrowseResultContinuation {
 
     @JsonPath({"$.continuationContents.horizontalListContinuation.items[*].gridRadioRenderer",
                "$.continuationContents.gridContinuation.items[*].gridRadioRenderer"})
-    private List<PlaylistItem> mPlaylistItems;
+    private List<RadioItem> mPlaylistItems;
 
     @JsonPath({"$.continuationContents.gridContinuation.continuations[0].nextContinuationData.continuation",
                "$.continuationContents.horizontalListContinuation.continuations[0].nextContinuationData.continuation"})
@@ -27,7 +27,7 @@ public class BrowseResultContinuation {
         return mNextPageKey;
     }
 
-    public List<PlaylistItem> getPlaylistItems() {
+    public List<RadioItem> getPlaylistItems() {
         return mPlaylistItems;
     }
 }

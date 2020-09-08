@@ -205,7 +205,11 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     @Override
     public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
         return Observable.create(emitter -> {
-            emitter.onNext(continueGroup(mediaGroup));
+            MediaGroup result = continueGroup(mediaGroup);
+
+            if (result != null) {
+                emitter.onNext(result);
+            }
 
             emitter.onComplete();
         });

@@ -45,27 +45,6 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public MediaGroup getRecommended() {
-        List<MediaGroup> tabs = getFirstHomeGroups();
-
-        return tabs.get(0); // first one is Recommended tab
-    }
-
-    @Override
-    public List<MediaGroup> getFirstHomeGroups() {
-        Log.d(TAG, "Emitting first home groups...");
-        List<BrowseSection> browseTabs = mBrowseServiceUnsigned.getHomeSections();
-        return YouTubeMediaGroup.from(browseTabs);
-    }
-
-    @Override
-    public List<MediaGroup> getNextHomeGroups() {
-        Log.d(TAG, "Emitting next home groups...");
-        List<BrowseSection> browseTabs = mBrowseServiceUnsigned.getNextHomeSections();
-        return YouTubeMediaGroup.from(browseTabs);
-    }
-
-    @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
@@ -81,15 +60,21 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
         );
     }
 
-    // SHOULD BE EMPTY FOR UNSIGNED
+    @Override
+    public BrowseTab getHomeTab() {
+        Log.d(TAG, "Emitting home group...");
+        return mBrowseServiceUnsigned.getHome();
+    }
 
     @Override
     public MediaGroup getSubscriptions() {
+        // SHOULD BE EMPTY FOR UNSIGNED
         return YouTubeMediaGroup.EMPTY_GROUP;
     }
 
     @Override
     public MediaGroup getHistory() {
+        // SHOULD BE EMPTY FOR UNSIGNED
         return YouTubeMediaGroup.EMPTY_GROUP;
     }
 

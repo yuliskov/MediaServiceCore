@@ -2,22 +2,17 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BrowseServiceUnsigned {
     private static final String TAG = BrowseServiceUnsigned.class.getSimpleName();
     private static BrowseServiceUnsigned sInstance;
     private final BrowseManagerUnsigned mBrowseManagerUnsigned;
     private String mVisitorData;
-    private String mNextHomeTabsKey;
 
     private BrowseServiceUnsigned() {
         mBrowseManagerUnsigned = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
@@ -51,41 +46,6 @@ public class BrowseServiceUnsigned {
         return getTab(BrowseManagerParams.getMusicQuery());
     }
 
-    public List<BrowseSection> getHomeSections() {
-        TabbedBrowseResult homeTabs = getTabbedResult(BrowseManagerParams.getHomeQuery());
-
-        if (homeTabs == null) {
-            Log.e(TAG, "Home tabs are empty");
-            return new ArrayList<>();
-        }
-
-        mVisitorData = homeTabs.getVisitorData();
-        mNextHomeTabsKey = findHomeTab(homeTabs).getNextPageKey();
-
-        return findHomeTab(homeTabs).getSections();
-    }
-
-    public List<BrowseSection> getNextHomeSections() {
-        TabbedBrowseResultContinuation nextHomeTabs = null;
-
-        if (mNextHomeTabsKey != null) {
-            nextHomeTabs = getNextTabbedResult(mNextHomeTabsKey, mVisitorData);
-
-            if (nextHomeTabs != null) {
-                mNextHomeTabsKey = nextHomeTabs.getNextPageKey();
-            } else {
-                mNextHomeTabsKey = null;
-            }
-        }
-
-        if (nextHomeTabs == null) {
-            Log.e(TAG, "NextHomeTabs are empty");
-            return new ArrayList<>();
-        }
-
-        return nextHomeTabs.getSections();
-    }
-
     public BrowseResultContinuation continueSection(String nextPageKey) {
         return getNextResult(nextPageKey, mVisitorData);
     }
@@ -93,9 +53,7 @@ public class BrowseServiceUnsigned {
     private TabbedBrowseResult getTabbedResult(String query) {
         Call<TabbedBrowseResult> wrapper = mBrowseManagerUnsigned.getTabbedBrowseResult(query);
 
-        TabbedBrowseResult browseResult = RetrofitHelper.get(wrapper);
-
-        return browseResult;
+        return RetrofitHelper.get(wrapper);
     }
 
     private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String visitorData) {
@@ -103,9 +61,7 @@ public class BrowseServiceUnsigned {
 
         Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerUnsigned.getContinueTabbedBrowseResult(query, visitorData);
 
-        TabbedBrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
-
-        return browseResult;
+        return RetrofitHelper.get(wrapper);
     }
 
     private BrowseResultContinuation getNextResult(String nextKey, String visitorData) {
@@ -114,21 +70,7 @@ public class BrowseServiceUnsigned {
         Call<BrowseResultContinuation> wrapper =
                 mBrowseManagerUnsigned.getContinueBrowseResult(query, visitorData);
 
-        BrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
-
-        return browseResult;
-    }
-
-    private BrowseTab findHomeTab(TabbedBrowseResult homeTabs) {
-        BrowseTab result = null;
-
-        if (homeTabs != null) {
-            result = homeTabs.getBrowseTabs().get(0);
-        } else {
-            Log.e(TAG, "findRootTab: tabs are empty");
-        }
-
-        return result;
+        return RetrofitHelper.get(wrapper);
     }
 
     private BrowseTab getTab(String query) {

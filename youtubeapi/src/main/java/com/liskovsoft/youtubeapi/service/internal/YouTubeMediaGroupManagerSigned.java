@@ -54,27 +54,8 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public MediaGroup getRecommended() {
-        return YouTubeMediaGroup.from(mBrowseServiceSigned.getRecommended(mSignInManager.getAuthorizationHeader()));
-    }
-
-    @Override
     public MediaGroup getHistory() {
         return YouTubeMediaGroup.from(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorizationHeader()), MediaGroup.TYPE_HISTORY);
-    }
-
-    @Override
-    public List<MediaGroup> getFirstHomeGroups() {
-        Log.d(TAG, "Emitting first home groups...");
-        List<BrowseSection> browseTabs = mBrowseServiceSigned.getHomeSections(mSignInManager.getAuthorizationHeader());
-        return YouTubeMediaGroup.from(browseTabs);
-    }
-
-    @Override
-    public List<MediaGroup> getNextHomeGroups() {
-        Log.d(TAG, "Emitting next home groups...");
-        List<BrowseSection> browseTabs = mBrowseServiceSigned.getNextHomeSections(mSignInManager.getAuthorizationHeader());
-        return YouTubeMediaGroup.from(browseTabs);
     }
 
     @Override
@@ -91,6 +72,12 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
                 mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup), mSignInManager.getAuthorizationHeader()),
                 mediaGroup
         );
+    }
+
+    @Override
+    public BrowseTab getHomeTab() {
+        Log.d(TAG, "Emitting home group...");
+        return mBrowseServiceSigned.getHome(mSignInManager.getAuthorizationHeader());
     }
 
     @Override

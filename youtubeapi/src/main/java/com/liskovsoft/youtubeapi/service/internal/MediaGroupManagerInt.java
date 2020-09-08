@@ -9,13 +9,11 @@ import java.util.List;
 public interface MediaGroupManagerInt {
     MediaGroup getSearch(String searchText);
     MediaGroup getSubscriptions();
-    MediaGroup getRecommended();
     MediaGroup getHistory();
-    List<MediaGroup> getFirstHomeGroups();
-    List<MediaGroup> getNextHomeGroups();
-    MediaGroup continueGroup(MediaGroup mediaGroup);
+    BrowseTab getHomeTab();
     BrowseTab getMusicTab();
     BrowseTab getNewsTab();
     BrowseTab getGamingTab();
+    MediaGroup continueGroup(MediaGroup mediaGroup);
     TabbedBrowseResultContinuation continueTab(String nextPageKey);
 }

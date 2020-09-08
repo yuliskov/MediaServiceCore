@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
@@ -67,7 +68,15 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         checkSigned();
 
-        return mMediaGroupManagerReal.getRecommended();
+        BrowseTab homeTab = mMediaGroupManagerReal.getHomeTab();
+
+        BrowseSection recommended = null;
+
+        if (homeTab.getSections() != null) {
+            recommended = homeTab.getSections().get(0); // first one is recommended
+        }
+
+        return YouTubeMediaGroup.from(recommended);
     }
 
     @Override
@@ -93,13 +102,27 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     public List<MediaGroup> getHome() {
         checkSigned();
 
+        BrowseTab tab = mMediaGroupManagerReal.getHomeTab();
+
         List<MediaGroup> result = new ArrayList<>();
 
-        List<MediaGroup> groups = mMediaGroupManagerReal.getFirstHomeGroups();
+        String nextPageKey = tab.getNextPageKey();
+        List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections());
+
+        if (groups.isEmpty()) {
+            Log.e(TAG, "Home group is empty");
+        }
 
         while (!groups.isEmpty()) {
             result.addAll(groups);
-            groups = mMediaGroupManagerReal.getNextHomeGroups();
+            TabbedBrowseResultContinuation continuation = mMediaGroupManagerReal.continueTab(nextPageKey);
+
+            if (continuation == null) {
+                break;
+            }
+
+            nextPageKey = continuation.getNextPageKey();
+            groups = YouTubeMediaGroup.from(continuation.getSections());
         }
 
         return result;
@@ -110,14 +133,9 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         return Observable.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> groups = mMediaGroupManagerReal.getFirstHomeGroups();
+            BrowseTab tab = mMediaGroupManagerReal.getHomeTab();
 
-            while (!groups.isEmpty()) {
-                emitter.onNext(groups);
-                groups = mMediaGroupManagerReal.getNextHomeGroups();
-            }
-
-            emitter.onComplete();
+            emitGroups(emitter, tab);
         });
     }
 
@@ -165,6 +183,11 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         while (!groups.isEmpty()) {
             emitter.onNext(groups);
             TabbedBrowseResultContinuation continuation = mMediaGroupManagerReal.continueTab(nextPageKey);
+
+            if (continuation == null) {
+                break;
+            }
+
             nextPageKey = continuation.getNextPageKey();
             groups = YouTubeMediaGroup.from(continuation.getSections());
         }

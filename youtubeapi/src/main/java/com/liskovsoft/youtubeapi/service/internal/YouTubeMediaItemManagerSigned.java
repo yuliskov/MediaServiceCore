@@ -1,13 +1,9 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
@@ -41,97 +37,50 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         WatchNextServiceSigned.unhold();
     }
 
-    //@Override
-    //public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
-    //    YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-    //
-    //    YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
-    //
-    //    if (metadata == null) {
-    //        metadata = getMetadata(item.getMediaId());
-    //
-    //        ytMediaItem.setMetadata(metadata);
-    //    }
-    //
-    //    return metadata;
-    //}
-
     @Override
-    public YouTubeMediaItemMetadata getMetadata(String videoId) {
-        WatchNextResult watchNextResult = mWatchNextServiceSigned.getWatchNextResult(videoId, mSignInManager.getAuthorizationHeader());
-
-        return YouTubeMediaItemMetadata.from(watchNextResult);
+    public WatchNextResult getWatchNextResult(String videoId) {
+        return mWatchNextServiceSigned.getWatchNextResult(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
-        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-
-        YouTubeMediaItemFormatInfo formatInfo = ytMediaItem.getFormatInfo();
-
-        if (formatInfo == null) {
-            VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(item.getMediaId(), mSignInManager.getAuthorizationHeader());
-
-            formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
-
-            ytMediaItem.setFormatInfo(formatInfo);
-        }
-
-        return formatInfo;
+    public VideoInfoResult getVideoInfo(String videoId) {
+        return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
-        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
-
-        return YouTubeMediaItemFormatInfo.from(videoInfo);
-    }
-
-    @Override
-    public void updateHistoryPosition(MediaItem item, float positionSec) {
-        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(item);
-
+    public void updateHistoryPosition(String videoId, String lengthSec, String eventId, String vmData, float positionSec) {
         mTrackingService.updateWatchTime(
-                formatInfo.getVideoId(), positionSec, Float.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
-                formatInfo.getVisitorMonitoringData(), mSignInManager.getAuthorizationHeader());
+                videoId, positionSec, Float.parseFloat(lengthSec), eventId,
+                vmData, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public void updateHistoryPosition(String videoId, float positionSec) {
-        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
-
-        mTrackingService.updateWatchTime(
-                formatInfo.getVideoId(), positionSec, Float.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
-                formatInfo.getVisitorMonitoringData(), mSignInManager.getAuthorizationHeader());
+    public void setLike(String videoId) {
+        mActionsService.setLike(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public void setLike(MediaItem item) {
-        mActionsService.setLike(item.getMediaId(), mSignInManager.getAuthorizationHeader());
+    public void removeLike(String videoId) {
+        mActionsService.removeLike(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public void removeLike(MediaItem item) {
-        mActionsService.removeLike(item.getMediaId(), mSignInManager.getAuthorizationHeader());
+    public void setDislike(String videoId) {
+        mActionsService.setDislike(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public void setDislike(MediaItem item) {
-        mActionsService.setDislike(item.getMediaId(), mSignInManager.getAuthorizationHeader());
+    public void removeDislike(String videoId) {
+        mActionsService.removeDislike(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public void removeDislike(MediaItem item) {
-        mActionsService.removeDislike(item.getMediaId(), mSignInManager.getAuthorizationHeader());
+    public void subscribe(String channelId) {
+        mActionsService.subscribe(channelId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public void subscribe(MediaItem item) {
-        mActionsService.subscribe(item.getChannelId(), mSignInManager.getAuthorizationHeader());
-    }
-
-    @Override
-    public void unsubscribe(MediaItem item) {
-        mActionsService.unsubscribe(item.getChannelId(), mSignInManager.getAuthorizationHeader());
+    public void unsubscribe(String channelId) {
+        mActionsService.unsubscribe(channelId, mSignInManager.getAuthorizationHeader());
     }
 }

@@ -1,11 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceUnsigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 
@@ -32,89 +28,49 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
         WatchNextServiceUnsigned.unhold();
     }
 
-    //@Override
-    //public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
-    //    YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-    //
-    //    YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
-    //
-    //    if (metadata == null) {
-    //        metadata = getMetadata(item.getMediaId());
-    //
-    //        ytMediaItem.setMetadata(metadata);
-    //    }
-    //
-    //    return metadata;
-    //}
-
     @Override
-    public YouTubeMediaItemMetadata getMetadata(String videoId) {
-        WatchNextResult watchNextResult = mWatchNextServiceUnsigned.getWatchNextResult(videoId);
-
-        return YouTubeMediaItemMetadata.from(watchNextResult);
+    public WatchNextResult getWatchNextResult(String videoId) {
+        return mWatchNextServiceUnsigned.getWatchNextResult(videoId);
     }
 
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
-        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-
-        YouTubeMediaItemFormatInfo formatInfo = ytMediaItem.getFormatInfo();
-
-        if (formatInfo == null) {
-            VideoInfoResult videoInfo = mVideoInfoServiceUnsigned.getVideoInfo(item.getMediaId());
-
-            formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
-
-            ytMediaItem.setFormatInfo(formatInfo);
-        }
-
-        return formatInfo;
+    public VideoInfoResult getVideoInfo(String videoId) {
+        return mVideoInfoServiceUnsigned.getVideoInfo(videoId);
     }
 
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
-        VideoInfoResult videoInfo = mVideoInfoServiceUnsigned.getVideoInfo(videoId);
-
-        return YouTubeMediaItemFormatInfo.from(videoInfo);
-    }
-
-    @Override
-    public void updateHistoryPosition(MediaItem item, float positionSec) {
+    public void updateHistoryPosition(String videoId, String lengthSec,
+                                      String eventId, String vmData, float positionSec) {
         // Do nothing, user is unsigned
     }
 
     @Override
-    public void updateHistoryPosition(String videoId, float positionSec) {
+    public void setLike(String videoId) {
         // Do nothing, user is unsigned
     }
 
     @Override
-    public void setLike(MediaItem item) {
+    public void removeLike(String videoId) {
         // Do nothing, user is unsigned
     }
 
     @Override
-    public void removeLike(MediaItem item) {
+    public void setDislike(String videoId) {
         // Do nothing, user is unsigned
     }
 
     @Override
-    public void setDislike(MediaItem item) {
+    public void removeDislike(String videoId) {
         // Do nothing, user is unsigned
     }
 
     @Override
-    public void removeDislike(MediaItem item) {
+    public void subscribe(String channelId) {
         // Do nothing, user is unsigned
     }
 
     @Override
-    public void subscribe(MediaItem item) {
-        // Do nothing, user is unsigned
-    }
-
-    @Override
-    public void unsubscribe(MediaItem item) {
+    public void unsubscribe(String channelId) {
         // Do nothing, user is unsigned
     }
 }

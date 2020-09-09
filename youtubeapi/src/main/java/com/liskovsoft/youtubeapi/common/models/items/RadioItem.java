@@ -8,12 +8,10 @@ import java.util.List;
 public class RadioItem {
     @JsonPath({"$.playlistId", "$.navigationEndpoint.watchEndpoint.playlistId"})
     private String mPlaylistId;
-    @JsonPath({"$.thumbnailRenderer.playlistVideoThumbnailRenderer.thumbnail.thumbnails[*]", "$.thumbnail.thumbnails[*]"})
-    private List<Thumbnail> mThumbnails;
-    @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
-    private String mTitle;
     @JsonPath("$.navigationEndpoint.watchEndpoint.videoId")
     private String mVideoId;
+    @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
+    private String mTitle;
     @JsonPath("$.secondaryNavigationEndpoint.watchEndpoint.videoId")
     private String mSecondVideoId;
     @JsonPath("$.videoCountText.runs[0].text")
@@ -26,6 +24,10 @@ public class RadioItem {
     private String mThumbnailText1;
     @JsonPath("$.thumbnailText.runs[1].text")
     private String mThumbnailText2;
+    @JsonPath({"$.thumbnailRenderer.playlistVideoThumbnailRenderer.thumbnail.thumbnails[*]", "$.thumbnail.thumbnails[*]"})
+    private List<Thumbnail> mThumbnails;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.params")
+    private String mParams;
 
     public String getPlaylistId() {
         return mPlaylistId;
@@ -61,5 +63,9 @@ public class RadioItem {
 
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
+    }
+
+    public String getParams() {
+        return mParams;
     }
 }

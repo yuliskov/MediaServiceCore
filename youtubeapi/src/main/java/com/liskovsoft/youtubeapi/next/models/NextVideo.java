@@ -6,14 +6,20 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import java.util.List;
 
 public class NextVideo {
-    @JsonPath("$.maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId")
+    @JsonPath("$.endpoint.watchEndpoint.videoId")
     private String mVideoId;
-    @JsonPath("$.maybeHistoryEndpointRenderer.item.previewButtonRenderer.title.runs[0].text")
+    @JsonPath("$.endpoint.watchEndpoint.playlistId")
+    private String mPlaylistId; // present only on playlists
+    @JsonPath("$.endpoint.watchEndpoint.index")
+    private String mPlaylistItemIndex; // index inside a playlist (present only on playlists)
+    @JsonPath("$.item.previewButtonRenderer.title.runs[0].text")
     private String mTitle;
-    @JsonPath("$.maybeHistoryEndpointRenderer.item.previewButtonRenderer.byline.runs[0].text")
+    @JsonPath("$.item.previewButtonRenderer.byline.runs[0].text")
     private String mAuthor;
-    @JsonPath("$.maybeHistoryEndpointRenderer.item.previewButtonRenderer.thumbnail.thumbnails[*]")
+    @JsonPath("$.item.previewButtonRenderer.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
+    @JsonPath("$.endpoint.watchEndpoint.params")
+    private String mParams;
 
     public String getVideoId() {
         return mVideoId;

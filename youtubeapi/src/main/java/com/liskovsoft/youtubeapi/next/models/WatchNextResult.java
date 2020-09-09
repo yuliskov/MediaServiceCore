@@ -14,7 +14,8 @@ public class WatchNextResult {
     private CurrentVideo mVideoMetadata;
     @JsonPath("$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0].videoOwnerRenderer")
     private VideoOwner mVideoOwner;
-    @JsonPath("$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer")
+    @JsonPath({"$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.maybeHistoryEndpointRenderer",
+               "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.autoplayEndpointRenderer"}) // present only on playlist
     private NextVideo mNextVideo;
 
     public List<SuggestedSection> getSuggestedSections() {

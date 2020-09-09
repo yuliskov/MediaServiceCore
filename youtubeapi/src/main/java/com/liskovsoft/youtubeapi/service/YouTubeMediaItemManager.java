@@ -5,11 +5,14 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.service.internal.MediaItemManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerUnsigned;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import io.reactivex.Observable;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
@@ -31,17 +34,31 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public MediaItemFormatInfo getFormatInfo(MediaItem item) {
+    public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
         checkSigned();
 
-        return mMediaItemManagerReal.getFormatInfo(item);
+        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
+
+        YouTubeMediaItemFormatInfo formatInfo = ytMediaItem.getFormatInfo();
+
+        if (formatInfo == null) {
+            VideoInfoResult videoInfo = mMediaItemManagerReal.getVideoInfo(item.getMediaId());
+
+            formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
+
+            ytMediaItem.setFormatInfo(formatInfo);
+        }
+
+        return formatInfo;
     }
 
     @Override
-    public MediaItemFormatInfo getFormatInfo(String videoId) {
+    public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
         checkSigned();
 
-        return mMediaItemManagerReal.getFormatInfo(videoId);
+        VideoInfoResult videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
+
+        return YouTubeMediaItemFormatInfo.from(videoInfo);
     }
 
     @Override
@@ -73,7 +90,9 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public YouTubeMediaItemMetadata getMetadata(String videoId) {
         checkSigned();
 
-        return mMediaItemManagerReal.getMetadata(videoId);
+        WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId);
+
+        return YouTubeMediaItemMetadata.from(watchNextResult);
     }
 
     @Override
@@ -90,14 +109,17 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public void updateHistoryPosition(MediaItem item, float positionSec) {
         checkSigned();
 
-        mMediaItemManagerReal.updateHistoryPosition(item, positionSec);
+        updateHistoryPosition(item.getMediaId(), positionSec);
     }
 
     @Override
     public void updateHistoryPosition(String videoId, float positionSec) {
         checkSigned();
 
-        mMediaItemManagerReal.updateHistoryPosition(videoId, positionSec);
+        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
+
+        mMediaItemManagerReal.updateHistoryPosition(formatInfo.getVideoId(), formatInfo.getLengthSeconds(),
+                formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), positionSec);
     }
 
     @Override
@@ -120,42 +142,42 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public void setLike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.setLike(item);
+        mMediaItemManagerReal.setLike(item.getMediaId());
     }
 
     @Override
     public void removeLike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.removeLike(item);
+        mMediaItemManagerReal.removeLike(item.getMediaId());
     }
 
     @Override
     public void setDislike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.setDislike(item);
+        mMediaItemManagerReal.setDislike(item.getMediaId());
     }
 
     @Override
     public void removeDislike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.removeDislike(item);
+        mMediaItemManagerReal.removeDislike(item.getMediaId());
     }
 
     @Override
     public void subscribe(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.subscribe(item);
+        mMediaItemManagerReal.subscribe(item.getChannelId());
     }
 
     @Override
     public void unsubscribe(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.unsubscribe(item);
+        mMediaItemManagerReal.unsubscribe(item.getChannelId());
     }
 
     private void checkSigned() {

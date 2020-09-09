@@ -24,7 +24,7 @@ public class WatchNextManagerParams {
     }
 
     /**
-     * Video query from playlist example: "params":"OAI%3D","playlistId":"RDx7g_SWE90O8","videoId":"x7g_SWE90O8"<br/>
+     * Video query from playlist example: "params":"OAI%3D","playlistId":"RDx7g_SWE90O8","playlistIndex": 2,"videoId":"x7g_SWE90O8"<br/>
      * Video query example: "videoId":"x7g_SWE90O8"
      */
     public static String getWatchNextQuery(String videoId, String playlistId, String lang) {

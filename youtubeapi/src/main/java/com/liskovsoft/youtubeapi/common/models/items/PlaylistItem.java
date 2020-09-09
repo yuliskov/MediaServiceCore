@@ -20,6 +20,8 @@ public class PlaylistItem {
     private String mVideoCountText;
     @JsonPath("$.shortBylineText.runs[0].text")
     private String mDescription;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.params")
+    private String mParams;
 
     public String getPlaylistId() {
         return mPlaylistId;
@@ -47,5 +49,9 @@ public class PlaylistItem {
 
     public String getChannelId() {
         return mChannelId;
+    }
+
+    public String getParams() {
+        return mParams;
     }
 }

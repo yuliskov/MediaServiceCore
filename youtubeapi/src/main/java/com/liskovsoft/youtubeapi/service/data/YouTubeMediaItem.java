@@ -128,6 +128,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mPlaylistId = item.getPlaylistId();
+        video.mMediaId = item.getVideoId();
 
         addCommonProps(video);
 
@@ -144,6 +145,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mPlaylistId = item.getPlaylistId();
+        video.mMediaId = item.getVideoId();
 
         addCommonProps(video);
 

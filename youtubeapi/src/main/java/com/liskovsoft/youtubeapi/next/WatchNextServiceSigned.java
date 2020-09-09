@@ -25,7 +25,15 @@ public class WatchNextServiceSigned {
     }
 
     public WatchNextResult getWatchNextResult(String videoId, String authorization) {
-        Call<WatchNextResult> wrapper = mWatchNextManagerSigned.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(videoId), authorization);
+        return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId), authorization);
+    }
+
+    public WatchNextResult getWatchNextResult(String videoId, String playlistId, String authorization) {
+        return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId, playlistId), authorization);
+    }
+
+    private WatchNextResult getWatchNext(String query, String authorization) {
+        Call<WatchNextResult> wrapper = mWatchNextManagerSigned.getWatchNextResult(query, authorization);
         return RetrofitHelper.get(wrapper);
     }
 }

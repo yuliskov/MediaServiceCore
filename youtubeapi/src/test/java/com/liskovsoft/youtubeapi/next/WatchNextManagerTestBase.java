@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.next;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
+import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 
@@ -47,7 +47,7 @@ public class WatchNextManagerTestBase {
         assertTrue("Watch next item thumbnails not empty: " + videoId, watchNextItem.getThumbnails().size() > 0);
     }
 
-    private void checkFields(VideoMetadata videoMetadata) {
+    private void checkFields(CurrentVideo videoMetadata) {
         assertNotNull("Video metadata not empty", videoMetadata);
         assertNotNull("Video metadata has video id", videoMetadata.getVideoId());
         assertNotNull("Video metadata has title", videoMetadata.getTitle());

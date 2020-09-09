@@ -23,17 +23,22 @@ public class WatchNextManagerParams {
         return getWatchNextQuery(videoId, playlistId, null);
     }
 
+    /**
+     * Video query from playlist example: "params":"OAI%3D","playlistId":"RDx7g_SWE90O8","videoId":"x7g_SWE90O8"<br/>
+     * Video query example: "videoId":"x7g_SWE90O8"
+     */
     public static String getWatchNextQuery(String videoId, String playlistId, String lang) {
         // always presents
         String videoData = String.format("\"videoId\":\"%s\",", videoId);
 
         // present only on play lists
+        // sometimes "params" present too: "params":"OAI%3D"
         if (playlistId != null) {
             videoData += String.format("\"playlistId\":\"%s\",", playlistId);
         }
 
         if (lang == null) {
-            lang = "en";
+            lang = "en"; // TODO: hardcoded language
         }
 
         return String.format(JSON_DATA_TEMPLATE, lang, videoData);

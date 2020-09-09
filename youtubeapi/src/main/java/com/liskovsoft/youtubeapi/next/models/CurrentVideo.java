@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
-public class VideoMetadata {
+public class CurrentVideo {
     private static final String BADGE_LIVE = "LIVE";
     public static final String LIKE_STATUS_LIKE = "LIKE";
     public static final String LIKE_STATUS_DISLIKE = "DISLIKE";

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LeanbackAssistant</string>
+
+    <string name="search_hint">Search for Videos</string>
+    <string name="search_label">Smart Tube TV BETA</string>
+    <string name="settings_description">Smart Tube TV BETA Videos</string>
+    <string translatable="false" name="search_authority">com.liskovsoft.leanbackassistant.vbeta</string>
+</resources>

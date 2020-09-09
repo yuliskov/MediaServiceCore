@@ -59,7 +59,15 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
-        return Observable.fromCallable(this::getSubscriptions);
+        return Observable.create(emitter -> {
+            MediaGroup subscriptions = getSubscriptions();
+
+            if (subscriptions != null) {
+                emitter.onNext(subscriptions);
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override
@@ -81,7 +89,15 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getRecommendedObserve() {
-        return Observable.fromCallable(this::getRecommended);
+        return Observable.create(emitter -> {
+            MediaGroup recommended = getRecommended();
+
+            if (recommended != null) {
+                emitter.onNext(recommended);
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override
@@ -95,7 +111,15 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
-        return Observable.fromCallable(this::getHistory);
+        return Observable.create(emitter -> {
+            MediaGroup history = getHistory();
+
+            if (history != null) {
+                emitter.onNext(history);
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override
@@ -173,6 +197,12 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, BrowseTab tab) {
+        if (tab == null) {
+            Log.e(TAG, "BrowseTab is null");
+            emitter.onComplete();
+            return;
+        }
+
         String nextPageKey = tab.getNextPageKey();
         List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections());
 

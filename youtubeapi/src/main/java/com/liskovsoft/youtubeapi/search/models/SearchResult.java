@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.search.models;
 
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
@@ -19,7 +20,10 @@ public class SearchResult {
     private List<ChannelItem> mChannelItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactRadioRenderer")
-    private List<RadioItem> mPlaylistItems;
+    private List<RadioItem> mRadioItems;
+
+    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactPlaylistRenderer")
+    private List<PlaylistItem> mPlaylistItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -39,8 +43,8 @@ public class SearchResult {
         return mChannelItems;
     }
 
-    public List<RadioItem> getPlaylistItems() {
-        return mPlaylistItems;
+    public List<RadioItem> getRadioItems() {
+        return mRadioItems;
     }
 
     public String getNextPageKey() {
@@ -49,5 +53,9 @@ public class SearchResult {
 
     public String getReloadPageKey() {
         return mReloadPageKey;
+    }
+
+    public List<PlaylistItem> getPlaylistItems() {
+        return mPlaylistItems;
     }
 }

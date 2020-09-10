@@ -19,7 +19,7 @@ public class GridTab {
     private String mParams;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].gridVideoRenderer")
-    private List<VideoItem> mItems;
+    private List<VideoItem> mVideoItems;
 
     /**
      * Used in continue Tabs
@@ -43,8 +43,8 @@ public class GridTab {
         return mTitle;
     }
 
-    public List<VideoItem> getItems() {
-        return mItems;
+    public List<VideoItem> getVideoItems() {
+        return mVideoItems;
     }
 
     public String getBrowseId() {

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.browse.ver2.models.rows;
+package com.liskovsoft.youtubeapi.browse.ver1.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
@@ -9,13 +9,13 @@ public class RowsTabContinuation {
      * Sections == Rows in web app version
      */
     @JsonPath("$.continuationContents.sectionListContinuation.contents[*].shelfRenderer")
-    private List<Row> mRows;
+    private List<BrowseSection> sections;
 
     @JsonPath("$.continuationContents.sectionListContinuation.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
-    public List<Row> getRows() {
-        return mRows;
+    public List<BrowseSection> getSections() {
+        return sections;
     }
 
     public String getNextPageKey() {

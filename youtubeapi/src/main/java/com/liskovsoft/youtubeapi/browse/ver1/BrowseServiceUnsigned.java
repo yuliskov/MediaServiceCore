@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -56,10 +56,10 @@ public class BrowseServiceUnsigned {
         return RetrofitHelper.get(wrapper);
     }
 
-    private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String visitorData) {
+    private RowsTabContinuation getNextTabbedResult(String nextKey, String visitorData) {
         String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
-        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerUnsigned.getContinueTabbedBrowseResult(query, visitorData);
+        Call<RowsTabContinuation> wrapper = mBrowseManagerUnsigned.getContinueTabbedBrowseResult(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }
@@ -104,8 +104,8 @@ public class BrowseServiceUnsigned {
         return result;
     }
 
-    public TabbedBrowseResultContinuation continueTab(String nextPageKey) {
-        TabbedBrowseResultContinuation nextHomeTabs = null;
+    public RowsTabContinuation continueTab(String nextPageKey) {
+        RowsTabContinuation nextHomeTabs = null;
 
         if (mVisitorData == null) {
             Log.e(TAG, "continueTab: visitor data is null");

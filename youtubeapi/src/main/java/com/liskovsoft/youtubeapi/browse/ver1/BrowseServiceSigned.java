@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -112,7 +112,7 @@ public class BrowseServiceSigned {
         return RetrofitHelper.get(wrapper);
     }
 
-    private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String authorization) {
+    private RowsTabContinuation getNextTabbedResult(String nextKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getNextTabbedResult: authorization is null.");
             return null;
@@ -120,9 +120,9 @@ public class BrowseServiceSigned {
 
         String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
 
-        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerSigned.continueTabbedBrowseResult(query, authorization);
+        Call<RowsTabContinuation> wrapper = mBrowseManagerSigned.continueTabbedBrowseResult(query, authorization);
 
-        TabbedBrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
+        RowsTabContinuation browseResult = RetrofitHelper.get(wrapper);
 
         return browseResult;
     }
@@ -161,13 +161,13 @@ public class BrowseServiceSigned {
         return result;
     }
 
-    public TabbedBrowseResultContinuation continueTab(String nextKey, String authorization) {
+    public RowsTabContinuation continueTab(String nextKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getNextTab: authorization is null.");
             return null;
         }
 
-        TabbedBrowseResultContinuation nextHomeTabs = null;
+        RowsTabContinuation nextHomeTabs = null;
 
         if (nextKey != null) {
             nextHomeTabs = getNextTabbedResult(nextKey, authorization);

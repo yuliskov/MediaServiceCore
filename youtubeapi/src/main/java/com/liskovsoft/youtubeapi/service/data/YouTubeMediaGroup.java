@@ -5,6 +5,9 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.Section;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
@@ -69,41 +72,38 @@ public class YouTubeMediaGroup implements MediaGroup {
         }
 
         YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup();
-
-        ArrayList<MediaItem> mediaItems = new ArrayList<>();
-
-        if (section.getVideoItems() != null) {
-            for (com.liskovsoft.youtubeapi.common.models.items.VideoItem item : section.getVideoItems()) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (section.getMusicItems() != null) {
-            for (com.liskovsoft.youtubeapi.common.models.items.MusicItem item : section.getMusicItems()) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (section.getChannelItems() != null) {
-            for (com.liskovsoft.youtubeapi.common.models.items.ChannelItem item : section.getChannelItems()) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (section.getRadioItems() != null) {
-            for (RadioItem item : section.getRadioItems()) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
         youTubeMediaGroup.mTitle = section.getTitle();
-        youTubeMediaGroup.mMediaItems = mediaItems.isEmpty() ? null : mediaItems;
         youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
 
-        return youTubeMediaGroup;
+        return create(youTubeMediaGroup, section.getVideoItems(), section.getMusicItems(), section.getChannelItems(),
+                section.getRadioItems(), null, section.getNextPageKey());
+    }
+
+    public static MediaGroup from(Section section, int type) {
+        if (section == null) {
+            return null;
+        }
+
+        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
+        youTubeMediaGroup.mTitle = section.getTitle();
+        youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
+
+        return create(youTubeMediaGroup, section.getVideoItems(), section.getMusicItems(), section.getChannelItems(),
+                section.getRadioItems(), null, section.getNextPageKey());
     }
 
     public static MediaGroup from(BrowseResultContinuation nextBrowseResult, MediaGroup baseGroup) {
+        if (nextBrowseResult == null) {
+            return null;
+        }
+
+        List<VideoItem> videoItems = nextBrowseResult.getVideoItems();
+        String nextPageKey = nextBrowseResult.getNextPageKey();
+
+        return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
+    }
+
+    public static MediaGroup from(GridTabContinuation nextBrowseResult, MediaGroup baseGroup) {
         if (nextBrowseResult == null) {
             return null;
         }
@@ -126,6 +126,17 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     public static MediaGroup from(BrowseResult browseResult, int type) {
+        if (browseResult == null) {
+            return null;
+        }
+
+        List<VideoItem> videoItems = browseResult.getVideoItems();
+        String nextPageKey = browseResult.getNextPageKey();
+
+        return create(new YouTubeMediaGroup(type), videoItems, nextPageKey);
+    }
+
+    public static MediaGroup from(GridTab browseResult, int type) {
         if (browseResult == null) {
             return null;
         }
@@ -206,6 +217,18 @@ public class YouTubeMediaGroup implements MediaGroup {
         return result;
     }
 
+    public static List<MediaGroup> from(List<Section> sections, int type) {
+        List<MediaGroup> result = new ArrayList<>();
+
+        if (sections != null && sections.size() > 0) {
+            for (Section section : sections) {
+                result.add(YouTubeMediaGroup.from(section, type));
+            }
+        }
+
+        return result;
+    }
+
     @Override
     public List<MediaItem> getMediaItems() {
         return mMediaItems;
@@ -248,7 +271,6 @@ public class YouTubeMediaGroup implements MediaGroup {
             List<RadioItem> radioItems,
             List<PlaylistItem> playlistItems,
             String nextPageKey) {
-        YouTubeMediaGroup youTubeMediaGroup = baseGroup;
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
@@ -283,10 +305,11 @@ public class YouTubeMediaGroup implements MediaGroup {
         }
 
         if (!mediaItems.isEmpty()) {
-            youTubeMediaGroup.mMediaItems = mediaItems;
+            baseGroup.mMediaItems = mediaItems;
         }
-        youTubeMediaGroup.mNextPageKey = nextPageKey;
 
-        return youTubeMediaGroup;
+        baseGroup.mNextPageKey = nextPageKey;
+
+        return baseGroup;
     }
 }

@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.browse.ver2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -30,19 +30,19 @@ public class BrowseServiceUnsigned {
         sInstance = null;
     }
 
-    public RowsTab getHome() {
+    public SectionTab getHome() {
         return getRowsTab(BrowseManagerParams.getHomeQuery());
     }
 
-    public RowsTab getGaming() {
+    public SectionTab getGaming() {
         return getRowsTab(BrowseManagerParams.getGamingQuery());
     }
 
-    public RowsTab getNews() {
+    public SectionTab getNews() {
         return getRowsTab(BrowseManagerParams.getNewsQuery());
     }
 
-    public RowsTab getMusic() {
+    public SectionTab getMusic() {
         return getRowsTab(BrowseManagerParams.getMusicQuery());
     }
 
@@ -50,8 +50,8 @@ public class BrowseServiceUnsigned {
         return continueGridTabResult(nextPageKey, mVisitorData);
     }
 
-    public RowsTabContinuation continueRowsTab(String nextPageKey) {
-        RowsTabContinuation nextHomeTabs = null;
+    public SectionTabContinuation continueRowsTab(String nextPageKey) {
+        SectionTabContinuation nextHomeTabs = null;
 
         if (mVisitorData == null) {
             Log.e(TAG, "continueTab: visitor data is null");
@@ -69,16 +69,16 @@ public class BrowseServiceUnsigned {
         return nextHomeTabs;
     }
 
-    private RowsTabResult getRowsTabResult(String query) {
-        Call<RowsTabResult> wrapper = mBrowseManagerUnsigned.getRowsTabResult(query);
+    private SectionTabResult getRowsTabResult(String query) {
+        Call<SectionTabResult> wrapper = mBrowseManagerUnsigned.getSectionTabResult(query);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private RowsTabContinuation continueRowsTabResult(String nextKey, String visitorData) {
+    private SectionTabContinuation continueRowsTabResult(String nextKey, String visitorData) {
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
-        Call<RowsTabContinuation> wrapper = mBrowseManagerUnsigned.continueRowsTab(query, visitorData);
+        Call<SectionTabContinuation> wrapper = mBrowseManagerUnsigned.continueSectionTab(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }
@@ -92,8 +92,8 @@ public class BrowseServiceUnsigned {
         return RetrofitHelper.get(wrapper);
     }
 
-    private RowsTab getRowsTab(String query) {
-        RowsTabResult tabs = getRowsTabResult(query);
+    private SectionTab getRowsTab(String query) {
+        SectionTabResult tabs = getRowsTabResult(query);
 
         if (tabs == null) {
             Log.e(TAG, "getTabs: tabs result is empty");
@@ -105,13 +105,13 @@ public class BrowseServiceUnsigned {
         return firstNotEmpty(tabs);
     }
 
-    private RowsTab firstNotEmpty(RowsTabResult tabs) {
-        RowsTab result = null;
+    private SectionTab firstNotEmpty(SectionTabResult tabs) {
+        SectionTab result = null;
 
         if (tabs.getTabs() != null) {
             // find first not empty tab
-            for (RowsTab browseTab : tabs.getTabs()) {
-                if (browseTab.getRows() != null) {
+            for (SectionTab browseTab : tabs.getTabs()) {
+                if (browseTab.getSections() != null) {
                     result = browseTab;
                     break;
                 }

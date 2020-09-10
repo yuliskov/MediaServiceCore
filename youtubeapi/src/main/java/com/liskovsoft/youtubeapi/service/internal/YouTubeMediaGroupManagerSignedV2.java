@@ -1,33 +1,35 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.ver1.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 
-public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
-    private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();
+import java.util.List;
+
+public class YouTubeMediaGroupManagerSignedV2 implements MediaGroupManagerIntV2 {
+    private static final String TAG = YouTubeMediaGroupManagerSignedV2.class.getSimpleName();
     private final SearchServiceSigned mSearchServiceSigned;
     private final BrowseServiceSigned mBrowseServiceSigned;
     private final YouTubeSignInManager mSignInManager;
-    private static YouTubeMediaGroupManagerSigned sInstance;
+    private static YouTubeMediaGroupManagerSignedV2 sInstance;
 
-    private YouTubeMediaGroupManagerSigned() {
+    private YouTubeMediaGroupManagerSignedV2() {
         mSearchServiceSigned = SearchServiceSigned.instance();
         mBrowseServiceSigned = BrowseServiceSigned.instance();
         mSignInManager = YouTubeSignInManager.instance();
     }
 
-    public static YouTubeMediaGroupManagerSigned instance() {
+    public static YouTubeMediaGroupManagerSignedV2 instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaGroupManagerSigned();
+            sInstance = new YouTubeMediaGroupManagerSignedV2();
         }
 
         return sInstance;
@@ -45,56 +47,63 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public BrowseResult getSubscriptions() {
+    public GridTab getSubscriptions() {
         return mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public BrowseResult getHistory() {
+    public GridTab getHistory() {
         return mBrowseServiceSigned.getHistory(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public SearchResultContinuation continueSearchGroup(String nextKey) {
+    public SearchResultContinuation continueSearch(String nextKey) {
         Log.d(TAG, "Continue search group...");
 
         return mSearchServiceSigned.continueSearch(nextKey, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public BrowseResultContinuation continueBrowseGroup(String nextKey) {
-        Log.d(TAG, "Continue browse group...");
-
-        return mBrowseServiceSigned.continueSection(nextKey, mSignInManager.getAuthorizationHeader());
-    }
-
-    @Override
-    public BrowseTab getHomeTab() {
+    public SectionTab getHomeTab() {
         Log.d(TAG, "Emitting home group...");
         return mBrowseServiceSigned.getHome(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public BrowseTab getMusicTab() {
+    public SectionTab getMusicTab() {
         Log.d(TAG, "Emitting music group...");
         return mBrowseServiceSigned.getMusic(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public BrowseTab getNewsTab() {
+    public SectionTab getNewsTab() {
         Log.d(TAG, "Emitting news group...");
         return mBrowseServiceSigned.getNews(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public BrowseTab getGamingTab() {
+    public SectionTab getGamingTab() {
         Log.d(TAG, "Emitting gaming group...");
         return mBrowseServiceSigned.getGaming(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public RowsTabContinuation continueTab(String nextPageKey) {
+    public List<GridTab> getPlaylists() {
+        Log.d(TAG, "Start loading playlists...");
+
+        return mBrowseServiceSigned.getPlaylists(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public GridTabContinuation continueGridTab(String nextKey) {
+        Log.d(TAG, "Continue browse group...");
+
+        return mBrowseServiceSigned.continueGridTab(nextKey, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public SectionTabContinuation continueSectionTab(String nextPageKey) {
         Log.d(TAG, "Continue tab...");
-        return mBrowseServiceSigned.continueTab(nextPageKey, mSignInManager.getAuthorizationHeader());
+        return mBrowseServiceSigned.continueSectionTab(nextPageKey, mSignInManager.getAuthorizationHeader());
     }
 }

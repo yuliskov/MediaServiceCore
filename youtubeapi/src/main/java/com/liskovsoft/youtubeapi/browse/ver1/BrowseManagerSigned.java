@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse.ver1;
 
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,5 +28,5 @@ public interface BrowseManagerSigned {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<TabbedBrowseResultContinuation> continueTabbedBrowseResult(@Body String browseQuery, @Header("Authorization") String auth);
+    Call<RowsTabContinuation> continueTabbedBrowseResult(@Body String browseQuery, @Header("Authorization") String auth);
 }

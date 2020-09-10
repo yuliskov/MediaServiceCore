@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class RowsTab {
+public class SectionTab {
     @JsonPath("$.title")
     private String title;
 
@@ -15,7 +15,7 @@ public class RowsTab {
      * Sections == Rows in web app version
      */
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[*].shelfRenderer")
-    private List<Row> mRows;
+    private List<Section> mSections;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -31,8 +31,8 @@ public class RowsTab {
         return browseId;
     }
 
-    public List<Row> getRows() {
-        return mRows;
+    public List<Section> getSections() {
+        return mSections;
     }
 
 

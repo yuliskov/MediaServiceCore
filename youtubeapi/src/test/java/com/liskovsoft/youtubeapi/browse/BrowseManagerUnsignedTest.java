@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerUnsigned;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
 import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
@@ -150,9 +150,9 @@ public class BrowseManagerUnsignedTest {
         nextSectionResultNotEmpty(browseResult2);
 
         String nextTabbedPageKey = browseResult1.getBrowseTabs().get(0).getNextPageKey();
-        Call<TabbedBrowseResultContinuation> nextTabbed = mService.getContinueTabbedBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
-        Response<TabbedBrowseResultContinuation> executeTabbed = nextTabbed.execute();
-        TabbedBrowseResultContinuation browseTabbedResult2 = executeTabbed.body();
+        Call<RowsTabContinuation> nextTabbed = mService.getContinueTabbedBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
+        Response<RowsTabContinuation> executeTabbed = nextTabbed.execute();
+        RowsTabContinuation browseTabbedResult2 = executeTabbed.body();
 
         nextTabbedResultNotEmpty(browseTabbedResult2);
     }
@@ -190,7 +190,7 @@ public class BrowseManagerUnsignedTest {
         assertTrue("Next section result: item list > 2", browseResult.getVideoItems().size() > 2 || browseResult.getPlaylistItems().size() > 2);
     }
 
-    private void nextTabbedResultNotEmpty(TabbedBrowseResultContinuation browseResult) {
+    private void nextTabbedResultNotEmpty(RowsTabContinuation browseResult) {
         assertNotNull("Tabbed result: not empty", browseResult);
         assertNotNull("Tabbed result: media item list not empty", browseResult.getSections());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());

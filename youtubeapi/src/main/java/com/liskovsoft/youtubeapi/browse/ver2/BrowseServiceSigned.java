@@ -5,9 +5,9 @@ import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabResult;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -71,19 +71,19 @@ public class BrowseServiceSigned {
         return result;
     }
 
-    public RowsTab getHome(String authorization) {
+    public SectionTab getHome(String authorization) {
         return getRowsTab(BrowseManagerParams.getHomeQuery(), authorization);
     }
 
-    public RowsTab getGaming(String authorization) {
+    public SectionTab getGaming(String authorization) {
         return getRowsTab(BrowseManagerParams.getGamingQuery(), authorization);
     }
 
-    public RowsTab getNews(String authorization) {
+    public SectionTab getNews(String authorization) {
         return getRowsTab(BrowseManagerParams.getNewsQuery(), authorization);
     }
 
-    public RowsTab getMusic(String authorization) {
+    public SectionTab getMusic(String authorization) {
         return getRowsTab(BrowseManagerParams.getMusicQuery(), authorization);
     }
 
@@ -121,66 +121,58 @@ public class BrowseServiceSigned {
     }
 
     public GridTabContinuation continueGridTab(String nextKey, String authorization) {
-        return continueGridTabResult(nextKey, authorization);
-    }
-
-    public RowsTabContinuation continueRowsTab(String nextKey, String authorization) {
-        return continueRowsTabResult(nextKey, authorization);
-    }
-
-    private GridTabContinuation continueGridTabResult(String nextPageKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "continueGridTabResult: authorization is null.");
             return null;
         }
 
-        if (nextPageKey == null) {
+        if (nextKey == null) {
             Log.e(TAG, "continueGridTabResult: next search key is null.");
             return null;
         }
 
-        String query = BrowseManagerParams.getContinuationQuery(nextPageKey);
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
         Call<GridTabContinuation> wrapper = mBrowseManagerSigned.continueGridTab(query, authorization);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private RowsTabContinuation continueRowsTabResult(String nextPageKey, String authorization) {
+    public SectionTabContinuation continueSectionTab(String nextKey, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "continueRowsTabResult: authorization is null.");
             return null;
         }
 
-        if (nextPageKey == null) {
+        if (nextKey == null) {
             Log.e(TAG, "continueGridTabResult: next search key is null.");
             return null;
         }
 
-        String query = BrowseManagerParams.getContinuationQuery(nextPageKey);
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
-        Call<RowsTabContinuation> wrapper = mBrowseManagerSigned.continueRowsTab(query, authorization);
+        Call<SectionTabContinuation> wrapper = mBrowseManagerSigned.continueSectionTab(query, authorization);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private RowsTabResult getRowsTabResult(String query, String authorization) {
+    private SectionTabResult getRowsTabResult(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getRowsTabResult: authorization is null.");
             return null;
         }
 
-        Call<RowsTabResult> wrapper = mBrowseManagerSigned.getRowsTabResult(query, authorization);
+        Call<SectionTabResult> wrapper = mBrowseManagerSigned.getSectionTabResult(query, authorization);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private RowsTab getRowsTab(String query, String authorization) {
+    private SectionTab getRowsTab(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getRowsTab: authorization is null. Query: " + query);
             return null;
         }
 
-        RowsTabResult tabs = getRowsTabResult(query, authorization);
+        SectionTabResult tabs = getRowsTabResult(query, authorization);
 
         if (tabs == null) {
             Log.e(TAG, "getRowsTab: tabs result is empty");
@@ -190,13 +182,13 @@ public class BrowseServiceSigned {
         return firstNotEmpty(tabs);
     }
 
-    private RowsTab firstNotEmpty(RowsTabResult tabs) {
-        RowsTab result = null;
+    private SectionTab firstNotEmpty(SectionTabResult tabs) {
+        SectionTab result = null;
 
         if (tabs.getTabs() != null) {
             // find first not empty tab
-            for (RowsTab tab : tabs.getTabs()) {
-                if (tab.getRows() != null) {
+            for (SectionTab tab : tabs.getTabs()) {
+                if (tab.getSections() != null) {
                     result = tab;
                     break;
                 }

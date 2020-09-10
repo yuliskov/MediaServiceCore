@@ -4,14 +4,14 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class RowsTabResult {
+public class SectionTabResult {
     @JsonPath("$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs[*].tabRenderer")
-    private List<RowsTab> mTabs;
+    private List<SectionTab> mTabs;
 
     @JsonPath("$.responseContext.visitorData")
     private String mVisitorData;
 
-    public List<RowsTab> getTabs() {
+    public List<SectionTab> getTabs() {
         return mTabs;
     }
 

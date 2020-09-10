@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
 
-public class Row {
+public class Section {
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")

@@ -3,12 +3,15 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
@@ -43,35 +46,32 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public MediaGroup getSearch(String searchText) {
-        SearchResult searchResult = mSearchServiceSigned.getSearch(searchText, mSignInManager.getAuthorizationHeader());
-        return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
+    public SearchResult getSearch(String searchText) {
+        return mSearchServiceSigned.getSearch(searchText, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public MediaGroup getSubscriptions() {
-        return YouTubeMediaGroup.from(mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorizationHeader()), MediaGroup.TYPE_SUBSCRIPTIONS);
+    public BrowseResult getSubscriptions() {
+        return mBrowseServiceSigned.getSubscriptions(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public MediaGroup getHistory() {
-        return YouTubeMediaGroup.from(mBrowseServiceSigned.getHistory(mSignInManager.getAuthorizationHeader()), MediaGroup.TYPE_HISTORY);
+    public BrowseResult getHistory() {
+        return mBrowseServiceSigned.getHistory(mSignInManager.getAuthorizationHeader());
     }
 
     @Override
-    public MediaGroup continueGroup(MediaGroup mediaGroup) {
-        Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
+    public SearchResultContinuation continueSearchGroup(String nextKey) {
+        Log.d(TAG, "Continue search group...");
 
-        if (mediaGroup.getType() == MediaGroup.TYPE_SEARCH) {
-            return YouTubeMediaGroup.from(
-                    mSearchServiceSigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup), mSignInManager.getAuthorizationHeader()),
-                    mediaGroup);
-        }
+        return mSearchServiceSigned.continueSearch(nextKey, mSignInManager.getAuthorizationHeader());
+    }
 
-        return YouTubeMediaGroup.from(
-                mBrowseServiceSigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup), mSignInManager.getAuthorizationHeader()),
-                mediaGroup
-        );
+    @Override
+    public BrowseResultContinuation continueBrowseGroup(String nextKey) {
+        Log.d(TAG, "Continue browse group...");
+
+        return mBrowseServiceSigned.continueSection(nextKey, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

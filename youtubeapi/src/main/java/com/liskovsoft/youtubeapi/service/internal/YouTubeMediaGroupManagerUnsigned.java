@@ -3,11 +3,14 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceUnsigned;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
@@ -39,25 +42,22 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public MediaGroup getSearch(String searchText) {
-        SearchResult searchResult = mSearchServiceUnsigned.getSearch(searchText);
-        return YouTubeMediaGroup.from(searchResult, MediaGroup.TYPE_SEARCH);
+    public SearchResult getSearch(String searchText) {
+        return mSearchServiceUnsigned.getSearch(searchText);
     }
 
     @Override
-    public MediaGroup continueGroup(MediaGroup mediaGroup) {
-        Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
+    public SearchResultContinuation continueSearchGroup(String nextKey) {
+        Log.d(TAG, "Continue search group...");
 
-        if (mediaGroup.getType() == MediaGroup.TYPE_SEARCH) {
-            return YouTubeMediaGroup.from(
-                    mSearchServiceUnsigned.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
-                    mediaGroup);
-        }
+        return mSearchServiceUnsigned.continueSearch(nextKey);
+    }
 
-        return YouTubeMediaGroup.from(
-                mBrowseServiceUnsigned.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
-                mediaGroup
-        );
+    @Override
+    public BrowseResultContinuation continueBrowseGroup(String nextKey) {
+        Log.d(TAG, "Continue browse group...");
+
+        return mBrowseServiceUnsigned.continueSection(nextKey);
     }
 
     @Override
@@ -67,15 +67,15 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public MediaGroup getSubscriptions() {
-        // SHOULD BE EMPTY FOR UNSIGNED
-        return YouTubeMediaGroup.EMPTY_GROUP;
+    public BrowseResult getSubscriptions() {
+        // NOP
+        return null;
     }
 
     @Override
-    public MediaGroup getHistory() {
-        // SHOULD BE EMPTY FOR UNSIGNED
-        return YouTubeMediaGroup.EMPTY_GROUP;
+    public BrowseResult getHistory() {
+        // NOP
+        return null;
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerSigned;
@@ -40,7 +42,8 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     public MediaGroup getSearch(String searchText) {
         checkSigned();
 
-        return mMediaGroupManagerReal.getSearch(searchText);
+        SearchResult search = mMediaGroupManagerReal.getSearch(searchText);
+        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
     @Override
@@ -54,7 +57,8 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         checkSigned();
 
-        return mMediaGroupManagerReal.getSubscriptions();
+        BrowseResult subscriptions = mMediaGroupManagerReal.getSubscriptions();
+        return YouTubeMediaGroup.from(subscriptions, MediaGroup.TYPE_SUBSCRIPTIONS);
     }
 
     @Override
@@ -106,7 +110,8 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         checkSigned();
 
-        return mMediaGroupManagerReal.getHistory();
+        BrowseResult history = mMediaGroupManagerReal.getHistory();
+        return YouTubeMediaGroup.from(history, MediaGroup.TYPE_HISTORY);
     }
 
     @Override
@@ -229,7 +234,18 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         checkSigned();
 
-        return mMediaGroupManagerReal.continueGroup(mediaGroup);
+        Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
+
+        if (mediaGroup.getType() == MediaGroup.TYPE_SEARCH) {
+            return YouTubeMediaGroup.from(
+                    mMediaGroupManagerReal.continueSearchGroup(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                    mediaGroup);
+        }
+
+        return YouTubeMediaGroup.from(
+                mMediaGroupManagerReal.continueBrowseGroup(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                mediaGroup
+        );
     }
 
     @Override

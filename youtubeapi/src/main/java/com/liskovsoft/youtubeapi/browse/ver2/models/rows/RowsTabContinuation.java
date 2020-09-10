@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class RowsTabContinuationResult {
+public class RowsTabContinuation {
     /**
      * Sections == Rows in web app version
      */

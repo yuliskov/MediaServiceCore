@@ -23,7 +23,7 @@ public class BrowseManagerParams {
             "\"user\":{\"enableSafetyMode\":false},\"clickTracking\":{\"clickTrackingParams\":\"CNkIEMm3AiITCJCMppLaxOQCFcdimwodFqUFqA==\"}}," +
             "\"continuation\":\"%s\"}";
     private static final String SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\"";
-    private static final String HISTORY = "\"browseId\":\"FEmy_youtube\"";
+    private static final String MY_LIBRARY = "\"browseId\":\"FEmy_youtube\"";
     private static final String HOME = "\"browseId\":\"FEtopics\"";
     private static final String GAMING = "\"browseId\":\"FEtopics\",\"params\":\"-gIGZ2FtaW5n\"";
     private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
@@ -37,8 +37,8 @@ public class BrowseManagerParams {
         return String.format(JSON_DATA_TEMPLATE, SUBSCRIPTIONS);
     }
 
-    public static String getHistoryQuery() {
-        return String.format(JSON_DATA_TEMPLATE, HISTORY);
+    public static String getMyLibraryQuery() {
+        return String.format(JSON_DATA_TEMPLATE, MY_LIBRARY);
     }
 
     public static String getGamingQuery() {

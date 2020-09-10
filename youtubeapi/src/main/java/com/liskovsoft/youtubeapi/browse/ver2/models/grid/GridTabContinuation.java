@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
 
-public class GridTabContinuationResult {
+public class GridTabContinuation {
     @JsonPath({"$.continuationContents.horizontalListContinuation.items[*].gridVideoRenderer",
                "$.continuationContents.gridContinuation.items[*].gridVideoRenderer"})
     private List<VideoItem> mVideoItems;

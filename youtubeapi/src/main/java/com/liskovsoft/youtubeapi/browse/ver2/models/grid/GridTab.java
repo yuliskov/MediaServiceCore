@@ -7,22 +7,40 @@ import java.util.List;
 
 public class GridTab {
     @JsonPath("$.title")
-    private String title;
+    private String mTitle;
 
     @JsonPath("$.endpoint.browseEndpoint.browseId")
-    private String browseId;
+    private String mBrowseId;
+
+    /**
+     * Not used
+     */
+    @JsonPath("$.endpoint.browseEndpoint.params")
+    private String mParams;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].gridVideoRenderer")
     private List<VideoItem> mItems;
 
+    /**
+     * Used in continue Tabs
+     */
     @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
+    /**
+     * Used in query User Library: Playlist, Watch Later, My videos
+     */
     @JsonPath("$.content.tvSurfaceContentRenderer.continuation.reloadContinuationData.continuation")
     private String mReloadPageKey;
 
+    /**
+     * Marks tab after that should come Playlists
+     */
+    @JsonPath("$.unselectable")
+    private boolean mUnselectable;
+
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public List<VideoItem> getItems() {
@@ -30,7 +48,7 @@ public class GridTab {
     }
 
     public String getBrowseId() {
-        return browseId;
+        return mBrowseId;
     }
 
     public String getNextPageKey() {
@@ -39,5 +57,13 @@ public class GridTab {
 
     public String getReloadPageKey() {
         return mReloadPageKey;
+    }
+
+    public String getParams() {
+        return mParams;
+    }
+
+    public boolean isUnselectable() {
+        return mUnselectable;
     }
 }

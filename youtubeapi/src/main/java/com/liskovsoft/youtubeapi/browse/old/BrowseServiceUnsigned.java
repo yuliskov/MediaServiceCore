@@ -1,10 +1,10 @@
-package com.liskovsoft.youtubeapi.browse.ver1;
+package com.liskovsoft.youtubeapi.browse.old;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.RowsTabContinuation;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 

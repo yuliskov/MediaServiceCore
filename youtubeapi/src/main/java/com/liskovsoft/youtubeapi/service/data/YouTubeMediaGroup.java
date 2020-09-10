@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResultContinuation;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
@@ -66,7 +66,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         mType = type;
     }
 
-    public static MediaGroup from(com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection section) {
+    public static MediaGroup from(com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseSection section) {
         if (section == null) {
             return null;
         }
@@ -185,11 +185,11 @@ public class YouTubeMediaGroup implements MediaGroup {
                 section.getRadioSuggestions(), section.getPlaylistSuggestions(), section.getNextPageKey());
     }
 
-    public static List<MediaGroup> from(List<com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection> sections) {
+    public static List<MediaGroup> from(List<com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseSection> sections) {
         List<MediaGroup> result = new ArrayList<>();
 
         if (sections != null && sections.size() > 0) {
-            for (com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection section : sections) {
+            for (com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseSection section : sections) {
                 result.add(YouTubeMediaGroup.from(section));
             }
         }

@@ -294,6 +294,16 @@ Authorization: Bearer ya29.a0AfH6SMAPf4Zu8jnNDCdlMZc9AzWXOqniN_xHiMIzWgx1y9q1J1a
 
 {"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","screenWidthPoints":1920,"screenHeightPoints":1080,"screenPixelDensity":2,"theme":"CLASSIC","utcOffsetMinutes":330,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION","zylonLeftNav":true},"acceptRegion":"IN","experimentsToken":"GgIQAA%3D%3D","deviceMake":"Samsung","deviceModel":"SmartTV","osName":"Tizen","osVersion":"2.3","browserName":"Safari","platform":"TV","acceptLanguage":"en"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false}}}
 
+###
+
+# Get user playlist
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+Authorization: Bearer ya29.a0AfH6SMBH0OYrLUbV8TF_K8mzg3kqYN6likPUAlBY-o3jLIZWOTp9e1VXYuxwwLcE0zt9gBnuGIelw4RViqSNGOf6vfn0WUkz-XZeO4XL_x7waBhZc3wiVGXEa6aMcQWX9GSJXQ-gCI2RAVgFvdz6n2IHOMfrNNRPrkJ6f5ijtwYetQ
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","webpSupport":false,"animatedWebpSupport":false,"acceptRegion":"US","acceptLanguage":"en"},"user":{"enableSafetyMode":false}},"continuation":"4qmFsgI6EgxGRW15X3lvdXR1YmUaKmNBU3lCQmhNVEhkQ05UaEtOekZoWm1kSVoyNTRUMFZ6TURKbU0xRSUzRA%3D%3D"}
+
+
 
 
 

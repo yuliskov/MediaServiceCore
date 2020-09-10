@@ -1,15 +1,15 @@
 package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerParams;
-import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerUnsigned;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.RowsTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver2.BrowseManagerParams;
+import com.liskovsoft.youtubeapi.browse.ver2.BrowseManagerUnsigned;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.Section;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,6 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -45,7 +44,7 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatRequiredFieldsExist() throws IOException {
-        BrowseSection recommended = getRecommended();
+        Section recommended = getRecommended();
         List<VideoItem> videoItems = recommended.getVideoItems();
 
         if (videoItems != null) {
@@ -59,13 +58,13 @@ public class BrowseManagerUnsignedTest {
         }
     }
 
-    private BrowseSection getRecommended() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
+    private Section getRecommended() throws IOException {
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
 
-        TabbedBrowseResult browseResult1 = wrapper.execute().body();
+        SectionTabResult browseResult = wrapper.execute().body();
 
-        assertNotNull("Items not null", browseResult1);
-        BrowseSection section = browseResult1.getBrowseTabs().get(0).getSections().get(0);
+        assertNotNull("Items not null", browseResult);
+        Section section = browseResult.getTabs().get(0).getSections().get(0);
         assertTrue("List > 2",
                 section.getVideoItems().size() > 2 || section.getMusicItems().size() > 2 || section.getChannelItems().size() > 2);
 
@@ -98,13 +97,13 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testEnsureNextResultIsUnique() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
 
-        TabbedBrowseResult browseResult = wrapper.execute().body();
+        SectionTabResult browseResult = wrapper.execute().body();
 
         tabbedResultNotEmpty(browseResult);
 
-        BrowseSection firstSection = browseResult.getBrowseTabs().get(0).getSections().get(0);
+        Section firstSection = browseResult.getTabs().get(0).getSections().get(0);
 
         String nextPageKey = firstSection.getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
@@ -112,9 +111,9 @@ public class BrowseManagerUnsignedTest {
         String visitorId = browseResult.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<BrowseResultContinuation> next = mService.getContinueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
-        Response<BrowseResultContinuation> execute = next.execute();
-        BrowseResultContinuation nextBrowseResult = execute.body();
+        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), visitorId);
+        Response<SectionContinuation> execute = next.execute();
+        SectionContinuation nextBrowseResult = execute.body();
 
         List<VideoItem> videoItems = firstSection.getVideoItems();
         List<VideoItem> nextVideoItems = nextBrowseResult.getVideoItems();
@@ -131,83 +130,83 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatTabbedResultNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
 
-        TabbedBrowseResult browseResult1 = wrapper.execute().body();
+        SectionTabResult browseResult1 = wrapper.execute().body();
 
         tabbedResultNotEmpty(browseResult1);
 
-        String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
+        String nextPageKey = browseResult1.getTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
         String visitorId = browseResult1.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<BrowseResultContinuation> next = mService.getContinueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), visitorId);
-        Response<BrowseResultContinuation> execute = next.execute();
-        BrowseResultContinuation browseResult2 = execute.body();
+        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), visitorId);
+        Response<SectionContinuation> execute = next.execute();
+        SectionContinuation browseResult2 = execute.body();
 
         nextSectionResultNotEmpty(browseResult2);
 
-        String nextTabbedPageKey = browseResult1.getBrowseTabs().get(0).getNextPageKey();
-        Call<RowsTabContinuation> nextTabbed = mService.getContinueTabbedBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextTabbedPageKey), visitorId);
-        Response<RowsTabContinuation> executeTabbed = nextTabbed.execute();
-        RowsTabContinuation browseTabbedResult2 = executeTabbed.body();
+        String nextTabbedPageKey = browseResult1.getTabs().get(0).getNextPageKey();
+        Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseManagerParams.getContinuationQuery(nextTabbedPageKey), visitorId);
+        Response<SectionTabContinuation> executeTabbed = nextTabbed.execute();
+        SectionTabContinuation browseTabbedResult2 = executeTabbed.body();
 
         nextTabbedResultNotEmpty(browseTabbedResult2);
     }
 
     @Test
     public void testThatAllTabsSectionHaveTitles() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
 
-        Response<TabbedBrowseResult> execute = wrapper.execute();
-        TabbedBrowseResult browseResult = execute.body();
+        Response<SectionTabResult> execute = wrapper.execute();
+        SectionTabResult browseResult = execute.body();
 
         tabbedResultNotEmpty(browseResult);
 
-        List<BrowseSection> sections = browseResult.getBrowseTabs().get(0).getSections();
+        List<Section> sections = browseResult.getTabs().get(0).getSections();
 
-        for (BrowseSection section : sections) {
+        for (Section section : sections) {
             assertNotNull("All sections should have names", section.getTitle());
         }
     }
 
     @Test
     public void testThatMusicTabNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getMusicQuery());
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getMusicQuery());
 
-        Response<TabbedBrowseResult> execute = wrapper.execute();
-        TabbedBrowseResult browseResult = execute.body();
+        Response<SectionTabResult> execute = wrapper.execute();
+        SectionTabResult browseResult = execute.body();
 
         tabbedResultNotEmpty(browseResult);
     }
 
-    private void nextSectionResultNotEmpty(BrowseResultContinuation browseResult) {
+    private void nextSectionResultNotEmpty(SectionContinuation browseResult) {
         assertNotNull("Next section result: not empty", browseResult);
         assertTrue("Next section result: item list not empty", browseResult.getVideoItems() != null || browseResult.getPlaylistItems() != null);
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
         assertTrue("Next section result: item list > 2", browseResult.getVideoItems().size() > 2 || browseResult.getPlaylistItems().size() > 2);
     }
 
-    private void nextTabbedResultNotEmpty(RowsTabContinuation browseResult) {
+    private void nextTabbedResultNotEmpty(SectionTabContinuation browseResult) {
         assertNotNull("Tabbed result: not empty", browseResult);
         assertNotNull("Tabbed result: media item list not empty", browseResult.getSections());
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
-        BrowseSection section = browseResult.getSections().get(0);
+        Section section = browseResult.getSections().get(0);
         assertTrue("Tabbed result: media item list not empty",
                 section.getVideoItems() != null || section.getMusicItems() != null || section.getChannelItems() != null);
     }
 
-    private void tabbedResultNotEmpty(TabbedBrowseResult browseResult) {
+    private void tabbedResultNotEmpty(SectionTabResult browseResult) {
         assertNotNull("Tabbed result not empty", browseResult);
-        assertNotNull("Tabs list not empty", browseResult.getBrowseTabs());
-        assertTrue("Tabs list > 2", browseResult.getBrowseTabs().size() > 2);
+        assertNotNull("Tabs list not empty", browseResult.getTabs());
+        assertTrue("Tabs list > 2", browseResult.getTabs().size() > 2);
 
-        BrowseTab browseTab = null;
+        SectionTab browseTab = null;
 
         // get first not empty
-        for (BrowseTab tab : browseResult.getBrowseTabs()) {
+        for (SectionTab tab : browseResult.getTabs()) {
             if (tab.getSections() != null) {
                 browseTab = tab;
                 break;

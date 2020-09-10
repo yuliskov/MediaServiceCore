@@ -1,10 +1,12 @@
 package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerParams;
-import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerSigned;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver2.BrowseManagerParams;
+import com.liskovsoft.youtubeapi.browse.ver2.BrowseManagerSigned;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
@@ -42,19 +44,23 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatSubscriptionsNotEmpty() throws IOException {
-        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseManagerParams.getSubscriptionsQuery(), TestHelpers.getAuthorization());
+        Call<GridTabResult> wrapper = mService.getGridTabResult(BrowseManagerParams.getSubscriptionsQuery(), TestHelpers.getAuthorization());
 
-        BrowseResult browseResult1 = wrapper.execute().body();
+        GridTabResult browseResult = wrapper.execute().body();
 
-        assertNotNull("Items not null", browseResult1);
-        assertTrue("List > 2", browseResult1.getVideoItems().size() > 2);
+        assertNotNull("Contains tabs", browseResult.getTabs());
 
-        String nextPageKey = browseResult1.getNextPageKey();
+        GridTab firstTab = browseResult.getTabs().get(0);
+
+        assertNotNull("Items not null", browseResult);
+        assertTrue("List > 2", firstTab.getVideoItems().size() > 2);
+
+        String nextPageKey = firstTab.getNextPageKey();
 
         assertNotNull("Item not null", nextPageKey);
 
-        Call<BrowseResultContinuation> browseResult2 = mService.continueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), TestHelpers.getAuthorization());
-        BrowseResultContinuation body = browseResult2.execute().body();
+        Call<GridTabContinuation> browseResult2 = mService.continueGridTab(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpers.getAuthorization());
+        GridTabContinuation body = browseResult2.execute().body();
 
         assertNotNull("Items not null", body);
         assertTrue("List > 2", body.getVideoItems().size() > 2);
@@ -72,25 +78,29 @@ public class BrowseManagerSignedTest {
     }
 
     private List<VideoItem> getSubscriptions() throws IOException {
-        Call<BrowseResult> wrapper = mService.getBrowseResult(BrowseManagerParams.getSubscriptionsQuery(), TestHelpers.getAuthorization());
+        Call<GridTabResult> wrapper = mService.getGridTabResult(BrowseManagerParams.getSubscriptionsQuery(), TestHelpers.getAuthorization());
 
-        BrowseResult browseResult1 = wrapper.execute().body();
+        GridTabResult browseResult = wrapper.execute().body();
 
-        assertNotNull("Items not null", browseResult1);
-        assertTrue("List > 2", browseResult1.getVideoItems().size() > 2);
+        assertNotNull("Contains tabs", browseResult.getTabs());
 
-        return browseResult1.getVideoItems();
+        GridTab firstTab = browseResult.getTabs().get(0);
+
+        assertNotNull("Items not null", firstTab);
+        assertTrue("List > 2", firstTab.getVideoItems().size() > 2);
+
+        return firstTab.getVideoItems();
     }
 
     private List<VideoItem> getRecommended() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery(), TestHelpers.getAuthorization());
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery(), TestHelpers.getAuthorization());
 
-        TabbedBrowseResult browseResult1 = wrapper.execute().body();
+        SectionTabResult browseResult = wrapper.execute().body();
 
-        assertNotNull("Items not null", browseResult1);
-        assertTrue("List > 2", browseResult1.getBrowseTabs().get(0).getSections().get(0).getVideoItems().size() > 2);
+        assertNotNull("Items not null", browseResult);
+        assertTrue("List > 2", browseResult.getTabs().get(0).getSections().get(0).getVideoItems().size() > 2);
 
-        return browseResult1.getBrowseTabs().get(0).getSections().get(0).getVideoItems();
+        return browseResult.getTabs().get(0).getSections().get(0).getVideoItems();
     }
 
     private void testFields(VideoItem videoItem) {
@@ -101,33 +111,57 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatHomeNotEmpty() throws IOException {
-        Call<TabbedBrowseResult> wrapper = mService.getTabbedBrowseResult(BrowseManagerParams.getHomeQuery(), TestHelpers.getAuthorization());
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery(), TestHelpers.getAuthorization());
 
-        TabbedBrowseResult browseResult1 = wrapper.execute().body();
+        SectionTabResult browseResult = wrapper.execute().body();
 
-        tabbedResultNotEmpty(browseResult1);
+        tabbedResultNotEmpty(browseResult);
 
-        String nextPageKey = browseResult1.getBrowseTabs().get(0).getSections().get(0).getNextPageKey();
+        assertNotNull("Contains tabs", browseResult.getTabs());
+
+        String nextPageKey = browseResult.getTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<BrowseResultContinuation> next = mService.continueBrowseResult(BrowseManagerParams.getNextBrowseQuery(nextPageKey), TestHelpers.getAuthorization());
-        Response<BrowseResultContinuation> execute = next.execute();
-        BrowseResultContinuation browseResult2 = execute.body();
+        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpers.getAuthorization());
+        Response<SectionContinuation> execute = next.execute();
+        SectionContinuation browseResult2 = execute.body();
 
         tabbedNextResultNotEmpty(browseResult2);
     }
 
-    private void tabbedNextResultNotEmpty(BrowseResultContinuation browseResult2) {
-        assertNotNull("Tabbed result not empty", browseResult2);
-        assertNotNull("Video list not empty", browseResult2.getVideoItems());
-        //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
-        assertTrue("Video list > 2", browseResult2.getVideoItems().size() > 2);
+    @Test
+    public void testThatPlaylistsNotEmpty() {
+        Call<GridTabResult> wrapper = mService.getGridTabResult(BrowseManagerParams.getMyLibraryQuery(), TestHelpers.getAuthorization());
+
+        GridTabResult gridTabResult = RetrofitHelper.get(wrapper);
+
+        assertTrue("Contains playlists", gridTabResult.getTabs().size() > 3);
+
+        GridTab lastGridTab = gridTabResult.getTabs().get(5);
+
+        assertNotNull("Contains reload key", lastGridTab.getReloadPageKey());
+
+        Call<GridTabContinuation> wrapper2 =
+                mService.continueGridTab(BrowseManagerParams.getContinuationQuery(lastGridTab.getReloadPageKey()), TestHelpers.getAuthorization());
+
+        GridTabContinuation gridTabContinuation = RetrofitHelper.get(wrapper2);
+
+        assertTrue("Grid tab not empty", gridTabContinuation.getVideoItems().size() > 3);
+
+        assertNotNull("Contains next key", gridTabContinuation.getNextPageKey());
     }
 
-    private void tabbedResultNotEmpty(TabbedBrowseResult browseResult1) {
-        assertNotNull("Tabbed result not empty", browseResult1);
-        assertNotNull("Tabs list not empty", browseResult1.getBrowseTabs());
-        assertTrue("Tabs list > 2", browseResult1.getBrowseTabs().size() > 2);
-        assertTrue("Tabs sections > 2", browseResult1.getBrowseTabs().get(0).getSections().size() > 2);
+    private void tabbedNextResultNotEmpty(SectionContinuation browseResult) {
+        assertNotNull("Tabbed result not empty", browseResult);
+        assertNotNull("Video list not empty", browseResult.getVideoItems());
+        //assertNotNull("Next key not empty", browseResult.getNextPageKey());
+        assertTrue("Video list > 2", browseResult.getVideoItems().size() > 2);
+    }
+
+    private void tabbedResultNotEmpty(SectionTabResult browseResult) {
+        assertNotNull("Tabbed result not empty", browseResult);
+        assertNotNull("Tabs list not empty", browseResult.getTabs());
+        assertTrue("Tabs list > 2", browseResult.getTabs().size() > 2);
+        assertTrue("Tabs sections > 2", browseResult.getTabs().get(0).getSections().size() > 2);
     }
 }

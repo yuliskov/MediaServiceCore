@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.browse.ver1.models;
+package com.liskovsoft.youtubeapi.browse.old.models;
 
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;

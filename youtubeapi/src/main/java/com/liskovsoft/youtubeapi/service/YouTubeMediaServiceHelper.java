@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;

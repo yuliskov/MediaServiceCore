@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.AuthService;
-import com.liskovsoft.youtubeapi.browse.ver1.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.old.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;

@@ -10,14 +10,14 @@ public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInManager mSignInManager;
-    private final MediaGroupManager mMediaTabManager;
+    private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
 
     private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
-        mMediaTabManager = YouTubeMediaGroupManagerV2.instance();
+        mMediaGroupManager = YouTubeMediaGroupManager.instance();
         mMediaItemManager = YouTubeMediaItemManager.instance();
     }
 
@@ -36,7 +36,7 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public MediaGroupManager getMediaGroupManager() {
-        return mMediaTabManager;
+        return mMediaGroupManager;
     }
 
     @Override

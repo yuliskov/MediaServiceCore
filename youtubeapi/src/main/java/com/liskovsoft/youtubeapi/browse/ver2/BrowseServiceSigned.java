@@ -140,12 +140,12 @@ public class BrowseServiceSigned {
 
     public GridTabContinuation continueGridTab(String nextKey, String authorization) {
         if (authorization == null) {
-            Log.e(TAG, "continueGridTabResult: authorization is null.");
+            Log.e(TAG, "continueGridTab: authorization is null.");
             return null;
         }
 
         if (nextKey == null) {
-            Log.e(TAG, "continueGridTabResult: next search key is null.");
+            Log.e(TAG, "continueGridTab: next search key is null.");
             return null;
         }
 

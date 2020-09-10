@@ -1,17 +1,14 @@
-package com.liskovsoft.youtubeapi.service.internal;
+package com.liskovsoft.youtubeapi.service.internal.old;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.ver2.BrowseServiceUnsigned;
-import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.old.BrowseServiceUnsigned;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.old.models.sections.RowsTabContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-
-import java.util.List;
 
 public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     private static final String TAG = YouTubeMediaGroupManagerUnsigned.class.getSimpleName();
@@ -44,71 +41,58 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public SearchResultContinuation continueSearch(String nextKey) {
+    public SearchResultContinuation continueSearchGroup(String nextKey) {
         Log.d(TAG, "Continue search group...");
 
         return mSearchServiceUnsigned.continueSearch(nextKey);
     }
 
     @Override
-    public SectionContinuation continueSection(String nextKey) {
-        Log.d(TAG, "Continue section...");
+    public BrowseResultContinuation continueBrowseGroup(String nextKey) {
+        Log.d(TAG, "Continue browse group...");
 
         return mBrowseServiceUnsigned.continueSection(nextKey);
     }
 
     @Override
-    public GridTabContinuation continueGridTab(String nextKey) {
-        Log.d(TAG, "Continue grid tab...");
-
-        return mBrowseServiceUnsigned.continueGridTab(nextKey);
-    }
-
-    @Override
-    public SectionTab getHomeTab() {
+    public BrowseTab getHomeTab() {
         Log.d(TAG, "Emitting home group...");
         return mBrowseServiceUnsigned.getHome();
     }
 
     @Override
-    public GridTab getSubscriptions() {
+    public BrowseResult getSubscriptions() {
         // NOP
         return null;
     }
 
     @Override
-    public GridTab getHistory() {
+    public BrowseResult getHistory() {
         // NOP
         return null;
     }
 
     @Override
-    public List<GridTab> getPlaylists() {
-        // NOP
-        return null;
-    }
-
-    @Override
-    public SectionTab getMusicTab() {
+    public BrowseTab getMusicTab() {
         Log.d(TAG, "Emitting music group...");
         return mBrowseServiceUnsigned.getMusic();
     }
 
     @Override
-    public SectionTab getNewsTab() {
+    public BrowseTab getNewsTab() {
         Log.d(TAG, "Emitting news group...");
         return mBrowseServiceUnsigned.getNews();
     }
 
     @Override
-    public SectionTab getGamingTab() {
+    public BrowseTab getGamingTab() {
         Log.d(TAG, "Emitting gaming group...");
         return mBrowseServiceUnsigned.getGaming();
     }
 
     @Override
-    public SectionTabContinuation continueSectionTab(String nextPageKey) {
+    public RowsTabContinuation continueTab(String nextPageKey) {
         Log.d(TAG, "Continue tab...");
-        return mBrowseServiceUnsigned.continueRowsTab(nextPageKey);
+        return mBrowseServiceUnsigned.continueTab(nextPageKey);
     }
 }

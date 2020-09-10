@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.browse.ver1;
+package com.liskovsoft.youtubeapi.browse.old;
 
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.old.models.BrowseResult;
 
 public class BrowseManagerParams {
     public static int RECOMMENDED_TAB_INDEX = 0;

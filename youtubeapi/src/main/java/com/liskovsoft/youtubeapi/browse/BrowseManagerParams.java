@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.browse.ver2;
+package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 
 public class BrowseManagerParams {
     private static final String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +

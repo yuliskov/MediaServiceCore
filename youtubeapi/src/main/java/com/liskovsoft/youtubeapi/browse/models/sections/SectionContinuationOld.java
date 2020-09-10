@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.browse.ver2.models.sections;
+package com.liskovsoft.youtubeapi.browse.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;

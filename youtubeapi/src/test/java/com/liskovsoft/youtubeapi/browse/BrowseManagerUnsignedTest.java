@@ -1,12 +1,10 @@
 package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.browse.ver2.BrowseManagerParams;
-import com.liskovsoft.youtubeapi.browse.ver2.BrowseManagerUnsigned;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.Section;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.Section;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;

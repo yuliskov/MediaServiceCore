@@ -1,11 +1,11 @@
-package com.liskovsoft.youtubeapi.browse.ver2;
+package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.app.AppConstants;
-import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabResult;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTabResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;

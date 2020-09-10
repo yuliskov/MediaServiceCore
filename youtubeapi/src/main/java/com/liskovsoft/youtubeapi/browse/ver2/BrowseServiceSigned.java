@@ -4,10 +4,11 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabResult;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -118,6 +119,23 @@ public class BrowseServiceSigned {
         }
 
         return result;
+    }
+
+    public SectionContinuation continueSection(String nextKey, String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "continueGridTabResult: authorization is null.");
+            return null;
+        }
+
+        if (nextKey == null) {
+            Log.e(TAG, "continueGridTabResult: next search key is null.");
+            return null;
+        }
+
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
+        Call<SectionContinuation> wrapper = mBrowseManagerSigned.continueSection(query, authorization);
+
+        return RetrofitHelper.get(wrapper);
     }
 
     public GridTabContinuation continueGridTab(String nextKey, String authorization) {

@@ -261,6 +261,11 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         });
     }
 
+    @Override
+    public Observable<List<MediaGroup>> getPlaylistsObserve() {
+        return null;
+    }
+
     private void checkSigned() {
         if (mSignInManager.isSigned()) {
             Log.d(TAG, "User signed.");

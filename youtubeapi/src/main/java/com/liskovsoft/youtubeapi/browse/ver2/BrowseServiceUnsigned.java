@@ -2,9 +2,10 @@ package com.liskovsoft.youtubeapi.browse.ver2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -46,8 +47,22 @@ public class BrowseServiceUnsigned {
         return getRowsTab(BrowseManagerParams.getMusicQuery());
     }
 
-    public GridTabContinuation continueGridTab(String nextPageKey) {
-        return continueGridTabResult(nextPageKey, mVisitorData);
+    public SectionContinuation continueSection(String nextKey) {
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
+
+        Call<SectionContinuation> wrapper =
+                mBrowseManagerUnsigned.continueSection(query, mVisitorData);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    public GridTabContinuation continueGridTab(String nextKey) {
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
+
+        Call<GridTabContinuation> wrapper =
+                mBrowseManagerUnsigned.continueGridTab(query, mVisitorData);
+
+        return RetrofitHelper.get(wrapper);
     }
 
     public SectionTabContinuation continueRowsTab(String nextPageKey) {
@@ -79,15 +94,6 @@ public class BrowseServiceUnsigned {
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
         Call<SectionTabContinuation> wrapper = mBrowseManagerUnsigned.continueSectionTab(query, visitorData);
-
-        return RetrofitHelper.get(wrapper);
-    }
-
-    private GridTabContinuation continueGridTabResult(String nextKey, String visitorData) {
-        String query = BrowseManagerParams.getContinuationQuery(nextKey);
-
-        Call<GridTabContinuation> wrapper =
-                mBrowseManagerUnsigned.continueGridTab(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }

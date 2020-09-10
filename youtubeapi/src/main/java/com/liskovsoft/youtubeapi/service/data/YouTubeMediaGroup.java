@@ -4,10 +4,10 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.Section;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.Section;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
@@ -66,7 +66,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         mType = type;
     }
 
-    public static MediaGroup from(BrowseSection section) {
+    public static MediaGroup from(com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection section) {
         if (section == null) {
             return null;
         }
@@ -103,13 +103,24 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
     }
 
-    public static MediaGroup from(GridTabContinuation nextBrowseResult, MediaGroup baseGroup) {
-        if (nextBrowseResult == null) {
+    public static MediaGroup from(SectionContinuation continuation, MediaGroup baseGroup) {
+        if (continuation == null) {
             return null;
         }
 
-        List<VideoItem> videoItems = nextBrowseResult.getVideoItems();
-        String nextPageKey = nextBrowseResult.getNextPageKey();
+        List<VideoItem> videoItems = continuation.getVideoItems();
+        String nextPageKey = continuation.getNextPageKey();
+
+        return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
+    }
+
+    public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
+        if (continuation == null) {
+            return null;
+        }
+
+        List<VideoItem> videoItems = continuation.getVideoItems();
+        String nextPageKey = continuation.getNextPageKey();
 
         return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
     }
@@ -174,11 +185,11 @@ public class YouTubeMediaGroup implements MediaGroup {
                 section.getRadioSuggestions(), section.getPlaylistSuggestions(), section.getNextPageKey());
     }
 
-    public static List<MediaGroup> from(List<BrowseSection> sections) {
+    public static List<MediaGroup> from(List<com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection> sections) {
         List<MediaGroup> result = new ArrayList<>();
 
         if (sections != null && sections.size() > 0) {
-            for (BrowseSection section : sections) {
+            for (com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection section : sections) {
                 result.add(YouTubeMediaGroup.from(section));
             }
         }

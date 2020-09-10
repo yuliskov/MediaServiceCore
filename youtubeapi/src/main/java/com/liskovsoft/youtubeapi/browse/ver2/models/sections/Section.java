@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.browse.ver2.models.rows;
+package com.liskovsoft.youtubeapi.browse.ver2.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;

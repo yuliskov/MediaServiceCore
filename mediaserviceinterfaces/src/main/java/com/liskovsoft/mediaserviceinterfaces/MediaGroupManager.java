@@ -23,4 +23,5 @@ public interface MediaGroupManager {
     Observable<List<MediaGroup>> getNewsObserve();
     Observable<List<MediaGroup>> getGamingObserve();
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
+    Observable<List<MediaGroup>> getPlaylistsObserve();
 }

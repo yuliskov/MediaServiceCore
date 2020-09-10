@@ -17,7 +17,7 @@ public class YouTubeMediaService implements MediaService {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
-        mMediaTabManager = YouTubeMediaGroupManager.instance();
+        mMediaTabManager = YouTubeMediaGroupManagerV2.instance();
         mMediaItemManager = YouTubeMediaItemManager.instance();
     }
 

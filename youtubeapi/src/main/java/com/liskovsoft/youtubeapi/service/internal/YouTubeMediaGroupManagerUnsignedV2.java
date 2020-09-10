@@ -4,8 +4,9 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.ver2.BrowseServiceUnsigned;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -50,8 +51,15 @@ public class YouTubeMediaGroupManagerUnsignedV2 implements MediaGroupManagerIntV
     }
 
     @Override
+    public SectionContinuation continueSection(String nextKey) {
+        Log.d(TAG, "Continue section...");
+
+        return mBrowseServiceUnsigned.continueSection(nextKey);
+    }
+
+    @Override
     public GridTabContinuation continueGridTab(String nextKey) {
-        Log.d(TAG, "Continue browse group...");
+        Log.d(TAG, "Continue grid tab...");
 
         return mBrowseServiceUnsigned.continueGridTab(nextKey);
     }

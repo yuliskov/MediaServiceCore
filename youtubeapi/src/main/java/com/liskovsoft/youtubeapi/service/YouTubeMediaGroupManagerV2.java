@@ -5,9 +5,10 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.Section;
-import com.liskovsoft.youtubeapi.browse.ver2.models.rows.SectionTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTabContinuation;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.Section;
+import com.liskovsoft.youtubeapi.browse.ver2.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerIntV2;
@@ -241,16 +242,23 @@ public class YouTubeMediaGroupManagerV2 implements MediaGroupManager {
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
-        if (mediaGroup.getType() == MediaGroup.TYPE_SEARCH) {
-            return YouTubeMediaGroup.from(
-                    mMediaGroupManagerReal.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
-                    mediaGroup);
+        switch (mediaGroup.getType()) {
+            case MediaGroup.TYPE_SEARCH:
+                return YouTubeMediaGroup.from(
+                        mMediaGroupManagerReal.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                        mediaGroup);
+            case MediaGroup.TYPE_HISTORY:
+            case MediaGroup.TYPE_SUBSCRIPTIONS:
+                return YouTubeMediaGroup.from(
+                        mMediaGroupManagerReal.continueGridTab(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                        mediaGroup
+                );
+            default:
+                return YouTubeMediaGroup.from(
+                        mMediaGroupManagerReal.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                        mediaGroup
+                );
         }
-
-        return YouTubeMediaGroup.from(
-                mMediaGroupManagerReal.continueGridTab(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
-                mediaGroup
-        );
     }
 
     @Override
@@ -279,7 +287,8 @@ public class YouTubeMediaGroupManagerV2 implements MediaGroupManager {
             YouTubeMediaGroupManagerSigned.unhold();
         }
     }
-    
+
+    @Override
     public Observable<List<MediaGroup>> getPlaylistsObserve() {
         return Observable.create(emitter -> {
             checkSigned();

@@ -2,13 +2,12 @@ package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.AuthService;
-import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver1.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;

@@ -1,20 +1,20 @@
-package com.liskovsoft.youtubeapi.browse.models.sections;
+package com.liskovsoft.youtubeapi.browse.ver2.models.rows;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class TabbedBrowseResultContinuation {
+public class RowsTabContinuationResult {
     /**
      * Sections == Rows in web app version
      */
     @JsonPath("$.continuationContents.sectionListContinuation.contents[*].shelfRenderer")
-    private List<BrowseSection> sections;
+    private List<Row> sections;
 
     @JsonPath("$.continuationContents.sectionListContinuation.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
-    public List<BrowseSection> getSections() {
+    public List<Row> getSections() {
         return sections;
     }
 

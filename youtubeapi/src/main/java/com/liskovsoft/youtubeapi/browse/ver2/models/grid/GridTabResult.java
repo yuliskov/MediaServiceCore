@@ -1,18 +1,18 @@
-package com.liskovsoft.youtubeapi.browse.models.sections;
+package com.liskovsoft.youtubeapi.browse.ver2.models.grid;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class TabbedBrowseResult {
+public class GridTabResult {
     @JsonPath("$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs[*].tabRenderer")
-    private List<BrowseTab> mBrowseTabs;
+    private List<GridTab> mTabs;
 
     @JsonPath("$.responseContext.visitorData")
     private String mVisitorData;
 
-    public List<BrowseTab> getBrowseTabs() {
-        return mBrowseTabs;
+    public List<GridTab> getTabs() {
+        return mTabs;
     }
 
     public String getVisitorData() {

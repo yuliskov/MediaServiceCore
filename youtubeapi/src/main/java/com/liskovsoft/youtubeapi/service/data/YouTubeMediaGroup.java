@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseSection;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;

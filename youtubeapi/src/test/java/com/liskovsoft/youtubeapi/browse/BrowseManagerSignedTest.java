@@ -1,8 +1,10 @@
 package com.liskovsoft.youtubeapi.browse;
 
-import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerParams;
+import com.liskovsoft.youtubeapi.browse.ver1.BrowseManagerSigned;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;

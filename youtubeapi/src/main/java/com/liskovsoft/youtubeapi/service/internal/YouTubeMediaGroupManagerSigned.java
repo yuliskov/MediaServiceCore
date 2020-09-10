@@ -1,22 +1,16 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.browse.models.BrowseResult;
-import com.liskovsoft.youtubeapi.browse.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.BrowseSection;
-import com.liskovsoft.youtubeapi.browse.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.models.sections.TabbedBrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
+import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
-
-import java.util.List;
 
 public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();

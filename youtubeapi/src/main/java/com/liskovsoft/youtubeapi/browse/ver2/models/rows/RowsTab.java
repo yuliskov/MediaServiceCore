@@ -1,29 +1,21 @@
-package com.liskovsoft.youtubeapi.browse.models.sections;
+package com.liskovsoft.youtubeapi.browse.ver2.models.rows;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
 
-public class BrowseTab {
+public class RowsTab {
     @JsonPath("$.title")
     private String title;
 
     @JsonPath("$.endpoint.browseEndpoint.browseId")
     private String browseId;
 
-    //@JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].gridVideoRenderer")
-    //private List<VideoItem> mGridItems;
-
     /**
      * Sections == Rows in web app version
      */
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[*].shelfRenderer")
-    private List<BrowseSection> mSections;
-
-    //@JsonPath({"$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation",
-    //           "$.content.tvSurfaceContentRenderer.content.gridRenderer.continuations[0].nextContinuationData.continuation"})
-    //private String mNextPageKey;
+    private List<Row> mRows;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -39,8 +31,8 @@ public class BrowseTab {
         return browseId;
     }
 
-    public List<BrowseSection> getSections() {
-        return mSections;
+    public List<Row> getRows() {
+        return mRows;
     }
 
 

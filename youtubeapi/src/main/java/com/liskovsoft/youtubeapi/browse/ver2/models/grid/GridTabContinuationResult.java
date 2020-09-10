@@ -1,12 +1,12 @@
-package com.liskovsoft.youtubeapi.browse.models;
+package com.liskovsoft.youtubeapi.browse.ver2.models.grid;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class BrowseResultContinuation {
+public class GridTabContinuationResult {
     @JsonPath({"$.continuationContents.horizontalListContinuation.items[*].gridVideoRenderer",
                "$.continuationContents.gridContinuation.items[*].gridVideoRenderer"})
     private List<VideoItem> mVideoItems;
@@ -23,11 +23,11 @@ public class BrowseResultContinuation {
         return mVideoItems;
     }
 
-    public String getNextPageKey() {
-        return mNextPageKey;
-    }
-
     public List<RadioItem> getPlaylistItems() {
         return mPlaylistItems;
+    }
+
+    public String getNextPageKey() {
+        return mNextPageKey;
     }
 }

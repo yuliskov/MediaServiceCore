@@ -1,14 +1,14 @@
-package com.liskovsoft.youtubeapi.browse.models.sections;
+package com.liskovsoft.youtubeapi.browse.ver2.models.rows;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class BrowseSection {
+public class Row {
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")

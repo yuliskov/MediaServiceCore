@@ -1,6 +1,10 @@
 package com.liskovsoft.youtubeapi.browse.ver2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuationResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabContinuationResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -26,51 +30,70 @@ public class BrowseServiceUnsigned {
         sInstance = null;
     }
 
-    public BrowseTab getHome() {
-        return getTab(BrowseManagerParams.getHomeQuery());
+    public RowsTab getHome() {
+        return getRowsTab(BrowseManagerParams.getHomeQuery());
     }
 
-    public BrowseTab getGaming() {
-        return getTab(BrowseManagerParams.getGamingQuery());
+    public RowsTab getGaming() {
+        return getRowsTab(BrowseManagerParams.getGamingQuery());
     }
 
-    public BrowseTab getNews() {
-        return getTab(BrowseManagerParams.getNewsQuery());
+    public RowsTab getNews() {
+        return getRowsTab(BrowseManagerParams.getNewsQuery());
     }
 
-    public BrowseTab getMusic() {
-        return getTab(BrowseManagerParams.getMusicQuery());
+    public RowsTab getMusic() {
+        return getRowsTab(BrowseManagerParams.getMusicQuery());
     }
 
-    public BrowseResultContinuation continueSection(String nextPageKey) {
-        return getNextResult(nextPageKey, mVisitorData);
+    public GridTabContinuationResult continueGridTab(String nextPageKey) {
+        return continueGridTabResult(nextPageKey, mVisitorData);
     }
 
-    private TabbedBrowseResult getTabbedResult(String query) {
-        Call<TabbedBrowseResult> wrapper = mBrowseManagerUnsigned.getRowsTabResult(query);
+    public RowsTabContinuationResult continueRowsTab(String nextPageKey) {
+        RowsTabContinuationResult nextHomeTabs = null;
+
+        if (mVisitorData == null) {
+            Log.e(TAG, "continueTab: visitor data is null");
+        }
+
+        if (nextPageKey != null) {
+            nextHomeTabs = continueRowsTabResult(nextPageKey, mVisitorData);
+        }
+
+        if (nextHomeTabs == null) {
+            Log.e(TAG, "NextHomeTabs are empty");
+            return null;
+        }
+
+        return nextHomeTabs;
+    }
+
+    private RowsTabResult getRowsTabResult(String query) {
+        Call<RowsTabResult> wrapper = mBrowseManagerUnsigned.getRowsTabResult(query);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String visitorData) {
+    private RowsTabContinuationResult continueRowsTabResult(String nextKey, String visitorData) {
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
-        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerUnsigned.continueRowsTabResult(query, visitorData);
+        Call<RowsTabContinuationResult> wrapper = mBrowseManagerUnsigned.continueRowsTabResult(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private BrowseResultContinuation getNextResult(String nextKey, String visitorData) {
+    private GridTabContinuationResult continueGridTabResult(String nextKey, String visitorData) {
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
-        Call<BrowseResultContinuation> wrapper =
+        Call<GridTabContinuationResult> wrapper =
                 mBrowseManagerUnsigned.continueGridTabResult(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private BrowseTab getTab(String query) {
-        TabbedBrowseResult tabs = getTabbedResult(query);
+    private RowsTab getRowsTab(String query) {
+        RowsTabResult tabs = getRowsTabResult(query);
 
         if (tabs == null) {
             Log.e(TAG, "getTabs: tabs result is empty");
@@ -82,13 +105,13 @@ public class BrowseServiceUnsigned {
         return firstNotEmpty(tabs);
     }
 
-    private BrowseTab firstNotEmpty(TabbedBrowseResult tabs) {
-        BrowseTab result = null;
+    private RowsTab firstNotEmpty(RowsTabResult tabs) {
+        RowsTab result = null;
 
-        if (tabs.getBrowseTabs() != null) {
+        if (tabs.getTabs() != null) {
             // find first not empty tab
-            for (BrowseTab browseTab : tabs.getBrowseTabs()) {
-                if (browseTab.getSections() != null) {
+            for (RowsTab browseTab : tabs.getTabs()) {
+                if (browseTab.getRows() != null) {
                     result = browseTab;
                     break;
                 }
@@ -98,24 +121,5 @@ public class BrowseServiceUnsigned {
         }
 
         return result;
-    }
-
-    public TabbedBrowseResultContinuation continueTab(String nextPageKey) {
-        TabbedBrowseResultContinuation nextHomeTabs = null;
-
-        if (mVisitorData == null) {
-            Log.e(TAG, "continueTab: visitor data is null");
-        }
-
-        if (nextPageKey != null) {
-            nextHomeTabs = getNextTabbedResult(nextPageKey, mVisitorData);
-        }
-
-        if (nextHomeTabs == null) {
-            Log.e(TAG, "NextHomeTabs are empty");
-            return null;
-        }
-
-        return nextHomeTabs;
     }
 }

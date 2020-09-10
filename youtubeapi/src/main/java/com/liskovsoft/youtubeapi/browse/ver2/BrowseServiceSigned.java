@@ -3,8 +3,10 @@ package com.liskovsoft.youtubeapi.browse.ver2;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabContinuationResult;
 import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTabResult;
 import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTab;
+import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabContinuationResult;
 import com.liskovsoft.youtubeapi.browse.ver2.models.rows.RowsTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
@@ -72,52 +74,55 @@ public class BrowseServiceSigned {
             Log.e(TAG, "getAuthSection: browse result is null");
         }
 
-        return browseResult.getTabs().get(0); // TODO: first first non-empty
+        return browseResult.getTabs().get(0); // TODO: find first non-empty
     }
 
-    private BrowseResultContinuation getNextSection(String nextPageKey, String authorization) {
+    public GridTabContinuationResult continueGridTab(String nextKey, String authorization) {
+        return continueGridTabResult(nextKey, authorization);
+    }
+
+    public RowsTabContinuationResult continueRowsTab(String nextKey, String authorization) {
+        return continueRowsTabResult(nextKey, authorization);
+    }
+
+    private GridTabContinuationResult continueGridTabResult(String nextPageKey, String authorization) {
         if (authorization == null) {
-            Log.e(TAG, "getNextAuthSection: authorization is null.");
+            Log.e(TAG, "continueGridTabResult: authorization is null.");
             return null;
         }
 
         if (nextPageKey == null) {
-            Log.e(TAG, "getNextAuthSection: next search key is null.");
+            Log.e(TAG, "continueGridTabResult: next search key is null.");
             return null;
         }
 
-        Call<BrowseResultContinuation> wrapper = mBrowseManagerSigned.continueGridTabResult(BrowseManagerParams.getContinuationQuery(nextPageKey), authorization);
-        BrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
+        String query = BrowseManagerParams.getContinuationQuery(nextPageKey);
+        Call<GridTabContinuationResult> wrapper = mBrowseManagerSigned.continueGridTabResult(query, authorization);
 
-        if (browseResult == null) {
-            Log.e(TAG, "getNextAuthSection: browseResult is null. Maybe invalid next key: " + nextPageKey);
-        }
-
-        return browseResult;
+        return RetrofitHelper.get(wrapper);
     }
 
-    public BrowseResultContinuation continueSection(String nextKey, String authorization) {
-        return getNextSection(nextKey, authorization);
-    }
-
-    private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String authorization) {
+    private RowsTabContinuationResult continueRowsTabResult(String nextPageKey, String authorization) {
         if (authorization == null) {
-            Log.e(TAG, "getNextTabbedResult: authorization is null.");
+            Log.e(TAG, "continueRowsTabResult: authorization is null.");
             return null;
         }
 
-        String query = BrowseManagerParams.getContinuationQuery(nextKey);
+        if (nextPageKey == null) {
+            Log.e(TAG, "continueGridTabResult: next search key is null.");
+            return null;
+        }
 
-        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerSigned.continueRowsTabResult(query, authorization);
+        String query = BrowseManagerParams.getContinuationQuery(nextPageKey);
 
-        TabbedBrowseResultContinuation browseResult = RetrofitHelper.get(wrapper);
+        Call<RowsTabContinuationResult> wrapper = mBrowseManagerSigned.continueRowsTabResult(query, authorization);
 
-        return browseResult;
+        return RetrofitHelper.get(wrapper);
     }
 
     private RowsTabResult getRowsTabResult(String query, String authorization) {
         if (authorization == null) {
-            Log.e(TAG, "getTabbedResult: authorization is null.");
+            Log.e(TAG, "getRowsTabResult: authorization is null.");
             return null;
         }
 
@@ -128,14 +133,14 @@ public class BrowseServiceSigned {
 
     private RowsTab getRowsTab(String query, String authorization) {
         if (authorization == null) {
-            Log.e(TAG, "getTab: authorization is null. Query: " + query);
+            Log.e(TAG, "getRowsTab: authorization is null. Query: " + query);
             return null;
         }
 
         RowsTabResult tabs = getRowsTabResult(query, authorization);
 
         if (tabs == null) {
-            Log.e(TAG, "getTab: tabs result is empty");
+            Log.e(TAG, "getRowsTab: tabs result is empty");
             return null;
         }
 
@@ -158,25 +163,5 @@ public class BrowseServiceSigned {
         }
 
         return result;
-    }
-
-    public TabbedBrowseResultContinuation continueTab(String nextKey, String authorization) {
-        if (authorization == null) {
-            Log.e(TAG, "getNextTab: authorization is null.");
-            return null;
-        }
-
-        TabbedBrowseResultContinuation nextHomeTabs = null;
-
-        if (nextKey != null) {
-            nextHomeTabs = getNextTabbedResult(nextKey, authorization);
-        }
-
-        if (nextHomeTabs == null) {
-            Log.e(TAG, "getNextTab: tabs are empty");
-            return null;
-        }
-
-        return nextHomeTabs;
     }
 }

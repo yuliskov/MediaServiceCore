@@ -224,12 +224,12 @@ public class YouTubeMediaGroupManagerV2 implements MediaGroupManager {
             emitter.onNext(groups);
             SectionTabContinuation continuation = mMediaGroupManagerReal.continueSectionTab(nextPageKey);
 
-            if (continuation == null) {
+            if (continuation != null) {
+                nextPageKey = continuation.getNextPageKey();
+                groups = YouTubeMediaGroup.from(continuation.getSections(), type);
+            } else {
                 break;
             }
-
-            nextPageKey = continuation.getNextPageKey();
-            groups = YouTubeMediaGroup.from(continuation.getSections(), type);
         }
 
         emitter.onComplete();

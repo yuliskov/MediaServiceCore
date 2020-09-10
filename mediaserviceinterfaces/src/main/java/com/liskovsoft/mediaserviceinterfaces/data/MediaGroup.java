@@ -13,6 +13,7 @@ public interface MediaGroup {
     int TYPE_NEWS = 6;
     int TYPE_GAMING = 7;
     int TYPE_PLAYLISTS = 8;
+    int TYPE_SUGGESTIONS = 9;
     int getType();
     void setType(int type);
     List<MediaItem> getMediaItems();

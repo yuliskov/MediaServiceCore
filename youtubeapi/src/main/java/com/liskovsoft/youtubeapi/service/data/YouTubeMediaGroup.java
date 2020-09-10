@@ -167,42 +167,11 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup();
-
-        youTubeMediaGroup.mMediaItems = new ArrayList<>();
-
-        if (section.getChannelSuggestions() != null) {
-            for (ChannelItem item : section.getChannelSuggestions()) {
-                youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (section.getVideoSuggestions() != null) {
-            for (VideoItem item : section.getVideoSuggestions()) {
-                youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (section.getRadioSuggestions() != null) {
-            for (RadioItem item : section.getRadioSuggestions()) {
-                youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (section.getPlaylistSuggestions() != null) {
-            for (PlaylistItem item : section.getPlaylistSuggestions()) {
-                youTubeMediaGroup.mMediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (youTubeMediaGroup.mMediaItems.isEmpty()) {
-            youTubeMediaGroup.mMediaItems = null;
-        }
-
+        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS);
         youTubeMediaGroup.mTitle = section.getTitle();
-        youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
 
-        return youTubeMediaGroup;
+        return create(youTubeMediaGroup, section.getVideoSuggestions(), null, section.getChannelSuggestions(),
+                section.getRadioSuggestions(), section.getPlaylistSuggestions(), section.getNextPageKey());
     }
 
     public static List<MediaGroup> from(List<BrowseSection> sections) {

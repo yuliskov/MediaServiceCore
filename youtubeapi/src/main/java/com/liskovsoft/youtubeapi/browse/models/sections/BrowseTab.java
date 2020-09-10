@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
 
@@ -11,11 +12,18 @@ public class BrowseTab {
     @JsonPath("$.endpoint.browseEndpoint.browseId")
     private String browseId;
 
+    //@JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].gridVideoRenderer")
+    //private List<VideoItem> mGridItems;
+
     /**
      * Sections == Rows in web app version
      */
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[*].shelfRenderer")
-    private List<BrowseSection> sections;
+    private List<BrowseSection> mSections;
+
+    //@JsonPath({"$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation",
+    //           "$.content.tvSurfaceContentRenderer.content.gridRenderer.continuations[0].nextContinuationData.continuation"})
+    //private String mNextPageKey;
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
@@ -32,7 +40,7 @@ public class BrowseTab {
     }
 
     public List<BrowseSection> getSections() {
-        return sections;
+        return mSections;
     }
 
 

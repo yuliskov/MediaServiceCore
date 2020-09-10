@@ -25,6 +25,10 @@ public class GridTab {
         return title;
     }
 
+    public List<VideoItem> getItems() {
+        return mItems;
+    }
+
     public String getBrowseId() {
         return browseId;
     }
@@ -35,9 +39,5 @@ public class GridTab {
 
     public String getReloadPageKey() {
         return mReloadPageKey;
-    }
-
-    public List<VideoItem> getItems() {
-        return mItems;
     }
 }

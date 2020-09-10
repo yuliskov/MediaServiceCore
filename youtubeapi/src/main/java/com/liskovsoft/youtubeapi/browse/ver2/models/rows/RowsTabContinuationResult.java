@@ -9,13 +9,13 @@ public class RowsTabContinuationResult {
      * Sections == Rows in web app version
      */
     @JsonPath("$.continuationContents.sectionListContinuation.contents[*].shelfRenderer")
-    private List<Row> sections;
+    private List<Row> mRows;
 
     @JsonPath("$.continuationContents.sectionListContinuation.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
-    public List<Row> getSections() {
-        return sections;
+    public List<Row> getRows() {
+        return mRows;
     }
 
     public String getNextPageKey() {

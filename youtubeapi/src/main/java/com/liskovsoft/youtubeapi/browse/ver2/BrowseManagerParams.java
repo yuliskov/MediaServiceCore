@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.ver2;
 
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.ver2.models.grid.GridTab;
 
 public class BrowseManagerParams {
     public static int RECOMMENDED_TAB_INDEX = 0;
@@ -29,6 +29,10 @@ public class BrowseManagerParams {
     private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
     private static final String MUSIC = "\"browseId\":\"FEtopics\",\"params\":\"-gIFbXVzaWM%3D\"";
 
+    public static String getHomeQuery() {
+        return String.format(JSON_DATA_TEMPLATE, HOME);
+    }
+
     public static String getSubscriptionsQuery() {
         return String.format(JSON_DATA_TEMPLATE, SUBSCRIPTIONS);
     }
@@ -51,14 +55,10 @@ public class BrowseManagerParams {
 
     /**
      * Get data param for the next search
-     * @param nextPageKey {@link BrowseResult#getNextPageKey()}
+     * @param nextPageKey {@link GridTab#getNextPageKey()}
      * @return data param
      */
-    public static String getNextBrowseQuery(String nextPageKey) {
+    public static String getContinuationQuery(String nextPageKey) {
         return String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey);
-    }
-
-    public static String getHomeQuery() {
-        return String.format(JSON_DATA_TEMPLATE, HOME);
     }
 }

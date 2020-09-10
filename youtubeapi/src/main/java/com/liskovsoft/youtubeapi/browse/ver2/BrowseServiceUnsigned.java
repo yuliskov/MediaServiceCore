@@ -1,10 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.ver2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.ver1.models.BrowseResultContinuation;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.BrowseTab;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResult;
-import com.liskovsoft.youtubeapi.browse.ver1.models.sections.TabbedBrowseResultContinuation;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -51,24 +47,24 @@ public class BrowseServiceUnsigned {
     }
 
     private TabbedBrowseResult getTabbedResult(String query) {
-        Call<TabbedBrowseResult> wrapper = mBrowseManagerUnsigned.getTabbedBrowseResult(query);
+        Call<TabbedBrowseResult> wrapper = mBrowseManagerUnsigned.getRowsTabResult(query);
 
         return RetrofitHelper.get(wrapper);
     }
 
     private TabbedBrowseResultContinuation getNextTabbedResult(String nextKey, String visitorData) {
-        String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
-        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerUnsigned.getContinueTabbedBrowseResult(query, visitorData);
+        Call<TabbedBrowseResultContinuation> wrapper = mBrowseManagerUnsigned.continueRowsTabResult(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }
 
     private BrowseResultContinuation getNextResult(String nextKey, String visitorData) {
-        String query = BrowseManagerParams.getNextBrowseQuery(nextKey);
+        String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
         Call<BrowseResultContinuation> wrapper =
-                mBrowseManagerUnsigned.getContinueBrowseResult(query, visitorData);
+                mBrowseManagerUnsigned.continueGridTabResult(query, visitorData);
 
         return RetrofitHelper.get(wrapper);
     }

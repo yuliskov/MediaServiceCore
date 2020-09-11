@@ -15,7 +15,6 @@ public interface MediaGroup {
     int TYPE_PLAYLISTS = 8;
     int TYPE_SUGGESTIONS = 9;
     int getType();
-    void setType(int type);
     List<MediaItem> getMediaItems();
     void setMediaItems(List<MediaItem> tabs);
     String getTitle();

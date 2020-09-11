@@ -285,12 +285,12 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             Log.d(TAG, "User signed.");
 
             mMediaGroupManagerReal = YouTubeMediaGroupManagerSigned.instance();
-            com.liskovsoft.youtubeapi.service.internal.old.YouTubeMediaGroupManagerUnsigned.unhold();
+            YouTubeMediaGroupManagerUnsigned.unhold();
         } else {
             Log.d(TAG, "User doesn't signed.");
 
             mMediaGroupManagerReal = YouTubeMediaGroupManagerUnsigned.instance();
-            com.liskovsoft.youtubeapi.service.internal.old.YouTubeMediaGroupManagerSigned.unhold();
+            YouTubeMediaGroupManagerSigned.unhold();
         }
     }
 

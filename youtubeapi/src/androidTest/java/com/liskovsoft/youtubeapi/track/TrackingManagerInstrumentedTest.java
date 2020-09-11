@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.AuthService;
-import com.liskovsoft.youtubeapi.browse.old.BrowseServiceSigned;
-import com.liskovsoft.youtubeapi.browse.old.models.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
@@ -19,7 +19,6 @@ import retrofit2.Response;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class TrackingManagerInstrumentedTest {
@@ -57,7 +56,7 @@ public class TrackingManagerInstrumentedTest {
     //}
 
     @Test
-    public void testUpdateWatchTime() throws IOException, InterruptedException {
+    public void testUpdateWatchTime() throws IOException {
         String playbackNonce = mAppService.getClientPlaybackNonce();
         String videoIdSimple = TestHelpers.VIDEO_ID_SIMPLE_3;
 
@@ -71,7 +70,7 @@ public class TrackingManagerInstrumentedTest {
 
         assertTrue("Update watch time response successful", response.isSuccessful());
 
-        BrowseResult history = mBrowseServiceSigned.getHistory(sAuthorization);
+        GridTab history = mBrowseServiceSigned.getHistory(sAuthorization);
 
         VideoItem historyItem = history.getVideoItems().get(0);
 

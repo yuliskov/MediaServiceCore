@@ -49,7 +49,15 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return Observable.fromCallable(() -> getSearch(searchText));
+        return Observable.create(emitter -> {
+            MediaGroup search = getSearch(searchText);
+
+            if (search != null) {
+                emitter.onNext(search);
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override
@@ -293,15 +301,17 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
             List<GridTab> tabs = mMediaGroupManagerReal.getPlaylists();
 
-            for (GridTab tab : tabs) {
-                GridTabContinuation tabContinuation = mMediaGroupManagerReal.continueGridTab(tab.getReloadPageKey());
+            if (tabs != null) {
+                for (GridTab tab : tabs) {
+                    GridTabContinuation tabContinuation = mMediaGroupManagerReal.continueGridTab(tab.getReloadPageKey());
 
-                if (tabContinuation != null) {
-                    ArrayList<MediaGroup> list = new ArrayList<>();
-                    YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_PLAYLISTS);
-                    mediaGroup.setTitle(tab.getTitle());
-                    list.add(YouTubeMediaGroup.from(tabContinuation, mediaGroup));
-                    emitter.onNext(list);
+                    if (tabContinuation != null) {
+                        ArrayList<MediaGroup> list = new ArrayList<>();
+                        YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_PLAYLISTS);
+                        mediaGroup.setTitle(tab.getTitle());
+                        list.add(YouTubeMediaGroup.from(tabContinuation, mediaGroup));
+                        emitter.onNext(list);
+                    }
                 }
             }
 

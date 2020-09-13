@@ -97,12 +97,28 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
-        return Observable.fromCallable(() -> getMetadata(item));
+        return Observable.create(emitter -> {
+            YouTubeMediaItemMetadata metadata = getMetadata(item);
+
+            if (metadata != null) {
+                emitter.onNext(metadata);
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(String videoId) {
-        return Observable.fromCallable(() -> getMetadata(videoId));
+        return Observable.create(emitter -> {
+            YouTubeMediaItemMetadata metadata = getMetadata(videoId);
+
+            if (metadata != null) {
+                emitter.onNext(metadata);
+            }
+
+            emitter.onComplete();
+        });
     }
 
     @Override

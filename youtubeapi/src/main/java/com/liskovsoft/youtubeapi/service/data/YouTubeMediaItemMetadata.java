@@ -31,6 +31,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private boolean mIsLive;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
+        if (watchNextResult == null) {
+            return null;
+        }
+
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
 
         CurrentVideo videoMetadata = watchNextResult.getVideoMetadata();

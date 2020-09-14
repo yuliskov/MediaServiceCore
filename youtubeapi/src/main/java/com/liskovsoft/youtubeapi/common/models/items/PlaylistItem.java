@@ -6,20 +6,21 @@ import java.util.List;
 
 // root element: pivotPlaylistRenderer (e.g. Album)
 public class PlaylistItem {
-    @JsonPath({"$.playlistId", "$.navigationEndpoint.watchEndpoint.playlistId"})
-    private String mPlaylistId;
-    @JsonPath("$.thumbnailRenderer.playlistCustomThumbnailRenderer.thumbnail.thumbnails[*]")
+    @JsonPath({"$.thumbnail.thumbnails[*]",
+               "$.thumbnailRenderer.playlistCustomThumbnailRenderer.thumbnail.thumbnails[*]"})
     private List<Thumbnail> mThumbnails;
-    @JsonPath("$.title.runs[0].text")
+    @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
+    @JsonPath("$.shortBylineText.runs[0].text")
+    private String mDescription;
     @JsonPath("$.navigationEndpoint.watchEndpoint.videoId")
     private String mVideoId;
     @JsonPath("$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId")
     private String mChannelId;
+    @JsonPath({"$.playlistId", "$.navigationEndpoint.watchEndpoint.playlistId"})
+    private String mPlaylistId;
     @JsonPath("$.videoCountText.runs[0].text")
     private String mVideoCountText;
-    @JsonPath("$.shortBylineText.runs[0].text")
-    private String mDescription;
     @JsonPath("$.navigationEndpoint.watchEndpoint.params")
     private String mParams;
 

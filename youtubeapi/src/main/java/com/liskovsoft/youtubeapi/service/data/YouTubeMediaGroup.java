@@ -28,6 +28,24 @@ public class YouTubeMediaGroup implements MediaGroup {
         mType = type;
     }
 
+    public static MediaGroup from(GridTab browseResult, int type) {
+        if (browseResult == null) {
+            return null;
+        }
+
+        return create(new YouTubeMediaGroup(type), browseResult.getVideoItems(), null,
+                null, null, null, browseResult.getNextPageKey());
+    }
+
+    public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
+        if (continuation == null) {
+            return null;
+        }
+
+        return create((YouTubeMediaGroup) baseGroup, continuation.getVideoItems(), null,
+                null, null, null, continuation.getNextPageKey());
+    }
+
     public static MediaGroup from(Section section, int type) {
         if (section == null) {
             return null;
@@ -50,13 +68,13 @@ public class YouTubeMediaGroup implements MediaGroup {
                 continuation.getChannelItems(), continuation.getRadioItems(), continuation.getPlaylistItems(), continuation.getNextPageKey());
     }
 
-    public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
-        if (continuation == null) {
+    public static MediaGroup from(SearchResult searchResult, int type) {
+        if (searchResult == null) {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, continuation.getVideoItems(), null,
-                null, null, null, continuation.getNextPageKey());
+        return create(new YouTubeMediaGroup(type), searchResult.getVideoItems(), searchResult.getMusicItems(), searchResult.getChannelItems(),
+                searchResult.getRadioItems(), searchResult.getPlaylistItems(), searchResult.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {
@@ -64,32 +82,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, nextSearchResult.getVideoItems(), null,
-                null, null, null, nextSearchResult.getNextPageKey());
-    }
-
-    public static MediaGroup from(GridTab browseResult, int type) {
-        if (browseResult == null) {
-            return null;
-        }
-
-        return create(new YouTubeMediaGroup(type), browseResult.getVideoItems(), null,
-                null, null, null, browseResult.getNextPageKey());
-    }
-
-    public static MediaGroup from(SearchResult searchResult, int type) {
-        if (searchResult == null) {
-            return null;
-        }
-
-        List<VideoItem> videoItems = searchResult.getVideoItems();
-        List<MusicItem> musicItems = searchResult.getMusicItems();
-        List<ChannelItem> channelItems = searchResult.getChannelItems();
-        List<RadioItem> radioItems = searchResult.getRadioItems();
-        List<PlaylistItem> playlistItems = searchResult.getPlaylistItems();
-        String nextPageKey = searchResult.getNextPageKey();
-
-        return create(new YouTubeMediaGroup(type), videoItems, musicItems, channelItems, radioItems, playlistItems, nextPageKey);
+        return create((YouTubeMediaGroup) baseGroup, nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
+                nextSearchResult.getChannelItems(), nextSearchResult.getRadioItems(), nextSearchResult.getPlaylistItems(), nextSearchResult.getNextPageKey());
     }
 
     public static MediaGroup from(SuggestedSection section) {

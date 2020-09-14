@@ -61,24 +61,6 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
-    //public static MediaItem from(SuggestedItem item) {
-    //    YouTubeMediaItem video = new YouTubeMediaItem();
-    //
-    //    video.mMediaItemType = MediaItem.TYPE_VIDEO;
-    //    video.mTitle = item.getTitle();
-    //    video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
-    //    String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-    //    video.mCardImageUrl = highResThumbnailUrl;
-    //    video.mBackgroundImageUrl = highResThumbnailUrl;
-    //    video.mMediaId = item.getVideoId();
-    //    video.mChannelId = item.getChannelId();
-    //    video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
-    //    video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
-    //    addCommonProps(video);
-    //
-    //    return video;
-    //}
-
     public static YouTubeMediaItem from(MusicItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
@@ -169,14 +151,11 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mTitle = item.getTitle();
-        //video.mDescription = YouTubeMediaServiceHelper.createDescription(item.getUserName(), item.getViewCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mMediaId = item.getVideoId();
-        //video.mChannelId = item.getChannelId();
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
-        //video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
         addCommonProps(video);
 
         return video;

@@ -7,33 +7,33 @@ import java.util.List;
 // root element: pivotChannelRenderer
 public class ChannelItem {
     @JsonPath("$.thumbnail.thumbnails[*]")
-    private List<Thumbnail> thumbnails;
+    private List<Thumbnail> mThumbnails;
     @JsonPath({"$.title.runs[0].text", "$.displayName.runs[0].text"})
-    private String title;
+    private String mTitle;
     @JsonPath({"$.channelId", "$.navigationEndpoint.browseEndpoint.browseId"})
-    private String channelId;
+    private String mChannelId;
     @JsonPath("$.videoCountText.runs[0].text")
-    private String videoCount;
+    private String mVideoCount;
     @JsonPath("$.subscriberCountText.runs[0].text")
-    private String subscriberCountText;
+    private String mSubscriberCountText;
 
     public List<Thumbnail> getThumbnails() {
-        return thumbnails;
+        return mThumbnails;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getChannelId() {
-        return channelId;
+        return mChannelId;
     }
 
     public String getVideoCount() {
-        return videoCount;
+        return mVideoCount;
     }
 
     public String getSubscriberCountText() {
-        return subscriberCountText;
+        return mSubscriberCountText;
     }
 }

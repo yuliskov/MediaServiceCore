@@ -13,7 +13,7 @@ public class SearchResult {
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer")
     private List<VideoItem> mVideoItems;
 
-    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].tvMusicVideoRenderer")
+    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].tvMusicVideoRenderer") // ???
     private List<MusicItem> mMusicItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactChannelRenderer")

@@ -38,7 +38,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
 
         return create(youTubeMediaGroup, section.getVideoItems(), section.getMusicItems(), section.getChannelItems(),
-                section.getRadioItems(), null, section.getNextPageKey());
+                section.getRadioItems(), section.getPlaylistItems(), section.getNextPageKey());
     }
 
     public static MediaGroup from(SectionContinuation continuation, MediaGroup baseGroup) {
@@ -46,10 +46,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        List<VideoItem> videoItems = continuation.getVideoItems();
-        String nextPageKey = continuation.getNextPageKey();
-
-        return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
+        return create((YouTubeMediaGroup) baseGroup, continuation.getVideoItems(), continuation.getMusicItems(),
+                continuation.getChannelItems(), continuation.getRadioItems(), continuation.getPlaylistItems(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
@@ -57,10 +55,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        List<VideoItem> videoItems = continuation.getVideoItems();
-        String nextPageKey = continuation.getNextPageKey();
-
-        return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
+        return create((YouTubeMediaGroup) baseGroup, continuation.getVideoItems(), null,
+                null, null, null, continuation.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {
@@ -68,10 +64,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        List<VideoItem> videoItems = nextSearchResult.getVideoItems();
-        String nextPageKey = nextSearchResult.getNextPageKey();
-
-        return create((YouTubeMediaGroup) baseGroup, videoItems, nextPageKey);
+        return create((YouTubeMediaGroup) baseGroup, nextSearchResult.getVideoItems(), null,
+                null, null, null, nextSearchResult.getNextPageKey());
     }
 
     public static MediaGroup from(GridTab browseResult, int type) {
@@ -79,10 +73,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        List<VideoItem> videoItems = browseResult.getVideoItems();
-        String nextPageKey = browseResult.getNextPageKey();
-
-        return create(new YouTubeMediaGroup(type), videoItems, nextPageKey);
+        return create(new YouTubeMediaGroup(type), browseResult.getVideoItems(), null,
+                null, null, null, browseResult.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResult searchResult, int type) {
@@ -147,10 +139,6 @@ public class YouTubeMediaGroup implements MediaGroup {
     @Override
     public int getType() {
         return mType;
-    }
-
-    private static YouTubeMediaGroup create(YouTubeMediaGroup baseGroup, List<VideoItem> videoItems, String nextPageKey) {
-        return create(baseGroup, videoItems, null, null, null, null, nextPageKey);
     }
 
     private static YouTubeMediaGroup create(

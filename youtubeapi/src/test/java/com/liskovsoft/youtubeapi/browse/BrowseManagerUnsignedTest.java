@@ -62,7 +62,7 @@ public class BrowseManagerUnsignedTest {
         SectionTabResult browseResult = wrapper.execute().body();
 
         assertNotNull("Items not null", browseResult);
-        Section section = browseResult.getTabs().get(0).getSections().get(0);
+        Section section = firstNotEmpty(browseResult).getSections().get(0);
         assertTrue("List > 2",
                 section.getVideoItems().size() > 2 || section.getMusicItems().size() > 2 || section.getChannelItems().size() > 2);
 
@@ -101,7 +101,7 @@ public class BrowseManagerUnsignedTest {
 
         tabbedResultNotEmpty(browseResult);
 
-        Section firstSection = browseResult.getTabs().get(0).getSections().get(0);
+        Section firstSection = firstNotEmpty(browseResult).getSections().get(0);
 
         String nextPageKey = firstSection.getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
@@ -134,7 +134,7 @@ public class BrowseManagerUnsignedTest {
 
         tabbedResultNotEmpty(browseResult1);
 
-        String nextPageKey = browseResult1.getTabs().get(0).getSections().get(0).getNextPageKey();
+        String nextPageKey = firstNotEmpty(browseResult1).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
         String visitorId = browseResult1.getVisitorData();
@@ -146,7 +146,7 @@ public class BrowseManagerUnsignedTest {
 
         nextSectionResultNotEmpty(browseResult2);
 
-        String nextTabbedPageKey = browseResult1.getTabs().get(0).getNextPageKey();
+        String nextTabbedPageKey = firstNotEmpty(browseResult1).getNextPageKey();
         Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseManagerParams.getContinuationQuery(nextTabbedPageKey), visitorId);
         Response<SectionTabContinuation> executeTabbed = nextTabbed.execute();
         SectionTabContinuation browseTabbedResult2 = executeTabbed.body();
@@ -163,7 +163,7 @@ public class BrowseManagerUnsignedTest {
 
         tabbedResultNotEmpty(browseResult);
 
-        List<Section> sections = browseResult.getTabs().get(0).getSections();
+        List<Section> sections = firstNotEmpty(browseResult).getSections();
 
         for (Section section : sections) {
             assertNotNull("All sections should have names", section.getTitle());
@@ -180,11 +180,62 @@ public class BrowseManagerUnsignedTest {
         tabbedResultNotEmpty(browseResult);
     }
 
+    @Test
+    public void testThatMusicTabContinuationIsUnique() {
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getMusicQuery());
+        
+        SectionTabResult browseResult = RetrofitHelper.get(wrapper);
+
+        tabbedResultNotEmpty(browseResult);
+
+        String visitorData = browseResult.getVisitorData();
+
+        Section firstSection = firstNotEmpty(browseResult).getSections().get(0);
+
+        Call<SectionContinuation> wrapper2 =
+                mService.continueSection(BrowseManagerParams.getContinuationQuery(firstSection.getNextPageKey()), visitorData);
+
+        SectionContinuation musicContinuation = RetrofitHelper.get(wrapper2);
+
+        String video1;
+        String video2;
+
+        if (firstSection.getMusicItems() != null) {
+            video1 = firstSection.getMusicItems().get(0).getVideoId();
+            video2 = musicContinuation.getMusicItems().get(0).getVideoId();
+        } else {
+            video1 = firstSection.getRadioItems().get(0).getVideoId();
+            video2 = musicContinuation.getRadioItems().get(0).getVideoId();
+        }
+
+        assertNotNull("Video1 not null", video1);
+        assertNotNull("Video2 not null", video2);
+
+        assertNotEquals("Music tab continuation is unique", video1, video2);
+    }
+
+    private SectionTab firstNotEmpty(SectionTabResult browseResult) {
+        if (browseResult == null) {
+            return null;
+        }
+
+        SectionTab result = null;
+
+        for (SectionTab tab : browseResult.getTabs()) {
+            if (tab.getSections() != null) {
+                result = tab;
+                break;
+            }
+        }
+
+        return result;
+    }
+
     private void nextSectionResultNotEmpty(SectionContinuation browseResult) {
         assertNotNull("Next section result: not empty", browseResult);
-        assertTrue("Next section result: item list not empty", browseResult.getVideoItems() != null || browseResult.getPlaylistItems() != null);
+        assertTrue("Next section result: item list not empty", browseResult.getVideoItems() != null || browseResult.getRadioItems() != null);
         //assertNotNull("Next key not empty", browseResult2.getNextPageKey());
-        assertTrue("Next section result: item list > 2", browseResult.getVideoItems().size() > 2 || browseResult.getPlaylistItems().size() > 2);
+        assertTrue("Next section result: item list > 2", browseResult.getVideoItems().size() > 2 || browseResult.getRadioItems().size() > 2);
     }
 
     private void nextTabbedResultNotEmpty(SectionTabContinuation browseResult) {

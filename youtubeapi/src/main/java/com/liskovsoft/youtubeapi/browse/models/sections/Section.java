@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.browse.models.sections;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
@@ -19,6 +20,8 @@ public class Section {
     private List<ChannelItem> mChannelItems;
     @JsonPath("$.content.horizontalListRenderer.items[*].gridRadioRenderer")
     private List<RadioItem> mRadioItems;
+    @JsonPath("$.content.horizontalListRenderer.items[*].gridPlaylistRenderer")
+    private List<PlaylistItem> mPlaylistItems;
     @JsonPath("$.content.horizontalListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
@@ -40,6 +43,10 @@ public class Section {
 
     public List<RadioItem> getRadioItems() {
         return mRadioItems;
+    }
+
+    public List<PlaylistItem> getPlaylistItems() {
+        return mPlaylistItems;
     }
 
     public String getNextPageKey() {

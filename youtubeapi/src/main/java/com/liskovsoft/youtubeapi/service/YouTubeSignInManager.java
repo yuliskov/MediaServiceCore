@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.auth.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class YouTubeSignInManager implements SignInManager {
@@ -53,7 +54,24 @@ public class YouTubeSignInManager implements SignInManager {
 
     @Override
     public Observable<String> signInObserve() {
-        return Observable.fromCallable(this::signIn);
+        return Observable.create(emitter -> {
+            UserCodeResult userCodeResult = mAuthService.getUserCode();
+
+            emitter.onNext(userCodeResult.getUserCode());
+
+            Disposable tokenAction = mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
+                        .subscribeOn(Schedulers.newThread())
+                        .subscribe(refreshTokenResult -> {
+                            if (refreshTokenResult != null) {
+                                Log.d(TAG, "Success. Refresh token successfully created!");
+                                storeRefreshToken(refreshTokenResult.getRefreshToken());
+                                emitter.onComplete();
+                            } else {
+                                Log.e(TAG, "Error. Refresh token is empty!");
+                                emitter.onError(new IllegalStateException("Error. Refresh token is empty!"));
+                            }
+                        });
+        });
     }
 
     @Override

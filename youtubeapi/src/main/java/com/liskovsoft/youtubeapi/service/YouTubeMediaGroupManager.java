@@ -247,21 +247,23 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
+        String nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup);
+
         switch (mediaGroup.getType()) {
             case MediaGroup.TYPE_SEARCH:
                 return YouTubeMediaGroup.from(
-                        mMediaGroupManagerReal.continueSearch(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                        mMediaGroupManagerReal.continueSearch(nextKey),
                         mediaGroup);
             case MediaGroup.TYPE_HISTORY:
             case MediaGroup.TYPE_SUBSCRIPTIONS:
             case MediaGroup.TYPE_PLAYLISTS:
                 return YouTubeMediaGroup.from(
-                        mMediaGroupManagerReal.continueGridTab(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                        mMediaGroupManagerReal.continueGridTab(nextKey),
                         mediaGroup
                 );
             default:
                 return YouTubeMediaGroup.from(
-                        mMediaGroupManagerReal.continueSection(YouTubeMediaServiceHelper.extractNextKey(mediaGroup)),
+                        mMediaGroupManagerReal.continueSection(nextKey),
                         mediaGroup
                 );
         }

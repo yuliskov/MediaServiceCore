@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,11 +63,21 @@ public class BrowseManagerUnsignedTest {
         SectionTabResult browseResult = wrapper.execute().body();
 
         assertNotNull("Items not null", browseResult);
-        Section section = firstNotEmpty(browseResult).getSections().get(0);
+        Section section = firstNotEmptyTab(browseResult).getSections().get(0);
         assertTrue("List > 2",
                 section.getVideoItems().size() > 2 || section.getMusicItems().size() > 2 || section.getChannelItems().size() > 2);
 
         return section;
+    }
+
+    private void testFields(PlaylistItem playlistItem) {
+        assertNotNull("Title not null", playlistItem.getTitle());
+        assertNotNull("Description not null", playlistItem.getDescription());
+        String playlistId = playlistItem.getPlaylistId();
+        assertNotNull("Playlist Id not null", playlistId);
+        assertNotNull("Video count not null: " + playlistId, playlistItem.getVideoCountText());
+        assertNotNull("Channel not null: " + playlistId, playlistItem.getChannelId());
+        assertNotNull("Thumbs not null: " + playlistId, playlistItem.getThumbnails());
     }
 
     private void testFields(VideoItem videoItem) {
@@ -101,7 +112,7 @@ public class BrowseManagerUnsignedTest {
 
         tabbedResultNotEmpty(browseResult);
 
-        Section firstSection = firstNotEmpty(browseResult).getSections().get(0);
+        Section firstSection = firstNotEmptyTab(browseResult).getSections().get(0);
 
         String nextPageKey = firstSection.getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
@@ -134,7 +145,7 @@ public class BrowseManagerUnsignedTest {
 
         tabbedResultNotEmpty(browseResult1);
 
-        String nextPageKey = firstNotEmpty(browseResult1).getSections().get(0).getNextPageKey();
+        String nextPageKey = firstNotEmptyTab(browseResult1).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
         String visitorId = browseResult1.getVisitorData();
@@ -146,7 +157,7 @@ public class BrowseManagerUnsignedTest {
 
         nextSectionResultNotEmpty(browseResult2);
 
-        String nextTabbedPageKey = firstNotEmpty(browseResult1).getNextPageKey();
+        String nextTabbedPageKey = firstNotEmptyTab(browseResult1).getNextPageKey();
         Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseManagerParams.getContinuationQuery(nextTabbedPageKey), visitorId);
         Response<SectionTabContinuation> executeTabbed = nextTabbed.execute();
         SectionTabContinuation browseTabbedResult2 = executeTabbed.body();
@@ -163,7 +174,7 @@ public class BrowseManagerUnsignedTest {
 
         tabbedResultNotEmpty(browseResult);
 
-        List<Section> sections = firstNotEmpty(browseResult).getSections();
+        List<Section> sections = firstNotEmptyTab(browseResult).getSections();
 
         for (Section section : sections) {
             assertNotNull("All sections should have names", section.getTitle());
@@ -182,15 +193,11 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatMusicTabContinuationIsUnique() {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getMusicQuery());
-        
-        SectionTabResult browseResult = RetrofitHelper.get(wrapper);
-
-        tabbedResultNotEmpty(browseResult);
+        SectionTabResult browseResult = getMusicTab();
 
         String visitorData = browseResult.getVisitorData();
 
-        Section firstSection = firstNotEmpty(browseResult).getSections().get(0);
+        Section firstSection = firstNotEmptyTab(browseResult).getSections().get(0);
 
         Call<SectionContinuation> wrapper2 =
                 mService.continueSection(BrowseManagerParams.getContinuationQuery(firstSection.getNextPageKey()), visitorData);
@@ -214,7 +221,43 @@ public class BrowseManagerUnsignedTest {
         assertNotEquals("Music tab continuation is unique", video1, video2);
     }
 
-    private SectionTab firstNotEmpty(SectionTabResult browseResult) {
+    @Test
+    public void testThatPlaylistItemContainsRequiredFields() {
+        SectionTabResult browseResult = getMusicTab();
+
+        Section playlistSection = findPlaylistSection(firstNotEmptyTab(browseResult));
+
+        testFields(playlistSection.getPlaylistItems().get(0));
+    }
+
+    private Section findPlaylistSection(SectionTab tab) {
+        if (tab == null) {
+            return null;
+        }
+
+        Section result = null;
+
+        for (Section section : tab.getSections()) {
+            if (section.getPlaylistItems() != null) {
+                result = section;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private SectionTabResult getMusicTab() {
+        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getMusicQuery());
+
+        SectionTabResult browseResult = RetrofitHelper.get(wrapper);
+
+        tabbedResultNotEmpty(browseResult);
+
+        return browseResult;
+    }
+
+    private SectionTab firstNotEmptyTab(SectionTabResult browseResult) {
         if (browseResult == null) {
             return null;
         }

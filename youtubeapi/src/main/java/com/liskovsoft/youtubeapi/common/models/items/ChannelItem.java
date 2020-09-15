@@ -8,13 +8,15 @@ import java.util.List;
 public class ChannelItem {
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
-    @JsonPath({"$.title.runs[0].text", "$.displayName.runs[0].text"})
+    @JsonPath({"$.title.simpleText", "$.title.runs[0].text", "$.displayName.runs[0].text"})
     private String mTitle;
     @JsonPath({"$.channelId", "$.navigationEndpoint.browseEndpoint.browseId"})
     private String mChannelId;
     @JsonPath("$.videoCountText.runs[0].text")
-    private String mVideoCount;
-    @JsonPath("$.subscriberCountText.runs[0].text")
+    private String mVideoCount1;
+    @JsonPath("$.videoCountText.runs[1].text")
+    private String mVideoCount2;
+    @JsonPath({"$.subscriberCountText.simpleText", "$.subscriberCountText.runs[0].text"})
     private String mSubscriberCountText;
 
     public List<Thumbnail> getThumbnails() {
@@ -29,8 +31,16 @@ public class ChannelItem {
         return mChannelId;
     }
 
-    public String getVideoCount() {
-        return mVideoCount;
+    public String getVideoCountText() {
+        String result;
+
+        if (mVideoCount2 != null) {
+            result = mVideoCount1 + mVideoCount2;
+        } else {
+            result = mVideoCount1;
+        }
+
+        return result;
     }
 
     public String getSubscriberCountText() {

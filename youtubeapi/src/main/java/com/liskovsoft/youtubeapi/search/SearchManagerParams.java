@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
+import com.liskovsoft.youtubeapi.app.AppConstants;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
 public class SearchManagerParams {
@@ -16,8 +18,12 @@ public class SearchManagerParams {
             "'request':{},'user':{'enableSafetyMode':false},'clickTracking':{'clickTrackingParams':'CAQQybcCIhMIyI2g4f3t4AIV13SyCh1LPghk'}}," +
             "'continuation':'%s'}";
 
+    private static final String FIRST_SEARCH = "\"query\":\"%s\"";
+    private static final String CONTINUATION_SEARCH = "\"continuation\":\"%s\"";
+
     public static String getSearchQuery(String searchText) {
-        return String.format(JSON_DATA_TEMPLATE, escape(searchText));
+        String search = String.format(FIRST_SEARCH, escape(searchText));
+        return createQuery(search);
     }
 
     /**
@@ -25,13 +31,19 @@ public class SearchManagerParams {
      * @param nextPageKey {@link SearchResult#getNextPageKey()}
      * @return data param
      */
-    public static String getNextSearchQuery(String nextPageKey) {
-        return String.format(JSON_CONTINUATION_DATA_TEMPLATE, nextPageKey);
+    public static String getContinuationQuery(String nextPageKey) {
+        String continuation = String.format(CONTINUATION_SEARCH, nextPageKey);
+        return createQuery(continuation);
     }
 
     private static String escape(String text) {
         return text
                 .replaceAll("'", "\\\\'")
                 .replaceAll("\"", "\\\\\"");
+    }
+
+    private static String createQuery(String template) {
+        LocaleManager localeManager = LocaleManager.instance();
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
     }
 }

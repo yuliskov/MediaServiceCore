@@ -36,6 +36,8 @@ public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
     
     @Test
     public void testThatResultProperlyLocalized() {
+        LocaleManager.instance().setLanguage("en");
+
         WatchNextResult watchNextResult = getWatchNextResult();
 
         SuggestedSection firstSuggesting = watchNextResult.getSuggestedSections().get(0);

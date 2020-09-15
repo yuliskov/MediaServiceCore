@@ -13,7 +13,7 @@ public class SearchResult {
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer")
     private List<VideoItem> mVideoItems;
 
-    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].tvMusicVideoRenderer") // ???
+    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].tvMusicVideoRenderer")
     private List<MusicItem> mMusicItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactChannelRenderer")
@@ -27,9 +27,6 @@ public class SearchResult {
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
-
-    @JsonPath("$.contents.sectionListRenderer.continuations[0].reloadContinuationData.continuation")
-    private String mReloadPageKey;
 
     public List<VideoItem> getVideoItems() {
         return mVideoItems;
@@ -49,10 +46,6 @@ public class SearchResult {
 
     public String getNextPageKey() {
         return mNextPageKey;
-    }
-
-    public String getReloadPageKey() {
-        return mReloadPageKey;
     }
 
     public List<PlaylistItem> getPlaylistItems() {

@@ -10,22 +10,28 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import java.util.List;
 
 public class SearchResultContinuation {
-    @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].compactVideoRenderer")
+    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer", // V7
+               "$.continuationContents.itemSectionContinuation.contents[*].compactVideoRenderer"}) // V6
     private List<VideoItem> mVideoItems;
 
-    @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].tvMusicVideoRenderer")
+    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].tvMusicVideoRenderer",
+               "$.continuationContents.itemSectionContinuation.contents[*].tvMusicVideoRenderer"})
     private List<MusicItem> mMusicItems;
 
-    @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].compactChannelRenderer")
+    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].compactChannelRenderer",
+               "$.continuationContents.itemSectionContinuation.contents[*].compactChannelRenderer"})
     private List<ChannelItem> mChannelItems;
 
-    @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].compactRadioRenderer")
+    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].compactRadioRenderer",
+               "$.continuationContents.itemSectionContinuation.contents[*].compactRadioRenderer"})
     private List<RadioItem> mRadioItems;
 
-    @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].compactPlaylistRenderer")
+    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].compactPlaylistRenderer",
+               "$.continuationContents.itemSectionContinuation.contents[*].compactPlaylistRenderer"})
     private List<PlaylistItem> mPlaylistItems;
 
-    @JsonPath("$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation")
+    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
+               "$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation"})
     private String mNextPageKey;
 
     public List<VideoItem> getVideoItems() {

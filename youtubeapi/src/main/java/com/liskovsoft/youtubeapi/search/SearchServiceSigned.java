@@ -49,7 +49,7 @@ public class SearchServiceSigned {
             throw new IllegalStateException("Can't get next search page. Next search key is empty.");
         }
         
-        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getNextSearchQuery(nextSearchPageKey), authorization);
+        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextSearchPageKey), authorization);
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {

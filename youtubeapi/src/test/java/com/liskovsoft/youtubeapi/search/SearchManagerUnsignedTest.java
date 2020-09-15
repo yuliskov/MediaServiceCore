@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import org.junit.Before;
@@ -10,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -50,7 +53,7 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
         checkSearchResult(result);
 
         String nextPageKey = result.getNextPageKey();
-        Call<SearchResultContinuation> wrapper2 = mSearchManagerUnsigned.continueSearchResult(SearchManagerParams.getNextSearchQuery(nextPageKey));
+        Call<SearchResultContinuation> wrapper2 = mSearchManagerUnsigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextPageKey));
         SearchResultContinuation result2 = RetrofitHelper.get(wrapper2);
         checkSearchResultContinuation(result2);
     }
@@ -63,5 +66,26 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
         assertTrue("Contains multiple music items", searchResult.getMusicItems().size() > 5);
 
         checkSearchResultMusicItem(searchResult.getMusicItems().get(0));
+    }
+
+    @Test
+    public void testThatSearchResultIsProperlyLocalized() {
+        LocaleManager.instance().setLanguage("en");
+
+        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
+        SearchResult searchResult = RetrofitHelper.get(wrapper);
+
+        MusicItem musicItem = searchResult.getMusicItems().get(0);
+
+        assertTrue("Contains english localization", musicItem.getViewCountText().contains("views"));
+
+        LocaleManager.instance().setLanguage("ru");
+
+        wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
+        searchResult = RetrofitHelper.get(wrapper);
+
+        musicItem = searchResult.getMusicItems().get(0);
+
+        assertTrue("Contains russian localization", musicItem.getViewCountText().contains("просмотров"));
     }
 }

@@ -48,7 +48,7 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
         checkSearchResult(result);
 
         String nextPageKey = result.getNextPageKey();
-        Call<SearchResultContinuation> wrapper2 = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getNextSearchQuery(nextPageKey), TestHelpers.getAuthorization());
+        Call<SearchResultContinuation> wrapper2 = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextPageKey), TestHelpers.getAuthorization());
         SearchResultContinuation result2 = RetrofitHelper.get(wrapper2);
         checkSearchResultContinuation(result2);
     }

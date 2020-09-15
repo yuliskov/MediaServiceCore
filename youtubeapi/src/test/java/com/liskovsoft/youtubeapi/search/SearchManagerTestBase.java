@@ -26,7 +26,6 @@ public class SearchManagerTestBase {
         assertNotNull("Search result contains items", searchResult.getVideoItems());
         assertTrue("Search result contains more than one item", searchResult.getVideoItems().size() > 2);
         assertNotNull("Search result contains next key", searchResult.getNextPageKey());
-        assertNotNull("Search result contains reload key", searchResult.getReloadPageKey());
         VideoItem videoItem = searchResult.getVideoItems().get(0);
         checkSearchResultVideoItem(videoItem);
         List<ChannelItem> channelItems = searchResult.getChannelItems();
@@ -58,7 +57,7 @@ public class SearchManagerTestBase {
         assertNotNull("Search result item not null", channelItem);
         assertNotNull("Search result item contains channel id", channelItem.getChannelId());
         assertNotNull("Search result item contains title", channelItem.getTitle());
-        assertNotNull("Search result item contains video count", channelItem.getVideoCount());
+        assertNotNull("Search result item contains video count", channelItem.getVideoCountText());
         assertNotNull("Search result item contains subscriber count", channelItem.getSubscriberCountText());
     }
 }

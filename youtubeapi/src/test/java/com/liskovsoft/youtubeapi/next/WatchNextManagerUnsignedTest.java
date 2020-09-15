@@ -2,6 +2,8 @@ package com.liskovsoft.youtubeapi.next;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
@@ -27,9 +31,28 @@ public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
 
     @Test
     public void testThatWatchNextContainsAllRequiredFields() {
-        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SIMPLE));
-        WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
+        checkWatchNextResultFields(getWatchNextResult());
+    }
+    
+    @Test
+    public void testThatResultProperlyLocalized() {
+        WatchNextResult watchNextResult = getWatchNextResult();
 
-        checkWatchNextResultFields(watchNextResult);
+        SuggestedSection firstSuggesting = watchNextResult.getSuggestedSections().get(0);
+
+        assertEquals("Suggestion title is localized to english", "Suggestions", firstSuggesting.getTitle());
+
+        LocaleManager.instance().setLanguage("ru");
+
+        watchNextResult = getWatchNextResult();
+
+        firstSuggesting = watchNextResult.getSuggestedSections().get(0);
+
+        assertEquals("Suggestion title is localized to russian", "Похожие видео", firstSuggesting.getTitle());
+    }
+
+    private WatchNextResult getWatchNextResult() {
+        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SIMPLE));
+        return RetrofitHelper.get(wrapper);
     }
 }

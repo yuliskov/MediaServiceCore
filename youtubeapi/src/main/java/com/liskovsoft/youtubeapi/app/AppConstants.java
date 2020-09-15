@@ -10,4 +10,11 @@ public interface AppConstants {
     String API_KEY = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
     String FUNCTION_RANDOM_BYTES =
      "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}}";
+
+    /**
+     * Used in browse, next, search
+     */
+    String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20190214\"," +
+            "\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
+            "\"user\":{\"enableSafetyMode\":false}},%s}";
 }

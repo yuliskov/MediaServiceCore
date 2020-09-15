@@ -4,8 +4,8 @@ import java.util.Locale;
 
 public class LocaleManager {
     private static LocaleManager sInstance;
-    private final String mLang;
-    private final String mCountry;
+    private String mLang;
+    private String mCountry;
 
     private LocaleManager() {
         Locale defaultLocale = Locale.getDefault();
@@ -27,5 +27,13 @@ public class LocaleManager {
 
     public String getLanguage() {
         return mLang;
+    }
+
+    public void setLanguage(String lang) {
+        mLang = lang;
+    }
+
+    public void setCountry(String country) {
+        mCountry = country;
     }
 }

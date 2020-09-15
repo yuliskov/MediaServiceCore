@@ -2,13 +2,10 @@ package com.liskovsoft.youtubeapi.next;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class WatchNextManagerParams {
-    private static final String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +
-            ".20190214\",\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
-            "\"user\":{\"enableSafetyMode\":false}}," +
-            "%s}";
     private static final String JSON_DATA_TEMPLATE_OLD = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"6.20180913\"," +
             "\"screenWidthPoints\":1280,\"screenHeightPoints\":720,\"screenPixelDensity\":1,\"theme\":\"CLASSIC\",\"utcOffsetMinutes\":180," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\"}," +
@@ -46,6 +43,6 @@ public class WatchNextManagerParams {
 
     private static String createQuery(String template) {
         LocaleManager localeManager = LocaleManager.instance();
-        return String.format(JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
     }
 }

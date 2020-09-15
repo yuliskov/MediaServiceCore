@@ -1,15 +1,12 @@
 package com.liskovsoft.youtubeapi.browse;
 
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class BrowseManagerParams {
     private static final String JSON_POST_DATA_TEMPLATE_OLD = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +
             ".20190214\",\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"US\",\"acceptLanguage\":\"en\"}," +
-            "\"user\":{\"enableSafetyMode\":false}}," +
-            "%s}";
-    private static final String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +
-            ".20190214\",\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
             "\"user\":{\"enableSafetyMode\":false}}," +
             "%s}";
     private static final String SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\"";
@@ -56,6 +53,6 @@ public class BrowseManagerParams {
 
     private static String createQuery(String template) {
         LocaleManager localeManager = LocaleManager.instance();
-        return String.format(JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
     }
 }

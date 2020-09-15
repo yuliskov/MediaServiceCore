@@ -17,4 +17,9 @@ public interface AppConstants {
     String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20200913.00.00\"," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
             "\"user\":{\"enableSafetyMode\":false}},%s}";
+
+    /**
+     * Used when parsing video_info data
+     */
+    String VIDEO_INFO_JSON_CONTENT_PARAM = "player_response";
 }

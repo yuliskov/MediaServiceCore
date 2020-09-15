@@ -14,7 +14,7 @@ public interface AppConstants {
     /**
      * Used in browse, next, search
      */
-    String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20190214\"," +
+    String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20200913.00.00\"," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
             "\"user\":{\"enableSafetyMode\":false}},%s}";
 }

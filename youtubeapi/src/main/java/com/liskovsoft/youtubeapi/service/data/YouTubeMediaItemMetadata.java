@@ -43,7 +43,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mTitle = videoMetadata.getTitle();
         mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
                 videoOwner.getVideoAuthor(),
-                videoMetadata.getPublishedDateAlt(),
+                videoMetadata.getPublishedTimeAlt(),
                 videoMetadata.getShortViewCount(),
                 videoMetadata.getLiveBadge());
         mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
@@ -52,7 +52,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
         mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
         mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
-        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
+        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedTime();
         mediaItemMetadata.mIsLive = videoMetadata.isLive();
         mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
         mediaItemMetadata.mChannelId = videoOwner.getChannelId();

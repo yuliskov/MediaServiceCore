@@ -6,6 +6,8 @@ import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 
+import java.util.List;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -27,8 +29,11 @@ public class SearchManagerTestBase {
         assertNotNull("Search result contains reload key", searchResult.getReloadPageKey());
         VideoItem videoItem = searchResult.getVideoItems().get(0);
         checkSearchResultVideoItem(videoItem);
-        ChannelItem channelItem = searchResult.getChannelItems().get(0);
-        checkSearchResultChannelItem(channelItem);
+        List<ChannelItem> channelItems = searchResult.getChannelItems();
+        if (channelItems != null) {
+            ChannelItem channelItem = channelItems.get(0);
+            checkSearchResultChannelItem(channelItem);
+        }
     }
 
     protected void checkSearchResultMusicItem(MusicItem videoItem) {

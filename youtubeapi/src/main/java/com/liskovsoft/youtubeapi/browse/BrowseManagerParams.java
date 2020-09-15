@@ -1,10 +1,15 @@
 package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class BrowseManagerParams {
-    private static final String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +
+    private static final String JSON_POST_DATA_TEMPLATE_OLD = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +
             ".20190214\",\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"US\",\"acceptLanguage\":\"en\"}," +
+            "\"user\":{\"enableSafetyMode\":false}}," +
+            "%s}";
+    private static final String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7" +
+            ".20190214\",\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
             "\"user\":{\"enableSafetyMode\":false}}," +
             "%s}";
     private static final String SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\"";
@@ -16,27 +21,27 @@ public class BrowseManagerParams {
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
 
     public static String getHomeQuery() {
-        return String.format(JSON_POST_DATA_TEMPLATE, HOME);
+        return createQuery(HOME);
     }
 
     public static String getSubscriptionsQuery() {
-        return String.format(JSON_POST_DATA_TEMPLATE, SUBSCRIPTIONS);
+        return createQuery(SUBSCRIPTIONS);
     }
 
     public static String getMyLibraryQuery() {
-        return String.format(JSON_POST_DATA_TEMPLATE, MY_LIBRARY);
+        return createQuery(MY_LIBRARY);
     }
 
     public static String getGamingQuery() {
-        return String.format(JSON_POST_DATA_TEMPLATE, GAMING);
+        return createQuery(GAMING);
     }
 
     public static String getNewsQuery() {
-        return String.format(JSON_POST_DATA_TEMPLATE, NEWS);
+        return createQuery(NEWS);
     }
 
     public static String getMusicQuery() {
-        return String.format(JSON_POST_DATA_TEMPLATE, MUSIC);
+        return createQuery(MUSIC);
     }
 
     /**
@@ -46,6 +51,11 @@ public class BrowseManagerParams {
      */
     public static String getContinuationQuery(String nextPageKey) {
         String continuation = String.format(CONTINUATION, nextPageKey);
-        return String.format(JSON_POST_DATA_TEMPLATE, continuation);
+        return createQuery(continuation);
+    }
+
+    private static String createQuery(String template) {
+        LocaleManager localeManager = LocaleManager.instance();
+        return String.format(JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
     }
 }

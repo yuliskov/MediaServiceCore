@@ -52,7 +52,7 @@ public class WatchNextManagerTestBase {
         assertNotNull("Video metadata has video id", videoMetadata.getVideoId());
         assertNotNull("Video metadata has title", videoMetadata.getTitle());
         assertNotNull("Video metadata has description", videoMetadata.getDescription());
-        assertNotNull("Video metadata has published date", videoMetadata.getPublishedDate());
+        assertNotNull("Video metadata has published date", videoMetadata.getPublishedTime());
         assertNotNull("Video metadata has view count", videoMetadata.getViewCount());
         assertNotNull("Video metadata has like status", videoMetadata.getLikeStatus());
     }

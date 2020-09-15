@@ -1,19 +1,24 @@
 package com.liskovsoft.youtubeapi.next.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+
+import java.util.List;
 
 public class VideoOwner {
-    @JsonPath("$.title.runs[0].text")
+    @JsonPath("$.thumbnail.thumbnails[*]")
+    private List<Thumbnail> mThumbnails;
+    @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mVideoAuthor;
-    @JsonPath("$.subscribeButton.subscribeButtonRenderer.subscribed")
+    @JsonPath({"$.subscribed", "$.subscribeButton.subscribeButtonRenderer.subscribed"})
     private boolean mIsSubscribed;
-    @JsonPath("$.subscribeButton.subscribeButtonRenderer.channelId")
+    @JsonPath({"$.navigationEndpoint.browseEndpoint.browseId", "$.subscribeButton.subscribeButtonRenderer.channelId"})
     private String mChannelId;
-    @JsonPath("$.subscribeButton.subscribeButtonRenderer.subscriberCountText.runs[0].text")
+    @JsonPath({"$.subscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.subscriberCountText.runs[0].text"})
     private String mSubscriberCount;
-    @JsonPath("$.subscribeButton.subscribeButtonRenderer.longSubscriberCountText.runs[0].text")
+    @JsonPath({"$.longSubscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.longSubscriberCountText.runs[0].text"})
     private String mSubscriberCountLong;
-    @JsonPath("$.subscribeButton.subscribeButtonRenderer.shortSubscriberCountText.runs[0].text")
+    @JsonPath({"$.shortSubscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.shortSubscriberCountText.runs[0].text"})
     private String mSubscriberCountShort;
 
     public String getVideoAuthor() {
@@ -38,5 +43,9 @@ public class VideoOwner {
 
     public String getSubscriberCountShort() {
         return mSubscriberCountShort;
+    }
+
+    public List<Thumbnail> getThumbnails() {
+        return mThumbnails;
     }
 }

@@ -13,16 +13,16 @@ public class VideoItem {
     private List<Thumbnail> mThumbnails;
     @JsonPath("$.channelThumbnail.thumbnails[0]")
     private String mChannelThumbnail;
-    @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
+    @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
-    @JsonPath({"$.longBylineText.runs[0].text", "$.shortBylineText.runs[0].text"})
+    @JsonPath({"$.shortBylineText.runs[0].text", "$.longBylineText.runs[0].text"})
     private String mUserName;
-    @JsonPath({"$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
-               "$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
+    @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
+               "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
                "$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId"})
     private String mChannelId;
-    @JsonPath({"$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl",
-               "$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl"})
+    @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl",
+               "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl"})
     private String mCanonicalChannelUrl;
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
     private String mPublishedTime;

@@ -38,16 +38,12 @@ public class YouTubeSignInManager implements SignInManager {
     public String signIn() {
         UserCodeResult userCodeResult = mAuthService.getUserCode();
 
-        mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
+        Disposable tokenAction = mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(refreshTokenResult -> {
-                    if (refreshTokenResult != null) {
-                        Log.d(TAG, "Success. Refresh token successfully created!");
-                        storeRefreshToken(refreshTokenResult.getRefreshToken());
-                    } else {
-                        Log.e(TAG, "Error. Refresh token is empty!");
-                    }
-                });
+                    Log.d(TAG, "Success. Refresh token successfully created!");
+                    storeRefreshToken(refreshTokenResult.getRefreshToken());
+                }, error -> Log.e(TAG, error));
 
         return userCodeResult.getUserCode();
     }
@@ -62,14 +58,12 @@ public class YouTubeSignInManager implements SignInManager {
             Disposable tokenAction = mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe(refreshTokenResult -> {
-                            if (refreshTokenResult != null) {
-                                Log.d(TAG, "Success. Refresh token successfully created!");
-                                storeRefreshToken(refreshTokenResult.getRefreshToken());
-                                emitter.onComplete();
-                            } else {
-                                Log.e(TAG, "Error. Refresh token is empty!");
-                                emitter.onError(new IllegalStateException("Error. Refresh token is empty!"));
-                            }
+                            Log.d(TAG, "Success. Refresh token successfully created!");
+                            storeRefreshToken(refreshTokenResult.getRefreshToken());
+                            emitter.onComplete();
+                        }, error -> {
+                            Log.e(TAG, "Error. Can't obtain refresh token!");
+                            emitter.onError(error);
                         });
         });
     }

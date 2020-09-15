@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.auth;
 
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
 import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
@@ -9,10 +10,11 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 
 public class AuthService {
+    private static final String TAG = AuthService.class.getSimpleName();
     private static AuthService sInstance;
     private final AuthManager mAuthManager;
-    private static final int REFRESH_TOKEN_ATTEMPTS = 5;
-    private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 15_000;
+    private static final int REFRESH_TOKEN_ATTEMPTS = 10;
+    private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 7_000;
 
     private AuthService() {
         mAuthManager = RetrofitHelper.withGson(AuthManager.class);
@@ -75,21 +77,25 @@ public class AuthService {
 
     public Observable<RefreshTokenResult> getRefreshTokenObserve(String deviceCode) {
         return Observable.create(emitter -> {
-            RefreshTokenResult refreshToken = null;
+            RefreshTokenResult tokenResult = null;
 
             for (int i = 0; i < REFRESH_TOKEN_ATTEMPTS; i++) {
                 Thread.sleep(REFRESH_TOKEN_ATTEMPT_INTERVAL_MS);
 
-                refreshToken = getRefreshToken(deviceCode);
+                tokenResult = getRefreshToken(deviceCode);
 
-                if (refreshToken != null && refreshToken.getRefreshToken() != null) {
+                if (tokenResult != null && tokenResult.getRefreshToken() != null) {
                     break;
                 }
             }
 
-            emitter.onNext(refreshToken);
-
-            emitter.onComplete();
+            if (tokenResult != null && tokenResult.getRefreshToken() != null) {
+                emitter.onNext(tokenResult);
+                emitter.onComplete();
+            } else {
+                Log.e(TAG, "Error. Refresh token is empty!");
+                emitter.onError(new IllegalStateException("Error. Refresh token is empty!"));
+            }
         });
     }
 }

@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
+// root element: pivotVideoRenderer
 public class VideoItem {
     private static final String THUMBNAIL_LIVE = "LIVE";
     private static final String THUMBNAIL_STYLE_DEFAULT = "DEFAULT";
@@ -33,7 +34,7 @@ public class VideoItem {
     @JsonPath({"$.lengthText.simpleText", "$.lengthText.runs[0].text"})
     private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
-    private String mAccessibilityLengthText;
+    private String mLengthTextLong;
     @JsonPath("$.badges[0].textBadge.label.runs[0].text")
     private String mQualityBadge;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style")
@@ -89,8 +90,8 @@ public class VideoItem {
         return mLengthText;
     }
 
-    public String getAccessibilityLength() {
-        return mAccessibilityLengthText;
+    public String getLengthTextLong() {
+        return mLengthTextLong;
     }
 
     public String getQualityBadge() {

@@ -45,7 +45,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 videoOwner.getVideoAuthor(),
                 videoMetadata.getPublishedTimeAlt(),
                 videoMetadata.getShortViewCount(),
-                videoMetadata.getLiveBadge());
+                videoMetadata.isLive() ? "LIVE" : "");
         mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
         mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
         mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();

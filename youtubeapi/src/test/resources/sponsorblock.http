@@ -1,0 +1,17 @@
+# Browse home page unsigned
+# https://github.com/ajayyy/SponsorBlock/wiki/API-Docs
+POST https://sponsor.ajay.app/api/skipSegments
+Content-Type: application/json
+
+{
+  "videoID": "c77pA0c9Xmc",
+  "category": "sponsor"
+}
+
+###
+
+GET https://sponsor.ajay.app/api/getTotalStats
+
+###
+
+GET https://sponsor.ajay.app/api/skipSegments?videoID=lnbauMvIlVE

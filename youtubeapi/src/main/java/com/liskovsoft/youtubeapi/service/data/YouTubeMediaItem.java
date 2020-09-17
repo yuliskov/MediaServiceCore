@@ -36,6 +36,7 @@ public class YouTubeMediaItem implements MediaItem {
     private YouTubeMediaItemFormatInfo mFormatInfo;
     private YouTubeMediaItemMetadata mMetadata;
     private int mPercentWatched;
+    private String mAuthor;
 
     public static YouTubeMediaItem from(VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
@@ -55,6 +56,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
         video.mPercentWatched = item.getPercentWatched();
+        video.mAuthor = item.getUserName();
 
         addCommonProps(video);
 
@@ -78,6 +80,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
         video.mPercentWatched = item.getPercentWatched();
+        video.mAuthor = item.getUserName();
 
         addCommonProps(video);
 
@@ -299,5 +302,10 @@ public class YouTubeMediaItem implements MediaItem {
 
     public void setMetadata(YouTubeMediaItemMetadata metadata) {
         mMetadata = metadata;
+    }
+
+    @Override
+    public String getAuthor() {
+        return mAuthor;
     }
 }

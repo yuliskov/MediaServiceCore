@@ -12,6 +12,7 @@ public interface MediaItem {
     // Music/Video props
     boolean isLive();
     int getPercentWatched();
+    String getAuthor();
 
     // Playlist props
     String getPlaylistId();

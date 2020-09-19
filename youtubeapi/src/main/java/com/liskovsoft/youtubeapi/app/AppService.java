@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfoResult;
 import com.liskovsoft.youtubeapi.app.models.ClientPlaybackNonceFunctionResult;
 import com.liskovsoft.youtubeapi.app.models.DecipherFunctionResult;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AppService {
+    private static final String TAG = AppService.class.getSimpleName();
     private static AppService sInstance;
     private final AppManager mAppManager;
     private Duktape mDuktape;
@@ -100,7 +102,6 @@ public class AppService {
 
                 if (content != null) {
                     mCachedDecipherFunction = Helpers.replace(content, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
-                    notifyCacheUpdated();
                 }
             }
         }
@@ -148,6 +149,7 @@ public class AppService {
 
             if (playerUrl != null) {
                 mCachedPlayerUrl = AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/");
+                notifyCacheUpdated();
             }
         }
 
@@ -197,6 +199,7 @@ public class AppService {
         boolean cacheIsStalled = (currentTimeTimeMs - mCacheUpdateTimeMS) > CACHE_REFRESH_PERIOD_MS;
 
         if (cacheIsStalled) {
+            Log.d(TAG, "Cache is stalled. Resetting...");
             mCachedDecipherFunction = null;
             mCachedClientPlaybackNonceFunction = null;
             mCachedPlayerUrl = null;

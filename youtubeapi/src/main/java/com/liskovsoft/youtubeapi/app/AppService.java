@@ -18,6 +18,8 @@ public class AppService {
     private String mCachedDecipherFunction;
     private String mCachedClientPlaybackNonceFunction;
     private String mCachedPlayerUrl;
+    private static final long CACHE_REFRESH_PERIOD_MS = 60 * 60 * 1_000;
+    private long mCacheUpdateTimeMS;
 
     private AppService() {
         mAppManager = RetrofitHelper.withRegExp(AppManager.class);
@@ -81,6 +83,8 @@ public class AppService {
     }
 
     private String getDecipherFunction() {
+        invalidateCache();
+
         if (mCachedDecipherFunction != null) {
             return mCachedDecipherFunction;
         }
@@ -96,6 +100,7 @@ public class AppService {
 
                 if (content != null) {
                     mCachedDecipherFunction = Helpers.replace(content, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
+                    notifyCacheUpdated();
                 }
             }
         }
@@ -104,6 +109,8 @@ public class AppService {
     }
 
     private String getClientPlaybackNonceFunction() {
+        invalidateCache();
+
         if (mCachedClientPlaybackNonceFunction != null) {
             return mCachedClientPlaybackNonceFunction;
         }
@@ -127,6 +134,8 @@ public class AppService {
     }
 
     private String getPlayerUrl() {
+        invalidateCache();
+
         if (mCachedPlayerUrl != null) {
             return mCachedPlayerUrl;
         }
@@ -181,5 +190,20 @@ public class AppService {
         }
 
         return AppConstants.FUNCTION_RANDOM_BYTES + playbackNonceFunction + "getClientPlaybackNonce();";
+    }
+
+    private void invalidateCache() {
+        long currentTimeTimeMs = System.currentTimeMillis();
+        boolean cacheIsStalled = (currentTimeTimeMs - mCacheUpdateTimeMS) > CACHE_REFRESH_PERIOD_MS;
+
+        if (cacheIsStalled) {
+            mCachedDecipherFunction = null;
+            mCachedClientPlaybackNonceFunction = null;
+            mCachedPlayerUrl = null;
+        }
+    }
+
+    private void notifyCacheUpdated() {
+        mCacheUpdateTimeMS = System.currentTimeMillis();
     }
 }

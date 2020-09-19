@@ -34,7 +34,7 @@ public class YouTubeHelper {
         String result = "";
 
         for (String item : items) {
-            if (item == null) {
+            if (item == null || item.isEmpty()) {
                 continue;
             }
 

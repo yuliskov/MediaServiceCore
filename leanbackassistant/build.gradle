@@ -32,7 +32,8 @@ android {
     productFlavors {
         orig {}
         beta {}
-        vbeta {}
+        ubeta {}
+        uorig {}
     }
 }
 

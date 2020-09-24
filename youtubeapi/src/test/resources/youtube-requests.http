@@ -303,6 +303,23 @@ Authorization: Bearer ya29.a0AfH6SMBH0OYrLUbV8TF_K8mzg3kqYN6likPUAlBY-o3jLIZWOTp
 
 {"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20190214","webpSupport":false,"animatedWebpSupport":false,"acceptRegion":"US","acceptLanguage":"en"},"user":{"enableSafetyMode":false}},"continuation":"4qmFsgI6EgxGRW15X3lvdXR1YmUaKmNBU3lCQmhNVEhkQ05UaEtOekZoWm1kSVoyNTRUMFZ6TURKbU0xRSUzRA%3D%3D"}
 
+###
+
+# Upcoming Event (Auth)
+POST https://www.youtube.com/youtubei/v1/player/heartbeat
+Content-Type: application/json
+Authorization: Bearer ya29.a0AfH6SMB1Y_w349Q4qitxqOJVyZt0SfJU1gUq3tEBxxOITkOKG4EpoOrbuKgcumZWqrJASoZBxl0VE6o6hUxUAer27Pc3onDKglUPQ-1YSkTgL7yPBLolRKc0whoPhKUzmZF6HojlK5dX6qJdRM6aFRapMCIVIE51GfnVMkiwFg3KJg
+
+{"videoId":"MKlcnv0SFno","context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200922.00.00","hl":"en","gl":"US","timeZone":"Europe/Kiev"}}}
+
+###
+
+# Upcoming Event (No Auth)
+POST https://www.youtube.com/youtubei/v1/player/heartbeat?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+Content-Type: application/json
+
+{"videoId":"MKlcnv0SFno","context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200922.00.00","hl":"en","gl":"US","timeZone":"Europe/Kiev"}}}
+
 
 
 

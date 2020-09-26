@@ -44,6 +44,11 @@ public class ClipService {
         MediaService service = YouTubeMediaService.instance();
         MediaGroupManager mediaTabManager = service.getMediaGroupManager();
         MediaGroup subscriptions = mediaTabManager.getSubscriptions();
+
+        if (subscriptions == null) {
+            return null;
+        }
+
         List<MediaItem> mediaItems = subscriptions.getMediaItems();
 
         Playlist playlist = new Playlist(
@@ -72,6 +77,11 @@ public class ClipService {
         MediaService service = YouTubeMediaService.instance();
         MediaGroupManager mediaTabManager = service.getMediaGroupManager();
         MediaGroup history = mediaTabManager.getHistory();
+
+        if (history == null) {
+            return null;
+        }
+
         List<MediaItem> mediaItems = history.getMediaItems();
 
         Playlist playlist = new Playlist(

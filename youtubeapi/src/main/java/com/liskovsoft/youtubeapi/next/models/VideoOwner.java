@@ -10,8 +10,8 @@ public class VideoOwner {
     private List<Thumbnail> mThumbnails;
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mVideoAuthor;
-    @JsonPath({"$.subscribed", "$.subscribeButton.subscribeButtonRenderer.subscribed"})
-    private boolean mIsSubscribed;
+    @JsonPath({"$.subscriptionButton.subscribed", "$.subscribed", "$.subscribeButton.subscribeButtonRenderer.subscribed"})
+    private Boolean mIsSubscribed;
     @JsonPath({"$.navigationEndpoint.browseEndpoint.browseId", "$.subscribeButton.subscribeButtonRenderer.channelId"})
     private String mChannelId;
     @JsonPath({"$.subscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.subscriberCountText.runs[0].text"})
@@ -25,7 +25,7 @@ public class VideoOwner {
         return mVideoAuthor;
     }
 
-    public boolean isSubscribed() {
+    public Boolean isSubscribed() {
         return mIsSubscribed;
     }
 

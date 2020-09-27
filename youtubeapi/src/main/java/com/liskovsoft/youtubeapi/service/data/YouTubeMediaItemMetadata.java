@@ -56,7 +56,8 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mIsLive = videoMetadata.isLive();
         mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
         mediaItemMetadata.mChannelId = videoOwner.getChannelId();
-        mediaItemMetadata.mSubscribed = videoOwner.isSubscribed();
+        Boolean subscribed = videoOwner.isSubscribed();
+        mediaItemMetadata.mSubscribed = subscribed != null && subscribed;
 
         mediaItemMetadata.mNextVideo = YouTubeMediaItem.from(watchNextResult.getNextVideo());
 

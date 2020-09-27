@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
+import io.reactivex.Observable;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -188,6 +189,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
+    public boolean containsHlsInfo() {
+        return mHlsManifestUrl != null;
+    }
+
+    @Override
     public boolean containsUrlListInfo() {
         return mRegularFormats != null;
     }
@@ -203,12 +209,17 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public InputStream getMpdStream() {
+    public InputStream createMpdStream() {
         return YouTubeMPDBuilder.from(this).build();
     }
 
     @Override
-    public List<String> getUrlList() {
+    public Observable<InputStream> createMpdStreamObservable() {
+        return Observable.fromCallable(this::createMpdStream);
+    }
+
+    @Override
+    public List<String> createUrlList() {
         return YouTubeUrlListBuilder.from(this).buildUriList();
     }
 

@@ -22,6 +22,15 @@ public class WatchNextManagerTestBase {
         checkFields(watchNextResult.getSuggestedSections());
     }
 
+    public void checkSignedWatchNextResultFields(WatchNextResult watchNextResult) {
+        assertNotNull("Watch next not empty", watchNextResult);
+
+        checkFields(watchNextResult.getVideoMetadata());
+        checkSignedFields(watchNextResult.getVideoOwner());
+        checkFields(watchNextResult.getNextVideo());
+        checkFields(watchNextResult.getSuggestedSections());
+    }
+
     private void checkFields(List<SuggestedSection> watchNextSections) {
         assertNotNull("Watch next contains rows", watchNextSections);
 
@@ -55,6 +64,11 @@ public class WatchNextManagerTestBase {
         assertNotNull("Video metadata has published date", videoMetadata.getPublishedTime());
         assertNotNull("Video metadata has view count", videoMetadata.getViewCount());
         assertNotNull("Video metadata has like status", videoMetadata.getLikeStatus());
+    }
+
+    private void checkSignedFields(VideoOwner videoOwner) {
+        assertNotNull("Video contains subscribe status", videoOwner.isSubscribed());
+        checkFields(videoOwner);
     }
 
     private void checkFields(VideoOwner videoOwner) {

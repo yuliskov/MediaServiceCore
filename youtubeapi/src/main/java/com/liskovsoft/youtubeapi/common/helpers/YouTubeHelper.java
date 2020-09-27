@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import io.reactivex.Observable;
+
 import java.util.concurrent.TimeUnit;
 
 public class YouTubeHelper {

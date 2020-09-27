@@ -28,11 +28,11 @@ public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
     }
 
     @Test
-    public void testThatWatchNextContainsAllRequiredFields() throws IOException {
+    public void testThatWatchNextContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
-                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SIMPLE), TestHelpers.getAuthorization());
+                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SUBSCRIBED), TestHelpers.getAuthorization());
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
-        checkWatchNextResultFields(watchNextResult);
+        checkSignedWatchNextResultFields(watchNextResult);
     }
 }

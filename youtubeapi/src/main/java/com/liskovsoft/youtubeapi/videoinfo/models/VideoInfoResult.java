@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
+import android.annotation.SuppressLint;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
@@ -11,6 +12,7 @@ import java.util.List;
 public class VideoInfoResult {
     private static final String PARAM_EVENT_ID = "ei";
     private static final String PARAM_VM = "vm";
+    private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";
 
     @JsonPath("$.streamingData.formats[*]")
     private List<RegularVideoFormat> mRegularFormats;
@@ -41,6 +43,9 @@ public class VideoInfoResult {
 
     @JsonPath("$.playbackTracking.videostatsWatchtimeUrl.baseUrl")
     private String mWatchTimeUrl;
+
+    @JsonPath("$.playabilityStatus.status")
+    private String mPlayabilityStatus;
 
     // Values used in tracking actions
     private String mEventId;
@@ -96,6 +101,10 @@ public class VideoInfoResult {
 
     public String getWatchTimeUrl() {
         return mWatchTimeUrl;
+    }
+    
+    public boolean isVideoAvailable() {
+        return !STATUS_UNPLAYABLE.equals(mPlayabilityStatus);
     }
 
     private void parseTrackingParams() {

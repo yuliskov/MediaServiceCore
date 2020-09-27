@@ -2,10 +2,8 @@ package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
-import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
-import okhttp3.Response;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +33,7 @@ public class YouTubeUrlListBuilderTest {
     private void testUrlList(String videoId) {
         MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(videoId);
 
-        List<String> urlList = mediaItemDetails.getUrlList();
+        List<String> urlList = mediaItemDetails.createUrlList();
 
         assertNotNull("Url list not empty", urlList);
 

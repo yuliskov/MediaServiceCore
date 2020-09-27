@@ -1,5 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces.data;
 
+import io.reactivex.Observable;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -27,7 +29,9 @@ public interface MediaItemFormatInfo {
     String getChannelId();
     void setChannelId(String channelId);
     boolean containsDashInfo();
+    boolean containsHlsInfo();
     boolean containsUrlListInfo();
-    InputStream getMpdStream();
-    List<String> getUrlList();;
+    InputStream createMpdStream();
+    Observable<InputStream> createMpdStreamObservable();
+    List<String> createUrlList();
 }

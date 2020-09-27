@@ -26,4 +26,10 @@ public interface MediaItemManager {
     Observable<MediaItemMetadata> getMetadataObserve(String videoId);
     Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec);
     Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec);
+    Observable<Void> subscribeObserve(MediaItem item);
+    Observable<Void> unsubscribeObserve(MediaItem item);
+    Observable<Void> setLikeObserve(MediaItem item);
+    Observable<Void> removeLikeObserve(MediaItem item);
+    Observable<Void> setDislikeObserve(MediaItem item);
+    Observable<Void> removeDislikeObserve(MediaItem item);
 }

@@ -39,25 +39,26 @@ public class VideoInfoManagerUnsignedTest {
 
     @Test
     public void testThatVideoInfoContainsAllRequiredFields() throws IOException {
-        Call<VideoInfoResult> wrapper = mService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
-        VideoInfoResult result = wrapper.execute().body();
+        testThatVideoInfoContainsAllRequiredFields(TestHelpers.VIDEO_ID_SIMPLE);
+    }
 
-        assertNotNull("Result not null", result);
-        List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
-        assertTrue("Formats not empty", formats.size() > 0);
-        assertNotNull("Contains range", formats.get(0).getIndexRange());
-        assertTrue("Contains fps", formats.get(0).getFps() != 0);
-        assertTrue("Contains bitrate", formats.get(0).getBitrate() != 0);
-        assertNotNull("Contains tracking url", result.getVideoStatsWatchTimeUrl());
-        assertNotNull("Contains captions", result.getCaptionTracks());
-        assertNotNull("Contains video details", result.getVideoDetails());
-        assertNotNull("Contains event id", result.getEventId());
-        assertNotNull("Contains vm tracking param", result.getVisitorMonitoringData());
+    @Test
+    public void testThatGeminiManContainsAllRequiredFields() throws IOException {
+        testThatVideoInfoContainsAllRequiredFields(TestHelpers.VIDEO_ID_GEMINI_MAN);
     }
 
     @Test
     public void testThatLiveVideoContainsSpecificFields()  throws IOException {
-        Call<VideoInfoResult> wrapper = mService.getVideoInfo(TestHelpers.VIDEO_ID_LIVE);
+        testThatLiveVideoContainsSpecificFields(TestHelpers.VIDEO_ID_LIVE);
+    }
+
+    @Test
+    public void testThatSubtitleContainsAllRequiredFields() throws IOException {
+        testThatSubtitleContainsAllRequiredFields(TestHelpers.VIDEO_ID_SIMPLE);
+    }
+
+    private void testThatLiveVideoContainsSpecificFields(String videoId)  throws IOException {
+        Call<VideoInfoResult> wrapper = mService.getVideoInfo(videoId);
         VideoInfoResult result = wrapper.execute().body();
 
         assertNotNull("Result not null", result);
@@ -65,9 +66,8 @@ public class VideoInfoManagerUnsignedTest {
         assertNotNull("Contains hls url", result.getHlsManifestUrl());
     }
 
-    @Test
-    public void testThatSubtitleContainsAllRequiredFields() throws IOException {
-        Call<VideoInfoResult> wrapper = mService.getVideoInfo(TestHelpers.VIDEO_ID_SIMPLE);
+    private void testThatSubtitleContainsAllRequiredFields(String videoId) throws IOException {
+        Call<VideoInfoResult> wrapper = mService.getVideoInfo(videoId);
         VideoInfoResult result = wrapper.execute().body();
 
         assertNotNull("Result not null", result);
@@ -83,5 +83,23 @@ public class VideoInfoManagerUnsignedTest {
         assertNotNull("Contains codecs", track.getCodecs());
 
         assertTrue("Subtitle url exists", TestHelpers.urlExists(track.getBaseUrl()));
+    }
+
+    private void testThatVideoInfoContainsAllRequiredFields(String videoId) throws IOException {
+        Call<VideoInfoResult> wrapper = mService.getVideoInfo(videoId);
+        VideoInfoResult result = wrapper.execute().body();
+
+        assertNotNull("Result not null", result);
+        assertTrue("Video available externally", result.isVideoAvailable());
+        List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
+        assertTrue("Formats not empty", formats.size() > 0);
+        assertNotNull("Contains range", formats.get(0).getIndexRange());
+        assertTrue("Contains fps", formats.get(0).getFps() != 0);
+        assertTrue("Contains bitrate", formats.get(0).getBitrate() != 0);
+        assertNotNull("Contains tracking url", result.getVideoStatsWatchTimeUrl());
+        assertNotNull("Contains captions", result.getCaptionTracks());
+        assertNotNull("Contains video details", result.getVideoDetails());
+        assertNotNull("Contains event id", result.getEventId());
+        assertNotNull("Contains vm tracking param", result.getVisitorMonitoringData());
     }
 }

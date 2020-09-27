@@ -42,7 +42,7 @@ public class YouTubeMPDBuilderInstrumentedTest {
 
         assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 
-        InputStream mpdStream = mediaItemDetails.getMpdStream();
+        InputStream mpdStream = mediaItemDetails.createMpdStream();
 
         assertNotNull("Mpd stream not null", mpdStream);
         String mpdContent = Helpers.toString(mpdStream);

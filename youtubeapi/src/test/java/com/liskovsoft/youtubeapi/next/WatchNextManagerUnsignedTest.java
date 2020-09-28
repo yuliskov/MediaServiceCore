@@ -54,7 +54,7 @@ public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
     }
 
     private WatchNextResult getWatchNextResult() {
-        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_SIMPLE));
+        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS));
         return RetrofitHelper.get(wrapper);
     }
 }

@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-import android.annotation.SuppressLint;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
@@ -13,6 +12,8 @@ public class VideoInfoResult {
     private static final String PARAM_EVENT_ID = "ei";
     private static final String PARAM_VM = "vm";
     private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";
+    private static final String STATUS_LOGIN_REQUIRED = "LOGIN_REQUIRED";
+    private static final String STATUS_AGE_CHECK_REQUIRED = "AGE_CHECK_REQUIRED";
 
     @JsonPath("$.streamingData.formats[*]")
     private List<RegularVideoFormat> mRegularFormats;
@@ -102,9 +103,20 @@ public class VideoInfoResult {
     public String getWatchTimeUrl() {
         return mWatchTimeUrl;
     }
-    
-    public boolean isVideoAvailable() {
-        return !STATUS_UNPLAYABLE.equals(mPlayabilityStatus);
+
+    /**
+     * Video cannot be embedded
+     */
+    public boolean isUnplayable() {
+        return STATUS_UNPLAYABLE.equals(mPlayabilityStatus);
+    }
+
+    /**
+     * Age restricted video
+     */
+    public boolean isLoginRequired() {
+        return STATUS_LOGIN_REQUIRED.equals(mPlayabilityStatus) ||
+               STATUS_AGE_CHECK_REQUIRED.equals(mPlayabilityStatus);
     }
 
     private void parseTrackingParams() {

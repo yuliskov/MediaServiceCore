@@ -33,12 +33,12 @@ public class YouTubeMPDBuilderInstrumentedTest {
 
     @Test
     public void testThatSimpleFormatIsValid() throws IOException {
-        testVideoFormatUrl(TestHelpers.VIDEO_ID_SIMPLE);
+        testVideoFormatUrl(TestHelpers.VIDEO_ID_CAPTIONS);
     }
 
     @Test
     public void testThatMpdNotEmpty() {
-        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(TestHelpers.VIDEO_ID_SIMPLE);
+        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(TestHelpers.VIDEO_ID_CAPTIONS);
 
         assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 

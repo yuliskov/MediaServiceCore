@@ -8,20 +8,23 @@ public class TestHelpers {
     private static String mAuthorization; // type: Bearer
     private static final String RAW_AUTH_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1%2F%2F0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY&grant_type=refresh_token";
 
+    // News One
+    public static final String VIDEO_ID_SIMPLE_1 = "x26FXCaUR7E";
+
+    // Kvartal 95
+    public static final String VIDEO_ID_SIMPLE_2 = "XemGObKTF0o";
+
     // Mafia: Definitive Edition - Official Story Trailer | Summer of Gaming 2020
-    public static final String VIDEO_ID_SIMPLE = "s2lGEhSlOTY";
+    public static final String VIDEO_ID_CAPTIONS = "s2lGEhSlOTY";
 
     // Strana: Yasno i ponyatno
     public static final String VIDEO_ID_SUBSCRIBED = "ftrpxWYDIJU";
 
-    // News One
-    public static final String VIDEO_ID_SIMPLE_3 = "x26FXCaUR7E";
-
-    // Kvartal 95
-    public static final String VIDEO_ID_SIMPLE_4 = "XemGObKTF0o";
-
     // 4K HDR 60FPS ● Sniper Will Smith (Gemini Man) ● Dolby Vision ● Dolby Atmos
-    public static final String VIDEO_ID_GEMINI_MAN = "vX2vsvdq8nw";
+    public static final String VIDEO_ID_UNAVAILABLE = "vX2vsvdq8nw";
+
+    // Cyberpunk trailer
+    public static final String VIDEO_ID_AGE_RESTRICTED = "8X2kIfS6fb8";
 
     // LINDEMANN - Mathematik ft. Haftbefehl (Official Video)
     public static final String VIDEO_ID_CIPHERED = "0YEZiDtnbdA";

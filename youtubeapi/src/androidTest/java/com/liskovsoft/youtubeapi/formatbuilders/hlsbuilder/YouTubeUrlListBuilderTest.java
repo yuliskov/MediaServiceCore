@@ -22,7 +22,7 @@ public class YouTubeUrlListBuilderTest {
 
     @Test
     public void testThatUrlListNotEmpty() {
-        testUrlList(TestHelpers.VIDEO_ID_SIMPLE);
+        testUrlList(TestHelpers.VIDEO_ID_CAPTIONS);
     }
 
     @Test

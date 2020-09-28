@@ -23,9 +23,12 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
 
     public VideoInfoResult getVideoInfo(String videoId) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoId);
+        VideoInfoResult result = getVideoInfoRegular(videoId);
 
-        VideoInfoResult result = RetrofitHelper.get(wrapper);
+        if (result != null && result.isLoginRequired()) {
+            Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
+            result = getVideoInfoRestricted(videoId);
+        }
 
         if (result != null) {
             decipherFormats(result.getAdaptiveFormats());
@@ -35,5 +38,17 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         }
 
         return result;
+    }
+    
+    private VideoInfoResult getVideoInfoRegular(String videoId) {
+        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoId);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private VideoInfoResult getVideoInfoRestricted(String videoId) {
+        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoId);
+
+        return RetrofitHelper.get(wrapper);
     }
 }

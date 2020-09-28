@@ -30,7 +30,7 @@ public class ActionsManagerTest {
     @Test
     public void testThatLikeIsWorking() {
         Call<ActionResult> wrapper =
-                mActionsManager.setLike(ActionsManagerParams.getLikeActionQuery(TestHelpers.VIDEO_ID_SIMPLE), TestHelpers.getAuthorization());
+                mActionsManager.setLike(ActionsManagerParams.getLikeActionQuery(TestHelpers.VIDEO_ID_CAPTIONS), TestHelpers.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Like result not null", actionResult);

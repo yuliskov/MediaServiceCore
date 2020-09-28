@@ -58,7 +58,7 @@ public class TrackingManagerInstrumentedTest {
     @Test
     public void testUpdateWatchTime() throws IOException {
         String playbackNonce = mAppService.getClientPlaybackNonce();
-        String videoIdSimple = TestHelpers.VIDEO_ID_SIMPLE_3;
+        String videoIdSimple = TestHelpers.VIDEO_ID_SIMPLE_1;
 
         Response<WatchTimeEmptyResult> response;
 

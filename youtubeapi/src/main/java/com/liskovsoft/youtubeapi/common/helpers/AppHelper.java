@@ -1,10 +1,12 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import com.liskovsoft.youtubeapi.app.AppConstants;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import io.reactivex.Observable;
 
 import java.util.concurrent.TimeUnit;
 
-public class YouTubeHelper {
+public class AppHelper {
     private static final String BULLET_SYMBOL = "\u2022";
     private static final String TIME_TEXT_DELIM = ":";
 
@@ -48,5 +50,10 @@ public class YouTubeHelper {
         }
 
         return result;
+    }
+
+    public static String createQuery(String template) {
+        LocaleManager localeManager = LocaleManager.instance();
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
     }
 }

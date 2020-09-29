@@ -40,7 +40,7 @@ public class ActionsManagerTest {
     @Test
     public void testThatSubscribeIsWorking() {
         Call<ActionResult> wrapper =
-                mActionsManager.subscribe(ActionsManagerParams.getSubscribeActionQuery(TestHelpers.CHANNEL_ID_SIMPLE), TestHelpers.getAuthorization());
+                mActionsManager.subscribe(ActionsManagerParams.getSubscribeActionQuery(TestHelpers.CHANNEL_ID_UNSUBSCRIBED), TestHelpers.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Subscribe result not null", actionResult);

@@ -32,6 +32,12 @@ public class TestHelpers {
     // GECID.com
     public static final String CHANNEL_ID_SIMPLE = "UC3PyIqYQ7lw7YKHRLqIvXlw";
 
+    // Strana.ua
+    public static final String CHANNEL_ID_SIMPLE2 = "UCDuSNexflm9nFKXLeMlqN2Q";
+
+    // Hayls World
+    public static final String CHANNEL_ID_UNSUBSCRIBED = "UCIxLxlan8q9WA7sjuq6LdTQ";
+
     // NEWS ONE
     public static final String VIDEO_ID_LIVE = "3e0FsU1N6OQ";
 

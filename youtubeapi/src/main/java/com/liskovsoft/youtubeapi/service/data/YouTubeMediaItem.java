@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
@@ -53,8 +53,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mProductionDate = item.getPublishedTime();
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
-        video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        video.mDuration = AppHelper.timeTextToMillis(item.getLengthText());
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
 
@@ -77,8 +77,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mProductionDate = item.getViewsAndPublished();
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
-        video.mDuration = YouTubeHelper.timeTextToMillis(item.getLengthText());
+        video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        video.mDuration = AppHelper.timeTextToMillis(item.getLengthText());
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
 
@@ -158,7 +158,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mMediaId = item.getVideoId();
-        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
         addCommonProps(video);
 
         return video;

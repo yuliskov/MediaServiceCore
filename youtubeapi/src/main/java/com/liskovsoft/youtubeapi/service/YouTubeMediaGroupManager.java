@@ -2,9 +2,11 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
@@ -212,6 +214,22 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         });
     }
 
+    @Override
+    public Observable<List<MediaGroup>> getChannelObserve(String channelId) {
+        return Observable.create(emitter -> {
+            checkSigned();
+
+            SectionList sectionList = mMediaGroupManagerReal.getChannel(channelId);
+
+            emitGroups(emitter, sectionList, MediaGroup.TYPE_CHANNEL);
+        });
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
+        return getChannelObserve(item.getChannelId());
+    }
+
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
         if (tab == null) {
             Log.e(TAG, "BrowseTab is null");
@@ -223,7 +241,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), type);
 
         if (groups.isEmpty()) {
-            Log.e(TAG, "Music group is empty");
+            Log.e(TAG, "Media group is empty: " + type);
         }
 
         while (!groups.isEmpty()) {
@@ -236,6 +254,24 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             } else {
                 break;
             }
+        }
+
+        emitter.onComplete();
+    }
+
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionList sectionList, int type) {
+        if (sectionList == null) {
+            Log.e(TAG, "SectionList is null");
+            emitter.onComplete();
+            return;
+        }
+
+        List<MediaGroup> groups = YouTubeMediaGroup.from(sectionList.getSections(), type);
+
+        if (groups.isEmpty()) {
+            Log.e(TAG, "Section list is empty");
+        } else {
+            emitter.onNext(groups);
         }
 
         emitter.onComplete();

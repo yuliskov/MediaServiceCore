@@ -2,10 +2,12 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
@@ -58,9 +60,9 @@ public class BrowseManagerUnsignedTest {
     }
 
     private Section getRecommended() throws IOException {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
 
-        SectionTabResult browseResult = wrapper.execute().body();
+        SectionTabList browseResult = wrapper.execute().body();
 
         assertNotNull("Items not null", browseResult);
         Section section = firstNotEmptyTab(browseResult).getSections().get(0);
@@ -106,9 +108,9 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testEnsureNextResultIsUnique() throws IOException {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
 
-        SectionTabResult browseResult = wrapper.execute().body();
+        SectionTabList browseResult = wrapper.execute().body();
 
         tabbedResultNotEmpty(browseResult);
 
@@ -139,9 +141,9 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatTabbedResultNotEmpty() throws IOException {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
 
-        SectionTabResult browseResult1 = wrapper.execute().body();
+        SectionTabList browseResult1 = wrapper.execute().body();
 
         tabbedResultNotEmpty(browseResult1);
 
@@ -167,10 +169,10 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatAllTabsSectionHaveTitles() throws IOException {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
 
-        Response<SectionTabResult> execute = wrapper.execute();
-        SectionTabResult browseResult = execute.body();
+        Response<SectionTabList> execute = wrapper.execute();
+        SectionTabList browseResult = execute.body();
 
         tabbedResultNotEmpty(browseResult);
 
@@ -183,17 +185,27 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatMusicTabNotEmpty() throws IOException {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getMusicQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getMusicQuery());
 
-        Response<SectionTabResult> execute = wrapper.execute();
-        SectionTabResult browseResult = execute.body();
+        Response<SectionTabList> execute = wrapper.execute();
+        SectionTabList browseResult = execute.body();
 
         tabbedResultNotEmpty(browseResult);
     }
 
     @Test
+    public void testThatChannelResultNotEmpty() throws IOException {
+        Call<SectionList> wrapper = mService.getSectionList(BrowseManagerParams.getChannelQuery(TestHelpers.CHANNEL_ID_UNSUBSCRIBED));
+
+        Response<SectionList> execute = wrapper.execute();
+        SectionList browseResult = execute.body();
+
+        sectionListResultNotEmpty(browseResult);
+    }
+
+    @Test
     public void testThatMusicTabContinuationIsUnique() {
-        SectionTabResult browseResult = getMusicTab();
+        SectionTabList browseResult = getMusicTab();
 
         String visitorData = browseResult.getVisitorData();
 
@@ -223,7 +235,7 @@ public class BrowseManagerUnsignedTest {
 
     @Test
     public void testThatPlaylistItemContainsRequiredFields() {
-        SectionTabResult browseResult = getMusicTab();
+        SectionTabList browseResult = getMusicTab();
 
         Section playlistSection = findPlaylistSection(firstNotEmptyTab(browseResult));
 
@@ -247,17 +259,17 @@ public class BrowseManagerUnsignedTest {
         return result;
     }
 
-    private SectionTabResult getMusicTab() {
-        Call<SectionTabResult> wrapper = mService.getSectionTabResult(BrowseManagerParams.getMusicQuery());
+    private SectionTabList getMusicTab() {
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getMusicQuery());
 
-        SectionTabResult browseResult = RetrofitHelper.get(wrapper);
+        SectionTabList browseResult = RetrofitHelper.get(wrapper);
 
         tabbedResultNotEmpty(browseResult);
 
         return browseResult;
     }
 
-    private SectionTab firstNotEmptyTab(SectionTabResult browseResult) {
+    private SectionTab firstNotEmptyTab(SectionTabList browseResult) {
         if (browseResult == null) {
             return null;
         }
@@ -290,7 +302,7 @@ public class BrowseManagerUnsignedTest {
                 section.getVideoItems() != null || section.getMusicItems() != null || section.getChannelItems() != null);
     }
 
-    private void tabbedResultNotEmpty(SectionTabResult browseResult) {
+    private void tabbedResultNotEmpty(SectionTabList browseResult) {
         assertNotNull("Tabbed result not empty", browseResult);
         assertNotNull("Tabs list not empty", browseResult.getTabs());
         assertTrue("Tabs list > 2", browseResult.getTabs().size() > 2);
@@ -307,5 +319,11 @@ public class BrowseManagerUnsignedTest {
 
         assertNotNull("Tab is not null", browseTab);
         assertTrue("Tabs sections > 2", browseTab.getSections().size() > 2);
+    }
+
+    private void sectionListResultNotEmpty(SectionList sectionList) {
+        assertNotNull("Section result not empty", sectionList);
+        assertNotNull("Section list not empty", sectionList.getSections());
+        assertTrue("Section list > 2", sectionList.getSections().size() > 2);
     }
 }

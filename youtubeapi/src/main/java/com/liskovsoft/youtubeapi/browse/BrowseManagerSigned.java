@@ -2,9 +2,10 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
-import com.liskovsoft.youtubeapi.browse.models.grid.GridTabResult;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -17,11 +18,7 @@ import retrofit2.http.POST;
 public interface BrowseManagerSigned {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<GridTabResult> getGridTabResult(@Body String browseQuery, @Header("Authorization") String auth);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<SectionContinuation> continueSection(@Body String browseQuery, @Header("Authorization") String auth);
+    Call<GridTabList> getGridTabList(@Body String browseQuery, @Header("Authorization") String auth);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -29,9 +26,17 @@ public interface BrowseManagerSigned {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<SectionTabResult> getSectionTabResult(@Body String browseQuery, @Header("Authorization") String auth);
+    Call<SectionTabList> getSectionTabList(@Body String browseQuery, @Header("Authorization") String auth);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
     Call<SectionTabContinuation> continueSectionTab(@Body String browseQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    Call<SectionContinuation> continueSection(@Body String browseQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    Call<SectionList> getSectionList(@Body String browseQuery, @Header("Authorization") String auth);
 }

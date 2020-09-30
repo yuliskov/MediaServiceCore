@@ -1,6 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import io.reactivex.Observable;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public interface MediaGroupManager {
     Observable<List<MediaGroup>> getMusicObserve();
     Observable<List<MediaGroup>> getNewsObserve();
     Observable<List<MediaGroup>> getGamingObserve();
+    Observable<List<MediaGroup>> getChannelObserve(String channelId);
+    Observable<List<MediaGroup>> getChannelObserve(MediaItem item);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
     Observable<List<MediaGroup>> getPlaylistsObserve();
 }

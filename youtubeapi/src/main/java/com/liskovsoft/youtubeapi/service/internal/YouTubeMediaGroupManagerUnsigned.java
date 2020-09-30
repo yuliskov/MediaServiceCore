@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.browse.BrowseServiceUnsigned;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
@@ -107,8 +108,14 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
+    public SectionList getChannel(String channelId) {
+        Log.d(TAG, "Emitting channel sections...");
+        return mBrowseServiceUnsigned.getChannel(channelId);
+    }
+
+    @Override
     public SectionTabContinuation continueSectionTab(String nextPageKey) {
         Log.d(TAG, "Continue tab...");
-        return mBrowseServiceUnsigned.continueRowsTab(nextPageKey);
+        return mBrowseServiceUnsigned.continueSectionTab(nextPageKey);
     }
 }

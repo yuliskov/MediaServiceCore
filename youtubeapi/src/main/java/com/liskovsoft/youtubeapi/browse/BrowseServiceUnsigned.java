@@ -3,9 +3,10 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -32,19 +33,23 @@ public class BrowseServiceUnsigned {
     }
 
     public SectionTab getHome() {
-        return getRowsTab(BrowseManagerParams.getHomeQuery());
+        return getSectionTab(BrowseManagerParams.getHomeQuery());
     }
 
     public SectionTab getGaming() {
-        return getRowsTab(BrowseManagerParams.getGamingQuery());
+        return getSectionTab(BrowseManagerParams.getGamingQuery());
     }
 
     public SectionTab getNews() {
-        return getRowsTab(BrowseManagerParams.getNewsQuery());
+        return getSectionTab(BrowseManagerParams.getNewsQuery());
     }
 
     public SectionTab getMusic() {
-        return getRowsTab(BrowseManagerParams.getMusicQuery());
+        return getSectionTab(BrowseManagerParams.getMusicQuery());
+    }
+
+    public SectionList getChannel(String channelId) {
+        return getSectionList(BrowseManagerParams.getChannelQuery(channelId));
     }
 
     public SectionContinuation continueSection(String nextKey) {
@@ -65,7 +70,13 @@ public class BrowseServiceUnsigned {
         return RetrofitHelper.get(wrapper);
     }
 
-    public SectionTabContinuation continueRowsTab(String nextPageKey) {
+    private SectionTabList getSectionTabList(String query) {
+        Call<SectionTabList> wrapper = mBrowseManagerUnsigned.getSectionTabList(query);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    public SectionTabContinuation continueSectionTab(String nextPageKey) {
         SectionTabContinuation nextHomeTabs = null;
 
         if (mVisitorData == null) {
@@ -73,7 +84,7 @@ public class BrowseServiceUnsigned {
         }
 
         if (nextPageKey != null) {
-            nextHomeTabs = continueRowsTabResult(nextPageKey, mVisitorData);
+            nextHomeTabs = continueSectionTab(nextPageKey, mVisitorData);
         }
 
         if (nextHomeTabs == null) {
@@ -84,13 +95,7 @@ public class BrowseServiceUnsigned {
         return nextHomeTabs;
     }
 
-    private SectionTabResult getRowsTabResult(String query) {
-        Call<SectionTabResult> wrapper = mBrowseManagerUnsigned.getSectionTabResult(query);
-
-        return RetrofitHelper.get(wrapper);
-    }
-
-    private SectionTabContinuation continueRowsTabResult(String nextKey, String visitorData) {
+    private SectionTabContinuation continueSectionTab(String nextKey, String visitorData) {
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
         Call<SectionTabContinuation> wrapper = mBrowseManagerUnsigned.continueSectionTab(query, visitorData);
@@ -98,8 +103,8 @@ public class BrowseServiceUnsigned {
         return RetrofitHelper.get(wrapper);
     }
 
-    private SectionTab getRowsTab(String query) {
-        SectionTabResult tabs = getRowsTabResult(query);
+    private SectionTab getSectionTab(String query) {
+        SectionTabList tabs = getSectionTabList(query);
 
         if (tabs == null) {
             Log.e(TAG, "getTabs: tabs result is empty");
@@ -111,7 +116,13 @@ public class BrowseServiceUnsigned {
         return firstNotEmpty(tabs);
     }
 
-    private SectionTab firstNotEmpty(SectionTabResult tabs) {
+    private SectionList getSectionList(String query) {
+        Call<SectionList> wrapper = mBrowseManagerUnsigned.getSectionList(query);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private SectionTab firstNotEmpty(SectionTabList tabs) {
         SectionTab result = null;
 
         if (tabs.getTabs() != null) {

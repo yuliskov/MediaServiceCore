@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
@@ -86,6 +87,12 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     public SectionTab getGamingTab() {
         Log.d(TAG, "Emitting gaming group...");
         return mBrowseServiceSigned.getGaming(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public SectionList getChannel(String channelId) {
+        Log.d(TAG, "Emitting channel sections...");
+        return mBrowseServiceSigned.getChannel(channelId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

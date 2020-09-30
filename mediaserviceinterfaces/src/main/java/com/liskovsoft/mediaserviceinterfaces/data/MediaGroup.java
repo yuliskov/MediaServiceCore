@@ -14,6 +14,7 @@ public interface MediaGroup {
     int TYPE_GAMING = 7;
     int TYPE_PLAYLISTS = 8;
     int TYPE_SUGGESTIONS = 9;
+    int TYPE_CHANNEL = 10;
     int LAYOUT_TYPE_ROWS = 0;
     int LAYOUT_TYPE_GRID = 1;
     int getType();

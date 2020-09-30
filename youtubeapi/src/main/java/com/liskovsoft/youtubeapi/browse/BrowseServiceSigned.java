@@ -5,10 +5,11 @@ import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
-import com.liskovsoft.youtubeapi.browse.models.grid.GridTabResult;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabResult;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -73,19 +74,23 @@ public class BrowseServiceSigned {
     }
 
     public SectionTab getHome(String authorization) {
-        return getRowsTab(BrowseManagerParams.getHomeQuery(), authorization);
+        return getSectionTab(BrowseManagerParams.getHomeQuery(), authorization);
     }
 
     public SectionTab getGaming(String authorization) {
-        return getRowsTab(BrowseManagerParams.getGamingQuery(), authorization);
+        return getSectionTab(BrowseManagerParams.getGamingQuery(), authorization);
     }
 
     public SectionTab getNews(String authorization) {
-        return getRowsTab(BrowseManagerParams.getNewsQuery(), authorization);
+        return getSectionTab(BrowseManagerParams.getNewsQuery(), authorization);
     }
 
     public SectionTab getMusic(String authorization) {
-        return getRowsTab(BrowseManagerParams.getMusicQuery(), authorization);
+        return getSectionTab(BrowseManagerParams.getMusicQuery(), authorization);
+    }
+
+    public SectionList getChannel(String channelId, String authorization) {
+        return getSectionList(BrowseManagerParams.getChannelQuery(channelId), authorization);
     }
 
     private List<GridTab> getGridTabs(String query, String authorization) {
@@ -96,9 +101,9 @@ public class BrowseServiceSigned {
 
         List<GridTab> result = null;
 
-        Call<GridTabResult> wrapper = mBrowseManagerSigned.getGridTabResult(query, authorization);
+        Call<GridTabList> wrapper = mBrowseManagerSigned.getGridTabList(query, authorization);
 
-        GridTabResult browseResult = RetrofitHelper.get(wrapper);
+        GridTabList browseResult = RetrofitHelper.get(wrapper);
 
         if (browseResult != null) {
             result = browseResult.getTabs();
@@ -173,24 +178,24 @@ public class BrowseServiceSigned {
         return RetrofitHelper.get(wrapper);
     }
 
-    private SectionTabResult getRowsTabResult(String query, String authorization) {
+    private SectionTabList getSectionTabList(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getRowsTabResult: authorization is null.");
             return null;
         }
 
-        Call<SectionTabResult> wrapper = mBrowseManagerSigned.getSectionTabResult(query, authorization);
+        Call<SectionTabList> wrapper = mBrowseManagerSigned.getSectionTabList(query, authorization);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private SectionTab getRowsTab(String query, String authorization) {
+    private SectionTab getSectionTab(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getRowsTab: authorization is null. Query: " + query);
             return null;
         }
 
-        SectionTabResult tabs = getRowsTabResult(query, authorization);
+        SectionTabList tabs = getSectionTabList(query, authorization);
 
         if (tabs == null) {
             Log.e(TAG, "getRowsTab: tabs result is empty");
@@ -200,7 +205,18 @@ public class BrowseServiceSigned {
         return firstNotEmpty(tabs);
     }
 
-    private SectionTab firstNotEmpty(SectionTabResult tabs) {
+    private SectionList getSectionList(String query, String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getSectionList: authorization is null.");
+            return null;
+        }
+
+        Call<SectionList> wrapper = mBrowseManagerSigned.getSectionList(query, authorization);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private SectionTab firstNotEmpty(SectionTabList tabs) {
         SectionTab result = null;
 
         if (tabs.getTabs() != null) {

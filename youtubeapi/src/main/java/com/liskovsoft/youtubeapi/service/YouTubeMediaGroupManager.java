@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerInt;
@@ -51,15 +52,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return Observable.create(emitter -> {
-            MediaGroup search = getSearch(searchText);
-
-            if (search != null) {
-                emitter.onNext(search);
-            }
-
-            emitter.onComplete();
-        });
+        return ObservableHelper.fromNullable(() -> getSearch(searchText));
     }
 
     @Override
@@ -74,15 +67,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
-        return Observable.create(emitter -> {
-            MediaGroup subscriptions = getSubscriptions();
-
-            if (subscriptions != null) {
-                emitter.onNext(subscriptions);
-            }
-
-            emitter.onComplete();
-        });
+        return ObservableHelper.fromNullable(this::getSubscriptions);
     }
 
     @Override
@@ -106,15 +91,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getRecommendedObserve() {
-        return Observable.create(emitter -> {
-            MediaGroup recommended = getRecommended();
-
-            if (recommended != null) {
-                emitter.onNext(recommended);
-            }
-
-            emitter.onComplete();
-        });
+        return ObservableHelper.fromNullable(this::getRecommended);
     }
 
     @Override
@@ -129,15 +106,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
-        return Observable.create(emitter -> {
-            MediaGroup history = getHistory();
-
-            if (history != null) {
-                emitter.onNext(history);
-            }
-
-            emitter.onComplete();
-        });
+        return ObservableHelper.fromNullable(this::getHistory);
     }
 
     @Override
@@ -307,15 +276,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
-        return Observable.create(emitter -> {
-            MediaGroup result = continueGroup(mediaGroup);
-
-            if (result != null) {
-                emitter.onNext(result);
-            }
-
-            emitter.onComplete();
-        });
+        return ObservableHelper.fromNullable(() -> continueGroup(mediaGroup));
     }
 
     private void checkSigned() {

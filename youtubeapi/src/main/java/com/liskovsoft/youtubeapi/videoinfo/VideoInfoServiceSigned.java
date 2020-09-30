@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import retrofit2.Call;
 
@@ -9,9 +10,11 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceSigned.class.getSimpleName();
     private static VideoInfoServiceSigned sInstance;
     private final VideoInfoManagerSigned mVideoInfoManagerSigned;
+    private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceSigned() {
         mVideoInfoManagerSigned = RetrofitHelper.withQueryString(VideoInfoManagerSigned.class);
+        mLocaleManager = LocaleManager.instance();
     }
 
     public static VideoInfoServiceSigned instance() {
@@ -40,14 +43,14 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         return result;
     }
 
-    private VideoInfoResult getVideoInfoRestricted(String videoId, String authorization) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, authorization);
+    private VideoInfoResult getVideoInfoRegular(String videoId, String authorization) {
+        Call<VideoInfoResult> wrapper = mVideoInfoManagerSigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage(), authorization);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfoResult getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerSigned.getVideoInfo(videoId, authorization);
+    private VideoInfoResult getVideoInfoRestricted(String videoId, String authorization) {
+        Call<VideoInfoResult> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, authorization);
 
         return RetrofitHelper.get(wrapper);
     }

@@ -18,6 +18,9 @@ public interface VideoInfoManagerUnsigned {
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfoResult> getVideoInfo(@Query("video_id") String videoId);
 
+    @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
+    Call<VideoInfoResult> getVideoInfoLocalized(@Query("video_id") String videoId, @Query("hl") String lang);
+
     @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfoResult> getVideoInfoRestricted(@Query("video_id") String videoId);
 }

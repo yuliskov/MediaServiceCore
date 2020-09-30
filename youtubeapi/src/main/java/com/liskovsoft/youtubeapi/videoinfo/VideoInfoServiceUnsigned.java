@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
 import retrofit2.Call;
 
@@ -9,9 +10,11 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceUnsigned.class.getSimpleName();
     private static VideoInfoServiceUnsigned sInstance;
     private final VideoInfoManagerUnsigned mVideoInfoManagerUnsigned;
+    private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceUnsigned() {
         mVideoInfoManagerUnsigned = RetrofitHelper.withQueryString(VideoInfoManagerUnsigned.class);
+        mLocaleManager = LocaleManager.instance();
     }
 
     public static VideoInfoServiceUnsigned instance() {
@@ -41,7 +44,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
     
     private VideoInfoResult getVideoInfoRegular(String videoId) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoId);
+        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }

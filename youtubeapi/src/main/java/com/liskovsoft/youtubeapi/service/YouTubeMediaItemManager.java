@@ -64,12 +64,12 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
-        return Observable.fromCallable(() -> getFormatInfo(item));
+        return ObservableHelper.fromNullable(() -> getFormatInfo(item));
     }
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
-        return Observable.fromCallable(() -> getFormatInfo(videoId));
+        return ObservableHelper.fromNullable(() -> getFormatInfo(videoId));
     }
 
     @Override
@@ -141,42 +141,42 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec) {
-        return ObservableHelper.fromRunnable(() -> updateHistoryPosition(item, positionSec));
+        return ObservableHelper.fromVoidable(() -> updateHistoryPosition(item, positionSec));
     }
 
     @Override
     public Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec) {
-        return ObservableHelper.fromRunnable(() -> updateHistoryPosition(videoId, positionSec));
+        return ObservableHelper.fromVoidable(() -> updateHistoryPosition(videoId, positionSec));
     }
 
     @Override
     public Observable<Void> subscribeObserve(MediaItem item) {
-        return ObservableHelper.fromRunnable(() -> subscribe(item));
+        return ObservableHelper.fromVoidable(() -> subscribe(item));
     }
 
     @Override
     public Observable<Void> unsubscribeObserve(MediaItem item) {
-        return ObservableHelper.fromRunnable(() -> unsubscribe(item));
+        return ObservableHelper.fromVoidable(() -> unsubscribe(item));
     }
 
     @Override
     public Observable<Void> setLikeObserve(MediaItem item) {
-        return ObservableHelper.fromRunnable(() -> setLike(item));
+        return ObservableHelper.fromVoidable(() -> setLike(item));
     }
 
     @Override
     public Observable<Void> removeLikeObserve(MediaItem item) {
-        return ObservableHelper.fromRunnable(() -> removeLike(item));
+        return ObservableHelper.fromVoidable(() -> removeLike(item));
     }
 
     @Override
     public Observable<Void> setDislikeObserve(MediaItem item) {
-        return ObservableHelper.fromRunnable(() -> setDislike(item));
+        return ObservableHelper.fromVoidable(() -> setDislike(item));
     }
 
     @Override
     public Observable<Void> removeDislikeObserve(MediaItem item) {
-        return ObservableHelper.fromRunnable(() -> removeDislike(item));
+        return ObservableHelper.fromVoidable(() -> removeDislike(item));
     }
 
     @Override

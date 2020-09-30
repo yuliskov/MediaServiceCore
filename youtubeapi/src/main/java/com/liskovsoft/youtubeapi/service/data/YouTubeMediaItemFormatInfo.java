@@ -35,6 +35,10 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mVisitorMonitoringData; // used in tracking
 
     public static YouTubeMediaItemFormatInfo from(VideoInfoResult videoInfo) {
+        if (videoInfo == null) {
+            return null;
+        }
+
         YouTubeMediaItemFormatInfo formatInfo = new YouTubeMediaItemFormatInfo();
 
         if (videoInfo.getAdaptiveFormats() != null) {

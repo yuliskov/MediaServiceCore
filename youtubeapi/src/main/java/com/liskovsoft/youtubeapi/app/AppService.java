@@ -3,7 +3,9 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.BaseData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
+import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.squareup.duktape.Duktape;
 import retrofit2.Call;
@@ -13,14 +15,19 @@ import java.util.List;
 
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
+    private static final long CACHE_REFRESH_PERIOD_MS = 60 * 60 * 1_000;
     private static AppService sInstance;
     private final AppManager mAppManager;
     private Duktape mDuktape;
     private String mCachedDecipherFunction;
     private String mCachedClientPlaybackNonceFunction;
     private String mCachedPlayerUrl;
-    private static final long CACHE_REFRESH_PERIOD_MS = 60 * 60 * 1_000;
-    private long mCacheUpdateTimeMS;
+    private String mCachedBaseUrl;
+    private String mCachedClientId;
+    private String mCachedClientSecret;
+    private long mAppInfoUpdateTimeMS;
+    private long mPlayerDataUpdateTimeMS;
+    private long mBaseDataUpdateTimeMS;
 
     private AppService() {
         mAppManager = RetrofitHelper.withRegExp(AppManager.class);
@@ -73,6 +80,24 @@ public class AppService {
         return getDuktape().evaluate(code).toString();
     }
 
+    /**
+     * Constant used in {@link AuthManager}
+     */
+    public String getClientId() {
+        updateBaseData();
+
+        return mCachedClientId;
+    }
+
+    /**
+     * Constant used in {@link AuthManager}
+     */
+    public String getClientSecret() {
+        updateBaseData();
+
+        return mCachedClientSecret;
+    }
+
     private static boolean isAllNulls(List<String> ciphered) {
         for (String cipher : ciphered) {
             if (cipher != null) {
@@ -81,79 +106,6 @@ public class AppService {
         }
 
         return true;
-    }
-
-    private String getDecipherFunction() {
-        invalidateCache();
-
-        if (mCachedDecipherFunction != null) {
-            return mCachedDecipherFunction;
-        }
-
-        String playerUrl = getPlayerUrl();
-
-        if (playerUrl != null) {
-            Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
-            PlayerData playerData = RetrofitHelper.get(wrapper);
-
-            if (playerData != null) {
-                String decipherFunction = playerData.getDecipherFunction();
-
-                if (decipherFunction != null) {
-                    mCachedDecipherFunction = Helpers.replace(decipherFunction, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
-                }
-            }
-        }
-
-        return mCachedDecipherFunction;
-    }
-
-    private String getClientPlaybackNonceFunction() {
-        invalidateCache();
-
-        if (mCachedClientPlaybackNonceFunction != null) {
-            return mCachedClientPlaybackNonceFunction;
-        }
-
-        String playerUrl = getPlayerUrl();
-
-        if (playerUrl != null) {
-            Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
-            PlayerData playerData = RetrofitHelper.get(wrapper);
-
-            if (playerData != null) {
-                String clientPlaybackNonce = playerData.getClientPlaybackNonce();
-
-                if (clientPlaybackNonce != null) {
-                    mCachedClientPlaybackNonceFunction =
-                            Helpers.replace(clientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
-                }
-            }
-        }
-
-        return mCachedClientPlaybackNonceFunction;
-    }
-
-    private String getPlayerUrl() {
-        invalidateCache();
-
-        if (mCachedPlayerUrl != null) {
-            return mCachedPlayerUrl;
-        }
-
-        Call<AppInfo> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
-        AppInfo appInfo = RetrofitHelper.get(wrapper);
-
-        if (appInfo != null) {
-            String playerUrl = appInfo.getPlayerUrl();
-
-            if (playerUrl != null) {
-                mCachedPlayerUrl = AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/");
-                notifyCacheUpdated();
-            }
-        }
-
-        return mCachedPlayerUrl;
     }
 
     private String createDecipherCode(List<String> ciphered) {
@@ -194,19 +146,118 @@ public class AppService {
         return AppConstants.FUNCTION_RANDOM_BYTES + playbackNonceFunction + "getClientPlaybackNonce();";
     }
 
-    private void invalidateCache() {
-        long currentTimeTimeMs = System.currentTimeMillis();
-        boolean cacheIsStalled = (currentTimeTimeMs - mCacheUpdateTimeMS) > CACHE_REFRESH_PERIOD_MS;
+    private String getDecipherFunction() {
+        updatePlayerData();
 
-        if (cacheIsStalled) {
-            Log.d(TAG, "Cache is stalled. Resetting...");
-            mCachedDecipherFunction = null;
-            mCachedClientPlaybackNonceFunction = null;
-            mCachedPlayerUrl = null;
+        return mCachedDecipherFunction;
+    }
+
+    private String getClientPlaybackNonceFunction() {
+        updatePlayerData();
+
+        return mCachedClientPlaybackNonceFunction;
+    }
+
+    private String getPlayerUrl() {
+        updateAppInfoData();
+
+        return mCachedPlayerUrl;
+    }
+
+    private String getBaseUrl() {
+        updateAppInfoData();
+
+        return mCachedBaseUrl;
+    }
+
+    private void updateAppInfoData() {
+        if (System.currentTimeMillis() - mAppInfoUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
+            mCachedPlayerUrl != null && mCachedBaseUrl != null) {
+            return;
+        }
+
+        Log.d(TAG, "updateAppInfoData");
+
+        Call<AppInfo> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_MODERN);
+        AppInfo appInfo = RetrofitHelper.get(wrapper);
+
+        if (appInfo != null) {
+            String playerUrl = appInfo.getPlayerUrl();
+
+            if (playerUrl != null) {
+                mCachedPlayerUrl = AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/");
+            }
+
+            String baseUrl = appInfo.getBaseUrl();
+
+            if (baseUrl != null) {
+                mCachedBaseUrl = AppConstants.SCRIPTS_URL_BASE + baseUrl.replace("\\/", "/");
+            }
+
+            mAppInfoUpdateTimeMS = System.currentTimeMillis();
         }
     }
 
-    private void notifyCacheUpdated() {
-        mCacheUpdateTimeMS = System.currentTimeMillis();
+    private void updatePlayerData() {
+        if (System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
+                mCachedDecipherFunction != null && mCachedClientPlaybackNonceFunction != null) {
+            return;
+        }
+
+        Log.d(TAG, "updatePlayerData");
+
+        String playerUrl = getPlayerUrl();
+
+        if (playerUrl != null) {
+            Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
+            PlayerData playerData = RetrofitHelper.get(wrapper);
+
+            if (playerData != null) {
+                String decipherFunction = playerData.getDecipherFunction();
+
+                if (decipherFunction != null) {
+                    mCachedDecipherFunction = Helpers.replace(decipherFunction, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
+                }
+
+                String clientPlaybackNonce = playerData.getClientPlaybackNonce();
+
+                if (clientPlaybackNonce != null) {
+                    mCachedClientPlaybackNonceFunction =
+                            Helpers.replace(clientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
+                }
+
+                mPlayerDataUpdateTimeMS = System.currentTimeMillis();
+            }
+        }
+    }
+
+    private void updateBaseData() {
+        if (System.currentTimeMillis() - mBaseDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
+                mCachedClientId != null && mCachedClientSecret != null) {
+            return;
+        }
+
+        String baseUrl = getBaseUrl();
+
+        if (baseUrl != null) {
+            Call<BaseData> wrapper = mAppManager.getBaseData(baseUrl);
+            BaseData baseData = RetrofitHelper.get(wrapper);
+
+            if (baseData != null) {
+                String clientId = baseData.getClientId();
+
+                if (clientId != null) {
+                    mCachedClientId = clientId;
+                }
+
+                String clientSecret = baseData.getClientSecret();
+
+                if (clientSecret != null) {
+                    mCachedClientSecret = clientSecret;
+                }
+
+                mBaseDataUpdateTimeMS = System.currentTimeMillis();
+            }
+        }
     }
 }

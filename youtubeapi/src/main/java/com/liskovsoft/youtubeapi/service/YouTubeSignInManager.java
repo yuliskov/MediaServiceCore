@@ -5,8 +5,8 @@ import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthService;
-import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
-import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.UserCode;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -36,7 +36,7 @@ public class YouTubeSignInManager implements SignInManager {
     @SuppressLint("CheckResult")
     @Override
     public String signIn() {
-        UserCodeResult userCodeResult = mAuthService.getUserCode();
+        UserCode userCodeResult = mAuthService.getUserCode();
 
         Disposable tokenAction = mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
                 .subscribeOn(Schedulers.newThread())
@@ -51,7 +51,7 @@ public class YouTubeSignInManager implements SignInManager {
     @Override
     public Observable<String> signInObserve() {
         return Observable.create(emitter -> {
-            UserCodeResult userCodeResult = mAuthService.getUserCode();
+            UserCode userCodeResult = mAuthService.getUserCode();
 
             emitter.onNext(userCodeResult.getUserCode());
 
@@ -115,7 +115,7 @@ public class YouTubeSignInManager implements SignInManager {
 
         Log.d(TAG, "Updating authorization header...");
 
-        AccessTokenResult token = obtainAccessToken();
+        AccessToken token = obtainAccessToken();
 
         if (token != null) {
             mAuthorization = String.format("%s %s", token.getTokenType(), token.getAccessToken());
@@ -125,7 +125,7 @@ public class YouTubeSignInManager implements SignInManager {
         }
     }
 
-    private AccessTokenResult obtainAccessToken() {
+    private AccessToken obtainAccessToken() {
         // We don't have context, so can't create instance here.
         // Let's hope someone already created one for us.
         if (GlobalPreferences.sInstance == null) {
@@ -136,7 +136,7 @@ public class YouTubeSignInManager implements SignInManager {
         String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
         String mediaServiceRefreshToken = GlobalPreferences.sInstance.getMediaServiceRefreshToken();
 
-        AccessTokenResult token = null;
+        AccessToken token = null;
 
         if (rawAuthData != null) {
             token = mAuthService.getAccessTokenRaw(rawAuthData);

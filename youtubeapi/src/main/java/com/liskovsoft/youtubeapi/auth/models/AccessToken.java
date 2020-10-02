@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.auth.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AccessTokenResult extends ErrorResponse {
+public class AccessToken extends ErrorResponse {
     @SerializedName("access_token")
     private String mAccessToken;
 

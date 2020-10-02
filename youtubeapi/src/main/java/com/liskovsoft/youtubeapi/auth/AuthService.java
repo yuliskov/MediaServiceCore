@@ -1,9 +1,10 @@
 package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
-import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
-import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
+import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.auth.models.RefreshToken;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.UserCode;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -15,9 +16,11 @@ public class AuthService {
     private final AuthManager mAuthManager;
     private static final int REFRESH_TOKEN_ATTEMPTS = 10;
     private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 7_000;
+    private final AppService mAppService;
 
     private AuthService() {
         mAuthManager = RetrofitHelper.withGson(AuthManager.class);
+        mAppService = AppService.instance();
     }
 
     public static AuthService instance() {
@@ -33,9 +36,9 @@ public class AuthService {
      * <a href=https://youtube.com/activate>https://youtube.com/activate</a>
      * @return response with user code and device code
      */
-    public UserCodeResult getUserCode() {
-        Call<UserCodeResult> wrapper = mAuthManager.getUserCode(
-                AuthParams.getClientId(),
+    public UserCode getUserCode() {
+        Call<UserCode> wrapper = mAuthManager.getUserCode(
+                mAppService.getClientId(),
                 AuthParams.getAppScope());
         return RetrofitHelper.get(wrapper);
     }
@@ -46,11 +49,11 @@ public class AuthService {
      * @param deviceCode the code contained inside the response of the method {@link #getUserCode()}
      * @return refresh token that should be stored inside the app registry for future use
      */
-    public RefreshTokenResult getRefreshToken(String deviceCode) {
-        Call<RefreshTokenResult> wrapper = mAuthManager.getRefreshToken(
+    public RefreshToken getRefreshToken(String deviceCode) {
+        Call<RefreshToken> wrapper = mAuthManager.getRefreshToken(
                 deviceCode,
-                AuthParams.getClientId(),
-                AuthParams.getClientSecret(),
+                mAppService.getClientId(),
+                mAppService.getClientSecret(),
                 AuthParams.getAccessGrantType());
         return RetrofitHelper.get(wrapper);
     }
@@ -60,24 +63,24 @@ public class AuthService {
      * @param refreshToken token obtained from previous method
      * @return temporal access token
      */
-    public AccessTokenResult getAccessToken(String refreshToken) {
-        Call<AccessTokenResult> wrapper = mAuthManager.getAccessToken(
+    public AccessToken getAccessToken(String refreshToken) {
+        Call<AccessToken> wrapper = mAuthManager.getAccessToken(
                 refreshToken,
-                AuthParams.getClientId(),
-                AuthParams.getClientSecret(),
+                mAppService.getClientId(),
+                mAppService.getClientSecret(),
                 AuthParams.getRefreshGrantType());
         return RetrofitHelper.get(wrapper);
     }
 
-    public AccessTokenResult getAccessTokenRaw(String rawAuthData) {
-        Call<AccessTokenResult> wrapper = mAuthManager.getAccessToken(
+    public AccessToken getAccessTokenRaw(String rawAuthData) {
+        Call<AccessToken> wrapper = mAuthManager.getAccessToken(
                 RequestBody.create(null, rawAuthData.getBytes()));
         return RetrofitHelper.get(wrapper);
     }
 
-    public Observable<RefreshTokenResult> getRefreshTokenObserve(String deviceCode) {
+    public Observable<RefreshToken> getRefreshTokenObserve(String deviceCode) {
         return Observable.create(emitter -> {
-            RefreshTokenResult tokenResult = null;
+            RefreshToken tokenResult = null;
 
             for (int i = 0; i < REFRESH_TOKEN_ATTEMPTS; i++) {
                 Thread.sleep(REFRESH_TOKEN_ATTEMPT_INTERVAL_MS);

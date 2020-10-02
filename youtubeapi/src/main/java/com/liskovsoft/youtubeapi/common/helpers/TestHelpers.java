@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.auth.AuthService;
-import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
 
 public class TestHelpers {
     private static String mAuthorization; // type: Bearer
@@ -46,7 +46,7 @@ public class TestHelpers {
             return mAuthorization;
         }
 
-        AccessTokenResult token = AuthService.instance().getAccessTokenRaw(RAW_AUTH_DATA);
+        AccessToken token = AuthService.instance().getAccessTokenRaw(RAW_AUTH_DATA);
 
         if (token == null) {
             throw new IllegalStateException("Token is null");

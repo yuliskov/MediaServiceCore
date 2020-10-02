@@ -1,8 +1,9 @@
 package com.liskovsoft.youtubeapi.auth;
 
-import com.liskovsoft.youtubeapi.auth.models.RefreshTokenResult;
-import com.liskovsoft.youtubeapi.auth.models.AccessTokenResult;
-import com.liskovsoft.youtubeapi.auth.models.UserCodeResult;
+import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.auth.models.RefreshToken;
+import com.liskovsoft.youtubeapi.auth.models.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.UserCode;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import okhttp3.RequestBody;
 import org.junit.Before;
@@ -26,6 +27,7 @@ public class AuthManagerTest {
     private static final String GRANT_TYPE = "refresh_token";
     private static final String REFRESH_TOKEN = "1//0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY";
     private AuthManager mService;
+    private AppService mAppService;
 
     @Before
     public void setUp() {
@@ -36,16 +38,17 @@ public class AuthManagerTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mService = RetrofitHelper.withGson(AuthManager.class);
+        mAppService = AppService.instance();
     }
 
     // Fail
     //@Test
     public void testThatUserIsAuthenticated() throws IOException {
-        Call<AccessTokenResult> wrapper = mService.getAccessToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
+        Call<AccessToken> wrapper = mService.getAccessToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
 
-        Response<AccessTokenResult> execute = wrapper.execute();
+        Response<AccessToken> execute = wrapper.execute();
 
-        AccessTokenResult token = execute.body();
+        AccessToken token = execute.body();
 
         assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
         assertTrue("Token not null", token.getAccessToken().length() > 50);
@@ -53,13 +56,13 @@ public class AuthManagerTest {
     
     @Test
     public void testThatUserCanRefreshToken() throws IOException {
-        Call<AccessTokenResult> wrapper = mService.getAccessToken(REFRESH_TOKEN, CLIENT_ID,
+        Call<AccessToken> wrapper = mService.getAccessToken(REFRESH_TOKEN, CLIENT_ID,
                 CLIENT_SECRET,
                 GRANT_TYPE);
 
-        Response<AccessTokenResult> execute = wrapper.execute();
+        Response<AccessToken> execute = wrapper.execute();
 
-        AccessTokenResult token = execute.body();
+        AccessToken token = execute.body();
 
         assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
         assertTrue("Token not null", token.getAccessToken().length() > 50);
@@ -67,14 +70,14 @@ public class AuthManagerTest {
 
     @Test
     public void testThatUserCodeFieldsNotEmpty() throws IOException {
-        UserCodeResult code = getUserCode();
+        UserCode code = getUserCode();
         assertTrue(notEmpty(code.getUserCode()));
         assertTrue(notEmpty(code.getDeviceCode()));
     }
 
     @Test
     public void testThatUserStillNotSignedIn() throws IOException {
-        RefreshTokenResult token = getAccessToken();
+        RefreshToken token = getAccessToken();
         assertEquals("authorization_pending", token.getError());
     }
 
@@ -83,18 +86,18 @@ public class AuthManagerTest {
         return userCode != null && userCode.length() > 5;
     }
 
-    private UserCodeResult getUserCode() throws IOException {
-        Call<UserCodeResult> userCode = mService.getUserCode(AuthParams.getClientId(), AuthParams.getAppScope());
-        Response<UserCodeResult> response = userCode.execute();
+    private UserCode getUserCode() throws IOException {
+        Call<UserCode> userCode = mService.getUserCode(mAppService.getClientId(), AuthParams.getAppScope());
+        Response<UserCode> response = userCode.execute();
         return response.body();
     }
 
-    private RefreshTokenResult getAccessToken() throws IOException {
-        UserCodeResult userCode = getUserCode();
+    private RefreshToken getAccessToken() throws IOException {
+        UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<RefreshTokenResult> token = mService.getRefreshToken(userCode.getDeviceCode(), AuthParams.getClientId(), AuthParams.getClientSecret(), AuthParams.getAccessGrantType());
-        Response<RefreshTokenResult> response = token.execute();
+        Call<RefreshToken> token = mService.getRefreshToken(userCode.getDeviceCode(), mAppService.getClientId(), mAppService.getClientSecret(), AuthParams.getAccessGrantType());
+        Response<RefreshToken> response = token.execute();
         return response.body();
     }
 }

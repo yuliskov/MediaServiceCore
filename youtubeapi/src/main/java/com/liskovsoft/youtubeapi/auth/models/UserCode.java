@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.auth.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserCodeResult {
+public class UserCode {
     /**
      * Example: AH-1Ng1K8lBZcrMezwnEzpZ23VwfE8Hn7HEuNL-GbQIMYrSZhBF1j3KZ-h47-bqBB4rC6-W9xG2WHM67ZGttecz_ALOZ-JoxDQ
      */

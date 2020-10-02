@@ -86,7 +86,7 @@ public class AppManagerTest {
     }
 
     private String getPlayerUrl() {
-        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_LG_1);
+        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_MODERN);
         AppInfo appInfo = RetrofitHelper.get(wrapper);
 
         assertNotNull("AppInfo not null", appInfo);
@@ -99,7 +99,7 @@ public class AppManagerTest {
     }
 
     private String getBaseUrl() {
-        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_LG_1);
+        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_MODERN);
         AppInfo appInfo = RetrofitHelper.get(wrapper);
 
         assertNotNull("AppInfo not null", appInfo);

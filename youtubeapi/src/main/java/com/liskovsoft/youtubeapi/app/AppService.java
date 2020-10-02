@@ -237,6 +237,8 @@ public class AppService {
             return;
         }
 
+        Log.d(TAG, "updateBaseData");
+
         String baseUrl = getBaseUrl();
 
         if (baseUrl != null) {

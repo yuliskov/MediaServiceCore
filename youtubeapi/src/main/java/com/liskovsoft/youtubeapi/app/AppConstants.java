@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 public interface AppConstants {
     String USER_AGENT_SAMSUNG_1 = "Mozilla/5.0 (Linux; Tizen 2.3; SmartHub; SMART-TV; SmartTV; U; Maple2012) AppleWebKit/538.1+ (KHTML, like Gecko) TV Safari/538.1+";
+    String USER_AGENT_LG_1 = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     Pattern SIGNATURE_DECIPHER = Pattern.compile("function [_$A-Za-z]{2}");
     Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE = Pattern.compile("\\nfunction [_$A-Za-z]{2}\\(\\)");
     String SCRIPTS_URL_BASE = "https://www.youtube.com";

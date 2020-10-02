@@ -2,9 +2,8 @@ package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.app.models.AppInfoResult;
-import com.liskovsoft.youtubeapi.app.models.ClientPlaybackNonceFunctionResult;
-import com.liskovsoft.youtubeapi.app.models.DecipherFunctionResult;
+import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.squareup.duktape.Duktape;
 import retrofit2.Call;
@@ -94,14 +93,14 @@ public class AppService {
         String playerUrl = getPlayerUrl();
 
         if (playerUrl != null) {
-            Call<DecipherFunctionResult> decipherWrapper = mAppManager.getDecipherFunction(playerUrl);
-            DecipherFunctionResult decipherFunction = RetrofitHelper.get(decipherWrapper);
+            Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
+            PlayerData playerData = RetrofitHelper.get(wrapper);
 
-            if (decipherFunction != null) {
-                String content = decipherFunction.getContent();
+            if (playerData != null) {
+                String decipherFunction = playerData.getDecipherFunction();
 
-                if (content != null) {
-                    mCachedDecipherFunction = Helpers.replace(content, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
+                if (decipherFunction != null) {
+                    mCachedDecipherFunction = Helpers.replace(decipherFunction, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
                 }
             }
         }
@@ -119,14 +118,15 @@ public class AppService {
         String playerUrl = getPlayerUrl();
 
         if (playerUrl != null) {
-            Call<ClientPlaybackNonceFunctionResult> playbackNonceWrapper = mAppManager.getClientPlaybackNonceFunction(playerUrl);
-            ClientPlaybackNonceFunctionResult playbackNonceFunction = RetrofitHelper.get(playbackNonceWrapper);
+            Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
+            PlayerData playerData = RetrofitHelper.get(wrapper);
 
-            if (playbackNonceFunction != null) {
-                String content = playbackNonceFunction.getContent();
+            if (playerData != null) {
+                String clientPlaybackNonce = playerData.getClientPlaybackNonce();
 
-                if (content != null) {
-                    mCachedClientPlaybackNonceFunction = Helpers.replace(content, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
+                if (clientPlaybackNonce != null) {
+                    mCachedClientPlaybackNonceFunction =
+                            Helpers.replace(clientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
                 }
             }
         }
@@ -141,8 +141,8 @@ public class AppService {
             return mCachedPlayerUrl;
         }
 
-        Call<AppInfoResult> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
-        AppInfoResult appInfo = RetrofitHelper.get(wrapper);
+        Call<AppInfo> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
+        AppInfo appInfo = RetrofitHelper.get(wrapper);
 
         if (appInfo != null) {
             String playerUrl = appInfo.getPlayerUrl();

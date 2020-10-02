@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.youtubeapi.app.models.AppInfoResult;
-import com.liskovsoft.youtubeapi.app.models.ClientPlaybackNonceFunctionResult;
-import com.liskovsoft.youtubeapi.app.models.DecipherFunctionResult;
+import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.BaseData;
+import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,12 +42,12 @@ public class AppManagerTest {
     public void testThatDecipherFunctionIsValid() {
         String playerUrl = getPlayerUrl();
 
-        Call<DecipherFunctionResult> wrapper = mManager.getDecipherFunction(playerUrl);
-        DecipherFunctionResult decipherFunction = RetrofitHelper.get(wrapper);
+        Call<PlayerData> wrapper = mManager.getPlayerData(playerUrl);
+        PlayerData playerData = RetrofitHelper.get(wrapper);
 
-        assertNotNull("Decipher result not null", decipherFunction);
+        assertNotNull("Decipher result not null", playerData);
 
-        String decipherFunctionContent = decipherFunction.getContent();
+        String decipherFunctionContent = playerData.getDecipherFunction();
         assertNotNull("Decipher function not null", decipherFunctionContent);
         assertFalse("Decipher function is not empty", decipherFunctionContent.isEmpty());
         assertTrue("Decipher function has proper content",
@@ -59,21 +59,35 @@ public class AppManagerTest {
     public void testThatPlaybackNonceFunctionIsValid() {
         String playerUrl = getPlayerUrl();
 
-        Call<ClientPlaybackNonceFunctionResult> wrapper = mManager.getClientPlaybackNonceFunction(playerUrl);
-        ClientPlaybackNonceFunctionResult clientPlaybackNonceFunction = RetrofitHelper.get(wrapper);
+        Call<PlayerData> wrapper = mManager.getPlayerData(playerUrl);
+        PlayerData clientPlaybackNonceFunction = RetrofitHelper.get(wrapper);
 
         assertNotNull("Playback nonce result not null", clientPlaybackNonceFunction);
 
-        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getContent();
+        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getClientPlaybackNonce();
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
         assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith(";function ") &&
                 playbackNonceFunctionContent.contains("\nfunction ") && playbackNonceFunctionContent.endsWith(".join(\"\")}"));
     }
 
+    @Test
+    public void testThatClientIdAndSecretNotEmpty() {
+        String baseUrl = getBaseUrl();
+
+        Call<BaseData> wrapper = mManager.getBaseData(baseUrl);
+
+        BaseData baseData = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Base data not null", baseData);
+
+        assertNotNull("Client id not empty", baseData.getClientId());
+        assertNotNull("Client secret not empty", baseData.getClientSecret());
+    }
+
     private String getPlayerUrl() {
-        Call<AppInfoResult> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_SAMSUNG_1);
-        AppInfoResult appInfo = RetrofitHelper.get(wrapper);
+        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_LG_1);
+        AppInfo appInfo = RetrofitHelper.get(wrapper);
 
         assertNotNull("AppInfo not null", appInfo);
 
@@ -82,5 +96,18 @@ public class AppManagerTest {
         assertNotNull("Player url not null", playerUrl);
 
         return AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/");
+    }
+
+    private String getBaseUrl() {
+        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_LG_1);
+        AppInfo appInfo = RetrofitHelper.get(wrapper);
+
+        assertNotNull("AppInfo not null", appInfo);
+
+        String baseUrl = appInfo.getBaseUrl();
+
+        assertNotNull("Base url not null", baseUrl);
+
+        return AppConstants.SCRIPTS_URL_BASE + baseUrl.replace("\\/", "/");
     }
 }

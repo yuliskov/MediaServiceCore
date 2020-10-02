@@ -1,12 +1,11 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.youtubeapi.app.models.AppInfoResult;
-import com.liskovsoft.youtubeapi.app.models.ClientPlaybackNonceFunctionResult;
-import com.liskovsoft.youtubeapi.app.models.DecipherFunctionResult;
+import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.BaseData;
+import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.Url;
 
 public interface AppManager {
@@ -16,21 +15,18 @@ public interface AppManager {
      * Player url example: <b>"player_url":"\/s\/player\/e49bfb00\/tv-player-ias.vflset\/tv-player-ias.js"</b>
      */
     @GET("https://youtube.com/tv")
-    Call<AppInfoResult> getAppInfo(@Header("User-Agent") String userAgent);
+    Call<AppInfo> getAppInfo(@Header("User-Agent") String userAgent);
 
     /**
-     * Return JS decipher function as string.<br/>
-     * Used when deciphering music items.<br/>
-     * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
+     * Returns useful player data such as Decipher function and Client Playback Nonce (CPN) constant
      */
     @GET
-    Call<DecipherFunctionResult> getDecipherFunction(@Url String playerUrl);
+    Call<PlayerData> getPlayerData(@Url String playerUrl);
 
     /**
-     * Return Client Playback Nonce (CPN) function that used in tracking as string.<br/>
-     * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".<br/>
-     * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
+     * Contains constants used in Auth<br/>
+     * Such as client_secret and client_id
      */
     @GET
-    Call<ClientPlaybackNonceFunctionResult> getClientPlaybackNonceFunction(@Url String playerUrl);
+    Call<BaseData> getBaseData(@Url String baseUrl);
 }

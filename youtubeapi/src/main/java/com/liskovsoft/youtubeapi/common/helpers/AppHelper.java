@@ -56,12 +56,12 @@ public class AppHelper {
                 }
 
                 if (result == null || result.isEmpty()) {
-                    result = item;
+                    result = item.trim();
                 } else {
                     if (divider == null) {
-                        result = String.format("%s %s", result, item);
+                        result = String.format("%s %s", result, item.trim());
                     } else {
-                        result = String.format("%s %s %s", result, divider, item);
+                        result = String.format("%s %s %s", result, divider, item.trim());
                     }
                 }
             }

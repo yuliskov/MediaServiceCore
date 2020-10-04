@@ -47,7 +47,7 @@ public class AppHelper {
     }
 
     private static String combineItems(String[] items, String divider) {
-        String result = "";
+        String result = null;
 
         if (items != null) {
             for (String item : items) {
@@ -55,7 +55,7 @@ public class AppHelper {
                     continue;
                 }
 
-                if (result.isEmpty()) {
+                if (result == null || result.isEmpty()) {
                     result = item;
                 } else {
                     if (divider == null) {

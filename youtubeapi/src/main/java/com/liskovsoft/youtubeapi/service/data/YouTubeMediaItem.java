@@ -46,7 +46,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mDescription = YouTubeMediaServiceHelper.createDescription(
                 item.getUserName(),
                 item.getPublishedTime(),
-                item.getViewCountText());
+                item.getShortViewCountText(),
+                item.isLive() ? "LIVE" : "");
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;

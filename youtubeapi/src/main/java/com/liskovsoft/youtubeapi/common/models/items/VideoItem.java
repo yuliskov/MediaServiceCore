@@ -1,12 +1,14 @@
 package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 
 import java.util.List;
 
 // root element: pivotVideoRenderer
 public class VideoItem {
-    private static final String THUMBNAIL_LIVE = "LIVE";
+    private static final String BADGE_LIVE = "LIVE";
+    private static final String THUMBNAIL_STYLE_LIVE = "LIVE";
     private static final String THUMBNAIL_STYLE_DEFAULT = "DEFAULT";
     @JsonPath("$.videoId")
     private String mVideoId;
@@ -30,7 +32,9 @@ public class VideoItem {
     @JsonPath({"$.viewCountText.simpleText", "$.viewCountText.runs[0].text"})
     private String mViewCountText;
     @JsonPath({"$.shortViewCountText.simpleText", "$.shortViewCountText.runs[0].text"})
-    private String mShortViewCount;
+    private String mShortViewCountText1;
+    @JsonPath("$.shortViewCountText.runs[1].text")
+    private String mShortViewCountText2;
     @JsonPath({"$.lengthText.simpleText", "$.lengthText.runs[0].text"})
     private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
@@ -82,8 +86,8 @@ public class VideoItem {
         return mViewCountText;
     }
 
-    public String getShortViewCount() {
-        return mShortViewCount;
+    public String getShortViewCountText() {
+        return AppHelper.combineText(mShortViewCountText1, mShortViewCountText2);
     }
 
     public String getLengthText() {
@@ -103,7 +107,7 @@ public class VideoItem {
     }
 
     public boolean isLive() {
-        return THUMBNAIL_LIVE.equals(mLiveBadge);
+        return THUMBNAIL_STYLE_LIVE.equals(mThumbnailStyle) || BADGE_LIVE.equals(mLiveBadge);
     }
 
     public int getPercentWatched() {

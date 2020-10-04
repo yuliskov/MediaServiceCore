@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import io.reactivex.Observable;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,25 +34,39 @@ public class AppHelper {
     }
 
     public static String itemsToDescription(String... items) {
-        String result = "";
+        return combineItems(items, BULLET_SYMBOL);
+    }
 
-        for (String item : items) {
-            if (item == null || item.isEmpty()) {
-                continue;
-            }
-
-            if (result.isEmpty()) {
-                result = item;
-            } else {
-                result = String.format("%s %s %s", result, BULLET_SYMBOL, item);
-            }
-        }
-
-        return result;
+    public static String combineText(String... items) {
+        return combineItems(items, null);
     }
 
     public static String createQuery(String template) {
         LocaleManager localeManager = LocaleManager.instance();
         return String.format(AppConstants.JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
+    }
+
+    private static String combineItems(String[] items, String divider) {
+        String result = "";
+
+        if (items != null) {
+            for (String item : items) {
+                if (item == null || item.isEmpty()) {
+                    continue;
+                }
+
+                if (result.isEmpty()) {
+                    result = item;
+                } else {
+                    if (divider == null) {
+                        result = String.format("%s %s", result, item);
+                    } else {
+                        result = String.format("%s %s %s", result, divider, item);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }

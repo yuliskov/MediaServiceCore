@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 
 public class TrackingService {
@@ -43,7 +43,7 @@ public class TrackingService {
     }
 
     public void updateWatchTime(String videoId, float positionSec, String authorization) {
-        VideoInfoResult videoInfoResult = mVideoInfoServiceSigned.getVideoInfo(videoId, authorization);
+        VideoInfo videoInfoResult = mVideoInfoServiceSigned.getVideoInfo(videoId, authorization);
 
         String lengthSeconds = videoInfoResult.getVideoDetails().getLengthSeconds();
         updateWatchTime(
@@ -57,7 +57,7 @@ public class TrackingService {
         );
     }
 
-    public void updateWatchTime(VideoInfoResult videoInfoResult, float positionSec, String authorization) {
+    public void updateWatchTime(VideoInfo videoInfoResult, float positionSec, String authorization) {
         String lengthSeconds = videoInfoResult.getVideoDetails().getLengthSeconds();
         updateWatchTime(
                 videoInfoResult.getVideoDetails().getVideoId(),

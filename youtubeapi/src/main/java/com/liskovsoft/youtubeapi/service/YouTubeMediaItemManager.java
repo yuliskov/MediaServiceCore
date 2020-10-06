@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.service.internal.MediaItemManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerUnsigned;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
@@ -43,7 +43,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         YouTubeMediaItemFormatInfo formatInfo = ytMediaItem.getFormatInfo();
 
         if (formatInfo == null) {
-            VideoInfoResult videoInfo = mMediaItemManagerReal.getVideoInfo(item.getMediaId());
+            VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(item.getMediaId());
 
             formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
@@ -57,7 +57,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
         checkSigned();
 
-        VideoInfoResult videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
+        VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
 
         return YouTubeMediaItemFormatInfo.from(videoInfo);
     }

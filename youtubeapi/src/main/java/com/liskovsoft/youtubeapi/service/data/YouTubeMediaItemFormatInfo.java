@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 import io.reactivex.Observable;
@@ -34,7 +34,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mEventId; // used in tracking
     private String mVisitorMonitoringData; // used in tracking
 
-    public static YouTubeMediaItemFormatInfo from(VideoInfoResult videoInfo) {
+    public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo) {
         if (videoInfo == null) {
             return null;
         }

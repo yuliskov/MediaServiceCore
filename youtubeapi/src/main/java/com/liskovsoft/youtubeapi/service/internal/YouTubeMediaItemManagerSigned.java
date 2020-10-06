@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private static YouTubeMediaItemManagerSigned sInstance;
@@ -43,7 +43,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
-    public VideoInfoResult getVideoInfo(String videoId) {
+    public VideoInfo getVideoInfo(String videoId) {
         return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
     }
 

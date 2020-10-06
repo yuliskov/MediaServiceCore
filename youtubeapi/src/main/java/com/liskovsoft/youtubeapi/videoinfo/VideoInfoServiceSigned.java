@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 
 public class VideoInfoServiceSigned extends VideoInfoServiceBase {
@@ -25,8 +25,8 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         return sInstance;
     }
 
-    public VideoInfoResult getVideoInfo(String videoId, String authorization) {
-        VideoInfoResult result = getVideoInfoRegular(videoId, authorization);
+    public VideoInfo getVideoInfo(String videoId, String authorization) {
+        VideoInfo result = getVideoInfoRegular(videoId, authorization);
 
         if (result != null && result.isLoginRequired()) {
             Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
@@ -37,20 +37,20 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
             decipherFormats(result.getAdaptiveFormats());
             decipherFormats(result.getRegularFormats());
         } else {
-            Log.e(TAG, "Can't get video info for videoId " + videoId);
+            Log.e(TAG, "Can't get video info. videoId: %s, authorization: %s", videoId, authorization);
         }
 
         return result;
     }
 
-    private VideoInfoResult getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerSigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage(), authorization);
+    private VideoInfo getVideoInfoRegular(String videoId, String authorization) {
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage(), authorization);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfoResult getVideoInfoRestricted(String videoId, String authorization) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, authorization);
+    private VideoInfo getVideoInfoRestricted(String videoId, String authorization) {
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, authorization);
 
         return RetrofitHelper.get(wrapper);
     }

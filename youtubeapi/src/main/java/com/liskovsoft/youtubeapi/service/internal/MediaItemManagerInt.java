@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public interface MediaItemManagerInt {
     WatchNextResult getWatchNextResult(String videoId);
-    VideoInfoResult getVideoInfo(String videoId);
+    VideoInfo getVideoInfo(String videoId);
     void updateHistoryPosition(String videoId, String lengthSec,
                                String eventId, String vmData, float positionSec);
     void setLike(String videoId);

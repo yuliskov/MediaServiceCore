@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Call;
@@ -87,7 +87,7 @@ public class TrackingManagerInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
                 videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
@@ -110,7 +110,7 @@ public class TrackingManagerInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> updateWatchTime(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec, positionSec,
@@ -122,7 +122,7 @@ public class TrackingManagerInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> updateWatchTimeAlt(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfoResult videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
                 videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization

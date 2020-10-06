@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class VideoInfoManagerUnsignedTest {
         testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_CAPTIONS));
     }
 
-    private void testThatLiveVideoContainsSpecificFields(VideoInfoResult result) {
+    private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {
         assertNotNull("Result not null", result);
         assertNotNull("Contains dash url", result.getDashManifestUrl());
         assertNotNull("Contains hls url", result.getHlsManifestUrl());
@@ -65,7 +65,7 @@ public class VideoInfoManagerUnsignedTest {
         testThatVideoInfoContainsRequiredFields(result);
     }
 
-    private void testThatVideoWithCaptionsContainsRequiredFields(VideoInfoResult result) {
+    private void testThatVideoWithCaptionsContainsRequiredFields(VideoInfo result) {
         assertNotNull("Result not null", result);
         List<CaptionTrack> captionTracks = result.getCaptionTracks();
         assertNotNull("Contains captions", captionTracks);
@@ -83,14 +83,14 @@ public class VideoInfoManagerUnsignedTest {
         testThatNonLiveVideoInfoContainsRequiredFields(result);
     }
 
-    private void testThatNonLiveVideoInfoContainsRequiredFields(VideoInfoResult result) {
+    private void testThatNonLiveVideoInfoContainsRequiredFields(VideoInfo result) {
         List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
         assertNotNull("Contains range", formats.get(0).getIndexRange());
 
         testThatVideoInfoContainsRequiredFields(result);
     }
 
-    private void testThatVideoInfoContainsRequiredFields(VideoInfoResult result) {
+    private void testThatVideoInfoContainsRequiredFields(VideoInfo result) {
         assertNotNull("Result not null", result);
         assertFalse("Video available externally", result.isUnplayable());
         List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
@@ -103,13 +103,13 @@ public class VideoInfoManagerUnsignedTest {
         assertNotNull("Contains vm tracking param", result.getVisitorMonitoringData());
     }
 
-    private VideoInfoResult getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfoResult> wrapper = mService.getVideoInfoRestricted(videoId);
+    private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
+        Call<VideoInfo> wrapper = mService.getVideoInfoRestricted(videoId);
         return wrapper.execute().body();
     }
 
-    private VideoInfoResult getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfoResult> wrapper = mService.getVideoInfo(videoId);
+    private VideoInfo getVideoInfo(String videoId) throws IOException {
+        Call<VideoInfo> wrapper = mService.getVideoInfo(videoId);
         return wrapper.execute().body();
     }
 }

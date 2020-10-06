@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 
 public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
@@ -25,8 +25,8 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         return sInstance;
     }
 
-    public VideoInfoResult getVideoInfo(String videoId) {
-        VideoInfoResult result = getVideoInfoRegular(videoId);
+    public VideoInfo getVideoInfo(String videoId) {
+        VideoInfo result = getVideoInfoRegular(videoId);
 
         if (result != null && result.isLoginRequired()) {
             Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
@@ -43,14 +43,14 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         return result;
     }
     
-    private VideoInfoResult getVideoInfoRegular(String videoId) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage());
+    private VideoInfo getVideoInfoRegular(String videoId) {
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfoResult getVideoInfoRestricted(String videoId) {
-        Call<VideoInfoResult> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoId);
+    private VideoInfo getVideoInfoRestricted(String videoId) {
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoId);
 
         return RetrofitHelper.get(wrapper);
     }

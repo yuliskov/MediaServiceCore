@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
 import java.util.List;
 
-public class VideoInfoResult {
+public class VideoInfo {
     private static final String PARAM_EVENT_ID = "ei";
     private static final String PARAM_VM = "vm";
     private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";

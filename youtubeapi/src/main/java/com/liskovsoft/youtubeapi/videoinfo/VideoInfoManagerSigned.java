@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -13,14 +13,14 @@ import retrofit2.http.Query;
 public interface VideoInfoManagerSigned {
     // Unused method. sts - ???
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
-    Call<VideoInfoResult> getVideoInfo(@Query("video_id") String videoId, @Query("sts") String sts, @Header("Authorization") String auth);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("sts") String sts, @Header("Authorization") String auth);
     
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
-    Call<VideoInfoResult> getVideoInfo(@Query("video_id") String videoId, @Header("Authorization") String auth);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Header("Authorization") String auth);
 
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
-    Call<VideoInfoResult> getVideoInfoLocalized(@Query("video_id") String videoId, @Query("hl") String lang, @Header("Authorization") String auth);
+    Call<VideoInfo> getVideoInfoLocalized(@Query("video_id") String videoId, @Query("hl") String lang, @Header("Authorization") String auth);
 
     @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
-    Call<VideoInfoResult> getVideoInfoRestricted(@Query("video_id") String videoId, @Header("Authorization") String auth);
+    Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Header("Authorization") String auth);
 }

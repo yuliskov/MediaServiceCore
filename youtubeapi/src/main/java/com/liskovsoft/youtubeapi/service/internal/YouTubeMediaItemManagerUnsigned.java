@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceUnsigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoResult;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     private static YouTubeMediaItemManagerUnsigned sInstance;
@@ -34,7 +34,7 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     }
 
     @Override
-    public VideoInfoResult getVideoInfo(String videoId) {
+    public VideoInfo getVideoInfo(String videoId) {
         return mVideoInfoServiceUnsigned.getVideoInfo(videoId);
     }
 

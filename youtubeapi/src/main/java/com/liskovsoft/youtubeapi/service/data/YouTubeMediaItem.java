@@ -24,7 +24,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mContentType;
     private boolean mIsLive;
     private int mDurationMs;
-    private String mDurationLabel;
+    private String mBadgeText;
     private String mProductionDate;
     private int mWidth;
     private int mHeight;
@@ -48,7 +48,7 @@ public class YouTubeMediaItem implements MediaItem {
                 item.getUserName(),
                 item.getPublishedTime(),
                 item.getShortViewCountText() != null ? item.getShortViewCountText() : item.getViewCountText(),
-                item.getUpcomingEventText() != null ? item.getUpcomingEventText() : item.getBadgeText());
+                item.getUpcomingEventText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
@@ -57,7 +57,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
-        video.mDurationLabel = item.getLengthText();
+        video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
 
@@ -82,7 +82,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
-        video.mDurationLabel = item.getLengthText();
+        video.mBadgeText = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
 
@@ -314,7 +314,7 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getDurationLabel() {
-        return mDurationLabel;
+    public String getBadgeText() {
+        return mBadgeText;
     }
 }

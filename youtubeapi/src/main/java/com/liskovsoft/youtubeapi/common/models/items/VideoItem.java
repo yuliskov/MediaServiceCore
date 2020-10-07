@@ -42,7 +42,7 @@ public class VideoItem {
     private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
     private String mLengthTextLong;
-    @JsonPath({"$.badges[0].liveBadge.label.runs[0].text", "$.badges[0].upcomingEventBadge.label.simpleText"})
+    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text.simpleText")
     private String mBadgeText;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style")
     private String mBadgeStyle;

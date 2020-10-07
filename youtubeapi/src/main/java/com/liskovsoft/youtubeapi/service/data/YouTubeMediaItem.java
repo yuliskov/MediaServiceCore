@@ -23,7 +23,8 @@ public class YouTubeMediaItem implements MediaItem {
     private String mBackgroundImageUrl;
     private String mContentType;
     private boolean mIsLive;
-    private int mDuration;
+    private int mDurationMs;
+    private String mDurationLabel;
     private String mProductionDate;
     private int mWidth;
     private int mHeight;
@@ -47,7 +48,7 @@ public class YouTubeMediaItem implements MediaItem {
                 item.getUserName(),
                 item.getPublishedTime(),
                 item.getShortViewCountText() != null ? item.getShortViewCountText() : item.getViewCountText(),
-                item.isLive() ? "LIVE" : "");
+                item.getUpcomingEventText() != null ? item.getUpcomingEventText() : item.getBadgeText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
@@ -55,7 +56,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
-        video.mDuration = AppHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationLabel = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
 
@@ -79,7 +81,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaId = item.getVideoId();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
-        video.mDuration = AppHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationLabel = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
 
@@ -271,7 +274,7 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public int getDurationMs() {
-        return mDuration;
+        return mDurationMs;
     }
 
     @Override
@@ -308,5 +311,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getAuthor() {
         return mAuthor;
+    }
+
+    @Override
+    public String getDurationLabel() {
+        return mDurationLabel;
     }
 }

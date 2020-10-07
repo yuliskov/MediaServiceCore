@@ -5,11 +5,14 @@ import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 
 import java.util.List;
 
-// root element: pivotVideoRenderer
+/**
+ * Root element: gridVideoRenderer/pivotVideoRenderer
+ */
 public class VideoItem {
-    private static final String BADGE_LIVE = "LIVE";
-    private static final String THUMBNAIL_STYLE_LIVE = "LIVE";
-    private static final String THUMBNAIL_STYLE_DEFAULT = "DEFAULT";
+    private static final String BADGE_TEXT_LIVE = "LIVE";
+    private static final String BADGE_STYLE_LIVE = "LIVE";
+    private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
+    private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
     @JsonPath("$.videoId")
     private String mVideoId;
     @JsonPath("$.thumbnail.thumbnails[*]")
@@ -39,16 +42,20 @@ public class VideoItem {
     private String mLengthText;
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
     private String mLengthTextLong;
-    @JsonPath("$.badges[0].textBadge.label.runs[0].text")
-    private String mQualityBadge;
+    @JsonPath({"$.badges[0].liveBadge.label.runs[0].text", "$.badges[0].upcomingEventBadge.label.simpleText"})
+    private String mBadgeText;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style")
-    private String mThumbnailStyle;
-    @JsonPath("$.badges[0].liveBadge.label.runs[0].text")
-    private String mLiveBadge;
+    private String mBadgeStyle;
     @JsonPath("$.trackingParams")
     private String mTrackingParams;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
+    @JsonPath("$.upcomingEventData.upcomingEventText.runs[0].text")
+    private String mUpcomingEventText1;
+    @JsonPath("$.upcomingEventData.upcomingEventText.runs[1].text")
+    private String mUpcomingEventText2;
+    @JsonPath("$.upcomingEventData.startTime")
+    private String mUpcomingEventStartTime;
 
     public String getVideoId() {
         return mVideoId;
@@ -98,16 +105,12 @@ public class VideoItem {
         return mLengthTextLong;
     }
 
-    public String getQualityBadge() {
-        return mQualityBadge;
-    }
-
-    public String getThumbnailStyle() {
-        return mThumbnailStyle;
+    public String getBadgeStyle() {
+        return mBadgeStyle;
     }
 
     public boolean isLive() {
-        return THUMBNAIL_STYLE_LIVE.equals(mThumbnailStyle) || BADGE_LIVE.equals(mLiveBadge);
+        return BADGE_STYLE_LIVE.equals(mBadgeStyle) || BADGE_TEXT_LIVE.equals(mBadgeText);
     }
 
     public int getPercentWatched() {
@@ -118,7 +121,21 @@ public class VideoItem {
         return mTrackingParams;
     }
 
-    public String getLiveBadge() {
-        return mLiveBadge;
+    public String getBadgeText() {
+        return mBadgeText;
+    }
+
+    /**
+     * Example: Premieres 10/8/20, 1:00 AM
+     */
+    public String getUpcomingEventText() {
+        return AppHelper.combineText(mUpcomingEventText1, mUpcomingEventText2);
+    }
+
+    /**
+     * Event start time in unix format: 1602108000
+     */
+    public String getUpcomingEventStartTime() {
+        return mUpcomingEventStartTime;
     }
 }

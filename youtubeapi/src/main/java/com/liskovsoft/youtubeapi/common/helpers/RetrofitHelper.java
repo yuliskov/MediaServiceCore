@@ -82,7 +82,7 @@ public class RetrofitHelper {
             okBuilder.addInterceptor(logging);
 
             // Disable cache (could help with dlfree error on Eltex)
-            okBuilder.cache(null);
+            //okBuilder.cache(null);
 
             OkHttpClient client = okBuilder.build();
             retrofitBuilder.client(client);

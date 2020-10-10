@@ -73,7 +73,7 @@ public class RetrofitHelper {
         if (BuildConfig.DEBUG) {
             OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-            if (sForceEnableProfiler) {
+            if (sForceEnableProfiler) { // force enable for unit tests
                 okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
             }
 

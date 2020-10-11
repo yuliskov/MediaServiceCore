@@ -2,10 +2,14 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.liskovsoft.youtubeapi.BuildConfig;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -70,10 +74,24 @@ public class RetrofitHelper {
     private static Retrofit.Builder createBuilder() {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
 
-        if (BuildConfig.DEBUG) {
-            OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-            if (sForceEnableProfiler) { // force enable for unit tests
+        addCommonHeaders(okBuilder);
+
+        debugSetup(okBuilder);
+
+        OkHttpClient client = okBuilder.build();
+
+        retrofitBuilder.client(client);
+
+        return retrofitBuilder;
+    }
+
+    private static void debugSetup(OkHttpClient.Builder okBuilder) {
+        if (BuildConfig.DEBUG) {
+            // Force enable for unit tests.
+            // If you enable it to all requests - expect slowdowns.
+            if (sForceEnableProfiler) {
                 okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
             }
 
@@ -83,11 +101,14 @@ public class RetrofitHelper {
 
             // Disable cache (could help with dlfree error on Eltex)
             //okBuilder.cache(null);
-
-            OkHttpClient client = okBuilder.build();
-            retrofitBuilder.client(client);
         }
+    }
 
-        return retrofitBuilder;
+    private static void addCommonHeaders(OkHttpClient.Builder builder) {
+        builder.addInterceptor(chain -> {
+            Request.Builder requestBuilder = chain.request().newBuilder();
+            requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
+            return chain.proceed(requestBuilder.build());
+        });
     }
 }

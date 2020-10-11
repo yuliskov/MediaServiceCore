@@ -3,7 +3,8 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.BaseData;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.LegacyClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
 import com.squareup.duktape.Duktape;
@@ -238,7 +239,7 @@ public class AppService {
         String baseUrl = getBaseUrl();
 
         if (baseUrl != null) {
-            BaseData baseData = mAppManager.getBaseData(baseUrl);
+            ClientData baseData = mAppManager.getBaseData(baseUrl);
 
             if (baseData != null) {
                 String clientId = baseData.getClientId();

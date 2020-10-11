@@ -1,15 +1,13 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.BaseData;
+import com.liskovsoft.youtubeapi.app.models.LegacyClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
-import retrofit2.Call;
 
 import java.io.IOException;
 
@@ -83,7 +81,7 @@ public class AppManagerTest {
     public void testThatClientIdAndSecretNotEmpty(String userAgent) {
         String baseUrl = getBaseUrl(userAgent);
 
-        BaseData baseData = mManager.getBaseData(baseUrl);
+        LegacyClientData baseData = mManager.getBaseData(baseUrl);
 
         assertNotNull("Base data not null", baseData);
 

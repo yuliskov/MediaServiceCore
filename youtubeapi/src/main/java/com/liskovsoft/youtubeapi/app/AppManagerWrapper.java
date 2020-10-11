@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.BaseData;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.ModernClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
@@ -23,14 +24,14 @@ public class AppManagerWrapper {
         return RetrofitHelper.get(wrapper);
     }
     
-    public BaseData getBaseData(String baseUrl) {
-        Call<BaseData> wrapper = mAppManager.getBaseData(baseUrl);
-        BaseData baseData = RetrofitHelper.get(wrapper);
+    public ClientData getBaseData(String baseUrl) {
+        Call<ModernClientData> wrapper = mAppManager.getModernClientData(baseUrl);
+        ClientData baseData = RetrofitHelper.get(wrapper);
 
         // Seem that lacy script encountered.
         // Needed values is stored in main script, not in base.
         if (baseData == null) {
-            baseData = RetrofitHelper.get(mAppManager.getBaseData(getMainUrl(baseUrl)));
+            baseData = RetrofitHelper.get(mAppManager.getLegacyClientData(getMainUrl(baseUrl)));
         }
 
         return baseData;

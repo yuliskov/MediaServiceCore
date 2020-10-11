@@ -109,12 +109,9 @@ public class SynchronizeDatabaseJobService extends JobService {
         private void updateChannels() {
             if (Helpers.isATVChannelsSupported(mContext)) {
                 try {
-                    Playlist subscriptions = mService.getSubscriptionsPlaylist();
-                    updateOrPublishChannel(subscriptions);
+                    updateOrPublishChannel(mService.getSubscriptionsPlaylist());
                     updateOrPublishChannel(mService.getRecommendedPlaylist());
                     updateOrPublishChannel(mService.getHistoryPlaylist());
-
-                    Log.d(TAG, "Syncing channels... " + subscriptions.getClips().size());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                     e.printStackTrace();
@@ -139,8 +136,6 @@ public class SynchronizeDatabaseJobService extends JobService {
                     }
 
                     updateOrPublishRecommendations(playlist);
-
-                    Log.d(TAG, "Syncing recommended... " + playlist.getClips().size());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                     e.printStackTrace();
@@ -150,12 +145,14 @@ public class SynchronizeDatabaseJobService extends JobService {
 
         private void updateOrPublishRecommendations(Playlist playlist) {
             if (checkPlaylist(playlist)) {
+                Log.d(TAG, "Syncing recommended: " + playlist.getName() + ", items num: " + playlist.getClips().size());
                 RecommendationsProvider.createOrUpdateRecommendations(mContext, playlist);
             }
         }
 
         private void updateOrPublishChannel(Playlist playlist) {
             if (checkPlaylist(playlist)) {
+                Log.d(TAG, "Syncing channel: " + playlist.getName() + ", items num: " + playlist.getClips().size());
                 ChannelsProvider.createOrUpdateChannel(mContext, playlist);
             }
         }

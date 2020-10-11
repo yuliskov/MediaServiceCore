@@ -34,13 +34,13 @@ public class AppManagerTest {
 
     @Test
     public void testThatAppInfoContainsAllRequiredFields() throws IOException {
-        String playerUrl = getPlayerUrl();
+        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
         assertTrue("Player url should ends with js", playerUrl.endsWith(".js"));
     }
 
     @Test
     public void testThatDecipherFunctionIsValid() {
-        String playerUrl = getPlayerUrl();
+        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
 
         PlayerData playerData = mManager.getPlayerData(playerUrl);
 
@@ -56,7 +56,7 @@ public class AppManagerTest {
 
     @Test
     public void testThatPlaybackNonceFunctionIsValid() {
-        String playerUrl = getPlayerUrl();
+        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
 
         PlayerData clientPlaybackNonceFunction = mManager.getPlayerData(playerUrl);
 
@@ -71,7 +71,17 @@ public class AppManagerTest {
 
     @Test
     public void testThatClientIdAndSecretNotEmpty() {
-        String baseUrl = getBaseUrl();
+        for (String userAgent : new String[]{
+                AppConstants.USER_AGENT_COBALT,
+                AppConstants.USER_AGENT_LEGACY,
+                AppConstants.USER_AGENT_MODERN
+        }) {
+            testThatClientIdAndSecretNotEmpty(userAgent);
+        }
+    }
+
+    public void testThatClientIdAndSecretNotEmpty(String userAgent) {
+        String baseUrl = getBaseUrl(userAgent);
 
         BaseData baseData = mManager.getBaseData(baseUrl);
 
@@ -81,8 +91,8 @@ public class AppManagerTest {
         assertNotNull("Client secret not empty", baseData.getClientSecret());
     }
 
-    private String getPlayerUrl() {
-        AppInfo appInfo = mManager.getAppInfo(AppConstants.USER_AGENT_COBALT);
+    private String getPlayerUrl(String userAgent) {
+        AppInfo appInfo = mManager.getAppInfo(userAgent);
 
         assertNotNull("AppInfo not null", appInfo);
 
@@ -93,8 +103,8 @@ public class AppManagerTest {
         return AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/");
     }
 
-    private String getBaseUrl() {
-        AppInfo appInfo = mManager.getAppInfo(AppConstants.USER_AGENT_COBALT);
+    private String getBaseUrl(String userAgent) {
+        AppInfo appInfo = mManager.getAppInfo(userAgent);
 
         assertNotNull("AppInfo not null", appInfo);
 

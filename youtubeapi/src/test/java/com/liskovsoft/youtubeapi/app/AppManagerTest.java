@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class AppManagerTest {
-    private AppManager mManager;
+    private AppManagerWrapper mManager;
 
     @Before
     public void setUp() {
@@ -29,7 +29,7 @@ public class AppManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mManager = RetrofitHelper.withRegExp(AppManager.class);
+        mManager = new AppManagerWrapper();
     }
 
     @Test
@@ -42,8 +42,7 @@ public class AppManagerTest {
     public void testThatDecipherFunctionIsValid() {
         String playerUrl = getPlayerUrl();
 
-        Call<PlayerData> wrapper = mManager.getPlayerData(playerUrl);
-        PlayerData playerData = RetrofitHelper.get(wrapper);
+        PlayerData playerData = mManager.getPlayerData(playerUrl);
 
         assertNotNull("Decipher result not null", playerData);
 
@@ -59,8 +58,7 @@ public class AppManagerTest {
     public void testThatPlaybackNonceFunctionIsValid() {
         String playerUrl = getPlayerUrl();
 
-        Call<PlayerData> wrapper = mManager.getPlayerData(playerUrl);
-        PlayerData clientPlaybackNonceFunction = RetrofitHelper.get(wrapper);
+        PlayerData clientPlaybackNonceFunction = mManager.getPlayerData(playerUrl);
 
         assertNotNull("Playback nonce result not null", clientPlaybackNonceFunction);
 
@@ -75,9 +73,7 @@ public class AppManagerTest {
     public void testThatClientIdAndSecretNotEmpty() {
         String baseUrl = getBaseUrl();
 
-        Call<BaseData> wrapper = mManager.getBaseData(baseUrl);
-
-        BaseData baseData = RetrofitHelper.get(wrapper);
+        BaseData baseData = mManager.getBaseData(baseUrl);
 
         assertNotNull("Base data not null", baseData);
 
@@ -86,8 +82,7 @@ public class AppManagerTest {
     }
 
     private String getPlayerUrl() {
-        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_MODERN);
-        AppInfo appInfo = RetrofitHelper.get(wrapper);
+        AppInfo appInfo = mManager.getAppInfo(AppConstants.USER_AGENT_COBALT);
 
         assertNotNull("AppInfo not null", appInfo);
 
@@ -99,8 +94,7 @@ public class AppManagerTest {
     }
 
     private String getBaseUrl() {
-        Call<AppInfo> wrapper = mManager.getAppInfo(AppConstants.USER_AGENT_MODERN);
-        AppInfo appInfo = RetrofitHelper.get(wrapper);
+        AppInfo appInfo = mManager.getAppInfo(AppConstants.USER_AGENT_COBALT);
 
         assertNotNull("AppInfo not null", appInfo);
 

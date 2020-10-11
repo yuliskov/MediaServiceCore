@@ -76,8 +76,11 @@ public class RegExpTypeAdapter<T> {
                                 regExpVal = matcher.group(0); // all match
                             }
                         }
- 
-                        break;
+
+                        // Match found
+                        if (regExpVal != null) {
+                            break;
+                        }
                     } catch (PathNotFoundException e) {
                         Log.e(TAG, type.getSimpleName() + ": " + e.getMessage());
                     }

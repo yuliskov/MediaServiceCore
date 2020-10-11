@@ -14,7 +14,9 @@ public class AppInfo {
      * Url for m=base script<br/>
      * Which contains client_secret and client_id constants
      */
-    @RegExp("id=\"base-js\" src=\"([^\"]*)\"")
+    @RegExp({
+            "id=\"base-js\" src=\"([^\"]*)\"",
+            "\\.src = '([^']*m=base)'"}) // Cobalt path
     private String mBaseUrl;
 
     public String getPlayerUrl() {

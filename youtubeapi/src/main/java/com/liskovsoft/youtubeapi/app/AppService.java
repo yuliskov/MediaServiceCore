@@ -6,9 +6,7 @@ import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.BaseData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.auth.AuthManager;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.squareup.duktape.Duktape;
-import retrofit2.Call;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +14,9 @@ import java.util.List;
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 60 * 60 * 1_000;
+    private static final String APP_USER_AGENT = AppConstants.USER_AGENT_MODERN;
     private static AppService sInstance;
-    private final AppManager mAppManager;
+    private final AppManagerWrapper mAppManager;
     private Duktape mDuktape;
     private String mCachedDecipherFunction;
     private String mCachedClientPlaybackNonceFunction;
@@ -30,7 +29,7 @@ public class AppService {
     private long mBaseDataUpdateTimeMS;
 
     private AppService() {
-        mAppManager = RetrofitHelper.withRegExp(AppManager.class);
+        mAppManager = new AppManagerWrapper();
     }
 
     public static AppService instance() {
@@ -178,8 +177,7 @@ public class AppService {
 
         Log.d(TAG, "updateAppInfoData");
 
-        Call<AppInfo> wrapper = mAppManager.getAppInfo(AppConstants.USER_AGENT_MODERN);
-        AppInfo appInfo = RetrofitHelper.get(wrapper);
+        AppInfo appInfo = mAppManager.getAppInfo(APP_USER_AGENT);
 
         if (appInfo != null) {
             String playerUrl = appInfo.getPlayerUrl();
@@ -209,8 +207,7 @@ public class AppService {
         String playerUrl = getPlayerUrl();
 
         if (playerUrl != null) {
-            Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
-            PlayerData playerData = RetrofitHelper.get(wrapper);
+            PlayerData playerData = mAppManager.getPlayerData(playerUrl);
 
             if (playerData != null) {
                 String decipherFunction = playerData.getDecipherFunction();
@@ -242,8 +239,7 @@ public class AppService {
         String baseUrl = getBaseUrl();
 
         if (baseUrl != null) {
-            Call<BaseData> wrapper = mAppManager.getBaseData(baseUrl);
-            BaseData baseData = RetrofitHelper.get(wrapper);
+            BaseData baseData = mAppManager.getBaseData(baseUrl);
 
             if (baseData != null) {
                 String clientId = baseData.getClientId();

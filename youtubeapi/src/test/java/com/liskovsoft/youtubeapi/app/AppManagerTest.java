@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.LegacyClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import org.junit.Before;
@@ -81,7 +82,7 @@ public class AppManagerTest {
     public void testThatClientIdAndSecretNotEmpty(String userAgent) {
         String baseUrl = getBaseUrl(userAgent);
 
-        LegacyClientData baseData = mManager.getBaseData(baseUrl);
+        ClientData baseData = mManager.getBaseData(baseUrl);
 
         assertNotNull("Base data not null", baseData);
 

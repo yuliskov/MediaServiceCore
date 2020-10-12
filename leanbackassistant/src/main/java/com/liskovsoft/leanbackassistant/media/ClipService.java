@@ -1,5 +1,6 @@
 package com.liskovsoft.leanbackassistant.media;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
@@ -25,6 +26,7 @@ public class ClipService {
     private static final String SUBSCRIPTIONS_URL = "https://www.youtube.com/tv#/zylon-surface?c=FEsubscriptions&resume";
     private static final String HISTORY_URL = "https://www.youtube.com/tv#/zylon-surface?c=FEmy_youtube&resume";
     private static final String RECOMMENDED_URL = "https://www.youtube.com/tv#/zylon-surface?c=default&resume";
+    @SuppressLint("StaticFieldLeak")
     private static ClipService mInstance;
     private final Context mContext;
 
@@ -34,100 +36,77 @@ public class ClipService {
 
     public static ClipService instance(Context context) {
         if (mInstance == null) {
-            mInstance = new ClipService(context);
+            mInstance = new ClipService(context.getApplicationContext());
         }
 
         return mInstance;
     }
 
     public Playlist getSubscriptionsPlaylist() {
-        MediaService service = YouTubeMediaService.instance();
-        MediaGroupManager mediaTabManager = service.getMediaGroupManager();
-        MediaGroup subscriptions = mediaTabManager.getSubscriptions();
-
-        if (subscriptions == null) {
-            return null;
-        }
-
-        List<MediaItem> mediaItems = subscriptions.getMediaItems();
-
-        Playlist playlist = new Playlist(
-                mContext.getResources().getString(R.string.subscriptions_playlist_name),
-                Integer.toString(SUBSCRIPTIONS_ID));
-        playlist.setChannelKey(SUBS_CHANNEL_ID);
-        playlist.setProgramsKey(SUBS_PROGRAMS_IDS);
-        playlist.setPlaylistUrl(SUBSCRIPTIONS_URL);
-        playlist.setLogoResId(R.drawable.generic_channels);
-
-        if (mediaItems != null && !mediaItems.isEmpty()) {
-            if (mediaItems.size() < 20) {
-                mediaItems.addAll(mediaTabManager.continueGroup(subscriptions).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueGroup(subscriptions).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueGroup(subscriptions).getMediaItems());
-            }
-
-            List<Clip> clips = convertToClips(mediaItems);
-            playlist.setClips(clips);
-        }
-
-        return playlist;
+        return createPlaylist(
+                R.string.subscriptions_playlist_name,
+                SUBSCRIPTIONS_ID,
+                SUBS_CHANNEL_ID,
+                SUBS_PROGRAMS_IDS,
+                SUBSCRIPTIONS_URL,
+                R.drawable.generic_channels,
+                MediaGroupManager::getSubscriptions
+        );
     }
 
     public Playlist getHistoryPlaylist() {
-        MediaService service = YouTubeMediaService.instance();
-        MediaGroupManager mediaTabManager = service.getMediaGroupManager();
-        MediaGroup history = mediaTabManager.getHistory();
-
-        if (history == null) {
-            return null;
-        }
-
-        List<MediaItem> mediaItems = history.getMediaItems();
-
-        Playlist playlist = new Playlist(
-                mContext.getResources().getString(R.string.history_playlist_name),
-                Integer.toString(HISTORY_ID));
-        playlist.setChannelKey(HISTORY_CHANNEL_ID);
-        playlist.setProgramsKey(HISTORY_PROGRAMS_IDS);
-        playlist.setPlaylistUrl(HISTORY_URL);
-        playlist.setLogoResId(R.drawable.generic_channels);
-
-        if (mediaItems != null && !mediaItems.isEmpty()) {
-            if (mediaItems.size() < 20) {
-                mediaItems.addAll(mediaTabManager.continueGroup(history).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueGroup(history).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueGroup(history).getMediaItems());
-            }
-
-            List<Clip> clips = convertToClips(mediaItems);
-            playlist.setClips(clips);
-        }
-
-        return playlist;
+        return createPlaylist(
+                R.string.history_playlist_name,
+                HISTORY_ID,
+                HISTORY_CHANNEL_ID,
+                HISTORY_PROGRAMS_IDS,
+                HISTORY_URL,
+                R.drawable.generic_channels,
+                MediaGroupManager::getHistory);
     }
 
     public Playlist getRecommendedPlaylist() {
+        return createPlaylist(
+                R.string.recommended_playlist_name,
+                RECOMMENDED_ID,
+                RECOMMENDED_CHANNEL_ID,
+                RECOMMENDED_PROGRAMS_IDS,
+                RECOMMENDED_URL,
+                R.drawable.generic_channels,
+                MediaGroupManager::getRecommended);
+    }
+
+    private Playlist createPlaylist(
+            int titleResId, int id, String channelId, String programId,
+            String recommendedUrl, int logoResId, GroupCallback callback) {
+        Playlist playlist = new Playlist(
+                mContext.getResources().getString(titleResId),
+                Integer.toString(id));
+        playlist.setChannelKey(channelId);
+        playlist.setProgramsKey(programId);
+        playlist.setPlaylistUrl(recommendedUrl);
+        playlist.setLogoResId(logoResId);
+
         MediaService service = YouTubeMediaService.instance();
         MediaGroupManager mediaTabManager = service.getMediaGroupManager();
-        MediaGroup recommended = mediaTabManager.getRecommended();
-        List<MediaItem> mediaItems = recommended.getMediaItems();
+        MediaGroup selectedGroup = callback.call(mediaTabManager);
 
-        Playlist playlist = new Playlist(
-                mContext.getResources().getString(R.string.recommended_playlist_name),
-                Integer.toString(RECOMMENDED_ID));
-        playlist.setChannelKey(RECOMMENDED_CHANNEL_ID);
-        playlist.setProgramsKey(RECOMMENDED_PROGRAMS_IDS);
-        playlist.setPlaylistUrl(RECOMMENDED_URL);
-        playlist.setLogoResId(R.drawable.generic_channels);
+        if (selectedGroup != null) {
+            List<MediaItem> mediaItems = selectedGroup.getMediaItems();
+            List<Clip> clips;
 
-        if (mediaItems != null && !mediaItems.isEmpty()) {
-            if (mediaItems.size() < 20) {
-                mediaItems.addAll(mediaTabManager.continueGroup(recommended).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueGroup(recommended).getMediaItems());
-                mediaItems.addAll(mediaTabManager.continueGroup(recommended).getMediaItems());
+            if (mediaItems != null && !mediaItems.isEmpty()) {
+                if (mediaItems.size() < 20) {
+                    mediaItems.addAll(mediaTabManager.continueGroup(selectedGroup).getMediaItems());
+                    mediaItems.addAll(mediaTabManager.continueGroup(selectedGroup).getMediaItems());
+                    mediaItems.addAll(mediaTabManager.continueGroup(selectedGroup).getMediaItems());
+                }
+
+                clips = convertToClips(mediaItems);
+            } else {
+                clips = new ArrayList<>();
             }
 
-            List<Clip> clips = convertToClips(mediaItems);
             playlist.setClips(clips);
         }
 
@@ -157,5 +136,9 @@ public class ClipService {
         }
 
         return null;
+    }
+
+    private interface GroupCallback {
+        MediaGroup call(MediaGroupManager mediaTabManager);
     }
 }

@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.PathNotFoundException;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
@@ -56,7 +57,7 @@ public class JsonPathTypeAdapter<T> {
                 }
             }
         } else { // annotation on field
-            jsonContent = Helpers.toString(is);
+            jsonContent = FileHelpers.toStringEfficient(is);
         }
 
         return (T) readType(getGenericType(), jsonContent);

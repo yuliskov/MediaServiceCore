@@ -57,7 +57,7 @@ public class JsonPathTypeAdapter<T> {
                 }
             }
         } else { // annotation on field
-            jsonContent = FileHelpers.toStringEfficient(is);
+            jsonContent = is;
         }
 
         return (T) readType(getGenericType(), jsonContent);
@@ -75,7 +75,13 @@ public class JsonPathTypeAdapter<T> {
             Constructor<?> constructor = type.getConstructor();
             obj = constructor.newInstance();
 
-            DocumentContext parser = mParser.parse((String) jsonContent);
+            DocumentContext parser;
+
+            if (jsonContent instanceof InputStream) {
+                parser = mParser.parse((InputStream) jsonContent);
+            } else {
+                parser = mParser.parse((String) jsonContent);
+            }
 
             List<Field> fields = ReflectionHelper.getAllFields(type);
 

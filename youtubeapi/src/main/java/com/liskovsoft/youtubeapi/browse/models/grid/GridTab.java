@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.models.grid;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class GridTab {
 
     @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].gridVideoRenderer")
     private List<VideoItem> mVideoItems;
+
+    @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].tvMusicVideoRenderer")
+    private List<MusicItem> mMusicItems;
 
     /**
      * Used in continue Tabs
@@ -45,6 +49,10 @@ public class GridTab {
 
     public List<VideoItem> getVideoItems() {
         return mVideoItems;
+    }
+
+    public List<MusicItem> getMusicItems() {
+        return mMusicItems;
     }
 
     public String getBrowseId() {

@@ -33,7 +33,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), browseResult.getVideoItems(), null,
+        return create(new YouTubeMediaGroup(type), browseResult.getVideoItems(), browseResult.getMusicItems(),
                 null, null, null, browseResult.getNextPageKey());
     }
 

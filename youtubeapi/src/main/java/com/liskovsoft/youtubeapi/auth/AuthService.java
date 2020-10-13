@@ -96,8 +96,11 @@ public class AuthService {
                 emitter.onNext(tokenResult);
                 emitter.onComplete();
             } else {
-                Log.e(TAG, "Error. Refresh token is empty!");
-                emitter.onError(new IllegalStateException("Error. Refresh token is empty!"));
+                String msg = String.format("Error. Refresh token is empty! Debug data: device code: %s, client id: %s, client secret: %s",
+                        deviceCode, mAppService.getClientId(), mAppService.getClientSecret());
+
+                Log.e(TAG, msg);
+                emitter.onError(new IllegalStateException(msg));
             }
         });
     }

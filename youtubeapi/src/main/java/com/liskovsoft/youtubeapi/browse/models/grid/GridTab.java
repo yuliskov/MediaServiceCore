@@ -1,8 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.models.grid;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
-import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;
 
@@ -19,11 +18,8 @@ public class GridTab {
     @JsonPath("$.endpoint.browseEndpoint.params")
     private String mParams;
 
-    @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].gridVideoRenderer")
-    private List<VideoItem> mVideoItems;
-
-    @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*].tvMusicVideoRenderer")
-    private List<MusicItem> mMusicItems;
+    @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*]")
+    private List<ItemWrapper> mItemWrappers;
 
     /**
      * Used in continue Tabs
@@ -47,14 +43,6 @@ public class GridTab {
         return mTitle;
     }
 
-    public List<VideoItem> getVideoItems() {
-        return mVideoItems;
-    }
-
-    public List<MusicItem> getMusicItems() {
-        return mMusicItems;
-    }
-
     public String getBrowseId() {
         return mBrowseId;
     }
@@ -73,5 +61,9 @@ public class GridTab {
 
     public boolean isUnselectable() {
         return mUnselectable;
+    }
+
+    public List<ItemWrapper> getItemWrappers() {
+        return mItemWrappers;
     }
 }

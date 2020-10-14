@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.data;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
@@ -38,6 +39,22 @@ public class YouTubeMediaItem implements MediaItem {
     private YouTubeMediaItemMetadata mMetadata;
     private int mPercentWatched;
     private String mAuthor;
+
+    public static MediaItem from(ItemWrapper item) {
+        if (item.getVideoItem() != null) {
+            return from(item.getVideoItem());
+        } else if (item.getMusicItem() != null) {
+            return from(item.getMusicItem());
+        } else if (item.getChannelItem() != null) {
+            return from(item.getChannelItem());
+        } else if (item.getPlaylistItem() != null) {
+            return from(item.getPlaylistItem());
+        } else if (item.getRadioItem() != null) {
+            return from(item.getRadioItem());
+        }
+
+        return null;
+    }
 
     public static YouTubeMediaItem from(VideoItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();

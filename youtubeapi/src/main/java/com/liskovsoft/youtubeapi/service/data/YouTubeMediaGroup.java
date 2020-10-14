@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
@@ -33,8 +34,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), browseResult.getVideoItems(), browseResult.getMusicItems(),
-                null, null, null, browseResult.getNextPageKey());
+        return create(new YouTubeMediaGroup(type), browseResult.getItemWrappers(), browseResult.getNextPageKey());
     }
 
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
@@ -42,8 +42,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, continuation.getVideoItems(), null,
-                null, null, null, continuation.getNextPageKey());
+        return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(Section section, int type) {
@@ -55,8 +54,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         youTubeMediaGroup.mTitle = section.getTitle();
         youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
 
-        return create(youTubeMediaGroup, section.getVideoItems(), section.getMusicItems(), section.getChannelItems(),
-                section.getRadioItems(), section.getPlaylistItems(), section.getNextPageKey());
+        return create(youTubeMediaGroup, section.getItemWrappers(), section.getNextPageKey());
     }
 
     public static MediaGroup from(SectionContinuation continuation, MediaGroup baseGroup) {
@@ -64,8 +62,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, continuation.getVideoItems(), continuation.getMusicItems(),
-                continuation.getChannelItems(), continuation.getRadioItems(), continuation.getPlaylistItems(), continuation.getNextPageKey());
+        return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResult searchResult, int type) {
@@ -133,6 +130,24 @@ public class YouTubeMediaGroup implements MediaGroup {
     @Override
     public int getType() {
         return mType;
+    }
+
+    private static MediaGroup create(YouTubeMediaGroup baseGroup, List<ItemWrapper> items, String nextPageKey) {
+        ArrayList<MediaItem> mediaItems = new ArrayList<>();
+
+        if (items != null) {
+            for (ItemWrapper item : items) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
+
+        if (!mediaItems.isEmpty()) {
+            baseGroup.mMediaItems = mediaItems;
+        }
+
+        baseGroup.mNextPageKey = nextPageKey;
+
+        return baseGroup;
     }
 
     private static YouTubeMediaGroup create(

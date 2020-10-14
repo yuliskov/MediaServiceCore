@@ -2,21 +2,39 @@ package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
-import java.util.List;
-
 public class ItemWrapper {
     @JsonPath("$.gridVideoRenderer")
-    private List<VideoItem> mVideoItems;
+    private VideoItem mVideoItem;
 
     @JsonPath("$.tvMusicVideoRenderer")
-    private List<MusicItem> mMusicItems;
+    private MusicItem mMusicItem;
 
     @JsonPath("$.gridRadioRenderer")
-    private List<RadioItem> mRadioItems;
+    private RadioItem mRadioItem;
 
     @JsonPath("$.gridChannelRenderer")
-    private List<ChannelItem> mChannelItems;
+    private ChannelItem mChannelItem;
 
     @JsonPath("$.gridPlaylistRenderer")
-    private List<PlaylistItem> mPlaylistItems;
+    private PlaylistItem mPlaylistItem;
+
+    public VideoItem getVideoItem() {
+        return mVideoItem;
+    }
+
+    public MusicItem getMusicItem() {
+        return mMusicItem;
+    }
+
+    public RadioItem getRadioItem() {
+        return mRadioItem;
+    }
+
+    public ChannelItem getChannelItem() {
+        return mChannelItem;
+    }
+
+    public PlaylistItem getPlaylistItem() {
+        return mPlaylistItem;
+    }
 }

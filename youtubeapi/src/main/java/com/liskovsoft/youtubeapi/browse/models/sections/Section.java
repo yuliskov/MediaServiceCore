@@ -1,27 +1,15 @@
 package com.liskovsoft.youtubeapi.browse.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
-import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
-import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
-import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
-import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;
 
 public class Section {
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
-    @JsonPath("$.content.horizontalListRenderer.items[*].gridVideoRenderer")
-    private List<VideoItem> mVideoItems;
-    @JsonPath("$.content.horizontalListRenderer.items[*].tvMusicVideoRenderer")
-    private List<MusicItem> mMusicItems;
-    @JsonPath("$.content.horizontalListRenderer.items[*].gridChannelRenderer")
-    private List<ChannelItem> mChannelItems;
-    @JsonPath("$.content.horizontalListRenderer.items[*].gridRadioRenderer")
-    private List<RadioItem> mRadioItems;
-    @JsonPath("$.content.horizontalListRenderer.items[*].gridPlaylistRenderer")
-    private List<PlaylistItem> mPlaylistItems;
+    @JsonPath("$.content.horizontalListRenderer.items[*]")
+    private List<ItemWrapper> mItemWrappers;
     @JsonPath("$.content.horizontalListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
@@ -29,27 +17,11 @@ public class Section {
         return mTitle;
     }
 
-    public List<VideoItem> getVideoItems() {
-        return mVideoItems;
-    }
-
-    public List<MusicItem> getMusicItems() {
-        return mMusicItems;
-    }
-
-    public List<ChannelItem> getChannelItems() {
-        return mChannelItems;
-    }
-
-    public List<RadioItem> getRadioItems() {
-        return mRadioItems;
-    }
-
-    public List<PlaylistItem> getPlaylistItems() {
-        return mPlaylistItems;
-    }
-
     public String getNextPageKey() {
         return mNextPageKey;
+    }
+
+    public List<ItemWrapper> getItemWrappers() {
+        return mItemWrappers;
     }
 }

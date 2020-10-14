@@ -30,6 +30,8 @@ public class MusicItem {
     private String mChannelId;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
+    @JsonPath("$.richThumbnail.movingThumbnailRenderer.movingThumbnailDetails.thumbnails[0].url")
+    private String mRichThumbnailUrl;
 
     public String getVideoId() {
         return mVideoId;
@@ -93,5 +95,9 @@ public class MusicItem {
 
     public int getPercentWatched() {
         return mPercentWatched;
+    }
+
+    public String getRichThumbnailUrl() {
+        return mRichThumbnailUrl;
     }
 }

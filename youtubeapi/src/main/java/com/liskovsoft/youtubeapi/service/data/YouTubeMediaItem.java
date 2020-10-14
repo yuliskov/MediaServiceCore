@@ -104,6 +104,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mBadgeText = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
+        video.mVideoPreviewUrl = item.getRichThumbnailUrl();
 
         addCommonProps(video);
 

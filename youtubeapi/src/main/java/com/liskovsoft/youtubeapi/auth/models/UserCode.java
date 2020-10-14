@@ -33,6 +33,11 @@ public class UserCode {
     }
 
     public String getUserCode() {
-        return mUserCode;
+        if (mUserCode == null) {
+            return null;
+        }
+
+        // Make code more readable by removing unused characters
+        return mUserCode.replace("-", " ");
     }
 }

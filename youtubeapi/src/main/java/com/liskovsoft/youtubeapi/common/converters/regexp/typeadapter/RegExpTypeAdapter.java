@@ -35,6 +35,7 @@ public class RegExpTypeAdapter<T> {
 
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
+        // Can't use Scanner(is) here. Because pattern should be matched multiple times.
         String regExpContent = Helpers.toString(is);
 
         return (T) readType(getGenericType(), regExpContent);

@@ -21,7 +21,7 @@ public interface AppConstants {
      * Previous client version: 7.20190214
      */
     String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20200913.00.00\"," +
-            "\"webpSupport\":false,\"animatedWebpSupport\":false,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
+            "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\"}," +
             "\"user\":{\"enableSafetyMode\":false}},%s}";
 
     /**

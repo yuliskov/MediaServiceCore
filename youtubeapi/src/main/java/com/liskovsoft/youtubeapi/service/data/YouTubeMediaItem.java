@@ -39,6 +39,7 @@ public class YouTubeMediaItem implements MediaItem {
     private YouTubeMediaItemMetadata mMetadata;
     private int mPercentWatched;
     private String mAuthor;
+    private String mVideoPreviewUrl;
 
     public static MediaItem from(ItemWrapper item) {
         if (item.getVideoItem() != null) {
@@ -77,6 +78,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
+        video.mVideoPreviewUrl = item.getRichThumbnailUrl();
 
         addCommonProps(video);
 
@@ -333,5 +335,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getBadgeText() {
         return mBadgeText;
+    }
+
+    @Override
+    public String getVideoPreviewUrl() {
+        return mVideoPreviewUrl;
     }
 }

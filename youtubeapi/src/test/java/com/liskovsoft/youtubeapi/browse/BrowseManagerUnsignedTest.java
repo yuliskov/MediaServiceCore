@@ -76,10 +76,10 @@ public class BrowseManagerUnsignedTest {
         }
     }
 
-    private Section getRecommended() throws IOException {
+    private Section getRecommended() {
         Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
 
-        SectionTabList browseResult = wrapper.execute().body();
+        SectionTabList browseResult = RetrofitHelper.get(wrapper);
 
         assertNotNull("Items not null", browseResult);
         Section section = firstNotEmptyTab(browseResult).getSections().get(0);
@@ -269,6 +269,22 @@ public class BrowseManagerUnsignedTest {
         Section playlistSection = findPlaylistSection(firstNotEmptyTab(browseResult));
 
         testFields(playlistSection.getItemWrappers().get(0));
+    }
+
+    @Test
+    public void testThatVideoContainsAnimatedPreview() {
+        Section recommended = getRecommended();
+
+        VideoItem videoItem = null;
+
+        for (ItemWrapper itemWrapper : recommended.getItemWrappers()) {
+            if (itemWrapper.getVideoItem() != null) {
+                videoItem = itemWrapper.getVideoItem();
+                break;
+            }
+        }
+
+        assertNotNull("Video contains animated previews", videoItem.getRichThumbnailUrl());
     }
 
     private Section findPlaylistSection(SectionTab tab) {

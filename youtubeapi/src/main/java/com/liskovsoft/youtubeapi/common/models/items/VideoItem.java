@@ -58,6 +58,8 @@ public class VideoItem {
     private String mUpcomingEventText2;
     @JsonPath("$.upcomingEventData.startTime")
     private String mUpcomingEventStartTime;
+    @JsonPath("$.richThumbnail.movingThumbnailRenderer.movingThumbnailDetails.thumbnails[0].url")
+    private String mRichThumbnailUrl;
 
     public String getVideoId() {
         return mVideoId;
@@ -139,5 +141,12 @@ public class VideoItem {
      */
     public String getUpcomingEventStartTime() {
         return mUpcomingEventStartTime;
+    }
+
+    /**
+     * Animated thumbnail preview in webp format
+     */
+    public String getRichThumbnailUrl() {
+        return mRichThumbnailUrl;
     }
 }

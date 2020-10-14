@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
@@ -72,7 +73,14 @@ public class TrackingManagerInstrumentedTest {
 
         GridTab history = mBrowseServiceSigned.getHistory(sAuthorization);
 
-        VideoItem historyItem = history.getVideoItems().get(0);
+        VideoItem historyItem = null;
+
+        for (ItemWrapper itemWrapper : history.getItemWrappers()) {
+            if (itemWrapper.getVideoItem() != null) {
+                historyItem = itemWrapper.getVideoItem();
+                break;
+            }
+        }
 
         assertEquals("History updated", videoIdSimple, historyItem.getVideoId());
 

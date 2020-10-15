@@ -43,7 +43,8 @@ public class AppHelper {
 
     public static String createQuery(String template) {
         LocaleManager localeManager = LocaleManager.instance();
-        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE, localeManager.getCountry(), localeManager.getLanguage(), template);
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE,
+                localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
     }
 
     private static String combineItems(String[] items, String divider) {

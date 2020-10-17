@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.playlist;
 
+import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.playlist.models.Playlist;
@@ -11,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -31,14 +33,54 @@ public class PlaylistManagerTest {
 
     @Test
     public void testThatPlaylistResultNotEmpty() {
-        Call<PlaylistsInfo> wrapper = mService.getPlaylistsInfo(PlaylistManagerParams.getAllPlaylistsQuery(TestHelpers.VIDEO_ID_AGE_RESTRICTED),
-                TestHelpers.getAuthorization());
-
-        PlaylistsInfo playlistsInfo = RetrofitHelper.get(wrapper);
+        PlaylistsInfo playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
 
         assertTrue("Playlist info not empty", playlistsInfo != null && playlistsInfo.getPlaylists() != null);
 
         testFields(playlistsInfo.getPlaylists().get(0));
+    }
+
+    @Test
+    public void testAddToPlaylist() {
+        PlaylistsInfo playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
+        Playlist firstPlaylist = playlistsInfo.getPlaylists().get(0);
+
+        Call<ActionResult> wrapper = mService.addToPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylist.getPlaylistId(),
+                TestHelpers.VIDEO_ID_AGE_RESTRICTED), TestHelpers.getAuthorization());
+
+        ActionResult actionResult = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Action result success", actionResult);
+
+        playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
+        firstPlaylist = playlistsInfo.getPlaylists().get(0);
+
+        assertTrue("Action successful", firstPlaylist.isSelected());
+    }
+
+    @Test
+    public void testRemoveFromPlaylist() {
+        PlaylistsInfo playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
+        Playlist firstPlaylist = playlistsInfo.getPlaylists().get(0);
+
+        Call<ActionResult> wrapper = mService.removeFromPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylist.getPlaylistId(),
+                TestHelpers.VIDEO_ID_AGE_RESTRICTED), TestHelpers.getAuthorization());
+
+        ActionResult actionResult = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Action result success", actionResult);
+
+        playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
+        firstPlaylist = playlistsInfo.getPlaylists().get(0);
+
+        assertFalse("Action successful", firstPlaylist.isSelected());
+    }
+
+    private PlaylistsInfo getPlaylistsInfo(String videoId) {
+        Call<PlaylistsInfo> wrapper = mService.getPlaylistsInfo(PlaylistManagerParams.getAllPlaylistsQuery(videoId),
+                TestHelpers.getAuthorization());
+
+        return RetrofitHelper.get(wrapper);
     }
 
     private void testFields(Playlist playlist) {

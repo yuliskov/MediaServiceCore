@@ -4,17 +4,22 @@ import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
+import com.liskovsoft.youtubeapi.service.data.YouTubeVideoPlaylistInfo;
 import com.liskovsoft.youtubeapi.service.internal.MediaItemManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
+
+import java.util.List;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
@@ -43,7 +48,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         YouTubeMediaItemFormatInfo formatInfo = ytMediaItem.getFormatInfo();
 
         if (formatInfo == null) {
-            VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(item.getMediaId());
+            VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(item.getVideoId());
 
             formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
@@ -79,7 +84,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
 
         if (metadata == null) {
-            metadata = getMetadata(item.getMediaId());
+            metadata = getMetadata(item.getVideoId());
 
             ytMediaItem.setMetadata(metadata);
         }
@@ -126,7 +131,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public void updateHistoryPosition(MediaItem item, float positionSec) {
         checkSigned();
 
-        updateHistoryPosition(item.getMediaId(), positionSec);
+        updateHistoryPosition(item.getVideoId(), positionSec);
     }
 
     @Override
@@ -183,28 +188,28 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public void setLike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.setLike(item.getMediaId());
+        mMediaItemManagerReal.setLike(item.getVideoId());
     }
 
     @Override
     public void removeLike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.removeLike(item.getMediaId());
+        mMediaItemManagerReal.removeLike(item.getVideoId());
     }
 
     @Override
     public void setDislike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.setDislike(item.getMediaId());
+        mMediaItemManagerReal.setDislike(item.getVideoId());
     }
 
     @Override
     public void removeDislike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.removeDislike(item.getMediaId());
+        mMediaItemManagerReal.removeDislike(item.getVideoId());
     }
 
     @Override
@@ -219,6 +224,44 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         checkSigned();
 
         mMediaItemManagerReal.unsubscribe(item.getChannelId());
+    }
+
+    @Override
+    public List<VideoPlaylistInfo> getVideoPlaylistsInfos(String videoId) {
+        checkSigned();
+
+        PlaylistsInfo playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfos(videoId);
+
+        return YouTubeVideoPlaylistInfo.from(playlistsInfo);
+    }
+
+    @Override
+    public void addToPlaylist(String playlistId, String videoId) {
+        checkSigned();
+
+        mMediaItemManagerReal.addToPlaylist(playlistId, videoId);
+    }
+
+    @Override
+    public void removeFromPlaylist(String playlistId, String videoId) {
+        checkSigned();
+
+        mMediaItemManagerReal.removeFromPlaylist(playlistId, videoId);
+    }
+
+    @Override
+    public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfosObserve(String videoId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> addToPlaylistObserve(String playlistId, String videoId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId) {
+        return null;
     }
 
     private void checkSigned() {

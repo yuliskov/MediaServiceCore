@@ -45,7 +45,7 @@ public class PlaylistManagerTest {
         PlaylistsInfo playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         Playlist firstPlaylist = playlistsInfo.getPlaylists().get(0);
 
-        Call<ActionResult> wrapper = mService.addToPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylist.getPlaylistId(),
+        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylist.getPlaylistId(),
                 TestHelpers.VIDEO_ID_AGE_RESTRICTED), TestHelpers.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
@@ -63,7 +63,7 @@ public class PlaylistManagerTest {
         PlaylistsInfo playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         Playlist firstPlaylist = playlistsInfo.getPlaylists().get(0);
 
-        Call<ActionResult> wrapper = mService.removeFromPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylist.getPlaylistId(),
+        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylist.getPlaylistId(),
                 TestHelpers.VIDEO_ID_AGE_RESTRICTED), TestHelpers.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);

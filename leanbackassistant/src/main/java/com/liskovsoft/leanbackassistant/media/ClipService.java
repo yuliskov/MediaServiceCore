@@ -123,7 +123,7 @@ public class ClipService {
                         v.getDescription(),
                         v.getBackgroundImageUrl(),
                         v.getCardImageUrl(),
-                        v.getMediaUrl(),
+                        v.getVideoUrl(),
                         null,
                         false,
                         null,

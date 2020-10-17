@@ -1,12 +1,17 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.playlist.PlaylistService;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+
+import java.util.List;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private static YouTubeMediaItemManagerSigned sInstance;
@@ -15,6 +20,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private final TrackingService mTrackingService;
     private final VideoInfoServiceSigned mVideoInfoServiceSigned;
     private final ActionsService mActionsService;
+    private final PlaylistService mPlaylistService;
 
     private YouTubeMediaItemManagerSigned() {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
@@ -22,6 +28,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         mTrackingService = TrackingService.instance();
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
         mActionsService = ActionsService.instance();
+        mPlaylistService = PlaylistService.instance();
     }
 
     public static YouTubeMediaItemManagerSigned instance() {
@@ -82,5 +89,20 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     @Override
     public void unsubscribe(String channelId) {
         mActionsService.unsubscribe(channelId, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public PlaylistsInfo getVideoPlaylistsInfos(String videoId) {
+        return mPlaylistService.getPlaylistsInfo(videoId, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public void addToPlaylist(String playlistId, String videoId) {
+        mPlaylistService.addToPlaylist(playlistId, videoId, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public void removeFromPlaylist(String playlistId, String videoId) {
+        mPlaylistService.removeFromPlaylist(playlistId, videoId, mSignInManager.getAuthorizationHeader());
     }
 }

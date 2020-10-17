@@ -46,7 +46,7 @@ public class SearchableActivity extends Activity {
         MediaItem video = VideoContentProvider.findVideoWithId(id);
 
         if (video != null) {
-            return video.getMediaUrl();
+            return video.getVideoUrl();
         }
 
         return null;

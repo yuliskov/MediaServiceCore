@@ -24,8 +24,8 @@ public interface MediaItem {
      * Additional video info such as user, published etc.
      */
     String getDescription();
-    String getMediaUrl();
-    String getMediaId();
+    String getVideoUrl();
+    String getVideoId();
     /**
      * Mime content type.<br/>
      * Example: <b>"video/mp4"</b>

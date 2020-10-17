@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public interface MediaItemManagerInt {
@@ -14,4 +15,7 @@ public interface MediaItemManagerInt {
     void removeDislike(String videoId);
     void subscribe(String channelId);
     void unsubscribe(String channelId);
+    PlaylistsInfo getVideoPlaylistsInfos(String videoId);
+    void addToPlaylist(String playlistId, String videoId);
+    void removeFromPlaylist(String playlistId, String videoId);
 }

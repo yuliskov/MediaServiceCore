@@ -18,9 +18,5 @@ public interface PlaylistManager {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse/edit_playlist")
-    Call<ActionResult> addToPlaylist(@Body String playlistQuery, @Header("Authorization") String auth);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/browse/edit_playlist")
-    Call<ActionResult> removeFromPlaylist(@Body String playlistQuery, @Header("Authorization") String auth);
+    Call<ActionResult> editPlaylist(@Body String playlistQuery, @Header("Authorization") String auth);
 }

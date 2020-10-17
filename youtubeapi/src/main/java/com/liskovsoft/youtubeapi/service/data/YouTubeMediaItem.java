@@ -233,12 +233,12 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getMediaUrl() {
+    public String getVideoUrl() {
         return mMediaUrl;
     }
 
     @Override
-    public String getMediaId() {
+    public String getVideoId() {
         return mMediaId;
     }
 

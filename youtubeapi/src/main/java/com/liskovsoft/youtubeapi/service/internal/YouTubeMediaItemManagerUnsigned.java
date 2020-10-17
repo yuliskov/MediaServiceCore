@@ -1,9 +1,13 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceUnsigned;
 import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+
+import java.util.List;
 
 public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     private static YouTubeMediaItemManagerUnsigned sInstance;
@@ -71,6 +75,22 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
 
     @Override
     public void unsubscribe(String channelId) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public PlaylistsInfo getVideoPlaylistsInfos(String videoId) {
+        // Do nothing, user is unsigned
+        return null;
+    }
+
+    @Override
+    public void addToPlaylist(String playlistId, String videoId) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void removeFromPlaylist(String playlistId, String videoId) {
         // Do nothing, user is unsigned
     }
 }

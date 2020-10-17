@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

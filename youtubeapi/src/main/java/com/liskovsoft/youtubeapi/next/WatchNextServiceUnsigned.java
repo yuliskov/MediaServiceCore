@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.next;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import retrofit2.Call;
 
 public class WatchNextServiceUnsigned {
@@ -28,8 +28,8 @@ public class WatchNextServiceUnsigned {
         return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId));
     }
 
-    public WatchNextResult getWatchNextResult(String videoId, String playlistId) {
-        return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId, playlistId));
+    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex) {
+        return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId, playlistId, playlistIndex));
     }
 
     private WatchNextResult getWatchNext(String query) {

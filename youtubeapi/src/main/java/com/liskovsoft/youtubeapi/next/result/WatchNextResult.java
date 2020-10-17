@@ -1,6 +1,11 @@
-package com.liskovsoft.youtubeapi.next.models;
+package com.liskovsoft.youtubeapi.next.result;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
+import com.liskovsoft.youtubeapi.next.models.NextVideo;
+import com.liskovsoft.youtubeapi.next.models.Playlist;
+import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
+import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 
 import java.util.List;
 
@@ -17,6 +22,8 @@ public class WatchNextResult {
     @JsonPath({"$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.maybeHistoryEndpointRenderer",
                "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.autoplayEndpointRenderer"}) // present only on playlist
     private NextVideo mNextVideo;
+    @JsonPath("$.contents.singleColumnWatchNextResults.playlist.playlist")
+    private Playlist mPlaylist;
 
     public List<SuggestedSection> getSuggestedSections() {
         return mSuggestedSections;
@@ -32,5 +39,9 @@ public class WatchNextResult {
 
     public NextVideo getNextVideo() {
         return mNextVideo;
+    }
+
+    public Playlist getPlaylist() {
+        return mPlaylist;
     }
 }

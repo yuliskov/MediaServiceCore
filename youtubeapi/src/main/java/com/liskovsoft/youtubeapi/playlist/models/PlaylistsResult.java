@@ -4,11 +4,11 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class PlaylistsInfo {
+public class PlaylistsResult {
     @JsonPath("$.contents[0].addToPlaylistRenderer.playlists[*].playlistAddToOptionRenderer")
-    private List<Playlist> mPlaylists;
+    private List<PlaylistInfo> mPlaylists;
 
-    public List<Playlist> getPlaylists() {
+    public List<PlaylistInfo> getPlaylists() {
         return mPlaylists;
     }
 }

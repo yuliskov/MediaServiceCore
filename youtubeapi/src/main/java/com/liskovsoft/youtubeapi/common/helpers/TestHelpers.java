@@ -8,6 +8,11 @@ public class TestHelpers {
     private static String mAuthorization; // type: Bearer
     private static final String RAW_AUTH_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1%2F%2F0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY&grant_type=refresh_token";
 
+    // ZHU - In the Morning (Official Video)
+    public static final String MUSIC_VIDEO_ID = "5_ARibfCMhw";
+    public static final String MUSIC_VIDEO_PLAYLIST_ID = "PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz";
+    public static final int MUSIC_VIDEO_INDEX = 1;
+
     // News One
     public static final String VIDEO_ID_SIMPLE_1 = "x26FXCaUR7E";
 

@@ -15,7 +15,7 @@ public class NextVideo {
     @JsonPath("$.endpoint.watchEndpoint.playlistId")
     private String mPlaylistId; // present only on playlists
     @JsonPath("$.endpoint.watchEndpoint.index")
-    private String mPlaylistItemIndex; // index inside a playlist (present only on playlists)
+    private int mPlaylistItemIndex = -1; // index inside a playlist (present only on playlists)
     @JsonPath("$.item.previewButtonRenderer.byline.runs[0].text")
     private String mAuthor;
     @JsonPath("$.endpoint.watchEndpoint.params")
@@ -35,5 +35,13 @@ public class NextVideo {
 
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
+    }
+
+    public String getPlaylistId() {
+        return mPlaylistId;
+    }
+
+    public int getPlaylistItemIndex() {
+        return mPlaylistItemIndex;
     }
 }

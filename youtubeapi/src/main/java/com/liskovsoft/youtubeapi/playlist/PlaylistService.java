@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import retrofit2.Call;
 
 public class PlaylistService {
@@ -21,8 +21,8 @@ public class PlaylistService {
         return sInstance;
     }
 
-    public PlaylistsInfo getPlaylistsInfo(String videoId, String authorization) {
-        Call<PlaylistsInfo> wrapper =
+    public PlaylistsResult getPlaylistsInfo(String videoId, String authorization) {
+        Call<PlaylistsResult> wrapper =
                 mPlaylistManager.getPlaylistsInfo(PlaylistManagerParams.getAllPlaylistsQuery(videoId), authorization);
 
         return RetrofitHelper.get(wrapper);

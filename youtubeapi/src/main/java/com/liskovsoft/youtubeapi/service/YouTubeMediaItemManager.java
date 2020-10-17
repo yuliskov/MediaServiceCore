@@ -7,8 +7,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
-import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
@@ -84,12 +84,21 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
 
         if (metadata == null) {
-            metadata = getMetadata(item.getVideoId());
+            metadata = getMetadata(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex());
 
             ytMediaItem.setMetadata(metadata);
         }
 
         return metadata;
+    }
+
+    @Override
+    public YouTubeMediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex) {
+        checkSigned();
+
+        WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId, playlistId, playlistIndex);
+
+        return YouTubeMediaItemMetadata.from(watchNextResult);
     }
 
     @Override
@@ -230,7 +239,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public List<VideoPlaylistInfo> getVideoPlaylistsInfos(String videoId) {
         checkSigned();
 
-        PlaylistsInfo playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfos(videoId);
+        PlaylistsResult playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfos(videoId);
 
         return YouTubeVideoPlaylistInfo.from(playlistsInfo);
     }

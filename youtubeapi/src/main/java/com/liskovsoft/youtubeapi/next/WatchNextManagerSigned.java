@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.next;
 
-import com.liskovsoft.youtubeapi.next.models.WatchNextResultContinuation;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;

@@ -1,17 +1,14 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
-import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
-import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
-
-import java.util.List;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private static YouTubeMediaItemManagerSigned sInstance;
@@ -47,6 +44,11 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     @Override
     public WatchNextResult getWatchNextResult(String videoId) {
         return mWatchNextServiceSigned.getWatchNextResult(videoId, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex) {
+        return mWatchNextServiceSigned.getWatchNextResult(videoId, playlistId, playlistIndex, mSignInManager.getAuthorizationHeader());
     }
 
     @Override
@@ -92,7 +94,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
-    public PlaylistsInfo getVideoPlaylistsInfos(String videoId) {
+    public PlaylistsResult getVideoPlaylistsInfos(String videoId) {
         return mPlaylistService.getPlaylistsInfo(videoId, mSignInManager.getAuthorizationHeader());
     }
 

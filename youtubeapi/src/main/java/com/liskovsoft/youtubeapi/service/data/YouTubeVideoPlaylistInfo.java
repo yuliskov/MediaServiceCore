@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
-import com.liskovsoft.youtubeapi.playlist.models.Playlist;
-import com.liskovsoft.youtubeapi.playlist.models.PlaylistsInfo;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfo;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +12,17 @@ public class YouTubeVideoPlaylistInfo implements VideoPlaylistInfo {
     private String mPlaylistId;
     private boolean mIsSelected;
 
-    public static List<VideoPlaylistInfo> from(PlaylistsInfo info) {
+    public static List<VideoPlaylistInfo> from(PlaylistsResult info) {
         List<VideoPlaylistInfo> result = new ArrayList<>();
 
-        for (Playlist playlist : info.getPlaylists()) {
+        for (PlaylistInfo playlist : info.getPlaylists()) {
             result.add(from(playlist));
         }
 
         return result;
     }
 
-    private static YouTubeVideoPlaylistInfo from(Playlist playlist) {
+    private static YouTubeVideoPlaylistInfo from(PlaylistInfo playlist) {
         YouTubeVideoPlaylistInfo info = new YouTubeVideoPlaylistInfo();
 
         info.mTitle = playlist.getTitle();

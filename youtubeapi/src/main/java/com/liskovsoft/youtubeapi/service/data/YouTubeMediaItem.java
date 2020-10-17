@@ -15,7 +15,7 @@ public class YouTubeMediaItem implements MediaItem {
     private static int sId;
     private String mTitle;
     private int mId;
-    private String mMediaId;
+    private String mVideoId;
     private String mChannelId;
     private String mPlaylistId;
     private String mMediaUrl;
@@ -40,6 +40,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mPercentWatched;
     private String mAuthor;
     private String mVideoPreviewUrl;
+    private int mPlaylistIndex;
 
     public static MediaItem from(ItemWrapper item) {
         if (item.getVideoItem() != null) {
@@ -71,7 +72,9 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mProductionDate = item.getPublishedTime();
-        video.mMediaId = item.getVideoId();
+        video.mVideoId = item.getVideoId();
+        video.mPlaylistId = item.getPlaylistId();
+        video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
@@ -97,7 +100,9 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mProductionDate = item.getViewsAndPublished();
-        video.mMediaId = item.getVideoId();
+        video.mVideoId = item.getVideoId();
+        video.mPlaylistId = item.getPlaylistId();
+        video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
@@ -137,7 +142,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mPlaylistId = item.getPlaylistId();
-        video.mMediaId = item.getVideoId();
+        video.mVideoId = item.getVideoId();
 
         addCommonProps(video);
 
@@ -154,7 +159,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mPlaylistId = item.getPlaylistId();
-        video.mMediaId = item.getVideoId();
+        video.mVideoId = item.getVideoId();
 
         addCommonProps(video);
 
@@ -181,7 +186,9 @@ public class YouTubeMediaItem implements MediaItem {
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
-        video.mMediaId = item.getVideoId();
+        video.mVideoId = item.getVideoId();
+        video.mPlaylistId = item.getPlaylistId();
+        video.mPlaylistIndex = item.getPlaylistItemIndex();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
         addCommonProps(video);
 
@@ -191,8 +198,8 @@ public class YouTubeMediaItem implements MediaItem {
     private static int createId(YouTubeMediaItem item) {
         int id;
 
-        if (item.mMediaId != null) {
-            id = item.mMediaId.hashCode();
+        if (item.mVideoId != null) {
+            id = item.mVideoId.hashCode();
         } else if (item.mChannelId != null) {
             id = item.mChannelId.hashCode();
         } else {
@@ -239,7 +246,7 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public String getVideoId() {
-        return mMediaId;
+        return mVideoId;
     }
 
     @Override
@@ -341,5 +348,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getVideoPreviewUrl() {
         return mVideoPreviewUrl;
+    }
+
+    @Override
+    public int getPlaylistIndex() {
+        return mPlaylistIndex;
     }
 }

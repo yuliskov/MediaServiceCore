@@ -8,14 +8,16 @@ public class MusicItem {
     private static final String TERTIARY_TEXT_DELIM = "•";
     @JsonPath("$.navigationEndpoint.watchEndpoint.videoId")
     private String mVideoId;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
+    private String mPlaylistId;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.index")
+    private int mPlaylistIndex;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
     @JsonPath({"$.primaryText.simpleText", "$.primaryText.runs[0].text"})
     private String mTitle;
     @JsonPath({"$.secondaryText.simpleText", "$.secondaryText.runs[0].text"})
     private String mUserName;
-    @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
-    private String mPlaylistId;
     @JsonPath("$.tertiaryText.simpleText")
     private String mViewsAndPublished;
     @JsonPath("$.tertiaryText.runs[0].text")
@@ -37,6 +39,14 @@ public class MusicItem {
         return mVideoId;
     }
 
+    public String getPlaylistId() {
+        return mPlaylistId;
+    }
+
+    public int getPlaylistIndex() {
+        return mPlaylistIndex;
+    }
+
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
     }
@@ -47,10 +57,6 @@ public class MusicItem {
 
     public String getUserName() {
         return mUserName;
-    }
-
-    public String getPlaylistId() {
-        return mPlaylistId;
     }
 
     public String getViewsAndPublished() {

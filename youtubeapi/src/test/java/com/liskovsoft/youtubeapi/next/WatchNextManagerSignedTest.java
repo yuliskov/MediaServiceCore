@@ -2,15 +2,13 @@ package com.liskovsoft.youtubeapi.next;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
-
-import java.io.IOException;
 
 @RunWith(RobolectricTestRunner.class)
 public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
@@ -34,5 +32,15 @@ public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedWatchNextResultFields(watchNextResult);
+    }
+
+    @Test
+    public void testThatWatchNextPlaylistItemContainsAllRequiredFields() {
+        Call<WatchNextResult> wrapper =
+                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(
+                        TestHelpers.MUSIC_VIDEO_ID, TestHelpers.MUSIC_VIDEO_PLAYLIST_ID, TestHelpers.MUSIC_VIDEO_INDEX), TestHelpers.getAuthorization());
+        WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
+
+        checkSignedPlaylistWatchNextResultFields(watchNextResult);
     }
 }

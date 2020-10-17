@@ -15,6 +15,10 @@ public class VideoItem {
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
     @JsonPath("$.videoId")
     private String mVideoId;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
+    private String mPlaylistId;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.index")
+    private int mPlaylistIndex;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
     @JsonPath("$.channelThumbnail.thumbnails[0]")
@@ -63,6 +67,14 @@ public class VideoItem {
 
     public String getVideoId() {
         return mVideoId;
+    }
+
+    public int getPlaylistIndex() {
+        return mPlaylistIndex;
+    }
+
+    public String getPlaylistId() {
+        return mPlaylistId;
     }
 
     public List<Thumbnail> getThumbnails() {

@@ -64,4 +64,5 @@ public interface MediaItem {
     double getRatingScore();
     String getChannelId();
     String getVideoPreviewUrl();
+    int getPlaylistIndex();
 }

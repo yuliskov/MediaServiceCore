@@ -14,6 +14,7 @@ public interface MediaItemManager {
     MediaItemFormatInfo getFormatInfo(String videoId);
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
+    MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex);
     void updateHistoryPosition(MediaItem item, float positionSec);
     void updateHistoryPosition(String videoId, float positionSec);
     void setLike(MediaItem item);

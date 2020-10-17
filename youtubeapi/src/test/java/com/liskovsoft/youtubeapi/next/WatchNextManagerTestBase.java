@@ -2,10 +2,11 @@ package com.liskovsoft.youtubeapi.next;
 
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
+import com.liskovsoft.youtubeapi.next.models.Playlist;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class WatchNextManagerTestBase {
 
         checkFields(watchNextResult.getVideoMetadata());
         checkFields(watchNextResult.getVideoOwner());
-        checkFields(watchNextResult.getNextVideo());
+        checkFields(watchNextResult.getNextVideo(), watchNextResult.getPlaylist() != null);
         checkFields(watchNextResult.getSuggestedSections());
     }
 
@@ -27,8 +28,18 @@ public class WatchNextManagerTestBase {
 
         checkFields(watchNextResult.getVideoMetadata());
         checkSignedFields(watchNextResult.getVideoOwner());
-        checkFields(watchNextResult.getNextVideo());
+        checkFields(watchNextResult.getNextVideo(), false);
         checkFields(watchNextResult.getSuggestedSections());
+    }
+
+    public void checkSignedPlaylistWatchNextResultFields(WatchNextResult watchNextResult) {
+        assertNotNull("Watch next not empty", watchNextResult);
+
+        checkFields(watchNextResult.getVideoMetadata());
+        checkSignedFields(watchNextResult.getVideoOwner());
+        checkFields(watchNextResult.getNextVideo(), true);
+        checkFields(watchNextResult.getSuggestedSections());
+        checkFields(watchNextResult.getPlaylist());
     }
 
     private void checkFields(List<SuggestedSection> watchNextSections) {
@@ -78,11 +89,24 @@ public class WatchNextManagerTestBase {
         assertNotNull("Video owner has author name", videoOwner.getVideoAuthor());
     }
 
-    private void checkFields(NextVideo nextVideo) {
+    private void checkFields(NextVideo nextVideo, boolean isPlaylist) {
         assertNotNull("Next video not empty", nextVideo);
         assertNotNull("Next video has video id", nextVideo.getVideoId());
         assertNotNull("Next video has title", nextVideo.getTitle());
         assertNotNull("Next video has author name", nextVideo.getAuthor());
         assertNotNull("Next video has thumbnails", nextVideo.getThumbnails());
+
+        if (isPlaylist) {
+            assertNotNull("Next video has playlist id", nextVideo.getPlaylistId());
+            assertTrue("Next video has playlist index", nextVideo.getPlaylistItemIndex() >= 0);
+        }
+    }
+
+    private void checkFields(Playlist playlist) {
+        assertNotNull("Playlist not empty", playlist);
+        assertNotNull("Playlist has playlist id", playlist.getPlaylistId());
+        assertTrue("Playlist has playlist index", playlist.getPlaylistIndex() >= 0);
+        assertNotNull("Playlist has title", playlist.getTitle());
+        assertTrue("Playlist has author name", playlist.getTotalVideos() > 0);
     }
 }

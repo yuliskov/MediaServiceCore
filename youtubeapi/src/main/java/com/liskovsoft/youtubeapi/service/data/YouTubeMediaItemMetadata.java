@@ -6,7 +6,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
-import com.liskovsoft.youtubeapi.next.models.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 import java.util.ArrayList;

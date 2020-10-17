@@ -136,8 +136,9 @@ public class YouTubeMediaGroup implements MediaGroup {
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
         if (items != null) {
-            for (ItemWrapper item : items) {
-                mediaItems.add(YouTubeMediaItem.from(item));
+            for (int i = 0; i < items.size(); i++) {
+                ItemWrapper item = items.get(i);
+                mediaItems.add(YouTubeMediaItem.from(item, i));
             }
         }
 

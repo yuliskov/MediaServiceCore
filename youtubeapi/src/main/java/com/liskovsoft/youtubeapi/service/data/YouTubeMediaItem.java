@@ -42,7 +42,18 @@ public class YouTubeMediaItem implements MediaItem {
     private String mVideoPreviewUrl;
     private int mPlaylistIndex;
 
-    public static MediaItem from(ItemWrapper item) {
+    public static YouTubeMediaItem from(ItemWrapper item, int position) {
+        YouTubeMediaItem mediaItem = from(item);
+
+        // Can't find a position of item inside browse query. So using position inside group instead.
+        if (mediaItem != null && mediaItem.mPlaylistIndex == -1 && mediaItem.mPlaylistId != null) {
+            mediaItem.mPlaylistIndex = position;
+        }
+
+        return mediaItem;
+    }
+
+    public static YouTubeMediaItem from(ItemWrapper item) {
         if (item.getVideoItem() != null) {
             return from(item.getVideoItem());
         } else if (item.getMusicItem() != null) {

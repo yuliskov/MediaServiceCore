@@ -18,7 +18,7 @@ public class VideoItem {
     @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
     private String mPlaylistId;
     @JsonPath("$.navigationEndpoint.watchEndpoint.index")
-    private int mPlaylistIndex;
+    private int mPlaylistIndex = -1;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
     @JsonPath("$.channelThumbnail.thumbnails[0]")

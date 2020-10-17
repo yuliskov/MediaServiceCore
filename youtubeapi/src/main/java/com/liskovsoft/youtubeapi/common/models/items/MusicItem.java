@@ -11,7 +11,7 @@ public class MusicItem {
     @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
     private String mPlaylistId;
     @JsonPath("$.navigationEndpoint.watchEndpoint.index")
-    private int mPlaylistIndex;
+    private int mPlaylistIndex = -1;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
     @JsonPath({"$.primaryText.simpleText", "$.primaryText.runs[0].text"})

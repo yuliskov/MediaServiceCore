@@ -1,0 +1,845 @@
+{
+  "responseContext": {
+    "serviceTrackingParams": [
+      {
+        "service": "GFEEDBACK",
+        "params": [
+          {
+            "key": "e",
+            "value": "23744176,23804281,23839597,23856950,23857949,23880043,23882503,23884386,23895671,23911055,23915654,23915993,23918597,23928508,23930220,23931993,23934970,23939554,23939988,23940248,23940704,23942338,23942434,23942633,23944779,23945479,23946420,23947698,23948841,23949704,23950272,23951621,23952720,23953999,23955809,23956097,23956754,23957884,23957896,23957896,23960091,9449243"
+          },
+          {
+            "key": "logged_in",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "service": "SUGGEST",
+        "params": [
+          {
+            "key": "sugexp",
+            "value": "ytdb_cc4,ytpo.bo.se=0,ytposo.bo.me=0,cfro=1,ytpo.bo.se=1,ytposo.bo.me=1,ytpo.bo.vqd=1,ytpo.bo.dm=5.0,ytpo.bo.ds=1.0,ytposo.bo.vqd=1,ytposo.bo.dm=5.0,ytposo.bo.ds=1.0"
+          },
+          {
+            "key": "suggest_token",
+            "value": "DZuS7RaVZb_hMydG8Ffvkw"
+          }
+        ]
+      }
+    ]
+  },
+  "trackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+  "contents": [
+    {
+      "addToPlaylistRenderer": {
+        "playlists": [
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "WL",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Watch later Private"
+                  }
+                },
+                "simpleText": "Watch later"
+              },
+              "privacy": "PRIVATE",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "WL",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "WL",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/a4BhBPtUAWs/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/a4BhBPtUAWs/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/a4BhBPtUAWs/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLB7W5L7vGfC4UMshJg5ezSI5v1odg",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/a4BhBPtUAWs/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Music Public"
+                  }
+                },
+                "simpleText": "Music"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/wBmWvvTV0P4/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/wBmWvvTV0P4/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/wBmWvvTV0P4/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLArt6VDebV-Eeb4I4RyxQPeXvoqeA",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/wBmWvvTV0P4/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY0bAW-kjHJGblUZ6MH1Z_OW",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Health Private"
+                  }
+                },
+                "simpleText": "Health"
+              },
+              "privacy": "PRIVATE",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY0bAW-kjHJGblUZ6MH1Z_OW",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY0bAW-kjHJGblUZ6MH1Z_OW",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/BsKeEkFc9uI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/BsKeEkFc9uI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/BsKeEkFc9uI/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBBjA1X_dAr4fsi5mZO_Pn_8zrVmg",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/BsKeEkFc9uI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Games Public"
+                  }
+                },
+                "simpleText": "Games"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/UqqToaiuMKs/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/UqqToaiuMKs/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/UqqToaiuMKs/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDLmvagKu9EqRI3PYi13zB5y4uczQ",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/UqqToaiuMKs/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY2p2xE0uTfFepR-aMFguHHS",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Sport Public"
+                  }
+                },
+                "simpleText": "Sport"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY2p2xE0uTfFepR-aMFguHHS",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY2p2xE0uTfFepR-aMFguHHS",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/t-OjGIzcrHE/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/t-OjGIzcrHE/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/t-OjGIzcrHE/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC2_0nhiqE3N6X9lRMO5IzhsY3sgw",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/t-OjGIzcrHE/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "FLwB58J71afgHgnxOEs02f3Q",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Favorites Public"
+                  }
+                },
+                "simpleText": "Favorites"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "FLwB58J71afgHgnxOEs02f3Q",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "FLwB58J71afgHgnxOEs02f3Q",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/eIdUEbTUP7M/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/eIdUEbTUP7M/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/eIdUEbTUP7M/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLAczatkhkbF5F6_SusR2GbZtkjNuw",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/eIdUEbTUP7M/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY2rSClDbIS4K94LlmRXBVMI",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Channels Public"
+                  }
+                },
+                "simpleText": "Channels"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY2rSClDbIS4K94LlmRXBVMI",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY2rSClDbIS4K94LlmRXBVMI",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/9Auq9mYxFEE/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/9Auq9mYxFEE/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/9Auq9mYxFEE/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCtnvUXZGljTocSZx-I1AZLzxHzsw",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/9Auq9mYxFEE/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY1KCSztYsMRdjbKRrlNkvPk",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Crafting Public"
+                  }
+                },
+                "simpleText": "Crafting"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY1KCSztYsMRdjbKRrlNkvPk",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY1KCSztYsMRdjbKRrlNkvPk",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/XCFt09ZsBSA/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/XCFt09ZsBSA/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/XCFt09ZsBSA/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBrPkNwLxRHlEvdoVrOskLddtYAuA",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/XCFt09ZsBSA/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY3EOKVJUs1d5LWg2xhjeJOu",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "English Public"
+                  }
+                },
+                "simpleText": "English"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY3EOKVJUs1d5LWg2xhjeJOu",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY3EOKVJUs1d5LWg2xhjeJOu",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/8QQWQaGhhTo/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/8QQWQaGhhTo/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/8QQWQaGhhTo/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLB3i30UrYAbGokbljqWjqFR4lY7rQ",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/8QQWQaGhhTo/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY16Bh4t7-A75ndxmXRPcNwi",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Coding Public"
+                  }
+                },
+                "simpleText": "Coding"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY16Bh4t7-A75ndxmXRPcNwi",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY16Bh4t7-A75ndxmXRPcNwi",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/RBhf8TPy5i4/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/RBhf8TPy5i4/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/RBhf8TPy5i4/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBL9fM27FumXkTrHJSvuvskBa8kJw",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/RBhf8TPy5i4/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY2LtFssDrpZ15Sy_dRaX4oq",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "BRIGHT SIDE Public"
+                  }
+                },
+                "simpleText": "BRIGHT SIDE"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY2LtFssDrpZ15Sy_dRaX4oq",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY2LtFssDrpZ15Sy_dRaX4oq",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/arg2bykJAQE/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/arg2bykJAQE/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/arg2bykJAQE/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCPfRQz2DYgzWYKf9s1X9Y39sFQKw",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/arg2bykJAQE/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "playlistAddToOptionRenderer": {
+              "playlistId": "PLbl01QFpbBY3jn7vZwsrydcPjv52DEH_Z",
+              "title": {
+                "accessibility": {
+                  "accessibilityData": {
+                    "label": "Comedy Public"
+                  }
+                },
+                "simpleText": "Comedy"
+              },
+              "privacy": "PUBLIC",
+              "containsSelectedVideos": "NONE",
+              "addToPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY3jn7vZwsrydcPjv52DEH_Z",
+                  "actions": [
+                    {
+                      "addedVideoId": "oaTqHgwmhOE",
+                      "action": "ACTION_ADD_VIDEO"
+                    }
+                  ]
+                }
+              },
+              "removeFromPlaylistServiceEndpoint": {
+                "clickTrackingParams": "CAAQisQGIhMI75qquea67AIVgbxVCh1slQms",
+                "playlistEditEndpoint": {
+                  "playlistId": "PLbl01QFpbBY3jn7vZwsrydcPjv52DEH_Z",
+                  "actions": [
+                    {
+                      "action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID",
+                      "removedVideoId": "oaTqHgwmhOE"
+                    }
+                  ]
+                }
+              },
+              "thumbnailRenderer": {
+                "playlistVideoThumbnailRenderer": {
+                  "thumbnail": {
+                    "thumbnails": [
+                      {
+                        "url": "//i.ytimg.com/vi/3jTliiPb-4M/default.jpg",
+                        "width": 120,
+                        "height": 90
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/3jTliiPb-4M/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                      },
+                      {
+                        "url": "https://i.ytimg.com/vi/3jTliiPb-4M/hqdefault.jpg?sqp=-oaymwEXCLwDEPoBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCzdUJeK5hRmpuxL7dNTcEo-Imo_A",
+                        "width": 444,
+                        "height": 250
+                      },
+                      {
+                        "url": "//i.ytimg.com/vi/3jTliiPb-4M/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

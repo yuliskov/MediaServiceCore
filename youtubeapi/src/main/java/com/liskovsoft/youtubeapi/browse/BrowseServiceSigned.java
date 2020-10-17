@@ -42,35 +42,16 @@ public class BrowseServiceSigned {
     }
 
     public GridTab getSubscriptions(String authorization) {
-        return getFirstGridTab(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        return getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 
     public GridTab getHistory(String authorization) {
-        return getFirstGridTab(BrowseManagerParams.getMyLibraryQuery(), authorization);
+        return getGridTab(0, BrowseManagerParams.getMyLibraryQuery(), authorization);
     }
 
     public List<GridTab> getPlaylists(String authorization) {
-        List<GridTab> libraryTabs = getGridTabs(BrowseManagerParams.getMyLibraryQuery(), authorization);
-
-        List<GridTab> result = null;
-
-        if (libraryTabs != null) {
-            result = new ArrayList<>();
-
-            boolean headerFound = false;
-
-            for (GridTab tab : libraryTabs) {
-                if (headerFound) {
-                    result.add(tab);
-                }
-
-                if (tab.isUnselectable()) {
-                    headerFound = true;
-                }
-            }
-        }
-
-        return result;
+        // Skip first tab as it's History tab
+        return getGridTabs(1, BrowseManagerParams.getMyLibraryQuery(), authorization);
     }
 
     public SectionTab getHome(String authorization) {
@@ -114,13 +95,35 @@ public class BrowseServiceSigned {
         return result;
     }
 
-    private GridTab getFirstGridTab(String query, String authorization) {
+    private GridTab getGridTab(int index, String query, String authorization) {
         List<GridTab> gridTabs = getGridTabs(query, authorization);
 
         GridTab result = null;
 
         if (gridTabs != null) {
-            result = gridTabs.get(0);
+            result = gridTabs.get(index);
+        }
+
+        return result;
+    }
+
+    private List<GridTab> getGridTabs(int fromIndex, String query, String authorization) {
+        List<GridTab> gridTabs = getGridTabs(query, authorization);
+
+        List<GridTab> result = null;
+
+        if (gridTabs != null) {
+            result = new ArrayList<>();
+
+            for (int i = fromIndex; i < gridTabs.size(); i++) {
+                GridTab tab = gridTabs.get(i);
+
+                if (tab.isUnselectable()) {
+                    continue;
+                }
+
+                result.add(tab);
+            }
         }
 
         return result;

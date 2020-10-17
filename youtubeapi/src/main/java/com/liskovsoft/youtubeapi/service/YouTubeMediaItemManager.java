@@ -251,17 +251,17 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfosObserve(String videoId) {
-        return null;
+        return Observable.fromCallable(() -> getVideoPlaylistsInfos(videoId));
     }
 
     @Override
     public Observable<Void> addToPlaylistObserve(String playlistId, String videoId) {
-        return null;
+        return ObservableHelper.fromVoidable(() -> addToPlaylist(playlistId, videoId));
     }
 
     @Override
     public Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId) {
-        return null;
+        return ObservableHelper.fromVoidable(() -> removeFromPlaylist(playlistId, videoId));
     }
 
     private void checkSigned() {

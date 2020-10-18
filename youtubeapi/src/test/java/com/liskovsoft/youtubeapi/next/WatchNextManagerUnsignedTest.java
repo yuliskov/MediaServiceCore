@@ -1,10 +1,12 @@
 package com.liskovsoft.youtubeapi.next;
 
+import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
@@ -55,7 +58,23 @@ public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
 
     @Test
     public void testThatWatchNextRowsCouldBeContinued() {
-        
+        WatchNextResult watchNextResult = getWatchNextResult();
+
+        String rootNextPageKey = watchNextResult.getSuggestedSections().get(0).getNextPageKey();
+
+        assertNotNull("Root contains next key", rootNextPageKey);
+
+        WatchNextResultContinuation continuation = continueWatchNext(rootNextPageKey);
+
+        String nextPageKey = continuation.getNextPageKey();
+
+        assertNotNull("Continuations contains next key", nextPageKey);
+    }
+
+    private WatchNextResultContinuation continueWatchNext(String nextPageKey) {
+        Call<WatchNextResultContinuation> wrapper = mManager.continueWatchNextResult(BrowseManagerParams.getContinuationQuery(nextPageKey));
+
+        return RetrofitHelper.get(wrapper);
     }
 
     private WatchNextResult getWatchNextResult() {

@@ -9,7 +9,8 @@ import java.util.List;
 public class WatchNextResultContinuation {
     @JsonPath("$.continuationContents.horizontalListContinuation.items[*]")
     private List<ItemWrapper> mItemWrappers;
-    @JsonPath("$.continuationContents.horizontalListContinuation.continuations[1].nextContinuationData.continuation")
+    @JsonPath({"$.continuationContents.horizontalListContinuation.continuations[0].nextContinuationData.continuation",
+               "$.continuationContents.horizontalListContinuation.continuations[1].nextContinuationData.continuation"})
     private String mNextPageKey;
 
     public String getNextPageKey() {

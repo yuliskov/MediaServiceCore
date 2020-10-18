@@ -1,12 +1,14 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public interface MediaItemManagerInt {
     WatchNextResult getWatchNextResult(String videoId);
     WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex);
+    WatchNextResultContinuation continueWatchNext(String nextKey);
     VideoInfo getVideoInfo(String videoId);
     void updateHistoryPosition(String videoId, String lengthSec,
                                String eventId, String vmData, float positionSec);

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
@@ -9,6 +10,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
@@ -111,6 +113,18 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public MediaGroup continueGroup(MediaGroup mediaGroup) {
+        checkSigned();
+
+        String nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup);
+
+        return YouTubeMediaGroup.from(
+                mMediaItemManagerReal.continueWatchNext(nextKey),
+                mediaGroup
+        );
+    }
+
+    @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
         return Observable.create(emitter -> {
             YouTubeMediaItemMetadata metadata = getMetadata(item);
@@ -134,6 +148,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
             emitter.onComplete();
         });
+    }
+
+    @Override
+    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
+        return ObservableHelper.fromNullable(() -> continueGroup(mediaGroup));
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.next;
 
+import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import retrofit2.Call;
 
 public class WatchNextServiceSigned {
@@ -34,6 +36,11 @@ public class WatchNextServiceSigned {
 
     private WatchNextResult getWatchNext(String query, String authorization) {
         Call<WatchNextResult> wrapper = mWatchNextManagerSigned.getWatchNextResult(query, authorization);
+        return RetrofitHelper.get(wrapper);
+    }
+
+    public WatchNextResultContinuation continueWatchNext(String nextKey, String authorization) {
+        Call<WatchNextResultContinuation> wrapper = mWatchNextManagerSigned.continueWatchNextResult(BrowseManagerParams.getContinuationQuery(nextKey), authorization);
         return RetrofitHelper.get(wrapper);
     }
 }

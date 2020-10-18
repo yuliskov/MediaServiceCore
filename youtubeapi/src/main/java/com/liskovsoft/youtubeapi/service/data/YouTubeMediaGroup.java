@@ -13,6 +13,7 @@ import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 
@@ -38,6 +39,14 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
+        if (continuation == null) {
+            return null;
+        }
+
+        return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+    }
+
+    public static MediaGroup from(WatchNextResultContinuation continuation, MediaGroup baseGroup) {
         if (continuation == null) {
             return null;
         }
@@ -91,8 +100,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS);
         youTubeMediaGroup.mTitle = section.getTitle();
 
-        return create(youTubeMediaGroup, section.getVideoSuggestions(), null, section.getChannelSuggestions(),
-                section.getRadioSuggestions(), section.getPlaylistSuggestions(), section.getNextPageKey());
+        return create(youTubeMediaGroup, section.getItemWrappers(), section.getNextPageKey());
     }
 
     public static List<MediaGroup> from(List<Section> sections, int type) {

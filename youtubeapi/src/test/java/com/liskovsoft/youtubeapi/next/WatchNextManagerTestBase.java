@@ -50,7 +50,7 @@ public class WatchNextManagerTestBase {
         assertNotNull("Row has title", firstRow.getTitle());
         assertNotNull("Row has continuation data", firstRow.getNextPageKey());
 
-        VideoItem watchNextItem = firstRow.getVideoSuggestions().get(0);
+        VideoItem watchNextItem = firstRow.getItemWrappers().get(0).getVideoItem();
 
         checkFields(watchNextItem);
     }

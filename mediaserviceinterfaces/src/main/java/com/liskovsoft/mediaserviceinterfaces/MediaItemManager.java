@@ -1,5 +1,6 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
@@ -15,6 +16,7 @@ public interface MediaItemManager {
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
     MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex);
+    MediaGroup continueGroup(MediaGroup mediaGroup);
     void updateHistoryPosition(MediaItem item, float positionSec);
     void updateHistoryPosition(String videoId, float positionSec);
     void setLike(MediaItem item);
@@ -32,6 +34,7 @@ public interface MediaItemManager {
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
     Observable<MediaItemMetadata> getMetadataObserve(String videoId);
+    Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
     Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec);
     Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec);
     Observable<Void> subscribeObserve(MediaItem item);

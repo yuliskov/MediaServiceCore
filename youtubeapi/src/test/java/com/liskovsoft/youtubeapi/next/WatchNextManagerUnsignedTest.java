@@ -53,6 +53,11 @@ public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
         assertEquals("Suggestion title is localized to russian", "Похожие видео", firstSuggesting.getTitle());
     }
 
+    @Test
+    public void testThatWatchNextRowsCouldBeContinued() {
+        
+    }
+
     private WatchNextResult getWatchNextResult() {
         Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS));
         return RetrofitHelper.get(wrapper);

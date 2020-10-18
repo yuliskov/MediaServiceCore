@@ -3,19 +3,23 @@ package com.liskovsoft.youtubeapi.common.models.items;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 public class ItemWrapper {
-    @JsonPath("$.gridVideoRenderer")
+    @JsonPath({"$.gridVideoRenderer",
+               "$.pivotVideoRenderer"}) // suggested item
     private VideoItem mVideoItem;
 
     @JsonPath("$.tvMusicVideoRenderer")
     private MusicItem mMusicItem;
 
-    @JsonPath("$.gridRadioRenderer")
+    @JsonPath({"$.gridRadioRenderer",
+               "$.pivotRadioRenderer"})
     private RadioItem mRadioItem;
 
-    @JsonPath("$.gridChannelRenderer")
+    @JsonPath({"$.gridChannelRenderer",
+               "$.pivotChannelRenderer"})
     private ChannelItem mChannelItem;
 
-    @JsonPath("$.gridPlaylistRenderer")
+    @JsonPath({"$.gridPlaylistRenderer",
+               "$.pivotPlaylistRenderer"})
     private PlaylistItem mPlaylistItem;
 
     public VideoItem getVideoItem() {

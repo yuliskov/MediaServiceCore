@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
@@ -49,6 +50,11 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     @Override
     public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex) {
         return mWatchNextServiceSigned.getWatchNextResult(videoId, playlistId, playlistIndex, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public WatchNextResultContinuation continueWatchNext(String nextKey) {
+        return mWatchNextServiceSigned.continueWatchNext(nextKey, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

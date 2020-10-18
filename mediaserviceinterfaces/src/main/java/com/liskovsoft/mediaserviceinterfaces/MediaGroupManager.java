@@ -12,7 +12,7 @@ public interface MediaGroupManager {
     MediaGroup getRecommended(); // Note, that recommended is a part of Home
     MediaGroup getHistory();
     List<MediaGroup> getHome();
-    MediaGroup continueGroup(MediaGroup mediaTab);
+    MediaGroup continueGroup(MediaGroup mediaGroup);
 
     // RxJava interfaces
     Observable<MediaGroup> getSearchObserve(String searchText);

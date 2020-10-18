@@ -20,4 +20,8 @@ public interface WatchNextManagerUnsigned {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
     Call<WatchNextResultContinuation> continueWatchNextResult(@Body String watchNextQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
+    Call<WatchNextResultContinuation> continueWatchNextResult(@Body String watchNextQuery);
 }

@@ -1,8 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.ClientData;
-import com.liskovsoft.youtubeapi.app.models.LegacyClientData;
+import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +72,7 @@ public class AppManagerTest {
         for (String userAgent : new String[]{
                 AppConstants.USER_AGENT_COBALT,
                 AppConstants.USER_AGENT_LEGACY,
+                AppConstants.USER_AGENT_LEGACY_2,
                 AppConstants.USER_AGENT_MODERN
         }) {
             testThatClientIdAndSecretNotEmpty(userAgent);

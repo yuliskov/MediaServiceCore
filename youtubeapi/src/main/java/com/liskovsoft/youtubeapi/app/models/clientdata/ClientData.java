@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.models;
+package com.liskovsoft.youtubeapi.app.models.clientdata;
 
 public interface ClientData {
     String getClientId();

@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.LegacyClientData;
-import com.liskovsoft.youtubeapi.app.models.ModernClientData;
+import com.liskovsoft.youtubeapi.app.models.clientdata.LegacyClientData;
+import com.liskovsoft.youtubeapi.app.models.clientdata.ModernClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -55,7 +55,7 @@ public class VideoItem {
     @JsonPath("$.trackingParams")
     private String mTrackingParams;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
-    private int mPercentWatched;
+    private int mPercentWatched = -1;
     @JsonPath("$.upcomingEventData.upcomingEventText.runs[0].text")
     private String mUpcomingEventText1;
     @JsonPath("$.upcomingEventData.upcomingEventText.runs[1].text")

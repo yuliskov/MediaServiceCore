@@ -4,4 +4,5 @@ public interface MediaService {
     SignInManager getSignInManager();
     MediaGroupManager getMediaGroupManager();
     MediaItemManager getMediaItemManager();
+    void invalidateCache();
 }

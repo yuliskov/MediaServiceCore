@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.AppService;
 
 public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
@@ -42,5 +43,10 @@ public class YouTubeMediaService implements MediaService {
     @Override
     public MediaItemManager getMediaItemManager() {
         return mMediaItemManager;
+    }
+
+    @Override
+    public void invalidateCache() {
+        AppService.instance().invalidateCache();
     }
 }

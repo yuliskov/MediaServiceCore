@@ -14,6 +14,7 @@ public interface SignInManager {
     void signOut();
     boolean isSigned();
     List<Account> getAccounts();
+    void selectAccount(Account account);
 
     // RxJava interfaces
     Observable<String> signInObserve();

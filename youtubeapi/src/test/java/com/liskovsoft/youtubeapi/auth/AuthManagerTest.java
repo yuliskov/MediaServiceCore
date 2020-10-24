@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
-import com.liskovsoft.youtubeapi.auth.models.info.Account;
+import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
@@ -41,7 +41,7 @@ public class AuthManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withGson(AuthManager.class);
+        mService = RetrofitHelper.withJsonPath(AuthManager.class);
         mAppService = AppService.instance();
     }
 
@@ -91,7 +91,7 @@ public class AuthManagerTest {
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 
-        Account firstAccount = accountsList.getAccounts().get(0);
+        AccountInt firstAccount = accountsList.getAccounts().get(0);
 
         assertNotNull("Contains Name", firstAccount.getName());
         assertNotNull("Contains Thumbnails", firstAccount.getThumbnails());

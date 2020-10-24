@@ -5,10 +5,14 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
+import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
+import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+
+import java.util.List;
 
 public class AuthService {
     private static final String TAG = AuthService.class.getSimpleName();
@@ -19,7 +23,7 @@ public class AuthService {
     private final AppService mAppService;
 
     private AuthService() {
-        mAuthManager = RetrofitHelper.withGson(AuthManager.class);
+        mAuthManager = RetrofitHelper.withJsonPath(AuthManager.class);
         mAppService = AppService.instance();
     }
 
@@ -96,12 +100,23 @@ public class AuthService {
                 emitter.onNext(tokenResult);
                 emitter.onComplete();
             } else {
-                String msg = String.format("Error. Refresh token is empty! Debug data: device code: %s, client id: %s, client secret: %s",
-                        deviceCode, mAppService.getClientId(), mAppService.getClientSecret());
+                String msg = String.format("Error. Refresh token is empty!\nDebug data: device code: %s, client id: %s, client secret: %s\n%s",
+                        deviceCode,
+                        mAppService.getClientId(),
+                        mAppService.getClientSecret(),
+                        tokenResult != null ? tokenResult.getError() : "");
 
                 Log.e(TAG, msg);
                 emitter.onError(new IllegalStateException(msg));
             }
         });
+    }
+
+    public List<AccountInt> getAccounts(String authorization) {
+        Call<AccountsList> wrapper = mAuthManager.getAccountsList(AuthParams.getAccountsListQuery(), authorization);
+
+        AccountsList accountsList = RetrofitHelper.get(wrapper);
+
+        return accountsList != null ? accountsList.getAccounts() : null;
     }
 }

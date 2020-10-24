@@ -1,6 +1,9 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
+import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import io.reactivex.Observable;
+
+import java.util.List;
 
 public interface SignInManager {
     /**
@@ -10,9 +13,11 @@ public interface SignInManager {
     String signIn();
     void signOut();
     boolean isSigned();
+    List<Account> getAccounts();
 
     // RxJava interfaces
     Observable<String> signInObserve();
     Observable<Void> signOutObserve();
     Observable<Boolean> isSignedObserve();
+    Observable<List<Account>> getAccountsObserve();
 }

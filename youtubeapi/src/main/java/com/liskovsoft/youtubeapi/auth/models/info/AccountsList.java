@@ -6,9 +6,9 @@ import java.util.List;
 
 public class AccountsList {
     @JsonPath("$.contents[0].accountSectionListRenderer.contents[0].accountItemSectionRenderer.contents[*].accountItem")
-    private List<Account> mAccounts;
+    private List<AccountInt> mAccounts;
 
-    public List<Account> getAccounts() {
+    public List<AccountInt> getAccounts() {
         return mAccounts;
     }
 }

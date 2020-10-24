@@ -1,18 +1,18 @@
-package com.liskovsoft.youtubeapi.auth.models.auth;
+package com.liskovsoft.youtubeapi.auth.models.auth_old;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.google.gson.annotations.SerializedName;
 
 public class AccessToken extends ErrorResponse {
-    @JsonPath("$.access_token")
+    @SerializedName("access_token")
     private String mAccessToken;
 
-    @JsonPath("$.expires_in")
+    @SerializedName("expires_in")
     private int mExpiresIn;
 
-    @JsonPath("$.scope")
+    @SerializedName("scope")
     private String mScope;
 
-    @JsonPath("$.token_type")
+    @SerializedName("token_type")
     private String mTokenType;
 
     public String getAccessToken() {

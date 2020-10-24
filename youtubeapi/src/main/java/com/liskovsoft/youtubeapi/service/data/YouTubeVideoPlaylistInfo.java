@@ -13,6 +13,10 @@ public class YouTubeVideoPlaylistInfo implements VideoPlaylistInfo {
     private boolean mIsSelected;
 
     public static List<VideoPlaylistInfo> from(PlaylistsResult info) {
+        if (info == null) {
+            return null;
+        }
+
         List<VideoPlaylistInfo> result = new ArrayList<>();
 
         for (PlaylistInfo playlist : info.getPlaylists()) {

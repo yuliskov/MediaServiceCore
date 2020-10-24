@@ -1,12 +1,12 @@
-package com.liskovsoft.youtubeapi.auth.models.auth;
+package com.liskovsoft.youtubeapi.auth.models.auth_old;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.google.gson.annotations.SerializedName;
 
 public class ErrorResponse {
-    @JsonPath("$.error")
+    @SerializedName("error")
     private String mError;
 
-    @JsonPath("$.error_description")
+    @SerializedName("error_description")
     private String mErrorDescription;
 
     public String getError() {

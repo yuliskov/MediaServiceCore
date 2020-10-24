@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 
-public class Account {
+public class AccountInt {
     @JsonPath("$.accountName.simpleText")
     private String mName;
 

@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.auth.models.RefreshToken;
-import com.liskovsoft.youtubeapi.auth.models.AccessToken;
-import com.liskovsoft.youtubeapi.auth.models.UserCode;
+import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
+import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;

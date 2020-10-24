@@ -27,7 +27,7 @@ public class YouTubeUrlListBuilderTest {
 
     @Test
     public void testThatCipheredUrlListNotEmpty() {
-        testUrlList(TestHelpers.VIDEO_ID_CIPHERED);
+        testUrlList(TestHelpers.VIDEO_ID_MUSIC_2);
     }
 
     private void testUrlList(String videoId) {

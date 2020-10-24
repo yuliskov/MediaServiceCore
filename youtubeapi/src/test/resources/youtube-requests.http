@@ -330,6 +330,13 @@ User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/40.13031-qa (unlike Geck
 refresh_token=1%2F%2F09vWK8nA1_WQmCgYIARAAGAkSNwF-L9Irh6sDnaZCUybJsvloVyf2QoFGmUH1WUhg-SPcZxzc64bHXzT7mEF3LBlxyJJI9HHv9Ig&client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=_mtpgetNAj54C4k6DoGujp3e&grant_type=refresh_token
 
 
+###
+
+POST https://www.youtube.com/youtubei/v1/account/accounts_list
+Content-Type: application/json
+Authorization: Bearer ya29.a0AfH6SMDV_6DAS3yqc3i4_V5_TrXW7N3clVikcHphX7eQMBamfqbkfA3c5sfvYADb15pkGQ3m02meo9t5H-focefBxQSSMtcE21OuHk6NS6pzVu8mbI_oQLwzfxB4zA2C7W0NVGbBXKMTtEVgWhrmLYM0pyNfVjjvsjiT6zsqAFEOxw
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200913.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false}},"accountReadMask":{"returnOwner":true}}
 
 
 

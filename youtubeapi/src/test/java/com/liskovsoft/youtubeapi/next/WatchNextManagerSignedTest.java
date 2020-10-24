@@ -42,7 +42,7 @@ public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
     public void testThatWatchNextPlaylistItemContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
                 mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(
-                        TestHelpers.MUSIC_VIDEO_ID, TestHelpers.MUSIC_VIDEO_PLAYLIST_ID, TestHelpers.MUSIC_VIDEO_INDEX), TestHelpers.getAuthorization());
+                        TestHelpers.VIDEO_ID_MUSIC, TestHelpers.PLAYLIST_ID, TestHelpers.PLAYLIST_VIDEO_INDEX), TestHelpers.getAuthorization());
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedPlaylistWatchNextResultFields(watchNextResult);

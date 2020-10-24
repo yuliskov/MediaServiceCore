@@ -1,0 +1,93 @@
+{
+  "responseContext": {
+    "serviceTrackingParams": [
+      {
+        "service": "GFEEDBACK",
+        "params": [
+          {
+            "key": "logged_in",
+            "value": "1"
+          },
+          {
+            "key": "e",
+            "value": "23877025,23962920,23956097,23930220,23955809,23939988,24590290,23940704,23939554,23953999,23882503,23956754,23880043,23744176,23931993,23944779,23928508,23949704,23839597,23890961,23942633,1714250,23911055,23951621,23857949,23956063,23957896,23884386,23804281,23946420,23960091,23948418,23962621,23918597,23957884,23948841,23934970,23950272,23947698,23940248,23942434"
+          }
+        ]
+      },
+      {
+        "service": "SUGGEST",
+        "params": [
+          {
+            "key": "sugexp",
+            "value": "ytdb_cc4,ytpo.bo.se=0,ytposo.bo.me=0,cfro=1,ytpo.bo.se=1,ytposo.bo.me=1,ytpo.bo.vqd=1,ytpo.bo.dm=5.0,ytpo.bo.ds=1.0,ytposo.bo.vqd=1,ytposo.bo.dm=5.0,ytposo.bo.ds=1.0"
+          },
+          {
+            "key": "suggest_token",
+            "value": "Ve4ADr5bO2tj1Ov-AdjZ8g"
+          }
+        ]
+      }
+    ]
+  },
+  "contents": [
+    {
+      "accountSectionListRenderer": {
+        "contents": [
+          {
+            "accountItemSectionRenderer": {
+              "contents": [
+                {
+                  "accountItem": {
+                    "accountName": {
+                      "simpleText": "firsthash"
+                    },
+                    "accountPhoto": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/-8IknGOhvhJs/AAAAAAAAAAI/AAAAAAAAAAA/c28TTuyJbDo/s216-c-k-c0x00ffffff-no-rj-mo/photo.jpg",
+                          "width": 216,
+                          "height": 216
+                        }
+                      ]
+                    },
+                    "isSelected": true,
+                    "isDisabled": false,
+                    "serviceEndpoint": {
+                      "selectActiveIdentityEndpoint": {
+                        "supportedTokens": [
+                          {
+                            "accountStateToken": {
+                              "hasChannel": true,
+                              "isMerged": true,
+                              "obfuscatedGaiaId": "102307470137119736718"
+                            }
+                          },
+                          {
+                            "offlineCacheKeyToken": {
+                              "clientCacheKey": "wB58J71afgHgnxOEs02f3Q"
+                            }
+                          },
+                          {
+                            "datasyncIdToken": {
+                              "datasyncIdToken": "102307470137119736718||"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "accountByline": {
+                      "simpleText": "firsthash-3330@pages.plusgoogle.com"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "selectText": {
+    "simpleText": "OK"
+  }
+}

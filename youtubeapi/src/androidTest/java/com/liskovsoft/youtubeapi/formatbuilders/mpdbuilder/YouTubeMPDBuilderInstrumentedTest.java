@@ -28,7 +28,7 @@ public class YouTubeMPDBuilderInstrumentedTest {
 
     @Test
     public void testThatCipheredFormatIsValid() throws IOException {
-        testVideoFormatUrl(TestHelpers.VIDEO_ID_CIPHERED);
+        testVideoFormatUrl(TestHelpers.VIDEO_ID_MUSIC_2);
     }
 
     @Test

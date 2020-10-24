@@ -1,10 +1,13 @@
 package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.auth.models.RefreshToken;
-import com.liskovsoft.youtubeapi.auth.models.AccessToken;
-import com.liskovsoft.youtubeapi.auth.models.UserCode;
+import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
+import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
+import com.liskovsoft.youtubeapi.auth.models.info.Account;
+import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
 import okhttp3.RequestBody;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import retrofit2.Response;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -79,6 +83,19 @@ public class AuthManagerTest {
     public void testThatUserStillNotSignedIn() throws IOException {
         RefreshToken token = getAccessToken();
         assertEquals("authorization_pending", token.getError());
+    }
+
+    @Test
+    public void testThatAccountsListNotEmpty() {
+        Call<AccountsList> wrapper = mService.getAccountsList(AuthParams.getAccountsListQuery(), TestHelpers.getAuthorization());
+
+        AccountsList accountsList = RetrofitHelper.get(wrapper);
+
+        Account firstAccount = accountsList.getAccounts().get(0);
+
+        assertNotNull("Contains Name", firstAccount.getName());
+        assertNotNull("Contains Thumbnails", firstAccount.getThumbnails());
+        assertTrue("Is selected", firstAccount.isSelected());
     }
 
     private boolean notEmpty(String userCode) {

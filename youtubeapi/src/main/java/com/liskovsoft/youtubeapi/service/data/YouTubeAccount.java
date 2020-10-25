@@ -33,17 +33,14 @@ public class YouTubeAccount implements Account {
 
         String[] split = spec.split(",");
 
-        if (split.length != 5) {
-            return null;
-        }
-
         YouTubeAccount account = new YouTubeAccount();
 
-        account.mId = Helpers.parseInt(split[0]);
-        account.mName = split[1];
-        account.mImageUrl = split[2];
-        account.mIsSelected = Helpers.parseBoolean(split[3]);
-        account.mRefreshToken = split[4];
+        account.mId = Helpers.parseInt(split, 0);
+        account.mName = Helpers.parseStr(split, 1);
+        account.mImageUrl = Helpers.parseStr(split, 2);
+        account.mIsSelected = Helpers.parseBoolean(split, 3);
+        account.mRefreshToken = Helpers.parseStr(split, 4);
+        account.mEmail = Helpers.parseStr(split, 5);
 
         return account;
     }
@@ -60,7 +57,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s", mId, mName, mImageUrl, mIsSelected, mRefreshToken);
+        return String.format("%s,%s,%s,%s,%s,%s", mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail);
     }
 
     @Override

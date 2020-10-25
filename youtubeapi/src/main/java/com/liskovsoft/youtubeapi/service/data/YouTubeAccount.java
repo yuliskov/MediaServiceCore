@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 public class YouTubeAccount implements Account {
     private int mId;
     private String mName;
+    private String mEmail;
     private String mImageUrl;
     private boolean mIsSelected;
     private String mRefreshToken;
@@ -18,6 +19,7 @@ public class YouTubeAccount implements Account {
         YouTubeAccount account = new YouTubeAccount();
         
         account.mName = accountInt.getName();
+        account.mEmail = accountInt.getEmail();
         account.mImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(accountInt.getThumbnails());
         account.mIsSelected = accountInt.isSelected();
 
@@ -72,6 +74,11 @@ public class YouTubeAccount implements Account {
     }
 
     @Override
+    public String getEmail() {
+        return mEmail;
+    }
+
+    @Override
     public String getAvatarImageUrl() {
         return mImageUrl;
     }
@@ -87,8 +94,11 @@ public class YouTubeAccount implements Account {
             YouTubeAccount account = (YouTubeAccount) obj;
             String token = account.getRefreshToken();
             String name = account.getName();
-            return (token != null && token.equals(getRefreshToken())) ||
-                    (name != null && name.equals(getName()));
+            String email = account.getEmail();
+            boolean tokenEquals = token != null && token.equals(getRefreshToken());
+            boolean nameEquals = name != null && name.equals(getName());
+            boolean emailEquals = email == null || getEmail() == null || email.equals(getEmail());
+            return tokenEquals || (nameEquals && emailEquals);
         }
 
         return super.equals(obj);

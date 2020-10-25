@@ -9,6 +9,9 @@ public class AccountInt {
     @JsonPath("$.accountName.simpleText")
     private String mName;
 
+    @JsonPath("$.accountByline.simpleText")
+    private String mEmail;
+
     @JsonPath("$.accountPhoto.thumbnails[*]")
     private List<Thumbnail> mAccountThumbnails;
 
@@ -20,6 +23,10 @@ public class AccountInt {
 
     public String getName() {
         return mName;
+    }
+
+    public String getEmail() {
+        return mEmail;
     }
 
     public List<Thumbnail> getThumbnails() {

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
@@ -45,6 +46,15 @@ public class YouTubeAccount implements Account {
         return account;
     }
 
+    public static YouTubeAccount fromToken(String token) {
+        YouTubeAccount account = new YouTubeAccount();
+
+        account.mRefreshToken = token;
+        account.mIsSelected = true;
+
+        return account;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -71,11 +81,28 @@ public class YouTubeAccount implements Account {
         return mIsSelected;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof YouTubeAccount) {
+            YouTubeAccount account = (YouTubeAccount) obj;
+            String token = account.getRefreshToken();
+            String name = account.getName();
+            return (token != null && token.equals(getRefreshToken())) ||
+                    (name != null && name.equals(getName()));
+        }
+
+        return super.equals(obj);
+    }
+
     public String getRefreshToken() {
         return mRefreshToken;
     }
 
     public void setRefreshToken(String token) {
         mRefreshToken = token;
+    }
+
+    public void setSelected(boolean selected) {
+        mIsSelected = selected;
     }
 }

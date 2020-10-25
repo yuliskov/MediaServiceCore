@@ -1,20 +1,17 @@
 package com.liskovsoft.youtubeapi.service;
 
-import android.annotation.SuppressLint;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
-import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
-import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
+import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeAccountManager;
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import java.util.List;
+import java.util.Set;
 
 public class YouTubeSignInManager implements SignInManager {
     private static final String TAG = YouTubeSignInManager.class.getSimpleName();
@@ -23,14 +20,16 @@ public class YouTubeSignInManager implements SignInManager {
     private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
     private String mAuthorizationHeaderCached;
-    private Disposable mTokenAction;
     private long mLastUpdateTime;
 
     private YouTubeSignInManager() {
         mAuthService = AuthService.instance();
-        mAccountManager = YouTubeAccountManager.instance();
+        mAccountManager = YouTubeAccountManager.instance(this);
 
-        GlobalPreferences.setOnInit(this::updateAuthorizationHeader);
+        GlobalPreferences.setOnInit(() -> {
+            mAccountManager.init();
+            this.updateAuthorizationHeader();
+        });
     }
 
     public static YouTubeSignInManager instance() {
@@ -41,43 +40,9 @@ public class YouTubeSignInManager implements SignInManager {
         return sInstance;
     }
 
-    @SuppressLint("CheckResult")
-    @Override
-    public String signIn() {
-        ObservableHelper.disposeActions(mTokenAction);
-
-        UserCode userCodeResult = mAuthService.getUserCode();
-
-        mTokenAction = mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(refreshTokenResult -> {
-                    Log.d(TAG, "Success. Refresh token successfully created!");
-                    mAccountManager.setRefreshToken(refreshTokenResult.getRefreshToken());
-                }, error -> Log.e(TAG, error));
-
-        return userCodeResult.getUserCode();
-    }
-
     @Override
     public Observable<String> signInObserve() {
-        ObservableHelper.disposeActions(mTokenAction);
-
-        return Observable.create(emitter -> {
-            UserCode userCodeResult = mAuthService.getUserCode();
-
-            emitter.onNext(userCodeResult.getUserCode());
-
-            mTokenAction = mAuthService.getRefreshTokenObserve(userCodeResult.getDeviceCode())
-                        .subscribeOn(Schedulers.newThread())
-                        .subscribe(refreshTokenResult -> {
-                            Log.d(TAG, "Success. Refresh token successfully created!");
-                            mAccountManager.setRefreshToken(refreshTokenResult.getRefreshToken());
-                            emitter.onComplete();
-                        }, error -> {
-                            Log.e(TAG, "Error. Can't obtain refresh token!");
-                            emitter.onError(error);
-                        });
-        });
+        return mAccountManager.signInObserve();
     }
 
     @Override
@@ -128,6 +93,11 @@ public class YouTubeSignInManager implements SignInManager {
         mAccountManager.selectAccount(account);
     }
 
+    @Override
+    public void removeAccount(Account account) {
+        mAccountManager.removeAccount(account);
+    }
+
     public void invalidateCache() {
         mLastUpdateTime = 0;
     }
@@ -145,6 +115,8 @@ public class YouTubeSignInManager implements SignInManager {
         }
 
         Log.d(TAG, "Updating authorization header...");
+
+        mAuthorizationHeaderCached = null;
 
         AccessToken token = obtainAccessToken();
 
@@ -166,10 +138,10 @@ public class YouTubeSignInManager implements SignInManager {
 
         AccessToken token = null;
 
-        String refreshToken = mAccountManager.getRefreshToken();
+        Account account = mAccountManager.getSelectedAccount();
 
-        if (refreshToken != null) {
-            token = mAuthService.getAccessToken(refreshToken);
+        if (account != null) {
+            token = mAuthService.getAccessToken(((YouTubeAccount) account).getRefreshToken());
         } else {
             String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
 

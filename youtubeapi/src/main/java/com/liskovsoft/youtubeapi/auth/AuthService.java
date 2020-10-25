@@ -2,13 +2,12 @@ package com.liskovsoft.youtubeapi.auth;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
+import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 
@@ -18,8 +17,8 @@ public class AuthService {
     private static final String TAG = AuthService.class.getSimpleName();
     private static AuthService sInstance;
     private final AuthManager mAuthManager;
-    private static final int REFRESH_TOKEN_ATTEMPTS = 10;
-    private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 7_000;
+    private static final int REFRESH_TOKEN_ATTEMPTS = 20;
+    private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 3_000;
     private final AppService mAppService;
 
     private AuthService() {
@@ -82,34 +81,31 @@ public class AuthService {
         return RetrofitHelper.get(wrapper);
     }
 
-    public Observable<RefreshToken> getRefreshTokenObserve(String deviceCode) {
-        return Observable.create(emitter -> {
-            RefreshToken tokenResult = null;
+    public RefreshToken getRefreshTokenSync(String deviceCode) throws InterruptedException {
+        RefreshToken tokenResult = null;
 
-            for (int i = 0; i < REFRESH_TOKEN_ATTEMPTS; i++) {
-                Thread.sleep(REFRESH_TOKEN_ATTEMPT_INTERVAL_MS);
+        for (int i = 0; i < REFRESH_TOKEN_ATTEMPTS; i++) {
+            Thread.sleep(REFRESH_TOKEN_ATTEMPT_INTERVAL_MS);
 
-                tokenResult = getRefreshToken(deviceCode);
-
-                if (tokenResult != null && tokenResult.getRefreshToken() != null) {
-                    break;
-                }
-            }
+            tokenResult = getRefreshToken(deviceCode);
 
             if (tokenResult != null && tokenResult.getRefreshToken() != null) {
-                emitter.onNext(tokenResult);
-                emitter.onComplete();
-            } else {
-                String msg = String.format("Error. Refresh token is empty!\nDebug data: device code: %s, client id: %s, client secret: %s\n%s",
-                        deviceCode,
-                        mAppService.getClientId(),
-                        mAppService.getClientSecret(),
-                        tokenResult != null ? tokenResult.getError() : "");
-
-                Log.e(TAG, msg);
-                emitter.onError(new IllegalStateException(msg));
+                break;
             }
-        });
+        }
+
+        if (tokenResult != null && tokenResult.getRefreshToken() != null) {
+            return tokenResult;
+        } else {
+            String msg = String.format("Error. Refresh token is empty!\nDebug data: device code: %s, client id: %s, client secret: %s\nError msg: %s",
+                    deviceCode,
+                    mAppService.getClientId(),
+                    mAppService.getClientSecret(),
+                    tokenResult != null ? tokenResult.getError() : "");
+
+            Log.e(TAG, msg);
+            throw new IllegalStateException(msg);
+        }
     }
 
     public List<AccountInt> getAccounts(String authorization) {

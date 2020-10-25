@@ -4,9 +4,12 @@ import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.AuthService;
+import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
+import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
+import io.reactivex.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,97 +19,122 @@ public class YouTubeAccountManager {
     private static YouTubeAccountManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeSignInManager mSignInManager;
-    private String mRefreshToken;
+    private final List<Account> mAccounts = new ArrayList<Account>() {
+        @Override
+        public boolean add(Account account) {
+            if (account == null) {
+                return false;
+            }
 
-    private YouTubeAccountManager() {
+            while (contains(account)) {
+                remove(account);
+            }
+
+            return super.add(account);
+        }
+    };
+
+    private YouTubeAccountManager(YouTubeSignInManager signInManager) {
         mAuthService = AuthService.instance();
-        mSignInManager = YouTubeSignInManager.instance();
+        mSignInManager = signInManager;
     }
 
-    public static YouTubeAccountManager instance() {
+    public static YouTubeAccountManager instance(YouTubeSignInManager signInManager) {
         if (sInstance == null) {
-            sInstance = new YouTubeAccountManager();
+            sInstance = new YouTubeAccountManager(signInManager);
         }
 
         return sInstance;
     }
 
+    public Observable<String> signInObserve() {
+        return Observable.create(emitter -> {
+            UserCode userCodeResult = mAuthService.getUserCode();
+
+            emitter.onNext(userCodeResult.getUserCode());
+
+            try {
+                RefreshToken token = mAuthService.getRefreshTokenSync(userCodeResult.getDeviceCode());
+
+                persistRefreshToken(token.getRefreshToken());
+
+                emitter.onComplete();
+            } catch (InterruptedException e) {
+                // NOP
+            }
+        });
+    }
+
     public List<Account> getAccounts() {
-        return restoreAccounts();
+        return mAccounts;
     }
 
     /**
      * Set selected account token
      */
-    public void setRefreshToken(String refreshToken) {
+    private void persistRefreshToken(String refreshToken) {
         if (refreshToken == null) {
             Log.e(TAG, "Refresh token is null");
             return;
         }
 
-        mRefreshToken = refreshToken;
+        addAccount(YouTubeAccount.fromToken(refreshToken));
 
         List<AccountInt> accountsInt = mAuthService.getAccounts(mSignInManager.getAuthorizationHeader());
 
-        List<Account> accounts = restoreAccounts();
-
         if (accountsInt != null) {
-            if (accounts == null) {
-                accounts = new ArrayList<>();
-            }
-
             for (AccountInt accountInt : accountsInt) {
                 if (accountInt.isSelected()) {
                     YouTubeAccount account = YouTubeAccount.from(accountInt);
                     account.setRefreshToken(refreshToken);
-                    accounts.add(account);
+                    addAccount(account);
                     break;
                 }
             }
         }
-
-        persistAccounts(accounts);
 
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
 
-    /**
-     * Get selected account token
-     */
-    public String getRefreshToken() {
-        if (mRefreshToken != null) {
-            return mRefreshToken;
+    private void addAccount(Account newAccount) {
+        for (Account account : mAccounts) {
+            ((YouTubeAccount) account).setSelected(false);
         }
 
-        List<Account> accounts = restoreAccounts();
+        mAccounts.add(newAccount);
 
-        if (accounts != null) {
-            for (Account account : accounts) {
-                if (account.isSelected()) {
-                    mRefreshToken = ((YouTubeAccount) account).getRefreshToken();
-                    break;
-                }
+        persistAccounts();
+    }
+
+    public void selectAccount(Account newAccount) {
+        for (Account account : mAccounts) {
+            ((YouTubeAccount) account).setSelected(newAccount != null && newAccount.equals(account));
+        }
+
+        persistAccounts();
+    }
+
+    public void removeAccount(Account account) {
+        if (account != null) {
+            mAccounts.remove(account);
+            persistAccounts();
+        }
+    }
+
+    public Account getSelectedAccount() {
+        for (Account account : mAccounts) {
+            if (account != null && account.isSelected()) {
+                return account;
             }
         }
 
-        return mRefreshToken;
+        return null;
     }
 
-    public void selectAccount(Account account) {
-        if (account != null) {
-            mRefreshToken = ((YouTubeAccount) account).getRefreshToken();
-            mSignInManager.invalidateCache();
-        }
-    }
-
-    private void persistAccounts(List<Account> accounts) {
-        if (accounts == null) {
-            return;
-        }
-
+    private void persistAccounts() {
         StringBuilder result = new StringBuilder();
 
-        for (Account account : accounts) {
+        for (Account account : mAccounts) {
             if (result.length() != 0) {
                 result.append("|");
             }
@@ -114,23 +142,21 @@ public class YouTubeAccountManager {
         }
 
         setAccountManagerData(result.toString());
+
+        mSignInManager.invalidateCache();
     }
 
-    private List<Account> restoreAccounts() {
+    private void restoreAccounts() {
         String data = getAccountManagerData();
-        List<Account> result = null;
 
         if (data != null) {
-            result = new ArrayList<>();
-
             String[] split = data.split("\\|");
+            mAccounts.clear();
 
             for (String spec : split) {
-                result.add(YouTubeAccount.from(spec));
+                mAccounts.add(YouTubeAccount.from(spec));
             }
         }
-
-        return result;
     }
 
     private void setAccountManagerData(String data) {
@@ -153,5 +179,9 @@ public class YouTubeAccountManager {
         }
 
         return GlobalPreferences.sInstance.getMediaServiceAccountData();
+    }
+
+    public void init() {
+        restoreAccounts();
     }
 }

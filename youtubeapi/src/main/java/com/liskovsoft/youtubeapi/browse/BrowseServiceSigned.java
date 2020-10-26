@@ -50,8 +50,9 @@ public class BrowseServiceSigned {
     }
 
     public List<GridTab> getPlaylists(String authorization) {
-        // Skip first tab as it's History tab
-        return getGridTabs(1, BrowseManagerParams.getMyLibraryQuery(), authorization);
+        // Skip first tab as it's History tab.
+        // And skip second "My videos" (has problems with playback at a moment).
+        return getGridTabs(2, BrowseManagerParams.getMyLibraryQuery(), authorization);
     }
 
     public SectionTab getHome(String authorization) {

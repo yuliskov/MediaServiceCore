@@ -50,9 +50,18 @@ public class BrowseServiceSigned {
     }
 
     public List<GridTab> getPlaylists(String authorization) {
-        // Skip first tab as it's History tab.
-        // And skip second "My videos" (has problems with playback at a moment).
-        return getGridTabs(2, BrowseManagerParams.getMyLibraryQuery(), authorization);
+        // Skip "History", "My videos"
+        List<GridTab> playlists = getGridTabs(2, BrowseManagerParams.getMyLibraryQuery(), authorization);
+
+        // Get "My videos"
+        GridTab myVideos = getGridTab(1, BrowseManagerParams.getMyLibraryQuery(), authorization);
+
+        // Set "My videos" as last item
+        if (playlists != null && myVideos != null) {
+            playlists.add(myVideos);
+        }
+
+        return playlists;
     }
 
     public SectionTab getHome(String authorization) {

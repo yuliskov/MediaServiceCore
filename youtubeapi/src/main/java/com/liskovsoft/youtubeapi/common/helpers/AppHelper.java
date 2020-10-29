@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AppHelper {
     private static final String BULLET_SYMBOL = "\u2022";
+    private static final String DESCRIPTION_DIVIDER = " " + BULLET_SYMBOL + " ";
     private static final String TIME_TEXT_DELIM = ":";
 
     public static String videoIdToFullUrl(String videoId) {
@@ -34,7 +35,7 @@ public class AppHelper {
     }
 
     public static String itemsToDescription(String... items) {
-        return combineItems(items, BULLET_SYMBOL);
+        return combineItems(items, DESCRIPTION_DIVIDER);
     }
 
     public static String combineText(String... items) {
@@ -48,7 +49,7 @@ public class AppHelper {
     }
 
     private static String combineItems(String[] items, String divider) {
-        String result = null;
+        StringBuilder result = new StringBuilder();
 
         if (items != null) {
             for (String item : items) {
@@ -56,18 +57,14 @@ public class AppHelper {
                     continue;
                 }
 
-                if (result == null || result.isEmpty()) {
-                    result = item.trim();
+                if (divider == null || result.length() == 0) {
+                    result.append(item);
                 } else {
-                    if (divider == null) {
-                        result = String.format("%s %s", result, item.trim());
-                    } else {
-                        result = String.format("%s %s %s", result, divider, item.trim());
-                    }
+                    result.append(divider).append(item);
                 }
             }
         }
 
-        return result;
+        return result.length() != 0 ? result.toString() : null;
     }
 }

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.auth;
+package com.liskovsoft.youtubeapi.auth.V2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
@@ -8,7 +8,6 @@ import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 
 import java.util.List;
@@ -41,8 +40,8 @@ public class AuthService {
      */
     public UserCode getUserCode() {
         Call<UserCode> wrapper = mAuthManager.getUserCode(
-                mAppService.getClientId(),
-                AuthParams.getAppScope());
+                AuthParams.getUserCodeQuery(mAppService.getClientId())
+        );
         return RetrofitHelper.get(wrapper);
     }
 
@@ -54,10 +53,11 @@ public class AuthService {
      */
     public RefreshToken getRefreshToken(String deviceCode) {
         Call<RefreshToken> wrapper = mAuthManager.getRefreshToken(
-                deviceCode,
-                mAppService.getClientId(),
-                mAppService.getClientSecret(),
-                AuthParams.getAccessGrantType());
+                AuthParams.getRefreshTokenQuery(
+                        deviceCode,
+                        mAppService.getClientId(),
+                        mAppService.getClientSecret())
+        );
         return RetrofitHelper.get(wrapper);
     }
 
@@ -68,20 +68,19 @@ public class AuthService {
      */
     public AccessToken getAccessToken(String refreshToken) {
         Call<AccessToken> wrapper = mAuthManager.getAccessToken(
-                refreshToken,
-                mAppService.getClientId(),
-                mAppService.getClientSecret(),
-                AuthParams.getRefreshGrantType());
+                AuthParams.getAccessTokenQuery(refreshToken,
+                        mAppService.getClientId(),
+                        mAppService.getClientSecret())
+        );
         return RetrofitHelper.get(wrapper);
     }
 
-    public AccessToken getAccessTokenRaw(String rawAuthData) {
-        Call<AccessToken> wrapper = mAuthManager.getAccessToken(
-                RequestBody.create(null, rawAuthData.getBytes()));
+    public AccessToken getAccessTokenRaw(String rawJsonAuthData) {
+        Call<AccessToken> wrapper = mAuthManager.getAccessToken(rawJsonAuthData);
         return RetrofitHelper.get(wrapper);
     }
 
-    public RefreshToken getRefreshTokenSync(String deviceCode) throws InterruptedException {
+    public RefreshToken getRefreshTokenWait(String deviceCode) throws InterruptedException {
         RefreshToken tokenResult = null;
 
         for (int i = 0; i < REFRESH_TOKEN_ATTEMPTS; i++) {

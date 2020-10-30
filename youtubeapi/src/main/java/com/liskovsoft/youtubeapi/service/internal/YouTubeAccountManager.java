@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.auth.AuthService;
+import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
@@ -54,7 +54,7 @@ public class YouTubeAccountManager {
             emitter.onNext(userCodeResult.getUserCode());
 
             try {
-                RefreshToken token = mAuthService.getRefreshTokenSync(userCodeResult.getDeviceCode());
+                RefreshToken token = mAuthService.getRefreshTokenWait(userCodeResult.getDeviceCode());
 
                 persistRefreshToken(token.getRefreshToken());
 

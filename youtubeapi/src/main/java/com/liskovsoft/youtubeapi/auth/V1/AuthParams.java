@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.auth;
+package com.liskovsoft.youtubeapi.auth.V1;
 
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 

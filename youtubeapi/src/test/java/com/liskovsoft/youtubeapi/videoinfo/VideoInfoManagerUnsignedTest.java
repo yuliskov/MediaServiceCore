@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -39,22 +39,22 @@ public class VideoInfoManagerUnsignedTest {
 
     @Test
     public void testThatAgeRestrictedVideoContainsRequiredFields() throws IOException {
-        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpers.VIDEO_ID_AGE_RESTRICTED));
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpersV1.VIDEO_ID_AGE_RESTRICTED));
     }
 
     @Test
     public void testThatUnavailableVideoContainsRequiredFields() throws IOException {
-        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_UNAVAILABLE));
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(TestHelpersV1.VIDEO_ID_UNAVAILABLE));
     }
 
     @Test
     public void testThatLiveVideoContainsSpecificFields()  throws IOException {
-        testThatLiveVideoContainsSpecificFields(getVideoInfo(TestHelpers.VIDEO_ID_LIVE));
+        testThatLiveVideoContainsSpecificFields(getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE));
     }
 
     @Test
     public void testThatVideoWithCaptionsContainsRequiredFields() throws IOException {
-        testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_CAPTIONS));
+        testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpersV1.VIDEO_ID_CAPTIONS));
     }
 
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {
@@ -78,7 +78,7 @@ public class VideoInfoManagerUnsignedTest {
         assertNotNull("Contains mime type", track.getMimeType());
         assertNotNull("Contains codecs", track.getCodecs());
 
-        assertTrue("Subtitle url exists", TestHelpers.urlExists(track.getBaseUrl()));
+        assertTrue("Subtitle url exists", TestHelpersV1.urlExists(track.getBaseUrl()));
 
         testThatNonLiveVideoInfoContainsRequiredFields(result);
     }

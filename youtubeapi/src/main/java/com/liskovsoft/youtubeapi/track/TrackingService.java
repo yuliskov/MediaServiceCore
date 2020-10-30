@@ -83,13 +83,13 @@ public class TrackingService {
                 authorization
         );
 
-        RetrofitHelper.get(wrapper); // execute 'create record'
+        RetrofitHelper.get(wrapper); // execute
 
         wrapper = mTrackingManager.updateWatchTime(
                 videoId, lengthSec, positionSec, positionSec, positionSec,
                 clientPlaybackNonce, eventId, authorization
         );
 
-        RetrofitHelper.get(wrapper); // execute 'update record time'
+        RetrofitHelper.get(wrapper); // execute
     }
 }

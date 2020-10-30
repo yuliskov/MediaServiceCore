@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,17 +28,17 @@ public class YouTubeMPDBuilderInstrumentedTest {
 
     @Test
     public void testThatCipheredFormatIsValid() throws IOException {
-        testVideoFormatUrl(TestHelpers.VIDEO_ID_MUSIC_2);
+        testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
     }
 
     @Test
     public void testThatSimpleFormatIsValid() throws IOException {
-        testVideoFormatUrl(TestHelpers.VIDEO_ID_CAPTIONS);
+        testVideoFormatUrl(TestHelpersV1.VIDEO_ID_CAPTIONS);
     }
 
     @Test
     public void testThatMpdNotEmpty() {
-        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(TestHelpers.VIDEO_ID_CAPTIONS);
+        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemManager().getFormatInfo(TestHelpersV1.VIDEO_ID_CAPTIONS);
 
         assertTrue("Is dash", mediaItemDetails.containsDashInfo());
 
@@ -69,6 +69,6 @@ public class YouTubeMPDBuilderInstrumentedTest {
 
         String url = mediaItemDetails.getAdaptiveFormats().get(0).getUrl();
 
-        assertTrue("Video url is working", TestHelpers.urlExists(url));
+        assertTrue("Video url is working", TestHelpersV1.urlExists(url));
     }
 }

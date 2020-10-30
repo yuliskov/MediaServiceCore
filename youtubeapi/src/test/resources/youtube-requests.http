@@ -277,13 +277,25 @@ Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrn
 
 # History WEB 2 step (BEST!!!)
 GET https://www.youtube.com/api/stats/watchtime?ns=yt&cpn=ERHv2c35JoHc-cdM&docid=x26FXCaUR7E&ver=2&ei=0uJWX_HGN4SjyAWD17PoCQ&st=100.5&et=100.5&final=1
-authorization: Bearer ya29.a0AfH6SMDXB2Ww8k3JfHRsUZmxnSKHaXrBmiVhNvUl2IPdXShJYBt7Dn_grlq4YT1mreOuJE3EWbKJG143WpLgdeGe9qJNo_Br2xjD8UwJ1wiuJimwyKIj3cIT3o-cuj2gkGebZfXX4LGvvcBvNJIpZmeiNSxfWvY-FdwYfjlkQ64DCA
+authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1fsBZDAJ-m-To_W1LRNkHa3aerWbrh71Jx6r7MupUnA7hWgV7LKl8riITbYIuD2t-Y9I8tCCvf5uLR_kvmhr55OKU1klDED46SEOztHmwnn4-2m1N0qBas8gFE
 
 ###
 
 # History WEB 1 step (BEST!!!)
 GET https://www.youtube.com/api/stats/playback?ns=yt&cpn=ERHv2c35JoHc-cdM&docid=x26FXCaUR7E&ver=2&ei=0uJWX_HGN4SjyAWD17PoCQ&vm=CAEQARgEKixQUXZlck9uQ3RMa0JqdnliMENGN1lnZmR0Qk1nREYtSWp0RmVfd0ttT2FJPToyQUNfSlFOTFJTdEYyTDhXdjA1eDNhNTVqSmhFQTZ3cFFWWW96SF91dnppVUFFNUpGQkE
-authorization: Bearer ya29.a0AfH6SMDXB2Ww8k3JfHRsUZmxnSKHaXrBmiVhNvUl2IPdXShJYBt7Dn_grlq4YT1mreOuJE3EWbKJG143WpLgdeGe9qJNo_Br2xjD8UwJ1wiuJimwyKIj3cIT3o-cuj2gkGebZfXX4LGvvcBvNJIpZmeiNSxfWvY-FdwYfjlkQ64DCA
+authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1fsBZDAJ-m-To_W1LRNkHa3aerWbrh71Jx6r7MupUnA7hWgV7LKl8riITbYIuD2t-Y9I8tCCvf5uLR_kvmhr55OKU1klDED46SEOztHmwnn4-2m1N0qBas8gFE
+
+###
+
+# History 1 ???
+GET https://www.youtube.com/api/stats/playback?ns=yt&el=detailpage&cpn=Eq7fuKjHUB0gsFDS&docid=4oO-X3RkeLk&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D4oO-X3RkeLk%26t%3D150s&cmt=350.009&ei=SFObX5--Jom87QSpqKlg&fmt=243&fs=0&rt=5.193&of=VsYpu00QxTqc2P13V6nokg&euri&lact=5620&cl=338950611&mos=0&vm=CAEQARgEKixpZ2UyNGlsMjVsZkZlTzV5bkZKZVp5Q0Ewb3lLbUdyZmN6Ni1hT1ZQbGwwPToyQU9HdF9PSUtDLUE1LTFBV2V6R2ppU1BicjljRmQ5XzN5bWtMdVZBdnVuLTI5RDlqN0E&volume=17&subscribed=1&cbr=Chrome&cbrver=85.0.4183.83&c=WEB&cver=2.20201028.02.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=508.181&rtn=11&afmt=251&inview=NaN
+authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1fsBZDAJ-m-To_W1LRNkHa3aerWbrh71Jx6r7MupUnA7hWgV7LKl8riITbYIuD2t-Y9I8tCCvf5uLR_kvmhr55OKU1klDED46SEOztHmwnn4-2m1N0qBas8gFE
+
+###
+
+# History 2 ???
+GET https://www.youtube.com/api/stats/watchtime?ns=yt&el=detailpage&cpn=pzSFbdMcRgw89FjP&docid=4oO-X3RkeLk&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ffeed%2Fhistory&cmt=150.548&ei=DVKbX63WLb-Dv_IPx_K1oA0&fmt=243&fs=0&rt=107.178&of=VsYpu00QxTqc2P13V6nokg&euri&lact=1581&cl=338950611&state=paused&vm=CAEQARgEKixpZ2UyNGlsMjVsZkZlTzV5bkZKZVp5Q0Ewb3lLbUdyZmN6Ni1hT1ZQbGwwPToyQU9HdF9PS29lTlpwSENUQkxndkt6cmd5enFLYjZfUFllQWxJS1RfcmtKbFZVNVVXN1E&volume=17&subscribed=1&cbr=Chrome&cbrver=85.0.4183.83&c=WEB&cver=2.20201028.02.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&final=1&hl=en_US&cr=US&len=508.181&afmt=251&idpj=-1&ldpj=-20&muted=0&st=150.548&et=150.548
+authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1fsBZDAJ-m-To_W1LRNkHa3aerWbrh71Jx6r7MupUnA7hWgV7LKl8riITbYIuD2t-Y9I8tCCvf5uLR_kvmhr55OKU1klDED46SEOztHmwnn4-2m1N0qBas8gFE
 
 ###
 

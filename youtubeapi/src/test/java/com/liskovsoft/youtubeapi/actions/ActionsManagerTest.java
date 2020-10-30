@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV1;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class ActionsManagerTest {
     @Test
     public void testThatLikeIsWorking() {
         Call<ActionResult> wrapper =
-                mActionsManager.setLike(ActionsManagerParams.getLikeActionQuery(TestHelpers.VIDEO_ID_CAPTIONS), TestHelpers.getAuthorization());
+                mActionsManager.setLike(ActionsManagerParams.getLikeActionQuery(TestHelpersV1.VIDEO_ID_CAPTIONS), TestHelpersV1.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Like result not null", actionResult);
@@ -40,7 +40,7 @@ public class ActionsManagerTest {
     @Test
     public void testThatSubscribeIsWorking() {
         Call<ActionResult> wrapper =
-                mActionsManager.subscribe(ActionsManagerParams.getSubscribeActionQuery(TestHelpers.CHANNEL_ID_UNSUBSCRIBED), TestHelpers.getAuthorization());
+                mActionsManager.subscribe(ActionsManagerParams.getSubscribeActionQuery(TestHelpersV1.CHANNEL_ID_UNSUBSCRIBED), TestHelpersV1.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Subscribe result not null", actionResult);

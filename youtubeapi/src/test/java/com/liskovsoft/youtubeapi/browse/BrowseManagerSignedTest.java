@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.TestHelpers;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatSubscriptionsNotEmpty() throws IOException {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpers.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV1.getAuthorization());
 
         GridTabList browseResult = wrapper.execute().body();
 
@@ -58,7 +58,7 @@ public class BrowseManagerSignedTest {
 
         assertNotNull("Item not null", nextPageKey);
 
-        Call<GridTabContinuation> browseResult2 = mService.continueGridTab(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpers.getAuthorization());
+        Call<GridTabContinuation> browseResult2 = mService.continueGridTab(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpersV1.getAuthorization());
         GridTabContinuation body = browseResult2.execute().body();
 
         assertNotNull("Items not null", body);
@@ -77,7 +77,7 @@ public class BrowseManagerSignedTest {
     }
 
     private List<ItemWrapper> getSubscriptions() throws IOException {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpers.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV1.getAuthorization());
 
         GridTabList browseResult = wrapper.execute().body();
 
@@ -92,7 +92,7 @@ public class BrowseManagerSignedTest {
     }
 
     private List<ItemWrapper> getRecommended() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpers.getAuthorization());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpersV1.getAuthorization());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -114,7 +114,7 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatHomeNotEmpty() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpers.getAuthorization());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpersV1.getAuthorization());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -125,7 +125,7 @@ public class BrowseManagerSignedTest {
         String nextPageKey = browseResult.getTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpers.getAuthorization());
+        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpersV1.getAuthorization());
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation browseResult2 = execute.body();
 
@@ -134,7 +134,7 @@ public class BrowseManagerSignedTest {
 
     @Test
     public void testThatPlaylistsNotEmpty() {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getMyLibraryQuery(), TestHelpers.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getMyLibraryQuery(), TestHelpersV1.getAuthorization());
 
         GridTabList gridTabResult = RetrofitHelper.get(wrapper);
 
@@ -145,7 +145,7 @@ public class BrowseManagerSignedTest {
         assertNotNull("Contains reload key", lastGridTab.getReloadPageKey());
 
         Call<GridTabContinuation> wrapper2 =
-                mService.continueGridTab(BrowseManagerParams.getContinuationQuery(lastGridTab.getReloadPageKey()), TestHelpers.getAuthorization());
+                mService.continueGridTab(BrowseManagerParams.getContinuationQuery(lastGridTab.getReloadPageKey()), TestHelpersV1.getAuthorization());
 
         GridTabContinuation gridTabContinuation = RetrofitHelper.get(wrapper2);
 

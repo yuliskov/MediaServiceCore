@@ -26,11 +26,11 @@ import static org.junit.Assert.assertTrue;
 public class AuthManagerTest {
     private static final String RAW_JSON_AUTH_DATA = "{\"client_id\":\"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com\"," +
             "\"client_secret\":\"SboVhoG9s0rNafixCSGGKXAT\"," +
-            "\"refresh_token\":\"1//0cP_RZyC7ratPCgYIARAAGAwSNwF-L9IrlOZa8kjE0SWrL8vIwSg_QqkxdHjq5EyiDitGclVNBtGovxijwz2R2VWGDHywf_IHlVM\"," +
+            "\"refresh_token\":\"1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU\"," +
             "\"grant_type\":\"refresh_token\"}";
     private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
-    private static final String REFRESH_TOKEN = "1//0cP_RZyC7ratPCgYIARAAGAwSNwF-L9IrlOZa8kjE0SWrL8vIwSg_QqkxdHjq5EyiDitGclVNBtGovxijwz2R2VWGDHywf_IHlVM";
+    private static final String REFRESH_TOKEN = "1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU";
     private AuthManager mService;
     private AppService mAppService;
 

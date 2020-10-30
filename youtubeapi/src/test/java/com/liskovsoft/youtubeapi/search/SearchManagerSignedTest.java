@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import org.junit.Before;
@@ -30,12 +30,12 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatSearchResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT), TestHelpersV1.getAuthorization());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
 
-        wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR), TestHelpersV1.getAuthorization());
+        wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR), TestHelpersV2.getAuthorization());
         searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
@@ -43,12 +43,12 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatContinuationResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT), TestHelpersV1.getAuthorization());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
         SearchResult result = RetrofitHelper.get(wrapper);
         checkSearchResult(result);
 
         String nextPageKey = result.getNextPageKey();
-        Call<SearchResultContinuation> wrapper2 = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextPageKey), TestHelpersV1.getAuthorization());
+        Call<SearchResultContinuation> wrapper2 = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextPageKey), TestHelpersV2.getAuthorization());
         SearchResultContinuation result2 = RetrofitHelper.get(wrapper2);
         checkSearchResultContinuation(result2);
     }

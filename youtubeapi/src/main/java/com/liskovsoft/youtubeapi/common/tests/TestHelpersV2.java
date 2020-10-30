@@ -8,7 +8,7 @@ public class TestHelpersV2 {
     private static String mAuthorization; // type: Bearer
     private static final String RAW_JSON_AUTH_DATA = "{\"client_id\":\"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com\"," +
             "\"client_secret\":\"SboVhoG9s0rNafixCSGGKXAT\"," +
-            "\"refresh_token\":\"1//0cP_RZyC7ratPCgYIARAAGAwSNwF-L9IrlOZa8kjE0SWrL8vIwSg_QqkxdHjq5EyiDitGclVNBtGovxijwz2R2VWGDHywf_IHlVM\"," +
+            "\"refresh_token\":\"1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU\"," +
             "\"grant_type\":\"refresh_token\"}";
 
     // In the morning

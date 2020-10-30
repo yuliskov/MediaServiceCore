@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import okhttp3.RequestBody;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +25,11 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class AuthManagerTest {
-    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&grant_type=refresh_token&refresh_token=1%2FdXXiG98cBB9lJ9YwGpNmVzboP3X24FUdLcvE1Y0M8QWtTYHpWsakvNjPKuJlk68J";
+    private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU&grant_type=refresh_token";
     private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
     private static final String GRANT_TYPE = "refresh_token";
-    private static final String REFRESH_TOKEN = "1//0ca0zVzDYAcWCCgYIARAAGAwSNwF-L9IrCkqjDqPyup8sXFA40LiTGh-8yW2jM4lLBOXyhcRa07fDM35jM-dU80PUemu1u1F8-AY";
+    private static final String REFRESH_TOKEN = "1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU";
     private AuthManager mService;
     private AppService mAppService;
 
@@ -87,7 +87,7 @@ public class AuthManagerTest {
 
     @Test
     public void testThatAccountsListNotEmpty() {
-        Call<AccountsList> wrapper = mService.getAccountsList(AuthParams.getAccountsListQuery(), TestHelpersV1.getAuthorization());
+        Call<AccountsList> wrapper = mService.getAccountsList(AuthParams.getAccountsListQuery(), TestHelpersV2.getAuthorization());
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 

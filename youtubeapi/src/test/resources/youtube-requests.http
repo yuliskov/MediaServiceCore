@@ -287,18 +287,6 @@ authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1f
 
 ###
 
-# History 1 ???
-GET https://www.youtube.com/api/stats/playback?ns=yt&el=detailpage&cpn=Eq7fuKjHUB0gsFDS&docid=4oO-X3RkeLk&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D4oO-X3RkeLk%26t%3D150s&cmt=350.009&ei=SFObX5--Jom87QSpqKlg&fmt=243&fs=0&rt=5.193&of=VsYpu00QxTqc2P13V6nokg&euri&lact=5620&cl=338950611&mos=0&vm=CAEQARgEKixpZ2UyNGlsMjVsZkZlTzV5bkZKZVp5Q0Ewb3lLbUdyZmN6Ni1hT1ZQbGwwPToyQU9HdF9PSUtDLUE1LTFBV2V6R2ppU1BicjljRmQ5XzN5bWtMdVZBdnVuLTI5RDlqN0E&volume=17&subscribed=1&cbr=Chrome&cbrver=85.0.4183.83&c=WEB&cver=2.20201028.02.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=508.181&rtn=11&afmt=251&inview=NaN
-authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1fsBZDAJ-m-To_W1LRNkHa3aerWbrh71Jx6r7MupUnA7hWgV7LKl8riITbYIuD2t-Y9I8tCCvf5uLR_kvmhr55OKU1klDED46SEOztHmwnn4-2m1N0qBas8gFE
-
-###
-
-# History 2 ???
-GET https://www.youtube.com/api/stats/watchtime?ns=yt&el=detailpage&cpn=pzSFbdMcRgw89FjP&docid=4oO-X3RkeLk&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ffeed%2Fhistory&cmt=150.548&ei=DVKbX63WLb-Dv_IPx_K1oA0&fmt=243&fs=0&rt=107.178&of=VsYpu00QxTqc2P13V6nokg&euri&lact=1581&cl=338950611&state=paused&vm=CAEQARgEKixpZ2UyNGlsMjVsZkZlTzV5bkZKZVp5Q0Ewb3lLbUdyZmN6Ni1hT1ZQbGwwPToyQU9HdF9PS29lTlpwSENUQkxndkt6cmd5enFLYjZfUFllQWxJS1RfcmtKbFZVNVVXN1E&volume=17&subscribed=1&cbr=Chrome&cbrver=85.0.4183.83&c=WEB&cver=2.20201028.02.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&final=1&hl=en_US&cr=US&len=508.181&afmt=251&idpj=-1&ldpj=-20&muted=0&st=150.548&et=150.548
-authorization: Bearer ya29.a0AfH6SMD7kZxOTcETy0XjZGuVaymbKvIvKzi34I2R16iYEPpLJ1fsBZDAJ-m-To_W1LRNkHa3aerWbrh71Jx6r7MupUnA7hWgV7LKl8riITbYIuD2t-Y9I8tCCvf5uLR_kvmhr55OKU1klDED46SEOztHmwnn4-2m1N0qBas8gFE
-
-###
-
 # Browse test
 GET https://www.youtube.com/youtubei/v1/browse?t=PHDJ3IE8ygxFybs9
 Content-Type: application/json
@@ -350,5 +338,28 @@ Authorization: Bearer ya29.a0AfH6SMDV_6DAS3yqc3i4_V5_TrXW7N3clVikcHphX7eQMBamfqb
 
 {"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200913.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false}},"accountReadMask":{"returnOwner":true}}
 
+###
+
+# History 1 ???
+GET https://www.youtube.com/api/stats/playback?ns=yt&el=detailpage&cpn=0msjcBTpBrXkZZQ1&docid=kuGvEKJVC4g&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2F&cmt=1500&ei=1JSbX_vXLqzU7QTO2K7ACA&fmt=243&fs=0&rt=0.62&of=9ieh7JF0AHchOiLvwwFBTQ&euri&lact=1320&cl=338950611&mos=0&vm=CAEQARgEKiwtZU9QVktpZ1R3MTRRelphd0NWTFVWSGJ6VnY4V25Gc3FXLXc0VmktMFAwPToyQU9HdF9PTGNxYTI2M2NtQUxTb29EazVUUGV6UkJSMnVDWUJIRDBRZzVkM0lNY3JnSlE&volume=13&subscribed=1&cbr=Chrome&cbrver=85.0.4183.83&c=WEB&cver=2.20201028.02.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=3120.021&fexp=23744176%2C23804281%2C23826897%2C23839597%2C23856950%2C23857949%2C23868335%2C23880043%2C23882503%2C23884386%2C23890959%2C23895671%2C23911055%2C23914825%2C23915993%2C23918597%2C23928508%2C23930220%2C23931993%2C23934970%2C23937429%2C23938251%2C23938251%2C23940248%2C23940704%2C23942338%2C23942434%2C23942633%2C23943294%2C23944779%2C23945479%2C23946420%2C23948841%2C23949704%2C23950272%2C23951139%2C23951621%2C23953999%2C23954761%2C23955809%2C23956063%2C23956754%2C23958692%2C23960091%2C23961290%2C23962004%2C23962621%2C23962920%2C23965773%2C23966469%2C23966489%2C24590290%2C24631665%2C24631715%2C3300112%2C3300134%2C3300164%2C3313321%2C3316377%2C3318700%2C3318774%2C3318889%2C3319220%2C3320539%2C3329157%2C9449243&rtn=5&feature=g-high-crv&afmt=251&inview=NaN
+authorization: Bearer ya29.A0AfH6SMDamiTkXFf-O1uC_BqhnGZT03h7_rtXMNncErlwx0RRbg-RMXlk2wqPPtIRb7t6IRxOUF4hZvGoCajMCzv1FT4-k25-vKgdlH30v72p6jj12vPz9B_ri3iFijR2m0l6IPrf2kNcrd3Ujr5rXWFwG0ocL9Jrl0KNOkiIhPoGr_9n_0uX
+
+###
+
+# History 2 ???
+GET https://www.youtube.com/api/stats/watchtime?ns=yt&el=detailpage&cpn=0msjcBTpBrXkZZQ1&docid=kuGvEKJVC4g&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2F&cmt=1005.087&ei=1JSbX_vXLqzU7QTO2K7ACA&fmt=243&fs=0&rt=5.682&of=9ieh7JF0AHchOiLvwwFBTQ&euri&lact=53&cl=338950611&state=playing&vm=CAEQARgEKiwtZU9QVktpZ1R3MTRRelphd0NWTFVWSGJ6VnY4V25Gc3FXLXc0VmktMFAwPToyQU9HdF9PTGNxYTI2M2NtQUxTb29EazVUUGV6UkJSMnVDWUJIRDBRZzVkM0lNY3JnSlE&volume=13&subscribed=1&cbr=Chrome&cbrver=85.0.4183.83&c=WEB&cver=2.20201028.02.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&hl=en_US&cr=US&len=3120.021&rtn=15&feature=g-high-crv&afmt=251&idpj=-6&ldpj=-33&rti=5&muted=0&st=0&et=1005.087
+authorization: Bearer ya29.A0AfH6SMDamiTkXFf-O1uC_BqhnGZT03h7_rtXMNncErlwx0RRbg-RMXlk2wqPPtIRb7t6IRxOUF4hZvGoCajMCzv1FT4-k25-vKgdlH30v72p6jj12vPz9B_ri3iFijR2m0l6IPrf2kNcrd3Ujr5rXWFwG0ocL9Jrl0KNOkiIhPoGr_9n_0uX
+
+###
+
+# History SHORT 1 ???
+GET https://www.youtube.com/api/stats/playback?ns=yt&ver=2&docid=x26FXCaUR7E&cpn=IC3LhMdjK7_NZpig&ei=SYKbX4PQHJWm7QTB95qoDQ&vm=CAEQARgEKiw2UURoaTBadVJOY0ltcXJZVkE5R3BzNWF3NmtMaU1EOUh4SjVHckNhMU0wPToyQU9HdF9PSk1hTU5FV3JRTXpIWnFyTnRTYVo4R1lCM0FNdTNXRVQzS1V2b21FUjh2WEE&len=508.181
+authorization: Bearer ya29.a0AfH6SMCm-Nc0kVozxVlbzoZFNHaJ22AgcgQleDvyXhQc3lTaXHWCpl8rnzRj8sx0Bg6cG7P4hVAXTk1L4V_3fLsJD7M7OQ36ZRjbzMXN7cKZM6v_OO5vOtYkrSkG_RRYrSnnNr5xKG3tSXXn2B9BLVwARdrkYSqRB-tWnjL-F7lQ
+
+###
+
+# History SHORT 2 ???
+GET https://www.youtube.com/api/stats/watchtime?ns=yt&ver=2&final=1&docid=x26FXCaUR7E&st=100.4&et=100.4&cpn=IC3LhMdjK7_NZpig&ei=UIObX-PRJs3j7ATdq4-ACQ&len=508.181
+authorization: Bearer ya29.a0AfH6SMCm-Nc0kVozxVlbzoZFNHaJ22AgcgQleDvyXhQc3lTaXHWCpl8rnzRj8sx0Bg6cG7P4hVAXTk1L4V_3fLsJD7M7OQ36ZRjbzMXN7cKZM6v_OO5vOtYkrSkG_RRYrSnnNr5xKG3tSXXn2B9BLVwARdrkYSqRB-tWnjL-F7lQ
 
 

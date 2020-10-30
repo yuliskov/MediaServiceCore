@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.track;
+package com.liskovsoft.youtubeapi.track.V1;
 
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
+import com.liskovsoft.youtubeapi.track.V1.TrackingManager;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -59,15 +60,15 @@ public class TrackingManagerInstrumentedTest {
     @Test
     public void testUpdateWatchTime() throws IOException {
         String playbackNonce = mAppService.getClientPlaybackNonce();
-        String videoIdSimple = TestHelpersV2.VIDEO_ID_1;
+        String videoIdSimple = TestHelpersV2.VIDEO_ID_3;
 
         Response<WatchTimeEmptyResult> response;
 
-        response = createWatchRecord(videoIdSimple, playbackNonce);
+        response = createWatchRecord(videoIdSimple, 300.4f, playbackNonce);
 
         assertTrue("Create watch record response successful", response.isSuccessful());
 
-        response = updateWatchTimeAlt(videoIdSimple, 100.4f, playbackNonce);
+        response = updateWatchTime(videoIdSimple, 300.4f, playbackNonce);
 
         assertTrue("Update watch time response successful", response.isSuccessful());
 
@@ -116,12 +117,24 @@ public class TrackingManagerInstrumentedTest {
     //    return wrapper.execute();
     //}
 
+    private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, float positionSec, String playbackNonce) throws IOException {
+        //String playbackNonce = mAppService.getClientPlaybackNonce();
+        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
+                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), 0, positionSec,
+                positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
+        );
+
+        return wrapper.execute();
+    }
+
     private Response<WatchTimeEmptyResult> updateWatchTime(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
         VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
-                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec, positionSec,
+                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), 0, positionSec,
                 positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization
         );
 

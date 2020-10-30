@@ -22,6 +22,9 @@ public class TestHelpersV2 {
     // Kvartal 95
     public static final String VIDEO_ID_2 = "XemGObKTF0o";
 
+    // Creed
+    public static final String VIDEO_ID_3 = "4oO-X3RkeLk";
+
     // Mafia Trailer
     public static final String VIDEO_ID_CAPTIONS = "s2lGEhSlOTY";
 

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.track;
+package com.liskovsoft.youtubeapi.track.V1;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
@@ -77,6 +77,7 @@ public class TrackingService {
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
                 videoId,
+                lengthSec, 0, positionSec, positionSec,
                 clientPlaybackNonce,
                 eventId,
                 visitorMonitoringData,
@@ -86,7 +87,7 @@ public class TrackingService {
         RetrofitHelper.get(wrapper); // execute
 
         wrapper = mTrackingManager.updateWatchTime(
-                videoId, lengthSec, positionSec, positionSec, positionSec,
+                videoId, lengthSec, 0, positionSec, positionSec,
                 clientPlaybackNonce, eventId, authorization
         );
 

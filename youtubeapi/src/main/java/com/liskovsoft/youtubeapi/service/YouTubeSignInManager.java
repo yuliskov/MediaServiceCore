@@ -14,7 +14,7 @@ import java.util.List;
 
 public class YouTubeSignInManager implements SignInManager {
     private static final String TAG = YouTubeSignInManager.class.getSimpleName();
-    private static final long UPDATE_PERIOD_MS = 30 * 60 * 1000; // 30 minutes
+    private static final long TOKEN_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // 30 minutes
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
@@ -108,7 +108,7 @@ public class YouTubeSignInManager implements SignInManager {
         if (mAuthorizationHeaderCached != null) {
             long currentTime = System.currentTimeMillis();
 
-            if ((currentTime - mLastUpdateTime) < UPDATE_PERIOD_MS) {
+            if ((currentTime - mLastUpdateTime) < TOKEN_REFRESH_PERIOD_MS) {
                 return;
             }
         }

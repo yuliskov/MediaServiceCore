@@ -38,6 +38,10 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create(new YouTubeMediaGroup(type), browseResult.getItemWrappers(), browseResult.getNextPageKey());
     }
 
+    public static MediaGroup from(GridTabContinuation continuation) {
+        return from(continuation, new YouTubeMediaGroup(MediaGroup.TYPE_UNDEFINED));
+    }
+
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
         if (continuation == null) {
             return null;
@@ -115,6 +119,12 @@ public class YouTubeMediaGroup implements MediaGroup {
         return result;
     }
 
+    public static MediaGroup fromTabs(List<GridTab> tabs, int type) {
+        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
+
+        return create(youTubeMediaGroup, tabs);
+    }
+
     @Override
     public List<MediaItem> getMediaItems() {
         return mMediaItems;
@@ -138,6 +148,26 @@ public class YouTubeMediaGroup implements MediaGroup {
     @Override
     public int getType() {
         return mType;
+    }
+
+    private static MediaGroup create(YouTubeMediaGroup baseGroup, List<GridTab> tabs) {
+        ArrayList<MediaItem> mediaItems = new ArrayList<>();
+
+        if (tabs != null) {
+            for (GridTab tab : tabs) {
+                YouTubeMediaItem item = YouTubeMediaItem.from(tab);
+
+                if (!item.isEmpty()) {
+                    mediaItems.add(item);
+                }
+            }
+        }
+
+        if (!mediaItems.isEmpty()) {
+            baseGroup.mMediaItems = mediaItems;
+        }
+
+        return baseGroup;
     }
 
     private static MediaGroup create(YouTubeMediaGroup baseGroup, List<ItemWrapper> items, String nextPageKey) {

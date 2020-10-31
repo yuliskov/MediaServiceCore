@@ -14,6 +14,7 @@ import java.util.List;
 public interface MediaGroupManagerInt {
     SearchResult getSearch(String searchText);
     GridTab getSubscriptions();
+    List<GridTab> getSubscribedChannels();
     GridTab getHistory();
     SectionTab getHomeTab();
     SectionTab getMusicTab();

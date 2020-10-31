@@ -78,6 +78,12 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
+    public List<GridTab> getSubscribedChannels() {
+        // NOP
+        return null;
+    }
+
+    @Override
     public GridTab getHistory() {
         // NOP
         return null;

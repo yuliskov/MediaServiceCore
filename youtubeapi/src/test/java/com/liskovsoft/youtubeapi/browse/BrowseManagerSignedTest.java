@@ -45,7 +45,7 @@ public class BrowseManagerSignedTest {
     public void testThatSubscriptionsNotEmpty() throws IOException {
         Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
 
-        GridTabList browseResult = wrapper.execute().body();
+        GridTabList browseResult = RetrofitHelper.get(wrapper);
 
         assertNotNull("Contains tabs", browseResult.getTabs());
 
@@ -63,6 +63,24 @@ public class BrowseManagerSignedTest {
 
         assertNotNull("Items not null", body);
         assertTrue("List > 2", body.getItemWrappers().size() > 2);
+    }
+
+    @Test
+    public void testThatChannelHasContent() {
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
+
+        GridTabList browseResult = RetrofitHelper.get(wrapper);
+
+        assertTrue("Contains tabs", browseResult.getTabs() != null && browseResult.getTabs().size() >= 10);
+
+        GridTab channel = browseResult.getTabs().get(10);
+
+        Call<GridTabContinuation> wrapper2 =
+                mService.continueGridTab(BrowseManagerParams.getContinuationQuery(channel.getReloadPageKey()), TestHelpersV2.getAuthorization());
+
+        GridTabContinuation continuation = RetrofitHelper.get(wrapper2);
+
+        assertTrue("Channel hash content", continuation.getItemWrappers().size() > 10);
     }
 
     @Test

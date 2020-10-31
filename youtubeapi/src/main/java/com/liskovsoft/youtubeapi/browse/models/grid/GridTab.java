@@ -2,12 +2,19 @@ package com.liskovsoft.youtubeapi.browse.models.grid;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 
 public class GridTab {
     @JsonPath("$.title")
     private String mTitle;
+
+    @JsonPath("$.accessibility.accessibilityData.label")
+    private String mTitleAlt;
+
+    @JsonPath("$.thumbnail.thumbnails[*]")
+    private List<Thumbnail> mThumbnails;
 
     @JsonPath("$.endpoint.browseEndpoint.browseId")
     private String mBrowseId;
@@ -41,6 +48,14 @@ public class GridTab {
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public String getTitleAlt() {
+        return mTitleAlt;
+    }
+
+    public List<Thumbnail> getThumbnails() {
+        return mThumbnails;
     }
 
     public String getBrowseId() {

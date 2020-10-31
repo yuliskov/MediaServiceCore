@@ -15,9 +15,10 @@ public interface MediaGroup {
     int TYPE_PLAYLISTS = 8;
     int TYPE_SUGGESTIONS = 9;
     int TYPE_CHANNEL = 10;
+    int TYPE_SETTINGS = 11;
+    int TYPE_CHANNELS_SUB = 12;
     int LAYOUT_TYPE_ROWS = 0;
     int LAYOUT_TYPE_GRID = 1;
-    int TYPE_SETTINGS = 11;
     int getType();
     List<MediaItem> getMediaItems();
     void setMediaItems(List<MediaItem> tabs);

@@ -13,6 +13,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerUnsigned;
@@ -71,6 +72,20 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
+    public MediaGroup getSubscribedChannels() {
+        checkSigned();
+
+        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannels();
+
+        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNELS_SUB);
+    }
+
+    @Override
+    public Observable<MediaGroup> getSubscribedChannelsObserve() {
+        return ObservableHelper.fromNullable(this::getSubscribedChannels);
+    }
+
+    @Override
     public MediaGroup getRecommended() {
         Log.d(TAG, "Getting recommended...");
 
@@ -107,6 +122,20 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
         return ObservableHelper.fromNullable(this::getHistory);
+    }
+
+    @Override
+    public MediaGroup getGroup(MediaItem mediaItem) {
+        checkSigned();
+
+        GridTabContinuation continuation = mMediaGroupManagerReal.continueGridTab(((YouTubeMediaItem) mediaItem).getReloadPageKey());
+
+        return YouTubeMediaGroup.from(continuation);
+    }
+
+    @Override
+    public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
+        return ObservableHelper.fromNullable(() -> getGroup(mediaItem));
     }
 
     @Override
@@ -262,6 +291,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             case MediaGroup.TYPE_HISTORY:
             case MediaGroup.TYPE_SUBSCRIPTIONS:
             case MediaGroup.TYPE_PLAYLISTS:
+            case MediaGroup.TYPE_UNDEFINED:
                 return YouTubeMediaGroup.from(
                         mMediaGroupManagerReal.continueGridTab(nextKey),
                         mediaGroup

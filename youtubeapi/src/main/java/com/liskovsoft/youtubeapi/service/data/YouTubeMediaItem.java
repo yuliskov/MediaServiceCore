@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
@@ -41,11 +42,12 @@ public class YouTubeMediaItem implements MediaItem {
     private String mAuthor;
     private String mVideoPreviewUrl;
     private int mPlaylistIndex;
+    private String mReloadPageKey;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
 
-        // Can't find a position of item inside browse query. So using position inside group instead.
+        // In case can't find a position of item inside browse playlist query. So using position inside group instead.
         if (mediaItem != null && mediaItem.mPlaylistIndex == -1 && mediaItem.mPlaylistId != null) {
             mediaItem.mPlaylistIndex = position;
         }
@@ -206,6 +208,20 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
+    public static YouTubeMediaItem from(GridTab tab) {
+        YouTubeMediaItem item = new YouTubeMediaItem();
+
+        item.mMediaItemType = MediaItem.TYPE_CHANNEL_SUB;
+        item.mTitle = tab.getTitle();
+        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(tab.getThumbnails());
+        item.mCardImageUrl = highResThumbnailUrl;
+        item.mBackgroundImageUrl = highResThumbnailUrl;
+        item.mReloadPageKey = tab.getReloadPageKey();
+        addCommonProps(item);
+
+        return item;
+    }
+
     private static int createId(YouTubeMediaItem item) {
         int id;
 
@@ -330,22 +346,6 @@ public class YouTubeMediaItem implements MediaItem {
         return mPercentWatched;
     }
 
-    public YouTubeMediaItemFormatInfo getFormatInfo() {
-        return mFormatInfo;
-    }
-
-    public void setFormatInfo(YouTubeMediaItemFormatInfo formatInfo) {
-        mFormatInfo = formatInfo;
-    }
-
-    public YouTubeMediaItemMetadata getMetadata() {
-        return mMetadata;
-    }
-
-    public void setMetadata(YouTubeMediaItemMetadata metadata) {
-        mMetadata = metadata;
-    }
-
     @Override
     public String getAuthor() {
         return mAuthor;
@@ -364,5 +364,29 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public int getPlaylistIndex() {
         return mPlaylistIndex;
+    }
+
+    public YouTubeMediaItemFormatInfo getFormatInfo() {
+        return mFormatInfo;
+    }
+
+    public void setFormatInfo(YouTubeMediaItemFormatInfo formatInfo) {
+        mFormatInfo = formatInfo;
+    }
+
+    public YouTubeMediaItemMetadata getMetadata() {
+        return mMetadata;
+    }
+
+    public void setMetadata(YouTubeMediaItemMetadata metadata) {
+        mMetadata = metadata;
+    }
+
+    public String getReloadPageKey() {
+        return mReloadPageKey;
+    }
+
+    public boolean isEmpty() {
+        return mTitle == null || mCardImageUrl == null;
     }
 }

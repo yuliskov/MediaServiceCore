@@ -12,6 +12,8 @@ public interface MediaGroupManager {
     MediaGroup getRecommended(); // Note, that recommended is a part of Home
     MediaGroup getHistory();
     List<MediaGroup> getHome();
+    MediaGroup getSubscribedChannels();
+    MediaGroup getGroup(MediaItem mediaGroup);
     MediaGroup continueGroup(MediaGroup mediaGroup);
 
     // RxJava interfaces
@@ -25,6 +27,8 @@ public interface MediaGroupManager {
     Observable<List<MediaGroup>> getGamingObserve();
     Observable<List<MediaGroup>> getChannelObserve(String channelId);
     Observable<List<MediaGroup>> getChannelObserve(MediaItem item);
-    Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
     Observable<List<MediaGroup>> getPlaylistsObserve();
+    Observable<MediaGroup> getSubscribedChannelsObserve();
+    Observable<MediaGroup> getGroupObserve(MediaItem mediaItem);
+    Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
 }

@@ -45,6 +45,10 @@ public class BrowseServiceSigned {
         return getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 
+    public List<GridTab> getSubscribedChannels(String authorization) {
+        return getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+    }
+
     public GridTab getHistory(String authorization) {
         return getGridTab(0, BrowseManagerParams.getMyLibraryQuery(), authorization);
     }

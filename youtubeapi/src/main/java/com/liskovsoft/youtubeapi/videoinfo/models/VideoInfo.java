@@ -48,6 +48,9 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.status")
     private String mPlayabilityStatus;
 
+    @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
+    private String mStoryboardSpec;
+
     // Values used in tracking actions
     private String mEventId;
     private String mVisitorMonitoringData;
@@ -117,6 +120,10 @@ public class VideoInfo {
     public boolean isLoginRequired() {
         return STATUS_LOGIN_REQUIRED.equals(mPlayabilityStatus) ||
                STATUS_AGE_CHECK_REQUIRED.equals(mPlayabilityStatus);
+    }
+
+    public String getStoryboardSpec() {
+        return mStoryboardSpec;
     }
 
     private void parseTrackingParams() {

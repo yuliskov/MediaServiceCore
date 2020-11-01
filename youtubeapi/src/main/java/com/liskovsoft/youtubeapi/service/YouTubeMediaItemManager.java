@@ -168,6 +168,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
         YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
 
+        if (formatInfo == null) {
+            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
+            return;
+        }
+
         mMediaItemManagerReal.updateHistoryPosition(formatInfo.getVideoId(), formatInfo.getLengthSeconds(),
                 formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), positionSec);
     }

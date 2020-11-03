@@ -45,8 +45,16 @@ public class BrowseServiceSigned {
         return getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 
-    public List<GridTab> getSubscribedChannels(String authorization) {
-        return getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+    public List<GridTab> getSubscribedChannelsAZ(String authorization) {
+        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+
+        return getPart(gridTabs, 1);
+    }
+
+    public List<GridTab> getSubscribedChannelsPopular(String authorization) {
+        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+
+        return getPart(gridTabs, 0);
     }
 
     public GridTab getHistory(String authorization) {
@@ -249,5 +257,32 @@ public class BrowseServiceSigned {
         }
 
         return result;
+    }
+
+    /**
+     * Channels are split by different criteria e.g. (popular and alphanumeric order)
+     */
+    private List<GridTab> getPart(List<GridTab> gridTabs, int partIndex) {
+        List<GridTab> azGridTabs = null;
+
+        if (gridTabs != null) {
+            azGridTabs = new ArrayList<>();
+
+            int partIndexFound = 0;
+
+            for (GridTab tab : gridTabs) {
+                if (tab.isUnselectable()) {
+                    partIndexFound++;
+                } else if (partIndexFound == partIndex) {
+                    azGridTabs.add(tab);
+                }
+            }
+
+            if (azGridTabs.isEmpty()) {
+                azGridTabs = gridTabs;
+            }
+        }
+
+        return azGridTabs;
     }
 }

@@ -16,7 +16,7 @@ public class AuthService {
     private static final String TAG = AuthService.class.getSimpleName();
     private static AuthService sInstance;
     private final AuthManager mAuthManager;
-    private static final int REFRESH_TOKEN_ATTEMPTS = 20;
+    private static final int REFRESH_TOKEN_ATTEMPTS = 200;
     private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 3_000;
     private final AppService mAppService;
 

@@ -75,6 +75,11 @@ public class TrackingService {
 
         Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
+        // Mark video as full watched if less than couple minutes remains
+        if (lengthSec - positionSec < 3 * 60) {
+           positionSec = lengthSec;
+        }
+
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
                 videoId,
                 lengthSec, 0, positionSec, positionSec,

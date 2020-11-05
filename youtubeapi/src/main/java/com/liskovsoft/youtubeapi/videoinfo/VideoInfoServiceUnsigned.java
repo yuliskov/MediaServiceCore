@@ -44,7 +44,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
     
     private VideoInfo getVideoInfoRegular(String videoId) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }

@@ -194,6 +194,10 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     public static MediaItem from(NextVideo item) {
+        if (item == null) {
+            return null;
+        }
+
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;

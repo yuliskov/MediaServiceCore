@@ -17,9 +17,15 @@ public interface VideoInfoManagerUnsigned {
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId);
 
+    /**
+     * Good for live translations
+     */
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
-    Call<VideoInfo> getVideoInfoLocalized(@Query("video_id") String videoId, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("hl") String lang);
 
+    /**
+     * Good for age restricted videos
+     */
     @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId);
 }

@@ -25,6 +25,15 @@ public interface VideoInfoManagerSigned {
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&c=TVHTML5&cver=" + AppConstants.CLIENT_VERSION)
     Call<VideoInfo> getVideoInfoRegular(@Query("video_id") String videoId, @Query("hl") String lang, @Header("Authorization") String auth);
 
+    /**
+     * Unlock live hls streams
+     */
+    @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
+    Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("hl") String lang, @Header("Authorization") String auth);
+
+    /**
+     * Unlock age restricted videos
+     */
     @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Header("Authorization") String auth);
 }

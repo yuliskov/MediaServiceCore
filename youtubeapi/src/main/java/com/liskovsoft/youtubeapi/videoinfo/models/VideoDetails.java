@@ -22,6 +22,8 @@ public class VideoDetails {
     private String mAuthor;
     @JsonPath("$.isLiveContent")
     private boolean mIsLiveContent;
+    @JsonPath("$.isOwnerViewing")
+    private boolean mIsOwnerViewing;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
 
@@ -55,6 +57,13 @@ public class VideoDetails {
 
     public boolean isLiveContent() {
         return mIsLiveContent;
+    }
+
+    /**
+     * Personal videos
+     */
+    public boolean isOwnerViewing() {
+        return mIsOwnerViewing;
     }
 
     public List<Thumbnail> getThumbnails() {

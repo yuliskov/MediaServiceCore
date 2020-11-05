@@ -31,6 +31,9 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         if (result != null && result.isLoginRequired()) {
             Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
             result = getVideoInfoRestricted(videoId, authorization);
+        } else if (result != null && result.getVideoDetails().isLiveContent()) {
+            Log.e(TAG, "Seems that video is Live. Retrying with different query method...");
+            result = getVideoInfoHls(videoId, authorization);
         }
 
         if (result != null) {
@@ -41,6 +44,12 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         }
 
         return result;
+    }
+
+    private VideoInfo getVideoInfoHls(String videoId, String authorization) {
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), authorization);
+
+        return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String authorization) {

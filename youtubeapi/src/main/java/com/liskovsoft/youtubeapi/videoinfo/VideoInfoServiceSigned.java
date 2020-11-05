@@ -44,7 +44,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoLocalized(videoId, mLocaleManager.getLanguage(), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRegular(videoId, mLocaleManager.getLanguage(), authorization);
 
         return RetrofitHelper.get(wrapper);
     }

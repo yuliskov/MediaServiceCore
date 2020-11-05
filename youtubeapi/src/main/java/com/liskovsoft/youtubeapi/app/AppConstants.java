@@ -17,13 +17,15 @@ public interface AppConstants {
     String FUNCTION_RANDOM_BYTES =
      "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}}";
 
+    String CLIENT_VERSION = "7.20201103.00.00";
+
     /**
      * Used in browse, next, search<br/>
      * Previous client version: 7.20190214
      */
-    String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"7.20200913.00.00\"," +
-            "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\",\"utcOffsetMinutes\":\"%s\"}," +
-            "\"user\":{\"enableSafetyMode\":false}},%s}";
+    String JSON_POST_DATA_TEMPLATE = String.format("{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
+            "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
+            "\"user\":{\"enableSafetyMode\":false}},%%s}", CLIENT_VERSION);
 
     /**
      * Used when parsing video_info data

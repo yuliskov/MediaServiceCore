@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,8 +19,11 @@ public interface VideoInfoManagerSigned {
     @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Header("Authorization") String auth);
 
-    @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
-    Call<VideoInfo> getVideoInfoLocalized(@Query("video_id") String videoId, @Query("hl") String lang, @Header("Authorization") String auth);
+    /**
+     * Unlock personal videos: <code>c=TVHTML5&cver=7.20201103.00.00</code><br/>
+     */
+    @GET("https://www.youtube.com/get_video_info?ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&c=TVHTML5&cver=" + AppConstants.CLIENT_VERSION)
+    Call<VideoInfo> getVideoInfoRegular(@Query("video_id") String videoId, @Query("hl") String lang, @Header("Authorization") String auth);
 
     @GET("https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv")
     Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Header("Authorization") String auth);

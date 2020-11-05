@@ -28,10 +28,10 @@ public class AppHelper {
 
         String[] timeParts = lengthText.split(TIME_TEXT_DELIM);
 
-        // TODO: time conversion doesn't take into account locale specific delimiters
-        int hours = timeParts.length == 3 ? Helpers.parseInt(timeParts[0]) : 0;
-        int minutes = timeParts.length == 3 ? Helpers.parseInt(timeParts[1]) : Helpers.parseInt(timeParts[0]);
-        int seconds = timeParts.length == 3 ? Helpers.parseInt(timeParts[2]) : Helpers.parseInt(timeParts[1]);
+        // TODO: time conversion doesn't take into account locale specific delimiters (e.g ".", ",")
+        int hours = Helpers.parseInt(timeParts, 0, 0);
+        int minutes = Helpers.parseInt(timeParts, 1, hours);
+        int seconds = Helpers.parseInt(timeParts, 2, minutes);
 
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
     }

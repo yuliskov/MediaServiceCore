@@ -82,7 +82,7 @@ public class TrackingService {
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
                 videoId,
-                lengthSec, 0, positionSec, positionSec,
+                lengthSec, positionSec, positionSec,
                 clientPlaybackNonce,
                 eventId,
                 visitorMonitoringData,
@@ -92,7 +92,7 @@ public class TrackingService {
         RetrofitHelper.get(wrapper); // execute
 
         wrapper = mTrackingManager.updateWatchTime(
-                videoId, lengthSec, 0, positionSec, positionSec,
+                videoId, lengthSec, positionSec, positionSec,
                 clientPlaybackNonce, eventId, authorization
         );
 

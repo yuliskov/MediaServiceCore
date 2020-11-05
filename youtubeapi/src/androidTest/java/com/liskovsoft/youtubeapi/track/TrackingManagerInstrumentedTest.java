@@ -9,7 +9,6 @@ import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
-import com.liskovsoft.youtubeapi.track.TrackingManager;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -98,7 +97,7 @@ public class TrackingManagerInstrumentedTest {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
         VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
-        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecordShort(
                 videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
         );
 
@@ -122,7 +121,7 @@ public class TrackingManagerInstrumentedTest {
         VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
-                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), 0, positionSec,
+                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
                 positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
         );
 
@@ -134,7 +133,7 @@ public class TrackingManagerInstrumentedTest {
         VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
-                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), 0, positionSec,
+                videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
                 positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization
         );
 
@@ -145,7 +144,7 @@ public class TrackingManagerInstrumentedTest {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
         VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
-        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTime(
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.updateWatchTimeShort(
                 videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization
         );
 

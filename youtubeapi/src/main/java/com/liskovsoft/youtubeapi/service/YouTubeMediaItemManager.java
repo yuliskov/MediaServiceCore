@@ -81,17 +81,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
-        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-
-        YouTubeMediaItemMetadata metadata = ytMediaItem.getMetadata();
-
-        if (metadata == null) {
-            metadata = getMetadata(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex());
-
-            ytMediaItem.setMetadata(metadata);
-        }
-
-        return metadata;
+        return getMetadata(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex());
     }
 
     @Override
@@ -130,6 +120,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             YouTubeMediaItemMetadata metadata = getMetadata(item);
 
             if (metadata != null) {
+                ((YouTubeMediaItem) item).sync(metadata);
                 emitter.onNext(metadata);
             }
 

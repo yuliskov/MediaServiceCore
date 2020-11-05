@@ -216,14 +216,32 @@ Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrn
 
 ###
 
+POST https://www.youtube.com/youtubei/v1/subscription/subscribe
+Content-Type: application/json
+Authorization: Bearer ya29.A0AfH6SMC-3nQxTc4iFmClL1DOMozGpJBkF9UaE_z0AJPQvL8-b_AMRwK-3lqjV-0X5BmMUX_nNvu4cqbW1zuJa4Ai8ZmvbLsDeqbWl-VGXFnHhW-Zcwgm-trDJq6z5XMCbI4GoAhqcvxY5HPLToPU6eHPJfYi0ZcWzs-etKKlK3Nqcl5DvrpT
+User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200913.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false}},"channelIds":["UCYq-iAOSZBvoUxvfzwKIZWA"]}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/subscription/unsubscribe
+Content-Type: application/json
+Authorization: Bearer ya29.A0AfH6SMC-3nQxTc4iFmClL1DOMozGpJBkF9UaE_z0AJPQvL8-b_AMRwK-3lqjV-0X5BmMUX_nNvu4cqbW1zuJa4Ai8ZmvbLsDeqbWl-VGXFnHhW-Zcwgm-trDJq6z5XMCbI4GoAhqcvxY5HPLToPU6eHPJfYi0ZcWzs-etKKlK3Nqcl5DvrpT
+User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200913.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false}},"channelIds":["UCYq-iAOSZBvoUxvfzwKIZWA"]}
+
+###
+
 # Subscribe
 # Params:
 # channelIds: channel id
 POST https://www.youtube.com/youtubei/v1/subscription/subscribe
 Content-Type: application/json
-Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+Authorization: Bearer ya29.A0AfH6SMBiQMLF1qj1mUq5CeyEKrl7H_sA-ccNCwN5ATjU4NEc8f2axzkLMq7W1Yr0r_8Qb5x7yuL69wmkTsTsFdcgvjVv-hkdd3g1HCC0pfkyW99HvhuIwGgCLFs-vptquKx_qPGFxxTwx3CRrJqiBgUPhBdJsoViX-2Za2Z3L0JtT5YmhQgQ
 
-{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"channelIds":["UCaO6TYtlC8U5ttz62hTrZgg"]}
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200913.00.00","webpSupport":false,"animatedWebpSupport":true},"user":{"enableSafetyMode":false}},"channelIds":["UCYq-iAOSZBvoUxvfzwKIZWA"]}
 
 ###
 
@@ -232,9 +250,9 @@ Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrn
 # channelIds: channel id
 POST https://www.youtube.com/youtubei/v1/subscription/unsubscribe
 Content-Type: application/json
-Authorization: Bearer ya29.ImGIB5U-nT8Xi7fxbXfhgwyydahDBFL_JGiZwI4WweGRoUqBVDhrnG72Xd5RjNQGOWmRbd0IT9EARLQmFJz9fagHXktfxlxCSQx9ao0Jq3qKvMgXkK-wtH0E_fB2cmzBgBQL
+Authorization: Bearer ya29.A0AfH6SMBiQMLF1qj1mUq5CeyEKrl7H_sA-ccNCwN5ATjU4NEc8f2axzkLMq7W1Yr0r_8Qb5x7yuL69wmkTsTsFdcgvjVv-hkdd3g1HCC0pfkyW99HvhuIwGgCLFs-vptquKx_qPGFxxTwx3CRrJqiBgUPhBdJsoViX-2Za2Z3L0JtT5YmhQgQ
 
-{"context":{"client":{"clientName":"TVHTML5","clientVersion":"6.20180913","screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"theme":"CLASSIC","utcOffsetMinutes":180,"webpSupport":false,"animatedWebpSupport":false,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION"},"acceptRegion":"UA","experimentsToken":"GgIQAA%3D%3D","deviceMake":"LG","deviceModel":"42LA660S-ZA","platform":"TV"},"request":{"consistencyTokenJars":[{"encryptedTokenJarContents":"QUFTNTA0eWY1TzFCRG9LV2RkR3F3VEJGRy1WWkJZMWx6QVljT1hLOGVTdGYxVUVnRDdEbnlJTDBvRnpDRjUwZXozUld1Tjh5UEw2Rmc2djhreUJ4cVdSYmJjNnhFV19RSnhBeEhUbXNqajl0M2Y4bGFleWYzcjVXVzVidmUwSkhLWUt6aFVRRzNhd0M4RDdqelE=","expirationSeconds":"300"}]},"user":{"enableSafetyMode":false},"clientScreenNonce":"MC42ODQxOTU5NjkzMzg3NTI1"},"channelIds":["UCaO6TYtlC8U5ttz62hTrZgg"]}
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20200913.00.00","webpSupport":false,"animatedWebpSupport":true},"user":{"enableSafetyMode":false}},"channelIds":["UCYq-iAOSZBvoUxvfzwKIZWA"]}
 
 ###
 

@@ -42,6 +42,9 @@ public interface MediaItem {
     String getBackgroundImageUrl();
     int getWidth();
     int getHeight();
+    String getChannelId();
+    String getVideoPreviewUrl();
+    int getPlaylistIndex();
     /**
      * Num of audio channels.<br/>
      * Example: <b>"2.0"</b>
@@ -63,7 +66,4 @@ public interface MediaItem {
      * Example: <b>4.05f</b>
      */
     double getRatingScore();
-    String getChannelId();
-    String getVideoPreviewUrl();
-    int getPlaylistIndex();
 }

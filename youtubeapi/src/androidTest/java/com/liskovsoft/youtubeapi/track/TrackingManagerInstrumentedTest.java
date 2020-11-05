@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.track.V1;
+package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
-import com.liskovsoft.youtubeapi.track.V1.TrackingManager;
+import com.liskovsoft.youtubeapi.track.TrackingManager;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;

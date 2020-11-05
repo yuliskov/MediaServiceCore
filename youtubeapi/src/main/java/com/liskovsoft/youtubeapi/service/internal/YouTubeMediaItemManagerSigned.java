@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
-import com.liskovsoft.youtubeapi.track.V1.TrackingService;
+import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 

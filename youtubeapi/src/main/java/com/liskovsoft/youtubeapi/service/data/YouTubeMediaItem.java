@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
@@ -37,7 +38,6 @@ public class YouTubeMediaItem implements MediaItem {
     private double mRatingScore;
     private int mMediaItemType;
     private YouTubeMediaItemFormatInfo mFormatInfo;
-    private YouTubeMediaItemMetadata mMetadata;
     private int mPercentWatched;
     private String mAuthor;
     private String mVideoPreviewUrl;
@@ -365,6 +365,16 @@ public class YouTubeMediaItem implements MediaItem {
     public int getPlaylistIndex() {
         return mPlaylistIndex;
     }
+    
+    public void sync(MediaItemMetadata metadata) {
+        if (metadata == null) {
+            return;
+        }
+
+        mTitle = metadata.getTitle();
+        mDescription = metadata.getDescription();
+        mChannelId = metadata.getChannelId();
+    }
 
     public YouTubeMediaItemFormatInfo getFormatInfo() {
         return mFormatInfo;
@@ -372,14 +382,6 @@ public class YouTubeMediaItem implements MediaItem {
 
     public void setFormatInfo(YouTubeMediaItemFormatInfo formatInfo) {
         mFormatInfo = formatInfo;
-    }
-
-    public YouTubeMediaItemMetadata getMetadata() {
-        return mMetadata;
-    }
-
-    public void setMetadata(YouTubeMediaItemMetadata metadata) {
-        mMetadata = metadata;
     }
 
     public String getReloadPageKey() {

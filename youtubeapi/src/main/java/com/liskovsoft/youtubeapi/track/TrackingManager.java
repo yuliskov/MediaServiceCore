@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.track.V1;
+package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import retrofit2.Call;

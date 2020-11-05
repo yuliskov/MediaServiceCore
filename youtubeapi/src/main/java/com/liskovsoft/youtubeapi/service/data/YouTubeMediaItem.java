@@ -90,6 +90,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        // TODO: time conversion doesn't take into account locale specific delimiters
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
@@ -118,6 +119,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        // TODO: time conversion doesn't take into account locale specific delimiters
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
         video.mBadgeText = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
@@ -27,9 +28,10 @@ public class AppHelper {
 
         String[] timeParts = lengthText.split(TIME_TEXT_DELIM);
 
-        int hours = timeParts.length == 3 ? Integer.parseInt(timeParts[0]) : 0;
-        int minutes = timeParts.length == 3 ? Integer.parseInt(timeParts[1]) : Integer.parseInt(timeParts[0]);
-        int seconds = timeParts.length == 3 ? Integer.parseInt(timeParts[2]) : Integer.parseInt(timeParts[1]);
+        // TODO: time conversion doesn't take into account locale specific delimiters
+        int hours = timeParts.length == 3 ? Helpers.parseInt(timeParts[0]) : 0;
+        int minutes = timeParts.length == 3 ? Helpers.parseInt(timeParts[1]) : Helpers.parseInt(timeParts[0]);
+        int seconds = timeParts.length == 3 ? Helpers.parseInt(timeParts[2]) : Helpers.parseInt(timeParts[1]);
 
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
     }

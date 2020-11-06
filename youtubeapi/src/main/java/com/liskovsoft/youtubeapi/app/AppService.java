@@ -13,7 +13,8 @@ import java.util.List;
 
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
-    private static final long CACHE_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // 30 minutes
+    // Interval doesn't matter because we have MediaService.invalidateCache()
+    private static final long CACHE_REFRESH_PERIOD_MS = 24 * 60 * 60 * 1_000; // one day
     private static AppService sInstance;
     private final AppManagerWrapper mAppManager;
     private Duktape mDuktape;

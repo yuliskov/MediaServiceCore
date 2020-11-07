@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
@@ -180,17 +181,9 @@ public class AppService {
         AppInfo appInfo = mAppManager.getAppInfo(AppConstants.APP_USER_AGENT);
 
         if (appInfo != null) {
-            String playerUrl = appInfo.getPlayerUrl();
+            mCachedPlayerUrl = AppHelper.tidyUrl(appInfo.getPlayerUrl());
 
-            if (playerUrl != null) {
-                mCachedPlayerUrl = AppConstants.SCRIPTS_URL_BASE + playerUrl.replace("\\/", "/");
-            }
-
-            String baseUrl = appInfo.getBaseUrl();
-
-            if (baseUrl != null) {
-                mCachedBaseUrl = AppConstants.SCRIPTS_URL_BASE + baseUrl.replace("\\/", "/");
-            }
+            mCachedBaseUrl = AppHelper.tidyUrl(appInfo.getBaseUrl());
 
             mAppInfoUpdateTimeMS = System.currentTimeMillis();
         }

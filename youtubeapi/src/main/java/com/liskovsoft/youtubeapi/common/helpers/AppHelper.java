@@ -69,4 +69,18 @@ public class AppHelper {
 
         return result.length() != 0 ? result.toString() : null;
     }
+
+    /**
+     * Create absolute url from relative if needed<br/>
+     * There was a serious bug when absolute url prepended twice
+     */
+    public static String tidyUrl(String url) {
+        if (url == null) {
+            return null;
+        }
+
+        url = url.replace("\\/", "/");
+
+        return url.startsWith("/") ? AppConstants.SCRIPTS_URL_BASE + url : url;
+    }
 }

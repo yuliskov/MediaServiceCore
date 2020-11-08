@@ -20,7 +20,7 @@ public class WatchNextManagerParams {
         // present only on play lists
         // sometimes "params" present too: "params":"OAI%3D"
         if (playlistId != null) {
-            videoData += String.format(",\"playlistId\":\"%s\",\"playlistIndex\":%s", playlistId, playlistIndex);
+            videoData += String.format(",\"playlistId\":\"%s\",\"playlistIndex\":%s", playlistId, Math.max(playlistIndex, 0));
         }
 
         return AppHelper.createQuery(videoData);

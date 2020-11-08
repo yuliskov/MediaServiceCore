@@ -391,3 +391,11 @@ User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like 
 GET https://www.youtube.com/get_video_info?video_id=aIYqW0SLUJY&cpn=2ePY7HOcv_pwy2_3&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv%23%2F&ps=leanback&el=leanback&hl=en&sts=18568&lact=36&c=TVHTML5&cver=7.20201103.00.00&cplayer=UNIPLAYER&cbrand=Samsung&cbr=TV%20Safari&cbrver=538.1&ctheme=CLASSIC&cmodel=SmartHub&cnetwork&cos=Tizen&cosver=2.3&cplatform=TV&itct=CFIQlDUYACITCMTq6Z_56-wCFSEEmwodfW8CBDIHaGlzdG9yeQ%3D%3D&width=1280&height=720&ei=yzikX_GIJsnuyAXa04uIBg&living_room_app_mode=LIVING_ROOM_APP_MODE_UNSPECIFIED
 Authorization: Bearer ya29.A0AfH6SMDfvyGRtSAwS5USRO_0Fcvdtk-iysZ85EoYHO-vkiFH5bkr3vx_-o4aAZCGLrz9x_B9-6ZkTbutsr9S-hO7lPPwjrUT3BTEcPjmGfsQ9xvQ_QilgYBhRpvE0D-NUSTr5W8DYdqgdW619IanKZV0sHks8bM21u5TwxHL8LFRVfl5CXfZ
 User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)
+
+###
+
+#Search tags
+
+GET https://clients1.google.com/complete/search?q=bc&client=youtube-lr&ds=yt&xhr=t&hl=en&gl=us
+Authorization: Bearer ya29.A0AfH6SMDfvyGRtSAwS5USRO_0Fcvdtk-iysZ85EoYHO-vkiFH5bkr3vx_-o4aAZCGLrz9x_B9-6ZkTbutsr9S-hO7lPPwjrUT3BTEcPjmGfsQ9xvQ_QilgYBhRpvE0D-NUSTr5W8DYdqgdW619IanKZV0sHks8bM21u5TwxHL8LFRVfl5CXfZ
+User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)

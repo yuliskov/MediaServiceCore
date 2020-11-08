@@ -4,12 +4,16 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.models.SearchTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchManagerSignedTest extends SearchManagerTestBase {
@@ -53,4 +57,12 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
         checkSearchResultContinuation(result2);
     }
 
+    @Test
+    public void testThatSearchTagsNotEmpty() {
+        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("bc", TestHelpersV2.getAuthorization());
+        SearchTags searchTags = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Search tags not empty", searchTags);
+        assertTrue("Contains multiple tags", searchTags.getSearchTags().size() > 3);
+    }
 }

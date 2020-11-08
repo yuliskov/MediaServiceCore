@@ -91,15 +91,13 @@ public class RetrofitHelper {
         if (BuildConfig.DEBUG) {
             // Force enable for unit tests.
             // If you enable it to all requests - expect slowdowns.
-            //if (sForceEnableProfiler) {
-            //    okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
-            //}
+            if (sForceEnableProfiler) {
+                addProfiler(okBuilder);
+            }
 
-            okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+            //addProfiler(okBuilder);
 
-            //HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            //logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            //okBuilder.addInterceptor(logging);
+            addLogger(okBuilder);
 
             // Disable cache (could help with dlfree error on Eltex)
             //okBuilder.cache(null);
@@ -112,5 +110,15 @@ public class RetrofitHelper {
             requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
             return chain.proceed(requestBuilder.build());
         });
+    }
+
+    private static void addProfiler(OkHttpClient.Builder okBuilder) {
+        okBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+    }
+
+    private static void addLogger(OkHttpClient.Builder okBuilder) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        okBuilder.addInterceptor(logging);
     }
 }

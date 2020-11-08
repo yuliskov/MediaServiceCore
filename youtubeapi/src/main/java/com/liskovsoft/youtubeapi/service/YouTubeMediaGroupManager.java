@@ -57,6 +57,18 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
+    public List<String> getSearchTags(String searchText) {
+        checkSigned();
+
+        return mMediaGroupManagerReal.getSearchTags(searchText);
+    }
+
+    @Override
+    public Observable<List<String>> getSearchTagsObserve(String searchText) {
+        return ObservableHelper.fromNullable(() -> getSearchTags(searchText));
+    }
+
+    @Override
     public MediaGroup getSubscriptions() {
         Log.d(TAG, "Getting subscriptions...");
 

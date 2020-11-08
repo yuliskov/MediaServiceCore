@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface MediaGroupManager {
     MediaGroup getSearch(String searchText);
+    List<String> getSearchTags(String searchText);
     MediaGroup getSubscriptions();
     MediaGroup getRecommended(); // Note, that recommended is a part of Home
     MediaGroup getHistory();
@@ -18,6 +19,7 @@ public interface MediaGroupManager {
 
     // RxJava interfaces
     Observable<MediaGroup> getSearchObserve(String searchText);
+    Observable<List<String>> getSearchTagsObserve(String searchText);
     Observable<MediaGroup> getSubscriptionsObserve();
     Observable<MediaGroup> getRecommendedObserve(); // Note, that recommended is a part of Home
     Observable<MediaGroup> getHistoryObserve();

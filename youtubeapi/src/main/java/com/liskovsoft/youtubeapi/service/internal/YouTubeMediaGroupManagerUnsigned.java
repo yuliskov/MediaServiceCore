@@ -45,6 +45,11 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
+    public List<String> getSearchTags(String searchText) {
+        return mSearchServiceUnsigned.getSearchTags(searchText);
+    }
+
+    @Override
     public SearchResultContinuation continueSearch(String nextKey) {
         Log.d(TAG, "Continue search group...");
 

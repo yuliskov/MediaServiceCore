@@ -1,9 +1,13 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.models.SearchTags;
 import retrofit2.Call;
+
+import java.util.List;
 
 /**
  * Wraps result from the {@link SearchManagerSigned}
@@ -57,5 +61,16 @@ public class SearchServiceSigned {
         }
 
         return searchResult;
+    }
+
+    public List<String> getSearchTags(String searchText, String authorization) {
+        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags(searchText, authorization);
+        SearchTags searchTags = RetrofitHelper.get(wrapper);
+
+        if (searchTags != null && searchTags.getSearchTags() != null) {
+            return searchTags.getSearchTags();
+        }
+
+        return null;
     }
 }

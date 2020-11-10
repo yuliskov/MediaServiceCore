@@ -51,4 +51,8 @@ public class BrowseManagerParams {
         String continuation = String.format(CONTINUATION, nextPageKey);
         return AppHelper.createQuery(continuation);
     }
+
+    public static String getGuideQuery() {
+        return AppHelper.createQuery("");
+    }
 }

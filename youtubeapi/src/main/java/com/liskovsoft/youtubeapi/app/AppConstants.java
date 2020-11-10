@@ -23,7 +23,7 @@ public interface AppConstants {
      * Used in browse, next, search<br/>
      * Previous client version: 7.20190214
      */
-    String JSON_POST_DATA_TEMPLATE = String.format("{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
+    String JSON_POST_DATA_TEMPLATE = String.format("{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
             "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
             "\"user\":{\"enableSafetyMode\":false}},%%s}", CLIENT_VERSION);
 

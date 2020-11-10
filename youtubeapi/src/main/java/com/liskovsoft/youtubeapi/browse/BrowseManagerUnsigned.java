@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.guide.Guide;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
@@ -40,4 +41,8 @@ public interface BrowseManagerUnsigned {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
     Call<SectionList> getSectionList(@Body String browseQuery);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/guide?key=" + AppConstants.API_KEY)
+    Call<Guide> getGuide(@Body String browseQuery);
 }

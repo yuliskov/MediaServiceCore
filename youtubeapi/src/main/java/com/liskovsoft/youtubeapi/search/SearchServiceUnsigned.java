@@ -63,6 +63,10 @@ public class SearchServiceUnsigned {
     }
 
     public List<String> getSearchTags(String searchText) {
+        if (searchText == null) {
+            searchText = "";
+        }
+
         Call<SearchTags> wrapper = mSearchManagerUnsigned.getSearchTags(searchText);
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 

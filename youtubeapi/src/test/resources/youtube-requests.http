@@ -395,7 +395,18 @@ User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like 
 ###
 
 #Search tags
+#https://clients1.google.com/complete/search?nonce=1604975130899&q&client=youtube-lr&ds=yt&xhr=t&oe=utf-8&hl=en&gl=us&tok=ej9W3CyhBendvx9fzpa55g&sugexp=ytdw_cc9%2Cytpo.bo.se%3D0%2Cytposo.bo.me%3D0%2Ccfro%3D1%2Cytpo.bo.se%3D1%2Cytposo.bo.me%3D1%2Cytpo.bo.so.dw%3D1%2Cytpo.bo.so.dwm%3D3%2Cytpo.bo.so.dwb%3D100.0%2Cytposo.bo.so.dw%3D1%2Cytposo.bo.so.dwm%3D3%2Cytposo.bo.so.dwb%3D100.0
 
-GET https://clients1.google.com/complete/search?q=bc&client=youtube-lr&ds=yt&xhr=t&hl=en&gl=us
-Authorization: Bearer ya29.A0AfH6SMDfvyGRtSAwS5USRO_0Fcvdtk-iysZ85EoYHO-vkiFH5bkr3vx_-o4aAZCGLrz9x_B9-6ZkTbutsr9S-hO7lPPwjrUT3BTEcPjmGfsQ9xvQ_QilgYBhRpvE0D-NUSTr5W8DYdqgdW619IanKZV0sHks8bM21u5TwxHL8LFRVfl5CXfZ
+GET https://clients1.google.com/complete/search?q&client=youtube-lr&ds=yt&xhr=t&hl=en&gl=us&tok=s_3xEJfR0HI6WcdeCVd6iA
+Authorization: Bearer ya29.A0AfH6SMBCZVXX-J3ds5ArANtBHpZ6Exx1BtyHDqhu_9L-yl6lEknRf_5DvYuEj6jCyf7rNugOjzRvHKLFKFHKExT3errXbUzo6pwkF191rfN7hlRqLb9fII9kIGaox8_nxF5J7aJWD6jyyo5VQeJRgv_5xvkhVBpcHHHCU3w2SKNcAd6zTDuY
 User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)
+
+###
+
+# Guide
+
+POST https://www.youtube.com/youtubei/v1/guide
+Authorization: Bearer ya29.A0AfH6SMCu9Y-tdsS7_vW3T1MH-yhf6u_ydc7sQwUcBrnxrS7E68qMMjSnZGyKIQ_ImcOAN1dNhHqgOWg3_YHAzesQLLsPPFa6udvG3zbsn22RxW36COTFaS_RdnaL9j_1-t1vzTDQ-oqe_2k8o2PsRASeqRr4XongvD9Vntub9-mB2iQpoDfg
+User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20201103.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false}},}

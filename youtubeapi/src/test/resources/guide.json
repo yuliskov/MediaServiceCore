@@ -6,7 +6,7 @@
         "params": [
           {
             "key": "e",
-            "value": "23744176,23804281,23839597,23856950,23857949,23862346,23882503,23884386,23895671,23911055,23916148,23918597,23921357,23928508,23928545,23930220,23931993,23934970,23939554,23940704,23942364,23942434,23942750,23943055,23943502,23944554,24590231,9449243"
+            "value": "23744176,23804281,23839597,23856950,23857949,23880043,23882503,23884386,23895671,23911055,23915993,23918597,23931993,23934970,23940248,23940704,23942338,23942434,23942633,23944779,23945479,23946420,23948841,23951620,23953999,23954761,23955809,23956063,23958692,23960091,23962621,23963794,23964478,23965594,23965773,23966489,23966583,23967094,23967663,23967968,23969282,24590290,24631665,24631715,9449243"
           },
           {
             "key": "logged_in",
@@ -18,14 +18,18 @@
         "service": "SUGGEST",
         "params": [
           {
+            "key": "sugexp",
+            "value": "ytdw_cc9,ytpo.bo.se=0,ytposo.bo.me=0,cfro=1,ytpo.bo.se=1,ytposo.bo.me=1,ytpo.bo.so.dw=1,ytpo.bo.so.dwm=3,ytpo.bo.so.dwb=100.0,ytposo.bo.so.dw=1,ytposo.bo.so.dwm=3,ytposo.bo.so.dwb=100.0"
+          },
+          {
             "key": "suggest_token",
-            "value": "yE34BPmILIQB85CpTq1Tug"
+            "value": "s_3xEJfR0HI6WcdeCVd6iA"
           }
         ]
       }
     ]
   },
-  "trackingParams": "CAAQumkiEwj63-H3udnrAhU7yxEIHdl7CCk=",
+  "trackingParams": "CAAQumkiEwjExO_S-vbsAhULWrIKHSoADbA=",
   "items": [
     {
       "guideSectionRenderer": {
@@ -50,16 +54,16 @@
                 ]
               },
               "navigationEndpoint": {
-                "clickTrackingParams": "CA0QtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CA0QtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
                 "signalNavigationEndpoint": {
                   "signal": "ACCOUNT_SETTINGS"
                 }
               },
-              "trackingParams": "CA0QtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+              "trackingParams": "CA0QtSwYACITCMTE79L69uwCFQtasgodKgANsA=="
             }
           }
         ],
-        "trackingParams": "CAwQ5isYACITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+        "trackingParams": "CAwQ5isYACITCMTE79L69uwCFQtasgodKgANsA=="
       }
     },
     {
@@ -68,7 +72,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAsQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAsQtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
                 "searchEndpoint": {
                   "query": ""
                 }
@@ -77,7 +81,7 @@
               "icon": {
                 "iconType": "SEARCH"
               },
-              "trackingParams": "CAsQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAsQtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "Search"
               }
@@ -86,7 +90,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAoQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAoQtSwYASITCMTE79L69uwCFQtasgodKgANsA==",
                 "browseEndpoint": {
                   "browseId": "FEtopics"
                 }
@@ -95,7 +99,7 @@
               "icon": {
                 "iconType": "WHAT_TO_WATCH"
               },
-              "trackingParams": "CAoQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAoQtSwYASITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "Home"
               }
@@ -104,7 +108,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAkQtSwYAiITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAkQtSwYAiITCMTE79L69uwCFQtasgodKgANsA==",
                 "browseEndpoint": {
                   "browseId": "FEtopics",
                   "params": "-gIGZ2FtaW5n"
@@ -114,7 +118,7 @@
               "icon": {
                 "iconType": "GAMING"
               },
-              "trackingParams": "CAkQtSwYAiITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAkQtSwYAiITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "Gaming"
               }
@@ -123,7 +127,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAgQtSwYAyITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAgQtSwYAyITCMTE79L69uwCFQtasgodKgANsA==",
                 "browseEndpoint": {
                   "browseId": "FEtopics",
                   "params": "-gINaGFwcGVuaW5nX25vdw%3D%3D"
@@ -133,7 +137,7 @@
               "icon": {
                 "iconType": "NEWS"
               },
-              "trackingParams": "CAgQtSwYAyITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAgQtSwYAyITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "News"
               }
@@ -142,7 +146,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAcQtSwYBCITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAcQtSwYBCITCMTE79L69uwCFQtasgodKgANsA==",
                 "browseEndpoint": {
                   "browseId": "FEtopics",
                   "params": "-gIFbXVzaWM%3D"
@@ -152,14 +156,14 @@
               "icon": {
                 "iconType": "YOUTUBE_MUSIC"
               },
-              "trackingParams": "CAcQtSwYBCITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAcQtSwYBCITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "Music"
               }
             }
           }
         ],
-        "trackingParams": "CAYQ5isYASITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+        "trackingParams": "CAYQ5isYASITCMTE79L69uwCFQtasgodKgANsA=="
       }
     },
     {
@@ -168,7 +172,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAUQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAUQtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
                 "browseEndpoint": {
                   "browseId": "FEsubscriptions"
                 }
@@ -177,7 +181,7 @@
               "icon": {
                 "iconType": "SUBSCRIPTIONS"
               },
-              "trackingParams": "CAUQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAUQtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "Subscriptions"
               }
@@ -186,7 +190,7 @@
           {
             "guideEntryRenderer": {
               "navigationEndpoint": {
-                "clickTrackingParams": "CAQQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+                "clickTrackingParams": "CAQQtSwYASITCMTE79L69uwCFQtasgodKgANsA==",
                 "browseEndpoint": {
                   "browseId": "FEmy_youtube"
                 }
@@ -195,14 +199,14 @@
               "icon": {
                 "iconType": "TAB_LIBRARY"
               },
-              "trackingParams": "CAQQtSwYASITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "trackingParams": "CAQQtSwYASITCMTE79L69uwCFQtasgodKgANsA==",
               "formattedTitle": {
                 "simpleText": "Library"
               }
             }
           }
         ],
-        "trackingParams": "CAMQ5isYAiITCPrf4fe52esCFTvLEQgd2XsIKQ=="
+        "trackingParams": "CAMQ5isYAiITCMTE79L69uwCFQtasgodKgANsA=="
       }
     }
   ],
@@ -212,7 +216,7 @@
         {
           "guideEntryRenderer": {
             "navigationEndpoint": {
-              "clickTrackingParams": "CAIQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+              "clickTrackingParams": "CAIQtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
               "applicationSettingsEndpoint": {
                 "hack": true
               }
@@ -221,14 +225,14 @@
             "icon": {
               "iconType": "SETTINGS"
             },
-            "trackingParams": "CAIQtSwYACITCPrf4fe52esCFTvLEQgd2XsIKQ==",
+            "trackingParams": "CAIQtSwYACITCMTE79L69uwCFQtasgodKgANsA==",
             "formattedTitle": {
               "simpleText": "Settings"
             }
           }
         }
       ],
-      "trackingParams": "CAEQ5isiEwj63-H3udnrAhU7yxEIHdl7CCk="
+      "trackingParams": "CAEQ5isiEwjExO_S-vbsAhULWrIKHSoADbA="
     }
   }
 }

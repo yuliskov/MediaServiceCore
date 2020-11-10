@@ -65,4 +65,13 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
         assertNotNull("Search tags not empty", searchTags);
         assertTrue("Contains multiple tags", searchTags.getSearchTags().size() > 3);
     }
+
+    @Test
+    public void testThatSearchTagsHistoryNotEmpty() {
+        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("", TestHelpersV2.getAuthorization());
+        SearchTags searchTags = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Search tags not empty", searchTags);
+        assertTrue("Contains multiple tags", searchTags.getSearchTags().size() > 3);
+    }
 }

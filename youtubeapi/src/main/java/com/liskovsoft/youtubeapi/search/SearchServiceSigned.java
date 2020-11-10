@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
+import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -15,9 +16,11 @@ import java.util.List;
 public class SearchServiceSigned {
     private static SearchServiceSigned sInstance;
     private final SearchManagerSigned mSearchManagerSigned;
+    private final BrowseServiceSigned mBrowseService;
 
     private SearchServiceSigned() {
         mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchManagerSigned.class);
+        mBrowseService = BrowseServiceSigned.instance();
     }
 
     public static SearchServiceSigned instance() {
@@ -64,7 +67,11 @@ public class SearchServiceSigned {
     }
 
     public List<String> getSearchTags(String searchText, String authorization) {
-        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags(searchText, authorization);
+        if (searchText == null) {
+            searchText = "";
+        }
+
+        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags(searchText, mBrowseService.getSuggestToken(authorization), authorization);
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 
         if (searchTags != null && searchTags.getSearchTags() != null) {

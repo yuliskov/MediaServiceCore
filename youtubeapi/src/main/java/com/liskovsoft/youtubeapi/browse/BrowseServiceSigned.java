@@ -4,8 +4,9 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
+import com.liskovsoft.youtubeapi.browse.models.guide.Guide;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
@@ -14,7 +15,9 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * For auth users only!<br/>
@@ -24,6 +27,7 @@ public class BrowseServiceSigned {
     private static final String TAG = BrowseServiceSigned.class.getSimpleName();
     private final BrowseManagerSigned mBrowseManagerSigned;
     private static BrowseServiceSigned sInstance;
+    private Map<String, Guide> mGuideMap = new HashMap<>();
 
     private BrowseServiceSigned() {
         mBrowseManagerSigned = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
@@ -201,6 +205,37 @@ public class BrowseServiceSigned {
         Call<SectionTabContinuation> wrapper = mBrowseManagerSigned.continueSectionTab(query, authorization);
 
         return RetrofitHelper.get(wrapper);
+    }
+
+    private Guide getGuide(String authorization) {
+        if (authorization == null) {
+            Log.e(TAG, "getGuide: authorization is null.");
+            return null;
+        }
+
+        Call<Guide> wrapper = mBrowseManagerSigned.getGuide(BrowseManagerParams.getGuideQuery(), authorization);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    public String getSuggestToken(String authorization) {
+        String result = null;
+
+        Guide guide = mGuideMap.get(authorization);
+
+        if (guide == null) {
+            mGuideMap.clear();
+            guide = getGuide(authorization);
+
+            if (guide != null) {
+                mGuideMap.put(authorization, guide);
+                result = guide.getSuggestToken();
+            }
+        } else {
+            result = guide.getSuggestToken();
+        }
+
+        return result;
     }
 
     private SectionTabList getSectionTabList(String query, String authorization) {

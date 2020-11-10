@@ -24,5 +24,5 @@ public interface SearchManagerSigned {
     Call<SearchResultContinuation> continueSearchResult(@Body String searchQuery, @Header("Authorization") String auth);
 
     @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&hl=en&gl=us")
-    Call<SearchTags> getSearchTags(@Query("q") String searchQuery, @Header("Authorization") String auth);
+    Call<SearchTags> getSearchTags(@Query("q") String searchQuery, @Query("tok") String suggestToken, @Header("Authorization") String auth);
 }

@@ -2,6 +2,8 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.guide.Guide;
+import com.liskovsoft.youtubeapi.browse.models.guide.TrackingParam;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
@@ -170,6 +172,17 @@ public class BrowseManagerSignedTest {
         assertTrue("Grid tab not empty", gridTabContinuation.getItemWrappers().size() > 3);
 
         assertNotNull("Contains next key", gridTabContinuation.getNextPageKey());
+    }
+
+    @Test
+    public void testThatGuideNotEmpty() {
+        Call<Guide> wrapper = mService.getGuide(BrowseManagerParams.getGuideQuery(), TestHelpersV2.getAuthorization());
+        Guide guide = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Guide not null", guide);
+        assertTrue("Guide contains items", guide.getItems().size() > 5);
+
+        assertNotNull("Guide contains suggest token", guide.getSuggestToken());
     }
 
     private void tabbedNextResultNotEmpty(SectionContinuation browseResult) {

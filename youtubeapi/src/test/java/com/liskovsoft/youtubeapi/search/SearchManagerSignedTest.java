@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
+import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -20,6 +21,7 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
     private static final String SEARCH_TEXT_SPECIAL_CHAR = "What's Trending";
     private SearchManagerSigned mSearchManagerSigned;
+    private BrowseServiceSigned mBrowseServiceSigned;
 
     @Before
     public void setUp() {
@@ -30,6 +32,7 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
         ShadowLog.stream = System.out; // catch Log class output
 
         mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchManagerSigned.class);
+        mBrowseServiceSigned = BrowseServiceSigned.instance();
     }
 
     @Test
@@ -59,7 +62,9 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatSearchTagsNotEmpty() {
-        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("bc", TestHelpersV2.getAuthorization());
+        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("bc",
+                mBrowseServiceSigned.getSuggestToken(TestHelpersV2.getAuthorization()),
+                TestHelpersV2.getAuthorization());
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 
         assertNotNull("Search tags not empty", searchTags);
@@ -68,7 +73,9 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatSearchTagsHistoryNotEmpty() {
-        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("", TestHelpersV2.getAuthorization());
+        Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("",
+                mBrowseServiceSigned.getSuggestToken(TestHelpersV2.getAuthorization()),
+                TestHelpersV2.getAuthorization());
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 
         assertNotNull("Search tags not empty", searchTags);

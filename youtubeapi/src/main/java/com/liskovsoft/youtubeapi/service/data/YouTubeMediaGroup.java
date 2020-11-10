@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeMediaGroup implements MediaGroup {
-    private List<MediaItem> mMediaItems;
-    private String mTitle;
-    public String mNextPageKey;
     private final int mType;
+    private String mTitle;
+    private List<MediaItem> mMediaItems;
+    public String mNextPageKey;
+    private String mChannelUrl;
+    private String mChannelId;
 
     public YouTubeMediaGroup(int type) {
         mType = type;
@@ -45,6 +47,12 @@ public class YouTubeMediaGroup implements MediaGroup {
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
         if (continuation == null) {
             return null;
+        }
+
+        // Subscribed channel view. Add details.
+        if (continuation.getChannelButton() != null) {
+            ((YouTubeMediaGroup) baseGroup).setChannelId(continuation.getChannelButton().getBrowseId());
+            ((YouTubeMediaGroup) baseGroup).setChannelUrl(continuation.getChannelButton().getCanonicalBaseUrl());
         }
 
         return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
@@ -148,6 +156,24 @@ public class YouTubeMediaGroup implements MediaGroup {
     @Override
     public int getType() {
         return mType;
+    }
+
+    @Override
+    public String getChannelId() {
+        return mChannelId;
+    }
+
+    @Override
+    public String getChannelUrl() {
+        return mChannelUrl;
+    }
+
+    private void setChannelUrl(String channelUrl) {
+        mChannelUrl = channelUrl;
+    }
+
+    private void setChannelId(String browseId) {
+        mChannelId = browseId;
     }
 
     private static MediaGroup create(YouTubeMediaGroup baseGroup, List<GridTab> tabs) {

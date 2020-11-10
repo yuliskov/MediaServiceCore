@@ -22,4 +22,6 @@ public interface MediaGroup {
     void setMediaItems(List<MediaItem> tabs);
     String getTitle();
     void setTitle(String title);
+    String getChannelId();
+    String getChannelUrl();
 }

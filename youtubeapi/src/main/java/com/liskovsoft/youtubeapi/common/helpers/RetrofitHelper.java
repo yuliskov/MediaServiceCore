@@ -91,11 +91,11 @@ public class RetrofitHelper {
         if (BuildConfig.DEBUG) {
             // Force enable for unit tests.
             // If you enable it to all requests - expect slowdowns.
-            if (sForceEnableProfiler) {
-                addProfiler(okBuilder);
-            }
+            //if (sForceEnableProfiler) {
+            //    addProfiler(okBuilder);
+            //}
 
-            //addProfiler(okBuilder);
+            addProfiler(okBuilder);
 
             addLogger(okBuilder);
 

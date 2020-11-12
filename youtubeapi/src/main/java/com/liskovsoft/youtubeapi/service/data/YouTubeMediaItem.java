@@ -223,6 +223,7 @@ public class YouTubeMediaItem implements MediaItem {
         item.mCardImageUrl = highResThumbnailUrl;
         item.mBackgroundImageUrl = highResThumbnailUrl;
         item.mReloadPageKey = tab.getReloadPageKey();
+        item.mBadgeText = tab.getBadge();
         addCommonProps(item);
 
         return item;

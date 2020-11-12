@@ -7,6 +7,8 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import java.util.List;
 
 public class GridTab {
+    private static final String PRESENTATION_NEW_CONTENT = "NEW_CONTENT";
+
     @JsonPath("$.title")
     private String mTitle;
 
@@ -46,6 +48,12 @@ public class GridTab {
     @JsonPath("$.unselectable")
     private boolean mUnselectable;
 
+    /**
+     * Channel mark that there is new content available
+     */
+    @JsonPath("$.presentationStyle.style")
+    private String mPresentationStyle;
+
     public String getTitle() {
         return mTitle;
     }
@@ -80,5 +88,13 @@ public class GridTab {
 
     public List<ItemWrapper> getItemWrappers() {
         return mItemWrappers;
+    }
+
+    public boolean hasNewContent() {
+        return PRESENTATION_NEW_CONTENT.equals(mPresentationStyle);
+    }
+
+    public String getBadge() {
+        return mPresentationStyle;
     }
 }

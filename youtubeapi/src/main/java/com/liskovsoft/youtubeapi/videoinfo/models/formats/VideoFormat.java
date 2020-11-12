@@ -106,11 +106,13 @@ public class VideoFormat {
         if (signature != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
-            if (url.contains(PARAM_SIGNATURE_SPECIAL_MARK)) {
-                url.set(PARAM_SIGNATURE_SPECIAL, signature);
-            } else {
-                url.set(PARAM_SIGNATURE, signature);
-            }
+            //if (url.contains(PARAM_SIGNATURE_SPECIAL_MARK)) {
+            //    url.set(PARAM_SIGNATURE_SPECIAL, signature);
+            //} else {
+            //    url.set(PARAM_SIGNATURE, signature);
+            //}
+
+            url.set(PARAM_SIGNATURE_SPECIAL, signature);
 
             mUrl = url.toString();
 

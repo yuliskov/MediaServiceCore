@@ -93,8 +93,4 @@ public class GridTab {
     public boolean hasNewContent() {
         return PRESENTATION_NEW_CONTENT.equals(mPresentationStyle);
     }
-
-    public String getBadge() {
-        return mPresentationStyle;
-    }
 }

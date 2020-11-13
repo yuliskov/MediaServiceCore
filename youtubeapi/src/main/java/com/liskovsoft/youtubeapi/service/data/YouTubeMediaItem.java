@@ -43,6 +43,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mVideoPreviewUrl;
     private int mPlaylistIndex;
     private String mReloadPageKey;
+    private boolean mHasNewContent;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -223,7 +224,7 @@ public class YouTubeMediaItem implements MediaItem {
         item.mCardImageUrl = highResThumbnailUrl;
         item.mBackgroundImageUrl = highResThumbnailUrl;
         item.mReloadPageKey = tab.getReloadPageKey();
-        item.mBadgeText = tab.getBadge();
+        item.mHasNewContent = tab.hasNewContent();
         addCommonProps(item);
 
         return item;
@@ -361,6 +362,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getBadgeText() {
         return mBadgeText;
+    }
+
+    @Override
+    public boolean hasNewContent() {
+        return mHasNewContent;
     }
 
     @Override

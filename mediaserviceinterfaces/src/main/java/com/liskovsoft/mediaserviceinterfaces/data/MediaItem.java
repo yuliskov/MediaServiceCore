@@ -18,6 +18,9 @@ public interface MediaItem {
     // Playlist props
     String getPlaylistId();
 
+    // Channel props
+    boolean hasNewContent();
+
     // Generic props
     int getId();
     String getTitle();

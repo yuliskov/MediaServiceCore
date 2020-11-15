@@ -22,4 +22,5 @@ public interface MediaItemMetadata {
     int getPercentWatched();
     int getLikeStatus();
     List<MediaGroup> getSuggestions();
+    String getDescriptionAlt();
 }

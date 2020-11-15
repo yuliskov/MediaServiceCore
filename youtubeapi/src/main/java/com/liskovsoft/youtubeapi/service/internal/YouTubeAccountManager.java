@@ -135,6 +135,10 @@ public class YouTubeAccountManager {
         StringBuilder result = new StringBuilder();
 
         for (Account account : mAccounts) {
+            if (account.isEmpty()) {
+                continue;
+            }
+
             if (result.length() != 0) {
                 result.append("|");
             }

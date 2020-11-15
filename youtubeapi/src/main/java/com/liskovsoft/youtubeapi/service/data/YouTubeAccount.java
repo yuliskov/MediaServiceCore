@@ -86,6 +86,11 @@ public class YouTubeAccount implements Account {
     }
 
     @Override
+    public boolean isEmpty() {
+        return mName == null && mEmail == null;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof YouTubeAccount) {
             YouTubeAccount account = (YouTubeAccount) obj;

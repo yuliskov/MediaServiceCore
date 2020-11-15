@@ -28,6 +28,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private MediaItem mNextVideo;
     private List<MediaGroup> mSuggestions;
     private String mDescription;
+    private String mDescriptionAlt;
     private boolean mIsLive;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
@@ -43,7 +44,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mTitle = videoMetadata.getTitle();
         mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
                 videoOwner.getVideoAuthor(),
-                videoMetadata.getPublishedTimeAlt(),
+                videoMetadata.getPublishedTime(),
+                videoMetadata.getShortViewCount(),
+                videoMetadata.isLive() ? "LIVE" : "");
+        mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
+                videoOwner.getVideoAuthor(),
+                videoMetadata.getPublishedDate(),
                 videoMetadata.getShortViewCount(),
                 videoMetadata.isLive() ? "LIVE" : "");
         mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
@@ -52,7 +58,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
         mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
         mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
-        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedTime();
+        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
         mediaItemMetadata.mIsLive = videoMetadata.isLive();
         mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
         mediaItemMetadata.mChannelId = videoOwner.getChannelId();
@@ -161,5 +167,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public String getDescription() {
         return mDescription;
+    }
+
+    @Override
+    public String getDescriptionAlt() {
+        return mDescriptionAlt;
     }
 }

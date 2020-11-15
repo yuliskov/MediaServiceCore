@@ -6,4 +6,5 @@ public interface Account {
     String getEmail();
     String getAvatarImageUrl();
     boolean isSelected();
+    boolean isEmpty();
 }

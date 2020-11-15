@@ -28,9 +28,9 @@ public class CurrentVideo {
     @JsonPath({"$.description.simpleText", "$.description.runs[0].text"})
     private String mDescription;
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
-    private String mPublishedTimeAlt;
-    @JsonPath({"$.dateText.simpleText", "$.dateText.runs[0].text"})
     private String mPublishedTime;
+    @JsonPath({"$.dateText.simpleText", "$.dateText.runs[0].text"})
+    private String mPublishedDate;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
     @JsonPath({"$.viewCount.videoViewCountRenderer.isLive"})
@@ -68,12 +68,12 @@ public class CurrentVideo {
         return mDescription;
     }
 
-    public String getPublishedTimeAlt() {
-        return mPublishedTimeAlt;
-    }
-
     public String getPublishedTime() {
         return mPublishedTime;
+    }
+
+    public String getPublishedDate() {
+        return mPublishedDate;
     }
 
     public int getPercentWatched() {

@@ -9,7 +9,6 @@ import java.util.List;
  * Root element: gridVideoRenderer/pivotVideoRenderer
  */
 public class VideoItem {
-    private static final String BADGE_TEXT_LIVE = "LIVE";
     private static final String BADGE_STYLE_LIVE = "LIVE";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
@@ -28,9 +27,10 @@ public class VideoItem {
     @JsonPath({"$.shortBylineText.runs[0].text", "$.longBylineText.runs[0].text"})
     private String mUserName;
     @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
-               "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
-               "$.menu.menuRenderer.items[0].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId"})
+               "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId"})
     private String mChannelId;
+    @JsonPath("$.menu.menuRenderer.items[*].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId")
+    private List<String> mMenuChannelId;
     @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl"})
     private String mCanonicalChannelUrl;
@@ -94,7 +94,7 @@ public class VideoItem {
     }
 
     public String getChannelId() {
-        return mChannelId;
+        return mChannelId != null ? mChannelId : mMenuChannelId != null ? mMenuChannelId.get(0) : null;
     }
 
     public String getCanonicalChannelUrl() {
@@ -126,7 +126,11 @@ public class VideoItem {
     }
 
     public boolean isLive() {
-        return BADGE_STYLE_LIVE.equals(mBadgeStyle) || BADGE_TEXT_LIVE.equals(mBadgeText);
+        return BADGE_STYLE_LIVE.equals(mBadgeStyle);
+    }
+
+    public boolean isUpcoming() {
+        return BADGE_STYLE_UPCOMING.equals(mBadgeStyle);
     }
 
     public int getPercentWatched() {

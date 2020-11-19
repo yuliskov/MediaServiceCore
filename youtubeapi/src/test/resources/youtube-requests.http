@@ -419,3 +419,11 @@ authorization: Bearer ya29.A0AfH6SMAlLtlGjazH_vYwUQ0wpn0_O0x3KfNA37xxYm7UhbWWlZ6
 User-Agent: Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20201103.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false}},"browseId":"FEtopics"}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/browse
+authorization: Bearer ya29.A0AfH6SMB9e-3IzROa4KPojfHa2_hR_7EqTfZUTHBnT0WJMz93hg1nIKIG2-JEjqP1ibkeUpn8CqX1bGSYYraJILgW6-NdT-UXNCjtlaV2tO2sfYFsnJ5P_o6UybvZU4BKaiDzsmjK07PqU7izuuo-TFnZVTs2WLNLvsQIBUZvc0-feF_uD_Sc
+user-agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/120 (unlike Gecko) Starboard/1
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20201103.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"RU","acceptLanguage":"ru","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false}},"browseId":"FEtopics"}

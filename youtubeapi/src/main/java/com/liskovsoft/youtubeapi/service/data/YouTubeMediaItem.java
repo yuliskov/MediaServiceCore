@@ -26,6 +26,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mBackgroundImageUrl;
     private String mContentType;
     private boolean mIsLive;
+    private boolean mIsUpcoming;
     private int mDurationMs;
     private String mBadgeText;
     private String mProductionDate;
@@ -97,6 +98,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
+        video.mIsLive = item.isLive();
+        video.mIsUpcoming = item.isUpcoming();
 
         addCommonProps(video);
 
@@ -292,6 +295,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public boolean isLive() {
         return mIsLive;
+    }
+
+    @Override
+    public boolean isUpcoming() {
+        return mIsUpcoming;
     }
 
     @Override

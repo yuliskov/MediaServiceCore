@@ -251,6 +251,18 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public void markAsNotInterested(MediaItem item) {
+        checkSigned();
+
+        mMediaItemManagerReal.markAsNotInterested(item.getFeedbackToken());
+    }
+
+    @Override
+    public Observable<Void> markAsNotInterestedObserve(MediaItem item) {
+        return ObservableHelper.fromVoidable(() -> markAsNotInterested(item));
+    }
+
+    @Override
     public List<VideoPlaylistInfo> getVideoPlaylistsInfos(String videoId) {
         checkSigned();
 

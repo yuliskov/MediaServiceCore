@@ -15,6 +15,7 @@ public interface MediaItem {
     boolean isUpcoming();
     int getPercentWatched();
     String getAuthor();
+    String getFeedbackToken();
 
     // Playlist props
     String getPlaylistId();

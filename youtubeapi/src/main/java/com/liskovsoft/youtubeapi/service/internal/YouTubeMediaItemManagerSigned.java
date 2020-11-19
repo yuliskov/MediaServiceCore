@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.youtubeapi.actions.ActionsService;
+import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
@@ -19,6 +20,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private final VideoInfoServiceSigned mVideoInfoServiceSigned;
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
+    private final FeedbackService mFeedbackService;
 
     private YouTubeMediaItemManagerSigned() {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
@@ -27,6 +29,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
         mActionsService = ActionsService.instance();
         mPlaylistService = PlaylistService.instance();
+        mFeedbackService = FeedbackService.instance();
     }
 
     public static YouTubeMediaItemManagerSigned instance() {
@@ -97,6 +100,11 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     @Override
     public void unsubscribe(String channelId) {
         mActionsService.unsubscribe(channelId, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public void markAsNotInterested(String feedbackToken) {
+        mFeedbackService.markAsNotInterested(feedbackToken, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

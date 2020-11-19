@@ -45,6 +45,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mPlaylistIndex;
     private String mReloadPageKey;
     private boolean mHasNewContent;
+    private String mFeedbackToken;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -100,6 +101,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
         video.mIsLive = item.isLive();
         video.mIsUpcoming = item.isUpcoming();
+        video.mFeedbackToken = item.getFeedbackToken();
 
         addCommonProps(video);
 
@@ -386,7 +388,12 @@ public class YouTubeMediaItem implements MediaItem {
     public int getPlaylistIndex() {
         return mPlaylistIndex;
     }
-    
+
+    @Override
+    public String getFeedbackToken() {
+        return mFeedbackToken;
+    }
+
     public void sync(MediaItemMetadata metadata) {
         if (metadata == null) {
             return;

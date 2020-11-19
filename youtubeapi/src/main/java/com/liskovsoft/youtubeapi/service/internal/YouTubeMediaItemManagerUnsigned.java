@@ -87,6 +87,11 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     }
 
     @Override
+    public void markAsNotInterested(String feedbackToken) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
     public PlaylistsResult getVideoPlaylistsInfos(String videoId) {
         // Do nothing, user is unsigned
         return null;

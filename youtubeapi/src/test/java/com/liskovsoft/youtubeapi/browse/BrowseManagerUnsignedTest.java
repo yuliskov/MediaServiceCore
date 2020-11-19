@@ -349,7 +349,7 @@ public class BrowseManagerUnsignedTest {
     private void tabbedResultNotEmpty(SectionTabList browseResult) {
         assertNotNull("Tabbed result not empty", browseResult);
         assertNotNull("Tabs list not empty", browseResult.getTabs());
-        assertTrue("Tabs list > 2", browseResult.getTabs().size() > 2);
+        assertTrue("Tabs list > 2", browseResult.getTabs().size() >= 1);
 
         SectionTab browseTab = null;
 

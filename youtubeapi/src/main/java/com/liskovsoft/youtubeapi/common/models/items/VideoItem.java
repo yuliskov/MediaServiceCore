@@ -31,6 +31,8 @@ public class VideoItem {
     private String mChannelId;
     @JsonPath("$.menu.menuRenderer.items[*].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId")
     private List<String> mMenuChannelId;
+    @JsonPath("$.menu.menuRenderer.items[*].menuServiceItemRenderer.serviceEndpoint.feedbackEndpoint.feedbackToken")
+    private List<String> mFeedbackToken;
     @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl"})
     private String mCanonicalChannelUrl;
@@ -164,5 +166,9 @@ public class VideoItem {
      */
     public String getRichThumbnailUrl() {
         return mRichThumbnailUrl;
+    }
+
+    public String getFeedbackToken() {
+        return mFeedbackToken != null ? mFeedbackToken.get(0) : null;
     }
 }

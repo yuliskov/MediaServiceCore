@@ -27,11 +27,12 @@ public class AppHelper {
         }
 
         String[] timeParts = lengthText.split(TIME_TEXT_DELIM);
+        int length = timeParts.length;
 
         // TODO: time conversion doesn't take into account locale specific delimiters (e.g ".", ",")
-        int hours = Helpers.parseInt(timeParts, 0, 0);
-        int minutes = Helpers.parseInt(timeParts, 1, hours);
-        int seconds = Helpers.parseInt(timeParts, 2, minutes);
+        int hours = Helpers.parseInt(timeParts, length - 3, 0);
+        int minutes = Helpers.parseInt(timeParts, length - 2, 0);
+        int seconds = Helpers.parseInt(timeParts, length - 1, 0);
 
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
     }

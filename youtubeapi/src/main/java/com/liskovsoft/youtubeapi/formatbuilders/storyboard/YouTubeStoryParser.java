@@ -25,6 +25,10 @@ public class YouTubeStoryParser {
         mSpec = spec;
     }
 
+    public static YouTubeStoryParser from(String storyboardSpec) {
+        return new YouTubeStoryParser(storyboardSpec);
+    }
+
     public Storyboard extractStory() {
         if (mSpec == null) {
             return null;

@@ -41,6 +41,9 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         return sInstance;
     }
 
+    /**
+     * Format info is cached because it's supposed to run in multiple methods
+     */
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
         checkSigned();

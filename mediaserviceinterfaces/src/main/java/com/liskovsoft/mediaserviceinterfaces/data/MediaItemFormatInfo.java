@@ -34,4 +34,5 @@ public interface MediaItemFormatInfo {
     InputStream createMpdStream();
     Observable<InputStream> createMpdStreamObservable();
     List<String> createUrlList();
+    MediaItemStoryboard createStoryboard();
 }

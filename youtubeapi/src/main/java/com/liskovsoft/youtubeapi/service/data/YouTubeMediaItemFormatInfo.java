@@ -2,9 +2,12 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
+import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser;
+import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser.Storyboard;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -33,6 +36,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mHlsManifestUrl;
     private String mEventId; // used in tracking
     private String mVisitorMonitoringData; // used in tracking
+    private String mStoryboardSpec;
 
     public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo) {
         if (videoInfo == null) {
@@ -74,6 +78,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
         formatInfo.mEventId = videoInfo.getEventId();
         formatInfo.mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
+        formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -225,6 +230,17 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public List<String> createUrlList() {
         return YouTubeUrlListBuilder.from(this).buildUriList();
+    }
+
+    @Override
+    public MediaItemStoryboard createStoryboard() {
+        if (mStoryboardSpec == null) {
+            return null;
+        }
+
+        Storyboard storyboard = YouTubeStoryParser.from(mStoryboardSpec).extractStory();
+
+        return YouTubeMediaItemStoryboard.from(storyboard);
     }
 
     public String getEventId() {

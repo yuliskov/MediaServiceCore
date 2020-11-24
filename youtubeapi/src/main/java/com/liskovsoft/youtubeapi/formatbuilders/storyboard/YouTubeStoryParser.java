@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.formatbuilders.storyboard;
 
+import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
@@ -85,6 +86,9 @@ public class YouTubeStoryParser {
             String link = mBaseUrl.replace("\\", "");
             int bestIdx = chooseBestSizeIdx();
             Size bestSize = mSizes.get(bestIdx);
+
+            //Log.d(TAG, "Found sizes: %s", mSizes);
+            //Log.d(TAG, "Found best size: %s", bestSize);
 
             link = link.replace(INDEX_VAR, String.valueOf(bestIdx));
             link = link.replace(IMG_NAME_VAR, bestSize.mImageName);
@@ -183,6 +187,12 @@ public class YouTubeStoryParser {
 
         public int getColCount() {
             return mColsCount;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return String.format("{width: %s, height: %s, quality: %s}", mWidth, mHeight, mQuality);
         }
     }
 }

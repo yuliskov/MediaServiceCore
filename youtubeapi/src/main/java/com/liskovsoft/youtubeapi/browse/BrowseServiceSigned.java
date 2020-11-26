@@ -60,6 +60,10 @@ public class BrowseServiceSigned {
     public List<GridTab> getSubscribedChannelsLastViewed(String authorization) {
         List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
 
+        if (gridTabs == null) {
+            return null;
+        }
+
         List<GridTab> result = getPart(gridTabs, 0);
         result.addAll(getPart(gridTabs, 1));
 

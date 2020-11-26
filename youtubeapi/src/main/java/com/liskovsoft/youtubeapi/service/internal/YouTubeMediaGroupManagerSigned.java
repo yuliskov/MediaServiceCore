@@ -59,8 +59,18 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public List<GridTab> getSubscribedChannels() {
+    public List<GridTab> getSubscribedChannelsTop() {
+        return mBrowseServiceSigned.getSubscribedChannelsTop(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public List<GridTab> getSubscribedChannelsAZ() {
         return mBrowseServiceSigned.getSubscribedChannelsAZ(mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
+    public List<GridTab> getSubscribedChannelsPopular() {
+        return mBrowseServiceSigned.getSubscribedChannelsPopular(mSignInManager.getAuthorizationHeader());
     }
 
     @Override

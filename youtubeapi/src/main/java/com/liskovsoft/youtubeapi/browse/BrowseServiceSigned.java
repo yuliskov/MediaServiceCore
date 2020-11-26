@@ -15,6 +15,8 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,10 +57,23 @@ public class BrowseServiceSigned {
         return getPart(gridTabs, 1);
     }
 
-    public List<GridTab> getSubscribedChannelsPopular(String authorization) {
-        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+    //public List<GridTab> getSubscribedChannelsPopular(String authorization) {
+    //    List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+    //
+    //    return getPart(gridTabs, 0);
+    //}
 
-        return getPart(gridTabs, 0);
+    public List<GridTab> getSubscribedChannelsTop(String authorization) {
+        List<GridTab> subscribedChannelsAZ = getSubscribedChannelsAZ(authorization);
+
+        Collections.sort(subscribedChannelsAZ, (o1, o2) ->
+                o1.hasNewContent() && !o2.hasNewContent() ? -1 : !o1.hasNewContent() && o2.hasNewContent() ? 1 : 0);
+
+        return subscribedChannelsAZ;
+    }
+
+    public List<GridTab> getSubscribedChannelsPopular(String authorization) {
+        return getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 
     public GridTab getHistory(String authorization) {

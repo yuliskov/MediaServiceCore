@@ -25,7 +25,12 @@ public class SearchResult {
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactPlaylistRenderer")
     private List<PlaylistItem> mPlaylistItems;
 
-    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation")
+    /**
+     * Nowadays, search result may contains two rows.<br/>
+     * First of them with continuation is interested for us.
+     */
+    @JsonPath({"$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
+               "$.contents.sectionListRenderer.contents[1].itemSectionRenderer.continuations[0].nextContinuationData.continuation"})
     private String mNextPageKey;
 
     public List<VideoItem> getVideoItems() {

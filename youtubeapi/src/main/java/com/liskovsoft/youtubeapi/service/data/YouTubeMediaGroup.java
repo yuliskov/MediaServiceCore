@@ -50,10 +50,8 @@ public class YouTubeMediaGroup implements MediaGroup {
         }
 
         // Subscribed channel view. Add details.
-        if (continuation.getChannelButton() != null) {
-            ((YouTubeMediaGroup) baseGroup).setChannelId(continuation.getChannelButton().getBrowseId());
-            ((YouTubeMediaGroup) baseGroup).setChannelUrl(continuation.getChannelButton().getCanonicalBaseUrl());
-        }
+        ((YouTubeMediaGroup) baseGroup).setChannelId(continuation.getBrowseId());
+        ((YouTubeMediaGroup) baseGroup).setChannelUrl(continuation.getCanonicalBaseUrl());
 
         return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }

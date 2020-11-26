@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.browse;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.guide.Guide;
-import com.liskovsoft.youtubeapi.browse.models.guide.TrackingParam;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
@@ -65,6 +64,20 @@ public class BrowseManagerSignedTest {
 
         assertNotNull("Items not null", body);
         assertTrue("List > 2", body.getItemWrappers().size() > 2);
+    }
+
+    @Test
+    public void testThatSubscribedChannelsContainsRequiredFields() {
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
+
+        GridTabList browseResult = RetrofitHelper.get(wrapper);
+
+        assertNotNull("Contains tabs", browseResult.getTabs());
+
+        // First tab is subscriptions. Others are channels.
+        for (GridTab tab : browseResult.getTabs().subList(1, browseResult.getTabs().size())) {
+            checkChannelTab(tab);
+        }
     }
 
     @Test
@@ -197,5 +210,16 @@ public class BrowseManagerSignedTest {
         assertNotNull("Tabs list not empty", browseResult.getTabs());
         assertTrue("Tabs list > 2", browseResult.getTabs().size() >= 1);
         assertTrue("Tabs sections > 2", browseResult.getTabs().get(0).getSections().size() > 2);
+    }
+
+    private void checkChannelTab(GridTab tab) {
+        if (tab.isUnselectable()) {
+            return;
+        }
+
+        assertNotNull("Contains title", tab.getTitle());
+        assertNotNull("Contains alt title", tab.getTitleAlt());
+        assertNotNull("Contains reload key", tab.getReloadPageKey());
+        assertNotNull("Contains thumbs", tab.getThumbnails());
     }
 }

@@ -84,17 +84,45 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
-    public MediaGroup getSubscribedChannels() {
+    public MediaGroup getSubscribedChannelsTop() {
         checkSigned();
 
-        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannels();
+        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsTop();
 
         return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNELS_SUB);
     }
 
     @Override
-    public Observable<MediaGroup> getSubscribedChannelsObserve() {
-        return ObservableHelper.fromNullable(this::getSubscribedChannels);
+    public MediaGroup getSubscribedChannelsAZ() {
+        checkSigned();
+
+        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsAZ();
+
+        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNELS_SUB);
+    }
+
+    @Override
+    public MediaGroup getSubscribedChannelsPopular() {
+        checkSigned();
+
+        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsPopular();
+
+        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNELS_SUB);
+    }
+
+    @Override
+    public Observable<MediaGroup> getSubscribedChannelsTopObserve() {
+        return ObservableHelper.fromNullable(this::getSubscribedChannelsTop);
+    }
+
+    @Override
+    public Observable<MediaGroup> getSubscribedChannelsAZObserve() {
+        return ObservableHelper.fromNullable(this::getSubscribedChannelsAZ);
+    }
+
+    @Override
+    public Observable<MediaGroup> getSubscribedChannelsPopularObserve() {
+        return ObservableHelper.fromNullable(this::getSubscribedChannelsPopular);
     }
 
     @Override

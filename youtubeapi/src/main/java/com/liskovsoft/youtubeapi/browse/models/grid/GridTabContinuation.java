@@ -18,10 +18,11 @@ public class GridTabContinuation {
     private String mNextPageKey;
 
     /**
-     * Subscribed channel updates with button on top
+     * Subscribed channel updates with button on top<br/>
+     * May have multiple buttons like "Play all", "Visit channel"
      */
-    @JsonPath("$.continuationContents.tvSurfaceContentContinuation.header.tvSurfaceHeaderRenderer.buttons[0].buttonRenderer")
-    private ChannelButton mChannelButton;
+    @JsonPath("$.continuationContents.tvSurfaceContentContinuation.header.tvSurfaceHeaderRenderer.buttons[*].buttonRenderer")
+    private List<ChannelButton> mChannelButtons;
 
     public String getNextPageKey() {
         return mNextPageKey;
@@ -31,7 +32,37 @@ public class GridTabContinuation {
         return mItemWrappers;
     }
 
-    public ChannelButton getChannelButton() {
-        return mChannelButton;
+    public List<ChannelButton> getChannelButtons() {
+        return mChannelButtons;
+    }
+
+    /**
+     * Channel GridTab contains channel id and other stuff
+     */
+    public String getBrowseId() {
+        if (mChannelButtons != null) {
+            for (ChannelButton button : mChannelButtons) {
+                if (button.getBrowseId() != null) {
+                    return button.getBrowseId();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Channel GridTab contains channel id and other stuff
+     */
+    public String getCanonicalBaseUrl() {
+        if (mChannelButtons != null) {
+            for (ChannelButton button : mChannelButtons) {
+                if (button.getCanonicalBaseUrl() != null) {
+                    return button.getCanonicalBaseUrl();
+                }
+            }
+        }
+
+        return null;
     }
 }

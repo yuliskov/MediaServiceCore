@@ -84,10 +84,10 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsTop() {
+    public MediaGroup getSubscribedChannelsUpdate() {
         checkSigned();
 
-        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsTop();
+        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsUpdate();
 
         return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNELS_SUB);
     }
@@ -102,17 +102,17 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsPopular() {
+    public MediaGroup getSubscribedChannelsLastViewed() {
         checkSigned();
 
-        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsPopular();
+        List<GridTab> subscribedChannels = mMediaGroupManagerReal.getSubscribedChannelsLastViewed();
 
         return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNELS_SUB);
     }
 
     @Override
-    public Observable<MediaGroup> getSubscribedChannelsTopObserve() {
-        return ObservableHelper.fromNullable(this::getSubscribedChannelsTop);
+    public Observable<MediaGroup> getSubscribedChannelsUpdateObserve() {
+        return ObservableHelper.fromNullable(this::getSubscribedChannelsUpdate);
     }
 
     @Override
@@ -121,8 +121,8 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
-    public Observable<MediaGroup> getSubscribedChannelsPopularObserve() {
-        return ObservableHelper.fromNullable(this::getSubscribedChannelsPopular);
+    public Observable<MediaGroup> getSubscribedChannelsLastViewedObserve() {
+        return ObservableHelper.fromNullable(this::getSubscribedChannelsLastViewed);
     }
 
     @Override

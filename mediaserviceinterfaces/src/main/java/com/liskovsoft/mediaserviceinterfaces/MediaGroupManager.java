@@ -13,9 +13,9 @@ public interface MediaGroupManager {
     MediaGroup getRecommended(); // Note, that recommended is a part of Home
     MediaGroup getHistory();
     List<MediaGroup> getHome();
-    MediaGroup getSubscribedChannelsTop();
+    MediaGroup getSubscribedChannelsUpdate();
     MediaGroup getSubscribedChannelsAZ();
-    MediaGroup getSubscribedChannelsPopular();
+    MediaGroup getSubscribedChannelsLastViewed();
     MediaGroup getGroup(MediaItem mediaGroup);
     MediaGroup continueGroup(MediaGroup mediaGroup);
 
@@ -32,9 +32,9 @@ public interface MediaGroupManager {
     Observable<List<MediaGroup>> getChannelObserve(String channelId);
     Observable<List<MediaGroup>> getChannelObserve(MediaItem item);
     Observable<List<MediaGroup>> getPlaylistsObserve();
-    Observable<MediaGroup> getSubscribedChannelsTopObserve();
+    Observable<MediaGroup> getSubscribedChannelsUpdateObserve();
     Observable<MediaGroup> getSubscribedChannelsAZObserve();
-    Observable<MediaGroup> getSubscribedChannelsPopularObserve();
+    Observable<MediaGroup> getSubscribedChannelsLastViewedObserve();
     Observable<MediaGroup> getGroupObserve(MediaItem mediaItem);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
 }

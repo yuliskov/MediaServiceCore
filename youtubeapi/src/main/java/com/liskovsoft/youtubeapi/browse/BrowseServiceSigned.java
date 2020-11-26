@@ -65,7 +65,13 @@ public class BrowseServiceSigned {
         }
 
         List<GridTab> result = getPart(gridTabs, 0);
-        result.addAll(getPart(gridTabs, 1));
+
+        // all channels should be unique
+        for (GridTab tab : getPart(gridTabs, 1)) {
+            if (!result.contains(tab)) {
+                result.add(tab);
+            }
+        }
 
         return result;
     }

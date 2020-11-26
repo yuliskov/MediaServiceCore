@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.models.grid;
 
+import androidx.annotation.Nullable;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
@@ -92,5 +94,17 @@ public class GridTab {
 
     public boolean hasNewContent() {
         return PRESENTATION_NEW_CONTENT.equals(mPresentationStyle);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof GridTab) {
+            GridTab tab = (GridTab) obj;
+            return Helpers.equals(mTitle, tab.getTitle()) &&
+                   Helpers.equals(mReloadPageKey, tab.getReloadPageKey()) &&
+                   Helpers.equals(mNextPageKey, tab.getNextPageKey());
+        }
+
+        return false;
     }
 }

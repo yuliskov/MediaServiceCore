@@ -57,11 +57,11 @@ public class BrowseServiceSigned {
         return getPart(gridTabs, 1);
     }
 
-    //public List<GridTab> getSubscribedChannelsPopular(String authorization) {
-    //    List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
-    //
-    //    return getPart(gridTabs, 0);
-    //}
+    public List<GridTab> getSubscribedChannelsPopular(String authorization) {
+        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+
+        return getPart(gridTabs, 0);
+    }
 
     public List<GridTab> getSubscribedChannelsTop(String authorization) {
         List<GridTab> subscribedChannelsAZ = getSubscribedChannelsAZ(authorization);
@@ -72,7 +72,7 @@ public class BrowseServiceSigned {
         return subscribedChannelsAZ;
     }
 
-    public List<GridTab> getSubscribedChannelsPopular(String authorization) {
+    public List<GridTab> getSubscribedChannelsAll(String authorization) {
         return getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 

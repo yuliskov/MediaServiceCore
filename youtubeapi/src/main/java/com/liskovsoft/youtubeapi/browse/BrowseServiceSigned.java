@@ -66,6 +66,10 @@ public class BrowseServiceSigned {
     public List<GridTab> getSubscribedChannelsTop(String authorization) {
         List<GridTab> subscribedChannelsAZ = getSubscribedChannelsAZ(authorization);
 
+        if (subscribedChannelsAZ == null) {
+            return null;
+        }
+
         Collections.sort(subscribedChannelsAZ, (o1, o2) ->
                 o1.hasNewContent() && !o2.hasNewContent() ? -1 : !o1.hasNewContent() && o2.hasNewContent() ? 1 : 0);
 

@@ -71,13 +71,20 @@ public class TrackingService {
     }
 
     private void updateWatchTime(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
+                                     String eventId, String visitorMonitoringData, String authorization) {
+        updateWatchTimeFull(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, authorization);
+    }
+
+    private void updateWatchTimeFull(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
                                  String eventId, String visitorMonitoringData, String authorization) {
 
         Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
         // Mark video as full watched if less than couple minutes remains
-        if (lengthSec - positionSec < 3 * 60) {
-           positionSec = lengthSec;
+        boolean isVideoAlmostWatched = lengthSec - positionSec < 3 * 60;
+        if (isVideoAlmostWatched) {
+            updateWatchTimeShort(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, authorization);
+            return;
         }
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
@@ -93,6 +100,29 @@ public class TrackingService {
 
         wrapper = mTrackingManager.updateWatchTime(
                 videoId, lengthSec, positionSec, positionSec,
+                clientPlaybackNonce, eventId, authorization
+        );
+
+        RetrofitHelper.get(wrapper); // execute
+    }
+
+    private void updateWatchTimeShort(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
+                                 String eventId, String visitorMonitoringData, String authorization) {
+
+        Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
+
+        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecordShort(
+                videoId,
+                clientPlaybackNonce,
+                eventId,
+                visitorMonitoringData,
+                authorization
+        );
+
+        RetrofitHelper.get(wrapper); // execute
+
+        wrapper = mTrackingManager.updateWatchTimeShort(
+                videoId, positionSec, positionSec,
                 clientPlaybackNonce, eventId, authorization
         );
 

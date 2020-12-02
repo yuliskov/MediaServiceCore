@@ -2,12 +2,14 @@ package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // root element: pivotPlaylistRenderer (e.g. Album)
 public class PlaylistItem {
     @JsonPath({"$.thumbnail.thumbnails[*]",
-               "$.thumbnailRenderer.playlistCustomThumbnailRenderer.thumbnail.thumbnails[*]"})
+               "$.thumbnailRenderer.playlistCustomThumbnailRenderer.thumbnail.thumbnails[*]",
+               "$.thumbnailRenderer.playlistVideoThumbnailRenderer.thumbnail.thumbnails[*]"})
     private List<Thumbnail> mThumbnails;
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;

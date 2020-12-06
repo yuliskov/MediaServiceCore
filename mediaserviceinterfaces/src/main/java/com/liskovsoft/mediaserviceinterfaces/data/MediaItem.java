@@ -48,6 +48,7 @@ public interface MediaItem {
     int getWidth();
     int getHeight();
     String getChannelId();
+    String getChannelUrl();
     String getVideoPreviewUrl();
     int getPlaylistIndex();
     /**

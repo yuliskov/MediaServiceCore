@@ -21,6 +21,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mChannelId;
     private String mPlaylistId;
     private String mMediaUrl;
+    private String mChannelUrl;
     private String mDescription;
     private String mCardImageUrl;
     private String mBackgroundImageUrl;
@@ -93,6 +94,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        video.mChannelUrl = AppHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
@@ -125,6 +127,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        video.mChannelUrl = AppHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
         video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
         video.mBadgeText = item.getLengthText();
@@ -147,6 +150,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mChannelId = item.getChannelId();
+        video.mChannelUrl = AppHelper.channelIdToFullUrl(item.getChannelId());
 
         addCommonProps(video);
 
@@ -352,6 +356,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getChannelId() {
         return mChannelId;
+    }
+
+    @Override
+    public String getChannelUrl() {
+        return mChannelUrl;
     }
 
     @Override

@@ -12,7 +12,19 @@ public class AppHelper {
     private static final String TIME_TEXT_DELIM = ":";
 
     public static String videoIdToFullUrl(String videoId) {
+        if (videoId == null) {
+            return null;
+        }
+
         return String.format("https://www.youtube.com/watch?v=%s", videoId);
+    }
+
+    public static String channelIdToFullUrl(String channelId) {
+        if (channelId == null) {
+            return null;
+        }
+
+        return String.format("https://www.youtube.com/channel/%s", channelId);
     }
 
     /**

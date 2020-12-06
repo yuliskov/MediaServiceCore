@@ -28,7 +28,7 @@ public class SearchableActivity extends Activity {
                 boolean startPlayback = getIntent().getBooleanExtra(EXTRA_START_PLAYBACK, false);
                 Log.d(TAG, "Should start playback? " + (startPlayback ? "yes" : "no"));
 
-                String url = obtainVideoUrl(id);
+                String url = obtainVideoOrChannelUrl(id);
 
                 if (url != null) {
                     Intent intent = AppUtil.getInstance(this).createAppIntent(url);
@@ -42,11 +42,11 @@ public class SearchableActivity extends Activity {
         finish();
     }
 
-    private String obtainVideoUrl(int id) {
+    private String obtainVideoOrChannelUrl(int id) {
         MediaItem video = VideoContentProvider.findVideoWithId(id);
 
         if (video != null) {
-            return video.getVideoUrl();
+            return video.getVideoUrl() != null ? video.getVideoUrl() : video.getChannelUrl();
         }
 
         return null;

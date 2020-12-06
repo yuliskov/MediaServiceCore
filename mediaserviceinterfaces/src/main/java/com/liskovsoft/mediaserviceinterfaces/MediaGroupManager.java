@@ -32,6 +32,7 @@ public interface MediaGroupManager {
     Observable<List<MediaGroup>> getChannelObserve(String channelId);
     Observable<List<MediaGroup>> getChannelObserve(MediaItem item);
     Observable<List<MediaGroup>> getPlaylistsObserve();
+    Observable<List<MediaItem>> getEmptyPlaylistsObserve();
     Observable<MediaGroup> getSubscribedChannelsUpdateObserve();
     Observable<MediaGroup> getSubscribedChannelsAZObserve();
     Observable<MediaGroup> getSubscribedChannelsLastViewedObserve();

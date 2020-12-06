@@ -387,4 +387,23 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             emitter.onComplete();
         });
     }
+
+    @Override
+    public Observable<List<MediaItem>> getEmptyPlaylistsObserve() {
+        return Observable.create(emitter -> {
+            checkSigned();
+
+            List<GridTab> tabs = mMediaGroupManagerReal.getPlaylists();
+
+            if (tabs != null && tabs.size() > 0) {
+                ArrayList<MediaItem> list = new ArrayList<>();
+                for (GridTab tab : tabs) {
+                    list.add(YouTubeMediaItem.from(tab));
+                }
+                emitter.onNext(list);
+            }
+
+            emitter.onComplete();
+        });
+    }
 }

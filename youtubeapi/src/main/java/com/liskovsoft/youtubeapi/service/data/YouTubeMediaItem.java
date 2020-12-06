@@ -227,7 +227,7 @@ public class YouTubeMediaItem implements MediaItem {
     public static YouTubeMediaItem from(GridTab tab) {
         YouTubeMediaItem item = new YouTubeMediaItem();
 
-        item.mMediaItemType = MediaItem.TYPE_CHANNEL_SUB;
+        item.mMediaItemType = MediaItem.TYPE_CHANNEL_SECTION;
         item.mTitle = tab.getTitle();
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(tab.getThumbnails());
         item.mCardImageUrl = highResThumbnailUrl;

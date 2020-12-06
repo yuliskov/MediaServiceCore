@@ -7,7 +7,7 @@ public interface MediaItem {
     int TYPE_MUSIC = 1;
     int TYPE_CHANNEL = 2;
     int TYPE_PLAYLIST = 3;
-    int TYPE_CHANNEL_SUB = 4;
+    int TYPE_CHANNEL_SECTION = 4;
     int getType();
 
     // Music/Video props

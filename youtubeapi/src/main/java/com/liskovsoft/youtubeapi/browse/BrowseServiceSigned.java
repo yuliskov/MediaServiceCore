@@ -52,13 +52,13 @@ public class BrowseServiceSigned {
     }
 
     public List<GridTab> getSubscribedChannelsAZ(String authorization) {
-        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        List<GridTab> gridTabs = getSubscribedChannelsSection(authorization);
 
         return getPart(gridTabs, 1);
     }
 
     public List<GridTab> getSubscribedChannelsLastViewed(String authorization) {
-        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        List<GridTab> gridTabs = getSubscribedChannelsSection(authorization);
 
         if (gridTabs == null) {
             return null;
@@ -89,8 +89,14 @@ public class BrowseServiceSigned {
         return subscribedChannelsAZ;
     }
 
+    private List<GridTab> getSubscribedChannelsSection(String authorization) {
+        List<GridTab> gridTabs = getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        // Exclude All Subscriptions tab (first one)
+        return gridTabs != null ? gridTabs.subList(1, gridTabs.size()) : null;
+    }
+
     public List<GridTab> getSubscribedChannelsAll(String authorization) {
-        return getGridTabs(BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        return getSubscribedChannelsSection(authorization);
     }
 
     public GridTab getHistory(String authorization) {
@@ -98,15 +104,14 @@ public class BrowseServiceSigned {
     }
 
     public List<GridTab> getPlaylists(String authorization) {
-        // Skip "History", "My videos"
-        List<GridTab> playlists = getGridTabs(2, BrowseManagerParams.getMyLibraryQuery(), authorization);
+        List<GridTab> playlists = getGridTabs(BrowseManagerParams.getMyLibraryQuery(), authorization);
 
-        // Get "My videos"
-        GridTab myVideos = getGridTab(1, BrowseManagerParams.getMyLibraryQuery(), authorization);
-
-        // Set "My videos" as last item
-        if (playlists != null && myVideos != null) {
-            playlists.add(myVideos);
+        if (playlists != null) {
+            playlists.remove(0); // remove "History"
+            GridTab myVideos = playlists.get(0); // save "My videos" for later use
+            playlists.remove(0); // remove "My videos"
+            playlists.remove(1); // remove "Purchases"
+            playlists.add(myVideos); // add "My videos" to the end
         }
 
         return playlists;

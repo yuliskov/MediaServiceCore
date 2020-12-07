@@ -426,6 +426,6 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     public boolean isEmpty() {
-        return mTitle == null || mCardImageUrl == null;
+        return mTitle == null && mCardImageUrl == null;
     }
 }

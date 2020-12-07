@@ -224,10 +224,10 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
-    public static YouTubeMediaItem from(GridTab tab) {
+    public static YouTubeMediaItem from(GridTab tab, int type) {
         YouTubeMediaItem item = new YouTubeMediaItem();
-
-        item.mMediaItemType = MediaItem.TYPE_CHANNEL_SECTION;
+        
+        item.mMediaItemType = type;
         item.mTitle = tab.getTitle();
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(tab.getThumbnails());
         item.mCardImageUrl = highResThumbnailUrl;

@@ -179,7 +179,7 @@ public class YouTubeMediaGroup implements MediaGroup {
 
         if (tabs != null) {
             for (GridTab tab : tabs) {
-                YouTubeMediaItem item = YouTubeMediaItem.from(tab);
+                YouTubeMediaItem item = YouTubeMediaItem.from(tab, baseGroup.getType());
 
                 if (!item.isEmpty()) {
                     mediaItems.add(item);

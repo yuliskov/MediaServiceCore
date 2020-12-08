@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -12,6 +13,7 @@ import java.util.List;
  * Wraps result from the {@link SearchManagerUnsigned}
  */
 public class SearchServiceUnsigned {
+    private static final String TAG = SearchServiceUnsigned.class.getSimpleName();
     private static SearchServiceUnsigned sInstance;
     private final SearchManagerUnsigned mSearchManagerUnsigned;
 
@@ -37,7 +39,7 @@ public class SearchServiceUnsigned {
 
 
         if (searchResult == null) {
-            throw new IllegalStateException("Invalid search result for text " + searchText);
+            Log.e(TAG, "Empty search result for text %s", searchText);
         }
 
         return searchResult;

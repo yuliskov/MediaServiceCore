@@ -29,7 +29,8 @@ public interface MediaItemFormatInfo {
     String getChannelId();
     void setChannelId(String channelId);
     boolean containsDashInfo();
-    boolean containsHlsInfo();
+    boolean containsHlsUrl();
+    boolean containsDashUrl();
     boolean containsUrlListInfo();
     InputStream createMpdStream();
     Observable<InputStream> createMpdStreamObservable();

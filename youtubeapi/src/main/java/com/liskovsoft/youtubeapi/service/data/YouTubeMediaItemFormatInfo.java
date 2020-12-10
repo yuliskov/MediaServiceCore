@@ -198,8 +198,13 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public boolean containsHlsInfo() {
+    public boolean containsHlsUrl() {
         return mHlsManifestUrl != null;
+    }
+
+    @Override
+    public boolean containsDashUrl() {
+        return mDashManifestUrl != null;
     }
 
     @Override

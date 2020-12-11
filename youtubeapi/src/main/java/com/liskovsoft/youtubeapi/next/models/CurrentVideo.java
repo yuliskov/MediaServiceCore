@@ -49,7 +49,8 @@ public class CurrentVideo {
     }
 
     public String getShortViewCount() {
-        return mShortViewCount;
+        // On live streams short view counter is absent
+        return mShortViewCount != null ? mShortViewCount : mViewCount;
     }
 
     public String getViewCount() {

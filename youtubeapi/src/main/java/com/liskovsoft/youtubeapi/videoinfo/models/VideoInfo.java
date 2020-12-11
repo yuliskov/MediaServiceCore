@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
@@ -121,7 +122,7 @@ public class VideoInfo {
     }
 
     public String getPlayabilityStatus() {
-        return String.format("%s. %s", mPlayabilityReason, mPlayabilityDescription);
+        return AppHelper.itemsToDescription(mPlayabilityReason, mPlayabilityDescription);
     }
 
     /**

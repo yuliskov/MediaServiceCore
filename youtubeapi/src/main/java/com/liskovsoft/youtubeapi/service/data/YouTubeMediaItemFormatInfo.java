@@ -73,7 +73,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             formatInfo.mDescription = videoDetails.getShortDescription();
             formatInfo.mChannelId = videoDetails.getChannelId();
             formatInfo.mAuthor = videoDetails.getAuthor();
-            formatInfo.mIsLive = videoDetails.isLiveContent();
+            formatInfo.mIsLive = videoDetails.isLive();
         }
 
         formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
@@ -192,6 +192,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mChannelId = channelId;
     }
 
+    @Override
     public boolean isLive() {
         return mIsLive;
     }

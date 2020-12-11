@@ -37,6 +37,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mEventId; // used in tracking
     private String mVisitorMonitoringData; // used in tracking
     private String mStoryboardSpec;
+    private boolean mIsUnplayable;
+    private String mPlayabilityStatus;
 
     public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo) {
         if (videoInfo == null) {
@@ -79,6 +81,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mEventId = videoInfo.getEventId();
         formatInfo.mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
+        formatInfo.mIsUnplayable = videoInfo.isUnplayable();
+        formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -246,6 +250,16 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         Storyboard storyboard = YouTubeStoryParser.from(mStoryboardSpec).extractStory();
 
         return YouTubeMediaItemStoryboard.from(storyboard);
+    }
+
+    @Override
+    public boolean isUnplayable() {
+        return mIsUnplayable;
+    }
+
+    @Override
+    public String getPlayabilityStatus() {
+        return mPlayabilityStatus;
     }
 
     public String getEventId() {

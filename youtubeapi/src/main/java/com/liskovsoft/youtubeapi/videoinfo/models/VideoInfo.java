@@ -48,6 +48,12 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.status")
     private String mPlayabilityStatus;
 
+    @JsonPath("$.playabilityStatus.reason")
+    private String mPlayabilityReason;
+
+    @JsonPath("$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason.runs[0].text")
+    private String mPlayabilityDescription;
+
     @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
     private String mStoryboardSpec;
 
@@ -112,6 +118,10 @@ public class VideoInfo {
      */
     public boolean isUnplayable() {
         return STATUS_UNPLAYABLE.equals(mPlayabilityStatus);
+    }
+
+    public String getPlayabilityStatus() {
+        return String.format("%s. %s", mPlayabilityReason, mPlayabilityDescription);
     }
 
     /**

@@ -36,4 +36,6 @@ public interface MediaItemFormatInfo {
     Observable<InputStream> createMpdStreamObservable();
     List<String> createUrlList();
     MediaItemStoryboard createStoryboard();
+    boolean isUnplayable();
+    String getPlayabilityStatus();
 }

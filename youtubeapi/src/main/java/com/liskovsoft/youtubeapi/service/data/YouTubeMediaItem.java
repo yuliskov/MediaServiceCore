@@ -403,6 +403,11 @@ public class YouTubeMediaItem implements MediaItem {
         return mFeedbackToken;
     }
 
+    @Override
+    public boolean hasUploads() {
+        return mReloadPageKey != null;
+    }
+
     public void sync(MediaItemMetadata metadata) {
         if (metadata == null) {
             return;

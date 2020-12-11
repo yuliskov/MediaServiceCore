@@ -76,4 +76,5 @@ public interface MediaItem {
      * Example: <b>4.05f</b>
      */
     double getRatingScore();
+    boolean hasUploads();
 }

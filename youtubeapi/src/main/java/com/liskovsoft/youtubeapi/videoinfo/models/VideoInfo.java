@@ -138,7 +138,7 @@ public class VideoInfo {
     }
 
     public boolean isHfr() {
-        return mDashManifestUrl != null && mDashManifestUrl.contains("hfr");
+        return mDashManifestUrl != null && mDashManifestUrl.contains("/hfr/all");
     }
 
     private void parseTrackingParams() {

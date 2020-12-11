@@ -29,6 +29,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mVideoId;
     private String mChannelId;
     private boolean mIsLive;
+    private boolean mIsLowLatencyLiveStream;
+    private boolean mIsStreamSeekable;
     private List<MediaFormat> mAdaptiveFormats;
     private List<MediaFormat> mRegularFormats;
     private List<MediaSubtitle> mSubtitles;
@@ -74,6 +76,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             formatInfo.mChannelId = videoDetails.getChannelId();
             formatInfo.mAuthor = videoDetails.getAuthor();
             formatInfo.mIsLive = videoDetails.isLive();
+            formatInfo.mIsLowLatencyLiveStream = videoDetails.isLowLatencyLiveStream();
         }
 
         formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
@@ -83,6 +86,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
+        formatInfo.mIsStreamSeekable = videoInfo.isHfr();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -196,6 +200,10 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     public boolean isLive() {
         return mIsLive;
     }
+    
+    public boolean isLowLatencyStream() {
+        return mIsLowLatencyLiveStream;
+    }
 
     @Override
     public boolean containsDashInfo() {
@@ -261,6 +269,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public String getPlayabilityStatus() {
         return mPlayabilityStatus;
+    }
+
+    @Override
+    public boolean isStreamSeekable() {
+        return mIsStreamSeekable;
     }
 
     public String getEventId() {

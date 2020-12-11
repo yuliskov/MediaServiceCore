@@ -137,6 +137,10 @@ public class VideoInfo {
         return mStoryboardSpec;
     }
 
+    public boolean isHfr() {
+        return mDashManifestUrl != null && mDashManifestUrl.contains("hfr");
+    }
+
     private void parseTrackingParams() {
         boolean parseDone = mEventId != null || mVisitorMonitoringData != null;
 

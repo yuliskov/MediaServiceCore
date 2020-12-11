@@ -28,6 +28,8 @@ public class VideoDetails {
     private boolean mIsOwnerViewing;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
+    @JsonPath("$.isLowLatencyLiveStream")
+    private boolean mIsLowLatencyLiveStream;
 
     public String getLengthSeconds() {
         return mLengthSeconds;
@@ -80,5 +82,9 @@ public class VideoDetails {
 
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
+    }
+
+    public boolean isLowLatencyLiveStream() {
+        return mIsLowLatencyLiveStream;
     }
 }

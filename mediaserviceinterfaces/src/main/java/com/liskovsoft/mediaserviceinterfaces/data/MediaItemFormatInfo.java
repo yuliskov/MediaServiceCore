@@ -39,4 +39,5 @@ public interface MediaItemFormatInfo {
     MediaItemStoryboard createStoryboard();
     boolean isUnplayable();
     String getPlayabilityStatus();
+    boolean isStreamSeekable();
 }

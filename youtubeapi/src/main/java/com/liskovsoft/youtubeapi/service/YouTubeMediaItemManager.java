@@ -187,8 +187,18 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public Observable<Void> subscribeObserve(String channelId) {
+        return ObservableHelper.fromVoidable(() -> subscribe(channelId));
+    }
+
+    @Override
     public Observable<Void> unsubscribeObserve(MediaItem item) {
         return ObservableHelper.fromVoidable(() -> unsubscribe(item));
+    }
+
+    @Override
+    public Observable<Void> unsubscribeObserve(String channelId) {
+        return ObservableHelper.fromVoidable(() -> unsubscribe(channelId));
     }
 
     @Override
@@ -241,16 +251,26 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public void subscribe(MediaItem item) {
+        subscribe(item.getChannelId());
+    }
+
+    @Override
+    public void subscribe(String channelId) {
         checkSigned();
 
-        mMediaItemManagerReal.subscribe(item.getChannelId());
+        mMediaItemManagerReal.subscribe(channelId);
     }
 
     @Override
     public void unsubscribe(MediaItem item) {
+        unsubscribe(item.getChannelId());
+    }
+
+    @Override
+    public void unsubscribe(String channelId) {
         checkSigned();
 
-        mMediaItemManagerReal.unsubscribe(item.getChannelId());
+        mMediaItemManagerReal.unsubscribe(channelId);
     }
 
     @Override

@@ -1,0 +1,14 @@
+{
+  "screens":[
+    {
+      "screenId":"ls0ul5gpib9n9hkkfnk0fqidjn",
+      "refreshIntervalInMillis":1123200000,
+      "remoteRefreshIntervalMs":79200000,
+      "refreshIntervalMs":1123200000,
+      "loungeTokenLifespanMs":1209600000,
+      "loungeToken":"AGdO5p9b0q01c7_OKJIgpEHxUqQ7rS7FzX07y2lLKveT7PfGG4WI9OBmgWPY1vH7hSsZoCknKwdWOACvbSItYmpfjTgmlXpAr1Wh9OIy1VXyvTTSrSoy69M",
+      "remoteRefreshIntervalInMillis":79200000,
+      "expiration":1610550515437
+    }
+  ]
+}

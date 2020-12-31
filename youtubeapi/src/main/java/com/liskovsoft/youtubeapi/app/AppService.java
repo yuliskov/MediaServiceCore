@@ -64,6 +64,10 @@ public class AppService {
 
         String decipherCode = createDecipherCode(ciphered);
 
+        if (decipherCode == null) {
+            return ciphered;
+        }
+
         return runDecipherCode(decipherCode);
     }
 

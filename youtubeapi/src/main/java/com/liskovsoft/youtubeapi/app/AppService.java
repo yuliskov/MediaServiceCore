@@ -116,6 +116,7 @@ public class AppService {
         String decipherFunction = getDecipherFunction();
 
         if (decipherFunction == null) {
+            Log.e(TAG, "Oops. DecipherFunction is null...");
             return null;
         }
 

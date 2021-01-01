@@ -1,4 +1,4 @@
 package com.liskovsoft.youtubeapi.lounge.models;
 
-public class LoungeTokenBatch {
+public class BindResult {
 }

@@ -243,17 +243,22 @@ public class BrowseManagerUnsignedTest {
 
         SectionContinuation musicContinuation = RetrofitHelper.get(wrapper2);
 
-        String video1;
-        String video2;
+        String video1 = null;
+        String video2 = null;
 
         ItemWrapper itemWrapper = firstSection.getItemWrappers().get(0);
 
+        ItemWrapper continuationItemWrapper = musicContinuation.getItemWrappers().get(0);
+
         if (itemWrapper.getMusicItem() != null) {
             video1 = itemWrapper.getMusicItem().getVideoId();
-            video2 = musicContinuation.getItemWrappers().get(0).getMusicItem().getVideoId();
-        } else {
+            video2 = continuationItemWrapper.getMusicItem().getVideoId();
+        } else if (itemWrapper.getRadioItem() != null) {
             video1 = itemWrapper.getRadioItem().getVideoId();
-            video2 = musicContinuation.getItemWrappers().get(0).getRadioItem().getVideoId();
+            video2 = continuationItemWrapper.getRadioItem().getVideoId();
+        } else if (itemWrapper.getPlaylistItem() != null) {
+            video1 = itemWrapper.getPlaylistItem().getVideoId();
+            video2 = continuationItemWrapper.getPlaylistItem().getVideoId();
         }
 
         assertNotNull("Video1 not null", video1);

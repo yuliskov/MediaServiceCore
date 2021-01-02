@@ -41,39 +41,43 @@ public class PlaylistManagerTest {
     }
 
     @Test
-    public void testAddToPlaylist() {
+    public void testAddToPlaylist() throws InterruptedException {
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
-        PlaylistInfo firstPlaylist = playlistsInfo.getPlaylists().get(0);
+        PlaylistInfo firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
-        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylist.getPlaylistId(),
+        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylistItem.getPlaylistId(),
                 TestHelpersV2.VIDEO_ID_AGE_RESTRICTED), TestHelpersV2.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
 
         assertNotNull("Action result success", actionResult);
 
-        playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
-        firstPlaylist = playlistsInfo.getPlaylists().get(0);
+        Thread.sleep(10_000);
 
-        assertTrue("Action successful", firstPlaylist.isSelected());
+        playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
+
+        assertTrue("Action successful", firstPlaylistItem.isSelected());
     }
 
     @Test
-    public void testRemoveFromPlaylist() {
+    public void testRemoveFromPlaylist() throws InterruptedException {
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
-        PlaylistInfo firstPlaylist = playlistsInfo.getPlaylists().get(0);
+        PlaylistInfo firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
-        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylist.getPlaylistId(),
+        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylistItem.getPlaylistId(),
                 TestHelpersV2.VIDEO_ID_AGE_RESTRICTED), TestHelpersV2.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
 
         assertNotNull("Action result success", actionResult);
 
-        playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
-        firstPlaylist = playlistsInfo.getPlaylists().get(0);
+        Thread.sleep(10_000);
 
-        assertFalse("Action successful", firstPlaylist.isSelected());
+        playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
+
+        assertFalse("Action successful", firstPlaylistItem.isSelected());
     }
 
     private PlaylistsResult getPlaylistsInfo(String videoId) {

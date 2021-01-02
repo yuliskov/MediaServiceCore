@@ -45,6 +45,7 @@ public class BindManagerTest {
                 screen.getScreenId(), SCREEN_NAME);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
+        // Pairing code XXX-XXX-XXX-XXX
         assertNotNull("Pairing code not empty", pairingCode.getPairingCode());
     }
 }

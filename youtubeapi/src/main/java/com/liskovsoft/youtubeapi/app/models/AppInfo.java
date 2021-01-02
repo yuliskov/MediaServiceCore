@@ -16,7 +16,8 @@ public class AppInfo {
      */
     @RegExp({
             "id=\"base-js\" src=\"([^\"]*)\"",
-            "\\.src = '([^']*m=base)'"}) // Cobalt path
+            "\\.src = '([^']*m=base)'", // Cobalt path
+            "\\.src = '([^']*)'; .\\.id = 'base-js'"}) // New Cobalt path
     private String mBaseUrl;
 
     public String getPlayerUrl() {

@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowseManagerSignedTest {
+public class BrowseManagerSignedTest extends BrowseManagerTestBase {
     /**
      * Authorization should be updated each hour
      */
@@ -133,16 +133,6 @@ public class BrowseManagerSignedTest {
         assertTrue("List > 2", browseResult.getTabs().get(0).getSections().get(0).getItemWrappers().size() > 2);
 
         return browseResult.getTabs().get(0).getSections().get(0).getItemWrappers();
-    }
-
-    private void testFields(ItemWrapper itemWrapper) {
-        testFields(itemWrapper.getVideoItem());
-    }
-
-    private void testFields(VideoItem videoItem) {
-        assertNotNull("Field not null", videoItem.getTitle());
-        assertNotNull("Field not null", videoItem.getUserName());
-        assertNotNull("Field not null", videoItem.getThumbnails());
     }
 
     @Test

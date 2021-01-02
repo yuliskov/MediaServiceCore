@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowseManagerUnsignedTest {
+public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
     private BrowseManagerUnsigned mService;
 
     @Before
@@ -89,50 +89,6 @@ public class BrowseManagerUnsignedTest {
         return section;
     }
 
-    private void testFields(ItemWrapper itemWrapper) {
-        if (itemWrapper.getPlaylistItem() != null) {
-            testFields(itemWrapper.getPlaylistItem());
-        } else if (itemWrapper.getVideoItem() != null) {
-            testFields(itemWrapper.getVideoItem());
-        } else if (itemWrapper.getMusicItem() != null) {
-            testFields(itemWrapper.getMusicItem());
-        }
-    }
-
-    private void testFields(PlaylistItem playlistItem) {
-        assertNotNull("Title not null", playlistItem.getTitle());
-        assertNotNull("Description not null", playlistItem.getDescription());
-        String playlistId = playlistItem.getPlaylistId();
-        assertNotNull("Playlist Id not null", playlistId);
-        assertNotNull("Video count not null: " + playlistId, playlistItem.getVideoCountText());
-        assertNotNull("Channel not null: " + playlistId, playlistItem.getChannelId());
-        assertNotNull("Thumbs not null: " + playlistId, playlistItem.getThumbnails());
-    }
-
-    private void testFields(VideoItem videoItem) {
-        assertNotNull("Title not null", videoItem.getTitle());
-        String videoId = videoItem.getVideoId();
-        assertNotNull("Id not null", videoId);
-        assertTrue("Time not null or live: " + videoId, videoItem.getPublishedTime() != null || videoItem.isLive());
-        assertNotNull("Views not null: " + videoId, videoItem.getViewCountText());
-        assertTrue("Length not null or live: " + videoId, videoItem.getLengthText() != null || videoItem.isLive());
-        //assertNotNull("Channel not null: " + videoId, videoItem.getChannelId());
-        assertNotNull("User not null: " + videoId, videoItem.getUserName());
-        assertNotNull("Thumbs not null: " + videoId, videoItem.getThumbnails());
-    }
-
-    private void testFields(MusicItem musicItem) {
-        assertNotNull("Title not null", musicItem.getTitle());
-        String videoId = musicItem.getVideoId();
-        assertNotNull("Id not null", videoId);
-        assertTrue("Time not null: " + videoId, musicItem.getPublishedText() != null);
-        assertNotNull("Views not null: " + videoId, musicItem.getViewCountText());
-        assertNotNull("Length not null: " + videoId, musicItem.getLengthText());
-        assertNotNull("Channel not null: " + videoId, musicItem.getChannelId());
-        assertNotNull("User not null: " + videoId, musicItem.getUserName());
-        assertNotNull("Thumbs not null: " + videoId, musicItem.getThumbnails());
-    }
-
     @Test
     public void testEnsureNextResultIsUnique() throws IOException {
         Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
@@ -161,7 +117,7 @@ public class BrowseManagerUnsignedTest {
 
             for (int j = 0; j < nextVideoItems.size(); j++) {
                 ItemWrapper second = nextVideoItems.get(j);
-                assertNotEquals("All items are unique", first.getVideoItem().getTitle(), second.getVideoItem().getTitle());
+                testThatItemsIsUnique(first, second);
             }
         }
     }
@@ -243,28 +199,11 @@ public class BrowseManagerUnsignedTest {
 
         SectionContinuation musicContinuation = RetrofitHelper.get(wrapper2);
 
-        String video1 = null;
-        String video2 = null;
-
         ItemWrapper itemWrapper = firstSection.getItemWrappers().get(0);
 
         ItemWrapper continuationItemWrapper = musicContinuation.getItemWrappers().get(0);
 
-        if (itemWrapper.getMusicItem() != null) {
-            video1 = itemWrapper.getMusicItem().getVideoId();
-            video2 = continuationItemWrapper.getMusicItem().getVideoId();
-        } else if (itemWrapper.getRadioItem() != null) {
-            video1 = itemWrapper.getRadioItem().getVideoId();
-            video2 = continuationItemWrapper.getRadioItem().getVideoId();
-        } else if (itemWrapper.getPlaylistItem() != null) {
-            video1 = itemWrapper.getPlaylistItem().getVideoId();
-            video2 = continuationItemWrapper.getPlaylistItem().getVideoId();
-        }
-
-        assertNotNull("Video1 not null", video1);
-        assertNotNull("Video2 not null", video2);
-
-        assertNotEquals("Music tab continuation is unique", video1, video2);
+        testThatItemsIsUnique(itemWrapper, continuationItemWrapper);
     }
 
     @Test

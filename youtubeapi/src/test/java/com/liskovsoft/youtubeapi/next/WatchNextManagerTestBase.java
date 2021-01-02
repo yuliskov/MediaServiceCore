@@ -61,7 +61,7 @@ public class WatchNextManagerTestBase {
         assertNotNull("Watch next item has video id: " + videoId, videoId);
         assertNotNull("Watch next item has user name: " + videoId, watchNextItem.getUserName());
         assertNotNull("Watch next item has channel id: " + videoId, watchNextItem.getChannelId());
-        assertTrue("Watch next item has view count: " + videoId, watchNextItem.getViewCountText() != null || watchNextItem.isLive());
+        assertTrue("Watch next item has view count: " + videoId, watchNextItem.getViewCountText() != null || watchNextItem.getShortViewCountText() != null || watchNextItem.isLive());
         assertTrue("Watch next item has length: " + videoId, watchNextItem.getLengthText() != null || watchNextItem.isLive());
         assertNotNull("Watch next item has thumbnails: " + videoId, watchNextItem.getThumbnails());
         assertTrue("Watch next item thumbnails not empty: " + videoId, watchNextItem.getThumbnails().size() > 0);

@@ -15,8 +15,14 @@ public class BrowseManagerTestBase {
         String title2 = null;
 
         if (item1.getVideoItem() != null) {
-            title1 = item1.getVideoItem().getTitle();
-            title2 = item2.getVideoItem().getTitle();
+            VideoItem videoItem1 = item1.getVideoItem();
+            VideoItem videoItem2 = item2.getVideoItem();
+
+            assertNotNull("Video1 title null " + videoItem1.getVideoId(), videoItem1.getTitle());
+            assertNotNull("Video2 title null " + videoItem2.getVideoId(), videoItem2.getTitle());
+
+            title1 = videoItem1.getTitle();
+            title2 = videoItem2.getTitle();
         } else if (item1.getMusicItem() != null) {
             title1 = item1.getMusicItem().getTitle();
             title2 = item2.getMusicItem().getTitle();

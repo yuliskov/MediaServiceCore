@@ -42,6 +42,8 @@ public class PlaylistManagerTest {
 
     @Test
     public void testAddToPlaylist() throws InterruptedException {
+        Thread.sleep(10_000);
+
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfo firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
@@ -62,6 +64,8 @@ public class PlaylistManagerTest {
 
     @Test
     public void testRemoveFromPlaylist() throws InterruptedException {
+        Thread.sleep(10_000);
+
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfo firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 

@@ -14,7 +14,7 @@ public class VideoOwner {
     private Boolean mIsSubscribed;
     @JsonPath({"$.navigationEndpoint.browseEndpoint.browseId", "$.subscribeButton.subscribeButtonRenderer.channelId"})
     private String mChannelId;
-    @JsonPath({"$.subscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.subscriberCountText.runs[0].text"})
+    @JsonPath({"$.subscriberCountText.simpleText", "$.subscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.subscriberCountText.runs[0].text"})
     private String mSubscriberCount;
     @JsonPath({"$.longSubscriberCountText.runs[0].text", "$.subscribeButton.subscribeButtonRenderer.longSubscriberCountText.runs[0].text"})
     private String mSubscriberCountLong;

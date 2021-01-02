@@ -5,4 +5,6 @@ public class BindManagerParams {
     public static final String ZX = "xxxxxxxxxxxx";
     public static final String RID = "1337";
     public static final String AID = "42";
+    public static final String APP = "lb-v4";
+    public static final String ACCESS_TYPE = "permanent";
 }

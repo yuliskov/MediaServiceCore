@@ -1,4 +1,4 @@
 package com.liskovsoft.youtubeapi.lounge.models;
 
-public class BindResult {
+public class PairingCode {
 }

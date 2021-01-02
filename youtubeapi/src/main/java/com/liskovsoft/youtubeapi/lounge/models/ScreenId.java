@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.lounge.models;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
-public class ScreenIdResult {
+public class ScreenId {
     @RegExp(".*")
     private String mScreenId;
 

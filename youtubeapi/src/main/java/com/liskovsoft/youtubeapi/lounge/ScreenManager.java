@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.lounge.models.LoungeTokenResult;
+import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -13,5 +13,5 @@ public interface ScreenManager {
      */
     @FormUrlEncoded
     @POST("https://www.youtube.com/api/lounge/pairing/get_lounge_token_batch")
-    Call<LoungeTokenResult> getLoungeToken(@Field("screen_ids") String... screenIds);
+    Call<ScreenInfos> getScreenInfos(@Field("screen_ids") String... screenIds);
 }

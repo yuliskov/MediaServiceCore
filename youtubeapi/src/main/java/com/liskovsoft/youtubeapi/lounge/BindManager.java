@@ -30,5 +30,5 @@ public interface BindManager {
             "&RID=" + BindManagerParams.RID +
             "&AID=" + BindManagerParams.AID +
             "&zx=" + BindManagerParams.ZX)
-    Call<BindData> bind(@Query("name") String screenName, @Query("loungeIdToken") String loungeToken, @Field("count") String count);
+    Call<BindData> bind(@Query("name") String screenName, @Query("loungeIdToken") String loungeToken, @Field("count") int count);
 }

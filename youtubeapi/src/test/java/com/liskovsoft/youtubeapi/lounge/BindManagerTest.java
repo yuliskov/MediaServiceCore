@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.lounge.models.LoungeTokenResult;
+import com.liskovsoft.youtubeapi.lounge.models.BindData;
+import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.Screen;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
@@ -34,18 +35,33 @@ public class BindManagerTest {
 
     @Test
     public void testThatPairingCodeGeneratedSuccessfully() {
-        Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
-        ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
-
-        Call<LoungeTokenResult> loungeTokenWrapper = mScreenManager.getLoungeToken(screenId.getScreenId());
-        LoungeTokenResult loungeTokenResult = RetrofitHelper.get(loungeTokenWrapper);
-
-        Screen screen = loungeTokenResult.getScreens().get(0);
+        Screen screen = getScreen();
         Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(BindManagerParams.ACCESS_TYPE, BindManagerParams.APP, screen.getLoungeToken(),
                 screen.getScreenId(), SCREEN_NAME);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
         // Pairing code XXX-XXX-XXX-XXX
         assertNotNull("Pairing code not empty", pairingCode.getPairingCode());
+    }
+
+    @Test
+    public void testThatFirstBindDataIsNotEmpty() {
+        Screen screen = getScreen();
+
+        Call<BindData> bindDataWrapper = mBindManager.bind(SCREEN_NAME, screen.getLoungeToken(), 0);
+
+        BindData bindData = RetrofitHelper.get(bindDataWrapper);
+
+        assertNotNull("Contains bind data", bindData.getBindData());
+    }
+
+    private Screen getScreen() {
+        Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
+        ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
+
+        Call<ScreenInfos> screenInfosWrapper = mScreenManager.getScreenInfos(screenId.getScreenId());
+        ScreenInfos screenInfos = RetrofitHelper.get(screenInfosWrapper);
+
+        return screenInfos.getScreens().get(0);
     }
 }

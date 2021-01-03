@@ -85,15 +85,22 @@ public class AppHelper {
 
     /**
      * Create absolute url from relative if needed<br/>
-     * There was a serious bug when absolute url prepended twice
+     * There was a serious bug when absolute url prepended twice<br/>
+     * Also unescapes url for some cases
      */
     public static String tidyUrl(String url) {
         if (url == null) {
             return null;
         }
 
-        url = url.replace("\\/", "/");
+        url = unescapeUrl(url);
 
         return url.startsWith("/") ? AppConstants.SCRIPTS_URL_BASE + url : url;
+    }
+
+    public static String unescapeUrl(String url) {
+        url = url.replace("\\/", "/");
+        url = url.replace("\\x3d", "="); // Hexadecimal escape sequences
+        return url;
     }
 }

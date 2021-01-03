@@ -117,6 +117,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
             for (int j = 0; j < nextVideoItems.size(); j++) {
                 ItemWrapper second = nextVideoItems.get(j);
+                assertNotNull("Item not null " + nextVideoItems, second);
                 testThatItemsIsUnique(first, second);
             }
         }

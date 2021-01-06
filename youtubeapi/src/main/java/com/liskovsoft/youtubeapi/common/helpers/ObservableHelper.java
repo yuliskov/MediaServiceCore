@@ -19,6 +19,12 @@ public class ObservableHelper {
 
             if (result != null) {
                 emitter.onNext(result);
+            } else {
+                // Fix fall back on the global error handler
+                // More info: https://stackoverflow.com/questions/44420422/crash-when-sending-exception-through-rxjava
+                if (!emitter.isDisposed()) {
+                    emitter.onError(new IllegalStateException("Unknown error. Empty result."));
+                }
             }
 
             emitter.onComplete();

@@ -375,7 +375,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
             List<GridTab> tabs = mMediaGroupManagerReal.getPlaylists();
 
-            if (tabs != null) {
+            if (tabs != null && tabs.size() > 0) {
                 for (GridTab tab : tabs) {
                     GridTabContinuation tabContinuation = mMediaGroupManagerReal.continueGridTab(tab.getReloadPageKey());
 
@@ -387,9 +387,11 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
                         emitter.onNext(list);
                     }
                 }
-            }
 
-            emitter.onComplete();
+                emitter.onComplete();
+            } else {
+                ObservableHelper.onError(emitter, "getPlaylistsObserve: tab is null");
+            }
         });
     }
 
@@ -402,9 +404,10 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
             if (tabs != null && tabs.size() > 0) {
                 emitter.onNext(YouTubeMediaGroup.fromTabs(tabs, MediaGroup.TYPE_PLAYLISTS_SECTION));
+                emitter.onComplete();
+            } else {
+                ObservableHelper.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
             }
-
-            emitter.onComplete();
         });
     }
 }

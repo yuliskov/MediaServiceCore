@@ -125,9 +125,10 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             if (metadata != null) {
                 ((YouTubeMediaItem) item).sync(metadata);
                 emitter.onNext(metadata);
+                emitter.onComplete();
+            } else {
+                ObservableHelper.onError(emitter, "getMetadataObserve result is null");
             }
-
-            emitter.onComplete();
         });
     }
 
@@ -138,9 +139,10 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
             if (metadata != null) {
                 emitter.onNext(metadata);
+                emitter.onComplete();
+            } else {
+                ObservableHelper.onError(emitter, "getMetadataObserve result is null");
             }
-
-            emitter.onComplete();
         });
     }
 

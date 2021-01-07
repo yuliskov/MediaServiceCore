@@ -270,8 +270,9 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
         if (tab == null) {
-            Log.e(TAG, "BrowseTab is null");
-            emitter.onComplete();
+            String msg = "emitGroups: BrowseTab is null";
+            Log.e(TAG, msg);
+            ObservableHelper.onError(emitter, msg);
             return;
         }
 
@@ -279,40 +280,44 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), type);
 
         if (groups.isEmpty()) {
-            Log.e(TAG, "Media group is empty: " + type);
-        }
+            String msg = "Media group is empty: " + type;
+            Log.e(TAG, msg);
+            ObservableHelper.onError(emitter, msg);
+        } else {
+            while (!groups.isEmpty()) {
+                emitter.onNext(groups);
+                SectionTabContinuation continuation = mMediaGroupManagerReal.continueSectionTab(nextPageKey);
 
-        while (!groups.isEmpty()) {
-            emitter.onNext(groups);
-            SectionTabContinuation continuation = mMediaGroupManagerReal.continueSectionTab(nextPageKey);
-
-            if (continuation != null) {
-                nextPageKey = continuation.getNextPageKey();
-                groups = YouTubeMediaGroup.from(continuation.getSections(), type);
-            } else {
-                break;
+                if (continuation != null) {
+                    nextPageKey = continuation.getNextPageKey();
+                    groups = YouTubeMediaGroup.from(continuation.getSections(), type);
+                } else {
+                    break;
+                }
             }
-        }
 
-        emitter.onComplete();
+            emitter.onComplete();
+        }
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionList sectionList, int type) {
         if (sectionList == null) {
-            Log.e(TAG, "SectionList is null");
-            emitter.onComplete();
+            String msg = "emitGroups: SectionList is null";
+            Log.e(TAG, msg);
+            ObservableHelper.onError(emitter, msg);
             return;
         }
 
         List<MediaGroup> groups = YouTubeMediaGroup.from(sectionList.getSections(), type);
 
         if (groups.isEmpty()) {
-            Log.e(TAG, "Section list is empty");
+            String msg = "emitGroups: SectionList content is null";
+            Log.e(TAG, msg);
+            ObservableHelper.onError(emitter, msg);
         } else {
             emitter.onNext(groups);
+            emitter.onComplete();
         }
-
-        emitter.onComplete();
     }
 
     @Override

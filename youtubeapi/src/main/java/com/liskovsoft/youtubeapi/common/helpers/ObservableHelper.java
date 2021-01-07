@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
 
 import java.util.concurrent.Callable;
@@ -19,15 +20,10 @@ public class ObservableHelper {
 
             if (result != null) {
                 emitter.onNext(result);
+                emitter.onComplete();
             } else {
-                // Fix fall back on the global error handler
-                // More info: https://stackoverflow.com/questions/44420422/crash-when-sending-exception-through-rxjava
-                if (!emitter.isDisposed()) {
-                    emitter.onError(new IllegalStateException("Unknown error. Empty result."));
-                }
+                onError(emitter, "fromNullable result is null");
             }
-
-            emitter.onComplete();
         });
     }
 
@@ -40,6 +36,14 @@ public class ObservableHelper {
                     action.dispose();
                 }
             }
+        }
+    }
+
+    public static <T> void onError(ObservableEmitter<T> emitter, String msg) {
+        // Fix fall back on the global error handler
+        // More info: https://stackoverflow.com/questions/44420422/crash-when-sending-exception-through-rxjava
+        if (!emitter.isDisposed()) {
+            emitter.onError(new IllegalStateException(msg));
         }
     }
 }

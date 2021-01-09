@@ -28,7 +28,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId) {
         VideoInfo result = getVideoInfoRegular(videoId);
 
-        if (result != null && result.isLoginRequired()) {
+        if (result != null && result.isAgeRestricted()) {
             Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
             result = getVideoInfoRestricted(videoId);
         }

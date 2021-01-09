@@ -1,41 +1,37 @@
 package com.liskovsoft.youtubeapi.lounge.models.commands;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistData;
 
 import java.util.List;
 
-/**
- * Example: [0,["c","F052B2115F9479B9","",8]
- */
 public class Command {
     public static final String TYPE_PLAYLIST = "setPlaylist";
     public static final String TYPE_NOW_PLAYING = "getNowPlaying";
     public static final String TYPE_SESSION_ID = "c";
-    public static final String TYPE_GOOGLE_SESSION_ID = "S";
+    public static final String TYPE_G_SESSION_ID = "S";
 
     @JsonPath("$[0]")
-    private int mCommandIndex;
+    private int mIndex;
 
     @JsonPath("$[1][0]")
-    private String mCommandName;
+    private String mName;
 
     @JsonPath("$[1][1]")
     private PlaylistData mPlaylistData;
 
     @JsonPath("$[1][1:]")
-    private List<String> mCommandParams;
+    private List<String> mParams;
 
-    public int getCommandIndex() {
-        return mCommandIndex;
+    public int getIndex() {
+        return mIndex;
     }
 
-    public String getCommandName() {
-        return mCommandName;
+    public String getName() {
+        return mName;
     }
 
-    public List<String> getCommandParams() {
-        return mCommandParams;
+    public List<String> getParams() {
+        return mParams;
     }
 
     public PlaylistData getPlaylistData() {

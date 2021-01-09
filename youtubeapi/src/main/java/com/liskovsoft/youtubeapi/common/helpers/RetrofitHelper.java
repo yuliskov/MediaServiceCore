@@ -1,10 +1,17 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.ParseContext;
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathSkipConverterFactory;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import okhttp3.OkHttpClient;
@@ -78,6 +85,18 @@ public class RetrofitHelper {
         }
 
         return null;
+    }
+
+    public static <T> JsonPathTypeAdapter<T> adaptJsonPathSkip(Class<?> clazz) {
+        Configuration conf = Configuration
+                .builder()
+                .mappingProvider(new GsonMappingProvider())
+                .jsonProvider(new GsonJsonProvider())
+                .build();
+
+        ParseContext parser = JsonPath.using(conf);
+
+        return new JsonPathSkipTypeAdapter<>(parser, clazz);
     }
 
     private static Retrofit.Builder createBuilder() {

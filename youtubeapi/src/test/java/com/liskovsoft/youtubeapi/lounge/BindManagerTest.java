@@ -13,6 +13,7 @@ import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -71,6 +72,7 @@ public class BindManagerTest {
         assertNotNull("Contains bind data", bindData);
     }
 
+    @Ignore("Long running test")
     @Test
     public void testBindStream() throws IOException {
         CommandInfos firstBind = getFirstBind();

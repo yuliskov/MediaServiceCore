@@ -7,6 +7,7 @@ import java.util.List;
 public class Command {
     public static final String TYPE_PLAYLIST = "setPlaylist";
     public static final String TYPE_NOW_PLAYING = "getNowPlaying";
+    public static final String TYPE_NOP = "noop";
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";
 
@@ -14,7 +15,7 @@ public class Command {
     private int mIndex;
 
     @JsonPath("$[1][0]")
-    private String mName;
+    private String mType;
 
     @JsonPath("$[1][1]")
     private PlaylistData mPlaylistData;
@@ -26,8 +27,8 @@ public class Command {
         return mIndex;
     }
 
-    public String getName() {
-        return mName;
+    public String getType() {
+        return mType;
     }
 
     public List<String> getParams() {
@@ -37,12 +38,4 @@ public class Command {
     public PlaylistData getPlaylistData() {
         return mPlaylistData;
     }
-
-    //public String getScreenId() {
-    //    return null;
-    //}
-    //
-    //public String getSessionId() {
-    //    return null;
-    //}
 }

@@ -18,7 +18,7 @@ public class CommandInfos {
         }
 
         for (Command command : mCommands) {
-            if (commandName.equals(command.getName())) {
+            if (commandName.equals(command.getType())) {
                 return command.getParams().get(0);
             }
         }

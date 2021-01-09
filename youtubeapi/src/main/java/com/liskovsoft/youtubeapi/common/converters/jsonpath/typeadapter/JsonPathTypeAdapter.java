@@ -155,8 +155,8 @@ public class JsonPathTypeAdapter<T> {
                     }
 
                     done = true; // at least one field is set
-                } catch (Exception e) { // same annotation on different types
-                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    Log.d(TAG, "%s: Incompatible json value found %s. Same path on different types?", field.getType().getSimpleName(), jsonVal);
                 }
             }
         } catch (Exception e) {

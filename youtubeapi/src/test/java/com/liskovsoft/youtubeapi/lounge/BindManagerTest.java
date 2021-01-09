@@ -63,7 +63,7 @@ public class BindManagerTest {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
         mScreenManager = RetrofitHelper.withJsonPath(ScreenManager.class);
         mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
-        createAdapter();
+        mAdapter = createJsonPathSkipTypeAdapter(CommandInfos.class);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class BindManagerTest {
         return mAdapter.read(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private void createAdapter() {
+    private <T> JsonPathTypeAdapter<T> createJsonPathSkipTypeAdapter(Class<?> clazz) {
         Configuration conf = Configuration
                 .builder()
                 .mappingProvider(new GsonMappingProvider())
@@ -173,6 +173,6 @@ public class BindManagerTest {
 
         ParseContext parser = JsonPath.using(conf);
 
-        mAdapter = new JsonPathSkipTypeAdapter<CommandInfos>(parser, CommandInfos.class);
+        return new JsonPathSkipTypeAdapter<>(parser, clazz);
     }
 }

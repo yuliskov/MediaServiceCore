@@ -427,3 +427,21 @@ authorization: Bearer ya29.A0AfH6SMB9e-3IzROa4KPojfHa2_hR_7EqTfZUTHBnT0WJMz93hg1
 user-agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/120 (unlike Gecko) Starboard/1
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20201103.00.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"RU","acceptLanguage":"ru","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false}},"browseId":"FEtopics"}
+
+###
+
+POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&id=75b10d12-6060-459d-b6d9-708d5e11ea7e&name=YouTube%20on%20TV&app=lb-v4&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&loungeIdToken=AGdO5p9ZLrDijMnwDXrz1HvKmGEDwvNRVYlNvW5iw9NiMC47zBhuxVMIpWt9xvkm_o-K3Q6lmWEA0iM6hzrNKXjWrbBNnV7pityWiJqQj56Z40ZefkuQQGE&VER=8&v=2&RID=58471&CVER=1&zx=wbzc8ohqyz93&t=1
+content-type: application/x-www-form-urlencoded
+
+count=0
+
+###
+
+POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&id=75b10d12-6060-459d-b6d9-708d5e11ea7e&name=YouTube%20on%20TV&app=lb-v4&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&loungeIdToken=AGdO5p9ZLrDijMnwDXrz1HvKmGEDwvNRVYlNvW5iw9NiMC47zBhuxVMIpWt9xvkm_o-K3Q6lmWEA0iM6hzrNKXjWrbBNnV7pityWiJqQj56Z40ZefkuQQGE&VER=8&v=2&RID=58471&CVER=1&zx=wbzc8ohqyz93&t=1
+content-type: application/x-www-form-urlencoded
+
+count=0
+
+###
+
+GET https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1&RID=rpc&CI=0&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx=xxxxxxxxxxxx&name=TubeNext&loungeIdToken=AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4&SID=DFFC882001813F8E&gsessionid=IXOhcJVMbHblsnSdQ6509rPE_aXgT5Jn

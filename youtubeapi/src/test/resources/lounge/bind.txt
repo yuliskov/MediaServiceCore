@@ -1,0 +1,17 @@
+Bind1:
+
+POST
+https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&id=75b10d12-6060-459d-b6d9-708d5e11ea7e&name=YouTube%20on%20TV&app=lb-v4&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&loungeIdToken=AGdO5p9ZLrDijMnwDXrz1HvKmGEDwvNRVYlNvW5iw9NiMC47zBhuxVMIpWt9xvkm_o-K3Q6lmWEA0iM6hzrNKXjWrbBNnV7pityWiJqQj56Z40ZefkuQQGE&VER=8&v=2&RID=58471&CVER=1&zx=wbzc8ohqyz93&t=1
+
+458
+[[0,["c","F052B2115F9479B9","",8]
+]
+,[1,["S","S8sDQ9Oxs3ffI3RjBZYcRj0fLOQ7IzbM"]]
+,[2,["loungeStatus",{"devices":"[{\"app\":\"lb-v4\",\"capabilities\":\"dsp,mic,dpa,que,mus\",\"clientName\":\"tvhtml5\",\"experiments\":\"\",\"name\":\"YouTube on TV\",\"id\":\"75b10d12-6060-459d-b6d9-708d5e11ea7e\",\"type\":\"LOUNGE_SCREEN\",\"hasCc\":\"true\"}]","connectionEventDetails":"{\"deviceId\":\"75b10d12-6060-459d-b6d9-708d5e11ea7e\"}"}]]
+,[3,["getNowPlaying"]]
+]
+
+Bind2:
+
+GET
+https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&id=75b10d12-6060-459d-b6d9-708d5e11ea7e&name=YouTube%20on%20TV&app=lb-v4&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&loungeIdToken=AGdO5p9ZLrDijMnwDXrz1HvKmGEDwvNRVYlNvW5iw9NiMC47zBhuxVMIpWt9xvkm_o-K3Q6lmWEA0iM6hzrNKXjWrbBNnV7pityWiJqQj56Z40ZefkuQQGE&VER=8&v=2&RID=rpc&SID=F052B2115F9479B9&CI=0&AID=3&gsessionid=S8sDQ9Oxs3ffI3RjBZYcRj0fLOQ7IzbM&TYPE=xmlhttp&zx=k34lkhilnlss&t=1

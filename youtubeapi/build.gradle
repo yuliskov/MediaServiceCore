@@ -61,4 +61,7 @@ dependencies {
 
     // js interpreter
     implementation 'com.squareup.duktape:duktape-android:' + duktapeVersion
+
+    // covert Reader to InputStream
+    implementation 'commons-io:commons-io:' + commonsIOVersion
 }

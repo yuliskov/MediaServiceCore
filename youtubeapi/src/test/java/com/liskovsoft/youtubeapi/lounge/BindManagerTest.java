@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.lounge.models.BindData;
+import com.liskovsoft.youtubeapi.lounge.models.Command;
+import com.liskovsoft.youtubeapi.lounge.models.CommandInfos;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.Screen;
@@ -18,8 +19,11 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(RobolectricTestRunner.class)
 public class BindManagerTest {
     private static final String SCREEN_NAME = "TubeNext";
+    private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
+    private static final String SCREEN_ID_TMP = "910nbko7d2d6qtthu2609a3id6";
     private BindManager mBindManager;
     private ScreenManager mScreenManager;
+    private CommandManager mCommandManager;
 
     @Before
     public void setUp() {
@@ -31,6 +35,7 @@ public class BindManagerTest {
 
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
         mScreenManager = RetrofitHelper.withJsonPath(ScreenManager.class);
+        mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
     }
 
     @Test
@@ -46,13 +51,34 @@ public class BindManagerTest {
 
     @Test
     public void testThatFirstBindDataIsNotEmpty() {
-        Screen screen = getScreen();
+        CommandInfos bindData = getFirstBind();
 
-        Call<BindData> bindDataWrapper = mBindManager.bind(SCREEN_NAME, screen.getLoungeToken(), 0);
+        assertNotNull("Contains bind data", bindData);
+    }
 
-        BindData bindData = RetrofitHelper.get(bindDataWrapper);
+    @Test
+    public void testThatSecondBindDataIsNotEmpty() throws InterruptedException {
+        CommandInfos firstBind = getFirstBind();
+        Command command1 = firstBind.getCommands().get(0);
+        Command command2 = firstBind.getCommands().get(1);
+        String screenId = command1.getCommandParams().get(0);
+        String sessionId = command2.getCommandParams().get(0);
 
-        assertNotNull("Contains bind data", bindData.getBindData());
+        for (int i = 0; i < 10; i++) {
+            Call<CommandInfos> bindDataWrapper = mCommandManager.bind2(SCREEN_NAME, LOUNGE_TOKEN_TMP, screenId, sessionId);
+
+            CommandInfos bindData = RetrofitHelper.get(bindDataWrapper);
+
+            //assertNotNull("Contains bind data", bindData);
+
+            //Thread.sleep(10_000);
+        }
+    }
+
+    private CommandInfos getFirstBind() {
+        Call<CommandInfos> bindDataWrapper = mCommandManager.bind1(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
+
+        return RetrofitHelper.get(bindDataWrapper);
     }
 
     private Screen getScreen() {

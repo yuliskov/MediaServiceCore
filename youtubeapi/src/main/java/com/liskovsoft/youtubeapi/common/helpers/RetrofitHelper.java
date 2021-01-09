@@ -4,12 +4,11 @@ import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathSkipConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -36,6 +35,16 @@ public class RetrofitHelper {
 
         Retrofit retrofit = builder
                 .addConverterFactory(JsonPathConverterFactory.create())
+                .build();
+
+        return retrofit.create(clazz);
+    }
+
+    public static <T> T withJsonPathSkip(Class<T> clazz) {
+        Retrofit.Builder builder = createBuilder();
+
+        Retrofit retrofit = builder
+                .addConverterFactory(JsonPathSkipConverterFactory.create())
                 .build();
 
         return retrofit.create(clazz);

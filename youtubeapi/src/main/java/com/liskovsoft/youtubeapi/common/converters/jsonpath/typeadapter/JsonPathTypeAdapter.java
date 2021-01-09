@@ -36,12 +36,10 @@ public class JsonPathTypeAdapter<T> {
         mType = (Class<?>) type;
     }
 
-    private Class<?> getGenericType() {
-        return mType;
-    }
-
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
+        is = process(is);
+
         Object jsonContent = null;
 
         String[] jsonPath = getJsonPath(getGenericType());
@@ -61,6 +59,17 @@ public class JsonPathTypeAdapter<T> {
         }
 
         return (T) readType(getGenericType(), jsonContent);
+    }
+
+    /**
+     * Enable additional processing like skipping first line etc
+     */
+    protected InputStream process(InputStream is) {
+        return is;
+    }
+
+    private Class<?> getGenericType() {
+        return mType;
     }
 
     private Object readType(Class<?> type, Object jsonContent) {

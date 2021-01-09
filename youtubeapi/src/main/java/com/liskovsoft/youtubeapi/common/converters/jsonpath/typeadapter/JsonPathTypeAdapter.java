@@ -117,43 +117,47 @@ public class JsonPathTypeAdapter<T> {
                     continue;
                 }
 
-                if (jsonVal instanceof JsonArray) {
-                    List<Object> list = null;
-                    Class<?> myType = ReflectionHelper.getGenericParamType(field);
+                try {
+                    if (jsonVal instanceof JsonArray) {
+                        List<Object> list = null;
+                        Class<?> myType = ReflectionHelper.getGenericParamType(field);
 
-                    if (myType == null) {
-                        throw new IllegalStateException("Please, supply generic field for the list type: " + field);
-                    }
-
-                    for (Object jsonObj : (JsonArray) jsonVal) {
-                        Object item;
-
-                        if (jsonObj instanceof JsonPrimitive) {
-                            item = parsePrimitive((JsonPrimitive) jsonObj);
-                        } else {
-                            item = readType(myType, jsonObj.toString());
+                        if (myType == null) {
+                            throw new IllegalStateException("Please, supply generic field for the list type: " + field);
                         }
 
-                        if (item != null) {
-                            if (list == null) {
-                                list = new ArrayList<>();
+                        for (Object jsonObj : (JsonArray) jsonVal) {
+                            Object item;
+
+                            if (jsonObj instanceof JsonPrimitive) {
+                                item = parsePrimitive((JsonPrimitive) jsonObj);
+                            } else {
+                                item = readType(myType, jsonObj.toString());
                             }
 
-                            list.add(item);
+                            if (item != null) {
+                                if (list == null) {
+                                    list = new ArrayList<>();
+                                }
+
+                                list.add(item);
+                            }
                         }
+
+                        field.set(obj, list);
+                    } else if (jsonVal instanceof JsonPrimitive) {
+                        Object val = parsePrimitive((JsonPrimitive) jsonVal);
+
+                        field.set(obj, val);
+                    } else if (jsonVal instanceof JsonObject) {
+                        Object val = readType(field.getType(), jsonVal.toString());
+                        field.set(obj, val);
                     }
 
-                    field.set(obj, list);
-                } else if (jsonVal instanceof JsonPrimitive) {
-                    Object val = parsePrimitive((JsonPrimitive) jsonVal);
-
-                    field.set(obj, val);
-                } else if (jsonVal instanceof JsonObject) {
-                    Object val = readType(field.getType(), jsonVal.toString());
-                    field.set(obj, val);
+                    done = true; // at least one field is set
+                } catch (Exception e) { // same annotation on different types
+                    e.printStackTrace();
                 }
-
-                done = true; // at least one field is set
             }
         } catch (Exception e) {
             e.printStackTrace();

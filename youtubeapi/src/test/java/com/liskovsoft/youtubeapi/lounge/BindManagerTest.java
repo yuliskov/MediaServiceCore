@@ -1,23 +1,23 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.ParseContext;
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.lounge.models.Command;
-import com.liskovsoft.youtubeapi.lounge.models.CommandInfos;
+import com.liskovsoft.youtubeapi.lounge.models.commands.Command;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.Screen;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,14 +25,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
-import javax.annotation.Nullable;
-
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -51,6 +50,7 @@ public class BindManagerTest {
     private BindManager mBindManager;
     private ScreenManager mScreenManager;
     private CommandManager mCommandManager;
+    private JsonPathTypeAdapter<CommandInfos> mAdapter;
 
     @Before
     public void setUp() {
@@ -63,6 +63,7 @@ public class BindManagerTest {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
         mScreenManager = RetrofitHelper.withJsonPath(ScreenManager.class);
         mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
+        createAdapter();
     }
 
     @Test
@@ -116,6 +117,7 @@ public class BindManagerTest {
 
             if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
                 System.out.println("New chunk: \n" + result);
+                CommandInfos commandInfos = toObject(result);
                 result = "";
             }
         }
@@ -123,24 +125,24 @@ public class BindManagerTest {
         response.body().close();
     }
 
-    @Test
-    public void testThatSecondBindDataIsNotEmpty() throws InterruptedException {
-        CommandInfos firstBind = getFirstBind();
-        Command command1 = firstBind.getCommands().get(0);
-        Command command2 = firstBind.getCommands().get(1);
-        String screenId = command1.getCommandParams().get(0);
-        String sessionId = command2.getCommandParams().get(0);
-
-        for (int i = 0; i < 10; i++) {
-            Call<CommandInfos> bindDataWrapper = mCommandManager.bind2(SCREEN_NAME, LOUNGE_TOKEN_TMP, screenId, sessionId);
-
-            CommandInfos bindData = RetrofitHelper.get(bindDataWrapper);
-
-            //assertNotNull("Contains bind data", bindData);
-
-            //Thread.sleep(10_000);
-        }
-    }
+    //@Test
+    //public void testThatSecondBindDataIsNotEmpty() throws InterruptedException {
+    //    CommandInfos firstBind = getFirstBind();
+    //    Command command1 = firstBind.getCommands().get(0);
+    //    Command command2 = firstBind.getCommands().get(1);
+    //    String screenId = command1.getCommandParams().get(0);
+    //    String sessionId = command2.getCommandParams().get(0);
+    //
+    //    for (int i = 0; i < 10; i++) {
+    //        Call<CommandInfos> bindDataWrapper = mCommandManager.bind2(SCREEN_NAME, LOUNGE_TOKEN_TMP, screenId, sessionId);
+    //
+    //        CommandInfos bindData = RetrofitHelper.get(bindDataWrapper);
+    //
+    //        //assertNotNull("Contains bind data", bindData);
+    //
+    //        //Thread.sleep(10_000);
+    //    }
+    //}
 
     private CommandInfos getFirstBind() {
         Call<CommandInfos> bindDataWrapper = mCommandManager.bind1(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
@@ -156,5 +158,21 @@ public class BindManagerTest {
         ScreenInfos screenInfos = RetrofitHelper.get(screenInfosWrapper);
 
         return screenInfos.getScreens().get(0);
+    }
+
+    private CommandInfos toObject(String result) {
+        return mAdapter.read(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    private void createAdapter() {
+        Configuration conf = Configuration
+                .builder()
+                .mappingProvider(new GsonMappingProvider())
+                .jsonProvider(new GsonJsonProvider())
+                .build();
+
+        ParseContext parser = JsonPath.using(conf);
+
+        mAdapter = new JsonPathSkipTypeAdapter<CommandInfos>(parser, CommandInfos.class);
     }
 }

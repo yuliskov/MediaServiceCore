@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.lounge.models.CommandInfos;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

@@ -46,4 +46,12 @@ public class ReflectionHelper {
 
         return result;
     }
+
+    public static void setField(Field field, Object obj, Object val) {
+        try {
+            field.set(obj, val);
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 }

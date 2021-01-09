@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.Command;
@@ -26,7 +27,12 @@ import retrofit2.Call;
 
 import javax.annotation.Nullable;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -78,82 +84,43 @@ public class BindManagerTest {
     }
 
     @Test
-    public void testWebSocket() throws InterruptedException {
+    public void testBindStream() throws IOException {
         CommandInfos firstBind = getFirstBind();
         Command command1 = firstBind.getCommands().get(0);
         Command command2 = firstBind.getCommands().get(1);
         String screenId = command1.getCommandParams().get(0);
         String sessionId = command2.getCommandParams().get(0);
 
-        Request request = new Builder().url(String.format(
-                "%s&name=%s&loungeIdToken=%s&SID=%s&gsessionid=%s",
-                BIND2_URL, SCREEN_NAME, LOUNGE_TOKEN_TMP, screenId, sessionId
-        )).build();
+        String url = String.format("%s&name=%s&loungeIdToken=%s&SID=%s&gsessionid=%s",
+                BIND2_URL,
+                SCREEN_NAME,
+                LOUNGE_TOKEN_TMP,
+                screenId,
+                sessionId);
+        Request request = new Builder().url(url).build();
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        //builder.addInterceptor(new OkHttpProfilerInterceptor());
+        builder.readTimeout(Duration.ZERO);
 
-        builder.addInterceptor(new Interceptor() {
-            @Override public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request()
-                        .newBuilder()
-                        .removeHeader("Upgrade")
-                        .removeHeader("Connection")
-                        .removeHeader("Sec-WebSocket-Key")
-                        .removeHeader("Sec-WebSocket-Version")
-                        .build();
-                return chain.proceed(request);
+        OkHttpClient client = builder.build();
+
+        Response response = client.newCall(request).execute();
+
+        InputStream in = response.body().byteStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String result = "";
+        String line = "";
+
+        while((line = reader.readLine()) != null) {
+            result += line + "\n";
+
+            if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
+                System.out.println("New chunk: \n" + result);
+                result = "";
             }
-        });
+        }
 
-        OkHttpClient okHttpClient = builder.build();
-
-        //okHttpClient.networkInterceptors().add(new Interceptor() {
-        //    @Override public Response intercept(Chain chain) throws IOException {
-        //        Request request = chain.request()
-        //                .newBuilder()
-        //                .removeHeader("Upgrade")
-        //                .removeHeader("Connection")
-        //                .removeHeader("Sec-WebSocket-Key")
-        //                .removeHeader("Sec-WebSocket-Version")
-        //                .build();
-        //        return chain.proceed(request);
-        //    }
-        //});
-
-        okHttpClient.newWebSocket(request, new WebSocketListener() {
-            @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                super.onOpen(webSocket, response);
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                super.onMessage(webSocket, text);
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                super.onMessage(webSocket, bytes);
-            }
-
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-            }
-
-            @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                super.onClosed(webSocket, code, reason);
-            }
-
-            @Override
-            public void onFailure(WebSocket webSocket, Throwable t, @Nullable Response response) {
-                super.onFailure(webSocket, t, response);
-            }
-        });
-
-        Thread.sleep(100_000);
+        response.body().close();
     }
 
     @Test

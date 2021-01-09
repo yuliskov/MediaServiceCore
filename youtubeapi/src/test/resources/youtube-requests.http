@@ -444,4 +444,8 @@ count=0
 
 ###
 
-GET https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1&RID=rpc&CI=0&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx=xxxxxxxxxxxx&name=TubeNext&loungeIdToken=AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4&SID=DFFC882001813F8E&gsessionid=IXOhcJVMbHblsnSdQ6509rPE_aXgT5Jn
+GET https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1&RID=rpc&CI=0&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx=xxxxxxxxxxxx&name=TubeNext&loungeIdToken=AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4&SID=382906C18CBCD492&gsessionid=y4LapfllLJ0jpekZD2sW3FvQu3o-mz0S
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: X8zbNRcWQ2VGQ+rtd6PrRQ==
+Sec-WebSocket-Version: 13

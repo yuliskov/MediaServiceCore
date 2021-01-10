@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import com.liskovsoft.mediaserviceinterfaces.DeviceLinkManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
@@ -11,6 +12,7 @@ public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInManager mSignInManager;
+    private final YouTubeDeviceLinkManager mDeviceLinkManager;
     private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
 
@@ -18,6 +20,7 @@ public class YouTubeMediaService implements MediaService {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
+        mDeviceLinkManager = YouTubeDeviceLinkManager.instance();
         mMediaGroupManager = YouTubeMediaGroupManager.instance();
         mMediaItemManager = YouTubeMediaItemManager.instance();
     }
@@ -33,6 +36,11 @@ public class YouTubeMediaService implements MediaService {
     @Override
     public SignInManager getSignInManager() {
         return mSignInManager;
+    }
+
+    @Override
+    public DeviceLinkManager getDeviceLinkManager() {
+        return mDeviceLinkManager;
     }
 
     @Override

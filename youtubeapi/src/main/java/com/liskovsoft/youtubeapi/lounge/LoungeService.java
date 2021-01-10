@@ -57,7 +57,7 @@ public class LoungeService {
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
         // Pairing code XXX-XXX-XXX-XXX
-        return pairingCode.getPairingCode();
+        return pairingCode != null ? pairingCode.getPairingCode() : null;
     }
 
     public void startListening(OnCommand callback) throws IOException {

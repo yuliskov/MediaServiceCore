@@ -74,7 +74,8 @@ public class LoungeService {
         Request request = new Builder().url(url).build();
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        builder.readTimeout(10, TimeUnit.DAYS);
+        // Read infinitely
+        builder.readTimeout(365, TimeUnit.DAYS);
 
         OkHttpClient client = builder.build();
 

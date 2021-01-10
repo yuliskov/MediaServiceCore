@@ -22,9 +22,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class RetrofitHelper {
-    private static final String DEFAULT_BASE_URL = "https://www.youtube.com"; // ignored when specified url is full
+    // Ignored when specified url is absolute
+    private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
+    // Default timeout 10 sec
+    private static final long TIMEOUT_SEC = 30;
     public static boolean sForceEnableProfiler;
 
     public static <T> T withGson(Class<T> clazz) {
@@ -104,6 +108,8 @@ public class RetrofitHelper {
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
+        setupTimeout(okBuilder);
+
         addCommonHeaders(okBuilder);
 
         debugSetup(okBuilder);
@@ -113,6 +119,13 @@ public class RetrofitHelper {
         retrofitBuilder.client(client);
 
         return retrofitBuilder;
+    }
+
+    private static void setupTimeout(OkHttpClient.Builder okBuilder) {
+        // Default timeout 10 sec
+        okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
+        okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
+        okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
     }
 
     private static void debugSetup(OkHttpClient.Builder okBuilder) {

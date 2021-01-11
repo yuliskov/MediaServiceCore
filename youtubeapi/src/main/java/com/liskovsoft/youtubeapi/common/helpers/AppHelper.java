@@ -121,4 +121,18 @@ public class AppHelper {
 
         return builder.toString();
     }
+
+    public static boolean atLeastOneEquals(String origin, String... values) {
+        if (origin == null || values == null) {
+            return false;
+        }
+
+        for (String value : values) {
+            if (origin.equals(value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

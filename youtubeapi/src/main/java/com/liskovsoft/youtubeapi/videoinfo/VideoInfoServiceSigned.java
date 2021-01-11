@@ -31,7 +31,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         if (result != null && result.isAgeRestricted()) {
             Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
             result = getVideoInfoRestricted(videoId, authorization);
-        } else if (result != null && result.getVideoDetails().isOwnerViewing()) {
+        } else if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isOwnerViewing()) {
             Log.e(TAG, "Seems that this is user video. Retrying with different query method...");
             result = getVideoInfoRegular(videoId, authorization);
         }

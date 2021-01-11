@@ -13,6 +13,7 @@ public class VideoInfo {
     private static final String PARAM_EVENT_ID = "ei";
     private static final String PARAM_VM = "vm";
     private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";
+    private static final String STATUS_ERROR = "ERROR";
     private static final String STATUS_LOGIN_REQUIRED = "LOGIN_REQUIRED";
     private static final String STATUS_AGE_CHECK_REQUIRED = "AGE_CHECK_REQUIRED";
     private static final String STATUS_CONTENT_CHECK_REQUIRED = "CONTENT_CHECK_REQUIRED";
@@ -53,7 +54,8 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.reason")
     private String mPlayabilityReason;
 
-    @JsonPath("$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason.runs[0].text")
+    @JsonPath({"$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason.simpleText",
+               "$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason.runs[0].text"})
     private String mPlayabilityDescription;
 
     @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
@@ -119,7 +121,7 @@ public class VideoInfo {
      * Video cannot be embedded
      */
     public boolean isUnplayable() {
-        return STATUS_UNPLAYABLE.equals(mPlayabilityStatus);
+        return AppHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE, STATUS_ERROR);
     }
 
     public String getPlayabilityStatus() {
@@ -130,9 +132,7 @@ public class VideoInfo {
      * Age restricted video
      */
     public boolean isAgeRestricted() {
-        return STATUS_LOGIN_REQUIRED.equals(mPlayabilityStatus) ||
-               STATUS_AGE_CHECK_REQUIRED.equals(mPlayabilityStatus) ||
-               STATUS_CONTENT_CHECK_REQUIRED.equals(mPlayabilityStatus);
+        return AppHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_LOGIN_REQUIRED, STATUS_AGE_CHECK_REQUIRED, STATUS_CONTENT_CHECK_REQUIRED);
     }
 
     public String getStoryboardSpec() {

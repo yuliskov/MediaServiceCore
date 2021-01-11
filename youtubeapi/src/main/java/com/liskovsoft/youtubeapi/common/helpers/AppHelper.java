@@ -103,4 +103,22 @@ public class AppHelper {
         url = url.replace("\\x3d", "="); // Hexadecimal escape sequences
         return url;
     }
+
+    public static String insertSeparator(String str, String separator, int groupLen) {
+        StringBuilder builder = new StringBuilder();
+
+        int index = 0;
+
+        for (int i = 0; i < str.length(); i++) {
+            index++;
+
+            builder.append(str.charAt(i));
+
+            if (index % groupLen == 0 && index != str.length()) {
+                builder.append(separator);
+            }
+        }
+
+        return builder.toString();
+    }
 }

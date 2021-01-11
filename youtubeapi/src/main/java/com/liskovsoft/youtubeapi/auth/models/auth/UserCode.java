@@ -15,6 +15,7 @@ public class UserCode {
      */
     @JsonPath("$.user_code")
     private String mUserCode;
+    private String mUserCodeAlt;
 
     @JsonPath("$.expires_in")
     private int mExpiresIn;
@@ -38,6 +39,10 @@ public class UserCode {
         }
 
         // Make code more readable by removing unused characters
-        return mUserCode.replace("-", " ");
+        if (mUserCodeAlt == null) {
+            mUserCodeAlt = mUserCode.replace("-", " ");
+        }
+
+        return mUserCodeAlt;
     }
 }

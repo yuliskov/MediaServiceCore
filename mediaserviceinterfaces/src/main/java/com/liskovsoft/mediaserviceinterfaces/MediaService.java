@@ -2,7 +2,7 @@ package com.liskovsoft.mediaserviceinterfaces;
 
 public interface MediaService {
     SignInManager getSignInManager();
-    DeviceLinkManager getDeviceLinkManager();
+    CommandManager getCommandManager();
     MediaGroupManager getMediaGroupManager();
     MediaItemManager getMediaItemManager();
     void invalidateCache();

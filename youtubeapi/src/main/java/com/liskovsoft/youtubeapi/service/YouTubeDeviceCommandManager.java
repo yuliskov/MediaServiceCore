@@ -1,18 +1,18 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.DeviceLinkManager;
+import com.liskovsoft.mediaserviceinterfaces.CommandManager;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.lounge.LoungeService;
 import io.reactivex.Observable;
 
-public class YouTubeDeviceLinkManager implements DeviceLinkManager {
-    private static final String TAG = YouTubeDeviceLinkManager.class.getSimpleName();
+public class YouTubeDeviceCommandManager implements CommandManager {
+    private static final String TAG = YouTubeDeviceCommandManager.class.getSimpleName();
     private static final long TOKEN_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // 30 minutes
-    private static YouTubeDeviceLinkManager sInstance;
+    private static YouTubeDeviceCommandManager sInstance;
     private final LoungeService mLoungeService;
 
-    private YouTubeDeviceLinkManager() {
+    private YouTubeDeviceCommandManager() {
         mLoungeService = LoungeService.instance();
 
         GlobalPreferences.setOnInit(() -> {
@@ -21,9 +21,9 @@ public class YouTubeDeviceLinkManager implements DeviceLinkManager {
         });
     }
 
-    public static YouTubeDeviceLinkManager instance() {
+    public static YouTubeDeviceCommandManager instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeDeviceLinkManager();
+            sInstance = new YouTubeDeviceCommandManager();
         }
 
         return sInstance;

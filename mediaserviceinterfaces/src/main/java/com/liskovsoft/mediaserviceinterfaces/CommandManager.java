@@ -1,5 +1,6 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
+import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import io.reactivex.Observable;
 
 public interface CommandManager {
@@ -7,4 +8,5 @@ public interface CommandManager {
 
     // RxJava interfaces
     Observable<String> getDeviceCodeObserve();
+    Observable<Command> getDeviceCommandObserve();
 }

@@ -6,9 +6,9 @@ import java.util.List;
 
 public class CommandInfos {
     @JsonPath("$[*]")
-    private List<Command> mCommands;
+    private List<CommandInfo> mCommands;
 
-    public List<Command> getCommands() {
+    public List<CommandInfo> getCommands() {
         return mCommands;
     }
 
@@ -17,7 +17,7 @@ public class CommandInfos {
             return null;
         }
 
-        for (Command command : mCommands) {
+        for (CommandInfo command : mCommands) {
             if (commandName.equals(command.getType())) {
                 return command.getParams().get(0);
             }

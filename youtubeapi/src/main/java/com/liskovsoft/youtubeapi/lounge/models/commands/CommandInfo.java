@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class Command {
+public class CommandInfo {
     public static final String TYPE_PLAYLIST = "setPlaylist";
     public static final String TYPE_NOW_PLAYING = "getNowPlaying";
     public static final String TYPE_NOP = "noop";

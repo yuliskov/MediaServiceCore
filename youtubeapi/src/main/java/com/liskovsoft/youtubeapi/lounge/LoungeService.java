@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.Screen;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
-import com.liskovsoft.youtubeapi.lounge.models.commands.Command;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,13 +23,15 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 public class LoungeService {
+    private static final String SCREEN_NAME_TMP = "TubeNext";
+    private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
     private static LoungeService sInstance;
     private final BindManager mBindManager;
     private final ScreenManager mScreenManager;
     private final CommandManager mCommandManager;
     private final JsonPathTypeAdapter<CommandInfos> mAdapter;
-    private final String mScreenName = "SmartTubeNext";
-    private String mLoungeToken;
+    private final String mScreenName = SCREEN_NAME_TMP;
+    private final String mLoungeToken = LOUNGE_TOKEN_TMP;
 
     public LoungeService() {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
@@ -63,8 +65,8 @@ public class LoungeService {
     public void startListening(OnCommand callback) throws IOException {
         CommandInfos firstBind = getFirstBind();
 
-        String sessionId = firstBind.getParam(Command.TYPE_SESSION_ID);
-        String gSessionId = firstBind.getParam(Command.TYPE_G_SESSION_ID);
+        String sessionId = firstBind.getParam(CommandInfo.TYPE_SESSION_ID);
+        String gSessionId = firstBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
 
         String url = BindManagerParams.createBindRpcUrl(
                 mScreenName,
@@ -75,7 +77,7 @@ public class LoungeService {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         // Read infinitely
-        builder.readTimeout(365, TimeUnit.DAYS);
+        builder.readTimeout(0, TimeUnit.MILLISECONDS);
 
         OkHttpClient client = builder.build();
 

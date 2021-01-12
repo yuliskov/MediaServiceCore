@@ -12,7 +12,7 @@ public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInManager mSignInManager;
-    private final YouTubeDeviceCommandManager mDeviceLinkManager;
+    private final YouTubeCommandManager mDeviceLinkManager;
     private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
 
@@ -20,7 +20,7 @@ public class YouTubeMediaService implements MediaService {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
-        mDeviceLinkManager = YouTubeDeviceCommandManager.instance();
+        mDeviceLinkManager = YouTubeCommandManager.instance();
         mMediaGroupManager = YouTubeMediaGroupManager.instance();
         mMediaItemManager = YouTubeMediaItemManager.instance();
     }

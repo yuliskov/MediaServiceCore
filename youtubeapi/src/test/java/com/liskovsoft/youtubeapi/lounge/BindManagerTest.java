@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.lounge.models.commands.Command;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.Screen;
@@ -13,7 +13,6 @@ import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -26,8 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
@@ -79,8 +76,8 @@ public class BindManagerTest {
     public void testBindStream() throws IOException {
         CommandInfos firstBind = getFirstBind();
 
-        String sessionId = firstBind.getParam(Command.TYPE_SESSION_ID);
-        String gSessionId = firstBind.getParam(Command.TYPE_G_SESSION_ID);
+        String sessionId = firstBind.getParam(CommandInfo.TYPE_SESSION_ID);
+        String gSessionId = firstBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
 
         String url = BindManagerParams.createBindRpcUrl(
                 SCREEN_NAME,
@@ -90,7 +87,8 @@ public class BindManagerTest {
         Request request = new Builder().url(url).build();
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        builder.readTimeout(10, TimeUnit.DAYS);
+        // Read infinitely
+        builder.readTimeout(0, TimeUnit.MILLISECONDS);
 
         OkHttpClient client = builder.build();
 

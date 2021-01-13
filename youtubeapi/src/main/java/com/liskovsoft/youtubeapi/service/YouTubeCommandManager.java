@@ -9,6 +9,9 @@ import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
+
 public class YouTubeCommandManager implements CommandManager {
     private static final String TAG = YouTubeCommandManager.class.getSimpleName();
     private static YouTubeCommandManager sInstance;
@@ -44,11 +47,17 @@ public class YouTubeCommandManager implements CommandManager {
     @Override
     public Observable<Command> getDeviceCommandObserve() {
         return Observable.create(emitter -> {
-            mLoungeService.startListening(infos -> {
-                for (CommandInfo info : infos.getCommands()) {
-                     emitter.onNext(YouTubeCommand.from(info));
-                }
-            });
+            try {
+                mLoungeService.startListening(infos -> {
+                    for (CommandInfo info : infos.getCommands()) {
+                         emitter.onNext(YouTubeCommand.from(info));
+                    }
+                });
+            } catch (InterruptedIOException e) {
+                // https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#error-handling
+                // UndeliverableException fix
+                emitter.tryOnError(e);
+            }
         });
     }
 }

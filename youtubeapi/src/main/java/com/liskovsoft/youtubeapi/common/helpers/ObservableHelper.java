@@ -42,8 +42,6 @@ public class ObservableHelper {
     public static <T> void onError(ObservableEmitter<T> emitter, String msg) {
         // Fix fall back on the global error handler
         // More info: https://stackoverflow.com/questions/44420422/crash-when-sending-exception-through-rxjava
-        if (!emitter.isDisposed()) {
-            emitter.onError(new IllegalStateException(msg));
-        }
+        emitter.tryOnError(new IllegalStateException(msg));
     }
 }

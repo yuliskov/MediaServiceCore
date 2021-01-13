@@ -112,7 +112,7 @@ public class LoungeService {
     }
 
     private CommandInfos getFirstBind() {
-        Call<CommandInfos> bindDataWrapper = mCommandManager.getBindData(mScreenName, mLoungeToken, 0);
+        Call<CommandInfos> bindDataWrapper = mCommandManager.getFistBindData(mScreenName, mLoungeToken, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }

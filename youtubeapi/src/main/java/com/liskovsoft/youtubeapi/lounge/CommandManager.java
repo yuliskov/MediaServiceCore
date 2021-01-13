@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.youtubeapi.lounge.models.StateResult;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -10,7 +11,20 @@ import retrofit2.http.Query;
 public interface CommandManager {
     @FormUrlEncoded
     @POST(BindManagerParams.BIND_DATA_URL)
-    Call<CommandInfos> getBindData(@Query("name") String screenName,
-                                   @Query("loungeIdToken") String loungeToken,
-                                   @Field("count") int count);
+    Call<CommandInfos> getFistBindData(@Query("name") String screenName,
+                                       @Query("loungeIdToken") String loungeToken,
+                                       @Field("count") int count);
+
+    @FormUrlEncoded
+    @POST(BindManagerParams.BIND_DATA_URL)
+    Call<StateResult> postState(@Query("name") String screenName,
+                                @Query("loungeIdToken") String loungeToken,
+                                @Field("count") int count,
+                                @Field("req0__sc") String stateName,
+                                @Field("req0_state") String stateType,
+                                @Field("req0_videoId") String videoId,
+                                @Field("req0_currentTime") String position,
+                                @Field("req0_duration") String duration,
+                                @Field("req0_seekableStartTime") String startTime,
+                                @Field("req0_seekableEndTime") String endTime);
 }

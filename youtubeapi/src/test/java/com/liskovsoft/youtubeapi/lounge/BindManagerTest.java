@@ -113,7 +113,7 @@ public class BindManagerTest {
     }
 
     private CommandInfos getFirstBind() {
-        Call<CommandInfos> bindDataWrapper = mCommandManager.getFistBindData(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
+        Call<CommandInfos> bindDataWrapper = mCommandManager.getSessionBindData(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }

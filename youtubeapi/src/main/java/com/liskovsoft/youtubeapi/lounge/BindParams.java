@@ -7,8 +7,14 @@ public class BindParams {
     public static final String AID = "42";
     public static final String APP = "lb-v4";
     public static final String ACCESS_TYPE = "permanent";
-    private static final String BASE_BIND_URL = "https://www.youtube.com/api/lounge/bc/bind?" +
-            "device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1" +
+    private static final String BASE_BIND_URL = "https://www.youtube.com/api/lounge/bc/bind" +
+            "?device=LOUNGE_SCREEN" +
+            "&theme=cl" +
+            "&capabilities=dsp%2Cmic%2Cdpa" +
+            "&mdxVersion=2" +
+            "&VER=8" +
+            "&v=2" +
+            "&t=1" +
             "&app=" + BindParams.APP +
             "&id=" + BindParams.SCREEN_UID +
             "&AID=" + BindParams.AID +

@@ -60,4 +60,9 @@ public class YouTubeCommandManager implements CommandManager {
             }
         });
     }
+
+    @Override
+    public Observable<Void> postPlayingObserve(String videoId, long positionMs, long lengthMs) {
+        return ObservableHelper.fromVoidable(() -> mLoungeService.postPlaying(videoId, positionMs, lengthMs));
+    }
 }

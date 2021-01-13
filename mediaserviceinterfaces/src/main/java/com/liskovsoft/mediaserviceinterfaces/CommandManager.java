@@ -9,4 +9,5 @@ public interface CommandManager {
     // RxJava interfaces
     Observable<String> getDeviceCodeObserve();
     Observable<Command> getDeviceCommandObserve();
+    Observable<Void> postPlayingObserve(String videoId, long positionMs, long lengthMs);
 }

@@ -56,7 +56,7 @@ public class BindManagerTest {
     @Test
     public void testThatPairingCodeGeneratedSuccessfully() {
         Screen screen = getScreen();
-        Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(BindManagerParams.ACCESS_TYPE, BindManagerParams.APP, screen.getLoungeToken(),
+        Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(BindParams.ACCESS_TYPE, BindParams.APP, screen.getLoungeToken(),
                 screen.getScreenId(), SCREEN_NAME);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
@@ -79,7 +79,7 @@ public class BindManagerTest {
         String sessionId = firstBind.getParam(CommandInfo.TYPE_SESSION_ID);
         String gSessionId = firstBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
 
-        String url = BindManagerParams.createBindRpcUrl(
+        String url = BindParams.createBindRpcUrl(
                 SCREEN_NAME,
                 LOUNGE_TOKEN_TMP,
                 sessionId,

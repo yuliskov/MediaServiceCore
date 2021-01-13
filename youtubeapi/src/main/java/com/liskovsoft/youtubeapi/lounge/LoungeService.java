@@ -51,8 +51,8 @@ public class LoungeService {
     public String getPairingCode() {
         Screen screen = getScreen();
         Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(
-                BindManagerParams.ACCESS_TYPE,
-                BindManagerParams.APP,
+                BindParams.ACCESS_TYPE,
+                BindParams.APP,
                 screen.getLoungeToken(),
                 screen.getScreenId(),
                 mScreenName);
@@ -68,7 +68,7 @@ public class LoungeService {
         String sessionId = firstBind.getParam(CommandInfo.TYPE_SESSION_ID);
         String gSessionId = firstBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
 
-        String url = BindManagerParams.createBindRpcUrl(
+        String url = BindParams.createBindRpcUrl(
                 mScreenName,
                 mLoungeToken,
                 sessionId,

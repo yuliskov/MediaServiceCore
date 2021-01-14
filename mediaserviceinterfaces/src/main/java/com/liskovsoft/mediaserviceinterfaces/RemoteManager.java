@@ -10,4 +10,5 @@ public interface RemoteManager {
     Observable<String> getPairingCodeObserve();
     Observable<Command> getCommandObserve();
     Observable<Void> postPlayingObserve(String videoId, long positionMs, long lengthMs);
+    Observable<Void> postUpdatePositionObserve(long positionMs, long lengthMs);
 }

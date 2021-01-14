@@ -52,6 +52,8 @@ public class YouTubeRemoteManager implements RemoteManager {
                          emitter.onNext(YouTubeCommand.from(info));
                     }
                 });
+
+                emitter.onComplete();
             } catch (InterruptedIOException e) {
                 // https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#error-handling
                 // UndeliverableException fix
@@ -63,5 +65,10 @@ public class YouTubeRemoteManager implements RemoteManager {
     @Override
     public Observable<Void> postPlayingObserve(String videoId, long positionMs, long lengthMs) {
         return ObservableHelper.fromVoidable(() -> mLoungeService.postPlaying(videoId, positionMs, lengthMs));
+    }
+
+    @Override
+    public Observable<Void> postUpdatePositionObserve(long positionMs, long lengthMs) {
+        return ObservableHelper.fromVoidable(() -> mLoungeService.postUpdatePosition(positionMs, lengthMs));
     }
 }

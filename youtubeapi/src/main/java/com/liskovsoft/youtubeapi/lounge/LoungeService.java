@@ -116,6 +116,17 @@ public class LoungeService {
         RetrofitHelper.get(wrapper);
     }
 
+    public void postUpdatePosition(long positionMs, long lengthMs) {
+        updateInitialValues();
+
+        Log.d(TAG, "Post update...");
+
+        Call<StateResult> wrapper = mCommandManager.postCommand(
+                SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, mSessionId, mGSessionId,
+                CommandParams.getOnStateChange(positionMs, lengthMs));
+        RetrofitHelper.get(wrapper);
+    }
+
     private void updateInitialValues() {
         if (mSessionId == null || mGSessionId == null) {
             CommandInfos sessionBind = getSessionBind();

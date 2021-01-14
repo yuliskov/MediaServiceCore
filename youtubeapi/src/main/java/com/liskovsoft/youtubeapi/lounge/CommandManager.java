@@ -22,5 +22,7 @@ public interface CommandManager {
     @POST(BindParams.BIND_DATA_URL)
     Call<StateResult> postCommand(@Query("name") String screenName,
                                   @Query("loungeIdToken") String loungeToken,
+                                  @Query("SID") String sessionId,
+                                  @Query("gsessionid") String gSessionId,
                                   @FieldMap Map<String, String> fields);
 }

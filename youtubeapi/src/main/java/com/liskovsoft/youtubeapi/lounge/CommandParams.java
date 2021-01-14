@@ -8,6 +8,7 @@ public class CommandParams {
     private static final String COMMAND_ON_STATE_CHANGE = "onStateChange";
 
     private static final String FIELD_COUNT = "count";
+    private static final String FIELD_OFS = "ofs";
     private static final String FIELD_COMMAND_NAME = "req0__sc";
     private static final String FIELD_STATE = "req0_state";
     private static final String FIELD_VIDEO_ID = "req0_videoId";
@@ -40,6 +41,7 @@ public class CommandParams {
         Map<String, String> result = new HashMap<>();
 
         result.put(FIELD_COUNT, "1");
+        result.put(FIELD_OFS, "0");
         result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000));
         result.put(FIELD_DURATION, String.valueOf(lengthMs / 1_000));
         result.put(FIELD_LOADED_TIME, "0");

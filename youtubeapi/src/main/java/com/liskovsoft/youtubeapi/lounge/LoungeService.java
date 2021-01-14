@@ -35,6 +35,8 @@ public class LoungeService {
     private final JsonPathTypeAdapter<CommandInfos> mLineSkipAdapter;
     private final String mScreenName = SCREEN_NAME_TMP;
     private final String mLoungeToken = LOUNGE_TOKEN_TMP;
+    private String mSessionId;
+    private String mGSessionId;
 
     public LoungeService() {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
@@ -66,16 +68,13 @@ public class LoungeService {
     }
 
     public void startListening(OnCommand callback) throws IOException {
-        CommandInfos sessionBind = getSessionBind();
-
-        String sessionId = sessionBind.getParam(CommandInfo.TYPE_SESSION_ID);
-        String gSessionId = sessionBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
+        updateInitialValues();
 
         String url = BindParams.createBindRpcUrl(
                 mScreenName,
                 mLoungeToken,
-                sessionId,
-                gSessionId);
+                mSessionId,
+                mGSessionId);
         Request request = new Builder().url(url).build();
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
@@ -107,11 +106,23 @@ public class LoungeService {
     }
 
     public void postPlaying(String videoId, long positionMs, long lengthMs) {
+        updateInitialValues();
+
         Log.d(TAG, "Post nowPlaying...");
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
-                SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, CommandParams.getNowPlaying(videoId, positionMs, lengthMs));
+                SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, mSessionId, mGSessionId,
+                CommandParams.getNowPlaying(videoId, positionMs, lengthMs));
         RetrofitHelper.get(wrapper);
+    }
+
+    private void updateInitialValues() {
+        if (mSessionId == null || mGSessionId == null) {
+            CommandInfos sessionBind = getSessionBind();
+
+            mSessionId = sessionBind.getParam(CommandInfo.TYPE_SESSION_ID);
+            mGSessionId = sessionBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
+        }
     }
 
     private Screen getScreen() {

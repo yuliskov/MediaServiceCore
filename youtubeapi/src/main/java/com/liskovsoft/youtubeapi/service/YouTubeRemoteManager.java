@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.CommandManager;
+import com.liskovsoft.mediaserviceinterfaces.RemoteManager;
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
@@ -9,15 +9,14 @@ import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
-import java.io.IOException;
 import java.io.InterruptedIOException;
 
-public class YouTubeCommandManager implements CommandManager {
-    private static final String TAG = YouTubeCommandManager.class.getSimpleName();
-    private static YouTubeCommandManager sInstance;
+public class YouTubeRemoteManager implements RemoteManager {
+    private static final String TAG = YouTubeRemoteManager.class.getSimpleName();
+    private static YouTubeRemoteManager sInstance;
     private final LoungeService mLoungeService;
 
-    private YouTubeCommandManager() {
+    private YouTubeRemoteManager() {
         mLoungeService = LoungeService.instance();
 
         GlobalPreferences.setOnInit(() -> {
@@ -26,26 +25,26 @@ public class YouTubeCommandManager implements CommandManager {
         });
     }
 
-    public static YouTubeCommandManager instance() {
+    public static YouTubeRemoteManager instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeCommandManager();
+            sInstance = new YouTubeRemoteManager();
         }
 
         return sInstance;
     }
 
     @Override
-    public String getDeviceCode() {
+    public String getPairingCode() {
         return mLoungeService.getPairingCode();
     }
 
     @Override
-    public Observable<String> getDeviceCodeObserve() {
-        return ObservableHelper.fromNullable(this::getDeviceCode);
+    public Observable<String> getPairingCodeObserve() {
+        return ObservableHelper.fromNullable(this::getPairingCode);
     }
 
     @Override
-    public Observable<Command> getDeviceCommandObserve() {
+    public Observable<Command> getCommandObserve() {
         return Observable.create(emitter -> {
             try {
                 mLoungeService.startListening(infos -> {

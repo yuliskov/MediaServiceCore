@@ -101,10 +101,14 @@ public class LoungeService {
             }
         }
 
+        Log.d(TAG, "Done listening...");
+
         response.body().close();
     }
 
     public void postPlaying(String videoId, long positionMs, long lengthMs) {
+        Log.d(TAG, "Post nowPlaying...");
+
         Call<StateResult> wrapper = mCommandManager.postCommand(
                 SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, CommandParams.getNowPlaying(videoId, positionMs, lengthMs));
         RetrofitHelper.get(wrapper);

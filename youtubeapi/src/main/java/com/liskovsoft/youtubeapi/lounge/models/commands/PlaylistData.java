@@ -12,8 +12,14 @@ public class PlaylistData {
     @JsonPath("$.videoId")
     private String mVideoId;
 
+    @JsonPath("$.videoIds")
+    private String mVideoIds;
+
     @JsonPath("$.currentIndex")
     private String mCurrentIndex;
+
+    @JsonPath("$.ctt")
+    private String mCtt;
 
     public String getListId() {
         return mListId;
@@ -27,7 +33,19 @@ public class PlaylistData {
         return mVideoId;
     }
 
+    public String[] getVideoIds() {
+        if (mVideoIds == null) {
+            return null;
+        }
+
+        return mVideoIds.split(",");
+    }
+
     public String getCurrentIndex() {
         return mCurrentIndex;
+    }
+
+    public String getCtt() {
+        return mCtt;
     }
 }

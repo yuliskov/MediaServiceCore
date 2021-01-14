@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
 import com.liskovsoft.youtubeapi.lounge.models.StateResult;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
+import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistData;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -37,6 +38,9 @@ public class LoungeService {
     private final String mLoungeToken = LOUNGE_TOKEN_TMP;
     private String mSessionId;
     private String mGSessionId;
+    private String mCtt;
+    private String mPlaylistIndex;
+    private String mPlaylistId;
 
     public LoungeService() {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
@@ -95,7 +99,14 @@ public class LoungeService {
 
             if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
                 Log.d(TAG, "New command: \n" + result);
-                callback.onCommand(toCommand(result));
+
+                CommandInfos infos = toCommandInfos(result);
+
+                for (CommandInfo info : infos.getCommands()) {
+                    updateData(info);
+                    callback.onCommand(info);
+                }
+
                 result = "";
             }
         }
@@ -106,17 +117,26 @@ public class LoungeService {
     }
 
     public void postPlaying(String videoId, long positionMs, long lengthMs) {
+        postNowPlaying(videoId, positionMs, lengthMs);
+        postOnStateChange(positionMs, lengthMs);
+    }
+
+    public void postUpdatePosition(long positionMs, long lengthMs) {
+        //postPositionUpdate(positionMs, lengthMs);
+    }
+
+    private void postNowPlaying(String videoId, long positionMs, long lengthMs) {
         updateInitialValues();
 
         Log.d(TAG, "Post nowPlaying...");
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
                 SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, mSessionId, mGSessionId,
-                CommandParams.getNowPlaying(videoId, positionMs, lengthMs));
+                CommandParams.getNowPlaying(videoId, positionMs, lengthMs, mCtt, mPlaylistId, mPlaylistIndex));
         RetrofitHelper.get(wrapper);
     }
 
-    public void postUpdatePosition(long positionMs, long lengthMs) {
+    private void postOnStateChange(long positionMs, long lengthMs) {
         updateInitialValues();
 
         Log.d(TAG, "Post update...");
@@ -125,6 +145,15 @@ public class LoungeService {
                 SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, mSessionId, mGSessionId,
                 CommandParams.getOnStateChange(positionMs, lengthMs));
         RetrofitHelper.get(wrapper);
+    }
+
+    private void updateData(CommandInfo info) {
+        if (info != null && info.getPlaylistData() != null) {
+            PlaylistData playlistData = info.getPlaylistData();
+            mCtt = playlistData.getCtt();
+            mPlaylistIndex = playlistData.getCurrentIndex();
+            mPlaylistId = playlistData.getListId();
+        }
     }
 
     private void updateInitialValues() {
@@ -152,11 +181,11 @@ public class LoungeService {
         return RetrofitHelper.get(bindDataWrapper);
     }
 
-    private CommandInfos toCommand(String result) {
+    private CommandInfos toCommandInfos(String result) {
         return mLineSkipAdapter.read(new ByteArrayInputStream(result.getBytes(Charset.forName("UTF-8"))));
     }
 
     public interface OnCommand {
-        void onCommand(CommandInfos infos);
+        void onCommand(CommandInfo info);
     }
 }

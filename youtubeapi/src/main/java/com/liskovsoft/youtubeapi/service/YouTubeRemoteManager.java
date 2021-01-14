@@ -47,11 +47,9 @@ public class YouTubeRemoteManager implements RemoteManager {
     public Observable<Command> getCommandObserve() {
         return Observable.create(emitter -> {
             try {
-                mLoungeService.startListening(infos -> {
-                    for (CommandInfo info : infos.getCommands()) {
-                         emitter.onNext(YouTubeCommand.from(info));
-                    }
-                });
+                mLoungeService.startListening(
+                        info -> emitter.onNext(YouTubeCommand.from(info))
+                );
 
                 emitter.onComplete();
             } catch (InterruptedIOException e) {

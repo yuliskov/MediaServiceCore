@@ -93,53 +93,56 @@ public class LoungeService {
 
         OkHttpClient client = builder.build();
 
-        Response response = client.newCall(request).execute();
+        // It's common to stream to be interrupted multiple times
+        while (true) {
+            Response response = client.newCall(request).execute();
 
-        InputStream in = response.body().byteStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String result = "";
-        String line = "";
+            InputStream in = response.body().byteStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String result = "";
+            String line = "";
 
-        while((line = reader.readLine()) != null) {
-            result += line + "\n";
+            while((line = reader.readLine()) != null) {
+                result += line + "\n";
 
-            if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
-                Log.d(TAG, "New command: \n" + result);
+                if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
+                    Log.d(TAG, "New command: \n" + result);
 
-                CommandInfo infos = toCommandInfos(result);
+                    CommandInfo infos = toCommandInfos(result);
 
-                for (CommandItem info : infos.getCommands()) {
-                    updateData(info);
-                    postResponse(info);
-                    callback.onCommand(info);
+                    for (CommandItem info : infos.getCommands()) {
+                        updateData(info);
+                        callback.onCommand(info);
+                    }
+
+                    result = "";
                 }
-
-                result = "";
             }
+
+            Log.d(TAG, "Closing read session...");
+
+            response.body().close();
         }
-
-        Log.d(TAG, "Closing session...");
-
-        mSessionId = null;
-        mGSessionId = null;
-
-        response.body().close();
     }
 
-    public void postPlaying(String videoId, long positionMs, long lengthMs) {
-        if (!AppHelper.checkNonNull(mSessionId, mGSessionId, mCtt, mPlaylistId, mPlaylistIndex)) {
+    public void postStartPlaying(String videoId, long positionMs, long durationMs) {
+        if (!AppHelper.checkNonNull(mCtt, mPlaylistId, mPlaylistIndex)) {
             return;
         }
 
-        postNowPlaying(videoId, positionMs, lengthMs);
-        postOnStateChange(positionMs, lengthMs);
+        postNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex);
+        postOnStateChange(positionMs, durationMs, CommandParams.STATE_PLAYING);
     }
 
-    private void postNowPlaying(String videoId, long positionMs, long lengthMs) {
-        postNowPlaying(videoId, positionMs, lengthMs, mCtt, mPlaylistId, mPlaylistIndex);
+    public void postStateChange(long positionMs, long durationMs, boolean isPlaying) {
+        postOnStateChange(positionMs, durationMs, isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED);
     }
 
     private void postNowPlaying(String videoId, long positionMs, long lengthMs, String ctt, String playlistId, String playlistIndex) {
+        if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
+            return;
+        }
+
         Log.d(TAG, "Post nowPlaying...");
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
@@ -148,35 +151,17 @@ public class LoungeService {
         RetrofitHelper.get(wrapper);
     }
 
-    private void postOnStateChange(long positionMs, long lengthMs) {
+    private void postOnStateChange(long positionMs, long lengthMs, int state) {
+        if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
+            return;
+        }
+
         Log.d(TAG, "Post onStateChange...");
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
-                CommandParams.getOnStateChange(positionMs, lengthMs));
+                CommandParams.getOnStateChange(positionMs, lengthMs, state));
         RetrofitHelper.get(wrapper);
-    }
-
-    private void postResponse(CommandItem info) {
-        switch (info.getType()) {
-            case CommandItem.TYPE_SET_PLAYLIST:
-                PlaylistParams params = info.getPlaylistParams();
-                postNowPlaying(
-                        params.getVideoId(),
-                        AppHelper.toMillis(params.getCurrentTimeSec()),
-                        -1,
-                        params.getCtt(),
-                        params.getPlaylistId(),
-                        params.getPlaylistIndex()
-                );
-                break;
-            case CommandItem.TYPE_PLAY:
-                break;
-            case CommandItem.TYPE_PAUSE:
-                break;
-            case CommandItem.TYPE_SEEK_TO:
-                break;
-        }
     }
 
     private void updateData(CommandItem info) {

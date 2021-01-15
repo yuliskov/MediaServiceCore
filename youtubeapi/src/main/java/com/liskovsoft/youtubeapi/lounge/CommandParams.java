@@ -7,12 +7,12 @@ public class CommandParams {
     private static final String COMMAND_NOW_PLAYING = "nowPlaying";
     private static final String COMMAND_ON_STATE_CHANGE = "onStateChange";
 
-    private static final int STATE_UNDETECTED = 0;
-    private static final int STATE_PLAYING = 1;
-    private static final int STATE_PAUSED = 2;
-    private static final int STATE_IDLE = 3;
-    private static final int STATE_READY = 4;
-    private static final int STATE_UNDEFINED = -1;
+    public static final int STATE_UNDETECTED = 0;
+    public static final int STATE_PLAYING = 1;
+    public static final int STATE_PAUSED = 2;
+    public static final int STATE_IDLE = 3;
+    public static final int STATE_READY = 4;
+    public static final int STATE_UNDEFINED = -1;
     
     private static final String FIELD_COUNT = "count";
     private static final String FIELD_OFS = "ofs";
@@ -34,11 +34,11 @@ public class CommandParams {
 
     public static Map<String, String> getNowPlaying(String videoId,
                                                     long positionMs,
-                                                    long lengthMs,
+                                                    long durationMs,
                                                     String ctt,
                                                     String playlistId,
                                                     String playlistIndex) {
-        Map<String, String> result = initCommand(positionMs, lengthMs);
+        Map<String, String> result = initCommand(positionMs, durationMs);
 
         result.put(FIELD_COMMAND_NAME, COMMAND_NOW_PLAYING);
         result.put(FIELD_STATE, String.valueOf(STATE_IDLE));
@@ -50,25 +50,25 @@ public class CommandParams {
         return result;
     }
 
-    public static Map<String, String> getOnStateChange(long positionMs, long lengthMs) {
-        Map<String, String> result = initCommand(positionMs, lengthMs);
+    public static Map<String, String> getOnStateChange(long positionMs, long durationMs, int state) {
+        Map<String, String> result = initCommand(positionMs, durationMs);
 
         result.put(FIELD_COMMAND_NAME, COMMAND_ON_STATE_CHANGE);
-        result.put(FIELD_STATE, String.valueOf(STATE_PLAYING));
+        result.put(FIELD_STATE, String.valueOf(state));
         result.put(FIELD_CPN, CPN_NONE);
 
         return result;
     }
 
-    private static Map<String, String> initCommand(long positionMs, long lengthMs) {
+    private static Map<String, String> initCommand(long positionMs, long durationMs) {
         Map<String, String> result = new HashMap<>();
 
         result.put(FIELD_COUNT, "1");
         result.put(FIELD_OFS, String.valueOf(sOfsCounter++));
         result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000f));
-        if (lengthMs > 0) {
-            result.put(FIELD_DURATION, String.valueOf(lengthMs / 1_000f));
-            result.put(FIELD_SEEK_END, String.valueOf(lengthMs / 1_000f));
+        if (durationMs > 0) {
+            result.put(FIELD_DURATION, String.valueOf(durationMs / 1_000f));
+            result.put(FIELD_SEEK_END, String.valueOf(durationMs / 1_000f));
         }
         result.put(FIELD_LOADED_TIME, "0");
         result.put(FIELD_SEEK_START, "0");

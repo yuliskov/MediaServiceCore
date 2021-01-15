@@ -73,7 +73,12 @@ public class LoungeService {
     }
 
     public void startListening(OnCommand callback) throws IOException {
-        updateInitialValues();
+        Log.d(TAG, "Opening session...");
+
+        CommandInfos sessionBind = getSessionBind();
+
+        mSessionId = sessionBind.getParam(CommandInfo.TYPE_SESSION_ID);
+        mGSessionId = sessionBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
 
         String url = BindParams.createBindRpcUrl(
                 mScreenName,
@@ -112,13 +117,16 @@ public class LoungeService {
             }
         }
 
-        Log.d(TAG, "Done listening...");
+        Log.d(TAG, "Closing session...");
+
+        mSessionId = null;
+        mGSessionId = null;
 
         response.body().close();
     }
 
     public void postPlaying(String videoId, long positionMs, long lengthMs) {
-        if (!AppHelper.checkNonNull(mCtt, mPlaylistId, mPlaylistIndex)) {
+        if (!AppHelper.checkNonNull(mSessionId, mGSessionId, mCtt, mPlaylistId, mPlaylistIndex)) {
             return;
         }
 
@@ -127,23 +135,19 @@ public class LoungeService {
     }
 
     private void postNowPlaying(String videoId, long positionMs, long lengthMs) {
-        updateInitialValues();
-
         Log.d(TAG, "Post nowPlaying...");
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
-                SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, mSessionId, mGSessionId,
+                mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 CommandParams.getNowPlaying(videoId, positionMs, lengthMs, mCtt, mPlaylistId, mPlaylistIndex));
         RetrofitHelper.get(wrapper);
     }
 
     private void postOnStateChange(long positionMs, long lengthMs) {
-        updateInitialValues();
-
         Log.d(TAG, "Post update...");
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
-                SCREEN_NAME_TMP, LOUNGE_TOKEN_TMP, mSessionId, mGSessionId,
+                mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 CommandParams.getOnStateChange(positionMs, lengthMs));
         RetrofitHelper.get(wrapper);
     }
@@ -154,15 +158,6 @@ public class LoungeService {
             mCtt = playlistData.getCtt();
             mPlaylistIndex = playlistData.getCurrentIndex();
             mPlaylistId = playlistData.getListId();
-        }
-    }
-
-    private void updateInitialValues() {
-        if (mSessionId == null || mGSessionId == null) {
-            CommandInfos sessionBind = getSessionBind();
-
-            mSessionId = sessionBind.getParam(CommandInfo.TYPE_SESSION_ID);
-            mGSessionId = sessionBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
         }
     }
 

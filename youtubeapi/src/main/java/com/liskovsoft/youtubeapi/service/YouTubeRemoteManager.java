@@ -5,7 +5,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.lounge.LoungeService;
-import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 

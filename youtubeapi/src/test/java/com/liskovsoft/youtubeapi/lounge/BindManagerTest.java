@@ -2,12 +2,12 @@ package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
-import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfos;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
-import com.liskovsoft.youtubeapi.lounge.models.Screen;
+import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
-import com.liskovsoft.youtubeapi.lounge.models.ScreenInfos;
+import com.liskovsoft.youtubeapi.lounge.models.info.ScreenInfo;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -35,9 +35,9 @@ public class BindManagerTest {
     private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
     private static final String SCREEN_ID_TMP = "910nbko7d2d6qtthu2609a3id6";
     private BindManager mBindManager;
-    private ScreenManager mScreenManager;
+    private InfoManager mScreenManager;
     private CommandManager mCommandManager;
-    private JsonPathTypeAdapter<CommandInfos> mAdapter;
+    private JsonPathTypeAdapter<CommandInfo> mAdapter;
 
     @Before
     public void setUp() {
@@ -48,14 +48,14 @@ public class BindManagerTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
-        mScreenManager = RetrofitHelper.withJsonPath(ScreenManager.class);
+        mScreenManager = RetrofitHelper.withJsonPath(InfoManager.class);
         mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
-        mAdapter = RetrofitHelper.adaptJsonPathSkip(CommandInfos.class);
+        mAdapter = RetrofitHelper.adaptJsonPathSkip(CommandInfo.class);
     }
 
     @Test
     public void testThatPairingCodeGeneratedSuccessfully() {
-        Screen screen = getScreen();
+        ScreenItem screen = getScreen();
         Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(BindParams.ACCESS_TYPE, BindParams.APP, screen.getLoungeToken(),
                 screen.getScreenId(), SCREEN_NAME);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
@@ -66,7 +66,7 @@ public class BindManagerTest {
 
     @Test
     public void testThatFirstBindDataIsNotEmpty() {
-        CommandInfos bindData = getFirstBind();
+        CommandInfo bindData = getFirstBind();
 
         assertNotNull("Contains bind data", bindData);
     }
@@ -74,10 +74,10 @@ public class BindManagerTest {
     //@Ignore("Long running test")
     @Test
     public void testBindStream() throws IOException {
-        CommandInfos firstBind = getFirstBind();
+        CommandInfo firstBind = getFirstBind();
 
-        String sessionId = firstBind.getParam(CommandInfo.TYPE_SESSION_ID);
-        String gSessionId = firstBind.getParam(CommandInfo.TYPE_G_SESSION_ID);
+        String sessionId = firstBind.getParam(CommandItem.TYPE_SESSION_ID);
+        String gSessionId = firstBind.getParam(CommandItem.TYPE_G_SESSION_ID);
 
         String url = BindParams.createBindRpcUrl(
                 SCREEN_NAME,
@@ -104,7 +104,7 @@ public class BindManagerTest {
 
             if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
                 System.out.println("New chunk: \n" + result);
-                CommandInfos commandInfos = toObject(result);
+                CommandInfo commandInfos = toObject(result);
                 result = "";
             }
         }
@@ -112,23 +112,23 @@ public class BindManagerTest {
         response.body().close();
     }
 
-    private CommandInfos getFirstBind() {
-        Call<CommandInfos> bindDataWrapper = mCommandManager.getSessionBindData(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
+    private CommandInfo getFirstBind() {
+        Call<CommandInfo> bindDataWrapper = mCommandManager.getSessionData(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }
 
-    private Screen getScreen() {
+    private ScreenItem getScreen() {
         Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
         ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
 
-        Call<ScreenInfos> screenInfosWrapper = mScreenManager.getScreenInfos(screenId.getScreenId());
-        ScreenInfos screenInfos = RetrofitHelper.get(screenInfosWrapper);
+        Call<ScreenInfo> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
+        ScreenInfo screenInfos = RetrofitHelper.get(screenInfosWrapper);
 
         return screenInfos.getScreens().get(0);
     }
 
-    private CommandInfos toObject(String result) {
+    private CommandInfo toObject(String result) {
         return mAdapter.read(new ByteArrayInputStream(result.getBytes(Charset.forName("UTF-8"))));
     }
 }

@@ -5,37 +5,24 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import java.util.List;
 
 public class CommandInfo {
-    public static final String TYPE_PLAYLIST = "setPlaylist";
-    public static final String TYPE_NOW_PLAYING = "getNowPlaying";
-    public static final String TYPE_NOP = "noop";
-    public static final String TYPE_SESSION_ID = "c";
-    public static final String TYPE_G_SESSION_ID = "S";
+    @JsonPath("$[*]")
+    private List<CommandItem> mCommands;
 
-    @JsonPath("$[0]")
-    private int mIndex;
-
-    @JsonPath("$[1][0]")
-    private String mType;
-
-    @JsonPath("$[1][1]")
-    private PlaylistData mPlaylistData;
-
-    @JsonPath("$[1][1:]")
-    private List<String> mParams;
-
-    public int getIndex() {
-        return mIndex;
+    public List<CommandItem> getCommands() {
+        return mCommands;
     }
 
-    public String getType() {
-        return mType;
-    }
+    public String getParam(String commandName) {
+        if (mCommands == null) {
+            return null;
+        }
 
-    public List<String> getParams() {
-        return mParams;
-    }
+        for (CommandItem command : mCommands) {
+            if (commandName.equals(command.getType())) {
+                return command.getParams().get(0);
+            }
+        }
 
-    public PlaylistData getPlaylistData() {
-        return mPlaylistData;
+        return null;
     }
 }

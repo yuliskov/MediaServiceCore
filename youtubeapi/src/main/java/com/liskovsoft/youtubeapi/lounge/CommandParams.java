@@ -66,10 +66,12 @@ public class CommandParams {
         result.put(FIELD_COUNT, "1");
         result.put(FIELD_OFS, String.valueOf(sOfsCounter++));
         result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000f));
-        result.put(FIELD_DURATION, String.valueOf(lengthMs / 1_000f));
+        if (lengthMs > 0) {
+            result.put(FIELD_DURATION, String.valueOf(lengthMs / 1_000f));
+            result.put(FIELD_SEEK_END, String.valueOf(lengthMs / 1_000f));
+        }
         result.put(FIELD_LOADED_TIME, "0");
         result.put(FIELD_SEEK_START, "0");
-        result.put(FIELD_SEEK_END, String.valueOf(lengthMs / 1_000f));
 
         return result;
     }

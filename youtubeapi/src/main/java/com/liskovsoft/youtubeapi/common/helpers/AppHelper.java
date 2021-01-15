@@ -149,4 +149,12 @@ public class AppHelper {
 
         return true;
     }
+
+    public static long toMillis(String currentTimeSec) {
+        if (currentTimeSec == null || currentTimeSec.isEmpty()) {
+            return 0;
+        }
+
+        return (long) (Helpers.parseFloat(currentTimeSec) * 1_000);
+    }
 }

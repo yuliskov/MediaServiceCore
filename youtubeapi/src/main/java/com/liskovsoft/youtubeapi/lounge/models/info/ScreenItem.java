@@ -1,8 +1,8 @@
-package com.liskovsoft.youtubeapi.lounge.models;
+package com.liskovsoft.youtubeapi.lounge.models.info;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
-public class Screen {
+public class ScreenItem {
     @JsonPath("$.screenId")
     private String mScreenId;
 

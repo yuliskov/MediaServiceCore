@@ -1,19 +1,43 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
-import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
-import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistData;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
+import com.liskovsoft.youtubeapi.lounge.models.commands.SeekToParams;
+import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
 
 public class YouTubeCommand implements Command {
     private int mType;
     private String mVideoId;
+    private String mPlaylistId;
+    private long mCurrentTimeMs;
 
-    public static Command from(CommandInfo info) {
+    public static Command from(CommandItem info) {
+        if (info == null) {
+            return null;
+        }
+
         YouTubeCommand command = new YouTubeCommand();
-        PlaylistData playlistData = info.getPlaylistData();
-        if (playlistData != null) {
-            command.mVideoId = playlistData.getVideoId();
-            command.mType = Command.TYPE_OPEN;
+
+        switch (info.getType()) {
+            case CommandItem.TYPE_SET_PLAYLIST:
+                command.mType = Command.TYPE_OPEN_VIDEO;
+                PlaylistParams setPlaylistParams = info.getPlaylistParams();
+                command.mVideoId = setPlaylistParams.getVideoId();
+                command.mPlaylistId = setPlaylistParams.getPlaylistId();
+                command.mCurrentTimeMs = AppHelper.toMillis(setPlaylistParams.getCurrentTimeSec());
+                break;
+            case CommandItem.TYPE_SEEK_TO:
+                command.mType = Command.TYPE_SEEK;
+                SeekToParams seekToParams = info.getSeekToParams();
+                command.mCurrentTimeMs = AppHelper.toMillis(seekToParams.getNewTimeSec());
+                break;
+            case CommandItem.TYPE_PLAY:
+                command.mType = Command.TYPE_PLAY;
+                break;
+            case CommandItem.TYPE_PAUSE:
+                command.mType = Command.TYPE_PAUSE;
+                break;
         }
 
         return command;
@@ -27,5 +51,15 @@ public class YouTubeCommand implements Command {
     @Override
     public String getVideoId() {
         return mVideoId;
+    }
+
+    @Override
+    public String getPlaylistId() {
+        return mPlaylistId;
+    }
+
+    @Override
+    public long getCurrentTimeMs() {
+        return mCurrentTimeMs;
     }
 }

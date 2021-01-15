@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.Screen;
@@ -117,12 +118,12 @@ public class LoungeService {
     }
 
     public void postPlaying(String videoId, long positionMs, long lengthMs) {
+        if (!AppHelper.checkNonNull(mCtt, mPlaylistId, mPlaylistIndex)) {
+            return;
+        }
+
         postNowPlaying(videoId, positionMs, lengthMs);
         postOnStateChange(positionMs, lengthMs);
-    }
-
-    public void postUpdatePosition(long positionMs, long lengthMs) {
-        //postPositionUpdate(positionMs, lengthMs);
     }
 
     private void postNowPlaying(String videoId, long positionMs, long lengthMs) {

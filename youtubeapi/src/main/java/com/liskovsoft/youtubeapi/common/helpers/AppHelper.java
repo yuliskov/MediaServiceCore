@@ -135,4 +135,18 @@ public class AppHelper {
 
         return false;
     }
+
+    public static boolean checkNonNull(Object... values) {
+        if (values == null) {
+            return false;
+        }
+
+        for (Object value : values) {
+            if (value == null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

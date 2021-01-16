@@ -77,6 +77,21 @@ public class LoungeService {
      * Process couldn't be stopped, only interrupted.
      */
     public void startListening(OnCommand callback) {
+        // It's common to stream to be interrupted multiple times
+        while (true) {
+            try {
+                startListeningInt(callback);
+            } catch (InterruptedIOException e) {
+                Log.e(TAG, "We're done. Seems that user has been closed remote session.");
+                break;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                // Continue to listen whichever is happening.
+            }
+        }
+    }
+
+    private void startListeningInt(OnCommand callback) throws IOException {
         Log.d(TAG, "Opening session...");
 
         CommandInfo sessionBind = getSessionBind();
@@ -97,48 +112,35 @@ public class LoungeService {
 
         OkHttpClient client = builder.build();
 
-        // It's common to stream to be interrupted multiple times
-        while (true) {
-            Response response = null;
-            try {
-                Log.d(TAG, "Starting read session...");
+        Log.d(TAG, "Starting read session...");
 
-                response = client.newCall(request).execute();
+        Response response = client.newCall(request).execute();
 
-                InputStream in = response.body().byteStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String result = "";
-                String line = "";
+        InputStream in = response.body().byteStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String result = "";
+        String line = "";
 
-                while((line = reader.readLine()) != null) {
-                    result += line + "\n";
+        while((line = reader.readLine()) != null) {
+            result += line + "\n";
 
-                    if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
-                        Log.d(TAG, "New command: \n" + result);
+            if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
+                Log.d(TAG, "New command: \n" + result);
 
-                        CommandInfo infos = toCommandInfos(result);
+                CommandInfo infos = toCommandInfos(result);
 
-                        for (CommandItem info : infos.getCommands()) {
-                            updateData(info);
-                            callback.onCommand(info);
-                        }
-
-                        result = "";
-                    }
+                for (CommandItem info : infos.getCommands()) {
+                    updateData(info);
+                    callback.onCommand(info);
                 }
-            } catch (InterruptedIOException e) {
-                Log.e(TAG, "Thread interrupted. User has been closed remote session? Exception message: %s", e.getMessage());
-                break;
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            } finally {
-                Log.d(TAG, "Closing read session...");
 
-                if (response != null) {
-                    response.body().close();
-                }
+                result = "";
             }
         }
+
+        Log.d(TAG, "Closing session...");
+
+        response.body().close();
     }
 
     public void postStartPlaying(String videoId, long positionMs, long durationMs) {

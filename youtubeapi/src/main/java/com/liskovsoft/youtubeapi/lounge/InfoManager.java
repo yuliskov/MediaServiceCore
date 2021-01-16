@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.lounge.models.info.LoungePlaylistInfo;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenInfo;
+import com.liskovsoft.youtubeapi.lounge.models.info.LoungePlaylist;
+import com.liskovsoft.youtubeapi.lounge.models.info.ScreenList;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -16,8 +16,8 @@ public interface InfoManager {
      */
     @FormUrlEncoded
     @POST("https://www.youtube.com/api/lounge/pairing/get_lounge_token_batch")
-    Call<ScreenInfo> getScreenInfo(@Field("screen_ids") String... screenIds);
+    Call<ScreenList> getScreenInfo(@Field("screen_ids") String... screenIds);
 
     @GET("https://www.youtube.com/list_ajax?style=json&action_get_list=1")
-    Call<LoungePlaylistInfo> getPlaylistInfo(@Query("list") String playlistId);
+    Call<LoungePlaylist> getPlaylistInfo(@Query("list") String playlistId);
 }

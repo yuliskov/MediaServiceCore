@@ -449,3 +449,12 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Key: X8zbNRcWQ2VGQ+rtd6PrRQ==
 Sec-WebSocket-Version: 13
+
+###
+
+# Lounge
+
+POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&id=75b10d12-6060-459d-b6d9-708d5e11ea7e&name=YouTube%20on%20TV&app=lb-v4&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&loungeIdToken=AGdO5p8gDmbHPjrpJoAXHP5VTK_2XhddyaTGBK_LiLTUqKqPlJRsgp37Iy6W-LukEoPFl6hEv9lIVl0rdh8k-OrvaJc08nPlxFmnmpucvB9Qiw6DZpbOIEA&VER=8&v=2&RID=96295&CVER=1&zx=x4wxnmayacxv&t=1
+Content-Type: application/x-www-form-urlencoded
+
+count=0

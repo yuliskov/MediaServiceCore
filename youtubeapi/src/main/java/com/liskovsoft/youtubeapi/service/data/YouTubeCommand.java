@@ -38,6 +38,9 @@ public class YouTubeCommand implements Command {
             case CommandItem.TYPE_PAUSE:
                 command.mType = Command.TYPE_PAUSE;
                 break;
+            case CommandItem.TYPE_GET_NOW_PLAYING:
+                command.mType = Command.TYPE_GET_STATE;
+                break;
         }
 
         return command;

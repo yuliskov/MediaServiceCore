@@ -7,10 +7,10 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenInfo;
+import com.liskovsoft.youtubeapi.lounge.models.info.ScreenList;
 import com.liskovsoft.youtubeapi.lounge.models.StateResult;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
-import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -35,7 +35,7 @@ public class LoungeService {
     private final BindManager mBindManager;
     private final InfoManager mScreenManager;
     private final CommandManager mCommandManager;
-    private final JsonPathTypeAdapter<CommandInfo> mLineSkipAdapter;
+    private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
     private final String mScreenName = SCREEN_NAME_TMP;
     private final String mLoungeToken = LOUNGE_TOKEN_TMP;
     private String mSessionId;
@@ -48,7 +48,7 @@ public class LoungeService {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
         mScreenManager = RetrofitHelper.withJsonPath(InfoManager.class);
         mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
-        mLineSkipAdapter = RetrofitHelper.adaptJsonPathSkip(CommandInfo.class);
+        mLineSkipAdapter = RetrofitHelper.adaptJsonPathSkip(CommandList.class);
     }
 
     public static LoungeService instance() {
@@ -94,10 +94,12 @@ public class LoungeService {
     private void startListeningInt(OnCommand callback) throws IOException {
         Log.d(TAG, "Opening session...");
 
-        CommandInfo sessionBind = getSessionBind();
+        CommandList sessionInfos = getSessionBind();
 
-        mSessionId = sessionBind.getParam(CommandItem.TYPE_SESSION_ID);
-        mGSessionId = sessionBind.getParam(CommandItem.TYPE_G_SESSION_ID);
+        mSessionId = sessionInfos.getParam(CommandItem.TYPE_SESSION_ID);
+        mGSessionId = sessionInfos.getParam(CommandItem.TYPE_G_SESSION_ID);
+
+        Log.d(TAG, "SID: %s, gsessionid: %s", mSessionId, mGSessionId);
 
         String url = BindParams.createBindRpcUrl(
                 mScreenName,
@@ -121,18 +123,17 @@ public class LoungeService {
         String result = "";
         String line = "";
 
+        processCommands(sessionInfos, callback);
+
         while((line = reader.readLine()) != null) {
             result += line + "\n";
 
             if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
                 Log.d(TAG, "New command: \n" + result);
 
-                CommandInfo infos = toCommandInfos(result);
+                CommandList infos = toCommandInfos(result);
 
-                for (CommandItem info : infos.getCommands()) {
-                    updateData(info);
-                    callback.onCommand(info);
-                }
+                processCommands(infos, callback);
 
                 result = "";
             }
@@ -141,6 +142,13 @@ public class LoungeService {
         Log.d(TAG, "Closing session...");
 
         response.body().close();
+    }
+
+    private void processCommands(CommandList commandList, OnCommand callback) {
+        for (CommandItem commandItem : commandList.getCommands()) {
+            updateData(commandItem);
+            callback.onCommand(commandItem);
+        }
     }
 
     public void postStartPlaying(String videoId, long positionMs, long durationMs) {
@@ -185,9 +193,9 @@ public class LoungeService {
     private void updateData(CommandItem info) {
         if (info != null && info.getPlaylistParams() != null) {
             PlaylistParams playlistData = info.getPlaylistParams();
-            mCtt = playlistData.getCtt();
-            mPlaylistIndex = playlistData.getPlaylistIndex();
-            mPlaylistId = playlistData.getPlaylistId();
+            mCtt = playlistData.getCtt() != null ? playlistData.getCtt() : mCtt;
+            mPlaylistIndex = playlistData.getPlaylistIndex() != null ? playlistData.getPlaylistIndex() : mPlaylistIndex;
+            mPlaylistId = playlistData.getPlaylistId() != null ? playlistData.getPlaylistId() : mPlaylistId;
         }
     }
 
@@ -195,19 +203,19 @@ public class LoungeService {
         Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
         ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
 
-        Call<ScreenInfo> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
-        ScreenInfo screenInfos = RetrofitHelper.get(screenInfosWrapper);
+        Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
+        ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
 
         return screenInfos.getScreens().get(0);
     }
 
-    private CommandInfo getSessionBind() {
-        Call<CommandInfo> bindDataWrapper = mCommandManager.getSessionData(mScreenName, mLoungeToken, 0);
+    private CommandList getSessionBind() {
+        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(mScreenName, mLoungeToken, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }
 
-    private CommandInfo toCommandInfos(String result) {
+    private CommandList toCommandInfos(String result) {
         return mLineSkipAdapter.read(new ByteArrayInputStream(result.getBytes(Charset.forName("UTF-8"))));
     }
 

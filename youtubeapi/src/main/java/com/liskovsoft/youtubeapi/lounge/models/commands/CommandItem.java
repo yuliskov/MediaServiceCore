@@ -1,11 +1,14 @@
 package com.liskovsoft.youtubeapi.lounge.models.commands;
 
+import androidx.annotation.NonNull;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
 public class CommandItem {
     public static final String TYPE_SET_PLAYLIST = "setPlaylist";
+    public static final String TYPE_LOUNGE_STATUS = "loungeStatus";
+    public static final String TYPE_REMOTE_DISCONNECTED = "remoteDisconnected";
     public static final String TYPE_GET_NOW_PLAYING = "getNowPlaying";
     public static final String TYPE_NOP = "noop";
     public static final String TYPE_PLAY = "play";
@@ -47,5 +50,11 @@ public class CommandItem {
 
     public SeekToParams getSeekToParams() {
         return mSeekToParams;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("Type: %s", getType());
     }
 }

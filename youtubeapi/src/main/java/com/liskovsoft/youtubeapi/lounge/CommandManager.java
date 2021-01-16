@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.youtubeapi.lounge.models.StateResult;
-import com.liskovsoft.youtubeapi.lounge.models.commands.CommandInfo;
+import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -14,7 +14,7 @@ import java.util.Map;
 public interface CommandManager {
     @FormUrlEncoded
     @POST(BindParams.BIND_DATA_URL)
-    Call<CommandInfo> getSessionData(@Query("name") String screenName,
+    Call<CommandList> getSessionData(@Query("name") String screenName,
                                      @Query("loungeIdToken") String loungeToken,
                                      @Field("count") int count);
 

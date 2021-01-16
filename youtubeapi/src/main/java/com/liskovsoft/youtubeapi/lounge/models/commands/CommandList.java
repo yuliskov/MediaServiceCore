@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class CommandInfo {
+public class CommandList {
     @JsonPath("$[*]")
     private List<CommandItem> mCommands;
 

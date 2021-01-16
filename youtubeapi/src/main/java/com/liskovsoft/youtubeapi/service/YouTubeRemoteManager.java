@@ -45,17 +45,11 @@ public class YouTubeRemoteManager implements RemoteManager {
     @Override
     public Observable<Command> getCommandObserve() {
         return Observable.create(emitter -> {
-            try {
-                mLoungeService.startListening(
-                        info -> emitter.onNext(YouTubeCommand.from(info))
-                );
+            mLoungeService.startListening(
+                    info -> emitter.onNext(YouTubeCommand.from(info))
+            );
 
-                emitter.onComplete();
-            } catch (InterruptedIOException e) {
-                // https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#error-handling
-                // UndeliverableException fix
-                emitter.tryOnError(e);
-            }
+            emitter.onComplete();
         });
     }
 

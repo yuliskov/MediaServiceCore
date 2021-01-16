@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
@@ -72,7 +73,10 @@ public class LoungeService {
         return pairingCode != null ? pairingCode.getPairingCode() : null;
     }
 
-    public void startListening(OnCommand callback) throws IOException {
+    /**
+     * Process couldn't be stopped, only interrupted.
+     */
+    public void startListening(OnCommand callback) {
         Log.d(TAG, "Opening session...");
 
         CommandInfo sessionBind = getSessionBind();
@@ -95,33 +99,45 @@ public class LoungeService {
 
         // It's common to stream to be interrupted multiple times
         while (true) {
-            Response response = client.newCall(request).execute();
+            Response response = null;
+            try {
+                Log.d(TAG, "Starting read session...");
 
-            InputStream in = response.body().byteStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            String result = "";
-            String line = "";
+                response = client.newCall(request).execute();
 
-            while((line = reader.readLine()) != null) {
-                result += line + "\n";
+                InputStream in = response.body().byteStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                String result = "";
+                String line = "";
 
-                if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
-                    Log.d(TAG, "New command: \n" + result);
+                while((line = reader.readLine()) != null) {
+                    result += line + "\n";
 
-                    CommandInfo infos = toCommandInfos(result);
+                    if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
+                        Log.d(TAG, "New command: \n" + result);
 
-                    for (CommandItem info : infos.getCommands()) {
-                        updateData(info);
-                        callback.onCommand(info);
+                        CommandInfo infos = toCommandInfos(result);
+
+                        for (CommandItem info : infos.getCommands()) {
+                            updateData(info);
+                            callback.onCommand(info);
+                        }
+
+                        result = "";
                     }
+                }
+            } catch (InterruptedIOException e) {
+                Log.e(TAG, "Thread interrupted. User has been closed remote session? Exception message: %s", e.getMessage());
+                break;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            } finally {
+                Log.d(TAG, "Closing read session...");
 
-                    result = "";
+                if (response != null) {
+                    response.body().close();
                 }
             }
-
-            Log.d(TAG, "Closing read session...");
-
-            response.body().close();
         }
     }
 

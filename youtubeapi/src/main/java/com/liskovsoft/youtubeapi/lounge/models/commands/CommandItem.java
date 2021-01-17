@@ -8,6 +8,7 @@ import java.util.List;
 public class CommandItem {
     public static final String TYPE_SET_PLAYLIST = "setPlaylist";
     public static final String TYPE_LOUNGE_STATUS = "loungeStatus";
+    public static final String TYPE_REMOTE_CONNECTED = "remoteConnected";
     public static final String TYPE_REMOTE_DISCONNECTED = "remoteDisconnected";
     public static final String TYPE_GET_NOW_PLAYING = "getNowPlaying";
     public static final String TYPE_NOP = "noop";
@@ -28,6 +29,9 @@ public class CommandItem {
 
     @JsonPath("$[1][1]")
     private SeekToParams mSeekToParams;
+
+    @JsonPath("$[1][1]")
+    private RemoteParams mRemoteParams;
 
     @JsonPath("$[1][1:]")
     private List<String> mParams;
@@ -50,6 +54,10 @@ public class CommandItem {
 
     public SeekToParams getSeekToParams() {
         return mSeekToParams;
+    }
+
+    public RemoteParams getRemoteParams() {
+        return mRemoteParams;
     }
 
     @NonNull

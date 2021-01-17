@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
@@ -41,6 +43,7 @@ public class LoungeService {
     private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
     private String mScreenName;
     private String mLoungeToken;
+    private String mScreenId;
     private String mSessionId;
     private String mGSessionId;
     private String mCtt;
@@ -63,12 +66,17 @@ public class LoungeService {
     }
 
     public String getPairingCode() {
-        ScreenItem screen = getScreen();
+        initConstants();
+
+        return getPairingCodeInt();
+    }
+
+    private String getPairingCodeInt() {
         Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(
                 BindParams.ACCESS_TYPE,
                 BindParams.APP,
-                screen.getLoungeToken(),
-                screen.getScreenId(),
+                mLoungeToken,
+                mScreenId,
                 mScreenName);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
@@ -98,11 +106,13 @@ public class LoungeService {
 
     private void initConstants() {
         if (mScreenName == null) {
-            mScreenName = AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext());
+            mScreenName = String.format("%s (%s)", AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext()), Build.MODEL);
         }
 
         if (mLoungeToken == null) {
-            mLoungeToken = getScreen().getLoungeToken();
+            ScreenItem screen = getScreen();
+            mLoungeToken = screen.getLoungeToken();
+            mScreenId = screen.getScreenId();
         }
     }
 

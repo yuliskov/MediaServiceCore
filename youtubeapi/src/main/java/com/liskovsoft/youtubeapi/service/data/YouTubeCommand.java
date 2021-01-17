@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.lounge.models.commands.SeekToParams;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
 
 public class YouTubeCommand implements Command {
-    private int mType;
+    private int mType = -1;
     private String mVideoId;
     private String mPlaylistId;
     private long mCurrentTimeMs;

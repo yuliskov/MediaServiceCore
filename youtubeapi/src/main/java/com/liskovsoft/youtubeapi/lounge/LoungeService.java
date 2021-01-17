@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
@@ -12,6 +14,7 @@ import com.liskovsoft.youtubeapi.lounge.models.StateResult;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -28,16 +31,16 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 public class LoungeService {
-    private static final String SCREEN_NAME_TMP = "TubeNext";
-    private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
+    //private static final String SCREEN_NAME_TMP = "TubeNext";
+    //private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
     private static final String TAG = LoungeService.class.getSimpleName();
     private static LoungeService sInstance;
     private final BindManager mBindManager;
     private final InfoManager mScreenManager;
     private final CommandManager mCommandManager;
     private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
-    private final String mScreenName = SCREEN_NAME_TMP;
-    private final String mLoungeToken = LOUNGE_TOKEN_TMP;
+    private String mScreenName;
+    private String mLoungeToken;
     private String mSessionId;
     private String mGSessionId;
     private String mCtt;
@@ -77,6 +80,8 @@ public class LoungeService {
      * Process couldn't be stopped, only interrupted.
      */
     public void startListening(OnCommand callback) {
+        initConstants();
+
         // It's common to stream to be interrupted multiple times
         while (true) {
             try {
@@ -88,6 +93,16 @@ public class LoungeService {
                 Log.e(TAG, e.getMessage());
                 // Continue to listen whichever is happening.
             }
+        }
+    }
+
+    private void initConstants() {
+        if (mScreenName == null) {
+            mScreenName = AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext());
+        }
+
+        if (mLoungeToken == null) {
+            mLoungeToken = getScreen().getLoungeToken();
         }
     }
 
@@ -200,13 +215,21 @@ public class LoungeService {
     }
 
     private ScreenItem getScreen() {
+        if (MediaServiceData.instance().getScreen() != null) {
+            return MediaServiceData.instance().getScreen();
+        }
+
         Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
         ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
 
         Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
         ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
 
-        return screenInfos.getScreens().get(0);
+        ScreenItem screenItem = screenInfos.getScreens().get(0);
+
+        MediaServiceData.instance().setScreen(screenItem);
+
+        return screenItem;
     }
 
     private CommandList getSessionBind() {

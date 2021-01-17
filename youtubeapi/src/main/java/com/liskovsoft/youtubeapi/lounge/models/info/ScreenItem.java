@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge.models.info;
 
+import androidx.annotation.NonNull;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 public class ScreenItem {
@@ -15,5 +17,25 @@ public class ScreenItem {
 
     public String getLoungeToken() {
         return mLoungeToken;
+    }
+
+    public static ScreenItem from(String data) {
+        if (data == null) {
+            return null;
+        }
+
+        String[] split = data.split(",");
+
+        ScreenItem result = new ScreenItem();
+        result.mScreenId = Helpers.parseStr(split, 0);
+        result.mLoungeToken = Helpers.parseStr(split, 1);
+
+        return result;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("%s,%s", mScreenId, mLoungeToken);
     }
 }

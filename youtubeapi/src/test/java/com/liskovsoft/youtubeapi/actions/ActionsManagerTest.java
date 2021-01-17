@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

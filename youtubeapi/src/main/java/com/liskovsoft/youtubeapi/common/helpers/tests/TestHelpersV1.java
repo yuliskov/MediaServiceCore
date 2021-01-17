@@ -1,15 +1,12 @@
-package com.liskovsoft.youtubeapi.common.tests;
+package com.liskovsoft.youtubeapi.common.helpers.tests;
 
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
-import com.liskovsoft.youtubeapi.auth.V2.AuthService;
+import com.liskovsoft.youtubeapi.auth.V1.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 
-public class TestHelpersV2 {
+public class TestHelpersV1 {
     private static String mAuthorization; // type: Bearer
-    private static final String RAW_JSON_AUTH_DATA = "{\"client_id\":\"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com\"," +
-            "\"client_secret\":\"SboVhoG9s0rNafixCSGGKXAT\"," +
-            "\"refresh_token\":\"1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU\"," +
-            "\"grant_type\":\"refresh_token\"}";
+    private static final String RAW_AUTH_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1//0cP_RZyC7ratPCgYIARAAGAwSNwF-L9IrlOZa8kjE0SWrL8vIwSg_QqkxdHjq5EyiDitGclVNBtGovxijwz2R2VWGDHywf_IHlVM&grant_type=refresh_token";
 
     // In the morning
     public static final String VIDEO_ID_MUSIC = "5_ARibfCMhw";
@@ -21,9 +18,6 @@ public class TestHelpersV2 {
 
     // Kvartal 95
     public static final String VIDEO_ID_2 = "XemGObKTF0o";
-
-    // Creed
-    public static final String VIDEO_ID_3 = "4oO-X3RkeLk";
 
     // Mafia Trailer
     public static final String VIDEO_ID_CAPTIONS = "s2lGEhSlOTY";
@@ -57,7 +51,7 @@ public class TestHelpersV2 {
             return mAuthorization;
         }
 
-        AccessToken token = AuthService.instance().getAccessTokenRaw(RAW_JSON_AUTH_DATA);
+        AccessToken token = AuthService.instance().getAccessTokenRaw(RAW_AUTH_DATA);
 
         if (token == null) {
             throw new IllegalStateException("Token is null");

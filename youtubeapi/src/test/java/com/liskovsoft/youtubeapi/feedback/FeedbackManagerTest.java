@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.feedback;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
 import org.junit.Before;
 import org.junit.Test;

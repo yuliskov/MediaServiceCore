@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next;
 
 import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import org.junit.Before;

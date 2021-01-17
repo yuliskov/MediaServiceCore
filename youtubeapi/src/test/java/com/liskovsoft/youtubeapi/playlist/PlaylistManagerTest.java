@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfo;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import org.junit.Before;

@@ -37,6 +37,7 @@ public interface MediaItemManager {
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
     Observable<MediaItemMetadata> getMetadataObserve(String videoId);
+    Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
     Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec);
     Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec);

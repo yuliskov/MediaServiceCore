@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.RemoteParams;
@@ -14,6 +15,7 @@ public class YouTubeCommand implements Command {
     private long mCurrentTimeMs;
     private String mDeviceName;
     private String mDeviceId;
+    private int mPlaylistIndex;
 
     public static Command from(CommandItem info) {
         if (info == null) {
@@ -25,10 +27,11 @@ public class YouTubeCommand implements Command {
         switch (info.getType()) {
             case CommandItem.TYPE_SET_PLAYLIST:
                 command.mType = Command.TYPE_OPEN_VIDEO;
-                PlaylistParams setPlaylistParams = info.getPlaylistParams();
-                command.mVideoId = setPlaylistParams.getVideoId();
-                command.mPlaylistId = setPlaylistParams.getPlaylistId();
-                command.mCurrentTimeMs = AppHelper.toMillis(setPlaylistParams.getCurrentTimeSec());
+                PlaylistParams playlistParams = info.getPlaylistParams();
+                command.mVideoId = playlistParams.getVideoId();
+                command.mPlaylistId = playlistParams.getPlaylistId();
+                command.mPlaylistIndex = Helpers.parseInt(playlistParams.getPlaylistIndex());
+                command.mCurrentTimeMs = AppHelper.toMillis(playlistParams.getCurrentTimeSec());
                 break;
             case CommandItem.TYPE_SEEK_TO:
                 command.mType = Command.TYPE_SEEK;
@@ -74,6 +77,11 @@ public class YouTubeCommand implements Command {
     @Override
     public String getPlaylistId() {
         return mPlaylistId;
+    }
+
+    @Override
+    public int getPlaylistIndex() {
+        return mPlaylistIndex;
     }
 
     @Override

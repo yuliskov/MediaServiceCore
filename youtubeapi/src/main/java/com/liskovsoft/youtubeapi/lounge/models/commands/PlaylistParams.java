@@ -12,11 +12,11 @@ public class PlaylistParams {
     @JsonPath("$.listId")
     private String mPlaylistId;
 
-    @JsonPath("$.currentTime")
-    private String mCurrentTimeSec;
-
     @JsonPath("$.currentIndex")
     private String mPlaylistIndex;
+
+    @JsonPath("$.currentTime")
+    private String mCurrentTimeSec;
 
     @JsonPath("$.ctt")
     private String mCtt;

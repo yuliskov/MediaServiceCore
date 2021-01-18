@@ -14,4 +14,5 @@ public interface Command {
     long getCurrentTimeMs();
     String getDeviceName();
     String getDeviceId();
+    int getPlaylistIndex();
 }

@@ -1,11 +1,14 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandParams {
     private static final String COMMAND_NOW_PLAYING = "nowPlaying";
     private static final String COMMAND_ON_STATE_CHANGE = "onStateChange";
+    private static final String COMMAND_ON_PREVIOUS_NEXT_CHANGE = "onHasPreviousNextChanged";
 
     public static final int STATE_UNDETECTED = 0;
     public static final int STATE_PLAYING = 1;
@@ -28,6 +31,8 @@ public class CommandParams {
     private static final String FIELD_LOADED_TIME = "req0_loadedTime";
     private static final String FIELD_SEEK_START = "req0_seekableStartTime";
     private static final String FIELD_SEEK_END = "req0_seekableEndTime";
+    private static final String FIELD_HAS_PREVIOUS = "req0_hasPrevious";
+    private static final String FIELD_HAS_NEXT = "req0_hasNext";
 
     private static final String CPN_NONE = "foo";
     private static int sOfsCounter;
@@ -60,12 +65,34 @@ public class CommandParams {
         return result;
     }
 
+    public static Map<String, String> getOnPrevNextChange() {
+        Map<String, String> result = initCommand(-1, -1);
+
+        result.put(FIELD_COMMAND_NAME, COMMAND_ON_PREVIOUS_NEXT_CHANGE);
+        result.put(FIELD_HAS_PREVIOUS, "false");
+        result.put(FIELD_HAS_NEXT, "false");
+
+        return result;
+    }
+
     private static Map<String, String> initCommand(long positionMs, long durationMs) {
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<String, String>() {
+            @Nullable
+            @Override
+            public String put(String key, String value) {
+                if (value == null) {
+                    return null;
+                }
+
+                return super.put(key, value);
+            }
+        };
 
         result.put(FIELD_COUNT, "1");
         result.put(FIELD_OFS, String.valueOf(sOfsCounter++));
-        result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000f));
+        if (positionMs >= 0) {
+            result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000f));
+        }
         if (durationMs > 0) {
             result.put(FIELD_DURATION, String.valueOf(durationMs / 1_000f));
             result.put(FIELD_SEEK_END, String.valueOf(durationMs / 1_000f));

@@ -177,16 +177,18 @@ public class LoungeService {
     }
 
     public void postStartPlaying(String videoId, long positionMs, long durationMs) {
-        if (!AppHelper.checkNonNull(mCtt, mPlaylistId, mPlaylistIndex)) {
-            return;
-        }
+        //if (!AppHelper.checkNonNull(mCtt, mPlaylistId, mPlaylistIndex)) {
+        //    return;
+        //}
 
         postNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex);
-        postOnStateChange(positionMs, durationMs, CommandParams.STATE_PLAYING);
+        postStateChange(positionMs, durationMs, true);
     }
 
     public void postStateChange(long positionMs, long durationMs, boolean isPlaying) {
-        postOnStateChange(positionMs, durationMs, isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED);
+        if (positionMs >= 0 && durationMs > 0) {
+            postOnStateChange(positionMs, durationMs, isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED);
+        }
     }
 
     private void postNowPlaying(String videoId, long positionMs, long lengthMs, String ctt, String playlistId, String playlistIndex) {
@@ -212,6 +214,19 @@ public class LoungeService {
         Call<StateResult> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 CommandParams.getOnStateChange(positionMs, lengthMs, state));
+        RetrofitHelper.get(wrapper);
+    }
+
+    private void postOnPrevNextChange() {
+        if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
+            return;
+        }
+
+        Log.d(TAG, "Post onPrevNextChange...");
+
+        Call<StateResult> wrapper = mCommandManager.postCommand(
+                mScreenName, mLoungeToken, mSessionId, mGSessionId,
+                CommandParams.getOnPrevNextChange());
         RetrofitHelper.get(wrapper);
     }
 

@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
@@ -26,6 +25,7 @@ public class ObservableHelper {
                 emitter.onNext(result);
                 emitter.onComplete();
             } else {
+                // Be aware of OnErrorNotImplementedException exception if error handler not implemented!
                 onError(emitter, "fromNullable result is null");
             }
         });
@@ -43,13 +43,12 @@ public class ObservableHelper {
         }
     }
 
+    /**
+     * Fix fall back on the global error handler.
+     * <a href="https://stackoverflow.com/questions/44420422/crash-when-sending-exception-through-rxjava">More info</a><br/>
+     * Be aware of {@link OnErrorNotImplementedException} exception if error handler not implemented inside subscribe clause!
+     */
     public static <T> void onError(ObservableEmitter<T> emitter, String msg) {
-        try {
-            // Fix fall back on the global error handler
-            // More info: https://stackoverflow.com/questions/44420422/crash-when-sending-exception-through-rxjava
-            emitter.tryOnError(new IllegalStateException(msg));
-        } catch (OnErrorNotImplementedException e) {
-            Log.e(TAG, "Oops. I forgot to add error handler somewhere. But it's ok. %s", e.getMessage());
-        }
+        emitter.tryOnError(new IllegalStateException(msg));
     }
 }

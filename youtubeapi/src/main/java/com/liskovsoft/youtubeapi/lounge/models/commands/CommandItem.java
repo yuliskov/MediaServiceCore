@@ -11,6 +11,7 @@ public class CommandItem {
     public static final String TYPE_REMOTE_CONNECTED = "remoteConnected";
     public static final String TYPE_REMOTE_DISCONNECTED = "remoteDisconnected";
     public static final String TYPE_GET_NOW_PLAYING = "getNowPlaying";
+    public static final String TYPE_UPDATE_PLAYLIST = "updatePlaylist";
     public static final String TYPE_NOP = "noop";
     public static final String TYPE_PLAY = "play";
     public static final String TYPE_PAUSE = "pause";

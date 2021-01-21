@@ -33,8 +33,6 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 public class LoungeService {
-    //private static final String SCREEN_NAME_TMP = "TubeNext";
-    //private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
     private static final String TAG = LoungeService.class.getSimpleName();
     private static LoungeService sInstance;
     private final BindManager mBindManager;

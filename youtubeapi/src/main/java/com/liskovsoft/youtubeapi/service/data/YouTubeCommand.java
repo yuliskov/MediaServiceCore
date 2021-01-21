@@ -33,6 +33,11 @@ public class YouTubeCommand implements Command {
                 command.mPlaylistIndex = Helpers.parseInt(playlistParams.getPlaylistIndex());
                 command.mCurrentTimeMs = AppHelper.toMillis(playlistParams.getCurrentTimeSec());
                 break;
+            case CommandItem.TYPE_UPDATE_PLAYLIST:
+                command.mType = Command.TYPE_UPDATE_PLAYLIST;
+                playlistParams = info.getPlaylistParams();
+                command.mPlaylistId = playlistParams.getPlaylistId();
+                break;
             case CommandItem.TYPE_SEEK_TO:
                 command.mType = Command.TYPE_SEEK;
                 SeekToParams seekToParams = info.getSeekToParams();

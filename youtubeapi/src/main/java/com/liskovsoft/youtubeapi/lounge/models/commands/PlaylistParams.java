@@ -6,6 +6,9 @@ public class PlaylistParams {
     @JsonPath("$.videoId")
     private String mVideoId;
 
+    /**
+     * Comma separated list of video ids
+     */
     @JsonPath("$.videoIds")
     private String mVideoIds;
 

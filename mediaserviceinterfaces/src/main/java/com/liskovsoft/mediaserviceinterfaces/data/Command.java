@@ -8,6 +8,7 @@ public interface Command {
     int TYPE_GET_STATE = 4;
     int TYPE_CONNECTED = 5;
     int TYPE_DISCONNECTED = 6;
+    int TYPE_UPDATE_PLAYLIST = 7;
     int getType();
     String getVideoId();
     String getPlaylistId();

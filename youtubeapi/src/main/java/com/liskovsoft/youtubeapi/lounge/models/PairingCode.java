@@ -15,7 +15,7 @@ public class PairingCode {
 
         // Format pairing code to XXX-XXX-XXX-XXX
         if (mPairingCodeAlt == null) {
-            mPairingCodeAlt = AppHelper.insertSeparator(mPairingCode, "-", 3);
+            mPairingCodeAlt = AppHelper.insertSeparator(mPairingCode, " ", 3);
         }
 
         return mPairingCodeAlt;

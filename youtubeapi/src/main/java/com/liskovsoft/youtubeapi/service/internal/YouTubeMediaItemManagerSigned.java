@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
+import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
@@ -17,16 +18,18 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private final WatchNextServiceSigned mWatchNextServiceSigned;
     private final YouTubeSignInManager mSignInManager;
     private final TrackingService mTrackingService;
-    private final VideoInfoServiceSigned mVideoInfoServiceSigned;
+    //private final VideoInfoServiceSigned mVideoInfoServiceSigned;
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
     private final FeedbackService mFeedbackService;
+    private final VideoInfoServiceUnsigned mVideoInfoServiceUnsigned;
 
     private YouTubeMediaItemManagerSigned() {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
         mSignInManager = YouTubeSignInManager.instance();
         mTrackingService = TrackingService.instance();
-        mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        //mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mVideoInfoServiceUnsigned = VideoInfoServiceUnsigned.instance();
         mActionsService = ActionsService.instance();
         mPlaylistService = PlaylistService.instance();
         mFeedbackService = FeedbackService.instance();
@@ -62,7 +65,8 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
 
     @Override
     public VideoInfo getVideoInfo(String videoId) {
-        return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+        //return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+        return mVideoInfoServiceUnsigned.getVideoInfo(videoId);
     }
 
     @Override

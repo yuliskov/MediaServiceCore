@@ -5,8 +5,11 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.block.SponsorBlockService;
+import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
@@ -14,6 +17,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
+import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.service.data.YouTubeVideoPlaylistInfo;
 import com.liskovsoft.youtubeapi.service.internal.MediaItemManagerInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerSigned;
@@ -27,10 +31,12 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
     private static MediaItemManager sInstance;
     private final YouTubeSignInManager mSignInManager;
+    private final SponsorBlockService mSponsorBlockService;
     private MediaItemManagerInt mMediaItemManagerReal;
 
     private YouTubeMediaItemManager() {
         mSignInManager = YouTubeSignInManager.instance();
+        mSponsorBlockService = SponsorBlockService.instance();
     }
 
     public static MediaItemManager instance() {
@@ -307,6 +313,13 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public List<SponsorSegment> getSponsorSegments(String videoId) {
+        SegmentList segmentList = mSponsorBlockService.getSegmentList(videoId);
+
+        return YouTubeSponsorSegment.from(segmentList);
+    }
+
+    @Override
     public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfosObserve(String videoId) {
         return Observable.fromCallable(() -> getVideoPlaylistsInfos(videoId));
     }
@@ -319,6 +332,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId) {
         return ObservableHelper.fromVoidable(() -> removeFromPlaylist(playlistId, videoId));
+    }
+
+    @Override
+    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId) {
+        return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId));
     }
 
     private void checkSigned() {

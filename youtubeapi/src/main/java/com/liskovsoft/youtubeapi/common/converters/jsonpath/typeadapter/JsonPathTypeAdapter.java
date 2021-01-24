@@ -192,7 +192,11 @@ public class JsonPathTypeAdapter<T> {
         Object val;
 
         if (jsonVal.isNumber()) {
-            val = jsonVal.getAsInt(); // Integer
+            if (jsonVal.toString().contains(".")) {
+                val = jsonVal.getAsFloat(); // Float
+            } else {
+                val = jsonVal.getAsInt(); // Integer
+            }
         } else if (jsonVal.isBoolean()) {
             val = jsonVal.getAsBoolean(); // Boolean
         } else {

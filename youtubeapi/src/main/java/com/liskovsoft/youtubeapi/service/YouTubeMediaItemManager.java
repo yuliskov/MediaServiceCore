@@ -320,6 +320,20 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public List<SponsorSegment> getSponsorSegments(String videoId, String... categories) {
+        SegmentList segmentList = mSponsorBlockService.getSegmentList(videoId, categories);
+
+        return YouTubeSponsorSegment.from(segmentList);
+    }
+
+    @Override
+    public List<SponsorSegment> getSponsorSegments(String videoId, List<String> categories) {
+        SegmentList segmentList = mSponsorBlockService.getSegmentList(videoId, categories);
+
+        return YouTubeSponsorSegment.from(segmentList);
+    }
+
+    @Override
     public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfosObserve(String videoId) {
         return Observable.fromCallable(() -> getVideoPlaylistsInfos(videoId));
     }
@@ -337,6 +351,16 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId) {
         return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId));
+    }
+
+    @Override
+    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, String... categories) {
+        return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
+    }
+
+    @Override
+    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, List<String> categories) {
+        return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
     }
 
     private void checkSigned() {

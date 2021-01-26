@@ -33,6 +33,8 @@ public interface MediaItemManager {
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId);
+    List<SponsorSegment> getSponsorSegments(String videoId, String... categories);
+    List<SponsorSegment> getSponsorSegments(String videoId, List<String> categories);
 
     // RxJava interfaces
     Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
@@ -56,4 +58,6 @@ public interface MediaItemManager {
     Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
+    Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, String... categories);
+    Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, List<String> categories);
 }

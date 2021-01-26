@@ -4,6 +4,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class AppHelper {
@@ -156,5 +158,31 @@ public class AppHelper {
         }
 
         return (long) (Helpers.parseFloat(currentTimeSec) * 1_000);
+    }
+
+    public static String toJsonArrayString(String... list) {
+        return toJsonArrayString(Arrays.asList(list));
+    }
+
+    public static String toJsonArrayString(List<String> list) {
+        if (list == null) {
+            return null;
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        result.append("[");
+
+        for (int i = 0; i < list.size(); i++) {
+            result.append(String.format("\"%s\"", list.get(i)));
+
+            if (i != (list.size() - 1)) {
+                result.append(",");
+            }
+        }
+
+        result.append("]");
+
+        return result.toString();
     }
 }

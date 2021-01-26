@@ -2,20 +2,19 @@ package com.liskovsoft.youtubeapi.lounge;
 
 import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenList;
 import com.liskovsoft.youtubeapi.lounge.models.StateResult;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
+import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
+import com.liskovsoft.youtubeapi.lounge.models.info.ScreenList;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -149,6 +148,11 @@ public class LoungeService {
         processCommands(sessionInfos, callback);
 
         while((line = reader.readLine()) != null) {
+            if (mLoungeToken == null) {
+                // restart service
+                break;
+            }
+
             result += line + "\n";
 
             if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
@@ -175,10 +179,6 @@ public class LoungeService {
     }
 
     public void postStartPlaying(String videoId, long positionMs, long durationMs) {
-        //if (!AppHelper.checkNonNull(mCtt, mPlaylistId, mPlaylistIndex)) {
-        //    return;
-        //}
-
         postNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex);
         postStateChange(positionMs, durationMs, true);
     }
@@ -187,6 +187,11 @@ public class LoungeService {
         if (positionMs >= 0 && durationMs > 0) {
             postOnStateChange(positionMs, durationMs, isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED);
         }
+    }
+
+    public void resetData() {
+        MediaServiceData.instance().setScreen(null);
+        mLoungeToken = null;
     }
 
     private void postNowPlaying(String videoId, long positionMs, long lengthMs, String ctt, String playlistId, String playlistIndex) {

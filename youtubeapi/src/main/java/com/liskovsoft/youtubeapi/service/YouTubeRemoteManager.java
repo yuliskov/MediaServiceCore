@@ -62,4 +62,9 @@ public class YouTubeRemoteManager implements RemoteManager {
     public Observable<Void> postStateChangeObserve(long positionMs, long durationMs, boolean isPlaying) {
         return ObservableHelper.fromVoidable(() -> mLoungeService.postStateChange(positionMs, durationMs, isPlaying));
     }
+
+    @Override
+    public Observable<Void> resetObserve() {
+        return ObservableHelper.fromVoidable(mLoungeService::resetData);
+    }
 }

@@ -11,4 +11,5 @@ public interface RemoteManager {
     Observable<Command> getCommandObserve();
     Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs);
     Observable<Void> postStateChangeObserve(long positionMs, long durationMs, boolean isPlaying);
+    Observable<Void> resetObserve();
 }

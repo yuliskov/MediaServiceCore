@@ -10,5 +10,5 @@ public interface SponsorBlockManager {
     Call<SegmentList> getSegments(@Query("videoID") String videoId);
 
     @GET(SponsorBlockParams.SEGMENTS_URL)
-    Call<SegmentList> getSegments(@Query("videoID") String videoId, @Query("category") String category);
+    Call<SegmentList> getSegments(@Query("videoID") String videoId, @Query(value = "categories", encoded = true) String categoriesJsonArray);
 }

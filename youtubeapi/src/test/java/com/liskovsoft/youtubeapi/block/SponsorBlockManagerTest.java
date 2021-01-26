@@ -48,4 +48,27 @@ public class SponsorBlockManagerTest {
         assertTrue("End not empty", firstSegment.getEnd() > 0);
         assertNotNull("UUID not empty", firstSegment.getUuid());
     }
+
+    @Test
+    public void testThatSegmentByCategoryResultNotEmpty() {
+        Call<SegmentList> wrapper = mService.getSegments(
+                VIDEO_ID, String.format("[\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"]",
+                        Segment.CATEGORY_SPONSOR, Segment.CATEGORY_INTRO, Segment.CATEGORY_OUTRO,
+                        Segment.CATEGORY_INTERACTION, Segment.CATEGORY_SELF_PROMO, Segment.CATEGORY_MUSIC_OFF_TOPIC
+                )
+        );
+
+        SegmentList segmentList = RetrofitHelper.get(wrapper);
+
+        List<Segment> segments = segmentList.getSegments();
+
+        assertNotNull("Segment list not empty", segments);
+
+        Segment firstSegment = segments.get(0);
+
+        assertNotNull("Category not empty", firstSegment.getCategory());
+        assertTrue("Start not empty", firstSegment.getStart() > 0);
+        assertTrue("End not empty", firstSegment.getEnd() > 0);
+        assertNotNull("UUID not empty", firstSegment.getUuid());
+    }
 }

@@ -9,7 +9,7 @@ public interface RemoteManager {
     // RxJava interfaces
     Observable<String> getPairingCodeObserve();
     Observable<Command> getCommandObserve();
-    Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs);
+    Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs, boolean isPlaying);
     Observable<Void> postStateChangeObserve(long positionMs, long durationMs, boolean isPlaying);
     Observable<Void> resetDataObserve();
 }

@@ -54,8 +54,8 @@ public class YouTubeRemoteManager implements RemoteManager {
     }
 
     @Override
-    public Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs) {
-        return ObservableHelper.fromVoidable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs));
+    public Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs, boolean isPlaying) {
+        return ObservableHelper.fromVoidable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, isPlaying));
     }
 
     @Override

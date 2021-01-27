@@ -178,9 +178,9 @@ public class LoungeService {
         }
     }
 
-    public void postStartPlaying(String videoId, long positionMs, long durationMs) {
+    public void postStartPlaying(String videoId, long positionMs, long durationMs, boolean isPlaying) {
         postNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex);
-        postStateChange(positionMs, durationMs, true);
+        postStateChange(positionMs, durationMs, isPlaying);
     }
 
     public void postStateChange(long positionMs, long durationMs, boolean isPlaying) {

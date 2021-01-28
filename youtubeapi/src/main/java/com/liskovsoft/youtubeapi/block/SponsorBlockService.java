@@ -5,8 +5,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 public class SponsorBlockService {
     private static SponsorBlockService sInstance;
@@ -30,11 +29,11 @@ public class SponsorBlockService {
         return RetrofitHelper.get(wrapper);
     }
 
-    public SegmentList getSegmentList(String videoId, String... categories) {
-        return getSegmentList(videoId, Arrays.asList(categories));
+    public SegmentList getSegmentList(String videoId, Set<String> categories) {
+        return categories != null && categories.size() > 0 ? getSegmentListInt(videoId, categories) : getSegmentList(videoId);
     }
 
-    public SegmentList getSegmentList(String videoId, List<String> categories) {
+    private SegmentList getSegmentListInt(String videoId, Set<String> categories) {
         Call<SegmentList> wrapper = mSponsorBlockManager.getSegments(videoId, AppHelper.toJsonArrayString(categories));
 
         return RetrofitHelper.get(wrapper);

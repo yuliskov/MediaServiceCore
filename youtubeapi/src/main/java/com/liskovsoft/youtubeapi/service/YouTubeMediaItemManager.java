@@ -26,6 +26,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
 
 import java.util.List;
+import java.util.Set;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
@@ -320,14 +321,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public List<SponsorSegment> getSponsorSegments(String videoId, String... categories) {
-        SegmentList segmentList = mSponsorBlockService.getSegmentList(videoId, categories);
-
-        return YouTubeSponsorSegment.from(segmentList);
-    }
-
-    @Override
-    public List<SponsorSegment> getSponsorSegments(String videoId, List<String> categories) {
+    public List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories) {
         SegmentList segmentList = mSponsorBlockService.getSegmentList(videoId, categories);
 
         return YouTubeSponsorSegment.from(segmentList);
@@ -354,12 +348,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, String... categories) {
-        return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
-    }
-
-    @Override
-    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, List<String> categories) {
+    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
         return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
     }
 

@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -164,7 +165,7 @@ public class AppHelper {
         return toJsonArrayString(Arrays.asList(list));
     }
 
-    public static String toJsonArrayString(List<String> list) {
+    public static String toJsonArrayString(Collection<String> list) {
         if (list == null) {
             return null;
         }
@@ -173,12 +174,16 @@ public class AppHelper {
 
         result.append("[");
 
-        for (int i = 0; i < list.size(); i++) {
-            result.append(String.format("\"%s\"", list.get(i)));
+        int i = 0;
+
+        for (String item : list) {
+            result.append(String.format("\"%s\"", item));
 
             if (i != (list.size() - 1)) {
                 result.append(",");
             }
+
+            i++;
         }
 
         result.append("]");

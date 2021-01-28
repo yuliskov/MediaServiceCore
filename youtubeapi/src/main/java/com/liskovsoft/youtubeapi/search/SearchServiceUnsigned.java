@@ -58,7 +58,7 @@ public class SearchServiceUnsigned {
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {
-            throw new IllegalStateException("Invalid next page search result for key " + nextSearchPageKey);
+            Log.e(TAG, "Empty next search page result for key %s", nextSearchPageKey);
         }
 
         return searchResult;

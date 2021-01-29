@@ -43,6 +43,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:' + testXSupportLibraryVersion
     androidTestImplementation 'androidx.test:rules:' + testXSupportLibraryVersion
 
+    implementation project(':commons-io-2.8.0') // My Android 4.3 fix
     implementation project(':sharedutils')
     implementation project(':mediaserviceinterfaces')
 
@@ -61,7 +62,4 @@ dependencies {
 
     // js interpreter
     implementation 'com.squareup.duktape:duktape-android:' + duktapeVersion
-
-    // covert Reader to InputStream
-    implementation 'commons-io:commons-io:' + commonsIOVersion
 }

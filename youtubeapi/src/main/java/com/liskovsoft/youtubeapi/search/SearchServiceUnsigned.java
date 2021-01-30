@@ -51,7 +51,7 @@ public class SearchServiceUnsigned {
      */
     public SearchResultContinuation continueSearch(String nextSearchPageKey) {
         if (nextSearchPageKey == null) {
-            throw new IllegalStateException("Can't get next search page. Next search key is empty.");
+            Log.e(TAG, "Can't get next search page. Next search key is empty.");
         }
         
         Call<SearchResultContinuation> wrapper = mSearchManagerUnsigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextSearchPageKey));

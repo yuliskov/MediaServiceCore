@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.lounge;
 
 import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
@@ -103,7 +104,11 @@ public class LoungeService {
 
     private void initConstants() {
         if (mScreenName == null) {
-            mScreenName = String.format("%s (%s)", AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext()), Build.MODEL);
+            mScreenName = String.format(
+                    "%s (%s)",
+                    AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext()),
+                    Helpers.getUserDeviceName()
+            );
         }
 
         if (mLoungeToken == null) {

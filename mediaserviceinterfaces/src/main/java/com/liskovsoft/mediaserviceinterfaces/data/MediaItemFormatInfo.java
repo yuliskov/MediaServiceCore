@@ -30,6 +30,7 @@ public interface MediaItemFormatInfo {
     void setChannelId(String channelId);
     boolean isLive();
     boolean containsDashInfo();
+    boolean containsDashVideoInfo();
     boolean containsHlsUrl();
     boolean containsDashUrl();
     boolean containsUrlListInfo();

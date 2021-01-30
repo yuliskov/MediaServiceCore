@@ -211,6 +211,22 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
+    public boolean containsDashVideoInfo() {
+        if (mAdaptiveFormats == null) {
+            return false;
+        }
+
+        for (MediaFormat format : mAdaptiveFormats) {
+            String mimeType = format.getMimeType();
+            if (mimeType != null && mimeType.startsWith("video/")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean containsHlsUrl() {
         return mHlsManifestUrl != null;
     }

@@ -70,6 +70,10 @@ public class LoungeService {
     }
 
     private String getPairingCodeInt() {
+        if (mLoungeToken == null || mScreenId == null) {
+            return null;
+        }
+
         Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(
                 BindParams.ACCESS_TYPE,
                 BindParams.APP,
@@ -86,11 +90,10 @@ public class LoungeService {
      * Process couldn't be stopped, only interrupted.
      */
     public void startListening(OnCommand callback) {
-        initConstants();
-
         // It's common to stream to be interrupted multiple times
         while (true) {
             try {
+                initConstants();
                 startListeningInt(callback);
             } catch (InterruptedIOException e) {
                 Log.e(TAG, "We're done. Seems that user has been closed remote session.");
@@ -113,8 +116,11 @@ public class LoungeService {
 
         if (mLoungeToken == null) {
             ScreenItem screen = getScreen();
-            mLoungeToken = screen.getLoungeToken();
-            mScreenId = screen.getScreenId();
+
+            if (screen != null) {
+                mLoungeToken = screen.getLoungeToken();
+                mScreenId = screen.getScreenId();
+            }
         }
     }
 
@@ -252,15 +258,20 @@ public class LoungeService {
             return MediaServiceData.instance().getScreen();
         }
 
+        ScreenItem screenItem = null;
+
         Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
         ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
 
-        Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
-        ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
+        if (screenId != null) {
+            Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
+            ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
 
-        ScreenItem screenItem = screenInfos.getScreens().get(0);
-
-        MediaServiceData.instance().setScreen(screenItem);
+            if (screenInfos != null) {
+                screenItem = screenInfos.getScreens().get(0);
+                MediaServiceData.instance().setScreen(screenItem);
+            }
+        }
 
         return screenItem;
     }

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.next.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
@@ -18,9 +19,13 @@ public class CurrentVideo {
     @JsonPath({"title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
     @JsonPath({"$.viewCount.videoViewCountRenderer.shortViewCount.simpleText", "$.shortViewCountText.runs[0].text"})
-    private String mShortViewCount;
-    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.runs[0].text", "$.viewCount.videoViewCountRenderer.viewCount.simpleText", "$.viewCountText.runs[0].text"})
-    private String mViewCount;
+    private String mShortViewCount1;
+    @JsonPath("$.shortViewCountText.runs[1].text")
+    private String mShortViewCount2;
+    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.simpleText", "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text", "$.viewCountText.runs[0].text"})
+    private String mViewCount1;
+    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.runs[1].text", "$.viewCountText.runs[1].text"})
+    private String mViewCount2;
     @JsonPath({"$.likesCount.simpleText", "$.likesCount.runs[0].text"})
     private String mLikesCount;
     @JsonPath({"$.dislikesCount.simpleText", "$.dislikesCount.runs[0].text"})
@@ -50,11 +55,11 @@ public class CurrentVideo {
 
     public String getShortViewCount() {
         // On live streams short view counter is absent
-        return mShortViewCount != null ? mShortViewCount : mViewCount;
+        return mShortViewCount1 != null ? AppHelper.combineText(mShortViewCount1, mShortViewCount2) : getViewCount();
     }
 
     public String getViewCount() {
-        return mViewCount;
+        return AppHelper.combineText(mViewCount1, mViewCount2);
     }
 
     public String getLikesCount() {

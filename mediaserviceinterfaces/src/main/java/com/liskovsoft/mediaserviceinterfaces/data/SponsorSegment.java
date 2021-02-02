@@ -10,4 +10,5 @@ public interface SponsorSegment {
 
     long getStartMs();
     long getEndMs();
+    String getCategory();
 }

@@ -53,7 +53,7 @@ public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
 
         firstSuggesting = watchNextResult.getSuggestedSections().get(0);
 
-        assertEquals("Suggestion title is localized to russian", "Похожие видео", firstSuggesting.getTitle());
+        assertEquals("Suggestion title is localized to russian", "Рекомендации", firstSuggesting.getTitle());
     }
 
     @Test

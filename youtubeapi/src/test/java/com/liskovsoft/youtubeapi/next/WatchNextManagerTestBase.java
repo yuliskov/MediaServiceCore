@@ -20,7 +20,7 @@ public class WatchNextManagerTestBase {
         checkFields(watchNextResult.getVideoMetadata());
         checkFields(watchNextResult.getVideoOwner());
         checkFields(watchNextResult.getNextVideo(), watchNextResult.getPlaylist() != null);
-        checkFields(watchNextResult.getSuggestedSections());
+        checkSuggestedSection(watchNextResult.getSuggestedSections().get(0));
     }
 
     public void checkSignedWatchNextResultFields(WatchNextResult watchNextResult) {
@@ -29,7 +29,7 @@ public class WatchNextManagerTestBase {
         checkFields(watchNextResult.getVideoMetadata());
         checkSignedFields(watchNextResult.getVideoOwner());
         checkFields(watchNextResult.getNextVideo(), false);
-        checkFields(watchNextResult.getSuggestedSections());
+        checkSuggestedSection(watchNextResult.getSuggestedSections().get(0));
     }
 
     public void checkSignedPlaylistWatchNextResultFields(WatchNextResult watchNextResult) {
@@ -38,33 +38,32 @@ public class WatchNextManagerTestBase {
         checkFields(watchNextResult.getVideoMetadata());
         checkSignedFields(watchNextResult.getVideoOwner());
         checkFields(watchNextResult.getNextVideo(), true);
-        checkFields(watchNextResult.getSuggestedSections());
-        checkFields(watchNextResult.getPlaylist());
+        // Skip first playlist row 'cause not all fields present here
+        checkSuggestedSection(watchNextResult.getSuggestedSections().get(1));
+        checkPlaylist(watchNextResult.getPlaylist());
     }
 
-    private void checkFields(List<SuggestedSection> watchNextSections) {
-        assertNotNull("Watch next contains rows", watchNextSections);
+    private void checkSuggestedSection(SuggestedSection suggestedSection) {
+        assertNotNull("Watch next contains rows", suggestedSection);
 
-        SuggestedSection firstRow = watchNextSections.get(0);
+        assertNotNull("Row has title", suggestedSection.getTitle());
+        assertNotNull("Row has continuation data", suggestedSection.getNextPageKey());
 
-        assertNotNull("Row has title", firstRow.getTitle());
-        assertNotNull("Row has continuation data", firstRow.getNextPageKey());
+        VideoItem suggestedItem = suggestedSection.getItemWrappers().get(0).getVideoItem();
 
-        VideoItem watchNextItem = firstRow.getItemWrappers().get(0).getVideoItem();
-
-        checkFields(watchNextItem);
+        checkSuggestedItem(suggestedItem);
     }
 
-    private void checkFields(VideoItem watchNextItem) {
-        String videoId = watchNextItem.getVideoId();
-        assertNotNull("Watch next item has title: " + videoId, watchNextItem.getTitle());
-        assertNotNull("Watch next item has video id: " + videoId, videoId);
-        assertNotNull("Watch next item has user name: " + videoId, watchNextItem.getUserName());
-        assertNotNull("Watch next item has channel id: " + videoId, watchNextItem.getChannelId());
-        assertTrue("Watch next item has view count: " + videoId, watchNextItem.getViewCountText() != null || watchNextItem.getShortViewCountText() != null || watchNextItem.isLive());
-        assertTrue("Watch next item has length: " + videoId, watchNextItem.getLengthText() != null || watchNextItem.isLive());
-        assertNotNull("Watch next item has thumbnails: " + videoId, watchNextItem.getThumbnails());
-        assertTrue("Watch next item thumbnails not empty: " + videoId, watchNextItem.getThumbnails().size() > 0);
+    private void checkSuggestedItem(VideoItem videoItem) {
+        String videoId = videoItem.getVideoId();
+        assertNotNull("Suggested item has title: " + videoId, videoItem.getTitle());
+        assertNotNull("Suggested item has video id: " + videoId, videoId);
+        assertNotNull("Suggested item has user name: " + videoId, videoItem.getUserName());
+        assertNotNull("Suggested item has channel id: " + videoId, videoItem.getChannelId());
+        assertTrue("Suggested item has view count: " + videoId, videoItem.getViewCountText() != null || videoItem.getShortViewCountText() != null || videoItem.isLive());
+        assertTrue("Suggested item has length: " + videoId, videoItem.getLengthText() != null || videoItem.isLive());
+        assertNotNull("Suggested item has thumbnails: " + videoId, videoItem.getThumbnails());
+        assertTrue("Suggested item thumbnails not empty: " + videoId, videoItem.getThumbnails().size() > 0);
     }
 
     private void checkFields(CurrentVideo videoMetadata) {
@@ -102,7 +101,7 @@ public class WatchNextManagerTestBase {
         }
     }
 
-    private void checkFields(Playlist playlist) {
+    private void checkPlaylist(Playlist playlist) {
         assertNotNull("Playlist not empty", playlist);
         assertNotNull("Playlist has playlist id", playlist.getPlaylistId());
         assertTrue("Playlist has playlist index", playlist.getPlaylistIndex() >= 0);

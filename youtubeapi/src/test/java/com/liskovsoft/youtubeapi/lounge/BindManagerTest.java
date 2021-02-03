@@ -33,8 +33,6 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(RobolectricTestRunner.class)
 public class BindManagerTest {
     private static final String SCREEN_NAME = "TubeNext";
-    private static final String LOUNGE_TOKEN_TMP = "AGdO5p8cH1tKYW3OIVFhSMRfjAjV5OxqYdjCezBGrDAaX7be3bcttKQAVKucSpEcoi8qh6rYs_r04DXQhd0_xEZY69s8W5J7rqEMmeaYwJsSi5VivgnFKv4";
-    private static final String SCREEN_ID_TMP = "910nbko7d2d6qtthu2609a3id6";
     private BindManager mBindManager;
     private InfoManager mScreenManager;
     private CommandManager mCommandManager;
@@ -67,7 +65,9 @@ public class BindManagerTest {
 
     @Test
     public void testThatFirstBindDataIsNotEmpty() {
-        CommandList bindData = getFirstBind();
+        ScreenItem screen = getScreen();
+
+        CommandList bindData = getFirstBind(screen.getLoungeToken());
 
         assertNotNull("Contains bind data", bindData);
     }
@@ -75,14 +75,16 @@ public class BindManagerTest {
     @Ignore("Long running test")
     @Test
     public void testBindStream() throws IOException {
-        CommandList firstBind = getFirstBind();
+        ScreenItem screen = getScreen();
+
+        CommandList firstBind = getFirstBind(screen.getLoungeToken());
 
         String sessionId = firstBind.getParam(CommandItem.TYPE_SESSION_ID);
         String gSessionId = firstBind.getParam(CommandItem.TYPE_G_SESSION_ID);
 
         String url = BindParams.createBindRpcUrl(
                 SCREEN_NAME,
-                LOUNGE_TOKEN_TMP,
+                screen.getLoungeToken(),
                 sessionId,
                 gSessionId);
         Request request = new Builder().url(url).build();
@@ -113,8 +115,8 @@ public class BindManagerTest {
         response.body().close();
     }
 
-    private CommandList getFirstBind() {
-        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(SCREEN_NAME, LOUNGE_TOKEN_TMP, 0);
+    private CommandList getFirstBind(String loungeToken) {
+        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(SCREEN_NAME, loungeToken, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }

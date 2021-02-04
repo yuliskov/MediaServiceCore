@@ -39,7 +39,9 @@ public class VideoItem {
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
     private String mPublishedTime;
     @JsonPath({"$.viewCountText.simpleText", "$.viewCountText.runs[0].text"})
-    private String mViewCountText;
+    private String mViewCountText1;
+    @JsonPath("$.viewCountText.runs[1].text")
+    private String mViewCountText2;
     @JsonPath({"$.shortViewCountText.simpleText", "$.shortViewCountText.runs[0].text"})
     private String mShortViewCountText1;
     @JsonPath("$.shortViewCountText.runs[1].text")
@@ -110,7 +112,7 @@ public class VideoItem {
     }
 
     public String getViewCountText() {
-        return mViewCountText;
+        return AppHelper.combineText(mViewCountText1, mViewCountText2);
     }
 
     public String getShortViewCountText() {

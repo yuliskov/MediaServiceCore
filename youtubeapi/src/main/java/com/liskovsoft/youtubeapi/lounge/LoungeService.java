@@ -95,7 +95,7 @@ public class LoungeService {
             try {
                 initConstants();
                 startListeningInt(callback);
-            } catch (InterruptedIOException e) {
+            } catch (InterruptedIOException | NullPointerException e) {
                 Log.e(TAG, "We're done. Seems that user has been closed remote session.");
                 break;
             } catch (Exception e) {

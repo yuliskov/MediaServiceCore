@@ -458,3 +458,12 @@ POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&id=75b10d12
 Content-Type: application/x-www-form-urlencoded
 
 count=0
+
+###
+
+# Lounge new
+
+POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx=xxxxxxxxxxxx&RID=1337&name=SmartTube%20Next%20Beta%20%28Yuriy%27s%20Fire%20TV%29&loungeIdToken=AGdO5p8HOIM4V1xYVNt-_cPkLflgHypNwlFAPqHkV-o-7SGxOjqtFvNSlALV9DZuojiwasKy9hwkjINX2_Ql4V-DwLyqCzY994t52FStGyiGnn_Cg7t2Hn4
+Content-Type: application/x-www-form-urlencoded
+
+count=0

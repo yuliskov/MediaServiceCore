@@ -110,7 +110,7 @@ public class LoungeService {
             mScreenName = String.format(
                     "%s (%s)",
                     AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext()),
-                    Build.MODEL
+                    Helpers.getUserDeviceName()
             );
         }
 

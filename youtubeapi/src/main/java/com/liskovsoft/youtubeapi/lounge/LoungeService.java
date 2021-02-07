@@ -110,7 +110,7 @@ public class LoungeService {
             mScreenName = String.format(
                     "%s (%s)",
                     AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext()),
-                    Helpers.getUserDeviceName()
+                    Build.MODEL
             );
         }
 
@@ -128,6 +128,11 @@ public class LoungeService {
         Log.d(TAG, "Opening session...");
 
         CommandList sessionInfos = getSessionBind();
+
+        if (sessionInfos == null) {
+            Log.e(TAG, "Can't open a session because it's empty.");
+            return;
+        }
 
         mSessionId = sessionInfos.getParam(CommandItem.TYPE_SESSION_ID);
         mGSessionId = sessionInfos.getParam(CommandItem.TYPE_G_SESSION_ID);

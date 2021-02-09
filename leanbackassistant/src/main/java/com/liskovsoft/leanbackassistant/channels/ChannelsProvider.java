@@ -430,6 +430,7 @@ public class ChannelsProvider {
         baseBuilder
             .setTitle(clip.getTitle())
             .setDescription(clip.getDescription())
+            .setDurationMillis(clip.getDurationMs())
             .setPosterArtUri(cardUri)
             .setIntent(AppUtil.getInstance(context).createAppIntent(clip.getVideoUrl()))
             .setPreviewVideoUri(previewUri)

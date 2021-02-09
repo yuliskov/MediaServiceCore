@@ -121,6 +121,7 @@ public class ClipService {
                 clips.add(new Clip(
                         v.getTitle(),
                         v.getDescription(),
+                        v.getDurationMs(),
                         v.getBackgroundImageUrl(),
                         v.getCardImageUrl(),
                         v.getVideoUrl(),

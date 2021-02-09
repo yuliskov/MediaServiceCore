@@ -81,6 +81,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(
+                item.getDescBadgeText(), // Mostly it's a 4K label
                 item.getUserName(),
                 item.getPublishedTime(),
                 item.getShortViewCountText() != null ? item.getShortViewCountText() : item.getViewCountText(),

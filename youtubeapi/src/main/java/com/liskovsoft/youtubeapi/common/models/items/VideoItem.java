@@ -54,6 +54,8 @@ public class VideoItem {
                "$.badges[0].liveBadge.label.runs[0].text",
                "$.badges[0].upcomingEventBadge.label.simpleText"})
     private String mBadgeText;
+    @JsonPath("$.badges[1].textBadge.label.simpleText")
+    private String mDescBadgeText;
     // Sometimes live video contains percent watched as first item
     @JsonPath({"$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style",
                "$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style"})
@@ -149,6 +151,13 @@ public class VideoItem {
 
     public String getBadgeText() {
         return mBadgeText;
+    }
+
+    /**
+     * Mostly it's a 4K label
+     */
+    public String getDescBadgeText() {
+        return mDescBadgeText;
     }
 
     /**

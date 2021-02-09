@@ -30,6 +30,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mDescription;
     private String mDescriptionAlt;
     private boolean mIsLive;
+    private boolean mIsUpcoming;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
         if (watchNextResult == null) {
@@ -60,6 +61,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
         mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
         mediaItemMetadata.mIsLive = videoMetadata.isLive();
+        mediaItemMetadata.mIsUpcoming = videoMetadata.isUpcoming();
         mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
         mediaItemMetadata.mChannelId = videoOwner.getChannelId();
         Boolean subscribed = videoOwner.isSubscribed();
@@ -135,13 +137,18 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public Boolean isSubscribed() {
+    public boolean isSubscribed() {
         return mSubscribed;
     }
 
     @Override
     public boolean isLive() {
         return mIsLive;
+    }
+
+    @Override
+    public boolean isUpcoming() {
+        return mIsUpcoming;
     }
 
     @Override

@@ -38,8 +38,10 @@ public class CurrentVideo {
     private String mPublishedDate;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
-    @JsonPath({"$.viewCount.videoViewCountRenderer.isLive"})
+    @JsonPath("$.viewCount.videoViewCountRenderer.isLive")
     private boolean mIsLive;
+    @JsonPath("$.badges[0].upcomingEventBadge.label.simpleText")
+    private String mUpcomingBadge;
 
     public String getVideoId() {
         return mVideoId;
@@ -92,5 +94,9 @@ public class CurrentVideo {
 
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
+    }
+
+    public boolean isUpcoming() {
+        return mUpcomingBadge != null;
     }
 }

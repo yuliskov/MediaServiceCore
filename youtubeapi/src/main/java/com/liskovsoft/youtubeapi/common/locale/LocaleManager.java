@@ -35,6 +35,10 @@ public class LocaleManager {
         return sInstance;
     }
 
+    public static void unhold() {
+        sInstance = null;
+    }
+
     public String getCountry() {
         return mCountry;
     }

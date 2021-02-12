@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
@@ -57,5 +58,6 @@ public class YouTubeMediaService implements MediaService {
     public void invalidateCache() {
         AppService.instance().invalidateCache();
         mSignInManager.invalidateCache();
+        LocaleManager.unhold();
     }
 }

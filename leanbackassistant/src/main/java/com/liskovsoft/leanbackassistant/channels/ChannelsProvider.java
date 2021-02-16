@@ -272,6 +272,11 @@ public class ChannelsProvider {
 
         writeChannelLogo(context, channelId, playlist.getLogoResId());
 
+        // Google TV fix (no dialog to enable the channels)
+        if (playlist.isDefault()) {
+            TvContractCompat.requestChannelBrowsable(context, channelId);
+        }
+
         return channelId;
     }
 

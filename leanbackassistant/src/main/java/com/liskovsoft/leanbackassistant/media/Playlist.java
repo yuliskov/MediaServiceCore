@@ -33,12 +33,17 @@ public final class Playlist {
     private String mProgramsKey;
     private String mPlaylistUrl;
     private int mLogoResId = -1;
+    private final boolean mIsDefault;
 
     public Playlist(String name, String playlistId) {
-        this(name, Collections.emptyList(), playlistId);
+        this(name, Collections.emptyList(), playlistId, false);
     }
 
-    public Playlist(String name, List<Clip> clip, String playlistId) {
+    public Playlist(String name, String playlistId, boolean isDefault) {
+        this(name, Collections.emptyList(), playlistId, isDefault);
+    }
+
+    public Playlist(String name, List<Clip> clip, String playlistId, boolean isDefault) {
         mName = name;
         mTitle = "playlist title";
         mDescription = "playlist description";
@@ -46,6 +51,7 @@ public final class Playlist {
         mBgImage = "asdf";
         mClips = clip;
         mPlaylistId = playlistId;
+        mIsDefault = isDefault;
     }
 
     public String getName() {
@@ -66,6 +72,13 @@ public final class Playlist {
 
     public String getPlaylistId() {
         return mPlaylistId;
+    }
+
+    /**
+     * Google TV fix: no dialog to set-up the channels.
+     */
+    public boolean isDefault() {
+        return mIsDefault;
     }
 
     public boolean isChannelPublished() {

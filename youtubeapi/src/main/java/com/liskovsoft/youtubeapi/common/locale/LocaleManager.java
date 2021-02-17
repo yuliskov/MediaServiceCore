@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.common.locale;
 
+import android.os.Build.VERSION;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -17,7 +19,15 @@ public class LocaleManager {
 
     private void initLang() {
         Locale defaultLocale = Locale.getDefault();
-        mLang = defaultLocale.toLanguageTag();
+
+        if (VERSION.SDK_INT >= 21) {
+            // Use BCP-47 code for language code to get content with correct language.
+            // For example, BCP-47 has zn-CN for simplified Chinese and zh-TW for traditional Chinese.
+            mLang = defaultLocale.toLanguageTag();
+        } else {
+            mLang = defaultLocale.getLanguage();
+        }
+
         mCountry = defaultLocale.getCountry();
     }
 

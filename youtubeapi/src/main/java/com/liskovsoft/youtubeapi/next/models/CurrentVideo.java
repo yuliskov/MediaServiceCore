@@ -16,7 +16,7 @@ public class CurrentVideo {
     private String mVideoId;
     @JsonPath("$.likeStatus")
     private String mLikeStatus;
-    @JsonPath({"title.simpleText", "$.title.runs[0].text"})
+    @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
     @JsonPath({"$.viewCount.videoViewCountRenderer.shortViewCount.simpleText", "$.shortViewCountText.runs[0].text"})
     private String mShortViewCount1;

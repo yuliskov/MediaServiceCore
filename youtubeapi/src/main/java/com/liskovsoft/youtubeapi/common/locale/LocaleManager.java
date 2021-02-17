@@ -17,7 +17,7 @@ public class LocaleManager {
 
     private void initLang() {
         Locale defaultLocale = Locale.getDefault();
-        mLang = defaultLocale.getLanguage();
+        mLang = defaultLocale.toLanguageTag();
         mCountry = defaultLocale.getCountry();
     }
 

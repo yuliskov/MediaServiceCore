@@ -108,6 +108,8 @@ public class RetrofitHelper {
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
+        disableCache(okBuilder);
+
         setupTimeout(okBuilder);
 
         addCommonHeaders(okBuilder);
@@ -121,11 +123,24 @@ public class RetrofitHelper {
         return retrofitBuilder;
     }
 
+    private static void disableCache(OkHttpClient.Builder okBuilder) {
+        // Disable cache (could help with dlfree error on Eltex)
+        okBuilder.cache(null);
+    }
+
     private static void setupTimeout(OkHttpClient.Builder okBuilder) {
         // Default timeout 10 sec
         okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
+    }
+
+    private static void addCommonHeaders(OkHttpClient.Builder builder) {
+        builder.addInterceptor(chain -> {
+            Request.Builder requestBuilder = chain.request().newBuilder();
+            requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
+            return chain.proceed(requestBuilder.build());
+        });
     }
 
     private static void debugSetup(OkHttpClient.Builder okBuilder) {
@@ -139,18 +154,7 @@ public class RetrofitHelper {
             addProfiler(okBuilder);
 
             addLogger(okBuilder);
-
-            // Disable cache (could help with dlfree error on Eltex)
-            //okBuilder.cache(null);
         }
-    }
-
-    private static void addCommonHeaders(OkHttpClient.Builder builder) {
-        builder.addInterceptor(chain -> {
-            Request.Builder requestBuilder = chain.request().newBuilder();
-            requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
-            return chain.proceed(requestBuilder.build());
-        });
     }
 
     private static void addProfiler(OkHttpClient.Builder okBuilder) {

@@ -34,6 +34,10 @@ public class YouTubeMediaService implements MediaService {
         return sInstance;
     }
 
+    public static void unhold() {
+        sInstance = null;
+    }
+
     @Override
     public SignInManager getSignInManager() {
         return mSignInManager;

@@ -26,7 +26,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId) {
-        VideoInfo result = getVideoInfoRegular(videoId);
+        VideoInfo result = getVideoInfoHls(videoId);
 
         if (result != null && result.isAgeRestricted()) {
             Log.e(TAG, "Seems that video age restricted. Retrying with different query method...");
@@ -43,7 +43,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         return result;
     }
     
-    private VideoInfo getVideoInfoRegular(String videoId) {
+    private VideoInfo getVideoInfoHls(String videoId) {
         Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);

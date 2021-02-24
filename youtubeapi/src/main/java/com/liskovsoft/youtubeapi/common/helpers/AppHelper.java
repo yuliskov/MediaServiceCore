@@ -190,4 +190,15 @@ public class AppHelper {
 
         return result.toString();
     }
+
+    public static String getToken(String authorization) {
+        if (authorization == null) {
+            return null;
+        }
+
+        // Remove Bearer prefix
+        String[] split = authorization.split("\\s+");
+
+        return split.length == 2 ? split[1] : split[0];
+    }
 }

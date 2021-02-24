@@ -39,10 +39,6 @@ public class YouTubeSignInManager implements SignInManager {
         return sInstance;
     }
 
-    public static void unhold() {
-        sInstance = null;
-    }
-
     @Override
     public Observable<String> signInObserve() {
         return mAccountManager.signInObserve();
@@ -89,6 +85,14 @@ public class YouTubeSignInManager implements SignInManager {
         updateAuthorizationHeader();
 
         return mAuthorizationHeaderCached;
+    }
+
+    /**
+     * For testing purposes
+     */
+    public void setAuthorizationHeader(String authorizationHeader) {
+        mAuthorizationHeaderCached = authorizationHeader;
+        mLastUpdateTime = System.currentTimeMillis();
     }
 
     @Override

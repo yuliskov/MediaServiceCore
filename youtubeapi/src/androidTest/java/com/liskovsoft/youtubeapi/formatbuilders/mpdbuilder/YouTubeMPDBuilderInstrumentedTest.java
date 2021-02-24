@@ -5,7 +5,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
@@ -30,25 +29,22 @@ public class YouTubeMPDBuilderInstrumentedTest {
         mService = YouTubeMediaService.instance();
     }
 
-    //@After
-    //public void tearDown() {
-    //    YouTubeMediaService.unhold();
-    //    YouTubeSignInManager.unhold();
-    //    GlobalPreferences.sInstance = null;
-    //}
+    @After
+    public void tearDown() {
+        YouTubeSignInManager.instance().setAuthorizationHeader(null);
+    }
 
     @Test
-    public void testThatCipheredFormatIsValid() throws IOException {
+    public void testThatCipheredFormatIsValid() {
         testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
     }
 
-    //@Test
-    //public void testThatSignedCipheredFormatIsValid() throws IOException {
-    //    GlobalPreferences.sInstance = new TestGlobalPreferences();
-    //    GlobalPreferences.sInstance.setRawAuthData(TestHelpersV2.RAW_JSON_AUTH_DATA);
-    //
-    //    testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
-    //}
+    @Test
+    public void testThatSignedCipheredFormatIsValid() {
+        YouTubeSignInManager.instance().setAuthorizationHeader(TestHelpersV2.getAuthorization());
+
+        testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
+    }
 
     @Test
     public void testThatSimpleFormatIsValid() throws IOException {

@@ -9,6 +9,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,13 @@ public class YouTubeMPDBuilderInstrumentedTest {
     public void setUp() {
         mService = YouTubeMediaService.instance();
     }
+
+    //@After
+    //public void tearDown() {
+    //    YouTubeMediaService.unhold();
+    //    YouTubeSignInManager.unhold();
+    //    GlobalPreferences.sInstance = null;
+    //}
 
     @Test
     public void testThatCipheredFormatIsValid() throws IOException {

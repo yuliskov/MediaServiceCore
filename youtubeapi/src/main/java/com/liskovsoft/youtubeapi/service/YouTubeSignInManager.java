@@ -39,6 +39,10 @@ public class YouTubeSignInManager implements SignInManager {
         return sInstance;
     }
 
+    public static void unhold() {
+        sInstance = null;
+    }
+
     @Override
     public Observable<String> signInObserve() {
         return mAccountManager.signInObserve();

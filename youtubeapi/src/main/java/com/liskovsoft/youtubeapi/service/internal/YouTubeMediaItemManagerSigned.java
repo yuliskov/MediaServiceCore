@@ -54,8 +54,8 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
-    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex) {
-        return mWatchNextServiceSigned.getWatchNextResult(videoId, playlistId, playlistIndex, mSignInManager.getAuthorizationHeader());
+    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+        return mWatchNextServiceSigned.getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

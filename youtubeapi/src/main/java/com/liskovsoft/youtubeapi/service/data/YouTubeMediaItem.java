@@ -47,6 +47,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mReloadPageKey;
     private boolean mHasNewContent;
     private String mFeedbackToken;
+    private String mPlaylistParams;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -367,6 +368,15 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getPlaylistId() {
         return mPlaylistId;
+    }
+
+    @Override
+    public String getPlaylistParams() {
+        return mPlaylistParams;
+    }
+
+    public void setPlaylistParams(String params) {
+        mPlaylistParams = params;
     }
 
     @Override

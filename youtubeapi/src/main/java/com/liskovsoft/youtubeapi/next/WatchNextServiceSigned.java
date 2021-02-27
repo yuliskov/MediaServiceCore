@@ -34,6 +34,10 @@ public class WatchNextServiceSigned {
         return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId, playlistId, playlistIndex), authorization);
     }
 
+    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams, String authorization) {
+        return getWatchNext(WatchNextManagerParams.getWatchNextQuery(videoId, playlistId, playlistIndex, playlistParams), authorization);
+    }
+
     private WatchNextResult getWatchNext(String query, String authorization) {
         Call<WatchNextResult> wrapper = mWatchNextManagerSigned.getWatchNextResult(query, authorization);
         return RetrofitHelper.get(wrapper);

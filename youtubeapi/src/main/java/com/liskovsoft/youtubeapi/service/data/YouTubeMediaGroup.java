@@ -27,6 +27,7 @@ public class YouTubeMediaGroup implements MediaGroup {
     public String mNextPageKey;
     private String mChannelUrl;
     private String mChannelId;
+    private String mPlaylistParams;
 
     public YouTubeMediaGroup(int type) {
         mType = type;
@@ -45,13 +46,20 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {
-        if (continuation == null) {
+        if (continuation == null || baseGroup == null) {
             return null;
         }
 
         // Subscribed channel view. Add details.
-        ((YouTubeMediaGroup) baseGroup).setChannelId(continuation.getBrowseId());
-        ((YouTubeMediaGroup) baseGroup).setChannelUrl(continuation.getCanonicalBaseUrl());
+        if (continuation.getBrowseId() != null) {
+            ((YouTubeMediaGroup) baseGroup).mChannelId = continuation.getBrowseId();
+        }
+        if (continuation.getParams() != null) {
+            ((YouTubeMediaGroup) baseGroup).mPlaylistParams = continuation.getParams();
+        }
+        if (continuation.getCanonicalBaseUrl() != null) {
+            ((YouTubeMediaGroup) baseGroup).mChannelUrl = continuation.getCanonicalBaseUrl();
+        }
 
         return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
@@ -166,12 +174,9 @@ public class YouTubeMediaGroup implements MediaGroup {
         return mChannelUrl;
     }
 
-    private void setChannelUrl(String channelUrl) {
-        mChannelUrl = channelUrl;
-    }
-
-    private void setChannelId(String browseId) {
-        mChannelId = browseId;
+    @Override
+    public String getPlaylistParams() {
+        return mPlaylistParams;
     }
 
     private static MediaGroup create(YouTubeMediaGroup baseGroup, List<GridTab> tabs) {
@@ -204,7 +209,9 @@ public class YouTubeMediaGroup implements MediaGroup {
         if (items != null) {
             for (int i = 0; i < items.size(); i++) {
                 ItemWrapper item = items.get(i);
-                mediaItems.add(YouTubeMediaItem.from(item, i));
+                YouTubeMediaItem mediaItem = YouTubeMediaItem.from(item, i);
+                mediaItem.setPlaylistParams(baseGroup.mPlaylistParams);
+                mediaItems.add(mediaItem);
             }
         }
 

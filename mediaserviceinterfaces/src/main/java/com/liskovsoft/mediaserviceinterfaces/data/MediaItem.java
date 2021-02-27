@@ -24,6 +24,9 @@ public interface MediaItem {
     // Playlist props
     String getPlaylistId();
 
+    // Replacement for playlist id in channel section
+    String getPlaylistParams();
+
     // Channel props
     boolean hasNewContent();
 

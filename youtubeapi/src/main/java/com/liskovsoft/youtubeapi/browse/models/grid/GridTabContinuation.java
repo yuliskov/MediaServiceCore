@@ -52,6 +52,21 @@ public class GridTabContinuation {
     }
 
     /**
+     * Could be used as a playlistId replacement
+     */
+    public String getParams() {
+        if (mChannelButtons != null) {
+            for (ChannelButton button : mChannelButtons) {
+                if (button.getParams() != null) {
+                    return button.getParams();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Channel GridTab contains channel id and other stuff
      */
     public String getCanonicalBaseUrl() {

@@ -36,7 +36,7 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     }
 
     @Override
-    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex) {
+    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams) {
         return mWatchNextServiceUnsigned.getWatchNextResult(videoId, playlistId, playlistIndex);
     }
 

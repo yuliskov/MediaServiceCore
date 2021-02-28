@@ -3,12 +3,11 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
     private static MediaServiceData sInstance;
-    private ScreenItem mScreenItem;
+    private String mScreenId;
 
     private MediaServiceData() {
         restoreData();
@@ -22,13 +21,13 @@ public class MediaServiceData {
         return sInstance;
     }
 
-    public ScreenItem getScreen() {
-        return mScreenItem;
+    public void setScreenId(String screenId) {
+        mScreenId = screenId;
+        persistData();
     }
 
-    public void setScreen(ScreenItem screenItem) {
-        mScreenItem = screenItem;
-        persistData();
+    public String getScreenId() {
+        return mScreenId;
     }
 
     private void restoreData() {
@@ -41,7 +40,7 @@ public class MediaServiceData {
 
         String[] split = Helpers.splitObject(data);
 
-        mScreenItem = ScreenItem.from(Helpers.parseStr(split, 0));
+        mScreenId = Helpers.parseStr(split, 1);
     }
 
     private void persistData() {
@@ -49,6 +48,6 @@ public class MediaServiceData {
             return;
         }
 
-        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergeObject(Helpers.toString(mScreenItem)));
+        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergeObject(null, mScreenId)); // null for ScreenItem
     }
 }

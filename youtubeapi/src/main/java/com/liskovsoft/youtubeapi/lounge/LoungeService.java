@@ -130,7 +130,7 @@ public class LoungeService {
         CommandList sessionInfos = getSessionBind();
 
         if (sessionInfos == null) {
-            Log.e(TAG, "Can't open a session because it's empty.");
+            Log.e(TAG, "Can't open a session because it's empty. Expired lounge id token?");
             return;
         }
 
@@ -206,7 +206,7 @@ public class LoungeService {
     }
 
     public void resetData() {
-        MediaServiceData.instance().setScreen(null);
+        MediaServiceData.instance().setScreenId(null);
         mLoungeToken = null;
     }
 
@@ -259,22 +259,24 @@ public class LoungeService {
     }
 
     private ScreenItem getScreen() {
-        if (MediaServiceData.instance().getScreen() != null) {
-            return MediaServiceData.instance().getScreen();
+        ScreenItem screenItem = null;
+        String screenId = MediaServiceData.instance().getScreenId();
+
+        if (screenId == null) {
+            Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
+            ScreenId screenIdContainer = RetrofitHelper.get(screenIdWrapper);
+            if (screenIdContainer != null) {
+                screenId = screenIdContainer.getScreenId();
+                MediaServiceData.instance().setScreenId(screenId);
+            }
         }
 
-        ScreenItem screenItem = null;
-
-        Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
-        ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
-
         if (screenId != null) {
-            Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
+            Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId);
             ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
 
             if (screenInfos != null) {
                 screenItem = screenInfos.getScreens().get(0);
-                MediaServiceData.instance().setScreen(screenItem);
             }
         }
 

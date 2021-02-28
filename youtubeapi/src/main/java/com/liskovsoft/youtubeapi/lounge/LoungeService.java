@@ -200,7 +200,12 @@ public class LoungeService {
     }
 
     public void postStateChange(long positionMs, long durationMs, boolean isPlaying) {
-        if (positionMs >= 0 && durationMs > 0) {
+        // Live stream fix (negative position)
+        if (positionMs < 0) {
+            positionMs = 0;
+        }
+
+        if (durationMs > 0) {
             postOnStateChange(positionMs, durationMs, isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED);
         }
     }

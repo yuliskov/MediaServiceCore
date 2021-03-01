@@ -130,7 +130,8 @@ public class LoungeService {
         CommandList sessionInfos = getSessionBind();
 
         if (sessionInfos == null) {
-            Log.e(TAG, "Can't open a session because it's empty. Expired lounge id token?");
+            Log.e(TAG, "Can't open a session because it's empty. Expired lounge token?");
+            mLoungeToken = null;
             return;
         }
 

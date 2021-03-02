@@ -11,6 +11,7 @@ public interface Command {
     int TYPE_UPDATE_PLAYLIST = 7;
     int TYPE_NEXT = 8;
     int TYPE_PREVIOUS = 9;
+    int TYPE_VOLUME = 10;
     int getType();
     String getVideoId();
     String getPlaylistId();
@@ -18,4 +19,5 @@ public interface Command {
     String getDeviceName();
     String getDeviceId();
     int getPlaylistIndex();
+    int getVolume();
 }

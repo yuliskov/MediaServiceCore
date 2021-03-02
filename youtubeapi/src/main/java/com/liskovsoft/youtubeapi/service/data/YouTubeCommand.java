@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.RemoteParams;
 import com.liskovsoft.youtubeapi.lounge.models.commands.SeekToParams;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
+import com.liskovsoft.youtubeapi.lounge.models.commands.VolumeParams;
 
 public class YouTubeCommand implements Command {
     private int mType = -1;
@@ -16,6 +17,7 @@ public class YouTubeCommand implements Command {
     private String mDeviceName;
     private String mDeviceId;
     private int mPlaylistIndex;
+    private int mVolume;
 
     public static Command from(CommandItem info) {
         if (info == null) {
@@ -42,6 +44,11 @@ public class YouTubeCommand implements Command {
                 command.mType = Command.TYPE_SEEK;
                 SeekToParams seekToParams = info.getSeekToParams();
                 command.mCurrentTimeMs = AppHelper.toMillis(seekToParams.getNewTimeSec());
+                break;
+            case CommandItem.TYPE_SET_VOLUME:
+                command.mType = Command.TYPE_VOLUME;
+                VolumeParams volumeParams = info.getVolumeParams();
+                command.mVolume = Helpers.parseInt(volumeParams.getVolume());
                 break;
             case CommandItem.TYPE_PLAY:
                 command.mType = Command.TYPE_PLAY;
@@ -108,5 +115,10 @@ public class YouTubeCommand implements Command {
     @Override
     public String getDeviceId() {
         return mDeviceId;
+    }
+
+    @Override
+    public int getVolume() {
+        return mVolume;
     }
 }

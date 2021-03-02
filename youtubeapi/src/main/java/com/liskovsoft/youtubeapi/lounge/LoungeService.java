@@ -216,29 +216,29 @@ public class LoungeService {
         mLoungeToken = null;
     }
 
-    private void postNowPlaying(String videoId, long positionMs, long lengthMs, String ctt, String playlistId, String playlistIndex) {
+    private void postNowPlaying(String videoId, long positionMs, long durationMs, String ctt, String playlistId, String playlistIndex) {
         if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
             return;
         }
 
-        Log.d(TAG, "Post nowPlaying...");
+        Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
-                CommandParams.getNowPlaying(videoId, positionMs, lengthMs, ctt, playlistId, playlistIndex));
+                CommandParams.getNowPlaying(videoId, positionMs, durationMs, ctt, playlistId, playlistIndex));
         RetrofitHelper.get(wrapper);
     }
 
-    private void postOnStateChange(long positionMs, long lengthMs, int state) {
+    private void postOnStateChange(long positionMs, long durationMs, int state) {
         if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
             return;
         }
 
-        Log.d(TAG, "Post onStateChange...");
+        Log.d(TAG, "Post onStateChange pos: %s, dur: %s...", positionMs, durationMs);
 
         Call<StateResult> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
-                CommandParams.getOnStateChange(positionMs, lengthMs, state));
+                CommandParams.getOnStateChange(positionMs, durationMs, state));
         RetrofitHelper.get(wrapper);
     }
 

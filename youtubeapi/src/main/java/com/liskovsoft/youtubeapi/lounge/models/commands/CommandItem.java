@@ -15,6 +15,8 @@ public class CommandItem {
     public static final String TYPE_NOP = "noop";
     public static final String TYPE_PLAY = "play";
     public static final String TYPE_PAUSE = "pause";
+    public static final String TYPE_NEXT = "next";
+    public static final String TYPE_PREVIOUS = "previous";
     public static final String TYPE_SEEK_TO = "seekTo";
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";

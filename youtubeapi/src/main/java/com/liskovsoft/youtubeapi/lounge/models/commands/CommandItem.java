@@ -19,6 +19,7 @@ public class CommandItem {
     public static final String TYPE_PREVIOUS = "previous";
     public static final String TYPE_SEEK_TO = "seekTo";
     public static final String TYPE_SET_VOLUME = "setVolume";
+    // Special commands
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";
 

@@ -162,7 +162,8 @@ public class LoungeService {
         String result = "";
         String line = "";
 
-        processCommands(sessionInfos, callback);
+        // Skip initial commands: TYPE_SESSION_ID, TYPE_G_SESSION_ID, TYPE_LOUNGE_STATUS, TYPE_GET_NOW_PLAYING
+        //processCommands(sessionInfos, callback);
 
         while((line = reader.readLine()) != null) {
             if (mLoungeToken == null) {

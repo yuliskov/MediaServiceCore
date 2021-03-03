@@ -13,6 +13,7 @@ public interface Command {
     int TYPE_NEXT = 8;
     int TYPE_PREVIOUS = 9;
     int TYPE_VOLUME = 10;
+    int TYPE_IDLE = 11;
     int getType();
     String getVideoId();
     String getPlaylistId();

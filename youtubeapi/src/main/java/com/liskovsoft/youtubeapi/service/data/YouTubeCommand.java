@@ -77,6 +77,9 @@ public class YouTubeCommand implements Command {
                 command.mDeviceName = remoteParams.getDeviceName();
                 command.mDeviceId = remoteParams.getDeviceId();
                 break;
+            case CommandItem.TYPE_NOP:
+                command.mType = Command.TYPE_IDLE;
+                break;
         }
 
         return command;

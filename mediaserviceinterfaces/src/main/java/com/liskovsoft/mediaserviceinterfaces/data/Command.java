@@ -1,6 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces.data;
 
 public interface Command {
+    int TYPE_UNDEFINED = -1;
     int TYPE_OPEN_VIDEO = 0;
     int TYPE_SEEK = 1;
     int TYPE_PLAY = 2;

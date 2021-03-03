@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
 import com.liskovsoft.youtubeapi.lounge.models.commands.VolumeParams;
 
 public class YouTubeCommand implements Command {
-    private int mType = -1;
+    private int mType = Command.TYPE_UNDEFINED;
     private String mVideoId;
     private String mPlaylistId;
     private long mCurrentTimeMs;

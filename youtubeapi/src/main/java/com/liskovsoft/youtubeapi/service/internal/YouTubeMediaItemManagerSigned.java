@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
@@ -22,14 +23,12 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
     private final FeedbackService mFeedbackService;
-    //private final VideoInfoServiceUnsigned mVideoInfoServiceUnsigned;
 
     private YouTubeMediaItemManagerSigned() {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
         mSignInManager = YouTubeSignInManager.instance();
         mTrackingService = TrackingService.instance();
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
-        //mVideoInfoServiceUnsigned = VideoInfoServiceUnsigned.instance();
         mActionsService = ActionsService.instance();
         mPlaylistService = PlaylistService.instance();
         mFeedbackService = FeedbackService.instance();
@@ -65,11 +64,13 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
 
     @Override
     public VideoInfo getVideoInfo(String videoId) {
-        return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
-
-        // FIX: info with auth signature refuse to work time to time
-        // NOTE: history won't work in this mode
-        //return mVideoInfoServiceUnsigned.getVideoInfo(videoId);
+        if (YouTubeMediaService.instance().isAltDataSourceEnabled()) { // seems like main algo stopped working
+            // FIX: info with auth signature refuse to work time to time
+            // NOTE: history won't work in this mode
+            return VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
+        } else {
+            return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+        }
     }
 
     @Override

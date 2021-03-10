@@ -16,6 +16,7 @@ public class YouTubeMediaService implements MediaService {
     private final YouTubeRemoteManager mDeviceLinkManager;
     private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
+    private boolean mIsAltDataSourceEnabled;
 
     private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
@@ -59,5 +60,15 @@ public class YouTubeMediaService implements MediaService {
         AppService.instance().invalidateCache();
         mSignInManager.invalidateCache();
         LocaleManager.unhold();
+    }
+
+    @Override
+    public void enableAltDataSource(boolean enable) {
+        mIsAltDataSourceEnabled = enable;
+    }
+
+    @Override
+    public boolean isAltDataSourceEnabled() {
+        return mIsAltDataSourceEnabled;
     }
 }

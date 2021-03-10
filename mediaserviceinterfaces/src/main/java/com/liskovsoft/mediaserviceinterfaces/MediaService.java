@@ -6,4 +6,6 @@ public interface MediaService {
     MediaGroupManager getMediaGroupManager();
     MediaItemManager getMediaItemManager();
     void invalidateCache();
+    void enableAltDataSource(boolean enable);
+    boolean isAltDataSourceEnabled();
 }

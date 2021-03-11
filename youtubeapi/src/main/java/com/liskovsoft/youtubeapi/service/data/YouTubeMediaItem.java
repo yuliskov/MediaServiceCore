@@ -466,7 +466,7 @@ public class YouTubeMediaItem implements MediaItem {
         return mTitle == null && mCardImageUrl == null;
     }
 
-    public static void clearCache() {
+    public static void invalidateCache() {
         sFormatInfo = null;
     }
 }

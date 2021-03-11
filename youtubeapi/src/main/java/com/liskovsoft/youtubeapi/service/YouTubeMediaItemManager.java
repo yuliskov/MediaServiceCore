@@ -53,30 +53,24 @@ public class YouTubeMediaItemManager implements MediaItemManager {
      */
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
-        checkSigned();
-
-        YouTubeMediaItem ytMediaItem = (YouTubeMediaItem) item;
-
-        YouTubeMediaItemFormatInfo formatInfo = ytMediaItem.getFormatInfo();
-
-        if (formatInfo == null) {
-            VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(item.getVideoId());
-
-            formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
-
-            ytMediaItem.setFormatInfo(formatInfo);
-        }
-
-        return formatInfo;
+        return getFormatInfo(item.getVideoId());
     }
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
         checkSigned();
 
-        VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
+        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItem.getFormatInfo(videoId);
 
-        return YouTubeMediaItemFormatInfo.from(videoInfo);
+        if (formatInfo == null) {
+            VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
+
+            formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
+
+            YouTubeMediaItem.setFormatInfo(videoId, formatInfo);
+        }
+
+        return formatInfo;
     }
 
     @Override

@@ -40,7 +40,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
-    private static Pair<Integer, YouTubeMediaItemFormatInfo> sFormatInfo;
+    private static Pair<String, YouTubeMediaItemFormatInfo> sFormatInfo;
     private int mPercentWatched;
     private String mAuthor;
     private String mVideoPreviewUrl;
@@ -434,8 +434,12 @@ public class YouTubeMediaItem implements MediaItem {
      * Returns cached FormatInfo<br/>
      * Use global static var to minimize RAM usage.
      */
-    public YouTubeMediaItemFormatInfo getFormatInfo() {
-        if (sFormatInfo != null && sFormatInfo.first == hashCode()) {
+    public static YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
+        if (videoId == null) {
+            return null;
+        }
+
+        if (sFormatInfo != null && videoId.equals(sFormatInfo.first)) {
             return sFormatInfo.second;
         }
 
@@ -446,12 +450,12 @@ public class YouTubeMediaItem implements MediaItem {
      * Updates cached FormatInfo<br/>
      * Use global static var to minimize RAM usage.
      */
-    public void setFormatInfo(YouTubeMediaItemFormatInfo formatInfo) {
-        if (formatInfo == null) {
+    public static void setFormatInfo(String videoId, YouTubeMediaItemFormatInfo formatInfo) {
+        if (videoId == null || formatInfo == null) {
             return;
         }
 
-        sFormatInfo = new Pair<>(hashCode(), formatInfo);
+        sFormatInfo = new Pair<>(videoId, formatInfo);
     }
 
     public String getReloadPageKey() {

@@ -467,3 +467,23 @@ POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&ca
 Content-Type: application/x-www-form-urlencoded
 
 count=0
+
+###
+
+# Lounge test
+
+POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx=xxxxxxxxxxxx&RID=1337&name=TubeNext&loungeIdToken=AGdO5p8JJgD6i5hUrdGRkq9v5fM11ocXVIeiDh8IgCQKE9BOzsWaBql6JWEr22oiu83fvk4RRVMaiBPD5J8FgeqNX1M7bHjJYrEr1Sn2Tqdz5BCV1kwQA8o
+Content-Type: application/x-www-form-urlencoded
+User-Agent: User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/40.13031-qa (unlike Gecko) Starboard/1
+
+count=0
+
+###
+
+# Lounge test
+
+POST https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl&capabilities=dsp%2Cmic%2Cdpa&mdxVersion=2&VER=8&v=2&t=1&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx=xxxxxxxxxxxx&RID=1337&name=SmartTubeNext%20on%20Yuriy%27s%20Fire%20TV&loungeIdToken=AGdO5p-IRMDTZHHW3EtJN26YLqcM_a1UqaC8WwXGENvetjadXhf0a3tiTZqSUEO5SzNbft-ASL5gG9oW7jKspjLpMD5nFTcKXIWtTyHU4HtLioA9COHHVwE
+Content-Type: application/x-www-form-urlencoded
+User-Agent: User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/40.13031-qa (unlike Gecko) Starboard/1
+
+count=0

@@ -95,6 +95,7 @@ public class LoungeService {
             try {
                 initConstants();
                 startListeningInt(callback);
+                Thread.sleep(3_000); // fix too frequent request
             } catch (InterruptedIOException | NullPointerException e) {
                 Log.e(TAG, "We're done. Seems that user has been closed remote session.");
                 break;
@@ -130,7 +131,7 @@ public class LoungeService {
         CommandList sessionInfos = getSessionBind();
 
         if (sessionInfos == null) {
-            Log.e(TAG, "Can't open a session because it's empty. Expired lounge token?");
+            Log.e(TAG, "Can't open a session because it's empty. Expired lounge token or too frequent request?");
             mLoungeToken = null;
             return;
         }

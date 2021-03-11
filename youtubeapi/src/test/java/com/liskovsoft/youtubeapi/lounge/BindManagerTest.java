@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
@@ -70,6 +74,22 @@ public class BindManagerTest {
         CommandList bindData = getFirstBind(screen.getLoungeToken());
 
         assertNotNull("Contains bind data", bindData);
+    }
+
+    @Ignore("Expired token")
+    @Test
+    public void testThatRequestInSuccessfulRaw() throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("User-Agent", AppConstants.APP_USER_AGENT);
+
+        Response response = OkHttpHelpers.doPostOkHttpRequest("https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl" +
+                        "&capabilities=dsp%2Cmic%2Cdpa" + "&mdxVersion=2&VER=8&v=2&t=1&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx" +
+                        "=xxxxxxxxxxxx&RID=1337&name=SmartTubeNext" + "%20on%20Yuriy%27s%20Fire%20TV&loungeIdToken=AGdO5p" +
+                        "-IRMDTZHHW3EtJN26YLqcM_a1UqaC8WwXGENvetjadXhf0a3tiTZqSUEO5SzNbft" + "-ASL5gG9oW7jKspjLpMD5nFTcKXIWtTyHU4HtLioA9COHHVwE", headers,
+                "count=0", "application/x-www-form-urlencoded");
+
+        String content = response.body().string();
+        assertNotNull("Contains bind data", content);
     }
 
     @Ignore("Long running test")

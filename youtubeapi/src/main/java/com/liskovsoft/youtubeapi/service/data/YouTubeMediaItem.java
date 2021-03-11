@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service.data;
 
+import android.util.Pair;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
@@ -39,7 +40,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
-    private YouTubeMediaItemFormatInfo mFormatInfo;
+    private static Pair<Integer, YouTubeMediaItemFormatInfo> sFormatInfo;
     private int mPercentWatched;
     private String mAuthor;
     private String mVideoPreviewUrl;
@@ -429,12 +430,28 @@ public class YouTubeMediaItem implements MediaItem {
         mChannelId = metadata.getChannelId();
     }
 
+    /**
+     * Returns cached FormatInfo<br/>
+     * Use global static var to minimize RAM usage.
+     */
     public YouTubeMediaItemFormatInfo getFormatInfo() {
-        return mFormatInfo;
+        if (sFormatInfo != null && sFormatInfo.first == hashCode()) {
+            return sFormatInfo.second;
+        }
+
+        return null;
     }
 
+    /**
+     * Updates cached FormatInfo<br/>
+     * Use global static var to minimize RAM usage.
+     */
     public void setFormatInfo(YouTubeMediaItemFormatInfo formatInfo) {
-        mFormatInfo = formatInfo;
+        if (formatInfo == null) {
+            return;
+        }
+
+        sFormatInfo = new Pair<>(hashCode(), formatInfo);
     }
 
     public String getReloadPageKey() {
@@ -443,5 +460,9 @@ public class YouTubeMediaItem implements MediaItem {
 
     public boolean isEmpty() {
         return mTitle == null && mCardImageUrl == null;
+    }
+
+    public static void clearCache() {
+        sFormatInfo = null;
     }
 }

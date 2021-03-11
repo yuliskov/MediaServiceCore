@@ -8,6 +8,7 @@ import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 
 public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
@@ -16,7 +17,6 @@ public class YouTubeMediaService implements MediaService {
     private final YouTubeRemoteManager mDeviceLinkManager;
     private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
-    private boolean mIsAltDataSourceEnabled;
 
     private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
@@ -60,15 +60,6 @@ public class YouTubeMediaService implements MediaService {
         AppService.instance().invalidateCache();
         mSignInManager.invalidateCache();
         LocaleManager.unhold();
-    }
-
-    @Override
-    public void enableAltDataSource(boolean enable) {
-        mIsAltDataSourceEnabled = enable;
-    }
-
-    @Override
-    public boolean isAltDataSourceEnabled() {
-        return mIsAltDataSourceEnabled;
+        YouTubeMediaItem.clearCache();
     }
 }

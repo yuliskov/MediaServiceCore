@@ -7,11 +7,9 @@ import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
@@ -64,13 +62,12 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
 
     @Override
     public VideoInfo getVideoInfo(String videoId) {
-        if (YouTubeMediaService.instance().isAltDataSourceEnabled()) { // seems like main algo stopped working
-            // FIX: info with auth signature refuse to work time to time
-            // NOTE: history won't work in this mode
-            return VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
-        } else {
-            return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
-        }
+        // Seems like main algo stopped working
+        // FIX: info with auth signature refuse to work time to time
+        // NOTE: history won't work in this mode
+        //VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
+
+        return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

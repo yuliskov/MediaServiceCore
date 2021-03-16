@@ -7,10 +7,10 @@ import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
  * Contained withing m=main js file
  */
 public class LegacyClientData implements ClientData {
-    @RegExp("clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",[\\w]{2}:\"\\w+\"")
+    @RegExp("clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",[$\\w]{2}:\"\\w+\"")
     private String mClientId;
 
-    @RegExp("clientId:\"[-\\w]+\\.apps\\.googleusercontent\\.com\",[\\w]{2}:\"(\\w+)\"")
+    @RegExp("clientId:\"[-\\w]+\\.apps\\.googleusercontent\\.com\",[$\\w]{2}:\"(\\w+)\"")
     private String mClientSecret;
 
     @Override

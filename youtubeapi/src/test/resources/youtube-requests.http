@@ -487,3 +487,11 @@ Content-Type: application/x-www-form-urlencoded
 User-Agent: User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/40.13031-qa (unlike Gecko) Starboard/1
 
 count=0
+
+###
+
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/120 (unlike Gecko) Starboard/1
+
+{"refresh_token":"1//09FlwLOjV_2VQCgYIARAAGAkSNwF-L9IrMevaPP0zPbJv4RJd70hr8q2r4JVSbhDVSZpXwzMdpc40W391OT0sjqZsCEizbhTI8xw","client_id":"861556708454-912i5jlic99ecvu3ro5kqirg0hldli5t.apps.googleusercontent.com","client_secret":"ju2WuMJMOjilz_h_1dPgFdeU","grant_type":"refresh_token"}

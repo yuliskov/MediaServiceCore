@@ -351,7 +351,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     private void checkSigned() {
-        if (mSignInManager.isSigned()) {
+        if (mSignInManager.checkAuthHeader()) {
             Log.d(TAG, "User signed.");
 
             mMediaItemManagerReal = YouTubeMediaItemManagerSigned.instance();

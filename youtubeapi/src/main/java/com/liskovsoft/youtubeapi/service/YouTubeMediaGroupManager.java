@@ -355,7 +355,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     private void checkSigned() {
-        if (mSignInManager.isSigned()) {
+        if (mSignInManager.checkAuthHeader()) {
             Log.d(TAG, "User signed.");
 
             mMediaGroupManagerReal = YouTubeMediaGroupManagerSigned.instance();

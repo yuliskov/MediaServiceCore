@@ -62,7 +62,8 @@ public class YouTubeSignInManager implements SignInManager {
         // get or create authorization on fly
         updateAuthorizationHeader();
 
-        return mAuthorizationHeaderCached != null;
+        // Second condition created for the case when a device in offline mode.
+        return mAuthorizationHeaderCached != null || mAccountManager.getSelectedAccount() != null;
     }
 
     @Override

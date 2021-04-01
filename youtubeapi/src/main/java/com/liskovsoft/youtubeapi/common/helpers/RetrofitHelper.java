@@ -106,6 +106,12 @@ public class RetrofitHelper {
     private static Retrofit.Builder createBuilder() {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
 
+        retrofitBuilder.client(createOkHttpClient());
+
+        return retrofitBuilder;
+    }
+    
+    public static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
         disableCache(okBuilder);
@@ -116,11 +122,7 @@ public class RetrofitHelper {
 
         debugSetup(okBuilder);
 
-        OkHttpClient client = okBuilder.build();
-
-        retrofitBuilder.client(client);
-
-        return retrofitBuilder;
+        return okBuilder.build();
     }
 
     private static void disableCache(OkHttpClient.Builder okBuilder) {

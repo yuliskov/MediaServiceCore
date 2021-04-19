@@ -18,7 +18,9 @@ public interface AppConstants {
     String FUNCTION_RANDOM_BYTES =
      "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}}";
 
-    String CLIENT_VERSION = "7.20201122.00.00";
+    // 7.20210411.10.00
+    // 7.20201122.00.00
+    String CLIENT_VERSION = "7.20210411.10.00";
 
     /**
      * Used in browse, next, search<br/>

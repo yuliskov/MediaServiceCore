@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,7 +100,7 @@ public class AppManagerTest {
 
         assertNotNull("Player url not null", playerUrl);
 
-        return YouTubeHelper.tidyUrl(playerUrl);
+        return ServiceHelper.tidyUrl(playerUrl);
     }
 
     private String getBaseUrl(String userAgent) {
@@ -112,6 +112,6 @@ public class AppManagerTest {
 
         assertNotNull("Base url not null", baseUrl);
 
-        return YouTubeHelper.tidyUrl(baseUrl);
+        return ServiceHelper.tidyUrl(baseUrl);
     }
 }

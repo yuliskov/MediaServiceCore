@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class YouTubeHelper {
+public class ServiceHelper {
     private static final String BULLET_SYMBOL = "\u2022";
     private static final String DESCRIPTION_DIVIDER = " " + BULLET_SYMBOL + " ";
     private static final String TIME_TEXT_DELIM = ":";

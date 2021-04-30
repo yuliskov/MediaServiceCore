@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
 public class SearchManagerParams {
@@ -9,7 +9,7 @@ public class SearchManagerParams {
 
     public static String getSearchQuery(String searchText) {
         String search = String.format(FIRST_SEARCH, escape(searchText));
-        return YouTubeHelper.createQuery(search);
+        return ServiceHelper.createQuery(search);
     }
 
     /**
@@ -19,7 +19,7 @@ public class SearchManagerParams {
      */
     public static String getContinuationQuery(String nextPageKey) {
         String continuation = String.format(CONTINUATION_SEARCH, nextPageKey);
-        return YouTubeHelper.createQuery(continuation);
+        return ServiceHelper.createQuery(continuation);
     }
 
     private static String escape(String text) {

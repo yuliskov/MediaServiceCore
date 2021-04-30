@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class WatchNextManagerParams {
     public static String getWatchNextQuery(@NonNull String videoId) {
@@ -32,6 +32,6 @@ public class WatchNextManagerParams {
             videoData += String.format(",\"params\":\"%s\"", playlistParams);
         }
 
-        return YouTubeHelper.createQuery(videoData);
+        return ServiceHelper.createQuery(videoData);
     }
 }

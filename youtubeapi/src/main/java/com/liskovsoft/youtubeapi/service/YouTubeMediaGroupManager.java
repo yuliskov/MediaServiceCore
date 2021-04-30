@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
@@ -294,7 +294,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             ObservableHelper.onError(emitter, msg);
         } else {
             // Chips?
-            for (MediaGroup group : YouTubeHelper.extractEmpty(groups)) {
+            for (MediaGroup group : ServiceHelper.extractEmpty(groups)) {
                 MediaGroup continuation = continueGroup(group);
                 emitter.onNext(Collections.singletonList(continuation));
             }

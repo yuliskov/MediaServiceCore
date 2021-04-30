@@ -193,6 +193,13 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             Log.e(TAG, "Home group is empty");
         }
 
+        // Chips?
+        for (MediaGroup group : groups) {
+            if (group.isEmpty()) {
+                continueGroup(group);
+            }
+        }
+
         while (!groups.isEmpty()) {
             result.addAll(groups);
             SectionTabContinuation continuation = mMediaGroupManagerReal.continueSectionTab(nextPageKey);
@@ -284,6 +291,13 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             Log.e(TAG, msg);
             ObservableHelper.onError(emitter, msg);
         } else {
+            // Chips?
+            for (MediaGroup group : groups) {
+                if (group.isEmpty()) {
+                    continueGroup(group);
+                }
+            }
+
             while (!groups.isEmpty()) {
                 emitter.onNext(groups);
                 SectionTabContinuation continuation = mMediaGroupManagerReal.continueSectionTab(nextPageKey);

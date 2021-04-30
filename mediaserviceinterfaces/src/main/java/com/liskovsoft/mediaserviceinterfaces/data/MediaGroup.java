@@ -26,4 +26,5 @@ public interface MediaGroup {
     String getChannelId();
     String getPlaylistParams();
     String getChannelUrl();
+    boolean isEmpty();
 }

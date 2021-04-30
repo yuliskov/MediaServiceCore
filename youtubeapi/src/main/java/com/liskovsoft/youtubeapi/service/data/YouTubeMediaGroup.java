@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
@@ -84,6 +85,18 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create(youTubeMediaGroup, section.getItemWrappers(), section.getNextPageKey());
     }
 
+    public static MediaGroup from(Chip chip, int type) {
+        if (chip == null) {
+            return null;
+        }
+
+        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
+        youTubeMediaGroup.mTitle = chip.getTitle();
+        youTubeMediaGroup.mNextPageKey = chip.getReloadPageKey();
+
+        return create(youTubeMediaGroup, null, chip.getReloadPageKey());
+    }
+
     public static MediaGroup from(SectionContinuation continuation, MediaGroup baseGroup) {
         if (continuation == null) {
             return null;
@@ -126,7 +139,13 @@ public class YouTubeMediaGroup implements MediaGroup {
 
         if (sections != null && sections.size() > 0) {
             for (Section section : sections) {
-                result.add(YouTubeMediaGroup.from(section, type));
+                if (section.getChips() != null) {
+                    for (Chip chip : section.getChips()) {
+                        result.add(YouTubeMediaGroup.from(chip, type));
+                    }
+                } else {
+                    result.add(YouTubeMediaGroup.from(section, type));
+                }
             }
         }
 
@@ -177,6 +196,11 @@ public class YouTubeMediaGroup implements MediaGroup {
     @Override
     public String getPlaylistParams() {
         return mPlaylistParams;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return mMediaItems == null || mMediaItems.isEmpty();
     }
 
     private static MediaGroup create(YouTubeMediaGroup baseGroup, List<GridTab> tabs) {

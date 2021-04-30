@@ -4,6 +4,9 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
+/**
+ * Used as Channel content
+ */
 public class SectionList {
     /**
      * Sections == Rows in web app version

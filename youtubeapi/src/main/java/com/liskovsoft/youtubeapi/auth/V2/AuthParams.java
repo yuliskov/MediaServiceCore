@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.auth.V2;
 
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class AuthParams {
     private static final String USER_CODE = "{\"client_id\":\"%s\",\"scope\":\"%s\"}";
@@ -11,7 +11,7 @@ public class AuthParams {
     private static final String GRANT_TYPE_REFRESH = "refresh_token";
 
     public static String getAccountsListQuery() {
-        return AppHelper.createQuery("\"accountReadMask\":{\"returnOwner\":true}");
+        return YouTubeHelper.createQuery("\"accountReadMask\":{\"returnOwner\":true}");
     }
 
     public static String getUserCodeQuery(String clientId) {

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.RemoteParams;
 import com.liskovsoft.youtubeapi.lounge.models.commands.SeekToParams;
@@ -33,7 +33,7 @@ public class YouTubeCommand implements Command {
                 command.mVideoId = playlistParams.getVideoId();
                 command.mPlaylistId = playlistParams.getPlaylistId();
                 command.mPlaylistIndex = Helpers.parseInt(playlistParams.getPlaylistIndex());
-                command.mCurrentTimeMs = AppHelper.toMillis(playlistParams.getCurrentTimeSec());
+                command.mCurrentTimeMs = YouTubeHelper.toMillis(playlistParams.getCurrentTimeSec());
                 break;
             case CommandItem.TYPE_UPDATE_PLAYLIST:
                 command.mType = Command.TYPE_UPDATE_PLAYLIST;
@@ -43,7 +43,7 @@ public class YouTubeCommand implements Command {
             case CommandItem.TYPE_SEEK_TO:
                 command.mType = Command.TYPE_SEEK;
                 SeekToParams seekToParams = info.getSeekToParams();
-                command.mCurrentTimeMs = AppHelper.toMillis(seekToParams.getNewTimeSec());
+                command.mCurrentTimeMs = YouTubeHelper.toMillis(seekToParams.getNewTimeSec());
                 break;
             case CommandItem.TYPE_SET_VOLUME:
                 command.mType = Command.TYPE_VOLUME;

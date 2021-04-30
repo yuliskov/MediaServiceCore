@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.next.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
@@ -57,11 +57,11 @@ public class CurrentVideo {
 
     public String getShortViewCount() {
         // On live streams short view counter is absent
-        return mShortViewCount1 != null ? AppHelper.combineText(mShortViewCount1, mShortViewCount2) : getViewCount();
+        return mShortViewCount1 != null ? YouTubeHelper.combineText(mShortViewCount1, mShortViewCount2) : getViewCount();
     }
 
     public String getViewCount() {
-        return AppHelper.combineText(mViewCount1, mViewCount2);
+        return YouTubeHelper.combineText(mViewCount1, mViewCount2);
     }
 
     public String getLikesCount() {

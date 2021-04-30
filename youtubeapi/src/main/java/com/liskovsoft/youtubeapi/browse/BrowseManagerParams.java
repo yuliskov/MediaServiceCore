@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class BrowseManagerParams {
     private static final String SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\"";
@@ -14,32 +14,32 @@ public class BrowseManagerParams {
     private static final String CHANNEL = "\"browseId\":\"%s\"";
 
     public static String getHomeQuery() {
-        return AppHelper.createQuery(HOME);
+        return YouTubeHelper.createQuery(HOME);
     }
 
     public static String getSubscriptionsQuery() {
-        return AppHelper.createQuery(SUBSCRIPTIONS);
+        return YouTubeHelper.createQuery(SUBSCRIPTIONS);
     }
 
     public static String getMyLibraryQuery() {
-        return AppHelper.createQuery(MY_LIBRARY);
+        return YouTubeHelper.createQuery(MY_LIBRARY);
     }
 
     public static String getGamingQuery() {
-        return AppHelper.createQuery(GAMING);
+        return YouTubeHelper.createQuery(GAMING);
     }
 
     public static String getNewsQuery() {
-        return AppHelper.createQuery(NEWS);
+        return YouTubeHelper.createQuery(NEWS);
     }
 
     public static String getMusicQuery() {
-        return AppHelper.createQuery(MUSIC);
+        return YouTubeHelper.createQuery(MUSIC);
     }
 
     public static String getChannelQuery(String channelId) {
         String channelTemplate = String.format(CHANNEL, channelId);
-        return AppHelper.createQuery(channelTemplate);
+        return YouTubeHelper.createQuery(channelTemplate);
     }
 
     /**
@@ -49,10 +49,10 @@ public class BrowseManagerParams {
      */
     public static String getContinuationQuery(String nextPageKey) {
         String continuation = String.format(CONTINUATION, nextPageKey);
-        return AppHelper.createQuery(continuation);
+        return YouTubeHelper.createQuery(continuation);
     }
 
     public static String getGuideQuery() {
-        return AppHelper.createQuery("");
+        return YouTubeHelper.createQuery("");
     }
 }

@@ -1,12 +1,11 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
@@ -219,7 +218,7 @@ public class LoungeService {
     }
 
     private void postNowPlaying(String videoId, long positionMs, long durationMs, String ctt, String playlistId, String playlistIndex) {
-        if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
+        if (!YouTubeHelper.checkNonNull(mSessionId, mGSessionId)) {
             return;
         }
 
@@ -232,7 +231,7 @@ public class LoungeService {
     }
 
     private void postOnStateChange(long positionMs, long durationMs, int state) {
-        if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
+        if (!YouTubeHelper.checkNonNull(mSessionId, mGSessionId)) {
             return;
         }
 
@@ -245,7 +244,7 @@ public class LoungeService {
     }
 
     private void postOnPrevNextChange() {
-        if (!AppHelper.checkNonNull(mSessionId, mGSessionId)) {
+        if (!YouTubeHelper.checkNonNull(mSessionId, mGSessionId)) {
             return;
         }
 

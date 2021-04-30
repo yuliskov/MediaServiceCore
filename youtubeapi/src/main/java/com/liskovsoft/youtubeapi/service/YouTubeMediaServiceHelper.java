@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
@@ -17,7 +17,7 @@ public final class YouTubeMediaServiceHelper {
     }
 
     public static String createDescription(String... items) {
-        return AppHelper.itemsToDescription(items);
+        return YouTubeHelper.itemsToDescription(items);
     }
 
     public static String extractNextKey(MediaGroup mediaTab) {

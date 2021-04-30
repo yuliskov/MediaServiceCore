@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class Section {
     private String mNextPageKey;
 
     public String getTitle() {
-        return AppHelper.combineText(mTitle1, mTitle2, mTitle3);
+        return YouTubeHelper.combineText(mTitle1, mTitle2, mTitle3);
     }
 
     public String getNextPageKey() {

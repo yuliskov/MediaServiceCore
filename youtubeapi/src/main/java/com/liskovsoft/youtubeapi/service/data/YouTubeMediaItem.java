@@ -4,7 +4,7 @@ import android.util.Pair;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
@@ -96,10 +96,10 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
-        video.mChannelUrl = AppHelper.channelIdToFullUrl(item.getChannelId());
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        video.mChannelUrl = YouTubeHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
-        video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationMs = YouTubeHelper.timeTextToMillis(item.getLengthText());
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
@@ -129,10 +129,10 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
-        video.mChannelUrl = AppHelper.channelIdToFullUrl(item.getChannelId());
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
+        video.mChannelUrl = YouTubeHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
-        video.mDurationMs = AppHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationMs = YouTubeHelper.timeTextToMillis(item.getLengthText());
         video.mBadgeText = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
@@ -153,7 +153,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
         video.mChannelId = item.getChannelId();
-        video.mChannelUrl = AppHelper.channelIdToFullUrl(item.getChannelId());
+        video.mChannelUrl = YouTubeHelper.channelIdToFullUrl(item.getChannelId());
 
         addCommonProps(video);
 
@@ -221,7 +221,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistItemIndex();
-        video.mMediaUrl = AppHelper.videoIdToFullUrl(item.getVideoId());
+        video.mMediaUrl = YouTubeHelper.videoIdToFullUrl(item.getVideoId());
         addCommonProps(video);
 
         return video;

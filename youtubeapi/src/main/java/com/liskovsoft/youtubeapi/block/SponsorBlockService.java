@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.block;
 
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
@@ -34,7 +34,7 @@ public class SponsorBlockService {
     }
 
     private SegmentList getSegmentListInt(String videoId, Set<String> categories) {
-        Call<SegmentList> wrapper = mSponsorBlockManager.getSegments(videoId, AppHelper.toJsonArrayString(categories));
+        Call<SegmentList> wrapper = mSponsorBlockManager.getSegments(videoId, YouTubeHelper.toJsonArrayString(categories));
 
         return RetrofitHelper.get(wrapper);
     }

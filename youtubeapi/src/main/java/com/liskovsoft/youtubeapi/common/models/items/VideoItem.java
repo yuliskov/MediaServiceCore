@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 import java.util.List;
 
@@ -114,11 +114,11 @@ public class VideoItem {
     }
 
     public String getViewCountText() {
-        return AppHelper.combineText(mViewCountText1, mViewCountText2);
+        return YouTubeHelper.combineText(mViewCountText1, mViewCountText2);
     }
 
     public String getShortViewCountText() {
-        return AppHelper.combineText(mShortViewCountText1, mShortViewCountText2);
+        return YouTubeHelper.combineText(mShortViewCountText1, mShortViewCountText2);
     }
 
     public String getLengthText() {
@@ -164,7 +164,7 @@ public class VideoItem {
      * Example: Premieres 10/8/20, 1:00 AM
      */
     public String getUpcomingEventText() {
-        return AppHelper.combineText(mUpcomingEventText1, mUpcomingEventText2);
+        return YouTubeHelper.combineText(mUpcomingEventText1, mUpcomingEventText2);
     }
 
     /**

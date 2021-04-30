@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge.models.info;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.AppHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class LoungePlaylistItem {
     @JsonPath("$.title")
@@ -32,7 +32,7 @@ public class LoungePlaylistItem {
     }
 
     public String getThumbnailUrl() {
-        return AppHelper.tidyUrl(mThumbnailUrl);
+        return YouTubeHelper.tidyUrl(mThumbnailUrl);
     }
 
     public String getEncryptedId() {

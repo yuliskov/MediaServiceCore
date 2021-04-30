@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
@@ -21,6 +22,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class YouTubeMediaGroupManager implements MediaGroupManager {
@@ -292,10 +294,9 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             ObservableHelper.onError(emitter, msg);
         } else {
             // Chips?
-            for (MediaGroup group : groups) {
-                if (group.isEmpty()) {
-                    continueGroup(group);
-                }
+            for (MediaGroup group : YouTubeHelper.extractEmpty(groups)) {
+                MediaGroup continuation = continueGroup(group);
+                emitter.onNext(Collections.singletonList(continuation));
             }
 
             while (!groups.isEmpty()) {

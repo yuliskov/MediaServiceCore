@@ -1,15 +1,17 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AppHelper {
+public class YouTubeHelper {
     private static final String BULLET_SYMBOL = "\u2022";
     private static final String DESCRIPTION_DIVIDER = " " + BULLET_SYMBOL + " ";
     private static final String TIME_TEXT_DELIM = ":";
@@ -200,5 +202,21 @@ public class AppHelper {
         String[] split = authorization.split("\\s+");
 
         return split.length == 2 ? split[1] : split[0];
+    }
+
+    public static List<MediaGroup> extractEmpty(List<MediaGroup> groups) {
+        List<MediaGroup> result = new ArrayList<>();
+
+        for (MediaGroup group : groups) {
+            if (group.isEmpty()) {
+                result.add(group);
+            }
+        }
+
+        for (MediaGroup group : result) {
+            groups.remove(group);
+        }
+
+        return result;
     }
 }

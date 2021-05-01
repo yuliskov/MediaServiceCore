@@ -143,7 +143,9 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             recommended = rows.get(0); // first one is recommended
         }
 
-        return YouTubeMediaGroup.from(recommended, MediaGroup.TYPE_RECOMMENDED);
+        MediaGroup result = YouTubeMediaGroup.from(recommended, MediaGroup.TYPE_RECOMMENDED);
+
+        return result != null && result.isEmpty() ? continueGroup(result) : result; // Maybe Chip?
     }
 
     @Override

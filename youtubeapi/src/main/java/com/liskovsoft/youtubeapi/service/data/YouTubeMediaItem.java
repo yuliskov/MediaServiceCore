@@ -1,8 +1,10 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import android.util.Pair;
+import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
@@ -468,5 +470,35 @@ public class YouTubeMediaItem implements MediaItem {
 
     public static void invalidateCache() {
         sFormatInfo = null;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", mReloadPageKey, mTitle, mDescription, mCardImageUrl, mVideoId, mPlaylistId, mChannelId);
+    }
+
+    public static MediaItem fromString(String spec) {
+        if (spec == null) {
+            return null;
+        }
+
+        String[] split = spec.split("&mi;");
+
+        if (split.length != 7) {
+            return null;
+        }
+
+        YouTubeMediaItem mediaItem = new YouTubeMediaItem();
+
+        mediaItem.mReloadPageKey = Helpers.parseStr(split[0]);
+        mediaItem.mTitle = Helpers.parseStr(split[1]);
+        mediaItem.mDescription = Helpers.parseStr(split[2]);
+        mediaItem.mCardImageUrl = Helpers.parseStr(split[3]);
+        mediaItem.mVideoId = Helpers.parseStr(split[4]);
+        mediaItem.mPlaylistId = Helpers.parseStr(split[5]);
+        mediaItem.mChannelId = Helpers.parseStr(split[6]);
+
+        return mediaItem;
     }
 }

@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
@@ -61,5 +62,21 @@ public class YouTubeMediaService implements MediaService {
         YouTubeSignInManager.instance().invalidateCache();
         LocaleManager.unhold();
         YouTubeMediaItem.invalidateCache();
+    }
+
+    public static String serialize(MediaItem mediaItem) {
+        if (mediaItem == null) {
+            return null;
+        }
+
+        return mediaItem.toString();
+    }
+
+    public static MediaItem deserializeMediaItem(String itemSpec) {
+        if (itemSpec == null) {
+            return null;
+        }
+
+        return YouTubeMediaItem.fromString(itemSpec);
     }
 }

@@ -298,7 +298,9 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             // Chips?
             for (MediaGroup group : ServiceHelper.extractEmpty(groups)) {
                 MediaGroup continuation = continueGroup(group);
-                emitter.onNext(Collections.singletonList(continuation));
+                if (continuation != null) {
+                    emitter.onNext(Collections.singletonList(continuation));
+                }
             }
 
             while (!groups.isEmpty()) {

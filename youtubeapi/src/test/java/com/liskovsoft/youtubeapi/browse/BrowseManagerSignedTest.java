@@ -157,6 +157,20 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
     }
 
     @Test
+    public void testThatGamesNotEmpty() throws IOException {
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getGamingQuery(), TestHelpersV2.getAuthorization());
+
+        SectionTabList browseResult = wrapper.execute().body();
+
+        tabbedResultNotEmpty(browseResult);
+
+        assertNotNull("Contains tabs", browseResult.getTabs());
+
+        List<ItemWrapper> itemWrappers = browseResult.getTabs().get(0).getSections().get(0).getItemWrappers();
+        assertNotNull("Items not null", itemWrappers);
+    }
+
+    @Test
     public void testThatPlaylistsNotEmpty() {
         Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getMyLibraryQuery(), TestHelpersV2.getAuthorization());
 

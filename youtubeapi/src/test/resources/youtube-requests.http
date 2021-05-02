@@ -495,3 +495,13 @@ Content-Type: application/json
 User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/120 (unlike Gecko) Starboard/1
 
 {"refresh_token":"1//09FlwLOjV_2VQCgYIARAAGAkSNwF-L9IrMevaPP0zPbJv4RJd70hr8q2r4JVSbhDVSZpXwzMdpc40W391OT0sjqZsCEizbhTI8xw","client_id":"861556708454-912i5jlic99ecvu3ro5kqirg0hldli5t.apps.googleusercontent.com","client_secret":"ju2WuMJMOjilz_h_1dPgFdeU","grant_type":"refresh_token"}
+
+
+###
+
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+Authorization: Bearer ya29.a0AfH6SMDW9Z5kCjzA9121AJ-vSwmS0rOJhbAZ0sb-bvFX0GhzO4leTvopRC_3dBEIbKrWXEi8XaFSkFwBApJZLYgptX8VTdSEecFZLzlWg8mAI2I5un03rWKAiMM0J8wZsIMc4Cyxbi8gGSarQnipf_oU7ZqD4KVAxufI3M8
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/120 (unlike Gecko) Starboard/1
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20210428.10.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false}},"browseId":"FEtopics","params":"-gIGZ2FtaW5n"}

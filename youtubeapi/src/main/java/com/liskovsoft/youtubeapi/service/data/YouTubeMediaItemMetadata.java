@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.data;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
@@ -84,6 +85,13 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mSuggestions = new ArrayList<>();
 
             for (SuggestedSection section : suggestedSections) {
+                if (section.getChips() != null) {
+                    // Contains multiple nested sections
+                    for (Chip chip : section.getChips()) {
+                        mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(chip));
+                    }
+                }
+
                 mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
             }
         }

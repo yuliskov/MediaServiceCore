@@ -123,6 +123,17 @@ public class YouTubeMediaGroup implements MediaGroup {
                 nextSearchResult.getChannelItems(), nextSearchResult.getRadioItems(), nextSearchResult.getPlaylistItems(), nextSearchResult.getNextPageKey());
     }
 
+    public static MediaGroup from(Chip chip) {
+        if (chip == null) {
+            return null;
+        }
+
+        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS);
+        youTubeMediaGroup.mTitle = chip.getTitle();
+
+        return create(youTubeMediaGroup, chip.getItemWrappers(), chip.getNextPageKey());
+    }
+
     public static MediaGroup from(SuggestedSection section) {
         if (section == null) {
             return null;

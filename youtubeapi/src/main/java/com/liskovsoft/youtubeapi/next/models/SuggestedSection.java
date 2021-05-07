@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.models;
 
+import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
@@ -10,6 +11,8 @@ public class SuggestedSection {
     private String mTitle;
     @JsonPath("$.content.horizontalListRenderer.items[*]")
     private List<ItemWrapper> mItemWrappers;
+    @JsonPath("$.headerRenderer.chipCloudRenderer.chips[*].chipCloudChipRenderer")
+    private List<Chip> mChips;
     @JsonPath("$.content.horizontalListRenderer.continuations[*].nextContinuationData.continuation")
     private List<String> mNextPageKey;
 
@@ -19,6 +22,10 @@ public class SuggestedSection {
 
     public List<ItemWrapper> getItemWrappers() {
         return mItemWrappers;
+    }
+
+    public List<Chip> getChips() {
+        return mChips;
     }
 
     public String getNextPageKey() {

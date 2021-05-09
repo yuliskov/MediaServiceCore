@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceSigned;
+import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
@@ -67,7 +68,18 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         // NOTE: history won't work in this mode
         //VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
 
-        return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+        // Enable history (temporally, until no playback be fixed)
+        VideoInfo signedInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+        VideoInfo unsignedInfo = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId); // Fix no playback bug (temporal fix)
+        if (signedInfo != null && unsignedInfo != null) { // Merge signed info with unsigned (otherwise history won't work)
+            unsignedInfo.setEventId(signedInfo.getEventId());
+            unsignedInfo.setVisitorMonitoringData(signedInfo.getVisitorMonitoringData());
+        }
+
+        // Original code
+        //return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+
+        return unsignedInfo;
     }
 
     @Override

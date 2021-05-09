@@ -103,10 +103,24 @@ public class VideoInfo {
         return mEventId;
     }
 
+    /**
+     * Intended to merge signed and unsigned infos (no-playback fix)
+     */
+    public void setEventId(String eventId) {
+        mEventId = eventId;
+    }
+
     public String getVisitorMonitoringData() {
         parseTrackingParams();
 
         return mVisitorMonitoringData;
+    }
+
+    /**
+     * Intended to merge signed and unsigned infos (no-playback fix)
+     */
+    public void setVisitorMonitoringData(String visitorMonitoringData) {
+        mVisitorMonitoringData = visitorMonitoringData;
     }
 
     public String getPlaybackUrl() {

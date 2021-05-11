@@ -1,26 +1,26 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 
-public class VideoInfoServiceSigned extends VideoInfoServiceBase {
-    private static final String TAG = VideoInfoServiceSigned.class.getSimpleName();
-    private static VideoInfoServiceSigned sInstance;
-    private final VideoInfoManagerSignedV3 mVideoInfoManagerSigned;
+public class VideoInfoServiceSignedTMP extends VideoInfoServiceBase {
+    private static final String TAG = VideoInfoServiceSignedTMP.class.getSimpleName();
+    private static VideoInfoServiceSignedTMP sInstance;
+    private final VideoInfoManagerSignedV2 mVideoInfoManagerSigned;
     private final LocaleManager mLocaleManager;
 
-    private VideoInfoServiceSigned() {
-        mVideoInfoManagerSigned = RetrofitHelper.withQueryString(VideoInfoManagerSignedV3.class);
+    private VideoInfoServiceSignedTMP() {
+        mVideoInfoManagerSigned = RetrofitHelper.withQueryString(VideoInfoManagerSignedV2.class);
         mLocaleManager = LocaleManager.instance();
     }
 
-    public static VideoInfoServiceSigned instance() {
+    public static VideoInfoServiceSignedTMP instance() {
         if (sInstance == null) {
-            sInstance = new VideoInfoServiceSigned();
+            sInstance = new VideoInfoServiceSignedTMP();
         }
 
         return sInstance;
@@ -48,19 +48,19 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoHls(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization));
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRegular(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRegular(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization));
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, ServiceHelper.getToken(authorization), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, ServiceHelper.getToken(authorization));
 
         return RetrofitHelper.get(wrapper);
     }

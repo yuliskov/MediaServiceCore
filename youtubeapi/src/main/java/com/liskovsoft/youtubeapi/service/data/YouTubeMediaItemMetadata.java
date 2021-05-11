@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.data;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeMediaItemMetadata implements MediaItemMetadata {
+    private static final String TAG = YouTubeMediaItemMetadata.class.getSimpleName();
     private String mTitle;
     private String mAuthor;
     private String mViewCount;
@@ -42,6 +44,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         CurrentVideo videoMetadata = watchNextResult.getVideoMetadata();
         VideoOwner videoOwner = watchNextResult.getVideoOwner();
+
+        if (videoMetadata == null || videoOwner == null) {
+            Log.e(TAG, "Oops. Next format has been changed. Please upgrade parser.");
+            return null;
+        }
 
         mediaItemMetadata.mTitle = videoMetadata.getTitle();
         mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(

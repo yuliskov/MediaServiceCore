@@ -295,16 +295,17 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             Log.e(TAG, msg);
             ObservableHelper.onError(emitter, msg);
         } else {
-            // Chips?
-            for (MediaGroup group : ServiceHelper.extractEmpty(groups)) {
-                MediaGroup continuation = continueGroup(group);
-                if (continuation != null) {
-                    emitter.onNext(Collections.singletonList(continuation));
-                }
-            }
-
             while (!groups.isEmpty()) {
-                emitter.onNext(groups);
+                for (MediaGroup group : groups) { // Preserve positions
+                    if (group.isEmpty()) { // Contains Chips (nested sections)?
+                        group = continueGroup(group);
+                    }
+
+                    if (group != null) {
+                        emitter.onNext(Collections.singletonList(group));
+                    }
+                }
+
                 SectionTabContinuation continuation = mMediaGroupManagerReal.continueSectionTab(nextPageKey);
 
                 if (continuation != null) {

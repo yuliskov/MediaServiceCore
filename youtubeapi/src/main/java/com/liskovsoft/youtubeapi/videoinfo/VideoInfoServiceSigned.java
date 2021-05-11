@@ -10,11 +10,11 @@ import retrofit2.Call;
 public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceSigned.class.getSimpleName();
     private static VideoInfoServiceSigned sInstance;
-    private final VideoInfoManagerSignedV3 mVideoInfoManagerSigned;
+    private final VideoInfoManagerSignedV2 mVideoInfoManagerSigned;
     private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceSigned() {
-        mVideoInfoManagerSigned = RetrofitHelper.withQueryString(VideoInfoManagerSignedV3.class);
+        mVideoInfoManagerSigned = RetrofitHelper.withQueryString(VideoInfoManagerSignedV2.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -48,19 +48,19 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoHls(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization));
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRegular(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRegular(videoId, mLocaleManager.getLanguage(), ServiceHelper.getToken(authorization));
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, ServiceHelper.getToken(authorization), authorization);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, ServiceHelper.getToken(authorization));
 
         return RetrofitHelper.get(wrapper);
     }

@@ -150,6 +150,7 @@ public class YouTubeMediaGroup implements MediaGroup {
 
         if (sections != null && sections.size() > 0) {
             for (Section section : sections) {
+                // Section contains chips (nested sections) or items. Not both.
                 if (section.getChips() != null) {
                     for (Chip chip : section.getChips()) {
                         result.add(YouTubeMediaGroup.from(chip, type));

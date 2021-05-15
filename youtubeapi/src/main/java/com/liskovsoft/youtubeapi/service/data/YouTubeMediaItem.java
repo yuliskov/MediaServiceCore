@@ -42,7 +42,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
-    private static Pair<String, YouTubeMediaItemFormatInfo> sFormatInfo;
+    private static Pair<String, YouTubeMediaItemFormatInfo> sCachedFormatInfo;
     private int mPercentWatched;
     private String mAuthor;
     private String mVideoPreviewUrl;
@@ -436,13 +436,13 @@ public class YouTubeMediaItem implements MediaItem {
      * Returns cached FormatInfo<br/>
      * Use global static var to minimize RAM usage.
      */
-    public static YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
+    public static YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
         if (videoId == null) {
             return null;
         }
 
-        if (sFormatInfo != null && videoId.equals(sFormatInfo.first)) {
-            return sFormatInfo.second;
+        if (sCachedFormatInfo != null && videoId.equals(sCachedFormatInfo.first)) {
+            return sCachedFormatInfo.second;
         }
 
         return null;
@@ -452,12 +452,12 @@ public class YouTubeMediaItem implements MediaItem {
      * Updates cached FormatInfo<br/>
      * Use global static var to minimize RAM usage.
      */
-    public static void setFormatInfo(String videoId, YouTubeMediaItemFormatInfo formatInfo) {
+    public static void setCachedFormatInfo(String videoId, YouTubeMediaItemFormatInfo formatInfo) {
         if (videoId == null || formatInfo == null) {
             return;
         }
 
-        sFormatInfo = new Pair<>(videoId, formatInfo);
+        sCachedFormatInfo = new Pair<>(videoId, formatInfo);
     }
 
     public String getReloadPageKey() {
@@ -469,7 +469,7 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     public static void invalidateCache() {
-        sFormatInfo = null;
+        sCachedFormatInfo = null;
     }
 
     @NonNull

@@ -60,14 +60,14 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
         checkSigned();
 
-        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItem.getFormatInfo(videoId);
+        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItem.getCachedFormatInfo(videoId);
 
         if (formatInfo == null) {
             VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
 
             formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
-            YouTubeMediaItem.setFormatInfo(videoId, formatInfo);
+            YouTubeMediaItem.setCachedFormatInfo(videoId, formatInfo);
         }
 
         return formatInfo;

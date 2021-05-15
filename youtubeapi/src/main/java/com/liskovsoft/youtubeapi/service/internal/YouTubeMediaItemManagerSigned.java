@@ -61,25 +61,37 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         return mWatchNextServiceSigned.continueWatchNext(nextKey, mSignInManager.getAuthorizationHeader());
     }
 
+    //@Override
+    //public VideoInfo getVideoInfo(String videoId) {
+    //    // Enable history (temporally, until no playback be fixed)
+    //    VideoInfo signedInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+    //    VideoInfo unsignedInfo = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId); // Fix no playback bug (temporal fix)
+    //    if (signedInfo != null && unsignedInfo != null) { // Merge signed info with unsigned (otherwise history won't work)
+    //        unsignedInfo.setEventId(signedInfo.getEventId());
+    //        unsignedInfo.setVisitorMonitoringData(signedInfo.getVisitorMonitoringData());
+    //    }
+    //
+    //    // Original code
+    //    //return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+    //
+    //    return unsignedInfo;
+    //}
+
     @Override
     public VideoInfo getVideoInfo(String videoId) {
-        // Seems like main algo stopped working
-        // FIX: info with auth signature refuse to work time to time
-        // NOTE: history won't work in this mode
-        //VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
-
         // Enable history (temporally, until no playback be fixed)
-        VideoInfo signedInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
-        VideoInfo unsignedInfo = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId); // Fix no playback bug (temporal fix)
-        if (signedInfo != null && unsignedInfo != null) { // Merge signed info with unsigned (otherwise history won't work)
-            unsignedInfo.setEventId(signedInfo.getEventId());
-            unsignedInfo.setVisitorMonitoringData(signedInfo.getVisitorMonitoringData());
+        VideoInfo result = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+
+        // Fix no playback bug (temporal fix)
+        // Check that history data is valid
+        if (result == null || result.getEventId() == null || result.getVisitorMonitoringData() == null) {
+            result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
         }
 
         // Original code
         //return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
 
-        return unsignedInfo;
+        return result;
     }
 
     @Override

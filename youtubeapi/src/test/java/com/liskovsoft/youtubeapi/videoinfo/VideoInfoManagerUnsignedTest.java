@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -22,7 +23,8 @@ import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
 public class VideoInfoManagerUnsignedTest {
-    private VideoInfoManagerUnsigned mService;
+    private VideoInfoManagerUnsignedV2 mService;
+    private LocaleManager mLocaleManager;
 
     @Before
     public void setUp() {
@@ -34,7 +36,8 @@ public class VideoInfoManagerUnsignedTest {
 
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withQueryString(VideoInfoManagerUnsigned.class);
+        mService = RetrofitHelper.withQueryString(VideoInfoManagerUnsignedV2.class);
+        mLocaleManager = LocaleManager.instance();
     }
 
     @Test
@@ -104,12 +107,12 @@ public class VideoInfoManagerUnsignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfoRestricted(videoId);
+        Call<VideoInfo> wrapper = mService.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(videoId);
+        Call<VideoInfo> wrapper = mService.getVideoInfo(videoId, mLocaleManager.getLanguage());
         return wrapper.execute().body();
     }
 }

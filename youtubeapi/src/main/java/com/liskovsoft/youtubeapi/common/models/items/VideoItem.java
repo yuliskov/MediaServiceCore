@@ -24,7 +24,7 @@ public class VideoItem {
     private String mChannelThumbnail;
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
-    @JsonPath({"$.shortBylineText.runs[0].text", "$.longBylineText.runs[0].text"})
+    @JsonPath({"$.shortBylineText.simpleText", "$.shortBylineText.runs[0].text", "$.longBylineText.runs[0].text"})
     private String mUserName;
     @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId"})

@@ -212,7 +212,9 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
         Section playlistSection = findPlaylistSection(firstNotEmptyTab(browseResult));
 
-        testFields(playlistSection.getItemWrappers().get(0));
+        if (playlistSection != null) {
+            testFields(playlistSection.getItemWrappers().get(0));
+        }
     }
 
     @Test
@@ -222,7 +224,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
         VideoItem videoItem = null;
 
         for (ItemWrapper itemWrapper : recommended.getItemWrappers()) {
-            if (itemWrapper.getVideoItem() != null) {
+            if (itemWrapper.getVideoItem() != null && !itemWrapper.getVideoItem().isLive()) {
                 videoItem = itemWrapper.getVideoItem();
                 break;
             }
@@ -239,7 +241,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
         Section result = null;
 
         for (Section section : tab.getSections()) {
-            if (section.getItemWrappers().get(0).getPlaylistItem() != null) {
+            if (section.getItemWrappers() != null && section.getItemWrappers().get(0).getPlaylistItem() != null) {
                 result = section;
                 break;
             }

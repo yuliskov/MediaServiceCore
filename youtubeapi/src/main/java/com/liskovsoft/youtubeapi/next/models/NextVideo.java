@@ -16,7 +16,7 @@ public class NextVideo {
     private String mPlaylistId; // present only on playlists
     @JsonPath("$.endpoint.watchEndpoint.index")
     private int mPlaylistItemIndex = -1; // index inside a playlist (present only on playlists)
-    @JsonPath("$.item.previewButtonRenderer.byline.runs[0].text")
+    @JsonPath({"$.item.previewButtonRenderer.byline.simpleText", "$.item.previewButtonRenderer.byline.runs[0].text"})
     private String mAuthor;
     @JsonPath("$.endpoint.watchEndpoint.params")
     private String mParams;

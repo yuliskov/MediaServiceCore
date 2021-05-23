@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo;
+package com.liskovsoft.youtubeapi.videoinfo.V1;
 
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;

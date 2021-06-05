@@ -16,7 +16,7 @@ public class PlayerData {
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".<br/>
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
-    @RegExp(";function [_$A-Za-z]{2}\\(\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues.*" +
+    @RegExp(";function [_$A-Za-z]{2}\\(a?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues.*" +
             "\\nfunction [_$A-Za-z]{2}\\(\\)\\{for\\(var .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
     private String mClientPlaybackNonce;
 

@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import io.reactivex.Observable;
@@ -15,6 +16,8 @@ public interface MediaItemManager {
     // Base interfaces
     MediaItemFormatInfo getFormatInfo(MediaItem item);
     MediaItemFormatInfo getFormatInfo(String videoId);
+    MediaItemStoryboard getStoryboard(MediaItem item);
+    MediaItemStoryboard getStoryboard(String videoId);
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
     MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex);
@@ -39,6 +42,8 @@ public interface MediaItemManager {
     // RxJava interfaces
     Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
+    Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item);
+    Observable<MediaItemStoryboard> getStoryboardObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
     Observable<MediaItemMetadata> getMetadataObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex);

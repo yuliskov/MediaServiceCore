@@ -61,7 +61,6 @@ public class YouTubeMediaService implements MediaService {
         AppService.instance().invalidateCache();
         YouTubeSignInManager.instance().invalidateCache();
         LocaleManager.unhold();
-        YouTubeMediaItem.invalidateCache();
     }
 
     public static String serialize(MediaItem mediaItem) {

@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -34,6 +35,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     private final YouTubeSignInManager mSignInManager;
     private final SponsorBlockService mSponsorBlockService;
     private MediaItemManagerInt mMediaItemManagerReal;
+    private YouTubeMediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemManager() {
         mSignInManager = YouTubeSignInManager.instance();
@@ -60,17 +62,24 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
         checkSigned();
 
-        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItem.getCachedFormatInfo(videoId);
+        VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
 
-        if (formatInfo == null) {
-            VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
+        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
-            formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
-
-            YouTubeMediaItem.setCachedFormatInfo(videoId, formatInfo);
-        }
+        mCachedFormatInfo = formatInfo;
 
         return formatInfo;
+    }
+
+    /**
+     * Cache format info per video playback session.
+     */
+    private YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
+        if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
+            return mCachedFormatInfo;
+        }
+
+        return getFormatInfo(videoId);
     }
 
     @Override
@@ -81,6 +90,26 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
         return ObservableHelper.fromNullable(() -> getFormatInfo(videoId));
+    }
+
+    @Override
+    public MediaItemStoryboard getStoryboard(MediaItem item) {
+        return getStoryboard(item.getVideoId());
+    }
+
+    @Override
+    public MediaItemStoryboard getStoryboard(String videoId) {
+        return getCachedFormatInfo(videoId).createStoryboard();
+    }
+
+    @Override
+    public Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item) {
+        return ObservableHelper.fromNullable(() -> getStoryboard(item));
+    }
+
+    @Override
+    public Observable<MediaItemStoryboard> getStoryboardObserve(String videoId) {
+        return ObservableHelper.fromNullable(() -> getStoryboard(videoId));
     }
 
     @Override
@@ -163,7 +192,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public void updateHistoryPosition(String videoId, float positionSec) {
         checkSigned();
 
-        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
+        YouTubeMediaItemFormatInfo formatInfo = getCachedFormatInfo(videoId);
 
         if (formatInfo == null) {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);

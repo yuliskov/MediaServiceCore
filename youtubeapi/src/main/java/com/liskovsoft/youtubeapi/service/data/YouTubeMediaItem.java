@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.service.data;
 
-import android.util.Pair;
 import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
@@ -42,7 +41,6 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
-    private static Pair<String, YouTubeMediaItemFormatInfo> sCachedFormatInfo;
     private int mPercentWatched;
     private String mAuthor;
     private String mVideoPreviewUrl;
@@ -432,44 +430,12 @@ public class YouTubeMediaItem implements MediaItem {
         mChannelId = metadata.getChannelId();
     }
 
-    /**
-     * Returns cached FormatInfo<br/>
-     * Use global static var to minimize RAM usage.
-     */
-    public static YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
-        if (videoId == null) {
-            return null;
-        }
-
-        if (sCachedFormatInfo != null && videoId.equals(sCachedFormatInfo.first)) {
-            return sCachedFormatInfo.second;
-        }
-
-        return null;
-    }
-
-    /**
-     * Updates cached FormatInfo<br/>
-     * Use global static var to minimize RAM usage.
-     */
-    public static void setCachedFormatInfo(String videoId, YouTubeMediaItemFormatInfo formatInfo) {
-        if (videoId == null || formatInfo == null) {
-            return;
-        }
-
-        sCachedFormatInfo = new Pair<>(videoId, formatInfo);
-    }
-
     public String getReloadPageKey() {
         return mReloadPageKey;
     }
 
     public boolean isEmpty() {
         return mTitle == null && mCardImageUrl == null;
-    }
-
-    public static void invalidateCache() {
-        sCachedFormatInfo = null;
     }
 
     @NonNull

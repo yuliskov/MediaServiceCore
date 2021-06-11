@@ -18,7 +18,7 @@ public class YouTubeSignInManager implements SignInManager {
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
-    private String mAuthorizationHeaderCached;
+    public static String mAuthorizationHeaderCached;
     private long mLastUpdateTime;
 
     private YouTubeSignInManager() {

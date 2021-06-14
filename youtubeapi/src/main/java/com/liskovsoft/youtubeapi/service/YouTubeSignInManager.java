@@ -14,11 +14,11 @@ import java.util.List;
 
 public class YouTubeSignInManager implements SignInManager {
     private static final String TAG = YouTubeSignInManager.class.getSimpleName();
-    private static final long TOKEN_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // 30 minutes
+    private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // 60 minutes - default token live
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
-    public static String mAuthorizationHeaderCached;
+    private String mAuthorizationHeaderCached;
     private long mLastUpdateTime;
 
     private YouTubeSignInManager() {

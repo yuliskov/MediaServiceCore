@@ -27,11 +27,13 @@ public interface AppConstants {
 
     /**
      * Used in browse, next, search<br/>
-     * Previous client version: 7.20190214
+     * Previous client version: 7.20190214<br/>
+     * racyCheckOk - confirm age<br/>
+     * contentCheckOk - ?
      */
     String JSON_POST_DATA_TEMPLATE = String.format("{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
             "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
-            "\"user\":{\"enableSafetyMode\":false}},%%s}", CLIENT_VERSION);
+            "\"user\":{\"enableSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION);
 
     /**
      * Used when parsing video_info data

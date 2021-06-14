@@ -60,6 +60,10 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
+        if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
+            return mCachedFormatInfo;
+        }
+
         checkSigned();
 
         VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
@@ -71,16 +75,16 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         return formatInfo;
     }
 
-    /**
-     * Cache format info per video playback session.
-     */
-    private YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
-        if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
-            return mCachedFormatInfo;
-        }
-
-        return getFormatInfo(videoId);
-    }
+    ///**
+    // * Cache format info per video playback session.
+    // */
+    //private YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
+    //    if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
+    //        return mCachedFormatInfo;
+    //    }
+    //
+    //    return getFormatInfo(videoId);
+    //}
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
@@ -99,7 +103,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public MediaItemStoryboard getStoryboard(String videoId) {
-        return getCachedFormatInfo(videoId).createStoryboard();
+        return getFormatInfo(videoId).createStoryboard();
     }
 
     @Override
@@ -192,7 +196,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     public void updateHistoryPosition(String videoId, float positionSec) {
         checkSigned();
 
-        YouTubeMediaItemFormatInfo formatInfo = getCachedFormatInfo(videoId);
+        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
 
         if (formatInfo == null) {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);

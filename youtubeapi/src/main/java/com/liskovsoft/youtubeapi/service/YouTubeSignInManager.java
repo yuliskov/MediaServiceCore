@@ -18,7 +18,7 @@ public class YouTubeSignInManager implements SignInManager {
     private static YouTubeSignInManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
-    private String mAuthorizationHeaderCached;
+    private String mCachedAuthorizationHeader;
     private long mLastUpdateTime;
 
     private YouTubeSignInManager() {
@@ -61,7 +61,7 @@ public class YouTubeSignInManager implements SignInManager {
         // get or create authorization on fly
         updateAuthorizationHeader();
 
-        return mAuthorizationHeaderCached != null;
+        return mCachedAuthorizationHeader != null;
     }
 
     @Override
@@ -89,14 +89,14 @@ public class YouTubeSignInManager implements SignInManager {
         // get or create authorization on fly
         updateAuthorizationHeader();
 
-        return mAuthorizationHeaderCached;
+        return mCachedAuthorizationHeader;
     }
 
     /**
      * For testing purposes
      */
     public void setAuthorizationHeader(String authorizationHeader) {
-        mAuthorizationHeaderCached = authorizationHeader;
+        mCachedAuthorizationHeader = authorizationHeader;
         mLastUpdateTime = System.currentTimeMillis();
     }
 
@@ -111,14 +111,14 @@ public class YouTubeSignInManager implements SignInManager {
     }
 
     public void invalidateCache() {
-        mLastUpdateTime = 0;
+        mCachedAuthorizationHeader = null;
     }
 
     /**
      * Authorization should be updated periodically (see expire_in field in response)
      */
     private synchronized void updateAuthorizationHeader() {
-        if (mAuthorizationHeaderCached != null) {
+        if (mCachedAuthorizationHeader != null) {
             long currentTime = System.currentTimeMillis();
 
             if ((currentTime - mLastUpdateTime) < TOKEN_REFRESH_PERIOD_MS) {
@@ -128,12 +128,12 @@ public class YouTubeSignInManager implements SignInManager {
 
         Log.d(TAG, "Updating authorization header...");
 
-        mAuthorizationHeaderCached = null;
+        mCachedAuthorizationHeader = null;
 
         AccessToken token = obtainAccessToken();
 
         if (token != null) {
-            mAuthorizationHeaderCached = String.format("%s %s", token.getTokenType(), token.getAccessToken());
+            mCachedAuthorizationHeader = String.format("%s %s", token.getTokenType(), token.getAccessToken());
             mLastUpdateTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "Access token is null!");

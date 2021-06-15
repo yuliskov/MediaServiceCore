@@ -31,7 +31,7 @@ import java.util.Set;
 
 public class YouTubeMediaItemManager implements MediaItemManager {
     private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
-    private static MediaItemManager sInstance;
+    private static YouTubeMediaItemManager sInstance;
     private final YouTubeSignInManager mSignInManager;
     private final SponsorBlockService mSponsorBlockService;
     private MediaItemManagerInt mMediaItemManagerReal;
@@ -42,7 +42,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         mSponsorBlockService = SponsorBlockService.instance();
     }
 
-    public static MediaItemManager instance() {
+    public static YouTubeMediaItemManager instance() {
         if (sInstance == null) {
             sInstance = new YouTubeMediaItemManager();
         }
@@ -381,6 +381,10 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
         return ObservableHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
+    }
+
+    public void invalidateCache() {
+        mCachedFormatInfo = null;
     }
 
     private void checkSigned() {

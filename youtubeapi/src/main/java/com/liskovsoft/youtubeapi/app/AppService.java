@@ -216,8 +216,8 @@ public class AppService {
     }
 
     public void invalidateCache() {
-        mAppInfoUpdateTimeMS = 0;
-        mPlayerDataUpdateTimeMS = 0;
-        mBaseDataUpdateTimeMS = 0;
+        mCachedAppInfo = null;
+        mCachedPlayerData = null;
+        mCachedBaseData = null;
     }
 }

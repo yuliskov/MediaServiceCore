@@ -63,16 +63,13 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
 
     //@Override
     //public VideoInfo getVideoInfo(String videoId) {
-    //    // Enable history (temporally, until no playback be fixed)
+    //    // Enable history (temporally, until frequent buffering will be fixed)
     //    VideoInfo signedInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
     //    VideoInfo unsignedInfo = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId); // Fix no playback bug (temporal fix)
     //    if (signedInfo != null && unsignedInfo != null) { // Merge signed info with unsigned (otherwise history won't work)
     //        unsignedInfo.setEventId(signedInfo.getEventId());
     //        unsignedInfo.setVisitorMonitoringData(signedInfo.getVisitorMonitoringData());
     //    }
-    //
-    //    // Original code
-    //    //return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
     //
     //    return unsignedInfo;
     //}
@@ -87,9 +84,6 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         if (result == null || result.getEventId() == null || result.getVisitorMonitoringData() == null) {
             result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
         }
-
-        // Original code
-        //return mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
 
         return result;
     }

@@ -118,12 +118,8 @@ public class YouTubeSignInManager implements SignInManager {
      * Authorization should be updated periodically (see expire_in field in response)
      */
     private synchronized void updateAuthorizationHeader() {
-        if (mCachedAuthorizationHeader != null) {
-            long currentTime = System.currentTimeMillis();
-
-            if ((currentTime - mLastUpdateTime) < TOKEN_REFRESH_PERIOD_MS) {
-                return;
-            }
+        if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mLastUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
+            return;
         }
 
         Log.d(TAG, "Updating authorization header...");

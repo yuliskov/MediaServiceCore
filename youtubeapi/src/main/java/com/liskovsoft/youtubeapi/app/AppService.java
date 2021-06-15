@@ -171,8 +171,7 @@ public class AppService {
     }
 
     private void updateAppInfoData() {
-        if (System.currentTimeMillis() - mAppInfoUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
-            mCachedAppInfo != null) {
+        if (mCachedAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 
@@ -186,8 +185,7 @@ public class AppService {
     }
 
     private void updatePlayerData() {
-        if (System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
-                mCachedPlayerData != null) {
+        if (mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 
@@ -201,8 +199,7 @@ public class AppService {
     }
 
     private void updateBaseData() {
-        if (System.currentTimeMillis() - mBaseDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
-                mCachedBaseData != null) {
+        if (mCachedBaseData != null && System.currentTimeMillis() - mBaseDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 

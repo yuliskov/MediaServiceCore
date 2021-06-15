@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +60,7 @@ public class AppManagerTest {
 
         assertNotNull("Playback nonce result not null", clientPlaybackNonceFunction);
 
-        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getClientPlaybackNonce();
+        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getClientPlaybackNonceFunction();
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
         assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith(";function ") &&
@@ -100,7 +99,7 @@ public class AppManagerTest {
 
         assertNotNull("Player url not null", playerUrl);
 
-        return ServiceHelper.tidyUrl(playerUrl);
+        return playerUrl;
     }
 
     private String getBaseUrl(String userAgent) {
@@ -112,6 +111,6 @@ public class AppManagerTest {
 
         assertNotNull("Base url not null", baseUrl);
 
-        return ServiceHelper.tidyUrl(baseUrl);
+        return baseUrl;
     }
 }

@@ -1,12 +1,10 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
@@ -19,12 +17,9 @@ public class AppService {
     private static AppService sInstance;
     private final AppManagerWrapper mAppManager;
     private Duktape mDuktape;
-    private String mCachedDecipherFunction;
-    private String mCachedClientPlaybackNonceFunction;
-    private String mCachedPlayerUrl;
-    private String mCachedBaseUrl;
-    private String mCachedClientId;
-    private String mCachedClientSecret;
+    private AppInfo mCachedAppInfo;
+    private PlayerData mCachedPlayerData;
+    private ClientData mCachedBaseData;
     private long mAppInfoUpdateTimeMS;
     private long mPlayerDataUpdateTimeMS;
     private long mBaseDataUpdateTimeMS;
@@ -90,7 +85,7 @@ public class AppService {
     public String getClientId() {
         updateBaseData();
 
-        return mCachedClientId;
+        return mCachedBaseData.getClientId();
     }
 
     /**
@@ -99,7 +94,7 @@ public class AppService {
     public String getClientSecret() {
         updateBaseData();
 
-        return mCachedClientSecret;
+        return mCachedBaseData.getClientSecret();
     }
 
     private static boolean isAllNulls(List<String> ciphered) {
@@ -154,106 +149,69 @@ public class AppService {
     private String getDecipherFunction() {
         updatePlayerData();
 
-        return mCachedDecipherFunction;
+        return mCachedPlayerData.getDecipherFunction();
     }
 
     private String getClientPlaybackNonceFunction() {
         updatePlayerData();
 
-        return mCachedClientPlaybackNonceFunction;
+        return mCachedPlayerData.getClientPlaybackNonceFunction();
     }
 
     private String getPlayerUrl() {
         updateAppInfoData();
 
-        return mCachedPlayerUrl;
+        return mCachedAppInfo.getPlayerUrl();
     }
 
     private String getBaseUrl() {
         updateAppInfoData();
 
-        return mCachedBaseUrl;
+        return mCachedAppInfo.getBaseUrl();
     }
 
     private void updateAppInfoData() {
         if (System.currentTimeMillis() - mAppInfoUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
-            mCachedPlayerUrl != null && mCachedBaseUrl != null) {
+            mCachedAppInfo != null) {
             return;
         }
 
         Log.d(TAG, "updateAppInfoData");
 
-        AppInfo appInfo = mAppManager.getAppInfo(AppConstants.APP_USER_AGENT);
+        mCachedAppInfo = mAppManager.getAppInfo(AppConstants.APP_USER_AGENT);
 
-        if (appInfo != null) {
-            mCachedPlayerUrl = ServiceHelper.tidyUrl(appInfo.getPlayerUrl());
-
-            mCachedBaseUrl = ServiceHelper.tidyUrl(appInfo.getBaseUrl());
-
+        if (mCachedAppInfo != null) {
             mAppInfoUpdateTimeMS = System.currentTimeMillis();
         }
     }
 
     private void updatePlayerData() {
         if (System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
-                mCachedDecipherFunction != null && mCachedClientPlaybackNonceFunction != null) {
+                mCachedPlayerData != null) {
             return;
         }
 
         Log.d(TAG, "updatePlayerData");
 
-        String playerUrl = getPlayerUrl();
+        mCachedPlayerData = mAppManager.getPlayerData(getPlayerUrl());
 
-        if (playerUrl != null) {
-            PlayerData playerData = mAppManager.getPlayerData(playerUrl);
-
-            if (playerData != null) {
-                String decipherFunction = playerData.getDecipherFunction();
-
-                if (decipherFunction != null) {
-                    mCachedDecipherFunction = Helpers.replace(decipherFunction, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
-                }
-
-                String clientPlaybackNonce = playerData.getClientPlaybackNonce();
-
-                if (clientPlaybackNonce != null) {
-                    mCachedClientPlaybackNonceFunction =
-                            Helpers.replace(clientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
-                }
-
-                mPlayerDataUpdateTimeMS = System.currentTimeMillis();
-            }
+        if (mCachedPlayerData != null) {
+            mPlayerDataUpdateTimeMS = System.currentTimeMillis();
         }
     }
 
     private void updateBaseData() {
         if (System.currentTimeMillis() - mBaseDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS &&
-                mCachedClientId != null && mCachedClientSecret != null) {
+                mCachedBaseData != null) {
             return;
         }
 
         Log.d(TAG, "updateBaseData");
 
-        String baseUrl = getBaseUrl();
+        mCachedBaseData = mAppManager.getBaseData(getBaseUrl());
 
-        if (baseUrl != null) {
-            ClientData baseData = mAppManager.getBaseData(baseUrl);
-
-            if (baseData != null) {
-                String clientId = baseData.getClientId();
-
-                if (clientId != null) {
-                    mCachedClientId = clientId;
-                }
-
-                String clientSecret = baseData.getClientSecret();
-
-                if (clientSecret != null) {
-                    mCachedClientSecret = clientSecret;
-                }
-
-                mBaseDataUpdateTimeMS = System.currentTimeMillis();
-            }
+        if (mCachedBaseData != null) {
+            mBaseDataUpdateTimeMS = System.currentTimeMillis();
         }
     }
 

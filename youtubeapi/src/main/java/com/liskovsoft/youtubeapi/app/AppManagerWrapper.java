@@ -20,11 +20,19 @@ public class AppManagerWrapper {
     }
     
     public PlayerData getPlayerData(String playerUrl) {
+        if (playerUrl == null) {
+            return null;
+        }
+
         Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
         return RetrofitHelper.get(wrapper);
     }
     
     public ClientData getBaseData(String baseUrl) {
+        if (baseUrl == null) {
+            return null;
+        }
+
         Call<ModernClientData> wrapper = mAppManager.getModernClientData(baseUrl);
         ClientData baseData = RetrofitHelper.get(wrapper);
 

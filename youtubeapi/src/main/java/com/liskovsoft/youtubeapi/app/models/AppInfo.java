@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app.models;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class AppInfo {
     /**
@@ -21,10 +22,10 @@ public class AppInfo {
     private String mBaseUrl;
 
     public String getPlayerUrl() {
-        return mPlayerUrl;
+        return ServiceHelper.tidyUrl(mPlayerUrl);
     }
 
     public String getBaseUrl() {
-        return mBaseUrl;
+        return ServiceHelper.tidyUrl(mBaseUrl);
     }
 }

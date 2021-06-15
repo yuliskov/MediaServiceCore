@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.app.models;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
 public class PlayerData {
@@ -23,10 +25,10 @@ public class PlayerData {
     private String mClientPlaybackNonce;
 
     public String getDecipherFunction() {
-        return mDecipherFunction;
+        return Helpers.replace(mDecipherFunction, AppConstants.SIGNATURE_DECIPHER, "function decipherSignature");
     }
 
-    public String getClientPlaybackNonce() {
-        return mClientPlaybackNonce;
+    public String getClientPlaybackNonceFunction() {
+        return Helpers.replace(mClientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
     }
 }

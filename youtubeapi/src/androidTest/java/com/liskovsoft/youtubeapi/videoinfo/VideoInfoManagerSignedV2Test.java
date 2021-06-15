@@ -2,17 +2,15 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoManagerParams;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoManagerUnsigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoManagerSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
 import java.io.IOException;
@@ -22,22 +20,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricTestRunner.class)
-public class VideoInfoManagerUnsignedV2Test {
-    private VideoInfoManagerUnsigned mService;
+/**
+ * NOTE: testing with Duktape (native libs)!!!
+ */
+public class VideoInfoManagerSignedV2Test {
+    private VideoInfoManagerSigned mService;
     private LocaleManager mLocaleManager;
 
     @Before
     public void setUp() {
-        // fix issue: No password supplied for PKCS#12 KeyStore
-        // https://github.com/robolectric/robolectric/issues/5115
-        System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-
-        ShadowLog.stream = System.out; // catch Log class output
-
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoManagerUnsigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoManagerSigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -64,7 +58,8 @@ public class VideoInfoManagerUnsignedV2Test {
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {
         assertNotNull("Result not null", result);
         assertNotNull("Contains dash url", result.getDashManifestUrl());
-        assertNotNull("Contains hls url", result.getHlsManifestUrl());
+        // V2 doesn't contains legacy hls urls
+        //assertNotNull("Contains hls url", result.getHlsManifestUrl());
 
         testThatVideoInfoContainsRequiredFields(result);
     }
@@ -108,12 +103,12 @@ public class VideoInfoManagerUnsignedV2Test {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
         return wrapper.execute().body();
     }
 }

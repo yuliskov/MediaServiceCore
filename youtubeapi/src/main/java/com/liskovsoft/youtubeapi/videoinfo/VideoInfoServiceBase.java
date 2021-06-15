@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
-    private final AppService mAppService;
+    public final AppService mAppService;
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();

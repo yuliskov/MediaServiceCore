@@ -12,13 +12,9 @@ import retrofit2.http.Query;
  * Unlock age restricted videos: https://www.youtube.com/get_video_info?ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv
  */
 public interface VideoInfoManagerSignedV3 {
-    // Unused method. sts - ???
-    @GET("https://www.youtube.com/get_video_info?html5=1&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION)
-    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("sts") String sts);
-
     // Unused method
     @GET("https://www.youtube.com/get_video_info?html5=1&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION)
-    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("cpn") String cpn);
 
     /**
      * Unlock live hls streams

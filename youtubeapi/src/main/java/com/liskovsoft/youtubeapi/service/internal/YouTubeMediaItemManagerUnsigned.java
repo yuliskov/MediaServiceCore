@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.next.WatchNextServiceUnsigned;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
-import com.liskovsoft.youtubeapi.videoinfo.V1.VideoInfoServiceUnsigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {

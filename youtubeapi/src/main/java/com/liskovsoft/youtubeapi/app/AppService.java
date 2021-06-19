@@ -97,6 +97,12 @@ public class AppService {
         return mCachedBaseData.getClientSecret();
     }
 
+    public String getSignatureTimestamp() {
+        updatePlayerData();
+
+        return mCachedPlayerData.getSignatureTimestamp();
+    }
+
     private static boolean isAllNulls(List<String> ciphered) {
         for (String cipher : ciphered) {
             if (cipher != null) {

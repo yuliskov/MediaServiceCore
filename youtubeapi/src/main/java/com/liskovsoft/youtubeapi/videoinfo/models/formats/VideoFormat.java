@@ -125,9 +125,9 @@ public class VideoFormat {
         if (mUrl != null && clientPlaybackNonce != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
-            url.set("alr", "yes");
+            //url.set("alr", "yes");
             url.set(PARAM_CPN, clientPlaybackNonce);
-            url.set("cver", "7.20210615.10.00");
+            //url.set("cver", "7.20210615.10.00");
 
             //url.set("range", "0-500");
             //url.set("rn", "1");

@@ -16,15 +16,17 @@ public interface AppConstants {
     Pattern SIGNATURE_DECIPHER = Pattern.compile("function [_$A-Za-z]{2}");
     Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE = Pattern.compile("\\nfunction [_$A-Za-z]{2}\\(\\)");
     String SCRIPTS_URL_BASE = "https://www.youtube.com";
-    String API_KEY = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
+    String API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
     String API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";
+    String API_KEY = API_KEY_NEW;
     String FUNCTION_RANDOM_BYTES =
      "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}}";
 
     // 7.20210428.10.00
     // 7.20210411.10.00
     // 7.20201122.00.00
-    String CLIENT_VERSION = "7.20210428.10.00";
+    String CLIENT_VERSION_TV = "7.20210428.10.00";
+    String CLIENT_VERSION_WEB = "2.20210617.01.00";
 
     /**
      * Used in browse, next, search<br/>
@@ -32,9 +34,22 @@ public interface AppConstants {
      * racyCheckOk - confirm age<br/>
      * contentCheckOk - ?
      */
-    String JSON_POST_DATA_TEMPLATE = String.format("{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
+    String JSON_POST_DATA_TEMPLATE_TV = String.format(
+            "{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
             "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
-            "\"user\":{\"enableSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION);
+            "\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION_TV);
+
+    /**
+     * Used in player only<br/>
+     * Previous client version: 7.20190214<br/>
+     * racyCheckOk, lockedSafetyMode - confirm age<br/>
+     * contentCheckOk - ?
+     */
+    String JSON_POST_DATA_TEMPLATE_WEB = String.format(
+            "{\"context\":{\"client\":{\"clientName\":\"WEB\",\"clientVersion\":\"%s\"," +
+            "\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
+            "\"user\":{\"lockedSafetyMode\":false}}," +
+            "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION_WEB);
 
     /**
      * Used when parsing video_info data

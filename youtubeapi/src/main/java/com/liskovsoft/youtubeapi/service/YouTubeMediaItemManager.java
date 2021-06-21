@@ -384,7 +384,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     public void invalidateCache() {
-        mCachedFormatInfo = null;
+        //mCachedFormatInfo = null;
     }
 
     private void checkSigned() {

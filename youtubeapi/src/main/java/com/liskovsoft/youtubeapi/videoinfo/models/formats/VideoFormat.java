@@ -121,12 +121,12 @@ public class VideoFormat {
         }
     }
 
-    public void setClientPlaybackNonce(String clientPlaybackNonce) {
-        if (mUrl != null && clientPlaybackNonce != null) {
+    public void setAdditionalParams(String clientPlaybackNonce) {
+        if (mUrl != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
-            //url.set("alr", "yes");
-            url.set(PARAM_CPN, clientPlaybackNonce);
+            url.set("alr", "yes");
+            //url.set(PARAM_CPN, clientPlaybackNonce);
             //url.set("cver", "7.20210615.10.00");
 
             //url.set("range", "0-500");
@@ -135,6 +135,10 @@ public class VideoFormat {
 
             //url.set("redirect_counter", "1");
             //url.set("cms_redirect", "yes");
+
+            //url.set("keepalive", "no");
+            //url.set("pcm2cms", "yes");
+            //url.set("lsparams", "mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpcm2cms%2Cpl%2Cinitcwndbps");
 
             mUrl = url.toString();
         }

@@ -42,7 +42,7 @@ public abstract class VideoInfoServiceBase {
         for (int i = 0; i < formats.size(); i++) {
             formats.get(i).setSignature(deciphered.get(i));
             // TODO: testing
-            //formats.get(i).setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce());
+            //formats.get(i).setAdditionalParams(AppService.instance().getClientPlaybackNonce());
         }
     }
 }

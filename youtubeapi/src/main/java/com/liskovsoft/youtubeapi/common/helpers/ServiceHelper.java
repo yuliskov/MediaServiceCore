@@ -64,7 +64,13 @@ public class ServiceHelper {
 
     public static String createQuery(String template) {
         LocaleManager localeManager = LocaleManager.instance();
-        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE,
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE_TV,
+                localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
+    }
+
+    public static String createQueryWeb(String template) {
+        LocaleManager localeManager = LocaleManager.instance();
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE_WEB,
                 localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
     }
 

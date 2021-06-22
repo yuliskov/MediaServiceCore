@@ -12,7 +12,7 @@ public class AppInfo {
      * Player path example: <b>/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
     @RegExp("\"player_url\":\"([^\"]*)\"")
-    private String mPlayerUrl = "/s/player/2fa3f946/tv-player-ias.vflset/tv-player-ias.js"; // TODO: temporal solution
+    private String mPlayerUrl = "/s/player/2fa3f946/tv-player-ias.vflset/tv-player-ias.js"; // TODO: remove when AppInfo NPE be fixed
 
     /**
      * Url for m=base script<br/>
@@ -22,7 +22,7 @@ public class AppInfo {
             "id=\"base-js\" src=\"([^\"]*)\"",
             "\\.src = '([^']*m=base)'", // Cobalt path
             "\\.src = '([^']*)'; .\\.id = 'base-js'"}) // New Cobalt path
-    private String mBaseUrl = "/s/_/kabuki/_/js/k=kabuki.base.en_US.AWbHXrvhM-E.O/am=RAABhAAQ/d=1/rs=ANjRhVkpjJ4qv11C3ADcDN7kWTKbNzemMQ/m=base"; // TODO: temporal solution
+    private String mBaseUrl = "/s/_/kabuki/_/js/k=kabuki.base.en_US.AWbHXrvhM-E.O/am=RAABhAAQ/d=1/rs=ANjRhVkpjJ4qv11C3ADcDN7kWTKbNzemMQ/m=base"; // TODO: remove when AppInfo NPE be fixed
 
     public String getPlayerUrl() {
         return ServiceHelper.tidyUrl(mPlayerUrl);

@@ -33,7 +33,7 @@ public class PlayerData {
     }
 
     public String getClientPlaybackNonceFunction() {
-        return Helpers.replace(mClientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "function getClientPlaybackNonce()");
+        return Helpers.replace(mClientPlaybackNonce, AppConstants.SIGNATURE_CLIENT_PLAYBACK_NONCE, "\nfunction getClientPlaybackNonce()");
     }
 
     public String getSignatureTimestamp() {

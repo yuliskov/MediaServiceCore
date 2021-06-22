@@ -13,9 +13,10 @@ public interface AppManager {
     /**
      * Get player version that associated with specified user agent.<br/>
      * Note, that user agent should be obtained from the Smart TV device.<br/>
-     * Player url example: <b>"player_url":"\/s\/player\/e49bfb00\/tv-player-ias.vflset\/tv-player-ias.js"</b>
+     * Player url example: <b>"player_url":"\/s\/player\/e49bfb00\/tv-player-ias.vflset\/tv-player-ias.js"</b><br/>
+     * Lang change tv's url: https://www.youtube.com/tv?hrld=1
      */
-    @GET("https://youtube.com/tv")
+    @GET("https://www.youtube.com/tv")
     Call<AppInfo> getAppInfo(@Header("User-Agent") String userAgent);
 
     /**

@@ -5,7 +5,9 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class VideoInfoManagerParams {
     private static final String CHECK_PARAMS =
-            "\"playbackContext\":{\"contentPlaybackContext\":{\"html5Preference\":\"HTML5_PREF_WANTS\",\"signatureTimestamp\":%s}}";
+            "\"playbackContext\":{\"contentPlaybackContext\":{\"html5Preference\":\"HTML5_PREF_WANTS\"," +
+            "\"lactMilliseconds\":\"50\",\"playerWidthPixels\":3840,\"playerHeightPixels\":2160," +
+            "\"signatureTimestamp\":%s}}";
     //private static final String VIDEO_ID = "\"videoId\":\"%s\",\"cpn\":\"%s\"";
     private static final String VIDEO_ID = "\"videoId\":\"%s\"";
 

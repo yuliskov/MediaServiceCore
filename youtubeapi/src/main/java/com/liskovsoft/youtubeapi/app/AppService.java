@@ -85,7 +85,8 @@ public class AppService {
     public String getClientId() {
         updateBaseData();
 
-        return mCachedBaseData.getClientId();
+        // TODO: NPE 1.6K!!!
+        return mCachedBaseData != null ? mCachedBaseData.getClientId() : null;
     }
 
     /**
@@ -161,19 +162,22 @@ public class AppService {
     private String getClientPlaybackNonceFunction() {
         updatePlayerData();
 
-        return mCachedPlayerData.getClientPlaybackNonceFunction();
+        // TODO: NPE 10K!!!
+        return mCachedPlayerData != null ? mCachedPlayerData.getClientPlaybackNonceFunction() : null;
     }
 
     private String getPlayerUrl() {
         updateAppInfoData();
 
-        return mCachedAppInfo.getPlayerUrl();
+        // TODO: NPE 2.5K
+        return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
     }
 
     private String getBaseUrl() {
         updateAppInfoData();
 
-        return mCachedAppInfo.getBaseUrl();
+        // TODO: NPE 143K!!!
+        return mCachedAppInfo != null ? mCachedAppInfo.getBaseUrl() : null;
     }
 
     private void updateAppInfoData() {

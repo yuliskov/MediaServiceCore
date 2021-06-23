@@ -25,7 +25,7 @@ public class AppInfo {
     private String mBaseUrl = "/s/_/kabuki/_/js/k=kabuki.base.en_US.AWbHXrvhM-E.O/am=RAABhAAQ/d=1/rs=ANjRhVkpjJ4qv11C3ADcDN7kWTKbNzemMQ/m=base"; // TODO: remove when AppInfo NPE be fixed
 
     @RegExp("\"visitorData\":\"([^\"]*)\"")
-    private String mVisitorData;
+    private String mVisitorData = "Cgs5azZUVjRoazRuNCiY8s6GBg%3D%3D"; // TODO: remove when AppInfo NPE be fixed
 
     public String getPlayerUrl() {
         return ServiceHelper.tidyUrl(mPlayerUrl);

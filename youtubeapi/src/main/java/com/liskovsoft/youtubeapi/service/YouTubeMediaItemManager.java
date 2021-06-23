@@ -60,7 +60,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
-        if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
+        if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId() != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
             return mCachedFormatInfo;
         }
 

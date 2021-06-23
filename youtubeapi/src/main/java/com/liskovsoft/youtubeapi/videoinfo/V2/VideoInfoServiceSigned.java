@@ -37,7 +37,9 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), authorization);
+        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQuery(videoId);
+        Log.d(TAG, videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorData());
 
         return RetrofitHelper.get(wrapper);
     }

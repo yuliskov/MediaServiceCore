@@ -12,7 +12,7 @@ public interface AppConstants {
     String USER_AGENT_COBALT = "Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1";
     String USER_AGENT_WEBOS = "Mozilla/5.0 (Web0S; Linux/SmartTV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36 WebAppManager";
     String USER_AGENT_XBOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02";
-    String APP_USER_AGENT = USER_AGENT_LEGACY_3;
+    String APP_USER_AGENT = USER_AGENT_COBALT;
     Pattern SIGNATURE_DECIPHER = Pattern.compile("function [_$A-Za-z]{2}");
     Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE = Pattern.compile("\\nfunction [_$A-Za-z]{2}\\(\\)");
     String SCRIPTS_URL_BASE = "https://www.youtube.com";
@@ -26,7 +26,6 @@ public interface AppConstants {
     // 7.20210411.10.00
     // 7.20201122.00.00
     String CLIENT_VERSION_TV = "7.20210428.10.00";
-    String CLIENT_VERSION_WEB = "2.20210617.01.00";
 
     /**
      * Used in browse, next, search<br/>
@@ -38,18 +37,6 @@ public interface AppConstants {
             "{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
             "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
             "\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION_TV);
-
-    /**
-     * Used in player only<br/>
-     * Previous client version: 7.20190214<br/>
-     * racyCheckOk, lockedSafetyMode - confirm age<br/>
-     * contentCheckOk - ?
-     */
-    String JSON_POST_DATA_TEMPLATE_WEB = String.format(
-            "{\"context\":{\"client\":{\"clientName\":\"WEB\",\"clientVersion\":\"%s\"," +
-            "\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
-            "\"user\":{\"lockedSafetyMode\":false}}," +
-            "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION_WEB);
 
     /**
      * Used when parsing video_info data

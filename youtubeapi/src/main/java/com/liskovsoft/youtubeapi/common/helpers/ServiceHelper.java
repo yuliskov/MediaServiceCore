@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.common.helpers;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 import java.util.ArrayList;
@@ -65,12 +66,6 @@ public class ServiceHelper {
     public static String createQuery(String template) {
         LocaleManager localeManager = LocaleManager.instance();
         return String.format(AppConstants.JSON_POST_DATA_TEMPLATE_TV,
-                localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
-    }
-
-    public static String createQueryWeb(String template) {
-        LocaleManager localeManager = LocaleManager.instance();
-        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE_WEB,
                 localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
     }
 

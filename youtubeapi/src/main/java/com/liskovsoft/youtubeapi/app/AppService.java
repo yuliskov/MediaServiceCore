@@ -98,10 +98,22 @@ public class AppService {
         return mCachedBaseData.getClientSecret();
     }
 
+    /**
+     * Used in get_video_info
+     */
     public String getSignatureTimestamp() {
         updatePlayerData();
 
         return mCachedPlayerData.getSignatureTimestamp();
+    }
+
+    /**
+     * Used in get_video_info
+     */
+    public String getVisitorData() {
+        updateAppInfoData();
+
+        return mCachedAppInfo.getVisitorData();
     }
 
     private static boolean isAllNulls(List<String> ciphered) {

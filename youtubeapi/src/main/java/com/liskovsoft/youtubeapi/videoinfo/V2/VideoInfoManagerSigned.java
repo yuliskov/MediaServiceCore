@@ -10,5 +10,5 @@ import retrofit2.http.POST;
 public interface VideoInfoManagerSigned {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("Authorization") String auth);
+    Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("Authorization") String auth, @Header("x-goog-visitor-id") String visitorId);
 }

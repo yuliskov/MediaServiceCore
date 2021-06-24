@@ -14,6 +14,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -141,8 +142,20 @@ public class RetrofitHelper {
         builder.addInterceptor(chain -> {
             Request.Builder requestBuilder = chain.request().newBuilder();
             requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
+            // Compress response
+            requestBuilder.header("Accept-Encoding", AppConstants.ACCEPT_ENCODING);
+
+            // Emulate browser request
+            //requestBuilder.header("Connection", "keep-alive");
+            //requestBuilder.header("Cache-Control", "max-age=0");
+            requestBuilder.header("Referer", "https://www.youtube.com/tv");
+
             return chain.proceed(requestBuilder.build());
         });
+
+        // Add gzip/deflate/br support
+        //builder.addInterceptor(BrotliInterceptor.INSTANCE);
+        builder.addInterceptor(new UnzippingInterceptor());
     }
 
     private static void debugSetup(OkHttpClient.Builder okBuilder) {

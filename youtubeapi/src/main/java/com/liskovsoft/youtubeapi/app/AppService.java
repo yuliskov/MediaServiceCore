@@ -95,7 +95,7 @@ public class AppService {
     public String getClientSecret() {
         updateBaseData();
 
-        return mCachedBaseData.getClientSecret();
+        return mCachedBaseData != null ? mCachedBaseData.getClientSecret() : null;
     }
 
     /**

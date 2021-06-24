@@ -13,6 +13,7 @@ public interface AppConstants {
     String USER_AGENT_WEBOS = "Mozilla/5.0 (Web0S; Linux/SmartTV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36 WebAppManager";
     String USER_AGENT_XBOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02";
     String APP_USER_AGENT = USER_AGENT_COBALT;
+    String ACCEPT_ENCODING = "gzip, deflate, br";
     Pattern SIGNATURE_DECIPHER = Pattern.compile("function [_$A-Za-z]{2}");
     Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE = Pattern.compile("\\nfunction [_$A-Za-z]{2}\\(\\)");
     String SCRIPTS_URL_BASE = "https://www.youtube.com";
@@ -25,7 +26,7 @@ public interface AppConstants {
     // 7.20210428.10.00
     // 7.20210411.10.00
     // 7.20201122.00.00
-    String CLIENT_VERSION_TV = "7.20210428.10.00";
+    String CLIENT_VERSION_TV = "7.20210622.10.00";
 
     /**
      * Used in browse, next, search<br/>

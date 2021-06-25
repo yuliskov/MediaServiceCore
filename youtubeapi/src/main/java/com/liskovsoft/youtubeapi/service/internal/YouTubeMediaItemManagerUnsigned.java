@@ -46,8 +46,8 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     }
 
     @Override
-    public VideoInfo getVideoInfo(String videoId) {
-        return mVideoInfoServiceUnsigned.getVideoInfo(videoId);
+    public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        return mVideoInfoServiceUnsigned.getVideoInfo(videoId, clickTrackingParams);
     }
 
     @Override

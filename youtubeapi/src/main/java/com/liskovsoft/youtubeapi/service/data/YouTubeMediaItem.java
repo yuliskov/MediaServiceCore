@@ -49,6 +49,7 @@ public class YouTubeMediaItem implements MediaItem {
     private boolean mHasNewContent;
     private String mFeedbackToken;
     private String mPlaylistParams;
+    private String mClickTrackingParams;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -107,6 +108,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mIsLive = item.isLive();
         video.mIsUpcoming = item.isUpcoming();
         video.mFeedbackToken = item.getFeedbackToken();
+        video.mClickTrackingParams = item.getClickTrackingParams();
 
         addCommonProps(video);
 
@@ -418,6 +420,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public boolean hasUploads() {
         return mReloadPageKey != null;
+    }
+
+    @Override
+    public String getClickTrackingParams() {
+        return mClickTrackingParams;
     }
 
     public void sync(MediaItemMetadata metadata) {

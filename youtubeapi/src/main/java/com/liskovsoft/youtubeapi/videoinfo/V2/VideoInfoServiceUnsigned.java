@@ -23,8 +23,8 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         return sInstance;
     }
 
-    public VideoInfo getVideoInfo(String videoId) {
-        VideoInfo result = getVideoInfoRegular(videoId);
+    public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams);
 
         if (result != null) {
             decipherFormats(result.getAdaptiveFormats());
@@ -36,8 +36,9 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         return result;
     }
 
-    private VideoInfo getVideoInfoRegular(String videoId) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId));
+    private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQuery(videoId, clickTrackingParams);
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery);
 
         return RetrofitHelper.get(wrapper);
     }

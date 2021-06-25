@@ -58,8 +58,8 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public void invalidateCache() {
-        AppService.instance().invalidateCache();
-        YouTubeSignInManager.instance().invalidateCache();
+        //AppService.instance().invalidateCache();
+        //YouTubeSignInManager.instance().invalidateCache();
         YouTubeMediaItemManager.instance().invalidateCache();
         LocaleManager.unhold();
     }

@@ -9,7 +9,7 @@ public interface MediaItemManagerInt {
     WatchNextResult getWatchNextResult(String videoId);
     WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams);
     WatchNextResultContinuation continueWatchNext(String nextKey);
-    VideoInfo getVideoInfo(String videoId);
+    VideoInfo getVideoInfo(String videoId, String clickTrackingParams);
     void updateHistoryPosition(String videoId, String lengthSec,
                                String eventId, String vmData, float positionSec);
     void setLike(String videoId);

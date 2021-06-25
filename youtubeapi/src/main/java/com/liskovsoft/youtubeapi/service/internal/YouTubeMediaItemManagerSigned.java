@@ -75,14 +75,14 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     //}
 
     @Override
-    public VideoInfo getVideoInfo(String videoId) {
+    public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         // Enable history (temporally, until no playback be fixed)
-        VideoInfo result = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
+        VideoInfo result = mVideoInfoServiceSigned.getVideoInfo(videoId, clickTrackingParams, mSignInManager.getAuthorizationHeader());
 
         // Fix no playback bug (temporal fix)
         // Check that history data is valid
         if (result == null || result.getEventId() == null || result.getVisitorMonitoringData() == null) {
-            result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId);
+            result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId, clickTrackingParams);
         }
 
         return result;

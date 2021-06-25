@@ -58,6 +58,7 @@ dependencies {
 
     implementation 'com.itkacher.okhttpprofiler:okhttpprofiler:' + okhttpProfilerVersion
     implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpLoggerVersion
+    //implementation 'com.squareup.okio:okio:' + okioVersion
 
     implementation 'androidx.annotation:annotation:' + appCompatXLibraryVersion
 

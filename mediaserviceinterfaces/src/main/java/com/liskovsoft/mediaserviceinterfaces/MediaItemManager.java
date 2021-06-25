@@ -16,6 +16,7 @@ public interface MediaItemManager {
     // Base interfaces
     MediaItemFormatInfo getFormatInfo(MediaItem item);
     MediaItemFormatInfo getFormatInfo(String videoId);
+    MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams);
     MediaItemStoryboard getStoryboard(MediaItem item);
     MediaItemStoryboard getStoryboard(String videoId);
     MediaItemMetadata getMetadata(MediaItem item);
@@ -42,6 +43,7 @@ public interface MediaItemManager {
     // RxJava interfaces
     Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
+    Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams);
     Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item);
     Observable<MediaItemStoryboard> getStoryboardObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);

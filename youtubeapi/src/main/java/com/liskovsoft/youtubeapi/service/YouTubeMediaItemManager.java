@@ -55,18 +55,23 @@ public class YouTubeMediaItemManager implements MediaItemManager {
      */
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
-        return getFormatInfo(item.getVideoId());
+        return getFormatInfo(item.getVideoId(), item.getClickTrackingParams());
     }
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
+        return getFormatInfo(videoId, null);
+    }
+
+    @Override
+    public YouTubeMediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
         if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId() != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
             return mCachedFormatInfo;
         }
 
         checkSigned();
 
-        VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId);
+        VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId, clickTrackingParams);
 
         YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
@@ -94,6 +99,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
         return ObservableHelper.fromNullable(() -> getFormatInfo(videoId));
+    }
+
+    @Override
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams) {
+        return ObservableHelper.fromNullable(() -> getFormatInfo(videoId, clickTrackingParams));
     }
 
     @Override

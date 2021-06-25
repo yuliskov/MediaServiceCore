@@ -80,4 +80,5 @@ public interface MediaItem {
      */
     double getRatingScore();
     boolean hasUploads();
+    String getClickTrackingParams();
 }

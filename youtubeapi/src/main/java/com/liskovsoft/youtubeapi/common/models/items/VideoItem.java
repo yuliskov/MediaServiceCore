@@ -18,6 +18,8 @@ public class VideoItem {
     private String mPlaylistId;
     @JsonPath("$.navigationEndpoint.watchEndpoint.index")
     private int mPlaylistIndex = -1;
+    @JsonPath("$.navigationEndpoint.clickTrackingParams")
+    private String mClickTrackingParams;
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
     @JsonPath("$.channelThumbnail.thumbnails[0]")
@@ -183,5 +185,9 @@ public class VideoItem {
 
     public String getFeedbackToken() {
         return mFeedbackToken != null ? mFeedbackToken.get(0) : null;
+    }
+
+    public String getClickTrackingParams() {
+        return mClickTrackingParams;
     }
 }

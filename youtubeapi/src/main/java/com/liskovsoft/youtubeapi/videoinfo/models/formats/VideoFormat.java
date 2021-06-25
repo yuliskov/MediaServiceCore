@@ -39,6 +39,7 @@ public class VideoFormat {
 
     // Regular video params
     public static final String QUALITY = "quality";
+    private static final String THROTTLE_PARAM = "n";
     // End Regular params
     
     @JsonPath("$.itag")
@@ -121,31 +122,28 @@ public class VideoFormat {
         }
     }
 
-    public void setAdditionalParams(String clientPlaybackNonce) {
+    public String getSignature() {
+        return mRealSignature;
+    }
+
+    public String getThrottleCipher() {
         if (mUrl != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
-            url.set("alr", "yes");
-            //url.set(PARAM_CPN, clientPlaybackNonce);
-            //url.set("cver", "7.20210615.10.00");
+            return url.get(THROTTLE_PARAM);
+        }
 
-            //url.set("range", "0-500");
-            //url.set("rn", "1");
-            //url.set("rbuf", "0");
+        return null;
+    }
 
-            //url.set("redirect_counter", "1");
-            //url.set("cms_redirect", "yes");
+    public void setThrottleCipher(String throttleCipher) {
+        if (mUrl != null) {
+            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
-            //url.set("keepalive", "no");
-            //url.set("pcm2cms", "yes");
-            //url.set("lsparams", "mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpcm2cms%2Cpl%2Cinitcwndbps");
+            url.set(THROTTLE_PARAM, throttleCipher);
 
             mUrl = url.toString();
         }
-    }
-
-    public String getSignature() {
-        return mRealSignature;
     }
 
     public String getMimeType() {

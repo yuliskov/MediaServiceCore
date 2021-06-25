@@ -55,4 +55,21 @@ public class AppServiceInstrumentedTest {
 
         assertTrue("Playback nonce not empty", playbackNonce != null && !playbackNonce.isEmpty());
     }
+
+    @Test
+    public void testThrottleFunction() {
+        List<String> throttled = new ArrayList<>();
+        String throttleSignature = "ADBVCGD2934FBBBBBDDDFFF";
+        throttled.add(throttleSignature);
+        throttled.add(throttleSignature);
+        throttled.add(throttleSignature);
+        List<String> normalized = mAppService.throttleFix(throttled);
+
+        assertNotNull("Throttled not null", normalized);
+        assertFalse("Throttled not empty", normalized.isEmpty());
+
+        //for (String throttle : throttled) {
+        //    assertNotEquals("Throttled not the same", throttle, throttleSignature);
+        //}
+    }
 }

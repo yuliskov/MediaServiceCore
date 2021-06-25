@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.app;
 
-import java.util.regex.Pattern;
-
 public interface AppConstants {
     // Samsung Smart TV
     String USER_AGENT_LEGACY = "Mozilla/5.0 (Linux; Tizen 2.3; SmartHub; SMART-TV; SmartTV; U; Maple2012) AppleWebKit/538.1+ (KHTML, like Gecko) TV Safari/538.1+";
@@ -14,8 +12,6 @@ public interface AppConstants {
     String USER_AGENT_XBOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02";
     String APP_USER_AGENT = USER_AGENT_COBALT;
     String ACCEPT_ENCODING = "gzip, deflate, br";
-    Pattern SIGNATURE_DECIPHER = Pattern.compile("function [_$A-Za-z]{2}");
-    Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE = Pattern.compile("\\nfunction [_$A-Za-z]{2}\\(\\)");
     String SCRIPTS_URL_BASE = "https://www.youtube.com";
     String API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
     String API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";

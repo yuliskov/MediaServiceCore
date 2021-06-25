@@ -64,7 +64,22 @@ public class AppManagerTest {
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
         assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith(";function ") &&
-                playbackNonceFunctionContent.contains("\nfunction ") && playbackNonceFunctionContent.endsWith(".join(\"\")}"));
+                playbackNonceFunctionContent.contains("function getClientPlaybackNonce") && playbackNonceFunctionContent.endsWith(".join(\"\")}"));
+    }
+
+    @Test
+    public void testThrottleFunctionIsValid() {
+        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
+
+        PlayerData playerData = mManager.getPlayerData(playerUrl);
+
+        assertNotNull("PlayerData not null", playerData);
+
+        String throttleFunction = playerData.getThrottleFunction();
+        assertNotNull("Throttle function not null", throttleFunction);
+        assertFalse("Throttle function not empty", throttleFunction.isEmpty());
+        assertTrue("Throttle function has valid content", throttleFunction.startsWith("function throttleSignature")
+                && throttleFunction.endsWith(".join(\"\")}"));
     }
 
     @Test

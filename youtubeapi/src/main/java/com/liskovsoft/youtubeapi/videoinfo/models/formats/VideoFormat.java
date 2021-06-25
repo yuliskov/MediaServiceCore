@@ -137,7 +137,7 @@ public class VideoFormat {
     }
 
     public void setThrottleCipher(String throttleCipher) {
-        if (mUrl != null) {
+        if (mUrl != null && throttleCipher != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
             url.set(THROTTLE_PARAM, throttleCipher);

@@ -121,7 +121,8 @@ public class AppService {
     public String getSignatureTimestamp() {
         updatePlayerData();
 
-        return mCachedPlayerData.getSignatureTimestamp();
+        // TODO: NPE 300!!!
+        return mCachedPlayerData != null ? mCachedPlayerData.getSignatureTimestamp() : null;
     }
 
     /**

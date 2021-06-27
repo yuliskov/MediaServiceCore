@@ -131,7 +131,8 @@ public class AppService {
     public String getVisitorData() {
         updateAppInfoData();
 
-        return mCachedAppInfo.getVisitorData();
+        // TODO: NPE 300!!!
+        return mCachedAppInfo != null ? mCachedAppInfo.getVisitorData() : null;
     }
 
     private static boolean isAllNulls(List<String> ciphered) {

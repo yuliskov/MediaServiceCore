@@ -26,6 +26,11 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams, String authorization) {
         VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams, authorization);
 
+        if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isOwnerViewing()) {
+            Log.e(TAG, "Seems that this is user video. Retrying with different query method...");
+            result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization);
+        }
+
         if (result != null) {
             decipherFormats(result.getAdaptiveFormats());
             decipherFormats(result.getRegularFormats());
@@ -38,7 +43,13 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams, String authorization) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQuery(videoId, clickTrackingParams);
-        Log.d(TAG, videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorData());
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private VideoInfo getVideoInfoPrivate(String videoId, String clickTrackingParams, String authorization) {
+        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryPrivate(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorData());
 
         return RetrofitHelper.get(wrapper);

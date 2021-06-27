@@ -23,6 +23,9 @@ public interface AppConstants {
     // 7.20210411.10.00
     // 7.20201122.00.00
     String CLIENT_VERSION_TV = "7.20210622.10.00";
+    String CLIENT_VERSION_WEB = "2.20210617.01.00";
+    String CLIENT_NAME_WEB = "WEB";
+    String CLIENT_NAME_TV = "TVHTML5";
 
     /**
      * Used in browse, next, search<br/>

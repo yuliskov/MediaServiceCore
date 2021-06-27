@@ -630,3 +630,14 @@ Range: bytes=0-1000000
 
 GET https://r4---sn-4gxb5u-qo3s.googlevideo.com/videoplayback?expire=1624331011&ei=o_7QYLHiBdjF7gPgkKyYDg&ip=46.98.137.162&id=o-APfLIPQgkYaVRCjUwR4mx4OLjmwyytcSmhNJA1dQv8-0&itag=313&aitags=133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C271%2C278%2C313%2C394%2C395%2C396%2C397%2C398%2C399%2C400%2C401&source=youtube&requiressl=yes&mh=zw&mm=31%2C29&mn=sn-4gxb5u-qo3s%2Csn-3c27sn7e&ms=au%2Crdu&mv=m&mvi=4&pl=23&initcwndbps=1025000&vprv=1&mime=video%2Fwebm&ns=k2azIi8TpxKtxHY3cB9D3cYF&gir=yes&clen=203668973&dur=100.200&lmt=1614635594301351&mt=1624309250&fvip=15&keepalive=yes&fexp=24001373%2C24007246&beids=23886202&c=WEB&txp=5432432&n=9peHXcy9MBbSXrXQY&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&sig=AOq0QJ8wRQIhAOH6owMk0To-DA-tHxXyt-4KnUR19_d4vw31kDLfTuX_AiA5KAK33H9I8bBlRxpwtVBGr2Q7NeClp2hhja23JBlrWA%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRQIgYi0KawlQPDNQN8uBWanUlg-8eXAhS0W4FaEpWNtU_XECIQC0cjWy4V7nJKbKTrNogYDtw7YfiYEQjZL4wms9cb1HTQ%3D%3D
 Range: bytes=0-1000000
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Authorization: Bearer ya29.a0ARrdaM_zusDbfZeKRssMfkJPShpAEd4lFQyN1KIpGn7v6fig17rTyHOU22b9D34iSrzwGDtKzBeOkNqZ73trx6LdfTGrnBETIgqcGFr0opzmADhl4lk8_MFU9NQILy1K4bvfpPe8nN0-xT1yHjTgCCIDQKX2slBXhgCGUA
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: CgtweU9XdEtHM3BwOCiN_uKGBg%3D%3D
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20210623.07.00","clientScreen":"WATCH","visitorData":"CgtweU9XdEtHM3BwOCiN_uKGBg%3D%3D","clickTracking":{"clickTrackingParams":"CFgQlDUYACITCIj308q0uPECFZRg4Aodt64LCTIKZy1oaWdoLWNwd1oMRkVteV95b3V0dWJlmgEHEO_wBRiiAQ=="},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":false,"contentCheckOk":false,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"-1","signatureTimestamp":18802}},"videoId":"UJ61wn1874Q","cpn":"EB3h5XtZlFSSXac8"}

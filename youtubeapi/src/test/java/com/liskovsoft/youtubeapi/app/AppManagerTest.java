@@ -48,7 +48,7 @@ public class AppManagerTest {
         assertNotNull("Decipher function not null", decipherFunctionContent);
         assertFalse("Decipher function is not empty", decipherFunctionContent.isEmpty());
         assertTrue("Decipher function has proper content",
-                decipherFunctionContent.startsWith("var ") && decipherFunctionContent.contains("function ") &&
+                decipherFunctionContent.startsWith(";var ") && decipherFunctionContent.contains("function ") &&
                         decipherFunctionContent.endsWith(".join(\"\")}"));
     }
 

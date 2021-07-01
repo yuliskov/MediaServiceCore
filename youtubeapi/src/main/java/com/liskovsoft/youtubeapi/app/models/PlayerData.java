@@ -34,7 +34,7 @@ public class PlayerData {
             "function [_$A-Za-z]{2}\\(\\)\\{for\\(var .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
     private String mClientPlaybackNonceFunction;
 
-    @RegExp(";function [_$A-Za-z]+\\(a\\)\\{var b=a.split\\(\"\"\\).*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*return b.join\\(\"\"\\)\\}")
+    @RegExp(";function [_$A-Za-z]+\\(a\\)\\{var b=a.split\\(\"\"\\)[\\S\\s]*?return b.join\\(\"\"\\)\\}")
     private String mThrottleFunction;
 
     @RegExp("signatureTimestamp:(\\d+)")

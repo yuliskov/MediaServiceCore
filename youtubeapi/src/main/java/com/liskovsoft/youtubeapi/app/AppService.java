@@ -1,22 +1,21 @@
 package com.liskovsoft.youtubeapi.app;
 
+import app.cash.quickjs.QuickJs;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
-import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
-    // Interval doesn't matter because we have MediaService.invalidateCache()
     private static final long CACHE_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static AppService sInstance;
     private final AppManagerWrapper mAppManager;
-    private Duktape mDuktape;
+    private QuickJs mQuickJs;
     private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
     private ClientData mCachedBaseData;
@@ -41,12 +40,12 @@ public class AppService {
      * Note, lazy init for easy testing.<br/>
      * Could be tested only inside instrumented tests!
      */
-    private Duktape getDuktape() {
-        if (mDuktape == null) {
-            mDuktape = Duktape.create(); // js evaluator, contains native *.so libs
+    private QuickJs getQuickJs() {
+        if (mQuickJs == null) {
+            mQuickJs = QuickJs.create(); // js evaluator, contains native *.so libs
         }
 
-        return mDuktape;
+        return mQuickJs;
     }
 
     /**
@@ -93,7 +92,7 @@ public class AppService {
             return null;
         }
 
-        return getDuktape().evaluate(code).toString();
+        return getQuickJs().evaluate(code).toString();
     }
 
     /**
@@ -188,7 +187,7 @@ public class AppService {
     }
 
     private List<String> runDecipherCode(String decipherCode) {
-        String result = getDuktape().evaluate(decipherCode).toString();
+        String result = getQuickJs().evaluate(decipherCode).toString();
 
         String[] values = result.split(",");
 
@@ -208,13 +207,14 @@ public class AppService {
     private String getDecipherFunction() {
         updatePlayerData();
 
-        return mCachedPlayerData.getDecipherFunction();
+        return mCachedPlayerData != null ? mCachedPlayerData.getDecipherFunction() : null;
     }
 
     private String getThrottleFunction() {
         updatePlayerData();
 
-        return mCachedPlayerData.getThrottleFunction();
+        // TODO: NPE 24 events
+        return mCachedPlayerData != null ? mCachedPlayerData.getThrottleFunction() : null;
     }
 
     private String getClientPlaybackNonceFunction() {

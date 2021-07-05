@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.app;
 
-import app.cash.quickjs.QuickJs;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
+import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ public class AppService {
     private static final long CACHE_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static AppService sInstance;
     private final AppManagerWrapper mAppManager;
-    private QuickJs mQuickJs;
+    private Duktape mDuktape;
     private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
     private ClientData mCachedBaseData;
@@ -40,12 +40,12 @@ public class AppService {
      * Note, lazy init for easy testing.<br/>
      * Could be tested only inside instrumented tests!
      */
-    private QuickJs getQuickJs() {
-        if (mQuickJs == null) {
-            mQuickJs = QuickJs.create(); // js evaluator, contains native *.so libs
+    private Duktape getDuktape() {
+        if (mDuktape == null) {
+            mDuktape = Duktape.create(); // js evaluator, contains native *.so libs
         }
 
-        return mQuickJs;
+        return mDuktape;
     }
 
     /**
@@ -92,7 +92,7 @@ public class AppService {
             return null;
         }
 
-        return getQuickJs().evaluate(code).toString();
+        return getDuktape().evaluate(code).toString();
     }
 
     /**
@@ -187,7 +187,7 @@ public class AppService {
     }
 
     private List<String> runDecipherCode(String decipherCode) {
-        String result = getQuickJs().evaluate(decipherCode).toString();
+        String result = getDuktape().evaluate(decipherCode).toString();
 
         String[] values = result.split(",");
 

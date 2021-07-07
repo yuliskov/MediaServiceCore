@@ -224,7 +224,7 @@ public class LoungeService {
 
         Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
 
-        Call<StateResult> wrapper = mCommandManager.postCommand(
+        Call<Void> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 CommandParams.getNowPlaying(videoId, positionMs, durationMs, ctt, playlistId, playlistIndex));
         RetrofitHelper.get(wrapper);
@@ -237,7 +237,7 @@ public class LoungeService {
 
         Log.d(TAG, "Post onStateChange pos: %s, dur: %s...", positionMs, durationMs);
 
-        Call<StateResult> wrapper = mCommandManager.postCommand(
+        Call<Void> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 CommandParams.getOnStateChange(positionMs, durationMs, state));
         RetrofitHelper.get(wrapper);
@@ -250,7 +250,7 @@ public class LoungeService {
 
         Log.d(TAG, "Post onPrevNextChange...");
 
-        Call<StateResult> wrapper = mCommandManager.postCommand(
+        Call<Void> wrapper = mCommandManager.postCommand(
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 CommandParams.getOnPrevNextChange());
         RetrofitHelper.get(wrapper);

@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.lounge.models.commands;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathNullable;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class CommandItem {
     // Special commands
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";
-
+    
     @JsonPath("$[0]")
     private int mIndex;
 

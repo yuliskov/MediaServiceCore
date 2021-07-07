@@ -1,11 +1,16 @@
 package com.liskovsoft.youtubeapi.common.converters.regexp.typeadapter;
 
+import android.content.Context;
 import com.jayway.jsonpath.PathNotFoundException;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -99,6 +104,10 @@ public class RegExpTypeAdapter<T> {
             e.printStackTrace();
         }
 
+        if (!done) {
+            dumpDebugInfo(type, regExpContent);
+        }
+
         return done ? obj : null;
     }
 
@@ -122,5 +131,19 @@ public class RegExpTypeAdapter<T> {
         }
 
         return null;
+    }
+
+    private void dumpDebugInfo(Class<?> type, String regExpContent) {
+        Context context = GlobalPreferences.sInstance.getContext();
+
+        if (context == null) {
+            return;
+        }
+
+        File destination = new File(FileHelpers.getCacheDir(context), type.getSimpleName());
+
+        MessageHelpers.showLongMessage(context, String.format("Debug info has been dumped to %s", destination));
+
+        FileHelpers.streamToFile(FileHelpers.toStream(regExpContent), destination);
     }
 }

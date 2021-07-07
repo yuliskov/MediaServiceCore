@@ -9,14 +9,15 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 public class AppInfo {
     /**
      * Return JS decipher function as string<br/>
-     * Player path example: <b>/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
+     * Path example: <b>/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
     @RegExp("\"player_url\":\"(.*?)\"")
     private String mPlayerUrl = "/s/player/7acefd5d/tv-player-ias.vflset/tv-player-ias.js"; // TODO: remove when AppInfo NPE be fixed
 
     /**
      * Url for m=base script<br/>
-     * Which contains client_secret and client_id constants
+     * Which contains client_secret and client_id constants<br/>
+     * Path example: <b>/s/_/kabuki/_/js/k=kabuki.base.en_US.8vees7yb36s.O/am=RAQAmAAQ/d=1/rs=ANjRhVmalTy3cHtUi1JaaLqkXmz43jeSJw/m=base</b>
      */
     @RegExp({
             "id=\"base-js\" src=\"(.*?)\"",

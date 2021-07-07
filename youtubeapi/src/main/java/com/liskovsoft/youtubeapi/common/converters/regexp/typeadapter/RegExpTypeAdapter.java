@@ -53,6 +53,7 @@ public class RegExpTypeAdapter<T> {
 
         Object obj = null;
         boolean done = false;
+        boolean unset = false;
 
         try {
             Constructor<?> constructor = type.getConstructor();
@@ -93,6 +94,7 @@ public class RegExpTypeAdapter<T> {
                 }
 
                 if (regExpVal == null) {
+                    unset = true; // at least one field is unset
                     continue;
                 }
 
@@ -104,7 +106,7 @@ public class RegExpTypeAdapter<T> {
             e.printStackTrace();
         }
 
-        if (!done) {
+        if (unset) {
             dumpDebugInfo(type, regExpContent);
         }
 

@@ -41,7 +41,7 @@ public class JsonPathTypeAdapter<T> {
     public final T read(InputStream is) {
         is = process(is);
 
-        Object jsonContent = null;
+        String jsonContent = null;
 
         String[] jsonPath = getJsonPath(getGenericType());
 
@@ -56,10 +56,17 @@ public class JsonPathTypeAdapter<T> {
                 }
             }
         } else { // annotation on field
-            jsonContent = is;
+            jsonContent = Helpers.toString(is);
         }
 
-        return (T) readType(getGenericType(), jsonContent);
+        T result = (T) readType(getGenericType(), jsonContent);
+
+        if (result == null) {
+            // Dump root object
+            ReflectionHelper.dumpDebugInfo(getGenericType(), jsonContent);
+        }
+
+        return result;
     }
 
     /**
@@ -73,7 +80,7 @@ public class JsonPathTypeAdapter<T> {
         return mType;
     }
 
-    private Object readType(Class<?> type, Object jsonContent) {
+    private Object readType(Class<?> type, String jsonContent) {
         if (type == null || jsonContent == null) {
             return null;
         }
@@ -87,11 +94,7 @@ public class JsonPathTypeAdapter<T> {
 
             DocumentContext parser;
 
-            if (jsonContent instanceof InputStream) {
-                parser = mParser.parse((InputStream) jsonContent);
-            } else {
-                parser = mParser.parse((String) jsonContent);
-            }
+            parser = mParser.parse(jsonContent);
 
             List<Field> fields = ReflectionHelper.getAllFields(type);
 
@@ -163,10 +166,6 @@ public class JsonPathTypeAdapter<T> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //if (!done) {
-        //    ReflectionHelper.dumpDebugInfo(type, jsonContent.toString());
-        //}
 
         return done ? obj : null;
     }

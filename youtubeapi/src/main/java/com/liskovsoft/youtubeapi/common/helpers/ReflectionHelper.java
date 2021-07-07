@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -61,7 +62,11 @@ public class ReflectionHelper {
         }
     }
 
-    public static void dumpDebugInfo(Class<?> type, String regExpContent) {
+    public static void dumpDebugInfo(Class<?> type, String content) {
+        dumpDebugInfo(type, FileHelpers.toStream(content));
+    }
+
+    public static void dumpDebugInfo(Class<?> type, InputStream content) {
         Context context = GlobalPreferences.sInstance.getContext();
 
         if (context == null) {
@@ -72,6 +77,6 @@ public class ReflectionHelper {
 
         MessageHelpers.showLongMessage(context, String.format("Debug info has been dumped to %s", destination));
 
-        FileHelpers.streamToFile(FileHelpers.toStream(regExpContent), destination);
+        FileHelpers.streamToFile(content, destination);
     }
 }

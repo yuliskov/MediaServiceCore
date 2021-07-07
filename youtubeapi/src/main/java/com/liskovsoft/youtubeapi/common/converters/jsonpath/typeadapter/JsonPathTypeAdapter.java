@@ -49,7 +49,7 @@ public class JsonPathTypeAdapter<T> {
             DocumentContext parser = mParser.parse(is);
             for (String path : jsonPath) {
                 try {
-                    jsonContent = parser.read(path);
+                    jsonContent = parser.read(path).toString();
                     break;
                 } catch (PathNotFoundException e) {
                     Log.e(TAG, e.getMessage());

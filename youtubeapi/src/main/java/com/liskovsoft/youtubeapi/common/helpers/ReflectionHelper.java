@@ -1,5 +1,11 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import android.content.Context;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -53,5 +59,19 @@ public class ReflectionHelper {
         } catch (IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void dumpDebugInfo(Class<?> type, String regExpContent) {
+        Context context = GlobalPreferences.sInstance.getContext();
+
+        if (context == null) {
+            return;
+        }
+
+        File destination = new File(FileHelpers.getCacheDir(context), type.getSimpleName());
+
+        MessageHelpers.showLongMessage(context, String.format("Debug info has been dumped to %s", destination));
+
+        FileHelpers.streamToFile(FileHelpers.toStream(regExpContent), destination);
     }
 }

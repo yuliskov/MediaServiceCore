@@ -163,6 +163,10 @@ public class JsonPathTypeAdapter<T> {
             e.printStackTrace();
         }
 
+        if (!done) {
+            ReflectionHelper.dumpDebugInfo(type, jsonContent.toString());
+        }
+
         return done ? obj : null;
     }
 

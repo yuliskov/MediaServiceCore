@@ -107,7 +107,7 @@ public class RegExpTypeAdapter<T> {
         }
 
         if (unset) {
-            dumpDebugInfo(type, regExpContent);
+            ReflectionHelper.dumpDebugInfo(type, regExpContent);
         }
 
         return done ? obj : null;
@@ -133,19 +133,5 @@ public class RegExpTypeAdapter<T> {
         }
 
         return null;
-    }
-
-    private void dumpDebugInfo(Class<?> type, String regExpContent) {
-        Context context = GlobalPreferences.sInstance.getContext();
-
-        if (context == null) {
-            return;
-        }
-
-        File destination = new File(FileHelpers.getCacheDir(context), type.getSimpleName());
-
-        MessageHelpers.showLongMessage(context, String.format("Debug info has been dumped to %s", destination));
-
-        FileHelpers.streamToFile(FileHelpers.toStream(regExpContent), destination);
     }
 }

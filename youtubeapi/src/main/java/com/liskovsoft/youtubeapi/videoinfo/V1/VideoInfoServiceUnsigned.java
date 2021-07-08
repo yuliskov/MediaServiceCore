@@ -26,6 +26,10 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         return sInstance;
     }
 
+    public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        return getVideoInfo(videoId);
+    }
+
     public VideoInfo getVideoInfo(String videoId) {
         VideoInfo result = getVideoInfoHls(videoId);
 

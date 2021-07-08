@@ -53,7 +53,7 @@ public class VideoInfoManagerUnsignedTest {
 
     @Test
     public void testThatLiveVideoContainsSpecificFields()  throws IOException {
-        testThatLiveVideoContainsSpecificFields(getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE));
+        testThatLiveVideoContainsSpecificFields(getVideoInfoHls(TestHelpersV1.VIDEO_ID_LIVE));
     }
 
     @Test
@@ -64,7 +64,8 @@ public class VideoInfoManagerUnsignedTest {
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {
         assertNotNull("Result not null", result);
         assertNotNull("Contains dash url", result.getDashManifestUrl());
-        assertNotNull("Contains hls url", result.getHlsManifestUrl());
+        // Not present anymore.
+        //assertNotNull("Contains hls url", result.getHlsManifestUrl());
 
         testThatVideoInfoContainsRequiredFields(result);
     }
@@ -114,6 +115,11 @@ public class VideoInfoManagerUnsignedTest {
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
         Call<VideoInfo> wrapper = mService.getVideoInfo(videoId, mLocaleManager.getLanguage());
+        return wrapper.execute().body();
+    }
+
+    private VideoInfo getVideoInfoHls(String videoId) throws IOException {
+        Call<VideoInfo> wrapper = mService.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
         return wrapper.execute().body();
     }
 }

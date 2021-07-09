@@ -19,7 +19,7 @@ public class PlayerData {
      * Used when deciphering music items.<br/>
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
-    @RegExp(";var [$\\w]+=\\{.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
+    @RegExp(";var [$\\w]+=\\{.*\\n?.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
     //@RegExp("var [$\\w]{2}=\\{.*\\n.*\\n.*\\nfunction [$\\w]{2}\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
     private String mDecipherFunction;
     

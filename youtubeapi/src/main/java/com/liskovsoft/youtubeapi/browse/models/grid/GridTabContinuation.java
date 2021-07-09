@@ -24,6 +24,12 @@ public class GridTabContinuation {
     @JsonPath("$.continuationContents.tvSurfaceContentContinuation.header.tvSurfaceHeaderRenderer.buttons[*].buttonRenderer")
     private List<ChannelButton> mChannelButtons;
 
+    /**
+     * Generic wrapper if there's no continuation content
+     */
+    @JsonPath("$.continuationContents.tvSurfaceContentContinuation.content.genericPromoRenderer.bodyText.runs[0].text")
+    private String mPromoContinuationText;
+
     public String getNextPageKey() {
         return mNextPageKey;
     }
@@ -79,5 +85,9 @@ public class GridTabContinuation {
         }
 
         return null;
+    }
+
+    public String getPromoContinuationText() {
+        return mPromoContinuationText;
     }
 }

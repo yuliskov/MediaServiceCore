@@ -67,6 +67,11 @@ public class ReflectionHelper {
     }
 
     public static void dumpDebugInfo(Class<?> type, InputStream content) {
+        // Thread probably has been interrupted. Do skip.
+        if (content == null) {
+            return;
+        }
+
         Context context = GlobalPreferences.sInstance.getContext();
 
         if (context == null) {

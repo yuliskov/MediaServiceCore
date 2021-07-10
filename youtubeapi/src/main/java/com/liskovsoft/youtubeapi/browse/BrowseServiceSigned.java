@@ -48,7 +48,16 @@ public class BrowseServiceSigned {
     }
 
     public GridTab getSubscriptions(String authorization) {
-        return getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        GridTab subs = getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
+
+        // LIVE videos always on top
+        if (subs != null) {
+            Collections.sort(subs.getItemWrappers(), (o1, o2) ->
+                    o1.getVideoItem().isLive() == o2.getVideoItem().isLive() ? 0 : o1.getVideoItem().isLive() ? -1 : 1
+            );
+        }
+
+        return subs;
     }
 
     public List<GridTab> getSubscribedChannelsAZ(String authorization) {

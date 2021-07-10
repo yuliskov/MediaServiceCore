@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 
-public class CurrentVideo {
+public class VideoMetadata {
     public static final String LIKE_STATUS_LIKE = "LIKE";
     public static final String LIKE_STATUS_DISLIKE = "DISLIKE";
     public static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";

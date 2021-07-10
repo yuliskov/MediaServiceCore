@@ -4,11 +4,9 @@ import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
 import com.liskovsoft.youtubeapi.next.models.Playlist;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
+import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
-
-import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -66,7 +64,7 @@ public class WatchNextManagerTestBase {
         assertTrue("Suggested item thumbnails not empty: " + videoId, videoItem.getThumbnails().size() > 0);
     }
 
-    private void checkFields(CurrentVideo videoMetadata) {
+    private void checkFields(VideoMetadata videoMetadata) {
         assertNotNull("Video metadata not empty", videoMetadata);
         assertNotNull("Video metadata has video id", videoMetadata.getVideoId());
         assertNotNull("Video metadata has title", videoMetadata.getTitle());

@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.next.result;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
 import com.liskovsoft.youtubeapi.next.models.Playlist;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
@@ -16,7 +17,7 @@ public class WatchNextResult {
     @JsonPath("$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer")
     private List<SuggestedSection> mSuggestedSections;
     @JsonPath("$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer")
-    private CurrentVideo mVideoMetadata;
+    private VideoMetadata mVideoMetadata;
     @JsonPath("$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.owner.videoOwnerRenderer")
     private VideoOwner mVideoOwner;
     @JsonPath({"$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.maybeHistoryEndpointRenderer",
@@ -24,12 +25,14 @@ public class WatchNextResult {
     private NextVideo mNextVideo;
     @JsonPath("$.contents.singleColumnWatchNextResults.playlist.playlist")
     private Playlist mPlaylist;
+    @JsonPath("$.contents.singleColumnWatchNextResults.autoplay.autoplay.replayVideoRenderer")
+    private ItemWrapper mReplayItem;
 
     public List<SuggestedSection> getSuggestedSections() {
         return mSuggestedSections;
     }
 
-    public CurrentVideo getVideoMetadata() {
+    public VideoMetadata getVideoMetadata() {
         return mVideoMetadata;
     }
 
@@ -43,5 +46,13 @@ public class WatchNextResult {
 
     public Playlist getPlaylist() {
         return mPlaylist;
+    }
+
+    /**
+     * Contains same info as video item<br/>
+     * Used as the mark that next data is correct (other items might be empty).
+     */
+    public ItemWrapper getReplayItem() {
+        return mReplayItem;
     }
 }

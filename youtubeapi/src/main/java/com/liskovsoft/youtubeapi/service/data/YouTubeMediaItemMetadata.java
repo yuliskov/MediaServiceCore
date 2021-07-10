@@ -6,7 +6,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.next.models.CurrentVideo;
+import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
@@ -42,7 +42,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
 
-        CurrentVideo videoMetadata = watchNextResult.getVideoMetadata();
+        VideoMetadata videoMetadata = watchNextResult.getVideoMetadata();
         VideoOwner videoOwner = watchNextResult.getVideoOwner();
 
         if (videoMetadata == null || videoOwner == null) {
@@ -78,10 +78,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mediaItemMetadata.mNextVideo = YouTubeMediaItem.from(watchNextResult.getNextVideo());
 
         switch (videoMetadata.getLikeStatus()) {
-            case CurrentVideo.LIKE_STATUS_LIKE:
+            case VideoMetadata.LIKE_STATUS_LIKE:
                 mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
                 break;
-            case CurrentVideo.LIKE_STATUS_DISLIKE:
+            case VideoMetadata.LIKE_STATUS_DISLIKE:
                 mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
                 break;
         }

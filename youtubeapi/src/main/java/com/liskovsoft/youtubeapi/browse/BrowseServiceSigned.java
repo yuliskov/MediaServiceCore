@@ -12,6 +12,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import retrofit2.Call;
 
 import java.util.ArrayList;
@@ -52,9 +53,13 @@ public class BrowseServiceSigned {
 
         // LIVE videos always on top
         if (subs != null) {
-            Collections.sort(subs.getItemWrappers(), (o1, o2) ->
-                    o1.getVideoItem().isLive() == o2.getVideoItem().isLive() ? 0 : o1.getVideoItem().isLive() ? -1 : 1
-            );
+            Collections.sort(subs.getItemWrappers(), (o1, o2) -> {
+                VideoItem item1 = o1.getVideoItem();
+                VideoItem item2 = o2.getVideoItem();
+                boolean isLive1 = item1 != null && item1.isLive();
+                boolean isLive2 = item2 != null && item2.isLive();
+                return isLive1 == isLive2 ? 0 : isLive1 ? -1 : 1;
+            });
         }
 
         return subs;

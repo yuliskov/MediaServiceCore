@@ -15,8 +15,8 @@ public class SectionContinuation {
     /**
      * Generic wrapper if there's no continuation content
      */
-    @JsonPath("$.continuationContents.genericPromoContinuation.bodyText.runs[0].text")
-    private String mPromoContinuationText;
+    @JsonPath("$.responseContext.visitorData")
+    private String mVisitorData;
 
     public String getNextPageKey() {
         return mNextPageKey;
@@ -26,7 +26,7 @@ public class SectionContinuation {
         return mItemWrappers;
     }
 
-    public String getPromoContinuationText() {
-        return mPromoContinuationText;
+    public String getVisitorData() {
+        return mVisitorData;
     }
 }

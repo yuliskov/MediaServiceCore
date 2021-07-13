@@ -27,8 +27,8 @@ public class GridTabContinuation {
     /**
      * Generic wrapper if there's no continuation content
      */
-    @JsonPath("$.continuationContents.tvSurfaceContentContinuation.content.genericPromoRenderer.bodyText.runs[0].text")
-    private String mPromoContinuationText;
+    @JsonPath("$.responseContext.visitorData")
+    private String mVisitorData;
 
     public String getNextPageKey() {
         return mNextPageKey;
@@ -87,7 +87,7 @@ public class GridTabContinuation {
         return null;
     }
 
-    public String getPromoContinuationText() {
-        return mPromoContinuationText;
+    public String getVisitorData() {
+        return mVisitorData;
     }
 }

@@ -1,5 +1,6 @@
 package com.liskovsoft.leanbackassistant.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -13,6 +14,7 @@ import com.liskovsoft.sharedutils.configparser.ConfigParser;
 public class AppUtil {
     private final Context mContext;
     private ConfigParser mParser;
+    @SuppressLint("StaticFieldLeak")
     private static AppUtil sInstance;
 
     private AppUtil(Context context) {

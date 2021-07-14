@@ -34,9 +34,7 @@ public class AppUtil {
     }
 
     public String getAppPackageName() {
-        ConfigParser parser = getParser();
-
-        return parser.get("app_package_name");
+        return mContext.getPackageName();
     }
 
     private ConfigParser getParser() {

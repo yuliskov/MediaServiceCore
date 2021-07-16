@@ -390,6 +390,10 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             return MIME_MP4_VIDEO;
         }
 
+        if (codecs.startsWith("av01")) {
+            return MIME_MP4_VIDEO;
+        }
+
         return null;
     }
 

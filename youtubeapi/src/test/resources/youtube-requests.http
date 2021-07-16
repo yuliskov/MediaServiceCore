@@ -652,3 +652,16 @@ User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko
 GET https://www.youtube.com/s/player/7acefd5d/tv-player-ias.vflset/tv-player-ias.js
 User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
 
+###
+
+# av01 test
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Authorization: Bearer ya29.a0ARrdaM87gr1g_s2P2LIx7cWFzNht3vd4W6BHWsrHM5GhLqy_iKnzpndy2vHVdL9XBpFM8xKftIFDgzZLdJbuF_Kg2g_7YUzBQ3frEUNIBZeJKzbb6pjlF5JKoGY6OBZ-aTrjeWaVyNjhG5cs7FgoAclZjB_iFMWixoHNRA
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: CgtMejA4Q3F4Z1Mtayi7i8WHBg%3D%3D
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20210617.01.00","clientScreen":"WATCH","visitorData":"CgtMejA4Q3F4Z1Mtayi7i8WHBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18823}},"videoId":"k2qgadSvNyU","cpn":"KS_H4oDik8zp-Ou4"}
+

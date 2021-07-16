@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.app.models;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
 import java.util.regex.Pattern;
@@ -19,9 +18,10 @@ public class PlayerData {
      * Used when deciphering music items.<br/>
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
-    @RegExp(";var [$\\w]+=\\{.*\\n.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
-    //@RegExp(";var [$\\w]+=\\{.*\\n?.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
-    //@RegExp("var [$\\w]{2}=\\{.*\\n.*\\n.*\\nfunction [$\\w]{2}\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}")
+    @RegExp({
+            ";var [$\\w]+=\\{.*\\n.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
+            ";var [$\\w]+=\\{.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}"
+    })
     private String mDecipherFunction;
     
     /**

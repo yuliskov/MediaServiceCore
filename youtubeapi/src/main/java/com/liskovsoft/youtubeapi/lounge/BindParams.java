@@ -1,12 +1,13 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 public class BindParams {
-    public static final String UID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671";
+    public static final String DEVICE_ID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671";
     public static final String ZX = "xxxxxxxxxxxx";
     public static final String RID = "1337";
     public static final String AID = "42";
     public static final String APP = "lb-v4";
     public static final String ACCESS_TYPE = "permanent";
+    public static final String QR = "1";
     private static final String BASE_BIND_URL = "https://www.youtube.com/api/lounge/bc/bind" +
             "?device=LOUNGE_SCREEN" +
             "&theme=cl" +
@@ -15,10 +16,10 @@ public class BindParams {
             "&VER=8" +
             "&v=2" +
             "&t=1" +
-            "&app=" + BindParams.APP +
-            "&id=" + BindParams.UID +
-            "&AID=" + BindParams.AID +
-            "&zx=" + BindParams.ZX;
+            "&app=" + APP +
+            "&id=" + DEVICE_ID +
+            "&AID=" + AID +
+            "&zx=" + ZX;
 
     public static final String TEST_DATA_URL = BASE_BIND_URL + "&MODE=init";
     public static final String BIND_DATA_URL = BASE_BIND_URL + "&RID=" + BindParams.RID;

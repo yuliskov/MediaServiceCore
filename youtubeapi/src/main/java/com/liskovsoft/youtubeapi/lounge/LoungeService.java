@@ -12,6 +12,7 @@ import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
+import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -72,13 +73,15 @@ public class LoungeService {
             return null;
         }
 
-        Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(
-                BindParams.ACCESS_TYPE,
-                BindParams.APP,
+        Call<PairingCodeV2> pairingCodeWrapper = mInfoManager.getPairingCodeV2(
                 mLoungeToken,
                 mScreenId,
-                mScreenName);
-        PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
+                mScreenName,
+                BindParams.ACCESS_TYPE,
+                BindParams.APP,
+                BindParams.DEVICE_ID,
+                BindParams.QR);
+        PairingCodeV2 pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
         // Pairing code XXX-XXX-XXX-XXX
         return pairingCode != null ? pairingCode.getPairingCode() : null;

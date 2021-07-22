@@ -6,9 +6,9 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
-import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
+import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
-import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
+import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

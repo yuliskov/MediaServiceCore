@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
-import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
+import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
+import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

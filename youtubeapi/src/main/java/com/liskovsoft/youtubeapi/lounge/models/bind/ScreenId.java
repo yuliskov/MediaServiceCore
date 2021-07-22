@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.lounge.models;
+package com.liskovsoft.youtubeapi.lounge.models.bind;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 

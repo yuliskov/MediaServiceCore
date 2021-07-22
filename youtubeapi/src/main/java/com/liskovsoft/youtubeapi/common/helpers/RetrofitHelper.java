@@ -16,6 +16,7 @@ import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QuerySt
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -121,6 +122,8 @@ public class RetrofitHelper {
 
         addCommonHeaders(okBuilder);
 
+        enableDecompression(okBuilder);
+
         debugSetup(okBuilder);
 
         return okBuilder.build();
@@ -142,8 +145,9 @@ public class RetrofitHelper {
         builder.addInterceptor(chain -> {
             Request.Builder requestBuilder = chain.request().newBuilder();
             requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
-            // Compress response
-            requestBuilder.header("Accept-Encoding", AppConstants.ACCEPT_ENCODING);
+
+            // Enable compression in production
+            requestBuilder.header("Accept-Encoding", BuildConfig.DEBUG ? "identity" : AppConstants.ACCEPT_ENCODING);
 
             // Emulate browser request
             //requestBuilder.header("Connection", "keep-alive");
@@ -152,7 +156,12 @@ public class RetrofitHelper {
 
             return chain.proceed(requestBuilder.build());
         });
+    }
 
+    /**
+     * Checks that response is compressed and do uncompress if needed.
+     */
+    private static void enableDecompression(Builder builder) {
         // Add gzip/deflate/br support
         //builder.addInterceptor(BrotliInterceptor.INSTANCE);
         builder.addInterceptor(new UnzippingInterceptor());

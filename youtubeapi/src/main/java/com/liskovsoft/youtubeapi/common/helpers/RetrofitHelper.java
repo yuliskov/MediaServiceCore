@@ -53,6 +53,9 @@ public class RetrofitHelper {
         return retrofit.create(clazz);
     }
 
+    /**
+     * Skips first line of the response
+     */
     public static <T> T withJsonPathSkip(Class<T> clazz) {
         Retrofit.Builder builder = createBuilder();
 

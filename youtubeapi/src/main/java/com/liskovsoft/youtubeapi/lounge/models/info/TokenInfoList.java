@@ -4,11 +4,11 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class ScreenList {
+public class TokenInfoList {
     @JsonPath("$.screens[*]")
-    private List<ScreenItem> mScreens;
+    private List<TokenInfo> mTokenInfos;
 
-    public List<ScreenItem> getScreens() {
-        return mScreens;
+    public List<TokenInfo> getTokenInfos() {
+        return mTokenInfos;
     }
 }

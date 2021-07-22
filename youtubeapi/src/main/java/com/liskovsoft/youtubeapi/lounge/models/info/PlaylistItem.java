@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.lounge.models.info;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
-public class LoungePlaylistItem {
+public class PlaylistItem {
     @JsonPath("$.title")
     private String mTitle;
 

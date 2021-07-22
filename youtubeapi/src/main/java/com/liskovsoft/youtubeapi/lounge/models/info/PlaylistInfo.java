@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class LoungePlaylist {
+public class PlaylistInfo {
     @JsonPath("$.title")
     private String mTitle;
 
@@ -12,7 +12,7 @@ public class LoungePlaylist {
     private String mAuthor;
 
     @JsonPath("$.video[*]")
-    private List<LoungePlaylistItem> mItems;
+    private List<PlaylistItem> mItems;
 
     public String getTitle() {
         return mTitle;
@@ -22,7 +22,7 @@ public class LoungePlaylist {
         return mAuthor;
     }
 
-    public List<LoungePlaylistItem> getItems() {
+    public List<PlaylistItem> getItems() {
         return mItems;
     }
 }

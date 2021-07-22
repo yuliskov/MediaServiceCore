@@ -8,6 +8,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
+/**
+ * RegEx
+ */
 public interface BindManager {
     @GET("https://www.youtube.com/api/lounge/pairing/generate_screen_id")
     Call<ScreenId> createScreenId();

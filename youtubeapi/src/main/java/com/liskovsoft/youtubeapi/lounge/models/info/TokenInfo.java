@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
-public class ScreenItem {
+public class TokenInfo {
     @JsonPath("$.screenId")
     private String mScreenId;
 
@@ -19,14 +19,14 @@ public class ScreenItem {
         return mLoungeToken;
     }
 
-    public static ScreenItem from(String data) {
+    public static TokenInfo from(String data) {
         if (data == null) {
             return null;
         }
 
         String[] split = data.split(",");
 
-        ScreenItem result = new ScreenItem();
+        TokenInfo result = new TokenInfo();
         result.mScreenId = Helpers.parseStr(split, 0);
         result.mLoungeToken = Helpers.parseStr(split, 1);
 

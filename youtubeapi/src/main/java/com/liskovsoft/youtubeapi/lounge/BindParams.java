@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 public class BindParams {
-    public static final String SCREEN_UID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671";
+    public static final String UID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671";
     public static final String ZX = "xxxxxxxxxxxx";
     public static final String RID = "1337";
     public static final String AID = "42";
@@ -16,9 +16,11 @@ public class BindParams {
             "&v=2" +
             "&t=1" +
             "&app=" + BindParams.APP +
-            "&id=" + BindParams.SCREEN_UID +
+            "&id=" + BindParams.UID +
             "&AID=" + BindParams.AID +
             "&zx=" + BindParams.ZX;
+
+    public static final String TEST_DATA_URL = BASE_BIND_URL + "&MODE=init";
     public static final String BIND_DATA_URL = BASE_BIND_URL + "&RID=" + BindParams.RID;
     private static final String BIND_RPC_URL = BASE_BIND_URL + "&RID=rpc&CI=0";
 

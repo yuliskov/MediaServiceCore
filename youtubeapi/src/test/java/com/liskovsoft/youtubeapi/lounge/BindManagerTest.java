@@ -7,9 +7,9 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
+import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenList;
+import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -38,7 +38,7 @@ import static org.junit.Assert.assertNotNull;
 public class BindManagerTest {
     private static final String SCREEN_NAME = "TubeNext";
     private BindManager mBindManager;
-    private InfoManager mScreenManager;
+    private InfoManager mInfoManager;
     private CommandManager mCommandManager;
     private JsonPathTypeAdapter<CommandList> mAdapter;
 
@@ -51,14 +51,14 @@ public class BindManagerTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
-        mScreenManager = RetrofitHelper.withJsonPath(InfoManager.class);
+        mInfoManager = RetrofitHelper.withJsonPath(InfoManager.class);
         mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
         mAdapter = RetrofitHelper.adaptJsonPathSkip(CommandList.class);
     }
 
     @Test
     public void testThatPairingCodeGeneratedSuccessfully() {
-        ScreenItem screen = getScreen();
+        TokenInfo screen = getScreen();
         Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(BindParams.ACCESS_TYPE, BindParams.APP, screen.getLoungeToken(),
                 screen.getScreenId(), SCREEN_NAME);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
@@ -69,7 +69,7 @@ public class BindManagerTest {
 
     @Test
     public void testThatFirstBindDataIsNotEmpty() {
-        ScreenItem screen = getScreen();
+        TokenInfo screen = getScreen();
 
         CommandList bindData = getFirstBind(screen.getLoungeToken());
 
@@ -95,7 +95,7 @@ public class BindManagerTest {
     @Ignore("Long running test")
     @Test
     public void testBindStream() throws IOException {
-        ScreenItem screen = getScreen();
+        TokenInfo screen = getScreen();
 
         CommandList firstBind = getFirstBind(screen.getLoungeToken());
 
@@ -141,14 +141,14 @@ public class BindManagerTest {
         return RetrofitHelper.get(bindDataWrapper);
     }
 
-    private ScreenItem getScreen() {
+    private TokenInfo getScreen() {
         Call<ScreenId> screenIdWrapper = mBindManager.createScreenId();
         ScreenId screenId = RetrofitHelper.get(screenIdWrapper);
 
-        Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId.getScreenId());
-        ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
+        Call<TokenInfoList> tokenInfoListWrapper = mInfoManager.getTokenInfo(screenId.getScreenId());
+        TokenInfoList tokenInfoList = RetrofitHelper.get(tokenInfoListWrapper);
 
-        return screenInfos.getScreens().get(0);
+        return tokenInfoList.getTokenInfos().get(0);
     }
 
     private CommandList toObject(String result) {

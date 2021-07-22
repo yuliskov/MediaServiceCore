@@ -10,6 +10,9 @@ import retrofit2.http.Query;
 
 import java.util.Map;
 
+/**
+ * JsonPathSkip
+ */
 public interface CommandManager {
     @FormUrlEncoded
     @POST(BindParams.BIND_DATA_URL)

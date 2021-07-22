@@ -9,12 +9,11 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.ScreenId;
-import com.liskovsoft.youtubeapi.lounge.models.StateResult;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenItem;
-import com.liskovsoft.youtubeapi.lounge.models.info.ScreenList;
+import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
+import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -35,7 +34,7 @@ public class LoungeService {
     private static final String TAG = LoungeService.class.getSimpleName();
     private static LoungeService sInstance;
     private final BindManager mBindManager;
-    private final InfoManager mScreenManager;
+    private final InfoManager mInfoManager;
     private final CommandManager mCommandManager;
     private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
     private String mScreenName;
@@ -49,7 +48,7 @@ public class LoungeService {
 
     public LoungeService() {
         mBindManager = RetrofitHelper.withRegExp(BindManager.class);
-        mScreenManager = RetrofitHelper.withJsonPath(InfoManager.class);
+        mInfoManager = RetrofitHelper.withJsonPath(InfoManager.class);
         mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
         mLineSkipAdapter = RetrofitHelper.adaptJsonPathSkip(CommandList.class);
     }
@@ -115,7 +114,7 @@ public class LoungeService {
         }
 
         if (mLoungeToken == null) {
-            ScreenItem screen = getScreen();
+            TokenInfo screen = getTokenInfo();
 
             if (screen != null) {
                 mLoungeToken = screen.getLoungeToken();
@@ -265,8 +264,8 @@ public class LoungeService {
         }
     }
 
-    private ScreenItem getScreen() {
-        ScreenItem screenItem = null;
+    private TokenInfo getTokenInfo() {
+        TokenInfo tokenInfo = null;
         String screenId = MediaServiceData.instance().getScreenId();
 
         if (screenId == null) {
@@ -279,15 +278,15 @@ public class LoungeService {
         }
 
         if (screenId != null) {
-            Call<ScreenList> screenInfosWrapper = mScreenManager.getScreenInfo(screenId);
-            ScreenList screenInfos = RetrofitHelper.get(screenInfosWrapper);
+            Call<TokenInfoList> tokenInfoListWrapper = mInfoManager.getTokenInfo(screenId);
+            TokenInfoList tokenInfoList = RetrofitHelper.get(tokenInfoListWrapper);
 
-            if (screenInfos != null) {
-                screenItem = screenInfos.getScreens().get(0);
+            if (tokenInfoList != null && tokenInfoList.getTokenInfos() != null) {
+                tokenInfo = tokenInfoList.getTokenInfos().get(0);
             }
         }
 
-        return screenItem;
+        return tokenInfo;
     }
 
     private CommandList getSessionBind() {

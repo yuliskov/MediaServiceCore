@@ -59,8 +59,8 @@ public class BindManagerTest {
     @Test
     public void testThatPairingCodeGeneratedSuccessfully() {
         TokenInfo screen = getScreen();
-        Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(BindParams.ACCESS_TYPE, BindParams.APP, screen.getLoungeToken(),
-                screen.getScreenId(), SCREEN_NAME);
+        Call<PairingCode> pairingCodeWrapper = mBindManager.getPairingCode(screen.getLoungeToken(),
+                screen.getScreenId(), SCREEN_NAME, BindParams.ACCESS_TYPE, BindParams.APP);
         PairingCode pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
         // Pairing code XXX-XXX-XXX-XXX

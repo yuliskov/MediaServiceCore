@@ -111,8 +111,8 @@ public class LoungeService {
         if (mScreenName == null) {
             mScreenName = String.format(
                     "%s (%s)",
-                    AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext()),
-                    Helpers.getUserDeviceName(GlobalPreferences.sInstance.getContext())
+                    Helpers.getUserDeviceName(GlobalPreferences.sInstance.getContext()),
+                    AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext())
             );
         }
 

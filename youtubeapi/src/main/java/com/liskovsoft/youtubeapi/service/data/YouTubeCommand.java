@@ -65,6 +65,9 @@ public class YouTubeCommand implements Command {
             case CommandItem.TYPE_GET_NOW_PLAYING:
                 command.mType = Command.TYPE_GET_STATE;
                 break;
+            case CommandItem.TYPE_STOP_VIDEO:
+                command.mType = Command.TYPE_STOP;
+                break;
             case CommandItem.TYPE_REMOTE_CONNECTED:
                 command.mType = Command.TYPE_CONNECTED;
                 RemoteParams remoteParams = info.getRemoteParams();

@@ -8,6 +8,7 @@ import java.util.Map;
 public class CommandParams {
     private static final String COMMAND_NOW_PLAYING = "nowPlaying";
     private static final String COMMAND_ON_STATE_CHANGE = "onStateChange";
+    private static final String COMMAND_ON_VOLUME_CHANGED = "onVolumeChanged";
     private static final String COMMAND_ON_PREVIOUS_NEXT_CHANGE = "onHasPreviousNextChanged";
 
     public static final int STATE_UNDETECTED = 0;
@@ -25,6 +26,8 @@ public class CommandParams {
     private static final String FIELD_PLAYLIST_ID = "req0_listId";
     private static final String FIELD_POSITION = "req0_currentTime";
     private static final String FIELD_DURATION = "req0_duration";
+    private static final String FIELD_VOLUME = "req0_volume"; // 0-100
+    private static final String FIELD_MUTED = "req0_muted";
     private static final String FIELD_CPN = "req0_cpn";
     private static final String FIELD_CTT = "req0_ctt";
     private static final String FIELD_INDEX = "req0_currentIndex";
@@ -43,7 +46,7 @@ public class CommandParams {
                                                     String ctt,
                                                     String playlistId,
                                                     String playlistIndex) {
-        Map<String, String> result = initCommand(positionMs, durationMs);
+        Map<String, String> result = getBaseCommand(positionMs, durationMs);
 
         result.put(FIELD_COMMAND_NAME, COMMAND_NOW_PLAYING);
         result.put(FIELD_STATE, String.valueOf(STATE_IDLE));
@@ -56,7 +59,7 @@ public class CommandParams {
     }
 
     public static Map<String, String> getOnStateChange(long positionMs, long durationMs, int state) {
-        Map<String, String> result = initCommand(positionMs, durationMs);
+        Map<String, String> result = getBaseCommand(positionMs, durationMs);
 
         result.put(FIELD_COMMAND_NAME, COMMAND_ON_STATE_CHANGE);
         result.put(FIELD_STATE, String.valueOf(state));
@@ -66,7 +69,7 @@ public class CommandParams {
     }
 
     public static Map<String, String> getOnPrevNextChange() {
-        Map<String, String> result = initCommand(-1, -1);
+        Map<String, String> result = getBaseCommand(-1, -1);
 
         result.put(FIELD_COMMAND_NAME, COMMAND_ON_PREVIOUS_NEXT_CHANGE);
         result.put(FIELD_HAS_PREVIOUS, "false");
@@ -75,7 +78,33 @@ public class CommandParams {
         return result;
     }
 
-    private static Map<String, String> initCommand(long positionMs, long durationMs) {
+    public static Map<String, String> getOnVolumeChanged(int volume) {
+        Map<String, String> result = getBaseCommand();
+
+        result.put(FIELD_COMMAND_NAME, COMMAND_ON_VOLUME_CHANGED);
+        result.put(FIELD_VOLUME, String.valueOf(volume));
+        result.put(FIELD_MUTED, "false");
+
+        return result;
+    }
+
+    private static Map<String, String> getBaseCommand(long positionMs, long durationMs) {
+        Map<String, String> result = getBaseCommand();
+
+        if (positionMs >= 0) {
+            result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000f));
+        }
+        if (durationMs > 0) {
+            result.put(FIELD_DURATION, String.valueOf(durationMs / 1_000f));
+            result.put(FIELD_SEEK_END, String.valueOf(durationMs / 1_000f));
+        }
+        result.put(FIELD_LOADED_TIME, "0");
+        result.put(FIELD_SEEK_START, "0");
+
+        return result;
+    }
+
+    private static Map<String, String> getBaseCommand() {
         Map<String, String> result = new HashMap<String, String>() {
             @Nullable
             @Override
@@ -90,15 +119,6 @@ public class CommandParams {
 
         result.put(FIELD_COUNT, "1");
         result.put(FIELD_OFS, String.valueOf(sOfsCounter++));
-        if (positionMs >= 0) {
-            result.put(FIELD_POSITION, String.valueOf(positionMs / 1_000f));
-        }
-        if (durationMs > 0) {
-            result.put(FIELD_DURATION, String.valueOf(durationMs / 1_000f));
-            result.put(FIELD_SEEK_END, String.valueOf(durationMs / 1_000f));
-        }
-        result.put(FIELD_LOADED_TIME, "0");
-        result.put(FIELD_SEEK_START, "0");
 
         return result;
     }

@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class LoungeService {
@@ -199,7 +200,8 @@ public class LoungeService {
     }
 
     public void postStartPlaying(String videoId, long positionMs, long durationMs, boolean isPlaying) {
-        postNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex);
+        Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
+        postCommand(CommandParams.getNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex));
         postStateChange(positionMs, durationMs, isPlaying);
     }
 
@@ -210,39 +212,26 @@ public class LoungeService {
         }
 
         if (durationMs > 0 && positionMs <= durationMs) {
-            postOnStateChange(positionMs, durationMs, isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED);
+            Log.d(TAG, "Post onStateChange pos: %s, dur: %s...", positionMs, durationMs);
+
+            Map<String, String> stateChange = CommandParams.getOnStateChange(
+                    positionMs,
+                    durationMs,
+                    isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED
+            );
+
+            postCommand(stateChange);
         }
+    }
+
+    public void postVolumeChange(int volume) {
+        Log.d(TAG, "Post onVolumeChanged: %s...", volume);
+        postCommand(CommandParams.getOnVolumeChanged(volume));
     }
 
     public void resetData() {
         MediaServiceData.instance().setScreenId(null);
         mLoungeToken = null;
-    }
-
-    private void postNowPlaying(String videoId, long positionMs, long durationMs, String ctt, String playlistId, String playlistIndex) {
-        if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
-            return;
-        }
-
-        Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
-
-        Call<Void> wrapper = mCommandManager.postCommand(
-                mScreenName, mLoungeToken, mSessionId, mGSessionId,
-                CommandParams.getNowPlaying(videoId, positionMs, durationMs, ctt, playlistId, playlistIndex));
-        RetrofitHelper.get(wrapper);
-    }
-
-    private void postOnStateChange(long positionMs, long durationMs, int state) {
-        if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
-            return;
-        }
-
-        Log.d(TAG, "Post onStateChange pos: %s, dur: %s...", positionMs, durationMs);
-
-        Call<Void> wrapper = mCommandManager.postCommand(
-                mScreenName, mLoungeToken, mSessionId, mGSessionId,
-                CommandParams.getOnStateChange(positionMs, durationMs, state));
-        RetrofitHelper.get(wrapper);
     }
 
     private void postOnPrevNextChange() {
@@ -252,10 +241,7 @@ public class LoungeService {
 
         Log.d(TAG, "Post onPrevNextChange...");
 
-        Call<Void> wrapper = mCommandManager.postCommand(
-                mScreenName, mLoungeToken, mSessionId, mGSessionId,
-                CommandParams.getOnPrevNextChange());
-        RetrofitHelper.get(wrapper);
+        postCommand(CommandParams.getOnPrevNextChange());
     }
 
     private void updateData(CommandItem info) {
@@ -300,6 +286,18 @@ public class LoungeService {
 
     private CommandList toCommandInfos(String result) {
         return mLineSkipAdapter.read(new ByteArrayInputStream(result.getBytes(Charset.forName("UTF-8"))));
+    }
+
+    private void postCommand(Map<String, String> command) {
+        if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
+            Log.e(TAG, "Can't send command. Error: mSessionId, mGSessionId is null");
+            return;
+        }
+
+        Call<Void> wrapper = mCommandManager.postCommand(
+                mScreenName, mLoungeToken, mSessionId, mGSessionId,
+                command);
+        RetrofitHelper.get(wrapper);
     }
 
     public interface OnCommand {

@@ -64,6 +64,11 @@ public class YouTubeRemoteManager implements RemoteManager {
     }
 
     @Override
+    public Observable<Void> postVolumeChangeObserve(int volume) {
+        return ObservableHelper.fromVoidable(() -> mLoungeService.postVolumeChange(volume));
+    }
+
+    @Override
     public Observable<Void> resetDataObserve() {
         return ObservableHelper.fromVoidable(mLoungeService::resetData);
     }

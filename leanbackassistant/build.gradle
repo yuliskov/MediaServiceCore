@@ -33,6 +33,7 @@ android {
         orig {}
         beta {}
         stbeta {}
+        ststable {}
         storig {}
     }
 }

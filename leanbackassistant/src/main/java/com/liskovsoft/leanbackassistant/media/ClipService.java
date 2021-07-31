@@ -101,9 +101,13 @@ public class ClipService {
 
             if (mediaItems != null && !mediaItems.isEmpty()) {
                 if (mediaItems.size() < 20) {
-                    mediaItems.addAll(mediaTabManager.continueGroup(selectedGroup).getMediaItems());
-                    mediaItems.addAll(mediaTabManager.continueGroup(selectedGroup).getMediaItems());
-                    mediaItems.addAll(mediaTabManager.continueGroup(selectedGroup).getMediaItems());
+                    for (int i = 0; i < 3; i++) {
+                        MediaGroup mediaGroup = mediaTabManager.continueGroup(selectedGroup);
+                        if (mediaGroup == null) {
+                            break;
+                        }
+                        mediaItems.addAll(mediaGroup.getMediaItems());
+                    }
                 }
 
                 clips = convertToClips(mediaItems);

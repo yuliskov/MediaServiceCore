@@ -6,10 +6,10 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class WatchNextManagerParams {
     public static String getWatchNextQuery(@NonNull String videoId) {
-        return getWatchNextQuery(videoId, null, -1, null);
+        return getWatchNextQuery(videoId, null, 0);
     }
 
-    public static String getWatchNextQuery(@NonNull String videoId, @Nullable String playlistId, int playlistIndex) {
+    public static String getWatchNextQuery(@Nullable String videoId, @Nullable String playlistId, int playlistIndex) {
         return getWatchNextQuery(videoId, playlistId, playlistIndex, null);
     }
 
@@ -18,7 +18,7 @@ public class WatchNextManagerParams {
      * Video query example: "videoId":"x7g_SWE90O8"<br/>
      * PlaylistParams is used inside browse channel queries
      */
-    public static String getWatchNextQuery(@NonNull String videoId, @Nullable String playlistId, int playlistIndex, String playlistParams) {
+    public static String getWatchNextQuery(@Nullable String videoId, @Nullable String playlistId, int playlistIndex, String playlistParams) {
         // always presents
         String videoData = String.format("\"videoId\":\"%s\"", videoId);
 

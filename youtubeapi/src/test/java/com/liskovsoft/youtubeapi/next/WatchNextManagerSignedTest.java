@@ -49,6 +49,16 @@ public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
     }
 
     @Test
+    public void testThatWatchNextNullPlaylistItemContainsAllRequiredFields() {
+        Call<WatchNextResult> wrapper =
+                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(
+                        null, TestHelpersV2.PLAYLIST_ID, 0), TestHelpersV2.getAuthorization());
+        WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
+
+        checkSignedPlaylistWatchNextResultFields(watchNextResult);
+    }
+
+    @Test
     public void testThatWatchNextRowsCouldBeContinued() {
         WatchNextResult watchNextResult = getWatchNextResult();
 

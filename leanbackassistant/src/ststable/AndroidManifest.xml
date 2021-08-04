@@ -40,7 +40,7 @@
         </activity>
 
         <provider android:name=".search.VideoContentProvider"
-                  android:authorities="org.smartteam.smarttube.tv"
+                  android:authorities="com.liskovsoft.leanbackassistant.ststable"
                   android:exported="true"
                   tools:ignore="ExportedContentProvider" />
 

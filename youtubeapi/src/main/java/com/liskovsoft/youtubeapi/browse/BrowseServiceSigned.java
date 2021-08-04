@@ -52,7 +52,7 @@ public class BrowseServiceSigned {
         GridTab subs = getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
 
         // LIVE videos always on top
-        if (subs != null) {
+        if (subs != null && subs.getItemWrappers() != null) {
             Collections.sort(subs.getItemWrappers(), (o1, o2) -> {
                 VideoItem item1 = o1.getVideoItem();
                 VideoItem item2 = o2.getVideoItem();

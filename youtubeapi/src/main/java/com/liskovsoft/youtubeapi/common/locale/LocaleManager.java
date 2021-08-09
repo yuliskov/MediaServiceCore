@@ -31,18 +31,24 @@ public class LocaleManager {
         sInstance = null;
     }
 
-    public String getCountry() {
-        return mCountry;
-    }
-
     public String getLanguage() {
         return mLang;
     }
 
+    /**
+     * Used in tests only
+     */
     public void setLanguage(String lang) {
         mLang = lang;
     }
 
+    public String getCountry() {
+        return mCountry;
+    }
+
+    /**
+     * Used in tests only
+     */
     public void setCountry(String country) {
         mCountry = country;
     }
@@ -75,8 +81,10 @@ public class LocaleManager {
         Locale locale;
 
         if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.getContext() != null) {
+            // Proper locale
             locale = LocaleUtility.getCurrentLocale(GlobalPreferences.sInstance.getContext());
         } else {
+            // Fallback locale
             locale = Locale.getDefault();
         }
 

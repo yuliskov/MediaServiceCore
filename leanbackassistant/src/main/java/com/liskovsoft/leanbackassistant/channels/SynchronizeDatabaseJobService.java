@@ -14,6 +14,7 @@ import com.liskovsoft.leanbackassistant.media.ClipServiceCached;
 import com.liskovsoft.leanbackassistant.media.Playlist;
 import com.liskovsoft.leanbackassistant.recommendations.RecommendationsProvider;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
@@ -61,6 +62,9 @@ public class SynchronizeDatabaseJobService extends JobService {
         Log.d(TAG, "Starting Channels update job...");
 
         sInProgress = true;
+
+        // Apply pre-saved locale
+        LocaleContextWrapper.apply(this);
 
         mSynchronizeDatabaseTask = new SynchronizeDatabaseTask(this, jobParameters);
         // NOTE: fetching channels in background

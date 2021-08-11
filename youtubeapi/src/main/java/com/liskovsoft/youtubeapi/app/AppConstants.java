@@ -11,9 +11,9 @@ public interface AppConstants {
     String USER_AGENT_WEBOS = "Mozilla/5.0 (Web0S; Linux/SmartTV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36 WebAppManager";
     String USER_AGENT_XBOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02";
     String APP_USER_AGENT = USER_AGENT_COBALT;
-    String ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br";
+    String ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br"; // uses more RAM because of decompression
     String ACCEPT_ENCODING_DEFAULT = "identity";
-    String ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED;
+    String ACCEPT_ENCODING = ACCEPT_ENCODING_DEFAULT;
     String SCRIPTS_URL_BASE = "https://www.youtube.com";
     String API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
     String API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";

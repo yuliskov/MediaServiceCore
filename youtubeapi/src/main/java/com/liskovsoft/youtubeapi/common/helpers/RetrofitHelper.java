@@ -30,7 +30,7 @@ public class RetrofitHelper {
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
     // Default timeout 10 sec
-    private static final long TIMEOUT_SEC = 30;
+    private static final long TIMEOUT_SEC = 60;
     public static boolean sForceEnableProfiler;
 
     public static <T> T withGson(Class<T> clazz) {

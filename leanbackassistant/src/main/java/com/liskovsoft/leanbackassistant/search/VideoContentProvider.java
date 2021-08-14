@@ -122,7 +122,7 @@ public class VideoContentProvider extends ContentProvider {
         }
 
         for (MediaItem video : sCachedMediaItems) {
-            if (video.getId() == id) {
+            if (video != null && video.getId() == id) {
                 return video;
             }
         }

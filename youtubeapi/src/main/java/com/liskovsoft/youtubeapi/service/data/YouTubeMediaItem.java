@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -473,5 +474,24 @@ public class YouTubeMediaItem implements MediaItem {
         mediaItem.mChannelId = Helpers.parseStr(split[6]);
 
         return mediaItem;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof MediaItem) {
+            if (getVideoId() != null) {
+                return getVideoId().equals(((MediaItem) obj).getVideoId());
+            }
+
+            if (getPlaylistId() != null) {
+                return getPlaylistId().equals(((MediaItem) obj).getPlaylistId());
+            }
+
+            if (getChannelId() != null) {
+                return getChannelId().equals(((MediaItem) obj).getChannelId());
+            }
+        }
+
+        return false;
     }
 }

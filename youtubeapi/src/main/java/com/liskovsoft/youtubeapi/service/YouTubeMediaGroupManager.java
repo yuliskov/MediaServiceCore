@@ -302,7 +302,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
                     }
 
                     if (group != null) {
-                        emitter.onNext(Collections.singletonList(group));
+                        emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
                     }
                 }
 

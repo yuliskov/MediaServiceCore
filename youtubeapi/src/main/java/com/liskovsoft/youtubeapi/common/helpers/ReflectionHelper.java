@@ -4,6 +4,7 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.R;
 
 import java.io.File;
 import java.io.InputStream;
@@ -80,7 +81,7 @@ public class ReflectionHelper {
 
         File destination = new File(FileHelpers.getCacheDir(context), type.getSimpleName());
 
-        MessageHelpers.showLongMessage(context, String.format("Debug info has been dumped to %s", destination));
+        MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
 
         FileHelpers.streamToFile(content, destination);
     }

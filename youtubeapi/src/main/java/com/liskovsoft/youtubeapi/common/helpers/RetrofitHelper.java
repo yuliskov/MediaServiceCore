@@ -119,7 +119,7 @@ public class RetrofitHelper {
     public static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-        disableCache(okBuilder);
+        //disableCache(okBuilder);
 
         setupTimeout(okBuilder);
 

@@ -1,0 +1,3 @@
+<resources>
+    <string name="dump_debug_info">Произошла ошибка. Детальная информация сохранена в %s</string>
+</resources>

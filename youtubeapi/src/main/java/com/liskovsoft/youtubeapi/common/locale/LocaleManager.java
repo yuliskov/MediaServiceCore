@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.locale;
 
 import android.os.Build.VERSION;
+import com.liskovsoft.sharedutils.locale.LocaleUpdater;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
@@ -87,6 +88,19 @@ public class LocaleManager {
             // Fallback locale
             locale = Locale.getDefault();
         }
+
+        // Alt way
+        //if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.getContext() != null) {
+        //    // Proper locale
+        //    locale = LocaleUpdater.getSavedLocale(GlobalPreferences.sInstance.getContext());
+        //
+        //    if (locale == null) {
+        //        locale = Locale.getDefault();
+        //    }
+        //} else {
+        //    // Fallback locale
+        //    locale = Locale.getDefault();
+        //}
 
         return locale;
     }

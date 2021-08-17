@@ -63,7 +63,7 @@ public class SynchronizeDatabaseJobService extends JobService {
         sInProgress = true;
 
         // Apply pre-saved locale
-        LocaleUpdater.applySavedLocale(this);
+        //LocaleUpdater.applySavedLocale(this);
 
         mSynchronizeDatabaseTask = new SynchronizeDatabaseTask(this, jobParameters);
         // NOTE: fetching channels in background

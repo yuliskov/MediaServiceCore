@@ -81,26 +81,16 @@ public class LocaleManager {
     private Locale getLocale() {
         Locale locale;
 
+        // Proper locale
         if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.getContext() != null) {
-            // Proper locale
-            locale = LocaleUtility.getCurrentLocale(GlobalPreferences.sInstance.getContext());
-        } else {
-            // Fallback locale
+            locale = LocaleUpdater.getSavedLocale(GlobalPreferences.sInstance.getContext());
+
+            if (locale == null) {
+                locale = LocaleUtility.getCurrentLocale(GlobalPreferences.sInstance.getContext());
+            }
+        } else { // Fallback locale
             locale = Locale.getDefault();
         }
-
-        // Alt way
-        //if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.getContext() != null) {
-        //    // Proper locale
-        //    locale = LocaleUpdater.getSavedLocale(GlobalPreferences.sInstance.getContext());
-        //
-        //    if (locale == null) {
-        //        locale = Locale.getDefault();
-        //    }
-        //} else {
-        //    // Fallback locale
-        //    locale = Locale.getDefault();
-        //}
 
         return locale;
     }

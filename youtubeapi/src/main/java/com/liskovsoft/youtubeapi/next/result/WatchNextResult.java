@@ -16,7 +16,8 @@ public class WatchNextResult {
      */
     @JsonPath("$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer")
     private List<SuggestedSection> mSuggestedSections;
-    @JsonPath("$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer")
+    @JsonPath({"$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer",
+               "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].musicWatchMetadataRenderer"}) // youtube music format
     private VideoMetadata mVideoMetadata;
     @JsonPath("$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.owner.videoOwnerRenderer")
     private VideoOwner mVideoOwner;

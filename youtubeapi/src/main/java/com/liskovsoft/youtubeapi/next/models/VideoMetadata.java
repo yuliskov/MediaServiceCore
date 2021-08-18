@@ -18,11 +18,15 @@ public class VideoMetadata {
     private String mLikeStatus;
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
-    @JsonPath({"$.viewCount.videoViewCountRenderer.shortViewCount.simpleText", "$.shortViewCountText.runs[0].text"})
+    @JsonPath({"$.viewCount.videoViewCountRenderer.shortViewCount.simpleText",
+            "$.shortViewCountText.runs[0].text"})
     private String mShortViewCount1;
     @JsonPath("$.shortViewCountText.runs[1].text")
     private String mShortViewCount2;
-    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.simpleText", "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text", "$.viewCountText.runs[0].text"})
+    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.simpleText",
+            "$.viewCountText.simpleText", // youtube music
+            "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text",
+            "$.viewCountText.runs[0].text"})
     private String mViewCount1;
     @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.runs[1].text", "$.viewCountText.runs[1].text"})
     private String mViewCount2;
@@ -42,6 +46,11 @@ public class VideoMetadata {
     private boolean mIsLive;
     @JsonPath("$.badges[0].upcomingEventBadge.label.simpleText")
     private String mUpcomingBadge;
+    /**
+     * Appeared in YouTube Music
+     */
+    @JsonPath("$.byline.runs[0].text")
+    private String mByLine;
 
     public String getVideoId() {
         return mVideoId;
@@ -98,5 +107,12 @@ public class VideoMetadata {
 
     public boolean isUpcoming() {
         return mUpcomingBadge != null;
+    }
+
+    /**
+     * Appeared in YouTube Music
+     */
+    public String getByLine() {
+        return mByLine;
     }
 }

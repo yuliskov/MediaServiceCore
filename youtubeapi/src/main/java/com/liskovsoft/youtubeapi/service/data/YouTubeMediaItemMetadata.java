@@ -47,44 +47,53 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         if (videoMetadata == null || videoOwner == null) {
             Log.e(TAG, "Oops. Next format has been changed. Please upgrade parser.");
-            return null;
         }
 
-        mediaItemMetadata.mTitle = videoMetadata.getTitle();
-        mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
-                videoOwner.getVideoAuthor(),
-                videoMetadata.getPublishedTime(),
-                videoMetadata.getShortViewCount(),
-                videoMetadata.isLive() ? "LIVE" : "");
-        mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
-                videoOwner.getVideoAuthor(),
-                videoMetadata.getPublishedDate(),
-                videoMetadata.getShortViewCount(),
-                videoMetadata.isLive() ? "LIVE" : "");
-        mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
-        mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
-        mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
-        mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
-        mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
-        mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
-        mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
-        mediaItemMetadata.mIsLive = videoMetadata.isLive();
-        mediaItemMetadata.mIsUpcoming = videoMetadata.isUpcoming();
-        mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
-        mediaItemMetadata.mChannelId = videoOwner.getChannelId();
-        Boolean subscribed = videoOwner.isSubscribed();
-        mediaItemMetadata.mSubscribed = subscribed != null && subscribed;
+        if (videoOwner != null) {
+            mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
+            mediaItemMetadata.mChannelId = videoOwner.getChannelId();
+            Boolean subscribed = videoOwner.isSubscribed();
+            mediaItemMetadata.mSubscribed = subscribed != null && subscribed;
+        }
+
+        if (videoMetadata != null) {
+            String author = mediaItemMetadata.mAuthor != null ? mediaItemMetadata.mAuthor : videoMetadata.getByLine();
+            mediaItemMetadata.mTitle = videoMetadata.getTitle();
+            mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
+                    author,
+                    videoMetadata.getPublishedTime(),
+                    videoMetadata.getShortViewCount(),
+                    videoMetadata.isLive() ? "LIVE" : "");
+            mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
+                    author,
+                    videoMetadata.getPublishedDate(),
+                    videoMetadata.getShortViewCount(),
+                    videoMetadata.isLive() ? "LIVE" : "");
+            mediaItemMetadata.mMediaId = videoMetadata.getVideoId();
+            mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
+            mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
+            mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
+            mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
+            mediaItemMetadata.mPercentWatched = videoMetadata.getPercentWatched();
+            mediaItemMetadata.mPublishedDate = videoMetadata.getPublishedDate();
+            mediaItemMetadata.mIsLive = videoMetadata.isLive();
+            mediaItemMetadata.mIsUpcoming = videoMetadata.isUpcoming();
+
+            String likeStatus = videoMetadata.getLikeStatus();
+
+            if (likeStatus != null) {
+                switch (likeStatus) {
+                    case VideoMetadata.LIKE_STATUS_LIKE:
+                        mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
+                        break;
+                    case VideoMetadata.LIKE_STATUS_DISLIKE:
+                        mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
+                        break;
+                }
+            }
+        }
 
         mediaItemMetadata.mNextVideo = YouTubeMediaItem.from(watchNextResult.getNextVideo());
-
-        switch (videoMetadata.getLikeStatus()) {
-            case VideoMetadata.LIKE_STATUS_LIKE:
-                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
-                break;
-            case VideoMetadata.LIKE_STATUS_DISLIKE:
-                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
-                break;
-        }
 
         List<SuggestedSection> suggestedSections = watchNextResult.getSuggestedSections();
 

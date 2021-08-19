@@ -24,7 +24,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mDislikesCount;
     private String mFullDescription;
     private String mPublishedDate;
-    private boolean mSubscribed;
+    private boolean mIsSubscribed;
     private int mLikeStatus;
     private String mMediaId;
     private String mChannelId;
@@ -54,7 +54,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
             mediaItemMetadata.mChannelId = videoOwner.getChannelId();
             Boolean subscribed = videoOwner.isSubscribed();
-            mediaItemMetadata.mSubscribed = subscribed != null && subscribed;
+            mediaItemMetadata.mIsSubscribed = subscribed != null && subscribed;
         }
 
         if (videoMetadata != null) {
@@ -117,16 +117,20 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         // Alt path to get like/subscribe status (when no such info in metadata section, e.g. YouTube Music items)
         if (buttonStates != null) {
-            if (buttonStates.getSubscribeToggled() != null) {
-                mediaItemMetadata.mSubscribed = buttonStates.getSubscribeToggled();
+            if (buttonStates.isSubscribeToggled() != null) {
+                mediaItemMetadata.mIsSubscribed = buttonStates.isSubscribeToggled();
             }
 
-            if (buttonStates.getLikeToggled() != null && buttonStates.getLikeToggled()) {
+            if (buttonStates.isLikeToggled() != null && buttonStates.isLikeToggled()) {
                 mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
             }
 
-            if (buttonStates.getDislikeToggled() != null && buttonStates.getDislikeToggled()) {
+            if (buttonStates.isDislikeToggled() != null && buttonStates.isDislikeToggled()) {
                 mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
+            }
+
+            if (buttonStates.getChannelId() != null) {
+                mediaItemMetadata.mChannelId = buttonStates.getChannelId();
             }
         }
 
@@ -180,7 +184,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
     @Override
     public boolean isSubscribed() {
-        return mSubscribed;
+        return mIsSubscribed;
     }
 
     @Override

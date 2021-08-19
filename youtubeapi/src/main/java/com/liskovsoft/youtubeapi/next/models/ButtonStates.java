@@ -1,6 +1,9 @@
 package com.liskovsoft.youtubeapi.next.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+
+import java.util.List;
 
 /**
  * Alt path to get like/subscribe status (when no such info in metadata section, e.g. YouTube Music items)
@@ -15,15 +18,29 @@ public class ButtonStates {
     @JsonPath("$.dislikeButton.toggleButtonRenderer.isToggled")
     private Boolean mIsDislikeToggled;
 
-    public Boolean getSubscribeToggled() {
+    @JsonPath("$.channelButton.videoOwnerRenderer.navigationEndpoint.browseEndpoint.browseId")
+    private String mChannelId;
+
+    @JsonPath("$.channelButton.videoOwnerRenderer.thumbnail.thumbnails[*]")
+    private List<Thumbnail> mChannelThumbnails;
+
+    public Boolean isSubscribeToggled() {
         return mIsSubscribeToggled;
     }
 
-    public Boolean getLikeToggled() {
+    public Boolean isLikeToggled() {
         return mIsLikeToggled;
     }
 
-    public Boolean getDislikeToggled() {
+    public Boolean isDislikeToggled() {
         return mIsDislikeToggled;
+    }
+
+    public String getChannelId() {
+        return mChannelId;
+    }
+
+    public List<Thumbnail> getChannelThumbnails() {
+        return mChannelThumbnails;
     }
 }

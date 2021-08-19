@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
+import com.liskovsoft.youtubeapi.next.models.ButtonStates;
 import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.VideoOwner;
@@ -58,10 +59,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         if (videoMetadata != null) {
             String author = mediaItemMetadata.mAuthor != null ? mediaItemMetadata.mAuthor : videoMetadata.getByLine();
+            String publishedTime = videoMetadata.getPublishedTime() != null ? videoMetadata.getPublishedTime() : videoMetadata.getAlbumName();
             mediaItemMetadata.mTitle = videoMetadata.getTitle();
             mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
-                    author,
-                    videoMetadata.getPublishedTime(),
+                    author, publishedTime,
                     videoMetadata.getShortViewCount(),
                     videoMetadata.isLive() ? "LIVE" : "");
             mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
@@ -109,6 +110,23 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 }
 
                 mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
+            }
+        }
+
+        ButtonStates buttonStates = watchNextResult.getButtonStates();
+
+        // Alt path to get like/subscribe status (when no such info in metadata section, e.g. YouTube Music items)
+        if (buttonStates != null) {
+            if (buttonStates.getSubscribeToggled() != null) {
+                mediaItemMetadata.mSubscribed = buttonStates.getSubscribeToggled();
+            }
+
+            if (buttonStates.getLikeToggled() != null && buttonStates.getLikeToggled()) {
+                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
+            }
+
+            if (buttonStates.getDislikeToggled() != null && buttonStates.getDislikeToggled()) {
+                mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
             }
         }
 

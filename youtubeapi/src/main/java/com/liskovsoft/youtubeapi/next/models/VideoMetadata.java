@@ -24,7 +24,7 @@ public class VideoMetadata {
     @JsonPath("$.shortViewCountText.runs[1].text")
     private String mShortViewCount2;
     @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.simpleText",
-            "$.viewCountText.simpleText", // youtube music
+            "$.viewCountText.simpleText", // YouTube Music
             "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text",
             "$.viewCountText.runs[0].text"})
     private String mViewCount1;
@@ -51,6 +51,11 @@ public class VideoMetadata {
      */
     @JsonPath("$.byline.runs[0].text")
     private String mByLine;
+    /**
+     * Appeared in YouTube Music
+     */
+    @JsonPath("$.albumName.simpleText")
+    private String mAlbumName;
 
     public String getVideoId() {
         return mVideoId;
@@ -114,5 +119,12 @@ public class VideoMetadata {
      */
     public String getByLine() {
         return mByLine;
+    }
+
+    /**
+     * Appeared in YouTube Music
+     */
+    public String getAlbumName() {
+        return mAlbumName;
     }
 }

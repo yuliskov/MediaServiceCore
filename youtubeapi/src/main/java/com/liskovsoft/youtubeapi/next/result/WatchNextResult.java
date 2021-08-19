@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.next.result;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.next.models.ButtonStates;
 import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.models.NextVideo;
 import com.liskovsoft.youtubeapi.next.models.Playlist;
@@ -28,6 +29,8 @@ public class WatchNextResult {
     private Playlist mPlaylist;
     @JsonPath("$.contents.singleColumnWatchNextResults.autoplay.autoplay.replayVideoRenderer")
     private ItemWrapper mReplayItem;
+    @JsonPath("$.transportControls.transportControlsRenderer")
+    private ButtonStates mButtonStates;
 
     public List<SuggestedSection> getSuggestedSections() {
         return mSuggestedSections;
@@ -55,5 +58,9 @@ public class WatchNextResult {
      */
     public ItemWrapper getReplayItem() {
         return mReplayItem;
+    }
+
+    public ButtonStates getButtonStates() {
+        return mButtonStates;
     }
 }

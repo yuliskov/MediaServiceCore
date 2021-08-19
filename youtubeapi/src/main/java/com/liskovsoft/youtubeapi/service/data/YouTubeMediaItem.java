@@ -478,20 +478,29 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof MediaItem) {
-            if (getVideoId() != null) {
-                return getVideoId().equals(((MediaItem) obj).getVideoId());
+        if (obj instanceof YouTubeMediaItem) {
+            if (mVideoId != null) {
+                return mVideoId.equals(((YouTubeMediaItem) obj).mVideoId);
             }
 
-            if (getPlaylistId() != null) {
-                return getPlaylistId().equals(((MediaItem) obj).getPlaylistId());
+            if (mPlaylistId != null) {
+                return mPlaylistId.equals(((YouTubeMediaItem) obj).mPlaylistId);
             }
 
-            if (getChannelId() != null) {
-                return getChannelId().equals(((MediaItem) obj).getChannelId());
+            if (mChannelId != null) {
+                return mChannelId.equals(((YouTubeMediaItem) obj).mChannelId);
+            }
+
+            if (mReloadPageKey != null) {
+                return mReloadPageKey.equals(((YouTubeMediaItem) obj).mReloadPageKey);
             }
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Helpers.hashCode(mVideoId, mPlaylistId, mChannelId, mReloadPageKey);
     }
 }

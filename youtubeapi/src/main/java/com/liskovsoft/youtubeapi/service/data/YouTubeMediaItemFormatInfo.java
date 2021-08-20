@@ -313,7 +313,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mVisitorMonitoringData = visitorMonitoringData;
     }
 
-    public boolean isFresh() {
-        return System.currentTimeMillis() - mCreatedTimeMs < 30_000;
+    public boolean isStale() {
+        return System.currentTimeMillis() - mCreatedTimeMs > 30_000;
     }
 }

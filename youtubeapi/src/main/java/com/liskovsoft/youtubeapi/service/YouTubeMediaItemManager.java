@@ -65,7 +65,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
-        if (mCachedFormatInfo != null && mCachedFormatInfo.isFresh() &&
+        if (mCachedFormatInfo != null && !mCachedFormatInfo.isStale() &&
                 mCachedFormatInfo.getVideoId() != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
             return mCachedFormatInfo;
         }

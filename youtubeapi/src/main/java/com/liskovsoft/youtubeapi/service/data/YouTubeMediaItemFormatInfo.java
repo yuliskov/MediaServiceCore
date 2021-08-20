@@ -41,6 +41,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mStoryboardSpec;
     private boolean mIsUnplayable;
     private String mPlayabilityStatus;
+    private final long mCreatedTimeMs;
+
+    public YouTubeMediaItemFormatInfo() {
+        mCreatedTimeMs = System.currentTimeMillis();
+    }
 
     public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo) {
         if (videoInfo == null) {
@@ -306,5 +311,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     public void setVisitorMonitoringData(String visitorMonitoringData) {
         mVisitorMonitoringData = visitorMonitoringData;
+    }
+
+    public boolean isFresh() {
+        return System.currentTimeMillis() - mCreatedTimeMs < 30_000;
     }
 }

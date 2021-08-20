@@ -65,7 +65,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
-        if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId() != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
+        if (mCachedFormatInfo != null && mCachedFormatInfo.isFresh() &&
+                mCachedFormatInfo.getVideoId() != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
             return mCachedFormatInfo;
         }
 
@@ -79,17 +80,6 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
         return formatInfo;
     }
-
-    ///**
-    // * Cache format info per video playback session.
-    // */
-    //private YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
-    //    if (mCachedFormatInfo != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
-    //        return mCachedFormatInfo;
-    //    }
-    //
-    //    return getFormatInfo(videoId);
-    //}
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {

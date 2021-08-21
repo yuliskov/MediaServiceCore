@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.models.V2.TitleItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +111,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), searchResult.getVideoItems(), searchResult.getMusicItems(), searchResult.getChannelItems(),
+        return create(new YouTubeMediaGroup(type), searchResult.getTitleItems(), searchResult.getVideoItems(), searchResult.getMusicItems(), searchResult.getChannelItems(),
                 searchResult.getRadioItems(), searchResult.getPlaylistItems(), searchResult.getNextPageKey());
     }
 
@@ -119,7 +120,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
+        return create((YouTubeMediaGroup) baseGroup, null, nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
                 nextSearchResult.getChannelItems(), nextSearchResult.getRadioItems(), nextSearchResult.getPlaylistItems(), nextSearchResult.getNextPageKey());
     }
 
@@ -262,6 +263,7 @@ public class YouTubeMediaGroup implements MediaGroup {
 
     private static YouTubeMediaGroup create(
             YouTubeMediaGroup baseGroup,
+            List<TitleItem> titleItems,
             List<VideoItem> videoItems,
             List<MusicItem> musicItems,
             List<ChannelItem> channelItems,
@@ -270,6 +272,12 @@ public class YouTubeMediaGroup implements MediaGroup {
             String nextPageKey) {
 
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
+
+        if (titleItems != null) {
+            for (TitleItem item : titleItems) {
+                mediaItems.add(YouTubeMediaItem.from(item));
+            }
+        }
 
         if (channelItems != null) {
             for (ChannelItem item : channelItems) {

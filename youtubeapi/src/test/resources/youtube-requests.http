@@ -677,3 +677,28 @@ Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20210622.10.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"browseId":"FEsubscriptions"}
+
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0ARrdaM_bJnI-syzPVJz22Ov4cmnNTZdnzYT92lX4oCJ9gGxHJp1454uaW8dsZUBhcbiL5lANYA2fDksjkH8UiRZIyt1h6sOjq1gYlnB0ELVKdzvvdNAceFe4PEVykYZv9xGRNcs7izhl-OHpQ_PjdheIQoFqQpPN6HmQaQ
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: CgtXVmxyLVYtdWs3VSiho4SJBg%3D%3D
+origin: https://www.youtube.com
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20210617.01.00","clientScreen":"WATCH","visitorData":"CgtXVmxyLVYtdWs3VSiho4SJBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18858}},"videoId":"qxV-JIfHelw","cpn":"ESTab--iQq2dL8Km"}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8
+authorization: SAPISIDHASH 1629556847_496710ca63099e02bffd7587cfe35ce6766ec1af
+content-type: application/json
+cookie: SAPISID=lTIhaHZPT8ESAswV/AeMzh3hUDf6MlLfSw; __Secure-3PAPISID=lTIhaHZPT8ESAswV/AeMzh3hUDf6MlLfSw; __Secure-1PAPISID=lTIhaHZPT8ESAswV/AeMzh3hUDf6MlLfSw; __Secure-1PSID=BAjMe86v1yauLI04xfmzye3kv_ikkoSyn47Vn_JaIhz_WerehImTJ4OSzNb7DH9zIDJz5A.; __Secure-3PSID=BAjMe86v1yauLI04xfmzye3kv_ikkoSyn47Vn_JaIhz_WereNGvucSRwZbmIbRY4CT6dCw.;
+origin: https://www.youtube.com
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20210617.01.00","clientScreen":"WATCH","visitorData":"CgtXVmxyLVYtdWs3VSiho4SJBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":false,"contentCheckOk":false,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18858}},"videoId":"qxV-JIfHelw","cpn":"ESTab--iQq2dL8Km"}

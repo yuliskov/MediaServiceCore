@@ -89,7 +89,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mEventId = videoInfo.getEventId();
         formatInfo.mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
-        formatInfo.mIsUnplayable = videoInfo.isUnplayable();
+        formatInfo.mIsUnplayable = videoInfo.isUnplayable() || videoInfo.isAgeRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr();
 

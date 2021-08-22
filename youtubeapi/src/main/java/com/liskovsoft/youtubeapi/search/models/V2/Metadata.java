@@ -5,8 +5,8 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 public class Metadata {
     @JsonPath("$.title.simpleText")
     private String mTitle;
-    @JsonPath("$.lines[0].lineRenderer.items[0].lineItemRenderer.text.runs[0].text")
-    private String mUserName;
+    @JsonPath("$.lines[0].lineRenderer.items[0].lineItemRenderer.text")
+    private TextItem mUserName;
     @JsonPath({"$.lines[1].lineRenderer.items[0].lineItemRenderer.text",
             "$.lines[1].lineRenderer.items[1].lineItemRenderer.text"})
     private TextItem mViewCountText;
@@ -20,7 +20,7 @@ public class Metadata {
     }
 
     public String getUserName() {
-        return mUserName;
+        return mUserName != null ? mUserName.getText() : null;
     }
 
     public String getViewCountText() {

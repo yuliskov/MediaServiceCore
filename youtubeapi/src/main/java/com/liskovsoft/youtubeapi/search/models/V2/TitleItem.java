@@ -16,8 +16,11 @@ public class TitleItem {
     @JsonPath("$.metadata.tileMetadataRenderer")
     private Metadata mMetadata;
 
-    @JsonPath("$.contentId")
+    @JsonPath("$.onSelectCommand.watchEndpoint.videoId")
     private String mVideoId;
+
+    @JsonPath("$.onSelectCommand.browseEndpoint.browseId")
+    private String mBrowseId;
 
     public Header getHeader() {
         return mHeader;
@@ -76,7 +79,7 @@ public class TitleItem {
     }
 
     public String getChannelId() {
-        return null;
+        return mBrowseId;
     }
 
     public int getPlaylistIndex() {

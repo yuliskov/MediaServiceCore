@@ -38,6 +38,9 @@ public class SearchResult {
                "$.contents.sectionListRenderer.contents[1].itemSectionRenderer.continuations[0].nextContinuationData.continuation"})
     private String mNextPageKey;
 
+    @JsonPath("$.estimatedResults")
+    private String mEstimatedResults;
+
     public List<VideoItem> getVideoItems() {
         return mVideoItems;
     }
@@ -64,5 +67,9 @@ public class SearchResult {
 
     public List<PlaylistItem> getPlaylistItems() {
         return mPlaylistItems;
+    }
+
+    public String getEstimatedResults() {
+        return mEstimatedResults;
     }
 }

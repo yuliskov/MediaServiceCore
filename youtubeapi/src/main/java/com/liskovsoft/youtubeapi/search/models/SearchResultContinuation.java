@@ -34,6 +34,12 @@ public class SearchResultContinuation {
                "$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation"})
     private String mNextPageKey;
 
+    /**
+     * Presents even when there is no results
+     */
+    @JsonPath("$.estimatedResults")
+    private String mEstimatedResults;
+
     public List<VideoItem> getVideoItems() {
         return mVideoItems;
     }
@@ -56,5 +62,9 @@ public class SearchResultContinuation {
 
     public String getNextPageKey() {
         return mNextPageKey;
+    }
+
+    public String getEstimatedResults() {
+        return mEstimatedResults;
     }
 }

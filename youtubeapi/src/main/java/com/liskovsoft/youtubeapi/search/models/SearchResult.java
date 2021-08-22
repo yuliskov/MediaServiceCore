@@ -38,6 +38,9 @@ public class SearchResult {
                "$.contents.sectionListRenderer.contents[1].itemSectionRenderer.continuations[0].nextContinuationData.continuation"})
     private String mNextPageKey;
 
+    /**
+     * Presents even when there is no results
+     */
     @JsonPath("$.estimatedResults")
     private String mEstimatedResults;
 

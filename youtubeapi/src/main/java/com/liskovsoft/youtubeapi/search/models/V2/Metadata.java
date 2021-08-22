@@ -7,8 +7,9 @@ public class Metadata {
     private String mTitle;
     @JsonPath("$.lines[0].lineRenderer.items[0].lineItemRenderer.text.runs[0].text")
     private String mUserName;
-    @JsonPath("$.lines[1].lineRenderer.items[1].lineItemRenderer.text.simpleText")
-    private String mViewCountText;
+    @JsonPath({"$.lines[1].lineRenderer.items[0].lineItemRenderer.text",
+            "$.lines[1].lineRenderer.items[1].lineItemRenderer.text"})
+    private TextItem mViewCountText;
     @JsonPath("$.lines[3].lineRenderer.items[1].lineItemRenderer.text.simpleText")
     private String mPublishedTime;
     @JsonPath("$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style")
@@ -23,7 +24,7 @@ public class Metadata {
     }
 
     public String getViewCountText() {
-        return mViewCountText;
+        return mViewCountText != null ? mViewCountText.getText() : null;
     }
 
     public String getPublishedTime() {

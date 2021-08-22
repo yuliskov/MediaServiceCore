@@ -64,11 +64,11 @@ public class TitleItem {
     }
 
     public String getBadgeText() {
-        return null;
+        return mHeader != null ? mHeader.getBadgeText() : null;
     }
 
     public int getPercentWatched() {
-        return 0;
+        return mHeader != null ? mHeader.getPercentWatched() : 0;
     }
 
     public String getRichThumbnailUrl() {
@@ -88,11 +88,11 @@ public class TitleItem {
     }
 
     public boolean isLive() {
-        return BADGE_STYLE_LIVE.equals(mMetadata != null ? mMetadata.getBadgeStyle() : null);
+        return BADGE_STYLE_LIVE.equals(mHeader != null ? mHeader.getBadgeStyle() : mMetadata.getBadgeStyle() != null ? mMetadata.getBadgeStyle() : null);
     }
 
     public boolean isUpcoming() {
-        return BADGE_STYLE_UPCOMING.equals(mMetadata != null ? mMetadata.getBadgeStyle() : null);
+        return BADGE_STYLE_UPCOMING.equals(mHeader != null ? mHeader.getBadgeStyle() : mMetadata.getBadgeStyle() != null ? mMetadata.getBadgeStyle() : null);
     }
 
     public String getFeedbackToken() {

@@ -13,7 +13,7 @@ public interface AppConstants {
     String APP_USER_AGENT = USER_AGENT_COBALT;
     String ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br"; // uses more RAM because of decompression
     String ACCEPT_ENCODING_DEFAULT = "identity";
-    String ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED;
+    String ACCEPT_ENCODING = ACCEPT_ENCODING_DEFAULT;
     String SCRIPTS_URL_BASE = "https://www.youtube.com";
     String API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8";
     String API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";

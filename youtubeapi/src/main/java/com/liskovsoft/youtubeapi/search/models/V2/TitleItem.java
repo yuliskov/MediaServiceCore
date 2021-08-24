@@ -42,7 +42,7 @@ public class TitleItem {
     }
 
     public String getDescBadgeText() {
-        return null;
+        return mMetadata != null ? mMetadata.getDescBadgeText() : null;
     }
 
     public String getUserName() {

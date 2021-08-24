@@ -1,19 +1,21 @@
 package com.liskovsoft.youtubeapi.search.models.V2;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+
+import java.util.List;
 
 public class Metadata {
     @JsonPath("$.title.simpleText")
     private String mTitle;
     @JsonPath("$.lines[0].lineRenderer.items[0].lineItemRenderer.text")
     private TextItem mUserName;
-    @JsonPath({"$.lines[1].lineRenderer.items[0].lineItemRenderer.text",
-            "$.lines[1].lineRenderer.items[1].lineItemRenderer.text"})
-    private TextItem mViewCountText;
-    @JsonPath("$.lines[1].lineRenderer.items[3].lineItemRenderer.text")
-    private TextItem mPublishedTime;
+    @JsonPath("$.lines[1].lineRenderer.items[*].lineItemRenderer.text")
+    private List<TextItem> mViewsAndDateText;
     @JsonPath("$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style")
     private String mBadgeStyle;
+    @JsonPath("$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label")
+    private String mDescBadgeText;
 
     public String getTitle() {
         return mTitle;
@@ -24,14 +26,18 @@ public class Metadata {
     }
 
     public String getViewCountText() {
-        return mViewCountText != null ? mViewCountText.getText() : null;
+        return mViewsAndDateText != null ? ServiceHelper.combineItems(mViewsAndDateText.toArray(new Object[0]), " ") : null;
     }
 
     public String getPublishedTime() {
-        return mPublishedTime != null ? mPublishedTime.getText() : null;
+        return null; // should be null (views and dates is combined)
     }
 
     public String getBadgeStyle() {
         return mBadgeStyle;
+    }
+
+    public String getDescBadgeText() {
+        return mDescBadgeText;
     }
 }

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search.models.V2;
 
+import androidx.annotation.NonNull;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
@@ -15,5 +16,11 @@ public class TextItem {
 
     public String getText() {
         return ServiceHelper.combineText(mText1, mText2, mFullText);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getText();
     }
 }

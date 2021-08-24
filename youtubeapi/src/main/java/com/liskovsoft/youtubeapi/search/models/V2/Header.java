@@ -8,8 +8,8 @@ import java.util.List;
 public class Header {
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
-    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text.simpleText")
-    private String mDuration;
+    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text")
+    private TextItem mDuration;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
     @JsonPath("$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style")
@@ -22,7 +22,7 @@ public class Header {
     }
 
     public String getDuration() {
-        return mDuration;
+        return mDuration != null ? mDuration.getText() : null;
     }
 
     public int getPercentWatched() {

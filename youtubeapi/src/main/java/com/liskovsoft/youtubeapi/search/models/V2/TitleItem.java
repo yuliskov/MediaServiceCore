@@ -19,6 +19,9 @@ public class TitleItem {
     @JsonPath("$.onSelectCommand.watchEndpoint.videoId")
     private String mVideoId;
 
+    @JsonPath("$.onSelectCommand.watchEndpoint.playlistId")
+    private String mPlaylistId;
+
     @JsonPath("$.onSelectCommand.browseEndpoint.browseId")
     private String mBrowseId;
 
@@ -87,7 +90,7 @@ public class TitleItem {
     }
 
     public String getPlaylistId() {
-        return null;
+        return mPlaylistId;
     }
 
     public boolean isLive() {

@@ -78,10 +78,16 @@ public class ServiceHelper {
                     continue;
                 }
 
+                String strItem = item.toString();
+
+                if (strItem == null || strItem.isEmpty()) {
+                    continue;
+                }
+
                 if (divider == null || result.length() == 0) {
-                    result.append(item);
+                    result.append(strItem);
                 } else {
-                    result.append(divider).append(item);
+                    result.append(divider).append(strItem);
                 }
             }
         }

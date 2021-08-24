@@ -10,8 +10,8 @@ public class Metadata {
     @JsonPath({"$.lines[1].lineRenderer.items[0].lineItemRenderer.text",
             "$.lines[1].lineRenderer.items[1].lineItemRenderer.text"})
     private TextItem mViewCountText;
-    @JsonPath("$.lines[3].lineRenderer.items[1].lineItemRenderer.text.simpleText")
-    private String mPublishedTime;
+    @JsonPath("$.lines[1].lineRenderer.items[3].lineItemRenderer.text")
+    private TextItem mPublishedTime;
     @JsonPath("$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style")
     private String mBadgeStyle;
 
@@ -28,7 +28,7 @@ public class Metadata {
     }
 
     public String getPublishedTime() {
-        return mPublishedTime;
+        return mPublishedTime != null ? mPublishedTime.getText() : null;
     }
 
     public String getBadgeStyle() {

@@ -120,7 +120,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, null, nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
+        return create((YouTubeMediaGroup) baseGroup, nextSearchResult.getTitleItems(), nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
                 nextSearchResult.getChannelItems(), nextSearchResult.getRadioItems(), nextSearchResult.getPlaylistItems(), nextSearchResult.getNextPageKey());
     }
 

@@ -50,7 +50,7 @@ public class SearchManagerTestBase {
         assertNotNull("Search result item contains title", videoItem.getTitle());
         //assertNotNull("Search result item contains channel id", videoItem.getChannelId()); // not exists in search result
         assertNotNull("Search result item contains view count", videoItem.getViewCountText());
-        assertNotNull("Search result item contains date", videoItem.getPublishedTime());
+        assertNotNull("Search result item contains date", videoItem.getPublishedDate());
     }
 
     private void checkSearchResultChannelItem(ChannelItem channelItem) {

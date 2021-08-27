@@ -128,13 +128,13 @@ public class YouTubeMediaItem implements MediaItem {
         video.mDescription = YouTubeMediaServiceHelper.createDescription(
                 item.getDescBadgeText(), // Mostly it's a 4K label
                 item.getUserName(),
-                item.getPublishedTime(),
+                item.getPublishedDate(),
                 item.getShortViewCountText() != null ? item.getShortViewCountText() : item.getViewCountText(),
                 item.getUpcomingEventText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
-        video.mProductionDate = item.getPublishedTime();
+        video.mProductionDate = item.getPublishedDate();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistIndex();

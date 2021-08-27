@@ -67,7 +67,7 @@ public class BrowseManagerTestBase {
         assertNotNull("Title not null", videoItem.getTitle());
         String videoId = videoItem.getVideoId();
         assertNotNull("Id not null", videoId);
-        assertTrue("Time not null or live: " + videoId, videoItem.getPublishedTime() != null || videoItem.isLive());
+        assertTrue("Time not null or live: " + videoId, videoItem.getPublishedDate() != null || videoItem.isLive());
         assertTrue("Length not null or live: " + videoId, videoItem.getLengthText() != null || videoItem.isLive());
         //assertNotNull("Channel not null: " + videoId, videoItem.getChannelId());
         assertNotNull("User not null: " + videoId, videoItem.getUserName());

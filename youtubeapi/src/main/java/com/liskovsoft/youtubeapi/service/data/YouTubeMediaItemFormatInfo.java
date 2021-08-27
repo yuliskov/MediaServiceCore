@@ -29,6 +29,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mVideoId;
     private String mChannelId;
     private boolean mIsLive;
+    private boolean mIsLiveContent;
     private boolean mIsLowLatencyLiveStream;
     private boolean mIsStreamSeekable;
     private List<MediaFormat> mAdaptiveFormats;
@@ -81,6 +82,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             formatInfo.mChannelId = videoDetails.getChannelId();
             formatInfo.mAuthor = videoDetails.getAuthor();
             formatInfo.mIsLive = videoDetails.isLive();
+            formatInfo.mIsLiveContent = videoDetails.isLiveContent();
             formatInfo.mIsLowLatencyLiveStream = videoDetails.isLowLatencyLiveStream();
         }
 
@@ -204,6 +206,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean isLive() {
         return mIsLive;
+    }
+
+    @Override
+    public boolean isLiveContent() {
+        return mIsLiveContent;
     }
     
     public boolean isLowLatencyStream() {

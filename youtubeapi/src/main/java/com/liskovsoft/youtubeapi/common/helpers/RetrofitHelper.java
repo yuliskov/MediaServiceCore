@@ -15,8 +15,10 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
+import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -121,7 +123,7 @@ public class RetrofitHelper {
 
         //disableCache(okBuilder);
 
-        setupTimeout(okBuilder);
+        setupConnectionParams(okBuilder);
 
         addCommonHeaders(okBuilder);
 
@@ -137,11 +139,17 @@ public class RetrofitHelper {
         okBuilder.cache(null);
     }
 
-    private static void setupTimeout(OkHttpClient.Builder okBuilder) {
+    /**
+     * https://stackoverflow.com/questions/39219094/sockettimeoutexception-in-retrofit<br/>
+     * https://stackoverflow.com/questions/63047533/connection-pool-okhttp
+     */
+    private static void setupConnectionParams(OkHttpClient.Builder okBuilder) {
         // Default timeout 10 sec
         okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
+        okBuilder.connectionPool(new ConnectionPool(10, TIMEOUT_SEC, TimeUnit.SECONDS));
+        //okBuilder.protocols(listOf(Protocol.HTTP_1_1));
     }
 
     private static void addCommonHeaders(OkHttpClient.Builder builder) {

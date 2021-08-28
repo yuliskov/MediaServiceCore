@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.search.models.V2;
+package com.liskovsoft.youtubeapi.common.models.V2;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
@@ -6,6 +6,10 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import java.util.List;
 
 public class TitleItem {
+    public static final String CONTENT_TYPE_UNDEFINED = "UNDEFINED";
+    public static final String CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL";
+    public static final String CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST";
+    public static final String CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO";
     private static final String BADGE_STYLE_LIVE = "LIVE";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
@@ -19,11 +23,17 @@ public class TitleItem {
     @JsonPath("$.onSelectCommand.watchEndpoint.videoId")
     private String mVideoId;
 
-    @JsonPath("$.onSelectCommand.watchEndpoint.playlistId")
+    @JsonPath({
+            "$.onSelectCommand.watchEndpoint.playlistId",
+            "$.onSelectCommand.watchPlaylistEndpoint.playlistId"
+    })
     private String mPlaylistId;
 
     @JsonPath("$.onSelectCommand.browseEndpoint.browseId")
-    private String mBrowseId;
+    private String mChannelId;
+
+    @JsonPath("$.contentType")
+    private String mContentType;
 
     public Header getHeader() {
         return mHeader;
@@ -82,7 +92,7 @@ public class TitleItem {
     }
 
     public String getChannelId() {
-        return mBrowseId;
+        return mChannelId;
     }
 
     public int getPlaylistIndex() {
@@ -107,5 +117,9 @@ public class TitleItem {
 
     public String getClickTrackingParams() {
         return null;
+    }
+
+    public String getContentType() {
+        return mContentType != null ? mContentType : CONTENT_TYPE_UNDEFINED;
     }
 }

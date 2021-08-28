@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.search.models.V2;
+package com.liskovsoft.youtubeapi.common.models.V2;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;

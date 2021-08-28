@@ -17,7 +17,7 @@ import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.search.models.V2.TitleItem;
+import com.liskovsoft.youtubeapi.common.models.V2.TitleItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,8 +6,8 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import java.util.List;
 
 public class Metadata {
-    @JsonPath("$.title.simpleText")
-    private String mTitle;
+    @JsonPath("$.title")
+    private TextItem mTitle;
     @JsonPath("$.lines[0].lineRenderer.items[0].lineItemRenderer.text")
     private TextItem mUserName;
     @JsonPath("$.lines[1].lineRenderer.items[*].lineItemRenderer.text")
@@ -18,7 +18,7 @@ public class Metadata {
     private String mDescBadgeText;
 
     public String getTitle() {
-        return mTitle;
+        return mTitle != null ? mTitle.getText() : null;
     }
 
     public String getUserName() {

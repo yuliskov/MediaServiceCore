@@ -18,10 +18,10 @@ import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
-import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -34,58 +34,54 @@ public class RetrofitHelper {
     // Default timeout 10 sec
     private static final long TIMEOUT_SEC = 30;
     public static boolean sForceEnableProfiler;
+    private static Retrofit sGsonRetrofit;
+    private static Retrofit sJsonPathRetrofit;
+    private static Retrofit sJsonPathSkipRetrofit;
+    private static Retrofit sQueryStringRetrofit;
+    private static Retrofit sRegExpRetrofit;
+    private static OkHttpClient sOkHttpClient;
 
     public static <T> T withGson(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
+        if (sGsonRetrofit == null) {
+            sGsonRetrofit = createRetrofit(GsonConverterFactory.create());
+        }
 
-        Retrofit retrofit = builder
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return sGsonRetrofit.create(clazz);
     }
 
     public static <T> T withJsonPath(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
+        if (sJsonPathRetrofit == null) {
+            sJsonPathRetrofit = createRetrofit(JsonPathConverterFactory.create());
+        }
 
-        Retrofit retrofit = builder
-                .addConverterFactory(JsonPathConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return sJsonPathRetrofit.create(clazz);
     }
 
     /**
      * Skips first line of the response
      */
     public static <T> T withJsonPathSkip(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
+        if (sJsonPathSkipRetrofit == null) {
+            sJsonPathSkipRetrofit = createRetrofit(JsonPathSkipConverterFactory.create());
+        }
 
-        Retrofit retrofit = builder
-                .addConverterFactory(JsonPathSkipConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return sJsonPathSkipRetrofit.create(clazz);
     }
 
     public static <T> T withQueryString(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
+        if (sQueryStringRetrofit == null) {
+            sQueryStringRetrofit = createRetrofit(QueryStringConverterFactory.create());
+        }
 
-        Retrofit retrofit = builder
-                .addConverterFactory(QueryStringConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return sQueryStringRetrofit.create(clazz);
     }
 
     public static <T> T withRegExp(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
+        if (sRegExpRetrofit == null) {
+            sRegExpRetrofit = createRetrofit(RegExpConverterFactory.create());
+        }
 
-        Retrofit retrofit = builder
-                .addConverterFactory(RegExpConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return sRegExpRetrofit.create(clazz);
     }
 
     public static <T> T get(Call<T> wrapper) {
@@ -117,21 +113,33 @@ public class RetrofitHelper {
 
         return retrofitBuilder;
     }
+
+    private static Retrofit createRetrofit(Converter.Factory factory) {
+        Retrofit.Builder builder = createBuilder();
+
+        return builder
+                .addConverterFactory(factory)
+                .build();
+    }
     
     public static OkHttpClient createOkHttpClient() {
-        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+        if (sOkHttpClient == null) {
+            OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-        //disableCache(okBuilder);
+            //disableCache(okBuilder);
 
-        setupConnectionParams(okBuilder);
+            setupConnectionParams(okBuilder);
 
-        addCommonHeaders(okBuilder);
+            addCommonHeaders(okBuilder);
 
-        enableDecompression(okBuilder);
+            enableDecompression(okBuilder);
 
-        debugSetup(okBuilder);
+            debugSetup(okBuilder);
 
-        return okBuilder.build();
+            sOkHttpClient = okBuilder.build();
+        }
+
+        return sOkHttpClient;
     }
 
     private static void disableCache(OkHttpClient.Builder okBuilder) {
@@ -148,7 +156,7 @@ public class RetrofitHelper {
         okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
-        okBuilder.connectionPool(new ConnectionPool(10, 10, TimeUnit.MINUTES));
+        //okBuilder.connectionPool(new ConnectionPool(10, 10, TimeUnit.MINUTES));
         //okBuilder.protocols(listOf(Protocol.HTTP_1_1));
     }
 

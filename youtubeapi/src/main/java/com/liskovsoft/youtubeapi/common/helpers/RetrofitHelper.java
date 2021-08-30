@@ -18,6 +18,7 @@ import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -34,19 +35,19 @@ public class RetrofitHelper {
     // Default timeout 10 sec
     private static final long TIMEOUT_SEC = 30;
     public static boolean sForceEnableProfiler;
-    private static Retrofit sGsonRetrofit;
     private static Retrofit sJsonPathRetrofit;
     private static Retrofit sJsonPathSkipRetrofit;
     private static Retrofit sQueryStringRetrofit;
     private static Retrofit sRegExpRetrofit;
-    private static OkHttpClient sOkHttpClient;
 
     public static <T> T withGson(Class<T> clazz) {
-        if (sGsonRetrofit == null) {
-            sGsonRetrofit = createRetrofit(GsonConverterFactory.create());
-        }
+        Retrofit.Builder builder = createBuilder();
 
-        return sGsonRetrofit.create(clazz);
+        Retrofit retrofit = builder
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(clazz);
     }
 
     public static <T> T withJsonPath(Class<T> clazz) {
@@ -57,12 +58,24 @@ public class RetrofitHelper {
         return sJsonPathRetrofit.create(clazz);
     }
 
+    private static Retrofit createRetrofit(Converter.Factory factory) {
+        Retrofit.Builder builder = createBuilder();
+
+        return builder
+                .addConverterFactory(factory)
+                .build();
+    }
+
     /**
      * Skips first line of the response
      */
     public static <T> T withJsonPathSkip(Class<T> clazz) {
         if (sJsonPathSkipRetrofit == null) {
-            sJsonPathSkipRetrofit = createRetrofit(JsonPathSkipConverterFactory.create());
+            Retrofit.Builder builder = createBuilder();
+
+            sJsonPathSkipRetrofit = builder
+                    .addConverterFactory(JsonPathSkipConverterFactory.create())
+                    .build();
         }
 
         return sJsonPathSkipRetrofit.create(clazz);
@@ -70,18 +83,26 @@ public class RetrofitHelper {
 
     public static <T> T withQueryString(Class<T> clazz) {
         if (sQueryStringRetrofit == null) {
-            sQueryStringRetrofit = createRetrofit(QueryStringConverterFactory.create());
+
         }
 
-        return sQueryStringRetrofit.create(clazz);
+        Retrofit.Builder builder = createBuilder();
+
+        Retrofit retrofit = builder
+                .addConverterFactory(QueryStringConverterFactory.create())
+                .build();
+
+        return retrofit.create(clazz);
     }
 
     public static <T> T withRegExp(Class<T> clazz) {
-        if (sRegExpRetrofit == null) {
-            sRegExpRetrofit = createRetrofit(RegExpConverterFactory.create());
-        }
+        Retrofit.Builder builder = createBuilder();
 
-        return sRegExpRetrofit.create(clazz);
+        Retrofit retrofit = builder
+                .addConverterFactory(RegExpConverterFactory.create())
+                .build();
+
+        return retrofit.create(clazz);
     }
 
     public static <T> T get(Call<T> wrapper) {
@@ -113,33 +134,21 @@ public class RetrofitHelper {
 
         return retrofitBuilder;
     }
-
-    private static Retrofit createRetrofit(Converter.Factory factory) {
-        Retrofit.Builder builder = createBuilder();
-
-        return builder
-                .addConverterFactory(factory)
-                .build();
-    }
     
     public static OkHttpClient createOkHttpClient() {
-        if (sOkHttpClient == null) {
-            OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-            //disableCache(okBuilder);
+        //disableCache(okBuilder);
 
-            setupConnectionParams(okBuilder);
+        setupConnectionParams(okBuilder);
 
-            addCommonHeaders(okBuilder);
+        addCommonHeaders(okBuilder);
 
-            enableDecompression(okBuilder);
+        enableDecompression(okBuilder);
 
-            debugSetup(okBuilder);
+        debugSetup(okBuilder);
 
-            sOkHttpClient = okBuilder.build();
-        }
-
-        return sOkHttpClient;
+        return okBuilder.build();
     }
 
     private static void disableCache(OkHttpClient.Builder okBuilder) {

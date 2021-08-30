@@ -35,74 +35,28 @@ public class RetrofitHelper {
     // Default timeout 10 sec
     private static final long TIMEOUT_SEC = 30;
     public static boolean sForceEnableProfiler;
-    private static Retrofit sJsonPathRetrofit;
-    private static Retrofit sJsonPathSkipRetrofit;
-    private static Retrofit sQueryStringRetrofit;
-    private static Retrofit sRegExpRetrofit;
 
     public static <T> T withGson(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
-
-        Retrofit retrofit = builder
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return buildRetrofit(GsonConverterFactory.create()).create(clazz);
     }
 
     public static <T> T withJsonPath(Class<T> clazz) {
-        if (sJsonPathRetrofit == null) {
-            sJsonPathRetrofit = createRetrofit(JsonPathConverterFactory.create());
-        }
-
-        return sJsonPathRetrofit.create(clazz);
-    }
-
-    private static Retrofit createRetrofit(Converter.Factory factory) {
-        Retrofit.Builder builder = createBuilder();
-
-        return builder
-                .addConverterFactory(factory)
-                .build();
+        return buildRetrofit(JsonPathConverterFactory.create()).create(clazz);
     }
 
     /**
      * Skips first line of the response
      */
     public static <T> T withJsonPathSkip(Class<T> clazz) {
-        if (sJsonPathSkipRetrofit == null) {
-            Retrofit.Builder builder = createBuilder();
-
-            sJsonPathSkipRetrofit = builder
-                    .addConverterFactory(JsonPathSkipConverterFactory.create())
-                    .build();
-        }
-
-        return sJsonPathSkipRetrofit.create(clazz);
+        return buildRetrofit(JsonPathSkipConverterFactory.create()).create(clazz);
     }
 
     public static <T> T withQueryString(Class<T> clazz) {
-        if (sQueryStringRetrofit == null) {
-
-        }
-
-        Retrofit.Builder builder = createBuilder();
-
-        Retrofit retrofit = builder
-                .addConverterFactory(QueryStringConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return buildRetrofit(QueryStringConverterFactory.create()).create(clazz);
     }
 
     public static <T> T withRegExp(Class<T> clazz) {
-        Retrofit.Builder builder = createBuilder();
-
-        Retrofit retrofit = builder
-                .addConverterFactory(RegExpConverterFactory.create())
-                .build();
-
-        return retrofit.create(clazz);
+        return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
     }
 
     public static <T> T get(Call<T> wrapper) {
@@ -125,6 +79,14 @@ public class RetrofitHelper {
         ParseContext parser = JsonPath.using(conf);
 
         return new JsonPathSkipTypeAdapter<>(parser, clazz);
+    }
+
+    private static Retrofit buildRetrofit(Converter.Factory factory) {
+        Retrofit.Builder builder = createBuilder();
+
+        return builder
+                .addConverterFactory(factory)
+                .build();
     }
 
     private static Retrofit.Builder createBuilder() {
@@ -165,7 +127,7 @@ public class RetrofitHelper {
         okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
-        //okBuilder.connectionPool(new ConnectionPool(10, 10, TimeUnit.MINUTES));
+        okBuilder.connectionPool(new ConnectionPool(0, 0, TimeUnit.SECONDS));
         //okBuilder.protocols(listOf(Protocol.HTTP_1_1));
     }
 

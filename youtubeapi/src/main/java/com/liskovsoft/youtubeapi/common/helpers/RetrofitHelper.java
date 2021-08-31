@@ -127,7 +127,8 @@ public class RetrofitHelper {
         okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
         okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
-        okBuilder.connectionPool(new ConnectionPool(0, TIMEOUT_SEC, TimeUnit.SECONDS));
+        // Decrease timout to imitate connection 'keepAlive' = false
+        okBuilder.connectionPool(new ConnectionPool(10, TIMEOUT_SEC, TimeUnit.SECONDS));
         //okBuilder.protocols(listOf(Protocol.HTTP_1_1));
     }
 

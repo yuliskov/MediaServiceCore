@@ -12,7 +12,10 @@ public class Header {
     private TextItem mDuration;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
-    @JsonPath("$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style")
+    @JsonPath({
+            "$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style",
+            "$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style"
+    })
     private String mBadgeStyle;
     @JsonPath("$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.text")
     private TextItem mBadgeText;

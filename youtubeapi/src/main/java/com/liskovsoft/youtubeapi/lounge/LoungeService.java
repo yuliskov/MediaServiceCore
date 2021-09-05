@@ -98,8 +98,12 @@ public class LoungeService {
                 initConstants();
                 startListeningInt(callback);
                 Thread.sleep(3_000); // fix too frequent request
-            } catch (InterruptedIOException | NullPointerException e) {
-                Log.e(TAG, "We're done. Seems that user has been closed remote session.");
+            } catch (InterruptedIOException e) {
+                Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
+                break;
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Oops. Stopping. Got NPE.");
+                e.printStackTrace();
                 break;
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

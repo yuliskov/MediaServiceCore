@@ -12,6 +12,8 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathNullable;
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -39,6 +41,8 @@ public class JsonPathTypeAdapter<T> {
 
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
+        //long startTimeMs = System.currentTimeMillis();
+
         is = process(is);
 
         String jsonContent = null;
@@ -66,6 +70,10 @@ public class JsonPathTypeAdapter<T> {
             ReflectionHelper.dumpDebugInfo(getGenericType(), jsonContent);
         }
 
+        //long endTimeMs = System.currentTimeMillis();
+        //
+        //Log.d(TAG, "Parse time ms is %s", endTimeMs - startTimeMs);
+
         return result;
     }
 
@@ -80,6 +88,41 @@ public class JsonPathTypeAdapter<T> {
         return mType;
     }
 
+    //private Object readType(Class<?> type, String jsonContent) {
+    //    if (type == null || jsonContent == null) {
+    //        return null;
+    //    }
+    //
+    //    try {
+    //        Constructor<?> constructor = type.getConstructor();
+    //        final Object obj = constructor.newInstance();
+    //
+    //        DocumentContext parser = mParser.parse(jsonContent);
+    //
+    //        List<Field> fields = ReflectionHelper.getAllFields(type);
+    //
+    //        List<Boolean> results = Observable.fromIterable(fields)
+    //                .map(field -> processField(field, obj, type, parser))
+    //                .subscribeOn(Schedulers.io())
+    //                .observeOn(Schedulers.io())
+    //                .toList()
+    //                .blockingGet();
+    //
+    //        for (Boolean result : results) {
+    //            // At least one field is set
+    //            if (result) {
+    //                return obj;
+    //            }
+    //        }
+    //
+    //    } catch (Exception e) {
+    //        Log.e(TAG, e.getMessage());
+    //        e.printStackTrace();
+    //    }
+    //
+    //    return null;
+    //}
+
     private Object readType(Class<?> type, String jsonContent) {
         if (type == null || jsonContent == null) {
             return null;
@@ -92,75 +135,16 @@ public class JsonPathTypeAdapter<T> {
             Constructor<?> constructor = type.getConstructor();
             obj = constructor.newInstance();
 
-            DocumentContext parser;
-
-            parser = mParser.parse(jsonContent);
+            DocumentContext parser = mParser.parse(jsonContent);
 
             List<Field> fields = ReflectionHelper.getAllFields(type);
 
             for (Field field : fields) {
-                field.setAccessible(true);
-                String[] jsonPath = getJsonPath(field);
+                boolean result = processField(field, obj, type, parser);
 
-                if (jsonPath == null) {
-                    continue;
-                }
-
-                Object jsonVal = null;
-
-                for (String path : jsonPath) {
-                    try {
-                        jsonVal = parser.read(path);
-                        break;
-                    } catch (PathNotFoundException e) {
-                        Log.d(TAG, type.getSimpleName() + ": Path not found: " + path);
-                    }
-                }
-
-                if (jsonVal == null) {
-                    continue;
-                }
-
-                try {
-                    if (jsonVal instanceof JsonArray) {
-                        List<Object> list = null;
-                        Class<?> myType = ReflectionHelper.getGenericParamType(field);
-
-                        if (myType == null) {
-                            throw new IllegalStateException("Please, supply generic field for the list type: " + field);
-                        }
-
-                        for (Object jsonObj : (JsonArray) jsonVal) {
-                            Object item;
-
-                            if (jsonObj instanceof JsonPrimitive) {
-                                item = parsePrimitive((JsonPrimitive) jsonObj);
-                            } else {
-                                item = readType(myType, jsonObj.toString());
-                            }
-
-                            if (item != null) {
-                                if (list == null) {
-                                    list = new ArrayList<>();
-                                }
-
-                                list.add(item);
-                            }
-                        }
-
-                        field.set(obj, list);
-                    } else if (jsonVal instanceof JsonPrimitive) {
-                        Object val = parsePrimitive((JsonPrimitive) jsonVal);
-
-                        field.set(obj, val);
-                    } else if (jsonVal instanceof JsonObject) {
-                        Object val = readType(field.getType(), jsonVal.toString());
-                        field.set(obj, val);
-                    }
-
-                    done = true; // at least one field is set
-                } catch (IllegalArgumentException e) {
-                    Log.d(TAG, "%s: Incompatible json value found %s. Same path on different types?", field.getType().getSimpleName(), jsonVal);
+                // At least one field is set
+                if (result) {
+                    done = true;
                 }
             }
         } catch (Exception e) {
@@ -168,6 +152,79 @@ public class JsonPathTypeAdapter<T> {
         }
 
         return done ? obj : null;
+    }
+
+    private boolean processField(Field field, Object obj, Class<?> type, DocumentContext parser) {
+        //Log.d(TAG, "Processing on thread: %s", Thread.currentThread().getName());
+
+        boolean done = false;
+        field.setAccessible(true);
+        String[] jsonPath = getJsonPath(field);
+
+        if (jsonPath == null) {
+            return false;
+        }
+
+        Object jsonVal = null;
+
+        for (String path : jsonPath) {
+            try {
+                jsonVal = parser.read(path);
+                break;
+            } catch (PathNotFoundException e) {
+                Log.d(TAG, type.getSimpleName() + ": Path not found: " + path);
+            }
+        }
+
+        if (jsonVal == null) {
+            return false;
+        }
+
+        try {
+            if (jsonVal instanceof JsonArray) {
+                List<Object> list = null;
+                Class<?> myType = ReflectionHelper.getGenericParamType(field);
+
+                if (myType == null) {
+                    throw new IllegalStateException("Please, supply generic field for the list type: " + field);
+                }
+
+                for (Object jsonObj : (JsonArray) jsonVal) {
+                    Object item;
+
+                    if (jsonObj instanceof JsonPrimitive) {
+                        item = parsePrimitive((JsonPrimitive) jsonObj);
+                    } else {
+                        item = readType(myType, jsonObj.toString());
+                    }
+
+                    if (item != null) {
+                        if (list == null) {
+                            list = new ArrayList<>();
+                        }
+
+                        list.add(item);
+                    }
+                }
+
+                field.set(obj, list);
+            } else if (jsonVal instanceof JsonPrimitive) {
+                Object val = parsePrimitive((JsonPrimitive) jsonVal);
+
+                field.set(obj, val);
+            } else if (jsonVal instanceof JsonObject) {
+                Object val = readType(field.getType(), jsonVal.toString());
+                field.set(obj, val);
+            }
+
+            done = true; // at least one field is set
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "%s: Incompatible json value found %s. Same path on different types?", field.getType().getSimpleName(), jsonVal);
+        } catch (IllegalAccessException e) {
+            Log.d(TAG, "%s: Illegal access with value %s.", field.getType().getSimpleName(), jsonVal);
+        }
+
+        return done;
     }
 
     private String[] getJsonPath(Class<?> type) {

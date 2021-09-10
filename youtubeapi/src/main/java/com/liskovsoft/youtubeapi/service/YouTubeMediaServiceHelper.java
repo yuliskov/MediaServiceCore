@@ -16,7 +16,7 @@ public final class YouTubeMediaServiceHelper {
         return thumbnails.get(thumbnails.size() - 1).getUrl();
     }
 
-    public static String createDescription(String... items) {
+    public static String createDescription(Object... items) {
         return ServiceHelper.itemsToDescription(items);
     }
 

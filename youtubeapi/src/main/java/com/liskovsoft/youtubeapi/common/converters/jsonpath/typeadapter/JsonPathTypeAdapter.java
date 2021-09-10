@@ -6,14 +6,12 @@ import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.PathNotFoundException;
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathNullable;
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import com.liskovsoft.youtubeapi.common.models.items.FieldHolder;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -21,7 +19,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JsonPathTypeAdapter<T> {
@@ -41,8 +38,6 @@ public class JsonPathTypeAdapter<T> {
 
     @SuppressWarnings("unchecked")
     public final T read(InputStream is) {
-        //long startTimeMs = System.currentTimeMillis();
-
         is = process(is);
 
         String jsonContent = null;
@@ -63,6 +58,8 @@ public class JsonPathTypeAdapter<T> {
             jsonContent = Helpers.toString(is);
         }
 
+        //long startTimeMs = System.currentTimeMillis();
+
         T result = (T) readType(getGenericType(), jsonContent);
 
         if (result == null) {
@@ -72,7 +69,7 @@ public class JsonPathTypeAdapter<T> {
 
         //long endTimeMs = System.currentTimeMillis();
         //
-        //Log.d(TAG, "Parse time ms is %s", endTimeMs - startTimeMs);
+        //Log.d(TAG, "Parse time is %s ms", endTimeMs - startTimeMs);
 
         return result;
     }
@@ -145,6 +142,11 @@ public class JsonPathTypeAdapter<T> {
                 // At least one field is set
                 if (result) {
                     done = true;
+                }
+
+                // Don't process other fields. It's single field wrapper.
+                if (result && obj instanceof FieldHolder) {
+                    break;
                 }
             }
         } catch (Exception e) {

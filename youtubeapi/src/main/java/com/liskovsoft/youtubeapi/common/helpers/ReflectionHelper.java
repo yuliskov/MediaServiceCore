@@ -13,6 +13,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ReflectionHelper {
@@ -50,6 +52,8 @@ public class ReflectionHelper {
         while (type.getSuperclass() != null) { // null if superclass is object
             type = type.getSuperclass();
             result.addAll(Arrays.asList(type.getDeclaredFields()));
+            // ??? Speedup json parsing by putting on top important fields.
+            //Collections.sort(result, (o1, o2) -> o1.getName().compareTo(o2.getName()));
         }
 
         return result;

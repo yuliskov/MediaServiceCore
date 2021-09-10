@@ -11,7 +11,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathNullable;
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
-import com.liskovsoft.youtubeapi.common.models.items.FieldHolder;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -142,11 +141,6 @@ public class JsonPathTypeAdapter<T> {
                 // At least one field is set
                 if (result) {
                     done = true;
-                }
-
-                // Don't process other fields. It's single field wrapper.
-                if (result && obj instanceof FieldHolder) {
-                    break;
                 }
             }
         } catch (Exception e) {

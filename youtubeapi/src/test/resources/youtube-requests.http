@@ -702,3 +702,13 @@ origin: https://www.youtube.com
 user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36
 
 {"context":{"client":{"clientName":"WEB","clientVersion":"2.20210617.01.00","clientScreen":"WATCH","visitorData":"CgtXVmxyLVYtdWs3VSiho4SJBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":false,"contentCheckOk":false,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18858}},"videoId":"qxV-JIfHelw","cpn":"ESTab--iQq2dL8Km"}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/next?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+Accept-Encoding: identity
+Referer: https://www.youtube.com/tv
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20210622.10.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en-US","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"videoId":"s2lGEhSlOTY"}

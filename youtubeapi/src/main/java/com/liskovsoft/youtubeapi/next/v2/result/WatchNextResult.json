@@ -1,0 +1,26 @@
+// "$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer"
+// "$.title.runs[0].text", "$.title.simpleText"
+{
+    "contents": {
+        "singleColumnWatchNextResults": {
+            "pivot": {
+                "pivot": {
+                    "contents": [
+                        {
+                            "shelfRenderer": {
+                                "title": {
+                                    "runs": [
+                                        {
+                                            "text": ""
+                                        }
+                                    ],
+                                    "simpleText": ""
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

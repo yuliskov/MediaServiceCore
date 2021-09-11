@@ -11,8 +11,9 @@ data class WatchNextResult(val contents: Contents?) {
             data class Pivot(val pivot: Pivot?, val contents: List<Content>?) {
                 data class Content(val shelfRenderer: ShelfRenderer?) {
                     data class ShelfRenderer(val title: Title?) {
-                        data class Title(val runs: List<TextItem>?, val simpleText: String?) {
+                        data class Title(val runs: List<TextItem?>?, val simpleText: String?) {
                             data class TextItem(val text: String?)
+
                             fun getText() = if (runs != null) ServiceHelper.combineText(runs) else simpleText
                         }
                     }

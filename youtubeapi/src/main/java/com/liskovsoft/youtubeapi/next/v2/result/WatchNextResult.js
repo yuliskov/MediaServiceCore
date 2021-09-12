@@ -1,85 +1,56 @@
-let textItem = {
-    runs: [
-        {
-            text: ""
+let buttonState = {
+    subscribeButton: {
+        toggleButtonRenderer: {
+            isToggled: false
         }
-    ],
-    simpleText: ""
-};
-
-let thumbnailItem = {
-    thumbnails: [
-        {
-            url: "",
-            width: "",
-            height: ""
+    },
+    likeButton: {
+        toggleButtonRenderer: {
+            isToggled: false
         }
-    ]
-};
-
-let videoItem = {
-    thumbnail: thumbnailItem,
-    title: textItem,
-    // UserName
-    shortBylineText: textItem,
-    // UserName
-    longBylineText: textItem,
-    videoId: ""
-};
-
-let tileItem = {
-    // Metadata
-    // $.metadata.tileMetadataRenderer
-    metadata: {
-        tileMetadataRenderer: {
-            title: textItem
+    },
+    dislikeButton: {
+        toggleButtonRenderer: {
+            isToggled: false
+        }
+    },
+    channelButton: {
+        videoOwnerRenderer: {
+            navigationEndpoint: {
+                browseEndpoint: {
+                    browseId: ""
+                }
+            },
+            thumbnail: thumbnailItem
         }
     }
 };
 
-let musicItem = {
-    thumbnail: thumbnailItem,
-    // Title
-    primaryText: textItem,
-    // Subtitle
-    secondaryText: textItem,
-    // Views and published
-    tertiaryText: textItem
+let itemWrapper = {
+    // TileItem
+    tileRenderer: tileItem,
+    // VideoItem
+    gridVideoRenderer: videoItem,
+    // SuggestedVideoItem
+    pivotVideoRenderer: videoItem,
+    // MusicItem
+    tvMusicVideoRenderer: musicItem,
+    // RadioItem
+    gridRadioRenderer: radioItem,
+    pivotRadioRenderer: radioItem,
+    // ChannelItem
+    gridChannelRenderer: channelItem,
+    pivotChannelRenderer: channelItem,
+    // PlaylistItem
+    gridPlaylistRenderer: playlistItem,
+    pivotPlaylistRenderer: playlistItem
 };
 
-let radioItem = {
-    thumbnail: thumbnailItem,
-    thumbnailRenderer: {
-        playlistVideoThumbnailRenderer: {
-            thumbnail: thumbnailItem
-        }
-    },
-    title: textItem
+let nextVideoItem = {
+
 };
 
-let channelItem = {
-    thumbnail: thumbnailItem,
-    title: textItem,
-    displayName: textItem,
-    channelId: "",
-    videoCountText: textItem,
-    subscriberCountText: textItem
-};
-
-let playlistItem = {
-    thumbnail: thumbnailItem,
-    thumbnailRenderer: {
-        playlistVideoThumbnailRenderer: {
-            thumbnail: thumbnailItem
-        },
-        playlistCustomThumbnailRenderer: {
-            thumbnail: thumbnailItem
-        }
-    },
-    title: textItem
-};
-
-let WatchNextResult = {
+let watchNextResult = {
     contents: {
         singleColumnWatchNextResults: {
             // SuggestedSections
@@ -96,25 +67,7 @@ let WatchNextResult = {
                                 content: {
                                     horizontalListRenderer: {
                                         items: [
-                                            {
-                                                // TileItem
-                                                tileRenderer: tileItem,
-                                                // VideoItem
-                                                gridVideoRenderer: videoItem,
-                                                // SuggestedVideoItem
-                                                pivotVideoRenderer: videoItem,
-                                                // MusicItem
-                                                tvMusicVideoRenderer: musicItem,
-                                                // RadioItem
-                                                gridRadioRenderer: radioItem,
-                                                pivotRadioRenderer: radioItem,
-                                                // ChannelItem
-                                                gridChannelRenderer: channelItem,
-                                                pivotChannelRenderer: channelItem,
-                                                // PlaylistItem
-                                                gridPlaylistRenderer: playlistItem,
-                                                pivotPlaylistRenderer: playlistItem
-                                            }
+                                            itemWrapper
                                         ]
                                     }
                                 }
@@ -123,8 +76,7 @@ let WatchNextResult = {
                     ]
                 }
             },
-            // VideoMetadata
-            // VideoOwner
+            // VideoMetadata and VideoOwner
             // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer
             // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].musicWatchMetadataRenderer
             results: {
@@ -134,14 +86,8 @@ let WatchNextResult = {
                             itemSectionRenderer: {
                                 contents: [
                                     {
-                                        videoMetadataRenderer: {
-                                             owner: {
-                                                 videoOwnerRenderer: {}
-                                             }
-                                        },
-                                        musicWatchMetadataRenderer: {
-                                            
-                                        }
+                                        videoMetadataRenderer: videoMetadataItem,
+                                        musicWatchMetadataRenderer: videoMetadataItem
                                     }
                                 ]
                             }
@@ -161,12 +107,12 @@ let WatchNextResult = {
                     sets: [
                         {
                             nextVideoRenderer: {
-                                maybeHistoryEndpointRenderer: {},
-                                autoplayEndpointRenderer: {}
+                                maybeHistoryEndpointRenderer: nextVideoItem,
+                                autoplayEndpointRenderer: nextVideoItem
                             }
                         }
                     ],
-                    replayVideoRenderer: {}
+                    replayVideoRenderer: itemWrapper
                 }
             }
         }
@@ -174,8 +120,8 @@ let WatchNextResult = {
     // ButtonStates
     // $.transportControls.transportControlsRenderer
     transportControls: {
-        transportControlsRenderer: {}
+        transportControlsRenderer: buttonState
     }
 };
 
-JSON.stringify(WatchNextResult);
+JSON.stringify(watchNextResult);

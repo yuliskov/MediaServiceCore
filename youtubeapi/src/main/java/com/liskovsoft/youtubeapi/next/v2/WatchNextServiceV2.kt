@@ -3,10 +3,11 @@ package com.liskovsoft.youtubeapi.next.v2
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager
 
-class WatchNextService private constructor() {
+class WatchNextServiceV2 private constructor() {
     private val mWatchNextManagerSigned = RetrofitHelper.withGson(WatchNextManagerSigned::class.java)
     private val mWatchNextManagerUnsigned = RetrofitHelper.withGson(WatchNextManagerUnsigned::class.java)
     private val mSignInManager = YouTubeSignInManager.instance()
@@ -20,7 +21,13 @@ class WatchNextService private constructor() {
     }
 
     fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int): MediaItemMetadata? {
-        TODO("Implement conversion: Retrofit result => Metadata interface")
+        return getMetadata(videoId, playlistId, playlistIndex, null)
+    }
+
+    fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
+        val watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+
+        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult) else null
     }
 
     private fun getWatchNextResult(videoId: String?): WatchNextResult? {
@@ -50,10 +57,10 @@ class WatchNextService private constructor() {
     //}
 
     companion object {
-        private var sInstance: WatchNextService? = null
-        fun instance(): WatchNextService? {
+        private var sInstance: WatchNextServiceV2? = null
+        fun instance(): WatchNextServiceV2? {
             if (sInstance == null) {
-                sInstance = WatchNextService()
+                sInstance = WatchNextServiceV2()
             }
             return sInstance
         }

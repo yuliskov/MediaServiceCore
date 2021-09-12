@@ -13,6 +13,7 @@ import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceV2;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
@@ -34,12 +35,14 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     private static YouTubeMediaItemManager sInstance;
     private final YouTubeSignInManager mSignInManager;
     private final SponsorBlockService mSponsorBlockService;
+    private final WatchNextServiceV2 mWatchNextServiceV2;
     private MediaItemManagerInt mMediaItemManagerReal;
     private YouTubeMediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemManager() {
         mSignInManager = YouTubeSignInManager.instance();
         mSponsorBlockService = SponsorBlockService.instance();
+        mWatchNextServiceV2 = WatchNextServiceV2.Companion.instance();
     }
 
     public static YouTubeMediaItemManager instance() {
@@ -134,13 +137,25 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         return YouTubeMediaItemMetadata.from(watchNextResult);
     }
 
+    private MediaItemMetadata getMetadataV2(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+        return mWatchNextServiceV2.getMetadata(videoId, playlistId, playlistIndex, playlistParams);
+    }
+
     @Override
     public YouTubeMediaItemMetadata getMetadata(String videoId) {
+        return getMetadataInt(videoId);
+    }
+
+    private YouTubeMediaItemMetadata getMetadataInt(String videoId) {
         checkSigned();
 
         WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId);
 
         return YouTubeMediaItemMetadata.from(watchNextResult);
+    }
+
+    private MediaItemMetadata getMetadataIntV2(String videoId) {
+        return mWatchNextServiceV2.getMetadata(videoId);
     }
 
     @Override

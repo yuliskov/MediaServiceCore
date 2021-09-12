@@ -6,6 +6,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.next.v2.helpers.ItemHelper
 import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 
+// TODO: implement full conversion
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaItemMetadata {
     private val _title: String? by lazy {
         // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.simpleText

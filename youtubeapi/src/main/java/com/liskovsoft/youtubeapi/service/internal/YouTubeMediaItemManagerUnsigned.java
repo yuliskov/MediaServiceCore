@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
-import com.liskovsoft.youtubeapi.next.WatchNextServiceUnsigned;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
+import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceUnsigned;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;

@@ -1,9 +1,9 @@
-package com.liskovsoft.youtubeapi.next;
+package com.liskovsoft.youtubeapi.next.v1;
 
 import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import retrofit2.Call;
 
 public class WatchNextServiceSigned {

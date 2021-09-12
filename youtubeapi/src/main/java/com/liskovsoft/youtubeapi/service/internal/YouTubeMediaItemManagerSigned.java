@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
-import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResultContinuation;
+import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceSigned;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;

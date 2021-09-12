@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.next.WatchNextServiceSigned;
+import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import com.liskovsoft.youtubeapi.videoinfo.V1.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;

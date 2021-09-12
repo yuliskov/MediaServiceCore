@@ -1,12 +1,12 @@
 package com.liskovsoft.youtubeapi.next;
 
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.next.models.NextVideo;
-import com.liskovsoft.youtubeapi.next.models.Playlist;
-import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
-import com.liskovsoft.youtubeapi.next.models.VideoOwner;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v1.models.NextVideo;
+import com.liskovsoft.youtubeapi.next.v1.models.Playlist;
+import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
+import com.liskovsoft.youtubeapi.next.v1.models.VideoMetadata;
+import com.liskovsoft.youtubeapi.next.v1.models.VideoOwner;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

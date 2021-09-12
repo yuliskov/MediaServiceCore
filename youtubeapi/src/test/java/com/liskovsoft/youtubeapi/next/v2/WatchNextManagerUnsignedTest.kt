@@ -5,11 +5,8 @@ import org.robolectric.RobolectricTestRunner
 import org.junit.Before
 import org.robolectric.shadows.ShadowLog
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.locale.LocaleManager
-import com.liskovsoft.youtubeapi.browse.BrowseManagerParams
-import com.liskovsoft.youtubeapi.next.WatchNextManagerParams
+import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult
 import org.junit.Assert
 import org.junit.Test
 

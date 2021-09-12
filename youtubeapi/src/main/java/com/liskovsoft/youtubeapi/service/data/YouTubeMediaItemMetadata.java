@@ -6,11 +6,11 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.next.models.ButtonStates;
-import com.liskovsoft.youtubeapi.next.models.SuggestedSection;
-import com.liskovsoft.youtubeapi.next.models.VideoMetadata;
-import com.liskovsoft.youtubeapi.next.models.VideoOwner;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v1.models.ButtonStates;
+import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
+import com.liskovsoft.youtubeapi.next.v1.models.VideoMetadata;
+import com.liskovsoft.youtubeapi.next.v1.models.VideoOwner;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 import java.util.ArrayList;

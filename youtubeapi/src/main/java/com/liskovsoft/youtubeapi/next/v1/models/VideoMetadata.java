@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next.models;
+package com.liskovsoft.youtubeapi.next.v1.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;

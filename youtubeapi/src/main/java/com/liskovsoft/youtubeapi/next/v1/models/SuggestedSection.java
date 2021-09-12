@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next.models;
+package com.liskovsoft.youtubeapi.next.v1.models;
 
 import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;

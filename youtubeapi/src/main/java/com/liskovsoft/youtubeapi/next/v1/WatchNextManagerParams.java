@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next;
+package com.liskovsoft.youtubeapi.next.v1;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

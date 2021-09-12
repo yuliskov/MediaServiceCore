@@ -1,8 +1,9 @@
-// "$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer"
-// "$.title.runs[0].text", "$.title.simpleText"
 {
     "contents": {
         "singleColumnWatchNextResults": {
+            // SuggestedSections
+            // $.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer
+            // $.title.runs[0].text", "$.title.simpleText
             "pivot": {
                 "pivot": {
                     "contents": [
@@ -15,12 +16,112 @@
                                         }
                                     ],
                                     "simpleText": ""
+                                },
+                                // ItemWrappers
+                                // $.content.horizontalListRenderer.items[*]
+                                "content": {
+                                    "horizontalListRenderer": {
+                                        "items": [
+                                            // TitleItem
+                                            {
+                                                "tileRenderer": {
+                                                    // Metadata
+                                                    // $.metadata.tileMetadataRenderer
+                                                    "metadata": {
+                                                         "tileMetadataRenderer": {
+                                                             "title": {
+                                                                 "runs": [
+                                                                     {
+                                                                         "text": ""
+                                                                     }
+                                                                 ],
+                                                                 "simpleText": ""
+                                                             }
+                                                         }
+                                                    }
+                                                },
+                                                // VideoItem
+                                                "gridVideoRenderer": {
+                                                    "title": {
+                                                        "runs": [
+                                                            {
+                                                                "text": ""
+                                                            }
+                                                        ],
+                                                        "simpleText": ""
+                                                    }
+                                                },
+                                                // SuggestedVideoItem
+                                                "pivotVideoRenderer": {
+                                                    "title": {
+                                                        "runs": [
+                                                            {
+                                                                "text": ""
+                                                            }
+                                                        ],
+                                                        "simpleText": ""
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
                                 }
                             }
                         }
                     ]
                 }
+            },
+            // VideoMetadata
+            // VideoOwner
+            // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer
+            // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].musicWatchMetadataRenderer
+            "results": {
+                "results": {
+                    "contents": [
+                        {
+                            "itemSectionRenderer": {
+                                "contents": [
+                                    {
+                                        "videoMetadataRenderer": {
+                                             "owner": {
+                                                 "videoOwnerRenderer": {}
+                                             }
+                                        },
+                                        "musicWatchMetadataRenderer": {
+                                            
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            // NextVideo
+            // VideoDetails
+            // ReplayItem
+            // $.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.maybeHistoryEndpointRenderer
+            // $.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.autoplayEndpointRenderer
+            // $.contents.singleColumnWatchNextResults.autoplay.autoplay.sets.replayVideoRenderer.pivotVideoRenderer ????
+            // $.contents.singleColumnWatchNextResults.autoplay.autoplay.replayVideoRenderer
+            "autoplay": {
+                "autoplay": {
+                    "sets": [
+                        {
+                            "nextVideoRenderer": {
+                                "maybeHistoryEndpointRenderer": {},
+                                "autoplayEndpointRenderer": {}
+                            }
+                        }
+                    ],
+                    "replayVideoRenderer": {}
+                }
             }
         }
+    },
+    // ButtonStates
+    // $.transportControls.transportControlsRenderer
+    "transportControls": {
+        "transportControlsRenderer": {}
     }
 }

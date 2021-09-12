@@ -1,8 +1,7 @@
-package com.liskovsoft.youtubeapi.next.result;
+package com.liskovsoft.youtubeapi.next.v1.result;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
-import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 
 import java.util.List;
 

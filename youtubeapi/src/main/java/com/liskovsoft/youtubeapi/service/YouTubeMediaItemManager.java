@@ -12,7 +12,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
-import com.liskovsoft.youtubeapi.next.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;

@@ -23,7 +23,7 @@ object WatchNextManagerParams {
         // present only on play lists
         // sometimes "params" present too: "params":"OAI%3D"
         if (playlistId != null) {
-            videoData += String.format(",\"playlistId\":\"%s\",\"playlistIndex\":%s", playlistId, Math.max(playlistIndex, 0))
+            videoData += String.format(",\"playlistId\":\"%s\",\"playlistIndex\":%s", playlistId, playlistIndex.coerceAtLeast(0))
         }
         if (playlistParams != null) {
             videoData += String.format(",\"params\":\"%s\"", playlistParams)

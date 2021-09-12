@@ -3,10 +3,15 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.youtubeapi.next.v2.result.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.helpers.ItemHelper
+import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaItemMetadata {
-    private val _title: String? by lazy { null }
+    private val _title: String? by lazy {
+        // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.simpleText
+        val textItem = watchNextResult.contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.itemSectionRenderer?.contents?.getOrNull(0)?.videoMetadataRenderer?.title
+        ItemHelper.toString(textItem)
+    }
     private val _description: String? by lazy { null }
 
     override fun getTitle(): String? {

@@ -2,10 +2,9 @@ package com.liskovsoft.youtubeapi.next.v2
 
 import retrofit2.http.POST
 import com.liskovsoft.youtubeapi.app.AppConstants
-import com.liskovsoft.youtubeapi.next.v2.result.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.Headers
 
 /**

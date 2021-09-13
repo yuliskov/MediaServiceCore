@@ -1,55 +1,3 @@
-let buttonState = {
-    subscribeButton: {
-        toggleButtonRenderer: {
-            isToggled: false
-        }
-    },
-    likeButton: {
-        toggleButtonRenderer: {
-            isToggled: false
-        }
-    },
-    dislikeButton: {
-        toggleButtonRenderer: {
-            isToggled: false
-        }
-    },
-    channelButton: {
-        videoOwnerRenderer: {
-            navigationEndpoint: {
-                browseEndpoint: {
-                    browseId: ""
-                }
-            },
-            thumbnail: thumbnailItem
-        }
-    }
-};
-
-let itemWrapper = {
-    // TileItem
-    tileRenderer: tileItem,
-    // VideoItem
-    gridVideoRenderer: videoItem,
-    // SuggestedVideoItem
-    pivotVideoRenderer: videoItem,
-    // MusicItem
-    tvMusicVideoRenderer: musicItem,
-    // RadioItem
-    gridRadioRenderer: radioItem,
-    pivotRadioRenderer: radioItem,
-    // ChannelItem
-    gridChannelRenderer: channelItem,
-    pivotChannelRenderer: channelItem,
-    // PlaylistItem
-    gridPlaylistRenderer: playlistItem,
-    pivotPlaylistRenderer: playlistItem
-};
-
-let nextVideoItem = {
-
-};
-
 let watchNextResult = {
     contents: {
         singleColumnWatchNextResults: {
@@ -60,18 +8,7 @@ let watchNextResult = {
                 pivot: {
                     contents: [
                         {
-                            shelfRenderer: {
-                                title: textItem,
-                                // ItemWrappers
-                                // $.content.horizontalListRenderer.items[*]
-                                content: {
-                                    horizontalListRenderer: {
-                                        items: [
-                                            itemWrapper
-                                        ]
-                                    }
-                                }
-                            }
+                            shelfRenderer: shelfItem
                         }
                     ]
                 }
@@ -120,7 +57,7 @@ let watchNextResult = {
     // ButtonStates
     // $.transportControls.transportControlsRenderer
     transportControls: {
-        transportControlsRenderer: buttonState
+        transportControlsRenderer: buttonStateItem
     }
 };
 

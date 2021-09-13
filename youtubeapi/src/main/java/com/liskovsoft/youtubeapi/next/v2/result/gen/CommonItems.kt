@@ -21,6 +21,21 @@ data class ThumbnailItem(
 
 class NextVideoItem
 
+data class ShelfItem(
+        val title: TextItem?,
+        val content: Content?
+) {
+
+
+    data class Content(
+            val horizontalListRenderer: HorizontalListRenderer?
+    ) {
+        data class HorizontalListRenderer(
+                val items: List<ItemWrapper?>?
+        )
+    }
+}
+
 data class ItemWrapper(
         val tileRenderer: TileItem?,
         val gridVideoRenderer: VideoItem?,
@@ -149,7 +164,7 @@ data class VideoMetadataItem(
 }
 
 
-data class ButtonState(
+data class ButtonStateItem(
         val subscribeButton: SubscribeButton?,
         val likeButton: LikeButton?,
         val dislikeButton: DislikeButton?,

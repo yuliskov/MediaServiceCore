@@ -96,3 +96,68 @@ let videoMetadataItem = {
         }
     }
 };
+
+let itemWrapper = {
+    // TileItem
+    tileRenderer: tileItem,
+    // VideoItem
+    gridVideoRenderer: videoItem,
+    // SuggestedVideoItem
+    pivotVideoRenderer: videoItem,
+    // MusicItem
+    tvMusicVideoRenderer: musicItem,
+    // RadioItem
+    gridRadioRenderer: radioItem,
+    pivotRadioRenderer: radioItem,
+    // ChannelItem
+    gridChannelRenderer: channelItem,
+    pivotChannelRenderer: channelItem,
+    // PlaylistItem
+    gridPlaylistRenderer: playlistItem,
+    pivotPlaylistRenderer: playlistItem
+};
+
+let shelfItem = {
+    title: textItem,
+    // ItemWrappers
+    // $.content.horizontalListRenderer.items[*]
+    content: {
+        horizontalListRenderer: {
+            items: [
+                itemWrapper
+            ]
+        }
+    }
+};
+
+let nextVideoItem = {
+
+};
+
+let buttonStateItem = {
+    subscribeButton: {
+        toggleButtonRenderer: {
+            isToggled: false
+        }
+    },
+    likeButton: {
+        toggleButtonRenderer: {
+            isToggled: false
+        }
+    },
+    dislikeButton: {
+        toggleButtonRenderer: {
+            isToggled: false
+        }
+    },
+    channelButton: {
+        videoOwnerRenderer: {
+            navigationEndpoint: {
+                browseEndpoint: {
+                    browseId: ""
+                }
+            },
+            thumbnail: thumbnailItem
+        }
+    }
+};

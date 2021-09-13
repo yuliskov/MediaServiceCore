@@ -19,23 +19,8 @@ data class WatchNextResult(
                     val contents: List<Content?>?
                 ) {
                     data class Content(
-                        val shelfRenderer: ShelfRenderer?
-                    ) {
-                        data class ShelfRenderer(
-                                val title: TextItem?,
-                                val content: Content?
-                        ) {
-
-
-                            data class Content(
-                                val horizontalListRenderer: HorizontalListRenderer?
-                            ) {
-                                data class HorizontalListRenderer(
-                                    val items: List<ItemWrapper?>?
-                                )
-                            }
-                        }
-                    }
+                        val shelfRenderer: ShelfItem?
+                    )
                 }
             }
 
@@ -81,6 +66,6 @@ data class WatchNextResult(
     }
 
     data class TransportControls(
-        val transportControlsRenderer: ButtonState?
+        val transportControlsRenderer: ButtonStateItem?
     )
 }

@@ -8,15 +8,32 @@ import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 
 // TODO: implement full conversion
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaItemMetadata {
-    private val _title: String? by lazy {
-        // $.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.simpleText
-        val textItem = watchNextResult.contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.itemSectionRenderer?.contents?.getOrNull(0)?.videoMetadataRenderer?.title
+    private val suggestedSections by lazy {
+        watchNextResult.contents?.singleColumnWatchNextResults?.pivot?.pivot?.contents?.map { it?.shelfRenderer }
+    }
+    private val videoMetadata by lazy {
+        watchNextResult.contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
+    }
+    private val nextVideo by lazy {
+        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.map { it?.nextVideoRenderer?.maybeHistoryEndpointRenderer ?: it?.nextVideoRenderer?.autoplayEndpointRenderer }?.firstOrNull()
+    }
+    private val replayItemWrapper by lazy {
+        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer
+    }
+    private val buttonStateItem by lazy {
+        watchNextResult.transportControls?.transportControlsRenderer
+    }
+    private val videoOwner by lazy {
+        videoMetadata?.owner?.videoOwnerRenderer
+    }
+    private val videoTitle: String? by lazy {
+        val textItem = videoMetadata?.title
         ItemHelper.toString(textItem)
     }
-    private val _description: String? by lazy { null }
+    private val _description: String? by lazy { ItemHelper.toString(videoMetadata?.description) }
 
     override fun getTitle(): String? {
-        return _title
+        return videoTitle
     }
 
     override fun getDescription(): String? {

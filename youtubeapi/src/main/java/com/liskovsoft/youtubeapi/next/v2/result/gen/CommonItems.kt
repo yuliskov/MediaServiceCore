@@ -9,7 +9,7 @@ data class TextItem(
     )
 }
 
-data class Thumbnails(
+data class ThumbnailItem(
         val thumbnails: List<Thumbnail?>?
 ) {
     data class Thumbnail(
@@ -19,7 +19,22 @@ data class Thumbnails(
     )
 }
 
-data class TileRenderer(
+class NextVideoItem
+
+data class ItemWrapper(
+        val tileRenderer: TileItem?,
+        val gridVideoRenderer: VideoItem?,
+        val pivotVideoRenderer: VideoItem?,
+        val tvMusicVideoRenderer: MusicItem?,
+        val gridRadioRenderer: RadioItem?,
+        val pivotRadioRenderer: RadioItem?,
+        val gridChannelRenderer: ChannelItem?,
+        val pivotChannelRenderer: ChannelItem?,
+        val gridPlaylistRenderer: PlaylistItem?,
+        val pivotPlaylistRenderer: PlaylistItem?
+)
+
+data class TileItem(
         val metadata: Metadata?
 ) {
     data class Metadata(
@@ -27,57 +42,30 @@ data class TileRenderer(
     ) {
         data class TileMetadataRenderer(
                 val title: TextItem?
-        ) {
-
-        }
+        )
     }
 }
 
-data class GridVideoRenderer(
-        val thumbnail: Thumbnails?,
+data class VideoItem(
+        val thumbnail: ThumbnailItem?,
         val title: TextItem?,
         val shortBylineText: TextItem?,
         val longBylineText: TextItem?,
         val videoId: String?
-) {
+)
 
-    
-    
-    
-}
-
-data class PivotVideoRenderer(
-        val thumbnail: Thumbnails?,
-        val title: TextItem?,
-        val shortBylineText: TextItem?,
-        val longBylineText: TextItem?,
-        val videoId: String?
-) {
-
-    
-    
-    
-}
-
-data class TvMusicVideoRenderer(
-        val thumbnail: Thumbnails?,
+data class MusicItem(
+        val thumbnail: ThumbnailItem?,
         val primaryText: TextItem?,
         val secondaryText: TextItem?,
         val tertiaryText: TextItem?
-) {
+)
 
-    
-    
-    
-}
-
-data class GridRadioRenderer(
-        val thumbnail: Thumbnails?,
+data class RadioItem(
+        val thumbnail: ThumbnailItem?,
         val thumbnailRenderer: ThumbnailRenderer?,
         val title: TextItem?
 ) {
-
-
     data class ThumbnailRenderer(
             val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?
     ) {
@@ -98,148 +86,36 @@ data class GridRadioRenderer(
     
 }
 
-data class PivotRadioRenderer(
-        val thumbnail: Thumbnails?,
-        val thumbnailRenderer: ThumbnailRenderer?,
-        val title: TextItem?
-) {
-
-
-    data class ThumbnailRenderer(
-            val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?
-    ) {
-        data class PlaylistVideoThumbnailRenderer(
-                val thumbnail: Thumbnail?
-        ) {
-            data class Thumbnail(
-                    val thumbnails: List<Thumbnail?>?
-            ) {
-                data class Thumbnail(
-                        val url: String?,
-                        val width: String?,
-                        val height: String?
-                )
-            }
-        }
-    }
-    
-}
-
-data class GridChannelRenderer(
-        val thumbnail: Thumbnails?,
+data class ChannelItem(
+        val thumbnail: ThumbnailItem?,
         val title: TextItem?,
         val displayName: TextItem?,
         val channelId: String?,
         val videoCountText: TextItem?,
         val subscriberCountText: TextItem?
-) {
+)
 
-    
-    
-    
-    
-}
-
-data class PivotChannelRenderer(
-        val thumbnail: Thumbnails?,
-        val title: TextItem?,
-        val displayName: TextItem?,
-        val channelId: String?,
-        val videoCountText: TextItem?,
-        val subscriberCountText: TextItem?
-) {
-
-    
-    
-    
-    
-}
-
-data class GridPlaylistRenderer(
-        val thumbnail: Thumbnails?,
+data class PlaylistItem(
+        val thumbnail: ThumbnailItem?,
         val thumbnailRenderer: ThumbnailRenderer?,
         val title: TextItem?
 ) {
-
-
     data class ThumbnailRenderer(
             val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?,
             val playlistCustomThumbnailRenderer: PlaylistCustomThumbnailRenderer?
     ) {
         data class PlaylistVideoThumbnailRenderer(
-                val thumbnail: Thumbnail?
-        ) {
-            data class Thumbnail(
-                    val thumbnails: List<Thumbnail?>?
-            ) {
-                data class Thumbnail(
-                        val url: String?,
-                        val width: String?,
-                        val height: String?
-                )
-            }
-        }
+                val thumbnail: ThumbnailItem?
+        )
 
         data class PlaylistCustomThumbnailRenderer(
-                val thumbnail: Thumbnail?
-        ) {
-            data class Thumbnail(
-                    val thumbnails: List<Thumbnail?>?
-            ) {
-                data class Thumbnail(
-                        val url: String?,
-                        val width: String?,
-                        val height: String?
-                )
-            }
-        }
+                val thumbnail: ThumbnailItem?
+        )
     }
     
 }
 
-data class PivotPlaylistRenderer(
-        val thumbnail: Thumbnails?,
-        val thumbnailRenderer: ThumbnailRenderer?,
-        val title: TextItem?
-) {
-
-
-    data class ThumbnailRenderer(
-            val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?,
-            val playlistCustomThumbnailRenderer: PlaylistCustomThumbnailRenderer?
-    ) {
-        data class PlaylistVideoThumbnailRenderer(
-                val thumbnail: Thumbnail?
-        ) {
-            data class Thumbnail(
-                    val thumbnails: List<Thumbnail?>?
-            ) {
-                data class Thumbnail(
-                        val url: String?,
-                        val width: String?,
-                        val height: String?
-                )
-            }
-        }
-
-        data class PlaylistCustomThumbnailRenderer(
-                val thumbnail: Thumbnail?
-        ) {
-            data class Thumbnail(
-                    val thumbnails: List<Thumbnail?>?
-            ) {
-                data class Thumbnail(
-                        val url: String?,
-                        val width: String?,
-                        val height: String?
-                )
-            }
-        }
-    }
-    
-}
-
-data class VideoMetadataRenderer(
+data class VideoMetadataItem(
         val owner: Owner?,
         val title: TextItem?,
         val byline: TextItem?,
@@ -256,22 +132,10 @@ data class VideoMetadataRenderer(
             val videoOwnerRenderer: VideoOwnerRenderer?
     ) {
         data class VideoOwnerRenderer(
-                val thumbnail: Thumbnails?,
+                val thumbnail: ThumbnailItem?,
                 val title: TextItem?
-        ) {
-
-
-
-        }
+        )
     }
-    
-    
-    
-    
-    
-    
-    
-    
 
     data class ViewCount(
             val videoViewCountRenderer: VideoViewCountRenderer?
@@ -280,59 +144,55 @@ data class VideoMetadataRenderer(
                 val viewCount: ViewCount?,
                 val shortViewCount: TextItem?,
                 val isLive: Boolean?
-        ) {
-
-
-
-        }
+        )
     }
 }
 
-data class MusicWatchMetadataRenderer(
-        val owner: Owner?,
-        val title: TextItem?,
-        val byline: TextItem?,
-        val albumName: TextItem?,
-        val videoId: String?,
-        val description: TextItem?,
-        val publishedTimeText: TextItem?,
-        val dateText: TextItem?,
-        val viewCountText: TextItem?,
-        val shortViewCountText: TextItem?,
-        val viewCount: ViewCount?
+
+data class ButtonState(
+        val subscribeButton: SubscribeButton?,
+        val likeButton: LikeButton?,
+        val dislikeButton: DislikeButton?,
+        val channelButton: ChannelButton?
 ) {
-    data class Owner(
+    data class SubscribeButton(
+            val toggleButtonRenderer: ToggleButtonRenderer?
+    ) {
+        data class ToggleButtonRenderer(
+                val isToggled: Boolean?
+        )
+    }
+
+    data class LikeButton(
+            val toggleButtonRenderer: ToggleButtonRenderer?
+    ) {
+        data class ToggleButtonRenderer(
+                val isToggled: Boolean?
+        )
+    }
+
+    data class DislikeButton(
+            val toggleButtonRenderer: ToggleButtonRenderer?
+    ) {
+        data class ToggleButtonRenderer(
+                val isToggled: Boolean?
+        )
+    }
+
+    data class ChannelButton(
             val videoOwnerRenderer: VideoOwnerRenderer?
     ) {
         data class VideoOwnerRenderer(
-                val thumbnail: Thumbnails?,
-                val title: TextItem?
+                val navigationEndpoint: NavigationEndpoint?,
+                val thumbnail: ThumbnailItem?
         ) {
-
-
-
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-
-    data class ViewCount(
-            val videoViewCountRenderer: VideoViewCountRenderer?
-    ) {
-        data class VideoViewCountRenderer(
-                val viewCount: ViewCount?,
-                val shortViewCount: TextItem?,
-                val isLive: Boolean?
-        ) {
-
-
-
+            data class NavigationEndpoint(
+                    val browseEndpoint: BrowseEndpoint?
+            ) {
+                data class BrowseEndpoint(
+                        val browseId: String?
+                )
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.common.models.V2.TitleItem;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -258,7 +258,7 @@ public class YouTubeMediaGroup implements MediaGroup {
 
     private static YouTubeMediaGroup create(
             YouTubeMediaGroup baseGroup,
-            List<TitleItem> titleItems,
+            List<TileItem> titleItems,
             List<VideoItem> videoItems,
             List<MusicItem> musicItems,
             List<ChannelItem> channelItems,
@@ -269,7 +269,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
         if (titleItems != null) {
-            for (TitleItem item : titleItems) {
+            for (TileItem item : titleItems) {
                 mediaItems.add(YouTubeMediaItem.from(item));
             }
         }

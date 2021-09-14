@@ -5,6 +5,8 @@ import com.liskovsoft.youtubeapi.next.v2.helpers.*
 import com.liskovsoft.youtubeapi.next.v2.result.gen.ItemWrapper
 
 data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
+    private val _videoId by lazy { itemWrapper.getVideoItem()?.videoId ?: itemWrapper.getMusicItem()?.videoId ?: itemWrapper.getTileItem()?.videoId }
+
     override fun hashCode(): Int {
         TODO("hashCode by id should be implemented")
     }

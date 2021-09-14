@@ -50,13 +50,28 @@ data class ItemWrapper(
 )
 
 data class TileItem(
-        val metadata: Metadata?
+        val metadata: Metadata?,
+        val onSelectCommand: OnSelectCommand?
 ) {
     data class Metadata(
             val tileMetadataRenderer: TileMetadataRenderer?
     ) {
         data class TileMetadataRenderer(
                 val title: TextItem?
+        )
+    }
+
+    data class OnSelectCommand(
+            val watchEndpoint: WatchEndpoint?,
+            val watchPlaylistEndpoint: WatchPlaylistEndpoint?
+    ) {
+        data class WatchEndpoint(
+                val videoId: String?,
+                val playlistId: String?
+        )
+
+        data class WatchPlaylistEndpoint(
+                val playlistId: String?
         )
     }
 }
@@ -73,8 +88,18 @@ data class MusicItem(
         val thumbnail: ThumbnailItem?,
         val primaryText: TextItem?,
         val secondaryText: TextItem?,
-        val tertiaryText: TextItem?
-)
+        val tertiaryText: TextItem?,
+        val navigationEndpoint: NavigationEndpoint?
+) {
+    data class NavigationEndpoint(
+            val watchEndpoint: WatchEndpoint?
+    ) {
+        data class WatchEndpoint(
+                val videoId: String?,
+                val playlistId: String?
+        )
+    }
+}
 
 data class RadioItem(
         val thumbnail: ThumbnailItem?,

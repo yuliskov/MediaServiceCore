@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.V2.TitleItem;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 
 public class ItemWrapper {
     @JsonPath("$.tileRenderer")
-    private TitleItem mTitleItem;
+    private TileItem mTitleItem;
 
     @JsonPath({"$.gridVideoRenderer",
                "$.pivotVideoRenderer"}) // suggested item
@@ -46,7 +46,7 @@ public class ItemWrapper {
         return mPlaylistItem;
     }
 
-    public TitleItem getTitleItem() {
+    public TileItem getTitleItem() {
         return mTitleItem;
     }
 }

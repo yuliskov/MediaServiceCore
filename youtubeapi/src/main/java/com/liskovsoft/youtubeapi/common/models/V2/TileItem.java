@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 
-public class TitleItem {
+public class TileItem {
     public static final String CONTENT_TYPE_UNDEFINED = "UNDEFINED";
     public static final String CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL";
     public static final String CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST";

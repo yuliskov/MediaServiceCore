@@ -28,6 +28,15 @@ let tileItem = {
         tileMetadataRenderer: {
             title: textItem
         }
+    },
+    onSelectCommand: {
+        watchEndpoint: {
+            videoId: "",
+            playlistId: ""
+        },
+        watchPlaylistEndpoint: {
+            playlistId: ""
+        }
     }
 };
 
@@ -35,7 +44,13 @@ let musicItem = {
     thumbnail: thumbnailItem, // Title
     primaryText: textItem, // Subtitle
     secondaryText: textItem, // Views and published
-    tertiaryText: textItem
+    tertiaryText: textItem,
+    navigationEndpoint: {
+        watchEndpoint: {
+            videoId: "",
+            playlistId: ""
+        }
+    }
 };
 
 let radioItem = {

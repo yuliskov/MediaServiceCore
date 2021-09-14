@@ -14,7 +14,7 @@ import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.v1.models.NextVideo;
-import com.liskovsoft.youtubeapi.common.models.V2.TitleItem;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 public class YouTubeMediaItem implements MediaItem {
@@ -82,7 +82,7 @@ public class YouTubeMediaItem implements MediaItem {
         return null;
     }
 
-    public static YouTubeMediaItem from(TitleItem item) {
+    public static YouTubeMediaItem from(TileItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
         video.mMediaItemType = MediaItem.TYPE_TILE;

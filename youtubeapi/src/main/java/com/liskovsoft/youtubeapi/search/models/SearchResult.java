@@ -6,14 +6,14 @@ import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
 import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.V2.TitleItem;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 
 import java.util.List;
 
 public class SearchResult {
     // V2
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].tileRenderer")
-    private List<TitleItem> mTitleItems;
+    private List<TileItem> mTitleItems;
 
     @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer")
     private List<VideoItem> mVideoItems;
@@ -60,7 +60,7 @@ public class SearchResult {
         return mRadioItems;
     }
 
-    public List<TitleItem> getTitleItems() {
+    public List<TileItem> getTitleItems() {
         return mTitleItems;
     }
 

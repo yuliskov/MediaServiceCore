@@ -78,8 +78,8 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
         TODO("Not yet implemented")
     }
 
-    override fun getVideoId(): String {
-        TODO("Not yet implemented")
+    override fun getVideoId(): String? {
+        return _videoId
     }
 
     override fun getContentType(): String {

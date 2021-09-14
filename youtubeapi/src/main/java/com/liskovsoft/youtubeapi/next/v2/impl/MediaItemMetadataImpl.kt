@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.youtubeapi.next.v2.helpers.ItemHelper
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 

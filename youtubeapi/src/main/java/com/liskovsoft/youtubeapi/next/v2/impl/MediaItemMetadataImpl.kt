@@ -4,18 +4,23 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.next.v2.helpers.ItemHelper
+import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 
 // TODO: implement full conversion
-data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaItemMetadata {
+data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
     private val suggestedSections by lazy {
         watchNextResult.contents?.singleColumnWatchNextResults?.pivot?.pivot?.contents?.map { it?.shelfRenderer }
     }
     private val videoMetadata by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
+        watchNextResult.contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.itemSectionRenderer?.contents?.map {
+            it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer
+        }?.firstOrNull()
     }
     private val nextVideo by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.map { it?.nextVideoRenderer?.maybeHistoryEndpointRenderer ?: it?.nextVideoRenderer?.autoplayEndpointRenderer }?.firstOrNull()
+        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.map {
+            it?.nextVideoRenderer?.maybeHistoryEndpointRenderer ?: it?.nextVideoRenderer?.autoplayEndpointRenderer
+        }?.firstOrNull()
     }
     private val replayItemWrapper by lazy {
         watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer
@@ -26,18 +31,22 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaIte
     private val videoOwner by lazy {
         videoMetadata?.owner?.videoOwnerRenderer
     }
-    private val videoTitle: String? by lazy {
+    private val videoTitle by lazy {
         val textItem = videoMetadata?.title
-        ItemHelper.toString(textItem)
+        textItem?.getText()
     }
-    private val _description: String? by lazy { ItemHelper.toString(videoMetadata?.description) }
+    private val videoDescription by lazy { videoMetadata?.description?.getText() }
+    private val videoAuthor by lazy { videoMetadata?.title?.getText() }
+    private val suggestionList by lazy {
+        suggestedSections?.map { it?.let { MediaGroupImpl(it) } }
+    }
 
     override fun getTitle(): String? {
         return videoTitle
     }
 
     override fun getDescription(): String? {
-        return _description
+        return videoDescription
     }
 
     override fun getFullDescription(): String? {
@@ -45,7 +54,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaIte
     }
 
     override fun getAuthor(): String? {
-        return null
+        return videoAuthor
     }
 
     override fun getViewCount(): String? {
@@ -96,8 +105,8 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult): MediaIte
         return 0
     }
 
-    override fun getSuggestions(): MutableList<MediaGroup?>? {
-        return null
+    override fun getSuggestions(): List<MediaGroup?>? {
+        return suggestionList
     }
 
     override fun getDescriptionAlt(): String? {

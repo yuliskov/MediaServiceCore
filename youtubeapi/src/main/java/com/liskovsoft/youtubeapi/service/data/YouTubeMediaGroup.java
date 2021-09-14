@@ -177,11 +177,6 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     @Override
-    public void setMediaItems(List<MediaItem> items) {
-        mMediaItems = items;
-    }
-
-    @Override
     public String getTitle() {
         return mTitle;
     }

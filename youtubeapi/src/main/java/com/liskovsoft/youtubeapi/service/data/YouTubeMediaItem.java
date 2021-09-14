@@ -85,7 +85,7 @@ public class YouTubeMediaItem implements MediaItem {
     public static YouTubeMediaItem from(TitleItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
-        video.mMediaItemType = MediaItem.TYPE_SEARCH_TITLE;
+        video.mMediaItemType = MediaItem.TYPE_TILE;
 
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(

@@ -19,7 +19,6 @@ public interface MediaGroup {
     int TYPE_CHANNEL_UPLOADS = 12;
     int getType();
     List<MediaItem> getMediaItems();
-    void setMediaItems(List<MediaItem> tabs);
     String getTitle();
     void setTitle(String title);
     // Below settings for Channel section group

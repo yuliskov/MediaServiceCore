@@ -1,14 +1,31 @@
 package com.liskovsoft.youtubeapi.next.v2.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.youtubeapi.next.v2.helpers.*
+import com.liskovsoft.youtubeapi.next.v2.result.gen.ItemWrapper
 
-data class MediaItemImpl(var value: Any): MediaItem {
+data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
+    override fun hashCode(): Int {
+        TODO("hashCode by id should be implemented")
+    }
+
     override fun equals(other: Any?): Boolean {
         TODO("Equals by id should be implemented")
     }
 
     override fun getType(): Int {
-        TODO("Not yet implemented")
+        if (itemWrapper.getChannelItem() != null)
+            return MediaItem.TYPE_CHANNEL
+        if (itemWrapper.getPlaylistItem() != null)
+            return MediaItem.TYPE_PLAYLIST
+        if (itemWrapper.getRadioItem() != null)
+            return MediaItem.TYPE_PLAYLIST
+        if (itemWrapper.getVideoItem() != null)
+            return MediaItem.TYPE_VIDEO
+        if (itemWrapper.getMusicItem() != null)
+            return MediaItem.TYPE_MUSIC
+
+        return MediaItem.TYPE_UNDEFINED;
     }
 
     override fun isLive(): Boolean {

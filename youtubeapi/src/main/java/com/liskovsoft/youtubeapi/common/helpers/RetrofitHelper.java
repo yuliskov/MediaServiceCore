@@ -17,15 +17,19 @@ import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QuerySt
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import okhttp3.ConnectionPool;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
+import okhttp3.dnsoverhttps.DnsOverHttps;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 public class RetrofitHelper {
@@ -95,8 +99,8 @@ public class RetrofitHelper {
 
         return retrofitBuilder;
     }
-    
-    public static OkHttpClient createOkHttpClient() {
+
+    private static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
         //disableCache(okBuilder);
@@ -180,5 +184,29 @@ public class RetrofitHelper {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         okBuilder.addInterceptor(logging);
+    }
+
+    /**
+     * Usage: <code>OkHttpClient newClient = wrapDns(client)</code><br/>
+     * https://github.com/square/okhttp/blob/master/okhttp-dnsoverhttps/src/test/java/okhttp3/dnsoverhttps/DohProviders.java
+     */
+    private static OkHttpClient wrapDns(OkHttpClient client) {
+        return client.newBuilder().dns(buildGoogle(client)).build();
+    }
+
+    private static DnsOverHttps buildGoogle(OkHttpClient bootstrapClient) {
+        return new DnsOverHttps.Builder().client(bootstrapClient)
+                .url(HttpUrl.get("https://dns.google/dns-query"))
+                .bootstrapDnsHosts(getByIp("8.8.4.4"), getByIp("8.8.8.8"))
+                .build();
+    }
+
+    private static InetAddress getByIp(String host) {
+        try {
+            return InetAddress.getByName(host);
+        } catch (UnknownHostException e) {
+            // unlikely
+            throw new RuntimeException(e);
+        }
     }
 }

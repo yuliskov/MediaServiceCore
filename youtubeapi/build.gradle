@@ -52,17 +52,20 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
     implementation 'com.google.code.gson:gson:' + gsonVersion
     implementation 'com.jayway.jsonpath:json-path:' + jsonPathVersion
-    implementation('com.squareup.okhttp3:okhttp-brotli:' + okhttpBrotliVersion) {
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp' // force global okhttp version
-    }
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
+    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:' + okhttpVersion
+    implementation('com.squareup.okhttp3:okhttp-brotli:' + okhttpBrotliVersion) {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp' // force global okhttp version
+    }
     implementation('com.itkacher.okhttpprofiler:okhttpprofiler:' + okhttpProfilerVersion) {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp' // force global okhttp version
     }
-    implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpLoggerVersion
+    implementation('com.squareup.okhttp3:logging-interceptor:' + okhttpLoggerVersion) {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp' // force global okhttp version
+    }
     //implementation 'com.squareup.okio:okio:' + okioVersion
 
     implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion

@@ -132,7 +132,7 @@ public class RetrofitHelper {
      * Fixing SSL handshake timed out (probably provider issues in some countries)
      */
     private static void setupConnectionFix(Builder okBuilder) {
-        // Already enabled on pre Lollipop
+        // Already enabled on pre Lollipop (fallback to TLS 1.0)
         if (VERSION.SDK_INT <= 19) {
             return;
         }

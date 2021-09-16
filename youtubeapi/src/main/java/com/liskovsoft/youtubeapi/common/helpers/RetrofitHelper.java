@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import android.os.Build.VERSION;
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -109,7 +110,7 @@ public class RetrofitHelper {
 
         //disableCache(okBuilder);
 
-        setupConnectionSpecs(okBuilder);
+        setupConnectionFix(okBuilder);
 
         setupConnectionParams(okBuilder);
 
@@ -128,9 +129,14 @@ public class RetrofitHelper {
     }
 
     /**
-     * Blocking fix: SSL handshake timed out
+     * Fixing SSL handshake timed out (probably provider issues in some countries)
      */
-    private static void setupConnectionSpecs(Builder okBuilder) {
+    private static void setupConnectionFix(Builder okBuilder) {
+        // Already enabled on pre Lollipop
+        if (VERSION.SDK_INT <= 19) {
+            return;
+        }
+
         ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
                 .tlsVersions(TlsVersion.TLS_1_2)
                 .cipherSuites(

@@ -1,12 +1,12 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
-import android.os.Build.VERSION;
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.sharedutils.okhttp.OkHttpCommons;
 import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory;
@@ -17,14 +17,10 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionPool;
-import okhttp3.ConnectionSpec;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
-import okhttp3.TlsVersion;
 import okhttp3.dnsoverhttps.DnsOverHttps;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -34,14 +30,10 @@ import retrofit2.Retrofit;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 public class RetrofitHelper {
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
-    // Default timeout 10 sec
-    private static final long TIMEOUT_SEC = 30;
     public static boolean sForceEnableProfiler;
 
     public static <T> T withGson(Class<T> clazz) {
@@ -110,9 +102,9 @@ public class RetrofitHelper {
 
         //disableCache(okBuilder);
 
-        setupConnectionFix(okBuilder);
+        OkHttpCommons.setupConnectionFix(okBuilder);
 
-        setupConnectionParams(okBuilder);
+        OkHttpCommons.setupConnectionParams(okBuilder);
 
         addCommonHeaders(okBuilder);
 
@@ -126,43 +118,6 @@ public class RetrofitHelper {
     private static void disableCache(OkHttpClient.Builder okBuilder) {
         // Disable cache (could help with dlfree error on Eltex)
         okBuilder.cache(null);
-    }
-
-    /**
-     * Fixing SSL handshake timed out (probably provider issues in some countries)
-     */
-    private static void setupConnectionFix(Builder okBuilder) {
-        // Already enabled on pre Lollipop (fallback to TLS 1.0)
-        if (VERSION.SDK_INT <= 19) {
-            return;
-        }
-
-        ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-                .tlsVersions(TlsVersion.TLS_1_2)
-                .cipherSuites(
-                        // TODO: test. Commented ciphers may not work.
-                        //CipherSuite.TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,
-                        //CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
-                )
-                .build();
-        okBuilder.connectionSpecs(Collections.singletonList(cs));
-    }
-
-    /**
-     * https://stackoverflow.com/questions/39219094/sockettimeoutexception-in-retrofit<br/>
-     * https://stackoverflow.com/questions/63047533/connection-pool-okhttp
-     */
-    private static void setupConnectionParams(OkHttpClient.Builder okBuilder) {
-        // Default timeout 10 sec
-        okBuilder.connectTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
-        okBuilder.readTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
-        okBuilder.writeTimeout(TIMEOUT_SEC, TimeUnit.SECONDS);
-        // Decrease timout. This behave as 'keepAlive' = false
-        okBuilder.connectionPool(new ConnectionPool(10, TIMEOUT_SEC, TimeUnit.SECONDS));
-        //okBuilder.protocols(listOf(Protocol.HTTP_1_1));
     }
 
     private static void addCommonHeaders(OkHttpClient.Builder builder) {

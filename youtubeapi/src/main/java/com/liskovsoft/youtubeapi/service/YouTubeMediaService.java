@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.RemoteManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 
@@ -58,8 +59,8 @@ public class YouTubeMediaService implements MediaService {
     @Override
     public void invalidateCache() {
         //AppService.instance().invalidateCache();
-        //YouTubeSignInManager.instance().invalidateCache();
         YouTubeMediaItemManager.instance().invalidateCache();
+        //YouTubeSignInManager.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)
         LocaleManager.unhold();
     }
 

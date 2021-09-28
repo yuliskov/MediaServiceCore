@@ -12,6 +12,13 @@ public class WatchNextResultContinuation {
                "$.continuationContents.horizontalListContinuation.continuations[1].nextContinuationData.continuation"})
     private String mNextPageKey;
 
+    /**
+     * Marker field to avoid json parser empty result warning.<br/>
+     * It appeared when we reached end of the list.<br/>
+     */
+    @JsonPath("$.contents.singleColumnWatchNextResults.results.results.trackingParams")
+    private String mTrackingParams;
+
     public String getNextPageKey() {
         return mNextPageKey;
     }

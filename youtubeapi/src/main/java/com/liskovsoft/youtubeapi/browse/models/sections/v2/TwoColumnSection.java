@@ -17,9 +17,17 @@ public class TwoColumnSection extends Section {
     @JsonPath("$.rightColumn.playlistVideoListRenderer.contents[*]")
     private List<ItemWrapper> mItemWrappers;
 
+    @JsonPath("$.rightColumn.playlistVideoListRenderer.continuations[0].nextContinuationData.continuation")
+    private String mNextPageKey2;
+
     @Override
     public String getTitle() {
         return mTitle.getText();
+    }
+
+    @Override
+    public String getNextPageKey() {
+        return mNextPageKey2;
     }
 
     @Override

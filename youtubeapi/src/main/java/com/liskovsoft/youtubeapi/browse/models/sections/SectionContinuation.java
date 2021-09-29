@@ -6,10 +6,16 @@ import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import java.util.List;
 
 public class SectionContinuation {
-    @JsonPath("$.continuationContents.horizontalListContinuation.items[*]")
+    @JsonPath({
+            "$.continuationContents.horizontalListContinuation.items[*]",
+            "$.continuationContents.playlistVideoListContinuation.contents[*]" // Two columns playlist (v2)
+    })
     private List<ItemWrapper> mItemWrappers;
 
-    @JsonPath("$.continuationContents.horizontalListContinuation.continuations[0].nextContinuationData.continuation")
+    @JsonPath({
+            "$.continuationContents.horizontalListContinuation.continuations[0].nextContinuationData.continuation",
+            "$.continuationContents.playlistVideoListContinuation.continuations[0].nextContinuationData.continuation" // Two columns playlist (v2)
+    })
     private String mNextPageKey;
 
     /**

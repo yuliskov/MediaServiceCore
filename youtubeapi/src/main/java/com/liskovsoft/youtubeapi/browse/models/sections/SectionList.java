@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.browse.models.sections;
 
+import com.liskovsoft.youtubeapi.browse.models.sections.v2.TwoColumnSection;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,6 +16,12 @@ public class SectionList {
     @JsonPath("$.contents.tvBrowseRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[*].shelfRenderer")
     private List<Section> mSections;
 
+    /**
+     * New type of playlist. Example: type in search page: "Сто лучших клипов 90-х"
+     */
+    @JsonPath("$.contents.tvBrowseRenderer.content.tvSurfaceContentRenderer.content.twoColumnRenderer")
+    private TwoColumnSection mTwoColumnSection;
+
     @JsonPath("$.contents.tvBrowseRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.continuations[0].nextContinuationData.continuation")
     private String mNextPageKey;
 
@@ -21,7 +29,7 @@ public class SectionList {
     private String mReloadPageKey;
 
     public List<Section> getSections() {
-        return mSections;
+        return mSections != null ? mSections : mTwoColumnSection != null ? Collections.singletonList(mTwoColumnSection) : null;
     }
     
     public String getNextPageKey() {

@@ -228,9 +228,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             }
         }
 
-        if (!mediaItems.isEmpty()) {
-            baseGroup.mMediaItems = mediaItems;
-        }
+        // Fix duplicated items after previous group reuse
+        baseGroup.mMediaItems = !mediaItems.isEmpty() ? mediaItems : null;
 
         return baseGroup;
     }
@@ -247,10 +246,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             }
         }
 
-        if (!mediaItems.isEmpty()) {
-            baseGroup.mMediaItems = mediaItems;
-        }
-
+        // Fix duplicated items after previous group reuse
+        baseGroup.mMediaItems = !mediaItems.isEmpty() ? mediaItems : null;
         baseGroup.mNextPageKey = nextPageKey;
 
         return baseGroup;
@@ -304,10 +301,8 @@ public class YouTubeMediaGroup implements MediaGroup {
             }
         }
 
-        if (!mediaItems.isEmpty()) {
-            baseGroup.mMediaItems = mediaItems;
-        }
-
+        // Fix duplicated items after previous group reuse
+        baseGroup.mMediaItems = !mediaItems.isEmpty() ? mediaItems : null;
         baseGroup.mNextPageKey = nextPageKey;
 
         return baseGroup;

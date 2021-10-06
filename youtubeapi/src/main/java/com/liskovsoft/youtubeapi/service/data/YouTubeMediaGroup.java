@@ -191,6 +191,14 @@ public class YouTubeMediaGroup implements MediaGroup {
         return mType;
     }
 
+    /**
+     * TODO: create unique id by reload page key
+     */
+    @Override
+    public int getId() {
+        return mTitle != null ? mTitle.hashCode() : hashCode();
+    }
+
     @Override
     public String getChannelId() {
         return mChannelId;

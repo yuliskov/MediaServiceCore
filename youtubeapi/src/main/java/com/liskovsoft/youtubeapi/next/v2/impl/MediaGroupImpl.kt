@@ -9,6 +9,8 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     private val _title by lazy { shelf.title?.getText() }
     private val _mediaItems by lazy { shelf.content?.horizontalListRenderer?.items?.map { it?.let { MediaItemImpl(it) } } }
 
+    override fun getId(): Int = title?.hashCode() ?: hashCode()
+
     override fun getType(): Int {
         TODO("Not yet implemented")
     }

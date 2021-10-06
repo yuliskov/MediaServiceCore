@@ -17,6 +17,7 @@ public interface MediaGroup {
     int TYPE_CHANNEL = 10;
     int TYPE_SETTINGS = 11;
     int TYPE_CHANNEL_UPLOADS = 12;
+    int getId();
     int getType();
     List<MediaItem> getMediaItems();
     String getTitle();

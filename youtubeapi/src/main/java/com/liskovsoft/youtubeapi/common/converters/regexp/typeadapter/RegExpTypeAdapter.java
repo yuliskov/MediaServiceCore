@@ -103,6 +103,7 @@ public class RegExpTypeAdapter<T> {
                 done = true; // at least one field is set
             }
         } catch (Exception e) {
+            unset = true; // at least one field is unset
             e.printStackTrace();
         }
 

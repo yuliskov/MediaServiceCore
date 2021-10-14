@@ -249,8 +249,10 @@ public class YouTubeMediaGroup implements MediaGroup {
             for (int i = 0; i < items.size(); i++) {
                 ItemWrapper item = items.get(i);
                 YouTubeMediaItem mediaItem = YouTubeMediaItem.from(item, i);
-                mediaItem.setPlaylistParams(baseGroup.mPlaylistParams);
-                mediaItems.add(mediaItem);
+                if (mediaItem != null) {
+                    mediaItem.setPlaylistParams(baseGroup.mPlaylistParams);
+                    mediaItems.add(mediaItem);
+                }
             }
         }
 

@@ -36,7 +36,7 @@ public class VideoInfoManagerParams {
     public static String getVideoInfoQuery(String videoId, String clickTrackingParams) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
+        return createQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
     }
 
     public static String getVideoInfoQueryPrivate(String videoId) {

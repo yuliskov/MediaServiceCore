@@ -34,19 +34,25 @@ public class VideoInfoManagerParams {
     }
 
     public static String getVideoInfoQuery(String videoId, String clickTrackingParams) {
-        String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
-        String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
+        return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, videoId, clickTrackingParams);
+    }
+
+    public static String getVideoInfoQueryAlt(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, videoId, clickTrackingParams);
+    }
+
+    public static String getVideoInfoQueryPrivate(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, videoId, clickTrackingParams);
     }
 
     public static String getVideoInfoQueryPrivate(String videoId) {
         return getVideoInfoQueryPrivate(videoId, null);
     }
 
-    public static String getVideoInfoQueryPrivate(String videoId, String clickTrackingParams) {
+    private static String createCheckedQuery(String clientName, String clientVersion, String videoId, String clickTrackingParams) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
+        return createQuery(clientName, clientVersion, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
     }
 
     private static String createQuery(String clientName, String clientVersion, String template, String clickTrackingParams) {

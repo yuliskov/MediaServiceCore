@@ -19,6 +19,8 @@ public class Header {
     private String mBadgeStyle;
     @JsonPath("$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.text")
     private TextItem mBadgeText;
+    @JsonPath("$.movingThumbnail.thumbnails[0].url")
+    private String mMovingThumbnailUrl;
 
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
@@ -38,5 +40,12 @@ public class Header {
 
     public String getBadgeText() {
         return mBadgeText != null ? mBadgeText.getText() : null;
+    }
+
+    /**
+     * Animated thumbnail preview in webp format
+     */
+    public String getMovingThumbnailUrl() {
+        return mMovingThumbnailUrl;
     }
 }

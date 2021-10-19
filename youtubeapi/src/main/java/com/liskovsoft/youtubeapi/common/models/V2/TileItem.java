@@ -88,7 +88,7 @@ public class TileItem {
     }
 
     public String getRichThumbnailUrl() {
-        return null;
+        return mHeader != null ? mHeader.getMovingThumbnailUrl() : null;
     }
 
     public String getChannelId() {

@@ -2,19 +2,22 @@ package com.liskovsoft.youtubeapi.common.models.V2;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 import java.util.List;
 
 public class Metadata {
     @JsonPath("$.title")
     private TextItem mTitle;
-    @JsonPath("$.lines[0].lineRenderer.items[0].lineItemRenderer.text")
-    private TextItem mUserName;
+    @JsonPath("$.lines[0].lineRenderer.items[*].lineItemRenderer.text")
+    private List<TextItem> mViewsAndDateText1;
     @JsonPath("$.lines[1].lineRenderer.items[*].lineItemRenderer.text")
-    private List<TextItem> mViewsAndDateText;
-    @JsonPath("$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style")
+    private List<TextItem> mViewsAndDateText2;
+    @JsonPath({"$.lines[0].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style",
+            "$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style"})
     private String mBadgeStyle;
-    @JsonPath("$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label")
+    @JsonPath({"$.lines[0].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label",
+            "$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label"})
     private String mDescBadgeText;
 
     public String getTitle() {
@@ -22,11 +25,11 @@ public class Metadata {
     }
 
     public String getUserName() {
-        return mUserName != null ? mUserName.getText() : null;
+        return null; // no user name, just generic lines
     }
 
     public String getViewCountText() {
-        return mViewsAndDateText != null ? ServiceHelper.combineItems(mViewsAndDateText.toArray(new Object[0]), " ") : null;
+        return YouTubeMediaServiceHelper.createDescription(getViewCountText1(), getViewCountText2());
     }
 
     public String getPublishedTime() {
@@ -39,5 +42,13 @@ public class Metadata {
 
     public String getDescBadgeText() {
         return mDescBadgeText;
+    }
+
+    private String getViewCountText1() {
+        return mViewsAndDateText1 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText1.toArray(new Object[0])) : null;
+    }
+
+    private String getViewCountText2() {
+        return mViewsAndDateText2 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText2.toArray(new Object[0])) : null;
     }
 }

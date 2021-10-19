@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.common.helpers;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
-import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 import java.util.ArrayList;
@@ -62,14 +61,14 @@ public class ServiceHelper {
     }
 
     public static String itemsToDescription(Object... items) {
-        return combineItems(items, DESCRIPTION_DIVIDER);
+        return combineItems(DESCRIPTION_DIVIDER, items);
     }
 
     public static String combineText(Object... items) {
-        return combineItems(items, null);
+        return combineItems(null, items);
     }
 
-    public static String combineItems(Object[] items, String divider) {
+    public static String combineItems(String divider, Object... items) {
         StringBuilder result = new StringBuilder();
 
         if (items != null) {

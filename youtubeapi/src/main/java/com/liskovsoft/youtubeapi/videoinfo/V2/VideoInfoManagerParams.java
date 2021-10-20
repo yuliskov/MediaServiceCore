@@ -30,17 +30,19 @@ public class VideoInfoManagerParams {
     private static final String VIDEO_ID = "\"videoId\":\"%s\",\"cpn\":\"%s\"";
 
     public static String getVideoInfoQuery(String videoId) {
-        return getVideoInfoQuery(videoId, null);
+        return getVideoInfoQueryLive(videoId, null);
     }
 
-    public static String getVideoInfoQuery(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, videoId, clickTrackingParams);
-    }
-
-    public static String getVideoInfoQueryAlt(String videoId, String clickTrackingParams) {
+    /**
+     * Support live streams seeking!
+     */
+    public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, videoId, clickTrackingParams);
     }
 
+    /**
+     * Support private videos viewing
+     */
     public static String getVideoInfoQueryPrivate(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, videoId, clickTrackingParams);
     }

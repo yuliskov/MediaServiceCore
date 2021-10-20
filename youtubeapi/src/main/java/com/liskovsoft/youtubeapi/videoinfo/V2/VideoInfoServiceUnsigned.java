@@ -37,7 +37,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQuery(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryLive(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery);
 
         return RetrofitHelper.get(wrapper);

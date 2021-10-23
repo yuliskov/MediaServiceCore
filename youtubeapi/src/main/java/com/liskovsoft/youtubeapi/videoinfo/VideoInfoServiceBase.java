@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
@@ -26,6 +27,9 @@ public abstract class VideoInfoServiceBase {
         List<String> throttled = extractThrottledStrings(formats);
         List<String> throttleFixed = mAppService.throttleFix(throttled);
         applyThrottleFixedStrings(throttleFixed, formats);
+
+        applyCpnStrings(AppService.instance().getClientPlaybackNonce(), formats);
+        applyClientVersionStrings(formats);
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
@@ -65,6 +69,19 @@ public abstract class VideoInfoServiceBase {
 
         for (int i = 0; i < formats.size(); i++) {
             formats.get(i).setThrottleCipher(throttleFixed.get(i));
+        }
+    }
+
+
+    private static void applyCpnStrings(String cpn, List<? extends VideoFormat> formats) {
+        for (VideoFormat format : formats) {
+            format.setCpn(cpn);
+        }
+    }
+
+    private static void applyClientVersionStrings(List<? extends VideoFormat> formats) {
+        for (VideoFormat format : formats) {
+            format.setCpn(AppConstants.CLIENT_VERSION_TV);
         }
     }
 }

@@ -18,6 +18,7 @@ public class VideoFormat {
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_ITAG = "itag";
     public static final String PARAM_CPN = "cpn";
+    public static final String PARAM_CVER = "cver";
     public static final String PARAM_SIGNATURE = "signature";
     public static final String PARAM_SIGNATURE_SPECIAL = "sig";
     public static final String PARAM_SIGNATURE_SPECIAL_MARK = "lsig";
@@ -106,20 +107,20 @@ public class VideoFormat {
 
     public void setSignature(String signature) {
         if (signature != null) {
-            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
-
             //if (url.contains(PARAM_SIGNATURE_SPECIAL_MARK)) {
             //    url.set(PARAM_SIGNATURE_SPECIAL, signature);
             //} else {
             //    url.set(PARAM_SIGNATURE, signature);
             //}
 
-            url.set(PARAM_SIGNATURE_SPECIAL, signature);
-
-            mUrl = url.toString();
+            setQueryParam(PARAM_SIGNATURE_SPECIAL, signature);
 
             mRealSignature = signature;
         }
+    }
+
+    public void setClientVersion(String clientVersion) {
+        setQueryParam(PARAM_CVER, clientVersion);
     }
 
     public String getSignature() {
@@ -127,23 +128,15 @@ public class VideoFormat {
     }
 
     public String getThrottleCipher() {
-        if (mUrl != null) {
-            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
-
-            return url.get(THROTTLE_PARAM);
-        }
-
-        return null;
+        return getQueryParam(THROTTLE_PARAM);
     }
 
     public void setThrottleCipher(String throttleCipher) {
-        if (mUrl != null && throttleCipher != null) {
-            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
+        setQueryParam(THROTTLE_PARAM, throttleCipher);
+    }
 
-            url.set(THROTTLE_PARAM, throttleCipher);
-
-            mUrl = url.toString();
-        }
+    public void setCpn(String cpn) {
+        setQueryParam(PARAM_CPN, cpn);
     }
 
     public String getMimeType() {
@@ -327,6 +320,26 @@ public class VideoFormat {
 
     public String getLastModified() {
         return mLastModified;
+    }
+
+    private String getQueryParam(String paramName) {
+        if (mUrl != null) {
+            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
+
+            return url.get(paramName);
+        }
+
+        return null;
+    }
+
+    private void setQueryParam(String paramName, String paramValue) {
+        if (mUrl != null && paramName != null && paramValue != null) {
+            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
+
+            url.set(paramName, paramValue);
+
+            mUrl = url.toString();
+        }
     }
 
     @NonNull

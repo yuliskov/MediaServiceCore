@@ -62,7 +62,7 @@ public class AppService {
             return ciphered;
         }
 
-        return runDecipherCode(decipherCode);
+        return runCode(decipherCode);
     }
 
     /**
@@ -79,7 +79,7 @@ public class AppService {
             return throttled;
         }
 
-        return runDecipherCode(throttleCode);
+        return runCode(throttleCode);
     }
 
     /**
@@ -186,8 +186,8 @@ public class AppService {
         return result.toString();
     }
 
-    private List<String> runDecipherCode(String decipherCode) {
-        String result = getDuktape().evaluate(decipherCode).toString();
+    private List<String> runCode(String code) {
+        String result = getDuktape().evaluate(code).toString();
 
         String[] values = result.split(",");
 

@@ -92,9 +92,10 @@ public class VideoFormat {
     @JsonPath("$.lastModified")
     private String mLastModified;
     private String mEventId;
+    private UrlQueryString mQueryString;
 
     public String getUrl() {
-        return mUrl;
+        return mQueryString != null ? mQueryString.toString() : mUrl;
     }
 
     public void setUrl(String url) {
@@ -323,23 +324,33 @@ public class VideoFormat {
     }
 
     public String getParam(String paramName) {
-        if (mUrl != null) {
-            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
+        UrlQueryString queryString = getQueryString();
 
-            return url.get(paramName);
+        if (queryString != null) {
+            return queryString.get(paramName);
         }
 
         return null;
     }
 
     public void setParam(String paramName, String paramValue) {
-        if (mUrl != null && paramName != null && paramValue != null) {
-            UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
+        UrlQueryString queryString = getQueryString();
 
-            url.set(paramName, paramValue);
-
-            mUrl = url.toString();
+        if (queryString != null && paramName != null && paramValue != null) {
+            queryString.set(paramName, paramValue);
         }
+    }
+
+    private UrlQueryString getQueryString() {
+        if (mUrl == null) {
+            return null;
+        }
+
+        if (mQueryString == null) {
+            mQueryString = UrlQueryStringFactory.parse(mUrl);
+        }
+
+        return mQueryString;
     }
 
     @NonNull

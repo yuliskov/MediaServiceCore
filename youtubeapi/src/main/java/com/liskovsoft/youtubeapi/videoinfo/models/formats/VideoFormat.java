@@ -113,14 +113,14 @@ public class VideoFormat {
             //    url.set(PARAM_SIGNATURE, signature);
             //}
 
-            setQueryParam(PARAM_SIGNATURE_SPECIAL, signature);
+            setParam(PARAM_SIGNATURE_SPECIAL, signature);
 
             mRealSignature = signature;
         }
     }
 
     public void setClientVersion(String clientVersion) {
-        setQueryParam(PARAM_CVER, clientVersion);
+        setParam(PARAM_CVER, clientVersion);
     }
 
     public String getSignature() {
@@ -128,15 +128,15 @@ public class VideoFormat {
     }
 
     public String getThrottleCipher() {
-        return getQueryParam(THROTTLE_PARAM);
+        return getParam(THROTTLE_PARAM);
     }
 
     public void setThrottleCipher(String throttleCipher) {
-        setQueryParam(THROTTLE_PARAM, throttleCipher);
+        setParam(THROTTLE_PARAM, throttleCipher);
     }
 
     public void setCpn(String cpn) {
-        setQueryParam(PARAM_CPN, cpn);
+        setParam(PARAM_CPN, cpn);
     }
 
     public String getMimeType() {
@@ -322,7 +322,7 @@ public class VideoFormat {
         return mLastModified;
     }
 
-    private String getQueryParam(String paramName) {
+    public String getParam(String paramName) {
         if (mUrl != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 
@@ -332,7 +332,7 @@ public class VideoFormat {
         return null;
     }
 
-    private void setQueryParam(String paramName, String paramValue) {
+    public void setParam(String paramName, String paramValue) {
         if (mUrl != null && paramName != null && paramValue != null) {
             UrlQueryString url = UrlQueryStringFactory.parse(mUrl);
 

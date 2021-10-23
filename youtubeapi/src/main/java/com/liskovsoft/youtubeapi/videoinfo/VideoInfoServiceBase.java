@@ -28,8 +28,7 @@ public abstract class VideoInfoServiceBase {
         List<String> throttleFixed = mAppService.throttleFix(throttled);
         applyThrottleFixedStrings(throttleFixed, formats);
 
-        applyCpnStrings(AppService.instance().getClientPlaybackNonce(), formats);
-        applyClientVersionStrings(formats);
+        applyAdditionalStrings(formats);
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
@@ -72,16 +71,13 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
+    private static void applyAdditionalStrings(List<? extends VideoFormat> formats) {
+        String cpn = AppService.instance().getClientPlaybackNonce();
 
-    private static void applyCpnStrings(String cpn, List<? extends VideoFormat> formats) {
         for (VideoFormat format : formats) {
             format.setCpn(cpn);
-        }
-    }
-
-    private static void applyClientVersionStrings(List<? extends VideoFormat> formats) {
-        for (VideoFormat format : formats) {
-            format.setCpn(AppConstants.CLIENT_VERSION_TV);
+            format.setClientVersion(AppConstants.CLIENT_VERSION_TV);
+            format.setParam("alr", "yes");
         }
     }
 }

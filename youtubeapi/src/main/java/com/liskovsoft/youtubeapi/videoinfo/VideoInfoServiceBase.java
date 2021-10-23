@@ -38,16 +38,6 @@ public abstract class VideoInfoServiceBase {
         return result;
     }
 
-    private static void applyDecipheredStrings(List<String> deciphered, List<? extends VideoFormat> formats) {
-        if (deciphered.size() != formats.size()) {
-            throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
-        }
-
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setSignature(deciphered.get(i));
-        }
-    }
-
     private static List<String> extractThrottledStrings(List<? extends VideoFormat> formats) {
         List<String> result = new ArrayList<>();
 
@@ -58,9 +48,19 @@ public abstract class VideoInfoServiceBase {
         return result;
     }
 
+    private static void applyDecipheredStrings(List<String> deciphered, List<? extends VideoFormat> formats) {
+        if (deciphered.size() != formats.size()) {
+            throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
+        }
+
+        for (int i = 0; i < formats.size(); i++) {
+            formats.get(i).setSignature(deciphered.get(i));
+        }
+    }
+
     private static void applyThrottleFixedStrings(List<String> throttleFixed, List<? extends VideoFormat> formats) {
         if (throttleFixed.size() != formats.size()) {
-            throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
+            throw new IllegalStateException("Sizes of formats and throttled strings should match!");
         }
 
         for (int i = 0; i < formats.size(); i++) {

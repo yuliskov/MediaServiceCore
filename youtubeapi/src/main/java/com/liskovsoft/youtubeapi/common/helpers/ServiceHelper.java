@@ -225,4 +225,14 @@ public class ServiceHelper {
 
         return result;
     }
+
+    public interface OnElementCallback<T> {
+        void onElement(T element, int i);
+    }
+
+    public static <T> void process(List<T> elements, OnElementCallback<T> callback) {
+        for (int i = 0; i < elements.size(); i++) {
+            callback.onElement(elements.get(i), i);
+        }
+    }
 }

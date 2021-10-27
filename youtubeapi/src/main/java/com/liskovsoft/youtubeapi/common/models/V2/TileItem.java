@@ -35,6 +35,9 @@ public class TileItem {
     @JsonPath("$.contentType")
     private String mContentType;
 
+    @JsonPath("$.menu.menuRenderer.items[*].menuServiceItemRenderer.serviceEndpoint.feedbackEndpoint.feedbackToken")
+    private List<String> mFeedbackToken;
+
     public Header getHeader() {
         return mHeader;
     }
@@ -112,7 +115,7 @@ public class TileItem {
     }
 
     public String getFeedbackToken() {
-        return null;
+        return mFeedbackToken != null ? mFeedbackToken.get(0) : null;
     }
 
     public String getClickTrackingParams() {

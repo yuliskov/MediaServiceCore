@@ -93,6 +93,7 @@ public class VideoFormat {
     private String mLastModified;
     private String mEventId;
     private UrlQueryString mQueryString;
+    private String mLanguage;
 
     public String getUrl() {
         return mQueryString != null ? mQueryString.toString() : mUrl;
@@ -293,6 +294,21 @@ public class VideoFormat {
         }
 
         return mTemplateSegmentUrl;
+    }
+
+    public String getLanguage() {
+        if (mLanguage == null && getQueryString() != null) {
+            String xtags = getQueryString().get("xtags");
+
+            if (xtags != null) {
+                String[] split = xtags.split("=");
+                if (split.length == 2) {
+                    mLanguage = split[1];
+                }
+            }
+        }
+
+        return mLanguage;
     }
 
     private String parseCipher() {

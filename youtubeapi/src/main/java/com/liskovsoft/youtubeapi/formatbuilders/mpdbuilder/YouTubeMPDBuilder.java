@@ -194,7 +194,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             break;
         }
 
-        writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem));
+        writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem), firstItem.getLanguage());
 
         // Representation
         for (MediaFormat item : filtered) {
@@ -288,10 +288,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         }
     }
 
-    private void writeMediaListPrologue(String id, String mimeType) {
+    private void writeMediaListPrologue(String id, String mimeType, String language) {
         startTag("", "AdaptationSet");
         attribute("", "id", id);
         attribute("", "mimeType", mimeType);
+        //attribute("", "lang", language);
         attribute("", "subsegmentAlignment", "true");
 
         startTag("", "Role");

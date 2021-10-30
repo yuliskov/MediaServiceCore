@@ -40,6 +40,7 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     boolean isOtf();
     String getOtfInitUrl();
     String getOtfTemplateUrl();
+    String getLanguage();
 
     // Other/Regular
     String getQuality();

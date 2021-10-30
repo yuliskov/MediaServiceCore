@@ -34,6 +34,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     private List<String> mGlobalSegmentList;
     private String mAudioQuality;
     private int mFormatType;
+    private String mLanguage;
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
         YouTubeMediaFormat mediaFormat = createBaseFormat(format);
@@ -82,6 +83,7 @@ public class YouTubeMediaFormat implements MediaFormat {
         mediaFormat.mSourceUrl = format.getSourceURL();
         mediaFormat.mSegmentUrlList = format.getSegmentUrlList();
         mediaFormat.mGlobalSegmentList = format.getGlobalSegmentList();
+        mediaFormat.mLanguage = format.getLanguage();
 
         return mediaFormat;
     }
@@ -309,6 +311,11 @@ public class YouTubeMediaFormat implements MediaFormat {
     @Override
     public void setGlobalSegmentList(List<String> segments) {
         mGlobalSegmentList = segments;
+    }
+
+    @Override
+    public String getLanguage() {
+        return mLanguage;
     }
 
     public String getIndexRange() {

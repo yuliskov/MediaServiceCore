@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -38,10 +40,10 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
-    private final Set<MediaFormat> mMP4Audios;
     private final Set<MediaFormat> mMP4Videos;
-    private final Set<MediaFormat> mWEBMAudios;
     private final Set<MediaFormat> mWEBMVideos;
+    private final Map<String, Set<MediaFormat>> mMP4Audios;
+    private final Map<String, Set<MediaFormat>> mWEBMAudios;
     private final List<MediaSubtitle> mSubs;
     private final YouTubeOtfSegmentParser mSegmentParser;
     private String mLimitVideoCodec;
@@ -50,10 +52,10 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     public YouTubeMPDBuilder(MediaItemFormatInfo info) {
         mInfo = info;
         MediaFormatComparator comp = new MediaFormatComparator();
-        mMP4Audios = new TreeSet<>(comp);
         mMP4Videos = new TreeSet<>(comp);
-        mWEBMAudios = new TreeSet<>(comp);
         mWEBMVideos = new TreeSet<>(comp);
+        mMP4Audios = new HashMap<>();
+        mWEBMAudios = new HashMap<>();
         mSubs = new ArrayList<>();
         mSegmentParser = new YouTubeOtfSegmentParser(true);
 
@@ -134,10 +136,17 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         }
 
         // MXPlayer fix: write high quality formats first
-        writeMediaTagsForGroup(mWEBMVideos);
-        writeMediaTagsForGroup(mWEBMAudios);
         writeMediaTagsForGroup(mMP4Videos);
-        writeMediaTagsForGroup(mMP4Audios);
+        writeMediaTagsForGroup(mWEBMVideos);
+
+        for (Set<MediaFormat> formats : mMP4Audios.values()) {
+            writeMediaTagsForGroup(formats);
+        }
+
+        for (Set<MediaFormat> formats : mWEBMAudios.values()) {
+            writeMediaTagsForGroup(formats);
+        }
+        
         writeMediaTagsForGroup(mSubs);
     }
 
@@ -292,7 +301,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         startTag("", "AdaptationSet");
         attribute("", "id", id);
         attribute("", "mimeType", mimeType);
-        //attribute("", "lang", language);
+        if (language != null) {
+            attribute("", "lang", language);
+        }
         attribute("", "subsegmentAlignment", "true");
 
         startTag("", "Role");
@@ -337,17 +348,17 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         String mimeType = extractMimeType(mediaItem);
         if (mimeType != null) {
             switch (mimeType) {
-                case MIME_WEBM_AUDIO:
-                    placeholder = mWEBMAudios;
+                case MIME_MP4_VIDEO:
+                    placeholder = mMP4Videos;
                     break;
                 case MIME_WEBM_VIDEO:
                     placeholder = mWEBMVideos;
                     break;
                 case MIME_MP4_AUDIO:
-                    placeholder = mMP4Audios;
+                    placeholder = getMP4Audios(mediaItem.getLanguage());
                     break;
-                case MIME_MP4_VIDEO:
-                    placeholder = mMP4Videos;
+                case MIME_WEBM_AUDIO:
+                    placeholder = getWEBMAudios(mediaItem.getLanguage());
                     break;
             }
         }
@@ -622,6 +633,21 @@ public class YouTubeMPDBuilder implements MPDBuilder {
                 && mMP4Audios.size() == 0 && mWEBMAudios.size() == 0) || !ensureRequiredFieldsAreSet();
     }
 
+    @Override
+    public boolean isDynamic() {
+        return isLive();
+    }
+
+    @Override
+    public void limitVideoCodec(String codec) {
+        mLimitVideoCodec = codec;
+    }
+
+    @Override
+    public void limitAudioCodec(String codec) {
+        mLimitAudioCodec = codec;
+    }
+
     private boolean isLive() {
         for (MediaFormat item : mMP4Videos) {
             return isLiveMedia(item);
@@ -747,18 +773,26 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         return result;
     }
 
-    @Override
-    public boolean isDynamic() {
-        return isLive();
+    private Set<MediaFormat> getMP4Audios(String language) {
+        return getFormats(mMP4Audios, language);
     }
 
-    @Override
-    public void limitVideoCodec(String codec) {
-        mLimitVideoCodec = codec;
+    private Set<MediaFormat> getWEBMAudios(String language) {
+        return getFormats(mWEBMAudios, language);
     }
 
-    @Override
-    public void limitAudioCodec(String codec) {
-        mLimitAudioCodec = codec;
+    private static Set<MediaFormat> getFormats(Map<String, Set<MediaFormat>> formatMap, String language) {
+        if (language == null) {
+            language = "default";
+        }
+
+        Set<MediaFormat> mediaFormats = formatMap.get(language);
+
+        if (mediaFormats == null) {
+            mediaFormats = new TreeSet<>(new MediaFormatComparator());
+            formatMap.put(language, mediaFormats);
+        }
+
+        return mediaFormats;
     }
 }

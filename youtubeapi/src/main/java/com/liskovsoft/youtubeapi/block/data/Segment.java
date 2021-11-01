@@ -3,15 +3,11 @@ package com.liskovsoft.youtubeapi.block.data;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
 public class Segment {
-    public static final String CATEGORY_SPONSOR = "sponsor";
-    public static final String CATEGORY_INTRO = "intro";
-    public static final String CATEGORY_OUTRO = "outro";
-    public static final String CATEGORY_INTERACTION = "interaction";
-    public static final String CATEGORY_SELF_PROMO = "selfpromo";
-    public static final String CATEGORY_MUSIC_OFF_TOPIC = "music_offtopic";
-
     @JsonPath("$.category")
     private String mCategory;
+
+    @JsonPath("$.actionType")
+    private String mActionType;
 
     @JsonPath("$.segment[0]")
     private float mStart;
@@ -36,5 +32,9 @@ public class Segment {
 
     public String getUuid() {
         return mUuid;
+    }
+
+    public String getActionType() {
+        return mActionType;
     }
 }

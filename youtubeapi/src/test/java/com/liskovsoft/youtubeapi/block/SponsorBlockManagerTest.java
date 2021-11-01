@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.block;
 
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.youtubeapi.block.data.Segment;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
@@ -54,8 +55,8 @@ public class SponsorBlockManagerTest {
     public void testThatSegmentByCategoryResultNotEmpty() {
         Call<SegmentList> wrapper = mService.getSegments(
                 VIDEO_ID, ServiceHelper.toJsonArrayString(
-                        Segment.CATEGORY_SPONSOR, Segment.CATEGORY_INTRO, Segment.CATEGORY_OUTRO,
-                        Segment.CATEGORY_INTERACTION, Segment.CATEGORY_SELF_PROMO, Segment.CATEGORY_MUSIC_OFF_TOPIC
+                        SponsorSegment.CATEGORY_SPONSOR, SponsorSegment.CATEGORY_INTRO, SponsorSegment.CATEGORY_OUTRO,
+                        SponsorSegment.CATEGORY_INTERACTION, SponsorSegment.CATEGORY_SELF_PROMO, SponsorSegment.CATEGORY_MUSIC_OFF_TOPIC
                 )
         );
 

@@ -9,8 +9,11 @@ public interface SponsorSegment {
     String CATEGORY_MUSIC_OFF_TOPIC = "music_offtopic";
     String CATEGORY_PREVIEW_RECAP = "preview";
     String CATEGORY_HIGHLIGHT = "poi_highlight";
+    String ACTION_SKIP = "skip";
+    String ACTION_MUTE = "mute";
 
     long getStartMs();
     long getEndMs();
     String getCategory();
+    String getAction();
 }

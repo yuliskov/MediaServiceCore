@@ -11,6 +11,7 @@ public class YouTubeSponsorSegment implements SponsorSegment {
     private long mStartMs;
     private long mEndMs;
     private String mCategory;
+    private String mAction;
 
     public static List<SponsorSegment> from(SegmentList segmentList) {
         if (segmentList == null || segmentList.getSegments() == null) {
@@ -24,6 +25,7 @@ public class YouTubeSponsorSegment implements SponsorSegment {
             sponsorSegment.mStartMs = (long) (segment.getStart() * 1_000);
             sponsorSegment.mEndMs = (long) (segment.getEnd() * 1_000);
             sponsorSegment.mCategory = segment.getCategory();
+            sponsorSegment.mAction = segment.getActionType();
             result.add(sponsorSegment);
         }
 
@@ -43,5 +45,10 @@ public class YouTubeSponsorSegment implements SponsorSegment {
     @Override
     public String getCategory() {
         return mCategory;
+    }
+
+    @Override
+    public String getAction() {
+        return mAction;
     }
 }

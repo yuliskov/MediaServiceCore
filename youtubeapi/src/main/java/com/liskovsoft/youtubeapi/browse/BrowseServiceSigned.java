@@ -114,8 +114,8 @@ public class BrowseServiceSigned {
     }
 
     public GridTab getHistory(String authorization) {
-        //return getGridTab(0, BrowseManagerParams.getHistoryQuery(), authorization); // web client version (needs new parser but contains feedback data)
-        return getGridTab(0, BrowseManagerParams.getMyLibraryQuery(), authorization);
+        return getGridTab(0, BrowseManagerParams.getHistoryQuery(), authorization); // web client version (needs new parser but can remove item from history)
+        //return getGridTab(0, BrowseManagerParams.getMyLibraryQuery(), authorization);
     }
 
     public List<GridTab> getPlaylists(String authorization) {

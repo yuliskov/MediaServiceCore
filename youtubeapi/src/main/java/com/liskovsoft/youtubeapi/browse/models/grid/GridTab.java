@@ -30,14 +30,16 @@ public class GridTab {
     private String mParams;
 
     @JsonPath({"$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*]",
-               "$.itemSectionRenderer.contents[*]"}) // web history section format (with ability to remove any item)
+               "$.contents[0].itemSectionRenderer.contents[*]" // web history section format (with ability to remove any item)
+    })
     private List<ItemWrapper> mItemWrappers;
 
     /**
      * Used in continue Tabs
      */
     @JsonPath({"$.content.tvSurfaceContentRenderer.content.gridRenderer.continuations[0].nextContinuationData.continuation",
-               "$.itemSectionRenderer.continuations[0].nextContinuationData.continuation"}) // web history section format (with ability to remove any item)
+               "$.continuations[0].nextContinuationData.continuation" // web history section format (with ability to remove any item)
+    })
     private String mNextPageKey;
 
     /**

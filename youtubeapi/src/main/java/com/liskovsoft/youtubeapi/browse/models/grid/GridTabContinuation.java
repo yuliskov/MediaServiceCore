@@ -10,11 +10,15 @@ import java.util.List;
  */
 public class GridTabContinuation {
     @JsonPath({"$.continuationContents.gridContinuation.items[*]",                                   // other grid like history, subscriptions
-               "$.continuationContents.tvSurfaceContentContinuation.content.gridRenderer.items[*]"}) // user playlist
+               "$.continuationContents.tvSurfaceContentContinuation.content.gridRenderer.items[*]", // user playlist
+               "$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*]" // web client version history (with remove from history)
+    })
     private List<ItemWrapper> mItemWrappers;
 
     @JsonPath({"$.continuationContents.gridContinuation.continuations[0].nextContinuationData.continuation",              // other grid like history, subscriptions
-               "$.continuationContents.tvSurfaceContentContinuation.content.gridRenderer.continuations[0].nextContinuationData.continuation"}) // user playlist
+               "$.continuationContents.tvSurfaceContentContinuation.content.gridRenderer.continuations[0].nextContinuationData.continuation", // user playlist
+               "$.continuationContents.sectionListContinuation.continuations[0].nextContinuationData.continuation" // web client version history (with remove from history)
+    })
     private String mNextPageKey;
 
     /**

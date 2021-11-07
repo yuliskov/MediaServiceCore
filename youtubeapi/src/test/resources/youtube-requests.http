@@ -712,3 +712,16 @@ Accept-Encoding: identity
 Referer: https://www.youtube.com/tv
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20210622.10.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en-US","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"videoId":"s2lGEhSlOTY"}
+
+
+###
+
+# Remove item from history
+
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+authorization: Bearer ya29.a0ARrdaM_kiv2y6v55ArMN-zwJRnOAlcPsqdgU6jZROr_NCjOCy8nfAcZt6zlTO8-yH4iURB7MeXepb3QCRiVOZBWx2EGQQ2dASLr1w9csvJRp5mprFlRtx2K6cLEx0ZwELLilHhRw3axrSdEtqx_I-3D9Z_szVGYMohJQ-ntTL1WV
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20211013.10.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"browseId":"FEhistory"}
+

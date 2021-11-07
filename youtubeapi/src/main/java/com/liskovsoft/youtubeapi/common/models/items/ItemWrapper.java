@@ -5,10 +5,11 @@ import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 
 public class ItemWrapper {
     @JsonPath("$.tileRenderer")
-    private TileItem mTitleItem;
+    private TileItem mTileItem;
 
     @JsonPath({"$.gridVideoRenderer",
-               "$.pivotVideoRenderer"}) // suggested item
+               "$.pivotVideoRenderer", // suggested item
+               "$.compactVideoRenderer"}) // history item (V2)
     private VideoItem mVideoItem;
 
     @JsonPath("$.tvMusicVideoRenderer")
@@ -46,7 +47,7 @@ public class ItemWrapper {
         return mPlaylistItem;
     }
 
-    public TileItem getTitleItem() {
-        return mTitleItem;
+    public TileItem getTileItem() {
+        return mTileItem;
     }
 }

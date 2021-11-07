@@ -29,13 +29,15 @@ public class GridTab {
     @JsonPath("$.endpoint.browseEndpoint.params")
     private String mParams;
 
-    @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*]")
+    @JsonPath({"$.content.tvSurfaceContentRenderer.content.gridRenderer.items[*]",
+               "$.itemSectionRenderer.contents[*]"}) // web history section format (with ability to remove any item)
     private List<ItemWrapper> mItemWrappers;
 
     /**
      * Used in continue Tabs
      */
-    @JsonPath("$.content.tvSurfaceContentRenderer.content.gridRenderer.continuations[0].nextContinuationData.continuation")
+    @JsonPath({"$.content.tvSurfaceContentRenderer.content.gridRenderer.continuations[0].nextContinuationData.continuation",
+               "$.itemSectionRenderer.continuations[0].nextContinuationData.continuation"}) // web history section format (with ability to remove any item)
     private String mNextPageKey;
 
     /**

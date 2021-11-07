@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 public class BrowseManagerParams {
     private static final String SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\"";
     private static final String MY_LIBRARY = "\"browseId\":\"FEmy_youtube\"";
+    private static final String HISTORY = "\"browseId\":\"FEhistory\"";
     private static final String HOME = "\"browseId\":\"FEtopics\"";
     private static final String GAMING = "\"browseId\":\"FEtopics\",\"params\":\"-gIGZ2FtaW5n\"";
     private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
@@ -23,6 +24,10 @@ public class BrowseManagerParams {
 
     public static String getMyLibraryQuery() {
         return ServiceHelper.createQuery(MY_LIBRARY);
+    }
+
+    public static String getHistoryQuery() {
+        return ServiceHelper.createQuery(HISTORY);
     }
 
     public static String getGamingQuery() {

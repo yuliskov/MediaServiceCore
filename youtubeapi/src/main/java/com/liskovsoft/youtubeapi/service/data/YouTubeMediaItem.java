@@ -75,8 +75,8 @@ public class YouTubeMediaItem implements MediaItem {
             return from(item.getPlaylistItem());
         } else if (item.getRadioItem() != null) {
             return from(item.getRadioItem());
-        } else if (item.getTitleItem() != null) {
-            return from(item.getTitleItem());
+        } else if (item.getTileItem() != null) {
+            return from(item.getTileItem());
         }
 
         return null;

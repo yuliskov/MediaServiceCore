@@ -28,7 +28,7 @@ public class SearchServiceUnsignedTest {
     @Test
     public void testSearchNotEmpty() {
         SearchResult searchResult = mService.getSearch("any search text");
-        assertTrue("search not empty?", searchResult.getVideoItems().size() != 0);
+        assertTrue("search not empty?", searchResult.getItemWrappers().size() != 0);
 
         SearchResultContinuation nextSearchResult = mService.continueSearch(searchResult.getNextPageKey());
         assertTrue("next search not empty?", nextSearchResult.getVideoItems().size() != 0);

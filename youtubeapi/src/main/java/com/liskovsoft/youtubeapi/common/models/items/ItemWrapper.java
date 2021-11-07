@@ -9,22 +9,25 @@ public class ItemWrapper {
 
     @JsonPath({"$.gridVideoRenderer",
                "$.pivotVideoRenderer", // suggested item
-               "$.compactVideoRenderer"}) // history item (V2)
+               "$.compactVideoRenderer"}) // history/search result item
     private VideoItem mVideoItem;
 
     @JsonPath("$.tvMusicVideoRenderer")
     private MusicItem mMusicItem;
 
     @JsonPath({"$.gridRadioRenderer",
-               "$.pivotRadioRenderer"})
+               "$.pivotRadioRenderer",
+               "$.compactRadioRenderer"})
     private RadioItem mRadioItem;
 
     @JsonPath({"$.gridChannelRenderer",
-               "$.pivotChannelRenderer"})
+               "$.pivotChannelRenderer",
+               "$.compactChannelRenderer"})
     private ChannelItem mChannelItem;
 
     @JsonPath({"$.gridPlaylistRenderer",
-               "$.pivotPlaylistRenderer"})
+               "$.pivotPlaylistRenderer",
+               "$.compactPlaylistRenderer"})
     private PlaylistItem mPlaylistItem;
 
     public VideoItem getVideoItem() {

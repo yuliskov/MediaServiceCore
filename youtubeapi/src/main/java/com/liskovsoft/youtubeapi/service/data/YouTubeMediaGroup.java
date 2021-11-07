@@ -111,8 +111,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), searchResult.getTitleItems(), searchResult.getVideoItems(), searchResult.getMusicItems(), searchResult.getChannelItems(),
-                searchResult.getRadioItems(), searchResult.getPlaylistItems(), searchResult.getNextPageKey());
+        return create(new YouTubeMediaGroup(type), searchResult.getItemWrappers(), searchResult.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {

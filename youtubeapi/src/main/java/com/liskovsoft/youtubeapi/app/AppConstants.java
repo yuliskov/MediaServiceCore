@@ -10,6 +10,7 @@ public interface AppConstants {
     String USER_AGENT_COBALT = "Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1";
     String USER_AGENT_WEBOS = "Mozilla/5.0 (Web0S; Linux/SmartTV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36 WebAppManager";
     String USER_AGENT_XBOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02";
+    String USER_AGENT_CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36";
     String APP_USER_AGENT = USER_AGENT_COBALT;
     String ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br"; // uses more RAM because of decompression
     String ACCEPT_ENCODING_IDENTITY = "identity";
@@ -33,16 +34,19 @@ public interface AppConstants {
     String CLIENT_NAME_WEB = "WEB";
     String CLIENT_NAME_ANDROID = "ANDROID";
 
+    String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
+            "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
+            "\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}";
+
     /**
      * Used in browse, next, search<br/>
      * Previous client version: 7.20190214<br/>
      * racyCheckOk - confirm age<br/>
      * contentCheckOk - ?
      */
-    String JSON_POST_DATA_TEMPLATE_TV = String.format(
-            "{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"TVHTML5\",\"clientVersion\":\"%s\"," +
-            "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
-            "\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}", CLIENT_VERSION_TV);
+    String JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_TV, CLIENT_VERSION_TV);
+
+    String JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB);
 
     /**
      * Used when parsing video_info data

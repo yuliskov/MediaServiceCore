@@ -54,8 +54,21 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     }
 
     @Override
+    public MediaGroup getSearch(String searchText, int options) {
+        checkSigned();
+
+        SearchResult search = mMediaGroupManagerReal.getSearch(searchText, options);
+        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+    }
+
+    @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
         return ObservableHelper.fromNullable(() -> getSearch(searchText));
+    }
+
+    @Override
+    public Observable<MediaGroup> getSearchObserve(String searchText, int options) {
+        return ObservableHelper.fromNullable(() -> getSearch(searchText, options));
     }
 
     @Override

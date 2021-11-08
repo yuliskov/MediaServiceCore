@@ -49,6 +49,11 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
+    public SearchResult getSearch(String searchText, int options) {
+        return mSearchServiceSigned.getSearch(searchText, options, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
     public List<String> getSearchTags(String searchText) {
         return mSearchServiceSigned.getSearchTags(searchText, mSignInManager.getAuthorizationHeader());
     }

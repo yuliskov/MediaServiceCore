@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface MediaGroupManagerInt {
     SearchResult getSearch(String searchText);
+    SearchResult getSearch(String searchText, int options);
     List<String> getSearchTags(String searchText);
     GridTab getSubscriptions();
     List<GridTab> getSubscribedChannelsUpdate();

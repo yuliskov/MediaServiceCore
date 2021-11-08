@@ -34,7 +34,11 @@ public class SearchServiceUnsigned {
     }
 
     public SearchResult getSearch(String searchText) {
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText));
+        return getSearch(searchText, -1);
+    }
+
+    public SearchResult getSearch(String searchText, int options) {
+        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 

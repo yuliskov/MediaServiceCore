@@ -63,7 +63,7 @@ public class RetrofitHelper {
         try {
             return wrapper.execute().body();
         } catch (IOException e) {
-            wrapper.cancel(); // fix background running when RxJava object is disposed
+            //wrapper.cancel(); // fix background running when RxJava object is disposed
             e.printStackTrace();
         }
 

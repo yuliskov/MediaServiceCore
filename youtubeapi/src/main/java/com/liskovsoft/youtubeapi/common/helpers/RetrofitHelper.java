@@ -35,6 +35,7 @@ public class RetrofitHelper {
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
     public static boolean sForceEnableProfiler;
+    private static OkHttpClient sOkHttpClient;
 
     public static <T> T withGson(Class<T> clazz) {
         return buildRetrofit(GsonConverterFactory.create()).create(clazz);
@@ -93,12 +94,20 @@ public class RetrofitHelper {
     private static Retrofit.Builder createBuilder() {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
 
-        retrofitBuilder.client(createOkHttpClient());
+        retrofitBuilder.client(getOkHttpClient());
 
         return retrofitBuilder;
     }
 
-    public static OkHttpClient createOkHttpClient() {
+    private static OkHttpClient getOkHttpClient() {
+        if (sOkHttpClient == null) {
+            sOkHttpClient = createOkHttpClient();
+        }
+
+        return sOkHttpClient;
+    }
+
+    private static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
         //disableCache(okBuilder);

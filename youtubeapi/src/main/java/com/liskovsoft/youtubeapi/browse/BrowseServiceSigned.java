@@ -296,6 +296,8 @@ public class BrowseServiceSigned {
             return null;
         }
 
+        Log.d(TAG, "Getting section tab list for query: %s", query);
+
         Call<SectionTabList> wrapper = mBrowseManagerSigned.getSectionTabList(query, authorization);
 
         return RetrofitHelper.get(wrapper);

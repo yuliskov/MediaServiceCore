@@ -294,11 +294,13 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
         if (tab == null) {
-            String msg = "emitGroups: BrowseTab is null";
+            String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
             Log.e(TAG, msg);
             ObservableHelper.onError(emitter, msg);
             return;
         }
+
+        Log.d(TAG, "emitGroups: begin emitting BrowseTab of type %s...", type);
 
         String nextPageKey = tab.getNextPageKey();
         List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), type);

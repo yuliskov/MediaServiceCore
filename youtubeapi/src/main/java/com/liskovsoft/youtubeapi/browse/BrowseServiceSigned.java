@@ -51,14 +51,17 @@ public class BrowseServiceSigned {
     public GridTab getSubscriptions(String authorization) {
         GridTab subs = getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
 
-        // LIVE videos always on top
+        // LIVE & UPCOMING videos always on top
         if (subs != null && subs.getItemWrappers() != null) {
             Collections.sort(subs.getItemWrappers(), (o1, o2) -> {
                 VideoItem item1 = o1.getVideoItem();
                 VideoItem item2 = o2.getVideoItem();
                 boolean isLive1 = item1 != null && item1.isLive();
                 boolean isLive2 = item2 != null && item2.isLive();
-                return isLive1 == isLive2 ? 0 : isLive1 ? -1 : 1;
+                boolean isUpcoming1 = item1 != null && item1.isUpcoming();
+                boolean isUpcoming2 = item2 != null && item2.isUpcoming();
+                return isLive1 == isLive2 && isUpcoming1 == isUpcoming2 ? 0 :
+                        isLive1 || (isUpcoming1 && !isLive2) ? -1 : 1;
             });
         }
 

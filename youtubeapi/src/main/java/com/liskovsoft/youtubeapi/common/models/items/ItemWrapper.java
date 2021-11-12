@@ -53,4 +53,12 @@ public class ItemWrapper {
     public TileItem getTileItem() {
         return mTileItem;
     }
+
+    public boolean isLive() {
+        return mVideoItem != null ? mVideoItem.isLive() : mTileItem != null ? mTileItem.isLive() : false;
+    }
+
+    public boolean isUpcoming() {
+        return mVideoItem != null ? mVideoItem.isUpcoming() : mTileItem != null ? mTileItem.isUpcoming() : false;
+    }
 }

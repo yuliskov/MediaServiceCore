@@ -53,16 +53,10 @@ public class BrowseServiceSigned {
 
         // LIVE & UPCOMING videos always on top
         if (subs != null && subs.getItemWrappers() != null) {
-            Collections.sort(subs.getItemWrappers(), (o1, o2) -> {
-                VideoItem item1 = o1.getVideoItem();
-                VideoItem item2 = o2.getVideoItem();
-                boolean isLive1 = item1 != null && item1.isLive();
-                boolean isLive2 = item2 != null && item2.isLive();
-                boolean isUpcoming1 = item1 != null && item1.isUpcoming();
-                boolean isUpcoming2 = item2 != null && item2.isUpcoming();
-                return isLive1 == isLive2 && isUpcoming1 == isUpcoming2 ? 0 :
-                        isLive1 || (isUpcoming1 && !isLive2) ? -1 : 1;
-            });
+            Collections.sort(subs.getItemWrappers(), (o1, o2) ->
+                    o1.isLive() == o2.isLive() && o1.isUpcoming() == o2.isUpcoming() ? 0 :
+                    o1.isLive() || (o1.isUpcoming() && !o2.isLive()) ? -1 : 1
+            );
         }
 
         return subs;

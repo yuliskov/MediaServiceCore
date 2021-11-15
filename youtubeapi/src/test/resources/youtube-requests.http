@@ -738,3 +738,17 @@ User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20211013.10.00","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"UA","acceptLanguage":"uk-UA","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"continuation":"4qmFsgI9EglGRWhpc3RvcnkaMENBRjZHM2x5WVRWb2QyOVBRMmQzU1hVMU1tTnFRVmxSTUUxTFdXMVJSUSUzRCUzRA%3D%3D"}
 
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Content-Length: 554
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0ARrdaM9gjboYgNGLs1XNCAOfVYiYvqdoO3oXp3pj1DIGZtFzqraQ980tYzhn7iTh8iATEO_6H-V0_lwLd-vxeq_Ap0jJNe04wWZ10YFDukZ5kYMn7DXUSe3nvqdfB9GYLxd_5Vp-Qyu4OY9tdfW5nuhabuLkUY5VCvkEcSm5Fpoh
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: CgstQ0tjMG1PVFE3MCjUt8qMBg%3D%3D
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20211014.05.00-canary_control","clientScreen":"WATCH","visitorData":"CgstQ0tjMG1PVFE3MCjUt8qMBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"UA","acceptLanguage":"ru-UA","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18942}},"videoId":"FSgEUu-RrdU","cpn":"3ozNI4AC0nsQQpAO"}
+

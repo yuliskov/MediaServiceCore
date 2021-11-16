@@ -14,6 +14,7 @@ public class VideoInfo {
     private static final String PARAM_VM = "vm";
     private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";
     private static final String STATUS_ERROR = "ERROR";
+    private static final String STATUS_OFFLINE = "LIVE_STREAM_OFFLINE";
     private static final String STATUS_LOGIN_REQUIRED = "LOGIN_REQUIRED";
     private static final String STATUS_AGE_CHECK_REQUIRED = "AGE_CHECK_REQUIRED";
     private static final String STATUS_CONTENT_CHECK_REQUIRED = "CONTENT_CHECK_REQUIRED";
@@ -155,6 +156,15 @@ public class VideoInfo {
 
     public boolean isHfr() {
         return mDashManifestUrl != null && mDashManifestUrl.contains("/hfr/all");
+    }
+
+    public boolean isValid() {
+        if (STATUS_OFFLINE.equals(mPlayabilityStatus)) {
+            return true;
+        }
+
+        // Check that history data is present
+        return getEventId() != null && getVisitorMonitoringData() != null;
     }
 
     private void parseTrackingParams() {

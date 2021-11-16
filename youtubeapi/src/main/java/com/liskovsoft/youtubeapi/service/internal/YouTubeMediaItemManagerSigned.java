@@ -80,8 +80,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         VideoInfo result = mVideoInfoServiceSigned.getVideoInfo(videoId, clickTrackingParams, mSignInManager.getAuthorizationHeader());
 
         // Fix no playback bug (temporal fix)
-        // Check that history data is valid
-        if (result == null || result.getEventId() == null || result.getVisitorMonitoringData() == null) {
+        if (result == null || !result.isValid()) {
             result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId, clickTrackingParams);
         }
 

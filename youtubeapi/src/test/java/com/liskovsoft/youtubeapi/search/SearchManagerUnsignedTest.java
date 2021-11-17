@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -63,9 +64,9 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
         Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
-        assertTrue("Contains multiple music items", searchResult.getMusicItems().size() > 5);
+        assertTrue("Contains multiple items", searchResult.getItemWrappers().size() > 5);
 
-        checkSearchResultMusicItem(searchResult.getMusicItems().get(0));
+        checkSearchResultTileItem(searchResult.getItemWrappers().get(0).getTileItem());
     }
 
     @Test
@@ -75,17 +76,17 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
         Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
-        MusicItem musicItem = searchResult.getMusicItems().get(0);
+        TileItem item = searchResult.getItemWrappers().get(0).getTileItem();
 
-        assertTrue("Contains english localization", musicItem.getViewCountText().contains("views"));
+        assertTrue("Contains english localization", item.getViewCountText().contains("views"));
 
         LocaleManager.instance().setLanguage("ru");
 
         wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
         searchResult = RetrofitHelper.get(wrapper);
 
-        musicItem = searchResult.getMusicItems().get(0);
+        item = searchResult.getItemWrappers().get(0).getTileItem();
 
-        assertTrue("Contains russian localization", musicItem.getViewCountText().contains("просмотров"));
+        assertTrue("Contains russian localization", item.getViewCountText().contains("просмотров"));
     }
 }

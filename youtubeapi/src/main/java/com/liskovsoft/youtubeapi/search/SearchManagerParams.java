@@ -39,7 +39,9 @@ public class SearchManagerParams {
     private static String toParams(int options) {
         String result = null;
 
-        if (Helpers.check(options, SearchOptions.UPLOAD_DATE_TODAY)) {
+        if (Helpers.check(options, SearchOptions.UPLOAD_DATE_LAST_HOUR)) {
+            result = "EgQIARAB";
+        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_TODAY)) {
             result = "EgQIAhAB";
         } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_WEEK)) {
             result = "EgQIAxAB";

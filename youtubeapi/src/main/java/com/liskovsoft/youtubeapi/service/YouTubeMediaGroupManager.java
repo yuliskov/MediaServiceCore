@@ -417,7 +417,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
                     if (tabContinuation != null) {
                         ArrayList<MediaGroup> list = new ArrayList<>();
                         YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_USER_PLAYLISTS);
-                        mediaGroup.setTitle(tab.getTitle());
+                        mediaGroup.setTitle(tab.getTitle()); // id calculated by title hashcode
                         list.add(YouTubeMediaGroup.from(tabContinuation, mediaGroup));
                         emitter.onNext(list);
                     }

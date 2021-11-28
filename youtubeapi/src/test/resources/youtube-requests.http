@@ -752,3 +752,29 @@ x-goog-visitor-id: CgstQ0tjMG1PVFE3MCjUt8qMBg%3D%3D
 
 {"context":{"client":{"clientName":"WEB","clientVersion":"2.20211014.05.00-canary_control","clientScreen":"WATCH","visitorData":"CgstQ0tjMG1PVFE3MCjUt8qMBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"UA","acceptLanguage":"ru-UA","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18942}},"videoId":"FSgEUu-RrdU","cpn":"3ozNI4AC0nsQQpAO"}
 
+###
+
+# restricted test
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0ARrdaM8N-kByuy0xyqzstP_G_ApW2y4gVVZ-djbOusO9Y7ZANcZsBTHEZCM6tspOeR_L65lGWoG-Sir25QDPR0v9taTbWYTpg_aUV6FwAju8kjsmvSmgY7CakoC2W-v3XW0J0T_EdGt-DaK1tWzs1HhcUb0LrP5m2a0nfwFmRt8w
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: Cgs0OWFNdzhGalpXTSjyvoqNBg%3D%3D
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20211014.05.00-canary_control","clientScreen":"WATCH","visitorData":"Cgs0OWFNdzhGalpXTSjyvoqNBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18954}},"videoId":"ujpejC8-vx8","cpn":"a0tJKXiNC6eiaynX"}
+
+###
+
+# restricted next
+
+POST https://www.youtube.com/youtubei/v1/next
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0ARrdaM8VChXNQPFEZyHLquaJpApvFoA9O9OINFsd084wWN2STXaqc5-mlDQJ8h1vUzvBsvuAyG-VzfxSbyEsbp-CGjzSANZofmv-FMIi1TOWlCt_SEvbmLXG-Q71-6NfaaO2jnDMqGC8DnA9J6EqC1iC1jTxdtBojGB2vnLAMlo2
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20211013.10.00","clientScreen":"EMBED","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"videoId":"ujpejC8-vx8"}

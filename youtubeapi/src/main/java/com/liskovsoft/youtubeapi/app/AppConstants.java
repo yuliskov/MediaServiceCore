@@ -33,10 +33,12 @@ public interface AppConstants {
     String CLIENT_NAME_TV = "TVHTML5";
     String CLIENT_NAME_WEB = "WEB";
     String CLIENT_NAME_ANDROID = "ANDROID";
+    String CLIENT_SCREEN_WATCH = "WATCH"; // won't play 18+ restricted videos
+    String CLIENT_SCREEN_EMBED = "EMBED"; // no 18+ restriction but not all video embeddable
 
     String JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-            "\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\",\"utcOffsetMinutes\":\"%%s\"}," +
-            "\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}";
+            "\"clientScreen\":\"%s\",\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptRegion\":\"%%s\",\"acceptLanguage\":\"%%s\"," +
+            "\"utcOffsetMinutes\":\"%%s\"},\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}";
 
     /**
      * Used in browse, next, search<br/>
@@ -44,9 +46,9 @@ public interface AppConstants {
      * racyCheckOk - confirm age<br/>
      * contentCheckOk - ?
      */
-    String JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_TV, CLIENT_VERSION_TV);
+    String JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_EMBED);
 
-    String JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB);
+    String JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_EMBED);
 
     /**
      * Used when parsing video_info data

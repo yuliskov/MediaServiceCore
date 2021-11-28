@@ -13,7 +13,7 @@ public class VideoInfoManagerParams {
      */
     private static final String JSON_POST_DATA_TEMPLATE =
             "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-            "\"clientScreen\":\"WATCH\",\"visitorData\":\"%s\",%s" +
+            "\"clientScreen\":\"%s\",\"visitorData\":\"%s\",%s" +
             "\"thirdParty\":{\"embedUrl\":\"https://www.youtube.com/tv#/\"}," +
             "\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\",\"utcOffsetMinutes\":\"%s\"}," +
             "\"user\":{\"lockedSafetyMode\":false}}," +
@@ -37,31 +37,39 @@ public class VideoInfoManagerParams {
      * Support live streams seeking!
      */
     public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, videoId, clickTrackingParams);
+        return createCheckedQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
     }
 
     /**
      * Support private videos viewing
      */
     public static String getVideoInfoQueryPrivate(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, videoId, clickTrackingParams);
+        return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
+    }
+
+    /**
+     * Support restricted (18+) videos viewing
+     */
+    public static String getVideoInfoQueryRestricted(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_EMBED, videoId, clickTrackingParams);
     }
 
     public static String getVideoInfoQueryPrivate(String videoId) {
         return getVideoInfoQueryPrivate(videoId, null);
     }
 
-    private static String createCheckedQuery(String clientName, String clientVersion, String videoId, String clickTrackingParams) {
+    private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(clientName, clientVersion, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
+        return createQuery(clientName, clientVersion, screenType, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
     }
 
-    private static String createQuery(String clientName, String clientVersion, String template, String clickTrackingParams) {
+    private static String createQuery(String clientName, String clientVersion, String screenType, String template, String clickTrackingParams) {
         LocaleManager localeManager = LocaleManager.instance();
         return String.format(JSON_POST_DATA_TEMPLATE,
                 clientName,
                 clientVersion,
+                screenType,
                 AppService.instance().getVisitorData(),
                 clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "",
                 localeManager.getCountry(),

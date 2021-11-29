@@ -110,7 +110,7 @@ public class RetrofitHelper {
     private static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-        disableCache(okBuilder);
+        //disableCache(okBuilder);
 
         OkHttpCommons.setupConnectionFix(okBuilder);
 

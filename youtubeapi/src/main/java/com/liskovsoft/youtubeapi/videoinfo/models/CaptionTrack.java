@@ -1,11 +1,22 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 
 public class CaptionTrack {
-    private static final String VTT_MIME_TYPE = "text/vtt";
-    private static final String VTT_PARAM = "vtt";
-    private static final String VTT_CODECS = "wvtt";
+    private static final String MIME_TYPE_VTT = "text/vtt";
+    /**
+     * YouTube subs not supported by ExoPlayer?<br/>
+     * https://js-jrod.medium.com/the-first-complete-guide-to-youtube-captions-f886e06f7d9d<br/>
+     * https://en.wikipedia.org/wiki/Timed_Text_Markup_Language<br/>
+     */
+    private static final String MIME_TYPE_SRV3 = "application/ttml+xml";
+    private static final String PARAM_VTT = "vtt";
+    private static final String PARAM_SRV3 = "srv3";
+    private static final String CODECS_VTT = "wvtt";
+    private static final String CODECS_SRV3 = "ttml";
 
     /**
      * Example: "https://www.youtube.com/api/timedtext?caps=&key=yt…&sparams=caps%2Cv%2Cxorp%2Cexpire&lang=en&name=en"
@@ -27,18 +38,27 @@ public class CaptionTrack {
      */
     @JsonPath("$.vssId")
     private String mVssId;
-    @JsonPath("$.name.simpleText")
-    private String mName;
+    @JsonPath("$.name")
+    private TextItem mName;
     /**
      * E.g. asr (Automatic Speech Recognition)
      */
     @JsonPath("$.kind")
     private String mType;
-    private String mMimeType = VTT_MIME_TYPE;
-    private String mCodecs = VTT_CODECS;
+    private String mMimeType = MIME_TYPE_VTT;
+    private String mCodecs = CODECS_VTT;
+    private UrlQueryString mBaseUrlQuery;
 
     public String getBaseUrl() {
-        return String.format("%s&fmt=%s", mBaseUrl, VTT_PARAM);
+        UrlQueryString baseUrlQuery = getBaseUrlQuery();
+
+        if (baseUrlQuery == null) {
+            return null;
+        }
+
+        baseUrlQuery.set("fmt", PARAM_VTT);
+        
+        return baseUrlQuery.toString();
     }
 
     public boolean isTranslatable() {
@@ -54,7 +74,7 @@ public class CaptionTrack {
     }
 
     public String getName() {
-        return mName;
+        return mName != null ? mName.getText() : null;
     }
 
     public String getType() {
@@ -67,5 +87,17 @@ public class CaptionTrack {
 
     public String getCodecs() {
         return mCodecs;
+    }
+
+    private UrlQueryString getBaseUrlQuery() {
+        if (mBaseUrl == null) {
+            return null;
+        }
+
+        if (mBaseUrlQuery == null) {
+            mBaseUrlQuery = UrlQueryStringFactory.parse(mBaseUrl);
+        }
+
+        return mBaseUrlQuery;
     }
 }

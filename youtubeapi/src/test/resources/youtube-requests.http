@@ -778,3 +778,16 @@ Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20211013.10.00","clientScreen":"EMBED","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"videoId":"ujpejC8-vx8"}
+
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0ARrdaM_00yT-SWUKUhYGP7bbmipAKtQimPIi8V8ql0YhcL92C0L4bTEh5FwdlbV6Nyfj9R-zTFrIephsWdWmUvmsVw3mr_DTaGngHwrdYz_FkuxP0iim5SOwNB7BwJnaWDVO3pYMiZzGm91FxmJM0n6JT3hvyISHH--o9JYi7HtP
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: Cgt2Z09YY3BPQjRfUSiP1JmNBg%3D%3D
+
+{"context":{"client":{"clientName":"ANDROID","clientVersion":"16.20","clientScreen":"WATCH","visitorData":"Cgt2Z09YY3BPQjRfUSiP1JmNBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18954}},"videoId":"sQEgklEwhSo","cpn":"yrUvMnEs1Nf0E0O5"}

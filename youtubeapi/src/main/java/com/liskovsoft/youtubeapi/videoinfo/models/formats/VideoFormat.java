@@ -92,11 +92,12 @@ public class VideoFormat {
     @JsonPath("$.lastModified")
     private String mLastModified;
     private String mEventId;
-    private UrlQueryString mQueryString;
+    private UrlQueryString mUrlQuery;
     private String mLanguage;
 
     public String getUrl() {
-        return mQueryString != null ? mQueryString.toString() : mUrl;
+        // Bypass query creation if url isn't transformed
+        return mUrlQuery != null ? mUrlQuery.toString() : mUrl;
     }
 
     public void setUrl(String url) {
@@ -297,8 +298,8 @@ public class VideoFormat {
     }
 
     public String getLanguage() {
-        if (mLanguage == null && getQueryString() != null) {
-            String xtags = getQueryString().get("xtags");
+        if (mLanguage == null && getUrlQuery() != null) {
+            String xtags = getUrlQuery().get("xtags");
 
             if (xtags != null) {
                 String[] split = xtags.split("=");
@@ -340,7 +341,7 @@ public class VideoFormat {
     }
 
     public String getParam(String paramName) {
-        UrlQueryString queryString = getQueryString();
+        UrlQueryString queryString = getUrlQuery();
 
         if (queryString != null) {
             return queryString.get(paramName);
@@ -350,23 +351,23 @@ public class VideoFormat {
     }
 
     public void setParam(String paramName, String paramValue) {
-        UrlQueryString queryString = getQueryString();
+        UrlQueryString queryString = getUrlQuery();
 
         if (queryString != null && paramName != null && paramValue != null) {
             queryString.set(paramName, paramValue);
         }
     }
 
-    private UrlQueryString getQueryString() {
+    private UrlQueryString getUrlQuery() {
         if (mUrl == null) {
             return null;
         }
 
-        if (mQueryString == null) {
-            mQueryString = UrlQueryStringFactory.parse(mUrl);
+        if (mUrlQuery == null) {
+            mUrlQuery = UrlQueryStringFactory.parse(mUrl);
         }
 
-        return mQueryString;
+        return mUrlQuery;
     }
 
     @NonNull

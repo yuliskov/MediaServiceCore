@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoungeService {
     private static final String TAG = LoungeService.class.getSimpleName();
+    private static final long TOKEN_ACTIVE_TIME_MS = 60 * 60 * 1_000;
     private static LoungeService sInstance;
     private final BindManager mBindManager;
     private final InfoManager mInfoManager;
@@ -41,6 +42,7 @@ public class LoungeService {
     private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
     private String mScreenName;
     private String mLoungeToken;
+    private long mTokenInitTimeMs;
     private String mScreenId;
     private String mSessionId;
     private String mGSessionId;
@@ -121,12 +123,13 @@ public class LoungeService {
             );
         }
 
-        if (mLoungeToken == null) {
+        if (mLoungeToken == null || isTokenOutdated()) {
             TokenInfo screen = getTokenInfo();
 
             if (screen != null) {
                 mLoungeToken = screen.getLoungeToken();
                 mScreenId = screen.getScreenId();
+                mTokenInitTimeMs = System.currentTimeMillis();
             }
         }
     }
@@ -302,6 +305,10 @@ public class LoungeService {
                 mScreenName, mLoungeToken, mSessionId, mGSessionId,
                 command);
         RetrofitHelper.get(wrapper);
+    }
+
+    private boolean isTokenOutdated() {
+        return System.currentTimeMillis() - mTokenInitTimeMs > TOKEN_ACTIVE_TIME_MS;
     }
 
     public interface OnCommand {

@@ -2,17 +2,14 @@ package com.liskovsoft.youtubeapi.browse.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;
 
 public class Section {
-    @JsonPath({"$.title.runs[0].text", "$.title.simpleText"})
-    private String mTitle1;
-    @JsonPath("$.title.runs[1].text")
-    private String mTitle2;
-    @JsonPath("$.title.runs[2].text")
-    private String mTitle3;
+    @JsonPath({"$.title", "$.headerRenderer.shelfHeaderRenderer.title"})
+    private TextItem mTitle;
     @JsonPath("$.headerRenderer.chipCloudRenderer.chips[*].chipCloudChipRenderer")
     private List<Chip> mChips;
     @JsonPath("$.content.horizontalListRenderer.items[*]")
@@ -21,7 +18,7 @@ public class Section {
     private String mNextPageKey;
 
     public String getTitle() {
-        return ServiceHelper.combineText(mTitle1, mTitle2, mTitle3);
+        return mTitle != null ? mTitle.getText() : null;
     }
 
     public String getNextPageKey() {

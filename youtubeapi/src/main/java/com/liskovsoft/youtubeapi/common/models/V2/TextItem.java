@@ -11,11 +11,14 @@ public class TextItem {
     @JsonPath("$.runs[1].text")
     private String mText2;
 
+    @JsonPath("$.title.runs[2].text")
+    private String mText3;
+
     @JsonPath("$.simpleText")
     private String mFullText;
 
     public String getText() {
-        return ServiceHelper.combineText(mText1, mText2, mFullText);
+        return ServiceHelper.combineText(mText1, mText2, mText3, mFullText);
     }
 
     @NonNull

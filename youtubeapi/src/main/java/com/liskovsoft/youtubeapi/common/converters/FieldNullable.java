@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.converters.jsonpath;
+package com.liskovsoft.youtubeapi.common.converters;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface JsonPathNullable {
+public @interface FieldNullable {
 }

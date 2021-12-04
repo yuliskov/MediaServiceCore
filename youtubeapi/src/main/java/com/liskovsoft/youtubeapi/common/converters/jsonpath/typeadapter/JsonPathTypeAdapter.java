@@ -9,7 +9,6 @@ import com.jayway.jsonpath.PathNotFoundException;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathNullable;
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
 
 import java.io.InputStream;
@@ -243,18 +242,6 @@ public class JsonPathTypeAdapter<T> {
         }
 
         return null;
-    }
-
-    private boolean isNullable(Field field) {
-        Annotation[] annotations = field.getAnnotations();
-
-        for (Annotation annotation : annotations) {
-            if (annotation instanceof JsonPathNullable) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private Object parsePrimitive(JsonPrimitive jsonVal) {

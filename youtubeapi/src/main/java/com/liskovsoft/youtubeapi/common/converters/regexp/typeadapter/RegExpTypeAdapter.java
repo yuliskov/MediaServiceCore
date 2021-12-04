@@ -93,8 +93,8 @@ public class RegExpTypeAdapter<T> {
                     }
                 }
 
-                if (regExpVal == null) {
-                    unset = true; // at least one field is unset
+                if (regExpVal == null && !ReflectionHelper.isNullable(field)) {
+                    unset = true; // at least one required field is unset
                     continue;
                 }
 

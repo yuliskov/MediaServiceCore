@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.lounge.models.commands;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathNullable;
 
 import java.util.List;
 

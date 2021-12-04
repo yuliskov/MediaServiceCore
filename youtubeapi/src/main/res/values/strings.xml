@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">YouTube API</string>
     <!-- Debug info has been dumped to: %s -->
-    <string name="dump_debug_info">Error occurred. Detailed info has been saved to %s</string>
+    <string name="dump_debug_info">Error occurred. Please, send this file to the support team: %s</string>
 </resources>

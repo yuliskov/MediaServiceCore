@@ -50,6 +50,14 @@ data class ShelfItem(
     }
 }
 
+data class RichThumbnailItem(
+        val movingThumbnailRenderer: MovingThumbnailRenderer?
+) {
+    data class MovingThumbnailRenderer(
+            val movingThumbnailDetails: ThumbnailItem?
+    )
+}
+
 data class ItemWrapper(
         val tileRenderer: TileItem?,
         val gridVideoRenderer: VideoItem?,
@@ -167,10 +175,14 @@ data class VideoItem(
         val title: TextItem?,
         val shortBylineText: TextItem?,
         val longBylineText: TextItem?,
+        val shortViewCountText: TextItem?,
+        val viewCountText: TextItem?,
         val publishedTimeText: TextItem?,
         val videoId: String?,
         val menu: MenuItem?,
-        val badges: List<BadgeItem?>?
+        val badges: List<BadgeItem?>?,
+        val upcomingEventData: UpcomingEvent,
+        val richThumbnail: RichThumbnailItem
 ) {
     data class BadgeItem(
             val liveBadge: LiveBadge?,
@@ -189,6 +201,11 @@ data class VideoItem(
                 val label: String?
         )
     }
+
+    data class UpcomingEvent(
+            val upcomingEventText: TextItem?,
+            val startTime: String?
+    )
 }
 
 data class MusicItem(

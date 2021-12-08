@@ -12,8 +12,19 @@ fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer
 fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer
 fun ThumbnailItem.findHighResThumbnailUrl() = if (thumbnails.isNullOrEmpty()) null else thumbnails.last()?.url
 
+//////////
+
 val VideoItem.descBadgeText
-    get() = this.badges?.getOrNull(0)?.metadataBadgeRenderer?.label
+    get() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
+
+val VideoItem.userName
+    get() = shortBylineText ?: longBylineText
+
+val VideoItem.publishedTime
+    get() = publishedTimeText
+
+val VideoItem.viewCount
+    get() = shortViewCountText ?: viewCountText
 
 ////////////
 
@@ -59,13 +70,13 @@ val ItemWrapper.descBadgeText
     get() = getVideoItem()?.descBadgeText ?: getMusicItem()?.descBadgeText ?: getTileItem()?.descBadgeText
 
 val ItemWrapper.userName
-    get() = getVideoItem()?.descBadgeText
+    get() = getVideoItem()?.userName?.getText()
 
 val ItemWrapper.publishedTime
-    get() = getVideoItem()?.descBadgeText
+    get() = getVideoItem()?.publishedTime?.getText()
 
 val ItemWrapper.viewCountText
-    get() = getVideoItem()?.descBadgeText
+    get() = getVideoItem()?.viewCountText?.getText()
 
 val ItemWrapper.upcomingEventText
-    get() = getVideoItem()?.descBadgeText
+    get() = getVideoItem()?.upcomingEventData?.upcomingEventText

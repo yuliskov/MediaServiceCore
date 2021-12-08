@@ -252,13 +252,7 @@ let thumbnailOverlaysItem = {
 
 let richThumbnailItem = {
     movingThumbnailRenderer: {
-        movingThumbnailDetails: {
-            thumbnails: [
-                {
-                    url: ""
-                }
-            ]
-        }
+        movingThumbnailDetails: thumbnailItem
     }
 };
 

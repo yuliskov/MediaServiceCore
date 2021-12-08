@@ -4,16 +4,14 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.next.v2.helpers.*
 import com.liskovsoft.youtubeapi.next.v2.result.gen.ItemWrapper
 
-data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
+data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
+    private val BADGE_STYLE_LIVE = "LIVE"
+    private val BADGE_STYLE_UPCOMING = "UPCOMING"
+    private val BADGE_STYLE_DEFAULT = "DEFAULT"
+
+    override val reloadPageKey: String? = null
+
     private val _videoId by lazy { itemWrapper.getVideoItem()?.videoId ?: itemWrapper.getMusicItem()?.videoId ?: itemWrapper.getTileItem()?.videoId }
-
-    override fun hashCode(): Int {
-        TODO("hashCode by id should be implemented")
-    }
-
-    override fun equals(other: Any?): Boolean {
-        TODO("Equals by id should be implemented")
-    }
 
     override fun getType(): Int {
         if (itemWrapper.getChannelItem() != null)
@@ -62,10 +60,6 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
         TODO("Not yet implemented")
     }
 
-    override fun getId(): Int {
-        TODO("Not yet implemented")
-    }
-
     override fun getTitle(): String {
         TODO("Not yet implemented")
     }
@@ -106,14 +100,6 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
         TODO("Not yet implemented")
     }
 
-    override fun getWidth(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun getHeight(): Int {
-        TODO("Not yet implemented")
-    }
-
     override fun getChannelId(): String {
         TODO("Not yet implemented")
     }
@@ -127,26 +113,6 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): MediaItem {
     }
 
     override fun getPlaylistIndex(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun getAudioChannelConfig(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun getPurchasePrice(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun getRentalPrice(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun getRatingStyle(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun getRatingScore(): Double {
         TODO("Not yet implemented")
     }
 

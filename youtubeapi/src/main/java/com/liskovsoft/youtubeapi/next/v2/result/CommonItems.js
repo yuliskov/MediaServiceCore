@@ -13,6 +13,13 @@ let thumbnailItem = {
     }]
 };
 
+let watchEndpointItem = {
+    videoId: "",
+    playlistId: "",
+    index: 0,
+    params: ""
+};
+
 let videoItem = {
     thumbnail: thumbnailItem,
     title: textItem, // UserName
@@ -30,10 +37,7 @@ let tileItem = {
         }
     },
     onSelectCommand: {
-        watchEndpoint: {
-            videoId: "",
-            playlistId: ""
-        },
+        watchEndpoint: watchEndpointItem,
         watchPlaylistEndpoint: {
             playlistId: ""
         }
@@ -46,10 +50,7 @@ let musicItem = {
     secondaryText: textItem, // Views and published
     tertiaryText: textItem,
     navigationEndpoint: {
-        watchEndpoint: {
-            videoId: "",
-            playlistId: ""
-        }
+        watchEndpoint: watchEndpointItem
     }
 };
 
@@ -146,7 +147,16 @@ let shelfItem = {
 };
 
 let nextVideoItem = {
-
+    item: {
+        previewButtonRenderer: {
+            thumbnail: thumbnailItem,
+            title: textItem,
+            byline: textItem
+        }
+    },
+    endpoint: {
+        watchEndpoint: watchEndpointItem
+    }
 };
 
 let buttonStateItem = {

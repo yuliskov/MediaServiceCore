@@ -1,5 +1,12 @@
 package com.liskovsoft.youtubeapi.next.v2.result.gen
 
+data class WatchEndpointItem(
+        val videoId: String?,
+        val playlistId: String?,
+        val index: Int,
+        val params: String?,
+)
+
 data class TextItem(
         val runs: List<Run?>?,
         val simpleText: String?
@@ -19,14 +26,20 @@ data class ThumbnailItem(
     )
 }
 
-class NextVideoItem
+data class NextVideoItem(
+    val item: Item?,
+    val endpoint: Endpoint?
+) {
+    data class Item(val previewButtonRenderer: PreviewButtonRenderer?) {
+         data class PreviewButtonRenderer(val thumbnail: ThumbnailItem?, val title: TextItem?, val byline: TextItem?)
+    }
+    data class Endpoint(val watchEndpoint: WatchEndpointItem?)
+}
 
 data class ShelfItem(
         val title: TextItem?,
         val content: Content?
 ) {
-
-
     data class Content(
             val horizontalListRenderer: HorizontalListRenderer?
     ) {
@@ -62,14 +75,9 @@ data class TileItem(
     }
 
     data class OnSelectCommand(
-            val watchEndpoint: WatchEndpoint?,
+            val watchEndpoint: WatchEndpointItem?,
             val watchPlaylistEndpoint: WatchPlaylistEndpoint?
     ) {
-        data class WatchEndpoint(
-                val videoId: String?,
-                val playlistId: String?
-        )
-
         data class WatchPlaylistEndpoint(
                 val playlistId: String?
         )
@@ -81,6 +89,7 @@ data class VideoItem(
         val title: TextItem?,
         val shortBylineText: TextItem?,
         val longBylineText: TextItem?,
+        val publishedTimeText: TextItem?,
         val videoId: String?
 )
 
@@ -92,13 +101,8 @@ data class MusicItem(
         val navigationEndpoint: NavigationEndpoint?
 ) {
     data class NavigationEndpoint(
-            val watchEndpoint: WatchEndpoint?
-    ) {
-        data class WatchEndpoint(
-                val videoId: String?,
-                val playlistId: String?
-        )
-    }
+            val watchEndpoint: WatchEndpointItem?
+    )
 }
 
 data class RadioItem(
@@ -181,7 +185,7 @@ data class VideoMetadataItem(
             val videoViewCountRenderer: VideoViewCountRenderer?
     ) {
         data class VideoViewCountRenderer(
-                val viewCount: ViewCount?,
+                val viewCount: TextItem?,
                 val shortViewCount: TextItem?,
                 val isLive: Boolean?
         )

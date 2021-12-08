@@ -1,9 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.helpers
 
-import com.liskovsoft.youtubeapi.next.v2.result.gen.ItemWrapper
-import com.liskovsoft.youtubeapi.next.v2.result.gen.MusicItem
-import com.liskovsoft.youtubeapi.next.v2.result.gen.TextItem
-import com.liskovsoft.youtubeapi.next.v2.result.gen.TileItem
+import com.liskovsoft.youtubeapi.next.v2.result.gen.*
 
 fun TextItem.getText() = runs?.joinToString { it?.text ?: "" } ?: simpleText
 
@@ -13,6 +10,7 @@ fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer
 fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer
 fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer
+fun ThumbnailItem.findHighResThumbnailUrl() = if (thumbnails.isNullOrEmpty()) null else thumbnails.last()?.url
 
 val MusicItem.videoId
     get() = this.navigationEndpoint?.watchEndpoint?.videoId

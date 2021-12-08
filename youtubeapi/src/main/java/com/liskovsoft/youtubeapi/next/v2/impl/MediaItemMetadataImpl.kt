@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 // TODO: implement full conversion
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
@@ -16,10 +17,12 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
             it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer
         }?.firstOrNull()
     }
+    private val nextVideoItem by lazy {
+        val nextVideoRenderer = watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.getOrNull(0)?.nextVideoRenderer
+        nextVideoRenderer?.maybeHistoryEndpointRenderer ?: nextVideoRenderer?.autoplayEndpointRenderer
+    }
     private val nextVideo by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.map {
-            it?.nextVideoRenderer?.maybeHistoryEndpointRenderer ?: it?.nextVideoRenderer?.autoplayEndpointRenderer
-        }?.firstOrNull()
+        nextVideoItem?.let { NextMediaItemImpl(it) }
     }
     private val replayItemWrapper by lazy {
         watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer
@@ -34,10 +37,48 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         val textItem = videoMetadata?.title
         textItem?.getText()
     }
-    private val videoDescription by lazy { videoMetadata?.description?.getText() }
+    private val videoFullDescription by lazy { videoMetadata?.description?.getText() }
+    private val videoDescription by lazy {
+        YouTubeMediaServiceHelper.createDescription(
+                videoAuthor, publishedTime, _viewCount,
+                if (_isLive == true) "LIVE" else ""
+        )
+    }
+    private val videoDescriptionAlt by lazy {
+        YouTubeMediaServiceHelper.createDescription(
+                videoAuthor, publishedDate, _viewCount,
+                if (_isLive == true) "LIVE" else ""
+        )
+    }
     private val videoAuthor by lazy { videoMetadata?.title?.getText() }
     private val suggestionList by lazy {
         suggestedSections?.map { it?.let { MediaGroupImpl(it) } }
+    }
+
+    private val _viewCount by lazy {
+        val viewCount1 = videoMetadata?.viewCount?.videoViewCountRenderer?.viewCount;
+        val viewCount2 = videoMetadata?.viewCountText;
+        viewCount1?.getText() ?: viewCount2?.getText()
+    }
+
+    private val publishedTime by lazy {
+        videoMetadata?.publishedTimeText ?: videoMetadata?.albumName
+    }
+
+    private val videoDetails by lazy {
+        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer?.pivotVideoRenderer
+    }
+
+    private val _publishedDate by lazy {
+        videoMetadata?.dateText?.getText() ?: videoDetails?.publishedTimeText?.getText()
+    }
+
+    private val _videoId by lazy {
+        videoMetadata?.videoId
+    }
+
+    private val _isLive by lazy {
+        videoMetadata?.viewCount?.videoViewCountRenderer?.isLive
     }
 
     override fun getTitle(): String? {
@@ -48,8 +89,12 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         return videoDescription
     }
 
+    override fun getDescriptionAlt(): String? {
+        return videoDescriptionAlt
+    }
+
     override fun getFullDescription(): String? {
-        return null;
+        return videoFullDescription;
     }
 
     override fun getAuthor(): String? {
@@ -57,27 +102,19 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     override fun getViewCount(): String? {
-        return null
-    }
-
-    override fun getLikesCount(): String? {
-        return null
-    }
-
-    override fun getDislikesCount(): String? {
-        return null
+        return _viewCount
     }
 
     override fun getPublishedDate(): String? {
-        return null
+        return _publishedDate
     }
 
     override fun getVideoId(): String? {
-        return null
+        return _videoId
     }
 
     override fun getNextVideo(): MediaItem? {
-        return null
+        return nextVideo
     }
 
     override fun isSubscribed(): Boolean {
@@ -108,7 +145,11 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         return suggestionList
     }
 
-    override fun getDescriptionAlt(): String? {
+    override fun getLikesCount(): String? {
+        return null
+    }
+
+    override fun getDislikesCount(): String? {
         return null
     }
 }

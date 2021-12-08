@@ -25,7 +25,55 @@ let videoItem = {
     title: textItem, // UserName
     shortBylineText: textItem, // UserName
     longBylineText: textItem,
-    videoId: ""
+    videoId: "",
+    trackingParams: "",
+    shortViewCountText: textItem,
+    viewCountText: textItem,
+    lengthText: textItem,
+    publishedTimeText: textItem,
+    thumbnailOverlays: [
+        {
+            thumbnailOverlayTimeStatusRenderer: {
+                text: textItem, // BadgeText
+                style: "" // BadgeStyle
+            },
+            thumbnailOverlayResumePlaybackRenderer: {
+                percentDurationWatched: 0
+            }
+        }
+    ],
+    badges: [
+        {   liveBadge: {
+                label: textItem // BadgeText
+            },
+            upcomingEventBadge: {
+                label: textItem // BadgeText
+            },
+            metadataBadgeRenderer: {
+                label: "" // DescBadgeText
+            }
+        }
+    ],
+    upcomingEventData: {
+        upcomingEventText: textItem,
+        startTime: ""
+    },
+    richThumbnail: richThumbnailItem,
+    menu: {
+        menuRenderer: {
+            items: [
+                {
+                    menuServiceItemRenderer: {
+                        serviceEndpoint: {
+                            feedbackEndpoint: {
+                                feedbackToken: [""]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
 };
 
 let tileItem = {
@@ -156,6 +204,22 @@ let nextVideoItem = {
     },
     endpoint: {
         watchEndpoint: watchEndpointItem
+    }
+};
+
+let thumbnailOverlaysItem = {
+    
+};
+
+let richThumbnailItem = {
+    movingThumbnailRenderer: {
+        movingThumbnailDetails: {
+            thumbnails: [
+                {
+                    url: ""
+                }
+            ]
+        }
     }
 };
 

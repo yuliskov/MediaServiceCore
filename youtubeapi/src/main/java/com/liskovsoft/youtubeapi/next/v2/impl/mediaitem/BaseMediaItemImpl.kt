@@ -1,10 +1,15 @@
-package com.liskovsoft.youtubeapi.next.v2.impl
+package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
+import kotlin.math.abs
 
 abstract class BaseMediaItemImpl: MediaItem {
+    protected val BADGE_STYLE_LIVE = "LIVE"
+    protected val BADGE_STYLE_UPCOMING = "UPCOMING"
+    protected val BADGE_STYLE_DEFAULT = "DEFAULT"
+
     protected var newTitle: String? = null
     protected var newDescription: String? = null
     protected var newChannelId: String? = null
@@ -17,7 +22,7 @@ abstract class BaseMediaItemImpl: MediaItem {
     }
 
     override fun getId(): Int {
-        return _id
+        return abs(_id)
     }
 
     override fun getWidth(): Int {

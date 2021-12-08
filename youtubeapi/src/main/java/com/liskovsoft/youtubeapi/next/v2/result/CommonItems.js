@@ -20,6 +20,22 @@ let watchEndpointItem = {
     params: ""
 };
 
+let menuItem = {
+    menuRenderer: {
+        items: [
+            {
+                menuServiceItemRenderer: {
+                    serviceEndpoint: {
+                        feedbackEndpoint: {
+                            feedbackToken: ""
+                        }
+                    }
+                }
+            }
+        ]
+    }
+};
+
 let videoItem = {
     thumbnail: thumbnailItem,
     title: textItem, // UserName
@@ -59,21 +75,7 @@ let videoItem = {
         startTime: ""
     },
     richThumbnail: richThumbnailItem,
-    menu: {
-        menuRenderer: {
-            items: [
-                {
-                    menuServiceItemRenderer: {
-                        serviceEndpoint: {
-                            feedbackEndpoint: {
-                                feedbackToken: [""]
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    }
+    menu: menuItem
 };
 
 let tileItem = {
@@ -81,7 +83,43 @@ let tileItem = {
     // $.metadata.tileMetadataRenderer
     metadata: {
         tileMetadataRenderer: {
-            title: textItem
+            title: textItem,
+            lines: [
+                {
+                    lineRenderer: {
+                        items: [
+                            {
+                                lineItemRenderer: {
+                                    text: textItem,
+                                    badge: {
+                                        metadataBadgeRenderer: {
+                                            style: "", // BadgeStyle
+                                            label: "" // DescBadgeText
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    header: {
+        tileHeaderRenderer: {
+            thumbnail: thumbnailItem,
+            thumbnailOverlays: [
+                {
+                    thumbnailOverlayTimeStatusRenderer: {
+                        text: textItem,
+                        style: ""
+                    },
+                    thumbnailOverlayResumePlaybackRenderer: {
+                        percentDurationWatched: 0
+                    }
+                }
+            ],
+            movingThumbnail: thumbnailItem
         }
     },
     onSelectCommand: {
@@ -89,7 +127,8 @@ let tileItem = {
         watchPlaylistEndpoint: {
             playlistId: ""
         }
-    }
+    },
+    menu: menuItem
 };
 
 let musicItem = {

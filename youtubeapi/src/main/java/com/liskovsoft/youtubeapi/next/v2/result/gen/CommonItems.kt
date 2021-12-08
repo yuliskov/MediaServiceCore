@@ -27,12 +27,13 @@ data class ThumbnailItem(
 }
 
 data class NextVideoItem(
-    val item: Item?,
-    val endpoint: Endpoint?
+        val item: Item?,
+        val endpoint: Endpoint?
 ) {
     data class Item(val previewButtonRenderer: PreviewButtonRenderer?) {
-         data class PreviewButtonRenderer(val thumbnail: ThumbnailItem?, val title: TextItem?, val byline: TextItem?)
+        data class PreviewButtonRenderer(val thumbnail: ThumbnailItem?, val title: TextItem?, val byline: TextItem?)
     }
+
     data class Endpoint(val watchEndpoint: WatchEndpointItem?)
 }
 
@@ -64,14 +65,67 @@ data class ItemWrapper(
 
 data class TileItem(
         val metadata: Metadata?,
-        val onSelectCommand: OnSelectCommand?
+        val header: Header?,
+        val onSelectCommand: OnSelectCommand?,
+        val menu: MenuItem?
 ) {
     data class Metadata(
             val tileMetadataRenderer: TileMetadataRenderer?
     ) {
         data class TileMetadataRenderer(
-                val title: TextItem?
-        )
+                val title: TextItem?,
+                val lines: List<Line?>?
+        ) {
+            data class Line(
+                    val lineRenderer: LineRenderer?
+            ) {
+                data class LineRenderer(
+                        val items: List<Item?>?
+                ) {
+                    data class Item(
+                            val lineItemRenderer: LineItemRenderer?
+                    ) {
+                        data class LineItemRenderer(
+                                val text: TextItem?,
+                                val badge: Badge?
+                        ) {
+                            data class Badge(
+                                    val metadataBadgeRenderer: MetadataBadgeRenderer?
+                            ) {
+                                data class MetadataBadgeRenderer(
+                                        val style: String?,
+                                        val label: String?
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    data class Header(
+            val tileHeaderRenderer: TileHeaderRenderer?
+    ) {
+        data class TileHeaderRenderer(
+                val thumbnail: ThumbnailItem,
+                val thumbnailOverlays: List<ThumbnailOverlay?>?,
+                val movingThumbnail: ThumbnailItem?
+        ) {
+            data class ThumbnailOverlay(
+                    val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
+                    val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?
+            ) {
+                data class ThumbnailOverlayTimeStatusRenderer(
+                        val text: TextItem?,
+                        val style: String?
+                )
+
+                data class ThumbnailOverlayResumePlaybackRenderer(
+                        val percentDurationWatched: Int?
+                )
+            }
+        }
     }
 
     data class OnSelectCommand(
@@ -84,14 +138,58 @@ data class TileItem(
     }
 }
 
+data class MenuItem(
+        val menuRenderer: MenuRenderer?
+) {
+    data class MenuRenderer(
+            val items: List<Item?>?
+    ) {
+        data class Item(
+                val menuServiceItemRenderer: MenuServiceItemRenderer?
+        ) {
+            data class MenuServiceItemRenderer(
+                    val serviceEndpoint: ServiceEndpoint?
+            ) {
+                data class ServiceEndpoint(
+                        val feedbackEndpoint: FeedbackEndpoint?
+                ) {
+                    data class FeedbackEndpoint(
+                            val feedbackToken: String?
+                    )
+                }
+            }
+        }
+    }
+}
+
 data class VideoItem(
         val thumbnail: ThumbnailItem?,
         val title: TextItem?,
         val shortBylineText: TextItem?,
         val longBylineText: TextItem?,
         val publishedTimeText: TextItem?,
-        val videoId: String?
-)
+        val videoId: String?,
+        val menu: MenuItem?,
+        val badges: List<BadgeItem?>?
+) {
+    data class BadgeItem(
+            val liveBadge: LiveBadge?,
+            val upcomingEventBadge: UpcomingEventBadge?,
+            val metadataBadgeRenderer: MetadataBadgeRenderer?
+    ) {
+        data class LiveBadge(
+                val label: TextItem?
+        )
+
+        data class UpcomingEventBadge(
+                val label: TextItem?
+        )
+
+        data class MetadataBadgeRenderer(
+                val label: String?
+        )
+    }
+}
 
 data class MusicItem(
         val thumbnail: ThumbnailItem?,
@@ -127,7 +225,7 @@ data class RadioItem(
             }
         }
     }
-    
+
 }
 
 data class ChannelItem(
@@ -156,7 +254,7 @@ data class PlaylistItem(
                 val thumbnail: ThumbnailItem?
         )
     }
-    
+
 }
 
 data class VideoMetadataItem(

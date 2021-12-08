@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next.v2.impl
+package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper

@@ -7,6 +7,8 @@ import org.robolectric.shadows.ShadowLog
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
+import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
+import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 import org.junit.Assert
 import org.junit.Test
 
@@ -24,11 +26,24 @@ class WatchNextManagerUnsignedTest {
 
     @Test
     fun testSuggestedItemsNotNull() {
-        val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
-        val wrapper = mManager!!.getWatchNextResult(watchNextQuery)
-        val watchNextResult = RetrofitHelper.get(wrapper)
+        val watchNextResult = getWatchNextResult()
 
         Assert.assertNotNull("watchNextResult not null", watchNextResult)
+    }
+
+    @Test
+    fun testSuggestedItemsCanBeConverted() {
+        val watchNextResult = getWatchNextResult()
+
+        val mediaItemMetadataImpl = MediaItemMetadataImpl(watchNextResult!!)
+
+        Assert.assertNotNull("Metadata isn't null", mediaItemMetadataImpl)
+    }
+
+    private fun getWatchNextResult(): WatchNextResult? {
+        val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val wrapper = mManager!!.getWatchNextResult(watchNextQuery)
+        return RetrofitHelper.get(wrapper)
     }
 
 //    @Test

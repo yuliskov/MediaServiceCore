@@ -62,10 +62,10 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     //@Override
-    //public VideoInfo getVideoInfo(String videoId) {
+    //public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
     //    // Enable history (temporally, until frequent buffering will be fixed)
-    //    VideoInfo signedInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, mSignInManager.getAuthorizationHeader());
-    //    VideoInfo unsignedInfo = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId); // Fix no playback bug (temporal fix)
+    //    VideoInfo signedInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, clickTrackingParams, mSignInManager.getAuthorizationHeader());
+    //    VideoInfo unsignedInfo = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId, clickTrackingParams); // Fix no playback bug (temporal fix)
     //    if (signedInfo != null && unsignedInfo != null) { // Merge signed info with unsigned (otherwise history won't work)
     //        unsignedInfo.setEventId(signedInfo.getEventId());
     //        unsignedInfo.setVisitorMonitoringData(signedInfo.getVisitorMonitoringData());

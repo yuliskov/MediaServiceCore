@@ -7,40 +7,41 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 import com.liskovsoft.youtubeapi.next.v2.result.gen.ShelfItem
 
 data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
-    private val _title by lazy { shelf.title?.getText() }
-    private val _mediaItems by lazy { shelf.content?.horizontalListRenderer?.items?.map { it?.let { MediaItemImpl(it) } } }
+    private var _titleItem: String? = null
+    private val titleItem by lazy { shelf.title?.getText() }
+    private val mediaItemList by lazy { shelf.content?.horizontalListRenderer?.items?.map { it?.let { MediaItemImpl(it) } } }
 
     override fun getId(): Int = title?.hashCode() ?: hashCode()
 
     override fun getType(): Int {
-        TODO("Not yet implemented")
+        return MediaGroup.TYPE_SUGGESTIONS;
     }
 
     override fun getMediaItems(): List<MediaItem?>? {
-        return _mediaItems
+        return mediaItemList
     }
 
     override fun getTitle(): String? {
-        return _title
+        return _titleItem ?: titleItem
     }
 
     override fun setTitle(title: String?) {
-        TODO("Not yet implemented")
+        _titleItem = title
     }
 
-    override fun getChannelId(): String {
-        TODO("Not yet implemented")
+    override fun getChannelId(): String? {
+        return null
     }
 
-    override fun getPlaylistParams(): String {
-        TODO("Not yet implemented")
+    override fun getPlaylistParams(): String? {
+        return null
     }
 
-    override fun getChannelUrl(): String {
-        TODO("Not yet implemented")
+    override fun getChannelUrl(): String? {
+        return null
     }
 
     override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
+        return mediaItemList.isNullOrEmpty()
     }
 }

@@ -72,8 +72,8 @@ val TileItem.publishedTIme
 
 val TileItem.viewCountText
     get() = YouTubeMediaServiceHelper.createDescription(metadata?.tileMetadataRenderer?.lines?.map {
-        ServiceHelper.combineItems(" ", it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text })
-    }) ?: null
+        ServiceHelper.combineItems(" ", it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray())
+    }?.toTypedArray()) ?: null
 
 val TileItem.upcomingEventText
     get() = null

@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
+import com.liskovsoft.youtubeapi.next.v2.helpers.userName
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
@@ -41,22 +42,22 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     private val videoFullDescription by lazy { videoMetadata?.description?.getText() }
     private val videoDescription by lazy {
         YouTubeMediaServiceHelper.createDescription(
-                videoAuthor, publishedTime, _viewCount,
-                if (_isLive == true) "LIVE" else ""
+                videoAuthor, publishedTime, viewCountText,
+                if (isLiveStream == true) "LIVE" else ""
         )
     }
     private val videoDescriptionAlt by lazy {
         YouTubeMediaServiceHelper.createDescription(
-                videoAuthor, publishedDate, _viewCount,
-                if (_isLive == true) "LIVE" else ""
+                videoAuthor, publishedDate, viewCountText,
+                if (isLiveStream == true) "LIVE" else ""
         )
     }
-    private val videoAuthor by lazy { videoMetadata?.title?.getText() }
+    private val videoAuthor by lazy { videoDetails?.userName?.getText() }
     private val suggestionList by lazy {
         suggestedSections?.map { it?.let { MediaGroupImpl(it) } }
     }
 
-    private val _viewCount by lazy {
+    private val viewCountText by lazy {
         val viewCount1 = videoMetadata?.viewCount?.videoViewCountRenderer?.viewCount;
         val viewCount2 = videoMetadata?.viewCountText;
         viewCount1?.getText() ?: viewCount2?.getText()
@@ -70,15 +71,15 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer?.pivotVideoRenderer
     }
 
-    private val _publishedDate by lazy {
+    private val publishedDateText by lazy {
         videoMetadata?.dateText?.getText() ?: videoDetails?.publishedTimeText?.getText()
     }
 
-    private val _videoId by lazy {
+    private val videoIdItem by lazy {
         videoMetadata?.videoId
     }
 
-    private val _isLive by lazy {
+    private val isLiveStream by lazy {
         videoMetadata?.viewCount?.videoViewCountRenderer?.isLive
     }
 
@@ -103,15 +104,15 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     override fun getViewCount(): String? {
-        return _viewCount
+        return viewCountText
     }
 
     override fun getPublishedDate(): String? {
-        return _publishedDate
+        return publishedDateText
     }
 
     override fun getVideoId(): String? {
-        return _videoId
+        return videoIdItem
     }
 
     override fun getNextVideo(): MediaItem? {

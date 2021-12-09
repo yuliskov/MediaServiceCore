@@ -120,13 +120,13 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public YouTubeMediaItemMetadata getMetadata(MediaItem item) {
-        return getMetadata(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getPlaylistParams());
+    public MediaItemMetadata getMetadata(MediaItem item) {
+        return getMetadataV2(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getPlaylistParams());
     }
 
     @Override
-    public YouTubeMediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex) {
-        return getMetadata(videoId, playlistId, playlistIndex, null);
+    public MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex) {
+        return getMetadataV2(videoId, playlistId, playlistIndex, null);
     }
 
     private YouTubeMediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
@@ -142,8 +142,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public YouTubeMediaItemMetadata getMetadata(String videoId) {
-        return getMetadataInt(videoId);
+    public MediaItemMetadata getMetadata(String videoId) {
+        return getMetadataIntV2(videoId);
     }
 
     private YouTubeMediaItemMetadata getMetadataInt(String videoId) {
@@ -173,7 +173,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
         return Observable.create(emitter -> {
-            YouTubeMediaItemMetadata metadata = getMetadata(item);
+            MediaItemMetadata metadata = getMetadata(item);
 
             if (metadata != null) {
                 ((YouTubeMediaItem) item).sync(metadata);

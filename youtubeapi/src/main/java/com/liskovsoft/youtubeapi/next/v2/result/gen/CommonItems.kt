@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.result.gen
 
+import com.liskovsoft.youtubeapi.next.v2.helpers.getText
+
 data class WatchEndpointItem(
         val videoId: String?,
         val playlistId: String?,
@@ -14,6 +16,10 @@ data class TextItem(
     data class Run(
             val text: String?
     )
+
+    override fun toString(): String {
+        return getText() ?: super.toString()
+    }
 }
 
 data class ThumbnailItem(

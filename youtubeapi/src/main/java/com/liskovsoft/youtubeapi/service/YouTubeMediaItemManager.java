@@ -15,6 +15,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceV2;
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
+import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
@@ -183,7 +184,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             MediaItemMetadata metadata = getMetadata(item);
 
             if (metadata != null) {
-                ((YouTubeMediaItem) item).sync(metadata);
+                if (item instanceof YouTubeMediaItem) {
+                    ((YouTubeMediaItem) item).sync(metadata);
+                } else if (item instanceof MediaItemImpl) {
+                    ((MediaItemImpl) item).sync(metadata);
+                }
                 emitter.onNext(metadata);
                 emitter.onComplete();
             } else {

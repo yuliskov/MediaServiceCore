@@ -23,6 +23,7 @@ fun VideoItem.getChannelId() =
         shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
         longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
         menu?.menuRenderer?.items?.firstNotNullOfOrNull { it?.menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId() }
+fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 
 ////////////
 
@@ -40,7 +41,7 @@ fun MusicItem.getUpcomingEventText() = null
 
 fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
 fun TileItem.getVideoId() = onSelectCommand?.watchEndpoint?.videoId
-fun TileItem.getPlaylistId() = onSelectCommand?.watchEndpoint?.playlistId
+fun TileItem.getPlaylistId() = onSelectCommand?.watchEndpoint?.playlistId ?: onSelectCommand?.watchPlaylistEndpoint?.playlistId
 fun TileItem.getDescBadgeText() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 fun TileItem.getUserName() = null
 fun TileItem.getPublishedTime() = null
@@ -75,30 +76,23 @@ fun ItemWrapper.getType(): Int {
     return MediaItem.TYPE_UNDEFINED;
 }
 
-val ItemWrapper.videoId
-    get() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId()
+fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId()
 
-val ItemWrapper.title
-    get() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle()
+fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle()
 
-val ItemWrapper.descBadgeText
-    get() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
+fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
 
-val ItemWrapper.userName
-    get() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
+fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
 
-val ItemWrapper.publishedTime
-    get() = getVideoItem()?.getPublishedTimeText() ?: getMusicItem()?.getViewsAndPublished() ?: getTileItem()?.getPublishedTime()
+fun ItemWrapper.getPublishedTime() = getVideoItem()?.getPublishedTimeText() ?: getMusicItem()?.getViewsAndPublished() ?: getTileItem()?.getPublishedTime()
 
-val ItemWrapper.viewCountText
-    get() = getVideoItem()?.getViewCount() ?: getMusicItem()?.getViewsCountText() ?: getTileItem()?.getViewCountText()
+fun ItemWrapper.getViewCountText() = getVideoItem()?.getViewCount() ?: getMusicItem()?.getViewsCountText() ?: getTileItem()?.getViewCountText()
 
-val ItemWrapper.upcomingEventText
-    get() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText() ?: getTileItem()?.getUpcomingEventText()
+fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText() ?: getTileItem()?.getUpcomingEventText()
 
-val ItemWrapper.thumbnail
-    get() = getVideoItem()?.getThumbnail() ?: getMusicItem()?.getThumbnail() ?: getTileItem()?.getThumbnail()
+fun ItemWrapper.getThumbnail() = getVideoItem()?.getThumbnail() ?: getMusicItem()?.getThumbnail() ?: getTileItem()?.getThumbnail()
 
+fun ItemWrapper.getPlaylistId() = null
 
 /////
 

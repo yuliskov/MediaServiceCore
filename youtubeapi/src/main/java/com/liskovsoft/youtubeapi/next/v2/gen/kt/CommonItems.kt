@@ -235,7 +235,8 @@ data class VideoItem(
         val badges: List<BadgeItem?>?,
         val upcomingEventData: UpcomingEvent?,
         val richThumbnail: RichThumbnailItem?,
-        val thumbnailOverlays: List<ThumbnailOverlayItem?>?
+        val thumbnailOverlays: List<ThumbnailOverlayItem?>?,
+        val navigationEndpoint: NavigationEndpointItem?
 ) {
     data class BadgeItem(
             val liveBadge: LiveBadge?,

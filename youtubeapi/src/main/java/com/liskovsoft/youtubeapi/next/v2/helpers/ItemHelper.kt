@@ -101,7 +101,7 @@ fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscri
 
 /////
 
-fun WatchNextResult.getSuggestedSections() = contents?.singleColumnWatchNextResults?.pivot?.pivot?.contents?.map { it?.shelfRenderer }
+fun WatchNextResult.getSuggestedSections() = contents?.singleColumnWatchNextResults?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.map { it?.shelfRenderer }
 fun WatchNextResult.getVideoMetadata() = contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.
     itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
 

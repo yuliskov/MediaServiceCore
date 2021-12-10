@@ -13,9 +13,10 @@ data class WatchNextResult(
             val autoplay: Autoplay?
         ) {
             data class Pivot(
-                val pivot: Pivot?
+                val pivot: NestedPivot?,
+                val sectionListRenderer: NestedPivot?
             ) {
-                data class Pivot(
+                data class NestedPivot(
                     val contents: List<Content?>?
                 ) {
                     data class Content(

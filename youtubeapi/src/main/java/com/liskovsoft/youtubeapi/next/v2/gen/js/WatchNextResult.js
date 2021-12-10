@@ -11,6 +11,13 @@ let watchNextResult = {
                             shelfRenderer: shelfItem
                         }
                     ]
+                },
+                sectionListRenderer: {
+                    contents: [
+                        {
+                            shelfRenderer: shelfItem
+                        }
+                    ]
                 }
             },
             // VideoMetadata and VideoOwner

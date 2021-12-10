@@ -3,78 +3,71 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.youtubeapi.next.v2.helpers.getText
-import com.liskovsoft.youtubeapi.next.v2.helpers.userName
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
-import com.liskovsoft.youtubeapi.next.v2.helpers.isSubscribed
+import com.liskovsoft.youtubeapi.next.v2.helpers.*
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
-// TODO: implement full conversion
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
     private val suggestedSections by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.pivot?.pivot?.contents?.map { it?.shelfRenderer }
+        watchNextResult.getSuggestedSections()
     }
     private val videoMetadata by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.itemSectionRenderer?.contents?.map {
-            it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer
-        }?.firstOrNull()
-    }
-    private val videoOwner by lazy {
-        videoMetadata?.owner?.videoOwnerRenderer
+        watchNextResult.getVideoMetadata()
     }
     private val nextVideoItem by lazy {
-        val nextVideoRenderer = watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.getOrNull(0)?.nextVideoRenderer
-        nextVideoRenderer?.maybeHistoryEndpointRenderer ?: nextVideoRenderer?.autoplayEndpointRenderer
+        watchNextResult.getNextVideoItem()
+    }
+    private val videoOwner by lazy {
+        videoMetadata?.getVideoOwner()
+    }
+    private val videoDetails by lazy {
+        watchNextResult.getVideoDetails()
     }
     private val nextMediaItem by lazy {
         nextVideoItem?.let { NextMediaItemImpl(it) }
     }
+    private val isSubscribedItem by lazy {
+        videoOwner?.isSubscribed() ?: false
+    }
     private val replayItemWrapper by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer
+        watchNextResult.getReplayItemWrapper()
     }
     private val buttonStateItem by lazy {
-        watchNextResult.transportControls?.transportControlsRenderer
+        watchNextResult.getButtonStateItem()
     }
     private val videoTitle by lazy {
-        val textItem = videoMetadata?.title
-        textItem?.getText()
+        videoMetadata?.getTitle()
     }
     private val videoFullDescription by lazy { videoMetadata?.description?.getText() }
     private val videoDescription by lazy {
         YouTubeMediaServiceHelper.createDescription(
                 videoAuthor, viewCountText, publishedTime,
-                if (isLiveStream == true) "LIVE" else ""
+                if (isLiveStream) "LIVE" else ""
         )
     }
     private val videoDescriptionAlt by lazy {
         YouTubeMediaServiceHelper.createDescription(
                 videoAuthor, viewCountText, publishedDate,
-                if (isLiveStream == true) "LIVE" else ""
+                if (isLiveStream) "LIVE" else ""
         )
     }
-    private val videoAuthor by lazy { videoDetails?.userName?.getText() }
+    private val videoAuthor by lazy { videoDetails?.getUserName() }
     private val suggestionList by lazy {
         suggestedSections?.map { it?.let { MediaGroupImpl(it) } }
     }
 
     private val viewCountText by lazy {
-        val viewCount1 = videoMetadata?.viewCount?.videoViewCountRenderer?.viewCount;
-        val viewCount2 = videoMetadata?.viewCountText;
-        viewCount1?.getText() ?: viewCount2?.getText()
+        videoMetadata?.getViewCountText()
     }
 
     private val publishedTime by lazy {
-        videoMetadata?.publishedTimeText ?: videoMetadata?.albumName
-    }
-
-    private val videoDetails by lazy {
-        watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer?.pivotVideoRenderer
+        videoMetadata?.getPublishedTime()
     }
 
     private val publishedDateText by lazy {
-        videoMetadata?.dateText?.getText() ?: videoDetails?.publishedTimeText?.getText()
+        videoMetadata?.getDateText() ?: videoDetails?.getPublishedTimeText()
     }
 
     private val videoIdItem by lazy {
@@ -82,7 +75,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     private val isLiveStream by lazy {
-        videoMetadata?.viewCount?.videoViewCountRenderer?.isLive
+        videoMetadata?.isLive() ?: false
     }
 
     override fun getTitle(): String? {
@@ -122,11 +115,11 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     override fun isSubscribed(): Boolean {
-        return videoOwner?.isSubscribed() ?: false
+        return isSubscribedItem
     }
 
     override fun isLive(): Boolean {
-        return false
+        return isLiveStream
     }
 
     override fun isUpcoming(): Boolean {

@@ -34,7 +34,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val userName: String? = null
     protected open val publishedTime: String? = null
     protected open val viewCountText: String? = null
-    protected open val upcomingEventText: TextItem? = null
+    protected open val upcomingEventText: String? = null
     protected open val descriptionItem: String?
         get() = _descriptionItem
     protected open val cardThumbImageUrl: String?

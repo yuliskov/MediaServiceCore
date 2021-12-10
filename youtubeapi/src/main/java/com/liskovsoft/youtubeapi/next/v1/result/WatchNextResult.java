@@ -16,7 +16,8 @@ public class WatchNextResult {
     /**
      * Sections == Rows in web app version
      */
-    @JsonPath("$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer")
+    @JsonPath({"$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer",
+            "$.contents.singleColumnWatchNextResults.pivot.sectionListRenderer.contents[*].shelfRenderer"})
     private List<SuggestedSection> mSuggestedSections;
     @JsonPath({"$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer",
                "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].musicWatchMetadataRenderer"}) // youtube music format

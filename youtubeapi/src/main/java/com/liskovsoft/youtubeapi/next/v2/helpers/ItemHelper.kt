@@ -92,7 +92,7 @@ fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() 
 
 fun ItemWrapper.getThumbnail() = getVideoItem()?.getThumbnail() ?: getMusicItem()?.getThumbnail() ?: getTileItem()?.getThumbnail()
 
-fun ItemWrapper.getPlaylistId() = null
+fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
 
 /////
 

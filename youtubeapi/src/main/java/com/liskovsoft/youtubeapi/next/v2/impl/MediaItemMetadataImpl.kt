@@ -54,7 +54,13 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
             LIKE_STATUS_LIKE -> MediaItemMetadata.LIKE_STATUS_LIKE
             LIKE_STATUS_DISLIKE -> MediaItemMetadata.LIKE_STATUS_DISLIKE
             LIKE_STATUS_INDIFFERENT -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
-            else -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
+            else -> {
+                when {
+                    watchNextResult.transportControls?.transportControlsRenderer?.isLikeToggled() == true -> MediaItemMetadata.LIKE_STATUS_LIKE
+                    watchNextResult.transportControls?.transportControlsRenderer?.isDislikeToggled() == true -> MediaItemMetadata.LIKE_STATUS_DISLIKE
+                    else -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
+                }
+            }
         }
     }
     private val videoFullDescription by lazy { videoMetadata?.description?.getText() }

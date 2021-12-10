@@ -129,10 +129,17 @@ fun VideoMetadataItem.getViewCountText() = viewCount?.videoViewCountRenderer?.vi
 fun VideoMetadataItem.isLive() = viewCount?.videoViewCountRenderer?.isLive
 fun VideoMetadataItem.getDateText() = dateText?.getText()
 fun VideoMetadataItem.getPublishedTime() = publishedTimeText?.getText() ?: albumName?.getText()
-fun VideoMetadataItem.getLikeStatus() = likeStatus ?: LIKE_STATUS_INDIFFERENT
+fun VideoMetadataItem.getLikeStatus() = likeStatus
 fun VideoMetadataItem.isUpcoming() = badges?.firstNotNullOfOrNull { it?.upcomingEventBadge?.label?.getText() }?.let { true } ?: false
 fun VideoMetadataItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
 
 ////////
 
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
+
+////////
+
+fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggled
+fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled
+fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
+fun ButtonStateItem.getChannelId() = channelButton?.videoOwnerRenderer?.getChannelId()

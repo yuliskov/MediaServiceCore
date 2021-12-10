@@ -326,6 +326,35 @@ data class PlaylistItem(
 
 }
 
+data class VideoOwnerItem(
+        val thumbnail: ThumbnailItem?,
+        val title: TextItem?,
+        val subscribed: Boolean?,
+        val subscriptionButton: SubscriptionButton?,
+        val subscribeButton: SubscribeButton?,
+        val navigationEndpoint: NavigationEndpoint?
+) {
+    data class SubscriptionButton(
+            val subscribed: Boolean?
+    )
+
+    data class SubscribeButton(
+            val subscribeButtonRenderer: SubscribeButtonRenderer?
+    ) {
+        data class SubscribeButtonRenderer(
+                val subscribed: Boolean?
+        )
+    }
+
+    data class NavigationEndpoint(
+            val browseEndpoint: BrowseEndpoint?
+    ) {
+        data class BrowseEndpoint(
+                val browseId: String?
+        )
+    }
+}
+
 data class VideoMetadataItem(
         val owner: Owner?,
         val title: TextItem?,
@@ -340,13 +369,8 @@ data class VideoMetadataItem(
         val viewCount: ViewCount?
 ) {
     data class Owner(
-            val videoOwnerRenderer: VideoOwnerRenderer?
-    ) {
-        data class VideoOwnerRenderer(
-                val thumbnail: ThumbnailItem?,
-                val title: TextItem?
-        )
-    }
+            val videoOwnerRenderer: VideoOwnerItem?
+    )
 
     data class ViewCount(
             val videoViewCountRenderer: VideoViewCountRenderer?
@@ -391,19 +415,6 @@ data class ButtonStateItem(
     }
 
     data class ChannelButton(
-            val videoOwnerRenderer: VideoOwnerRenderer?
-    ) {
-        data class VideoOwnerRenderer(
-                val navigationEndpoint: NavigationEndpoint?,
-                val thumbnail: ThumbnailItem?
-        ) {
-            data class NavigationEndpoint(
-                    val browseEndpoint: BrowseEndpoint?
-            ) {
-                data class BrowseEndpoint(
-                        val browseId: String?
-                )
-            }
-        }
-    }
+            val videoOwnerRenderer: VideoOwnerItem?
+    )
 }

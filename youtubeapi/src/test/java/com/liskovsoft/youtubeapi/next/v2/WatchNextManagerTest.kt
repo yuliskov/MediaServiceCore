@@ -1,19 +1,20 @@
 package com.liskovsoft.youtubeapi.next.v2
 
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.junit.Before
-import org.robolectric.shadows.ShadowLog
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
-import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
+import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import org.junit.Assert
+import org.junit.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
-class WatchNextManagerUnsignedTest {
+class WatchNextManagerTest {
     private var mManager: WatchNextManager? = null
     private var mServiceV2: WatchNextServiceV2? = null
     @Before
@@ -27,30 +28,47 @@ class WatchNextManagerUnsignedTest {
     }
 
     @Test
-    fun testSuggestedItemsNotNull() {
+    fun testThatWatchNextResultNotNull() {
         val watchNextResult = getWatchNextResult()
 
-        Assert.assertNotNull("watchNextResult not null", watchNextResult)
+        assertNotNull("watchNextResult not null", watchNextResult)
     }
 
     @Test
-    fun testSuggestedItemsCanBeConverted() {
-        val watchNextResult = getWatchNextResult()
+    fun testThatWatchNextResultCanBeConverted() {
+        val metadata = getMediaItemMetadataUnsigned()
 
-        val mediaItemMetadataImpl = MediaItemMetadataImpl(watchNextResult!!)
-
-        Assert.assertNotNull("Metadata isn't null", mediaItemMetadataImpl)
+        assertNotNull("Metadata isn't null", metadata)
     }
 
     @Test
     fun testThatSuggestedContinuationNotNull() {
-        val metadata = mServiceV2!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val metadata = getMediaItemMetadataUnsigned()
 
         val firstGroup = metadata?.suggestions?.first()
         val continuation = mServiceV2!!.continueGroup(firstGroup)
 
-        Assert.assertNotNull("Continuation not null", continuation)
+        assertNotNull("Continuation not null", continuation)
     }
+
+    @Test
+    fun testThatMetadataContainsRequiredFields() {
+        val metadata = getMediaItemMetadataUnsigned();
+
+        testBaseFields(metadata)
+    }
+
+    private fun testBaseFields(metadata: MediaItemMetadata?) {
+        assertNotNull("Contains title", metadata?.title)
+        assertNotNull("Contains desc", metadata?.description)
+        assertNotNull("Contains desc alt", metadata?.descriptionAlt)
+        assertNotNull("Contains desc full", metadata?.fullDescription)
+        assertNotNull("Contains video id", metadata?.videoId)
+        assertNotNull("Contains view count", metadata?.viewCount)
+        assertNotNull("Contains date", metadata?.publishedDate)
+    }
+
+    private fun getMediaItemMetadataUnsigned() = mServiceV2!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)

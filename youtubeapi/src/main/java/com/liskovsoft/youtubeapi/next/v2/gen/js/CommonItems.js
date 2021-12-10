@@ -175,7 +175,21 @@ let playlistItem = {
 
 let videoOwnerItem = {
     thumbnail: thumbnailItem,
-    title: textItem
+    title: textItem,
+    subscribed: false,
+    subscriptionButton: {
+        subscribed: false
+    },
+    subscribeButton: {
+        subscribeButtonRenderer: {
+            subscribed: false
+        }
+    },
+    navigationEndpoint: {
+        browseEndpoint: {
+            browseId: ""
+        }
+    }
 };
 
 let videoMetadataItem = {
@@ -311,13 +325,6 @@ let buttonStateItem = {
         }
     },
     channelButton: {
-        videoOwnerRenderer: {
-            navigationEndpoint: {
-                browseEndpoint: {
-                    browseId: ""
-                }
-            },
-            thumbnail: thumbnailItem
-        }
+        videoOwnerRenderer: videoOwnerItem
     }
 };

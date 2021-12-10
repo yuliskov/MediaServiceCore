@@ -124,3 +124,8 @@ val ItemWrapper.upcomingEventText
 
 val ItemWrapper.thumbnail
     get() = getVideoItem()?.thumbnail ?: getVideoItem()?.thumbnail ?: getTileItem()?.header?.tileHeaderRenderer?.thumbnail
+
+
+/////
+
+fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed

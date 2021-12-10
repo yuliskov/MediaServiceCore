@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.next.v2.helpers.userName
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.helpers.isSubscribed
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 // TODO: implement full conversion
@@ -20,11 +21,14 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
             it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer
         }?.firstOrNull()
     }
+    private val videoOwner by lazy {
+        videoMetadata?.owner?.videoOwnerRenderer
+    }
     private val nextVideoItem by lazy {
         val nextVideoRenderer = watchNextResult.contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.getOrNull(0)?.nextVideoRenderer
         nextVideoRenderer?.maybeHistoryEndpointRenderer ?: nextVideoRenderer?.autoplayEndpointRenderer
     }
-    private val nextVideo by lazy {
+    private val nextMediaItem by lazy {
         nextVideoItem?.let { NextMediaItemImpl(it) }
     }
     private val replayItemWrapper by lazy {
@@ -32,9 +36,6 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
     private val buttonStateItem by lazy {
         watchNextResult.transportControls?.transportControlsRenderer
-    }
-    private val videoOwner by lazy {
-        videoMetadata?.owner?.videoOwnerRenderer
     }
     private val videoTitle by lazy {
         val textItem = videoMetadata?.title
@@ -117,11 +118,11 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     override fun getNextVideo(): MediaItem? {
-        return nextVideo
+        return nextMediaItem
     }
 
     override fun isSubscribed(): Boolean {
-        return false
+        return videoOwner?.isSubscribed() ?: false
     }
 
     override fun isLive(): Boolean {

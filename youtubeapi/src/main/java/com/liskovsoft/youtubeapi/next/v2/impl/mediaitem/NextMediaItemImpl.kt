@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.helpers.findHighResThumbnailUrl
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
-import com.liskovsoft.youtubeapi.next.v2.result.gen.NextVideoItem
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.NextVideoItem
 
 data class NextMediaItemImpl(var nextVideoItem: NextVideoItem): BaseMediaItemImpl() {
     override val videoIdItem by lazy { nextVideoItem.endpoint?.watchEndpoint?.videoId }

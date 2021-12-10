@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.next.v2.result.gen.TextItem
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.TextItem
 import kotlin.math.abs
 
 open class BaseMediaItemImpl : MediaItem {
@@ -18,6 +18,8 @@ open class BaseMediaItemImpl : MediaItem {
     private var _cardThumbImageUrl: String? = null
     private var _videoIdItem: String? = null
     private var _playlistIdItem: String? = null
+    private var _playlistIndexItem: Int = 0
+    private var _playlistParamsItem: String? = null
 
     protected open val reloadPageKey: String?
         get() = _reloadPageKey
@@ -39,10 +41,13 @@ open class BaseMediaItemImpl : MediaItem {
         get() = _cardThumbImageUrl
     protected open val playlistIdItem: String?
         get() = _playlistIdItem
-    protected open val playlistIndexItem: Int = 0
+    protected open val playlistIndexItem: Int
+        get() = _playlistIndexItem
     protected open val channelIdItem: String?
         get() = _channelIdItem
     protected open val mediaUrl: String? = null
+    protected open val playlistParamsItem: String?
+        get() = _playlistParamsItem
 
     protected companion object {
         var sId: Int = 0
@@ -119,7 +124,11 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getPlaylistParams(): String? {
-        return null
+        return _playlistParamsItem ?: playlistParamsItem
+    }
+
+    fun setPlaylistParams(params: String?) {
+        _playlistParamsItem = params
     }
 
     override fun hasNewContent(): Boolean {
@@ -167,7 +176,11 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getPlaylistIndex(): Int {
-        return playlistIndexItem
+        return _playlistIndexItem ?: playlistIndexItem
+    }
+
+    fun setPlaylistIndex(index: Int) {
+        _playlistIndexItem = index
     }
 
     // Fake params

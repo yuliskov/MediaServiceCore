@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next.v2.result.gen
+package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 
@@ -45,15 +45,61 @@ data class NextVideoItem(
 
 data class ShelfItem(
         val title: TextItem?,
-        val content: Content?
+        val content: Content?,
+        val headerRenderer: HeaderRenderer?
 ) {
     data class Content(
             val horizontalListRenderer: HorizontalListRenderer?
     ) {
         data class HorizontalListRenderer(
-                val items: List<ItemWrapper?>?
+                val items: List<ItemWrapper?>?,
+                val continuations: List<ContinuationItem?>?
         )
     }
+
+    data class HeaderRenderer(
+            val shelfHeaderRenderer: ShelfHeaderRenderer?,
+            val chipCloudRenderer: ChipCloudRenderer?
+    ) {
+        data class ShelfHeaderRenderer(
+                val title: String?
+        )
+
+        data class ChipCloudRenderer(
+                val chips: List<ChipItem?>?
+        )
+    }
+}
+
+data class ChipItem(
+        val chipCloudChipRenderer: ChipCloudChipRenderer?
+) {
+    data class ChipCloudChipRenderer(
+            val text: TextItem?,
+            val content: Content?
+    ) {
+        data class Content(
+                val horizontalListRenderer: HorizontalListRenderer?
+        ) {
+            data class HorizontalListRenderer(
+                    val items: List<ItemWrapper?>?,
+                    val continuations: List<ContinuationItem?>?
+            )
+        }
+    }
+}
+
+data class ContinuationItem(
+        val reloadContinuationData: ReloadContinuationData?,
+        val nextContinuationData: NextContinuationData?
+) {
+    data class ReloadContinuationData(
+            val continuation: String?
+    )
+
+    data class NextContinuationData(
+            val continuation: String?
+    )
 }
 
 data class RichThumbnailItem(

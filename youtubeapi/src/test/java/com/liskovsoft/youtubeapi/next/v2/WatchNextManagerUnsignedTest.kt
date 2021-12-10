@@ -8,20 +8,22 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
-import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import org.junit.Assert
 import org.junit.Test
 
 @RunWith(RobolectricTestRunner::class)
 class WatchNextManagerUnsignedTest {
-    private var mManager: WatchNextManagerUnsigned? = null
+    private var mManager: WatchNextManager? = null
+    private var mServiceV2: WatchNextServiceV2? = null
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mManager = RetrofitHelper.withGson(WatchNextManagerUnsigned::class.java)
+        mManager = RetrofitHelper.withGson(WatchNextManager::class.java)
+        mServiceV2 = WatchNextServiceV2.instance()
     }
 
     @Test
@@ -40,9 +42,19 @@ class WatchNextManagerUnsignedTest {
         Assert.assertNotNull("Metadata isn't null", mediaItemMetadataImpl)
     }
 
+    @Test
+    fun testThatSuggestedContinuationNotNull() {
+        val metadata = mServiceV2!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
+
+        val firstGroup = metadata?.suggestions?.first()
+        val continuation = mServiceV2!!.continueGroup(firstGroup)
+
+        Assert.assertNotNull("Continuation not null", continuation)
+    }
+
     private fun getWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
-        val wrapper = mManager!!.getWatchNextResult(watchNextQuery)
+        val wrapper = mManager!!.getWatchNextResultUnsigned(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 

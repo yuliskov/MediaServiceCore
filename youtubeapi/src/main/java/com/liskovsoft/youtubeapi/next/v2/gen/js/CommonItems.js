@@ -220,6 +220,31 @@ let itemWrapper = {
     pivotPlaylistRenderer: playlistItem
 };
 
+let chipItem = {
+    chipCloudChipRenderer: {
+        text: textItem,
+        content: {
+            horizontalListRenderer: {
+                items: [
+                    itemWrapper
+                ],
+                continuations: [
+                    continuationItem
+                ]
+            }
+        }
+    }
+};
+
+let continuationItem = {
+    reloadContinuationData: {
+        continuation: ""
+    },
+    nextContinuationData: {
+        continuation: ""
+    }
+};
+
 let shelfItem = {
     title: textItem,
     // ItemWrappers
@@ -228,6 +253,19 @@ let shelfItem = {
         horizontalListRenderer: {
             items: [
                 itemWrapper
+            ],
+            continuations: [
+                continuationItem
+            ]
+        }
+    },
+    headerRenderer: {
+        shelfHeaderRenderer: {
+            title: textItem
+        },
+        chipCloudRenderer: {
+            chips: [
+                chipItem
             ]
         }
     }

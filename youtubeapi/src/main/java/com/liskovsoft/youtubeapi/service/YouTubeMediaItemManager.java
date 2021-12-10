@@ -14,6 +14,7 @@ import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceV2;
+import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
@@ -164,10 +165,16 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
         String nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup);
 
-        return YouTubeMediaGroup.from(
-                mMediaItemManagerReal.continueWatchNext(nextKey),
-                mediaGroup
-        );
+        if (mediaGroup instanceof YouTubeMediaGroup) {
+            return YouTubeMediaGroup.from(
+                    mMediaItemManagerReal.continueWatchNext(nextKey),
+                    mediaGroup
+            );
+        } else if (mediaGroup instanceof MediaGroupImpl) {
+            return mWatchNextServiceV2.continueGroup(mediaGroup);
+        }
+
+        return null;
     }
 
     @Override

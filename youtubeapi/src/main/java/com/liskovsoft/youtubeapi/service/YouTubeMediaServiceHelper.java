@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public final class YouTubeMediaServiceHelper {
 
         if (mediaTab instanceof YouTubeMediaGroup) {
             result = ((YouTubeMediaGroup) mediaTab).mNextPageKey;
+        } else if (mediaTab instanceof MediaGroupImpl) {
+            result = ((MediaGroupImpl) mediaTab).getNextPageKey();
         }
 
         return result;

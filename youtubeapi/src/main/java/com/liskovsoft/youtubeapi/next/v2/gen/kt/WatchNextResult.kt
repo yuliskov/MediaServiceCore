@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next.v2.result.gen
+package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
 data class WatchNextResult(
     val contents: Contents?,

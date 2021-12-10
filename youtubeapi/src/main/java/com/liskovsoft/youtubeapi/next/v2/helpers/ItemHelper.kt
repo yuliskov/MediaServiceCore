@@ -2,10 +2,10 @@ package com.liskovsoft.youtubeapi.next.v2.helpers
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.result.gen.*
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
-fun TextItem.getText() = runs?.joinToString { it?.text ?: "" } ?: simpleText
+fun TextItem.getText() = runs?.joinToString("") { it?.text ?: "" } ?: simpleText
 
 fun ThumbnailItem.findHighResThumbnailUrl() = if (thumbnails.isNullOrEmpty()) null else thumbnails.last()?.url
 
@@ -71,9 +71,9 @@ val TileItem.publishedTIme
     get() = null
 
 val TileItem.viewCountText
-    get() = YouTubeMediaServiceHelper.createDescription(metadata?.tileMetadataRenderer?.lines?.map {
-        ServiceHelper.combineItems(" ", it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray())
-    }?.toTypedArray()) ?: null
+    get() = YouTubeMediaServiceHelper.createDescription(*metadata?.tileMetadataRenderer?.lines?.map {
+        ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: null)
+    }?.toTypedArray() ?: null) ?: null
 
 val TileItem.upcomingEventText
     get() = null

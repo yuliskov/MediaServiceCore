@@ -5,8 +5,9 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 import com.liskovsoft.youtubeapi.next.v2.helpers.userName
+import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
-import com.liskovsoft.youtubeapi.next.v2.result.gen.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 // TODO: implement full conversion
@@ -42,13 +43,13 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     private val videoFullDescription by lazy { videoMetadata?.description?.getText() }
     private val videoDescription by lazy {
         YouTubeMediaServiceHelper.createDescription(
-                videoAuthor, publishedTime, viewCountText,
+                videoAuthor, viewCountText, publishedTime,
                 if (isLiveStream == true) "LIVE" else ""
         )
     }
     private val videoDescriptionAlt by lazy {
         YouTubeMediaServiceHelper.createDescription(
-                videoAuthor, publishedDate, viewCountText,
+                videoAuthor, viewCountText, publishedDate,
                 if (isLiveStream == true) "LIVE" else ""
         )
     }

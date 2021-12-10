@@ -1,6 +1,7 @@
 let textItem = {
     runs: [{
-        text: ""
+        text: "",
+        navigationEndpoint: navigationEndpointItem
     }],
     simpleText: ""
 };
@@ -13,6 +14,13 @@ let thumbnailItem = {
     }]
 };
 
+let navigationEndpointItem = {
+    browseEndpoint: {
+        browseId: ""
+    },
+    watchEndpoint: watchEndpointItem
+};
+
 let watchEndpointItem = {
     videoId: "",
     playlistId: "",
@@ -22,17 +30,18 @@ let watchEndpointItem = {
 
 let menuItem = {
     menuRenderer: {
-        items: [
-            {
-                menuServiceItemRenderer: {
-                    serviceEndpoint: {
-                        feedbackEndpoint: {
-                            feedbackToken: ""
-                        }
+        items: [{
+            menuServiceItemRenderer: {
+                serviceEndpoint: {
+                    feedbackEndpoint: {
+                        feedbackToken: ""
                     }
                 }
+            },
+            menuNavigationItemRenderer: {
+                navigationEndpoint: navigationEndpointItem
             }
-        ]
+        }]
     }
 };
 
@@ -48,28 +57,19 @@ let videoItem = {
     lengthText: textItem,
     publishedTimeText: textItem,
     thumbnailOverlays: [
-        {
-            thumbnailOverlayTimeStatusRenderer: {
-                text: textItem, // BadgeText
-                style: "" // BadgeStyle
-            },
-            thumbnailOverlayResumePlaybackRenderer: {
-                percentDurationWatched: 0
-            }
-        }
+        thumbnailOverlayItem
     ],
-    badges: [
-        {   liveBadge: {
-                label: textItem // BadgeText
-            },
-            upcomingEventBadge: {
-                label: textItem // BadgeText
-            },
-            metadataBadgeRenderer: {
-                label: "" // DescBadgeText
-            }
+    badges: [{
+        liveBadge: {
+            label: textItem // BadgeText
+        },
+        upcomingEventBadge: {
+            label: textItem // BadgeText
+        },
+        metadataBadgeRenderer: {
+            label: "" // DescBadgeText
         }
-    ],
+    }],
     upcomingEventData: {
         upcomingEventText: textItem,
         startTime: ""
@@ -84,40 +84,28 @@ let tileItem = {
     metadata: {
         tileMetadataRenderer: {
             title: textItem,
-            lines: [
-                {
-                    lineRenderer: {
-                        items: [
-                            {
-                                lineItemRenderer: {
-                                    text: textItem,
-                                    badge: {
-                                        metadataBadgeRenderer: {
-                                            style: "", // BadgeStyle
-                                            label: "" // DescBadgeText
-                                        }
-                                    }
+            lines: [{
+                lineRenderer: {
+                    items: [{
+                        lineItemRenderer: {
+                            text: textItem,
+                            badge: {
+                                metadataBadgeRenderer: {
+                                    style: "", // BadgeStyle
+                                    label: "" // DescBadgeText
                                 }
                             }
-                        ]
-                    }
+                        }
+                    }]
                 }
-            ]
+            }]
         }
     },
     header: {
         tileHeaderRenderer: {
             thumbnail: thumbnailItem,
             thumbnailOverlays: [
-                {
-                    thumbnailOverlayTimeStatusRenderer: {
-                        text: textItem,
-                        style: ""
-                    },
-                    thumbnailOverlayResumePlaybackRenderer: {
-                        percentDurationWatched: 0
-                    }
-                }
+                thumbnailOverlayItem
             ],
             movingThumbnail: thumbnailItem
         }
@@ -136,9 +124,7 @@ let musicItem = {
     primaryText: textItem, // Subtitle
     secondaryText: textItem, // Views and published
     tertiaryText: textItem,
-    navigationEndpoint: {
-        watchEndpoint: watchEndpointItem
-    }
+    navigationEndpoint: navigationEndpointItem
 };
 
 let radioItem = {
@@ -182,14 +168,11 @@ let videoOwnerItem = {
     },
     subscribeButton: {
         subscribeButtonRenderer: {
-            subscribed: false
+            subscribed: false,
+            channelId: ""
         }
     },
-    navigationEndpoint: {
-        browseEndpoint: {
-            browseId: ""
-        }
-    }
+    navigationEndpoint: navigationEndpointItem
 };
 
 let videoMetadataItem = {
@@ -211,25 +194,28 @@ let videoMetadataItem = {
             shortViewCount: textItem,
             isLive: false
         }
-    }
+    },
+    likeStatus: "",
+    badges: [{
+        upcomingEventBadge: {
+            label: textItem
+        }
+    }],
+    thumbnailOverlays: [
+        thumbnailOverlayItem
+    ]
 };
 
 let itemWrapper = {
     // TileItem
-    tileRenderer: tileItem,
-    // VideoItem
-    gridVideoRenderer: videoItem,
-    // SuggestedVideoItem
-    pivotVideoRenderer: videoItem,
-    // MusicItem
-    tvMusicVideoRenderer: musicItem,
-    // RadioItem
+    tileRenderer: tileItem, // VideoItem
+    gridVideoRenderer: videoItem, // SuggestedVideoItem
+    pivotVideoRenderer: videoItem, // MusicItem
+    tvMusicVideoRenderer: musicItem, // RadioItem
     gridRadioRenderer: radioItem,
-    pivotRadioRenderer: radioItem,
-    // ChannelItem
+    pivotRadioRenderer: radioItem, // ChannelItem
     gridChannelRenderer: channelItem,
-    pivotChannelRenderer: channelItem,
-    // PlaylistItem
+    pivotChannelRenderer: channelItem, // PlaylistItem
     gridPlaylistRenderer: playlistItem,
     pivotPlaylistRenderer: playlistItem
 };
@@ -239,12 +225,8 @@ let chipItem = {
         text: textItem,
         content: {
             horizontalListRenderer: {
-                items: [
-                    itemWrapper
-                ],
-                continuations: [
-                    continuationItem
-                ]
+                items: [itemWrapper],
+                continuations: [continuationItem]
             }
         }
     }
@@ -260,17 +242,12 @@ let continuationItem = {
 };
 
 let shelfItem = {
-    title: textItem,
-    // ItemWrappers
+    title: textItem, // ItemWrappers
     // $.content.horizontalListRenderer.items[*]
     content: {
         horizontalListRenderer: {
-            items: [
-                itemWrapper
-            ],
-            continuations: [
-                continuationItem
-            ]
+            items: [itemWrapper],
+            continuations: [continuationItem]
         }
     },
     headerRenderer: {
@@ -278,9 +255,7 @@ let shelfItem = {
             title: textItem
         },
         chipCloudRenderer: {
-            chips: [
-                chipItem
-            ]
+            chips: [chipItem]
         }
     }
 };
@@ -298,8 +273,14 @@ let nextVideoItem = {
     }
 };
 
-let thumbnailOverlaysItem = {
-    
+let thumbnailOverlayItem = {
+    thumbnailOverlayTimeStatusRenderer: {
+        text: textItem, // BadgeText
+        style: "" // BadgeStyle
+    },
+    thumbnailOverlayResumePlaybackRenderer: {
+        percentDurationWatched: 0
+    }
 };
 
 let richThumbnailItem = {

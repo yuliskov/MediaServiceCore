@@ -19,6 +19,10 @@ fun VideoItem.getUserName() = shortBylineText?.getText() ?: longBylineText?.getT
 fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
 fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText()
 fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.getText()
+fun VideoItem.getChannelId() =
+        shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
+        longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
+        menu?.menuRenderer?.items?.firstNotNullOfOrNull { it?.menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId() }
 
 ////////////
 
@@ -99,6 +103,7 @@ val ItemWrapper.thumbnail
 /////
 
 fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed
+fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 
 /////
 
@@ -115,9 +120,19 @@ fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsR
 
 ///////
 
+const val LIKE_STATUS_LIKE = "LIKE"
+const val LIKE_STATUS_DISLIKE = "DISLIKE"
+const val LIKE_STATUS_INDIFFERENT = "INDIFFERENT"
 fun VideoMetadataItem.getVideoOwner() = owner?.videoOwnerRenderer
 fun VideoMetadataItem.getTitle() = title?.getText()
 fun VideoMetadataItem.getViewCountText() = viewCount?.videoViewCountRenderer?.viewCount?.getText() ?: viewCountText?.getText()
 fun VideoMetadataItem.isLive() = viewCount?.videoViewCountRenderer?.isLive
 fun VideoMetadataItem.getDateText() = dateText?.getText()
 fun VideoMetadataItem.getPublishedTime() = publishedTimeText?.getText() ?: albumName?.getText()
+fun VideoMetadataItem.getLikeStatus() = likeStatus ?: LIKE_STATUS_INDIFFERENT
+fun VideoMetadataItem.isUpcoming() = badges?.firstNotNullOfOrNull { it?.upcomingEventBadge?.label?.getText() }?.let { true } ?: false
+fun VideoMetadataItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
+
+////////
+
+fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId

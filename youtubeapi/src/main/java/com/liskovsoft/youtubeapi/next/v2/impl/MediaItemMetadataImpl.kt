@@ -3,13 +3,19 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
-import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.helpers.*
+import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
+import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
+    private val channelIdItem by lazy {
+        videoDetails?.getChannelId() ?: videoOwner?.getChannelId()
+    }
+    private val percentWatchedItem by lazy {
+        videoMetadata?.getPercentWatched() ?: 0
+    }
     private val suggestedSections by lazy {
         watchNextResult.getSuggestedSections()
     }
@@ -39,6 +45,17 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
     private val videoTitle by lazy {
         videoMetadata?.getTitle()
+    }
+    private val isUpcomingItem by lazy {
+        videoMetadata?.isUpcoming() ?: false
+    }
+    private val likeStatusItem by lazy {
+        when (videoMetadata?.getLikeStatus()) {
+            LIKE_STATUS_LIKE -> MediaItemMetadata.LIKE_STATUS_LIKE
+            LIKE_STATUS_DISLIKE -> MediaItemMetadata.LIKE_STATUS_DISLIKE
+            LIKE_STATUS_INDIFFERENT -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
+            else -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
+        }
     }
     private val videoFullDescription by lazy { videoMetadata?.description?.getText() }
     private val videoDescription by lazy {
@@ -123,19 +140,19 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     override fun isUpcoming(): Boolean {
-        return false
+        return isUpcomingItem
     }
 
     override fun getChannelId(): String? {
-        return null
+        return channelIdItem
     }
 
     override fun getPercentWatched(): Int {
-        return 0
+        return percentWatchedItem
     }
 
     override fun getLikeStatus(): Int {
-        return 0
+        return likeStatusItem
     }
 
     override fun getSuggestions(): List<MediaGroup?>? {

@@ -2,6 +2,15 @@ package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 
+data class NavigationEndpointItem(
+    val browseEndpoint: BrowseEndpoint?,
+    val watchEndpoint: WatchEndpointItem?
+) {
+    data class BrowseEndpoint(
+        val browseId: String?
+    )
+}
+
 data class WatchEndpointItem(
         val videoId: String?,
         val playlistId: String?,
@@ -14,7 +23,8 @@ data class TextItem(
         val simpleText: String?
 ) {
     data class Run(
-            val text: String?
+            val text: String?,
+            val navigationEndpoint: NavigationEndpointItem?
     )
 
     override fun toString(): String {
@@ -169,23 +179,9 @@ data class TileItem(
     ) {
         data class TileHeaderRenderer(
                 val thumbnail: ThumbnailItem,
-                val thumbnailOverlays: List<ThumbnailOverlay?>?,
+                val thumbnailOverlays: List<ThumbnailOverlayItem?>?,
                 val movingThumbnail: ThumbnailItem?
-        ) {
-            data class ThumbnailOverlay(
-                    val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
-                    val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?
-            ) {
-                data class ThumbnailOverlayTimeStatusRenderer(
-                        val text: TextItem?,
-                        val style: String?
-                )
-
-                data class ThumbnailOverlayResumePlaybackRenderer(
-                        val percentDurationWatched: Int?
-                )
-            }
-        }
+        )
     }
 
     data class OnSelectCommand(
@@ -205,7 +201,8 @@ data class MenuItem(
             val items: List<Item?>?
     ) {
         data class Item(
-                val menuServiceItemRenderer: MenuServiceItemRenderer?
+                val menuServiceItemRenderer: MenuServiceItemRenderer?,
+                val menuNavigationItemRenderer: MenuNavigationItemRenderer?
         ) {
             data class MenuServiceItemRenderer(
                     val serviceEndpoint: ServiceEndpoint?
@@ -218,6 +215,9 @@ data class MenuItem(
                     )
                 }
             }
+            data class MenuNavigationItemRenderer(
+                    val navigationEndpoint: NavigationEndpointItem?
+            )
         }
     }
 }
@@ -234,7 +234,8 @@ data class VideoItem(
         val menu: MenuItem?,
         val badges: List<BadgeItem?>?,
         val upcomingEventData: UpcomingEvent?,
-        val richThumbnail: RichThumbnailItem?
+        val richThumbnail: RichThumbnailItem?,
+        val thumbnailOverlays: List<ThumbnailOverlayItem?>?
 ) {
     data class BadgeItem(
             val liveBadge: LiveBadge?,
@@ -332,7 +333,7 @@ data class VideoOwnerItem(
         val subscribed: Boolean?,
         val subscriptionButton: SubscriptionButton?,
         val subscribeButton: SubscribeButton?,
-        val navigationEndpoint: NavigationEndpoint?
+        val navigationEndpoint: NavigationEndpointItem?
 ) {
     data class SubscriptionButton(
             val subscribed: Boolean?
@@ -342,15 +343,8 @@ data class VideoOwnerItem(
             val subscribeButtonRenderer: SubscribeButtonRenderer?
     ) {
         data class SubscribeButtonRenderer(
-                val subscribed: Boolean?
-        )
-    }
-
-    data class NavigationEndpoint(
-            val browseEndpoint: BrowseEndpoint?
-    ) {
-        data class BrowseEndpoint(
-                val browseId: String?
+                val subscribed: Boolean?,
+                val channelId: String?
         )
     }
 }
@@ -366,7 +360,10 @@ data class VideoMetadataItem(
         val dateText: TextItem?,
         val viewCountText: TextItem?,
         val shortViewCountText: TextItem?,
-        val viewCount: ViewCount?
+        val viewCount: ViewCount?,
+        val likeStatus: String?,
+        val badges: List<Badge?>?,
+        val thumbnailOverlays: List<ThumbnailOverlayItem?>?
 ) {
     data class Owner(
             val videoOwnerRenderer: VideoOwnerItem?
@@ -381,8 +378,15 @@ data class VideoMetadataItem(
                 val isLive: Boolean?
         )
     }
-}
 
+    data class Badge(
+            val upcomingEventBadge: UpcomingEventBadge?
+    ) {
+        data class UpcomingEventBadge(
+                val label: TextItem?
+        )
+    }
+}
 
 data class ButtonStateItem(
         val subscribeButton: SubscribeButton?,
@@ -416,5 +420,19 @@ data class ButtonStateItem(
 
     data class ChannelButton(
             val videoOwnerRenderer: VideoOwnerItem?
+    )
+}
+
+data class ThumbnailOverlayItem(
+    val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
+    val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?
+) {
+    data class ThumbnailOverlayTimeStatusRenderer(
+        val text: TextItem?,
+        val style: String?
+    )
+
+    data class ThumbnailOverlayResumePlaybackRenderer(
+        val percentDurationWatched: Int?
     )
 }

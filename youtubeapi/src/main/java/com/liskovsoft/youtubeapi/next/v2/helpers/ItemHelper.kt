@@ -14,7 +14,7 @@ fun ThumbnailItem.Thumbnail.getUrl() = if (url?.startsWith("//") == true) "https
 
 fun VideoItem.getTitle() = title?.getText()
 fun VideoItem.getVideoId() = videoId
-fun VideoItem.getThumbnail() = thumbnail
+fun VideoItem.getThumbnails() = thumbnail
 fun VideoItem.getDescBadgeText() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
 fun VideoItem.getBadgeText() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() } ?:
     badges?.firstNotNullOfOrNull { it?.liveBadge?.label?.getText() ?: it?.upcomingEventBadge?.label?.getText() }
@@ -34,7 +34,7 @@ fun VideoItem.getLengthText() = lengthText?.getText()
 
 fun MusicItem.getTitle() = primaryText?.getText()
 fun MusicItem.getUserName() = secondaryText?.getText()
-fun MusicItem.getThumbnail() = thumbnail
+fun MusicItem.getThumbnails() = thumbnail
 fun MusicItem.getVideoId() = navigationEndpoint?.watchEndpoint?.videoId
 fun MusicItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun MusicItem.getBadgeText() = lengthText?.getText()
@@ -61,7 +61,7 @@ fun TileItem.getViewCountText() =
         ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: null)
     }?.toTypedArray() ?: null) ?: null
 fun TileItem.getUpcomingEventText() = null
-fun TileItem.getThumbnail() = header?.tileHeaderRenderer?.thumbnail
+fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
 fun TileItem.getBadgeStyle() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.getOrNull(0)?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched
 fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
@@ -94,13 +94,13 @@ fun ItemWrapper.getType(): Int {
 
 fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId()
 fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle()
+fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails()
 fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
 fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
 fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
 fun ItemWrapper.getPublishedTime() = getVideoItem()?.getPublishedTimeText() ?: getMusicItem()?.getViewsAndPublished() ?: getTileItem()?.getPublishedTime()
 fun ItemWrapper.getViewCountText() = getVideoItem()?.getViewCount() ?: getMusicItem()?.getViewsCountText() ?: getTileItem()?.getViewCountText()
 fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText() ?: getTileItem()?.getUpcomingEventText()
-fun ItemWrapper.getThumbnail() = getVideoItem()?.getThumbnail() ?: getMusicItem()?.getThumbnail() ?: getTileItem()?.getThumbnail()
 fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
 fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getLengthText()
 fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
@@ -161,3 +161,13 @@ fun ShelfItem.getTitle() = title?.getText()
 fun ShelfItem.getItemWrappers() = content?.horizontalListRenderer?.items
 fun ShelfItem.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
 fun ShelfItem.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
+
+//////
+
+fun NextVideoItem.getVideoId() = endpoint?.watchEndpoint?.videoId
+fun NextVideoItem.getTitle() = item?.previewButtonRenderer?.title?.getText()
+fun NextVideoItem.getAuthor() = item?.previewButtonRenderer?.byline?.getText()
+fun NextVideoItem.getThumbnails() = item?.previewButtonRenderer?.thumbnail
+fun NextVideoItem.getPlaylistId() = endpoint?.watchEndpoint?.playlistId
+fun NextVideoItem.getPlaylistIndex() = endpoint?.watchEndpoint?.index ?: 0
+fun NextVideoItem.getParams() = endpoint?.watchEndpoint?.params

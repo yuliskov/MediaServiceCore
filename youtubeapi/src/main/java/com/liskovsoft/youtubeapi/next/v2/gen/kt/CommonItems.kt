@@ -236,7 +236,8 @@ data class VideoItem(
         val upcomingEventData: UpcomingEvent?,
         val richThumbnail: RichThumbnailItem?,
         val thumbnailOverlays: List<ThumbnailOverlayItem?>?,
-        val navigationEndpoint: NavigationEndpointItem?
+        val navigationEndpoint: NavigationEndpointItem?,
+        val lengthText: TextItem?
 ) {
     data class BadgeItem(
             val liveBadge: LiveBadge?,
@@ -267,7 +268,8 @@ data class MusicItem(
         val primaryText: TextItem?,
         val secondaryText: TextItem?,
         val tertiaryText: TextItem?,
-        val navigationEndpoint: NavigationEndpoint?
+        val navigationEndpoint: NavigationEndpoint?,
+        val lengthText: TextItem?
 ) {
     data class NavigationEndpoint(
             val watchEndpoint: WatchEndpointItem?

@@ -124,7 +124,8 @@ let musicItem = {
     primaryText: textItem, // Subtitle
     secondaryText: textItem, // Views and published
     tertiaryText: textItem,
-    navigationEndpoint: navigationEndpointItem
+    navigationEndpoint: navigationEndpointItem,
+    lengthText: textItem
 };
 
 let radioItem = {

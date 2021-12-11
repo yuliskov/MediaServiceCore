@@ -25,6 +25,7 @@ open class BaseMediaItemImpl : MediaItem {
         get() = _reloadPageKey
     private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
 
+    protected open val badgeTextItem: String? = null
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String?
         get() = _videoIdItem
@@ -35,6 +36,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val publishedTime: String? = null
     protected open val viewCountText: String? = null
     protected open val upcomingEventText: String? = null
+    protected open val durationItemMs: Int = 0
     protected open val descriptionItem: String?
         get() = _descriptionItem
     protected open val cardThumbImageUrl: String?
@@ -103,26 +105,6 @@ open class BaseMediaItemImpl : MediaItem {
         return cardThumbImageUrl
     }
 
-    override fun isLive(): Boolean {
-        return false
-    }
-
-    override fun isUpcoming(): Boolean {
-        return false
-    }
-
-    override fun getPercentWatched(): Int {
-        return 0
-    }
-
-    override fun getAuthor(): String? {
-        return null
-    }
-
-    override fun getFeedbackToken(): String? {
-        return null
-    }
-
     override fun getPlaylistParams(): String? {
         return _playlistParamsItem ?: playlistParamsItem
     }
@@ -131,36 +113,12 @@ open class BaseMediaItemImpl : MediaItem {
         _playlistParamsItem = params
     }
 
-    override fun hasNewContent(): Boolean {
-        return false
-    }
-
-    override fun getContentType(): String? {
-        return null
-    }
-
     override fun getDurationMs(): Int {
-        return 0;
+        return durationItemMs;
     }
 
     override fun getBadgeText(): String? {
-        return null
-    }
-
-    override fun getChannelUrl(): String? {
-        return null
-    }
-
-    override fun getVideoPreviewUrl(): String? {
-        return null
-    }
-
-    override fun hasUploads(): Boolean {
-        return false
-    }
-
-    override fun getClickTrackingParams(): String? {
-        return null
+        return badgeTextItem
     }
 
     override fun getPlaylistId(): String? {
@@ -181,6 +139,50 @@ open class BaseMediaItemImpl : MediaItem {
 
     fun setPlaylistIndex(index: Int) {
         _playlistIndexItem = index
+    }
+
+    override fun isLive(): Boolean {
+        return false
+    }
+
+    override fun isUpcoming(): Boolean {
+        return false
+    }
+
+    override fun getPercentWatched(): Int {
+        return 0
+    }
+
+    override fun getAuthor(): String? {
+        return null
+    }
+
+    override fun getFeedbackToken(): String? {
+        return null
+    }
+
+    override fun hasNewContent(): Boolean {
+        return false
+    }
+
+    override fun getContentType(): String? {
+        return null
+    }
+
+    override fun getChannelUrl(): String? {
+        return null
+    }
+
+    override fun getVideoPreviewUrl(): String? {
+        return null
+    }
+
+    override fun hasUploads(): Boolean {
+        return false
+    }
+
+    override fun getClickTrackingParams(): String? {
+        return null
     }
 
     // Fake params

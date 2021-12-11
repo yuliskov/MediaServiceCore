@@ -7,7 +7,8 @@ import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: "" } ?: simpleText
 
-fun ThumbnailItem.findHighResThumbnailUrl() = if (thumbnails.isNullOrEmpty()) null else thumbnails.last()?.url
+fun ThumbnailItem.findHighResThumbnailUrl() = if (thumbnails.isNullOrEmpty()) null else thumbnails.last()?.getUrl()
+fun ThumbnailItem.Thumbnail.getUrl() = if (url?.startsWith("//") == true) "https:$url" else url
 
 //////////
 
@@ -24,7 +25,7 @@ fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.get
 fun VideoItem.getChannelId() =
     shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
-    menu?.menuRenderer?.items?.firstNotNullOfOrNull { it?.menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId() }
+    menu?.getBrowseId()
 fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun VideoItem.getLengthText() = lengthText?.getText()
 
@@ -38,6 +39,7 @@ fun MusicItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun MusicItem.getBadgeText() = lengthText?.getText()
 fun MusicItem.getLengthText() = lengthText?.getText()
 fun MusicItem.getViewsAndPublished() = tertiaryText?.getText()
+fun MusicItem.getChannelId() = menu?.getBrowseId()
 fun MusicItem.getDescBadgeText() = null
 fun MusicItem.getViewsCountText() = null
 fun MusicItem.getUpcomingEventText() = null
@@ -61,6 +63,7 @@ fun TileItem.getBadgeStyle() = header?.tileHeaderRenderer?.thumbnailOverlays?.fi
 fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.getOrNull(0)?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched
 fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
 fun TileItem.getLengthText() = header?.tileHeaderRenderer?.thumbnailOverlays?.getOrNull(0)?.thumbnailOverlayTimeStatusRenderer?.text?.getText()
+fun TileItem.getChannelId() = menu?.getBrowseId()
 
 ////////////
 
@@ -97,6 +100,7 @@ fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() 
 fun ItemWrapper.getThumbnail() = getVideoItem()?.getThumbnail() ?: getMusicItem()?.getThumbnail() ?: getTileItem()?.getThumbnail()
 fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
 fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getLengthText()
+fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
 
 /////
 
@@ -141,3 +145,15 @@ fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggle
 fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.getChannelId() = channelButton?.videoOwnerRenderer?.getChannelId()
+
+
+////////
+
+fun MenuItem.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId() }
+
+///////
+
+fun ShelfItem.getTitle() = title?.getText()
+fun ShelfItem.getItemWrappers() = content?.horizontalListRenderer?.items
+fun ShelfItem.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
+fun ShelfItem.getChipItems() = headerRenderer?.chipCloudRenderer?.chips

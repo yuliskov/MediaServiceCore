@@ -3,11 +3,12 @@ package com.liskovsoft.youtubeapi.next.v2.gen.kt
 import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 
 data class NavigationEndpointItem(
-    val browseEndpoint: BrowseEndpoint?,
-    val watchEndpoint: WatchEndpointItem?
+        val browseEndpoint: BrowseEndpoint?,
+        val watchEndpoint: WatchEndpointItem?,
+        val watchPlaylistEndpoint: WatchEndpointItem?
 ) {
     data class BrowseEndpoint(
-        val browseId: String?
+            val browseId: String?
     )
 }
 
@@ -136,7 +137,7 @@ data class ItemWrapper(
 data class TileItem(
         val metadata: Metadata?,
         val header: Header?,
-        val onSelectCommand: OnSelectCommand?,
+        val onSelectCommand: NavigationEndpointItem?,
         val menu: MenuItem?
 ) {
     data class Metadata(
@@ -183,15 +184,6 @@ data class TileItem(
                 val movingThumbnail: ThumbnailItem?
         )
     }
-
-    data class OnSelectCommand(
-            val watchEndpoint: WatchEndpointItem?,
-            val watchPlaylistEndpoint: WatchPlaylistEndpoint?
-    ) {
-        data class WatchPlaylistEndpoint(
-                val playlistId: String?
-        )
-    }
 }
 
 data class MenuItem(
@@ -215,6 +207,7 @@ data class MenuItem(
                     )
                 }
             }
+
             data class MenuNavigationItemRenderer(
                     val navigationEndpoint: NavigationEndpointItem?
             )
@@ -269,7 +262,8 @@ data class MusicItem(
         val secondaryText: TextItem?,
         val tertiaryText: TextItem?,
         val navigationEndpoint: NavigationEndpoint?,
-        val lengthText: TextItem?
+        val lengthText: TextItem?,
+        val menu: MenuItem?
 ) {
     data class NavigationEndpoint(
             val watchEndpoint: WatchEndpointItem?
@@ -427,15 +421,15 @@ data class ButtonStateItem(
 }
 
 data class ThumbnailOverlayItem(
-    val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
-    val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?
+        val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
+        val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?
 ) {
     data class ThumbnailOverlayTimeStatusRenderer(
-        val text: TextItem?,
-        val style: String?
+            val text: TextItem?,
+            val style: String?
     )
 
     data class ThumbnailOverlayResumePlaybackRenderer(
-        val percentDurationWatched: Int?
+            val percentDurationWatched: Int?
     )
 }

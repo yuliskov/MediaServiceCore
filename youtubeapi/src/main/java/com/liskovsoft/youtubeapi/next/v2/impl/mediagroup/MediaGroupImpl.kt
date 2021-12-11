@@ -2,19 +2,21 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediagroup
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.youtubeapi.next.v2.helpers.getText
-import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.ShelfItem
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResultContinuation
-import java.util.ArrayList
+import com.liskovsoft.youtubeapi.next.v2.helpers.getItemWrappers
+import com.liskovsoft.youtubeapi.next.v2.helpers.getNextPageKey
+import com.liskovsoft.youtubeapi.next.v2.helpers.getTitle
+import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
+import java.util.*
 
 data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     private var _titleItem: String? = null
-    private val titleItem by lazy { shelf.title?.getText() }
+    private val titleItem by lazy { shelf.getTitle() }
     private var _mediaItemList: List<MediaItem?>? = null
-    private val mediaItemList by lazy { shelf.content?.horizontalListRenderer?.items?.map { it?.let { MediaItemImpl(it) } } }
+    private val mediaItemList by lazy { shelf.getItemWrappers()?.map { it?.let { MediaItemImpl(it) } } }
     private var _nextPageKeyVal: String? = null
-    private val nextPageKeyVal by lazy { shelf.content?.horizontalListRenderer?.continuations?.getOrNull(0)?.nextContinuationData?.continuation }
+    private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 
     fun getNextPageKey(): String? {
         return _nextPageKeyVal ?: nextPageKeyVal

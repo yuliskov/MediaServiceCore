@@ -27,6 +27,7 @@ fun VideoItem.getChannelId() =
     longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     menu?.getBrowseId()
 fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
+fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
 fun VideoItem.getLengthText() = lengthText?.getText()
 
 ////////////
@@ -40,6 +41,7 @@ fun MusicItem.getBadgeText() = lengthText?.getText()
 fun MusicItem.getLengthText() = lengthText?.getText()
 fun MusicItem.getViewsAndPublished() = tertiaryText?.getText()
 fun MusicItem.getChannelId() = menu?.getBrowseId()
+fun MusicItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
 fun MusicItem.getDescBadgeText() = null
 fun MusicItem.getViewsCountText() = null
 fun MusicItem.getUpcomingEventText() = null
@@ -49,6 +51,7 @@ fun MusicItem.getUpcomingEventText() = null
 fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
 fun TileItem.getVideoId() = onSelectCommand?.watchEndpoint?.videoId
 fun TileItem.getPlaylistId() = onSelectCommand?.watchEndpoint?.playlistId ?: onSelectCommand?.watchPlaylistEndpoint?.playlistId
+fun TileItem.getPlaylistIndex() = 0
 fun TileItem.getDescBadgeText() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }
 fun TileItem.getUserName() = null
@@ -101,6 +104,7 @@ fun ItemWrapper.getThumbnail() = getVideoItem()?.getThumbnail() ?: getMusicItem(
 fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
 fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getLengthText()
 fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
+fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex() ?: 0
 
 /////
 

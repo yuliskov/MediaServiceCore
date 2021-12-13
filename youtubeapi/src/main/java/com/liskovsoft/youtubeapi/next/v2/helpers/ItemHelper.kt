@@ -29,6 +29,8 @@ fun VideoItem.getChannelId() =
 fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
 fun VideoItem.getLengthText() = lengthText?.getText()
+fun VideoItem.isLive() = false
+fun VideoItem.isUpcoming() = false
 
 ////////////
 
@@ -45,8 +47,18 @@ fun MusicItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
 fun MusicItem.getDescBadgeText() = null
 fun MusicItem.getViewsCountText() = null
 fun MusicItem.getUpcomingEventText() = null
+fun MusicItem.isLive() = false
+fun MusicItem.isUpcoming() = false
 
 ///////////
+
+private const val CONTENT_TYPE_UNDEFINED = "UNDEFINED"
+private const val CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
+private const val CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
+private const val CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
+private const val BADGE_STYLE_LIVE = "LIVE"
+private const val BADGE_STYLE_UPCOMING = "UPCOMING"
+private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 
 fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
 fun TileItem.getVideoId() = onSelectCommand?.watchEndpoint?.videoId
@@ -67,6 +79,11 @@ fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays
 fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
 fun TileItem.getLengthText() = header?.tileHeaderRenderer?.thumbnailOverlays?.getOrNull(0)?.thumbnailOverlayTimeStatusRenderer?.text?.getText()
 fun TileItem.getChannelId() = menu?.getBrowseId()
+fun TileItem.isLive() = BADGE_STYLE_LIVE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
+fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
+
+fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
+fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 
 ////////////
 
@@ -105,6 +122,8 @@ fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicIte
 fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getLengthText()
 fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
 fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex() ?: 0
+fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: false
+fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming() ?: false
 
 /////
 

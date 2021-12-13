@@ -791,3 +791,15 @@ User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko
 x-goog-visitor-id: Cgt2Z09YY3BPQjRfUSiP1JmNBg%3D%3D
 
 {"context":{"client":{"clientName":"ANDROID","clientVersion":"16.20","clientScreen":"WATCH","visitorData":"Cgt2Z09YY3BPQjRfUSiP1JmNBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18954}},"videoId":"sQEgklEwhSo","cpn":"yrUvMnEs1Nf0E0O5"}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.A0ARrdaM-KsKQeYp7_-6Y3eaoYbZGQcLa7-p75HqycsPpqmzRYA7WQuId6sQ8oX2Gp6BNt8T7vSr0Qq4IvTtioYbJsainAVZY8Glu8F35NexZgFFIpy_O5FFb9CaUfWqzObv7rD9bsBeNl568Y61smpOXKcSqbKvHDy9kGdZRYRFeK
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/4.13031-qa (unlike Gecko) Starboard/1
+x-goog-visitor-id: Cgs3Q01ZVlNMcF9nMCiLzd6NBg%3D%3D
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20211014.05.00-canary_control","clientScreen":"WATCH","visitorData":"Cgs3Q01ZVlNMcF9nMCiLzd6NBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18970}},"videoId":"-mPHEd3ePGg","cpn":"uVEaysVI2UHxERUO"}

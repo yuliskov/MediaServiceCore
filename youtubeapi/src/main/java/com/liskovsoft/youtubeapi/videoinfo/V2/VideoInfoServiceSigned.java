@@ -24,6 +24,27 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams, String authorization) {
+        VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization);
+
+        if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
+            Log.e(TAG, "Enable seeking support on the live streams...");
+            result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
+        } else if (result != null && result.isUnplayable()) {
+            Log.e(TAG, "Found restricted video. Retrying with different query method...");
+            result = getVideoInfoRestricted(videoId, clickTrackingParams, authorization);
+        }
+
+        if (result != null) {
+            decipherFormats(result.getAdaptiveFormats());
+            decipherFormats(result.getRegularFormats());
+        } else {
+            Log.e(TAG, "Can't get video info. videoId: %s, authorization: %s", videoId, authorization);
+        }
+
+        return result;
+    }
+
+    public VideoInfo getVideoInfoOld(String videoId, String clickTrackingParams, String authorization) {
         // Support live streams seeking!
         VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
 

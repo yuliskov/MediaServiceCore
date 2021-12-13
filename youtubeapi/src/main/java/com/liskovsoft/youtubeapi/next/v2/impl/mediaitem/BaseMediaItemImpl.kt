@@ -50,6 +50,8 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val mediaUrl: String? = null
     protected open val playlistParamsItem: String?
         get() = _playlistParamsItem
+    protected open val isLiveItem: Boolean = false
+    protected open val isUpcomingItem: Boolean = false
 
     protected companion object {
         var sId: Int = 0
@@ -142,11 +144,11 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun isLive(): Boolean {
-        return false
+        return isLiveItem
     }
 
     override fun isUpcoming(): Boolean {
-        return false
+        return isUpcomingItem
     }
 
     override fun getPercentWatched(): Int {

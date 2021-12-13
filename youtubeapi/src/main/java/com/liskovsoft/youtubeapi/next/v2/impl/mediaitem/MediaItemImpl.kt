@@ -21,4 +21,6 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val badgeTextItem by lazy { itemWrapper.getBadgeText() }
     override val durationItemMs by lazy { ServiceHelper.timeTextToMillis(itemWrapper.getLengthText()) }
     override val channelIdItem by lazy { itemWrapper.getChannelId() }
+    override val isLiveItem by lazy { itemWrapper.isLive() }
+    override val isUpcomingItem by lazy { itemWrapper.isUpcoming() }
 }

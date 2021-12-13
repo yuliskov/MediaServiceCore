@@ -34,14 +34,15 @@ public class VideoInfoManagerParams {
     }
 
     /**
-     * Support live streams seeking!
+     * Support live streams seeking!<br/>
+     * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
      */
     public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
+        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
     }
 
     /**
-     * Support private videos viewing
+     * Support viewing private (user) videos
      */
     public static String getVideoInfoQueryPrivate(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.CLIENT_NAME_TV, AppConstants.CLIENT_VERSION_TV, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);

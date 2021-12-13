@@ -38,7 +38,7 @@ public class VideoInfoManagerParams {
      * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
      */
     public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
+        return createCheckedQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
     }
 
     /**

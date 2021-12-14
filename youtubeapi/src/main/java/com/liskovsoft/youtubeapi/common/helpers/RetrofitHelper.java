@@ -110,7 +110,7 @@ public class RetrofitHelper {
     private static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-        disableCache(okBuilder);
+        //disableCache(okBuilder);
 
         OkHttpCommons.setupConnectionFix(okBuilder);
 
@@ -127,6 +127,7 @@ public class RetrofitHelper {
 
     private static void disableCache(OkHttpClient.Builder okBuilder) {
         // Disable cache (could help with dlfree error on Eltex)
+        // Spoiler: no this won't help with dlfree error on Eltex
         okBuilder.cache(null);
     }
 

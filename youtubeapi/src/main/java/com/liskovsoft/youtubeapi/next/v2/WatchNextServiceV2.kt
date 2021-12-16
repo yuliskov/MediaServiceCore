@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager
 
 class WatchNextServiceV2 private constructor() {
-    private val mWatchNextManager = RetrofitHelper.withGson(WatchNextManager::class.java)
+    private var mWatchNextManager = RetrofitHelper.withGson(WatchNextManager::class.java)
     private val mSignInManager = YouTubeSignInManager.instance()
 
     fun getMetadata(videoId: String): MediaItemMetadata? {
@@ -69,6 +69,13 @@ class WatchNextServiceV2 private constructor() {
         else
             mWatchNextManager.continueWatchNextResultUnsigned(query)
         return RetrofitHelper.get(wrapper)
+    }
+
+    /**
+     * For testing (mocking) purposes only
+     */
+    fun setWatchNextManager(watchNextManager: WatchNextManager) {
+        mWatchNextManager = watchNextManager
     }
 
     companion object {

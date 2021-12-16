@@ -7,7 +7,6 @@ import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextManagerMock
-import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextServiceV2Mock
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -20,7 +19,6 @@ class WatchNextManagerTest {
     private var mManager: WatchNextManager? = null
     private var mManagerMock: WatchNextManagerMock? = null
     private var mServiceV2: WatchNextServiceV2? = null
-    private var mServiceV2Mock: WatchNextServiceV2Mock? = null
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -31,7 +29,6 @@ class WatchNextManagerTest {
         mServiceV2 = WatchNextServiceV2.instance()
 
         mManagerMock = MockUtils.mockWithGson(WatchNextManagerMock::class.java)
-        mServiceV2Mock = WatchNextServiceV2Mock.instance()
     }
 
     @Test
@@ -50,14 +47,18 @@ class WatchNextManagerTest {
 
     @Test
     fun testThatMockedWatchNextResultCanBeConverted() {
-        val metadata = getMockedMediaItemMetadataUnsigned()
+        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextManager)
+
+        val metadata = getMediaItemMetadataUnsigned()
 
         assertNotNull("Metadata isn't null", metadata)
     }
 
     @Test
     fun testThatMockedWatchNextSuggestionsNotEmpty() {
-        val metadata = getMockedMediaItemMetadataUnsigned()
+        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextManager)
+
+        val metadata = getMediaItemMetadataUnsigned()
 
         val anyItem = metadata?.suggestions?.getOrNull(0)?.mediaItems?.getOrNull(0)
 
@@ -98,7 +99,6 @@ class WatchNextManagerTest {
         assertNotNull("Contains date", metadata?.publishedDate)
     }
 
-    private fun getMockedMediaItemMetadataUnsigned() = mServiceV2Mock!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
     private fun getMediaItemMetadataUnsigned() = mServiceV2!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {

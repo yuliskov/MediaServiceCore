@@ -8,7 +8,6 @@ public interface MediaItem {
     int TYPE_MUSIC = 1;
     int TYPE_CHANNEL = 2;
     int TYPE_PLAYLIST = 3;
-    int TYPE_TILE = 4;
 
     // Special type of items derived from groups.
     // Such items should have same ids.

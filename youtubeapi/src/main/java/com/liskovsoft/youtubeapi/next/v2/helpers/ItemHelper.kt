@@ -52,10 +52,10 @@ fun MusicItem.isUpcoming() = false
 
 ///////////
 
-private const val CONTENT_TYPE_UNDEFINED = "UNDEFINED"
-private const val CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
-private const val CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
-private const val CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
+private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
+private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
+private const val TILE_CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
+private const val TILE_CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
 private const val BADGE_STYLE_LIVE = "LIVE"
 private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
@@ -85,6 +85,8 @@ fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: m
 fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 
+fun TileItem.getContentType() = contentType
+
 ////////////
 
 private fun ItemWrapper.getTileItem() = tileRenderer
@@ -105,6 +107,13 @@ fun ItemWrapper.getType(): Int {
         return MediaItem.TYPE_VIDEO
     if (getMusicItem() != null)
         return MediaItem.TYPE_MUSIC
+    if (getTileItem() != null)
+        return when (getTileItem()?.getContentType()) {
+            TILE_CONTENT_TYPE_CHANNEL -> MediaItem.TYPE_CHANNEL
+            TILE_CONTENT_TYPE_PLAYLIST -> MediaItem.TYPE_PLAYLIST
+            TILE_CONTENT_TYPE_VIDEO -> MediaItem.TYPE_VIDEO
+            else -> MediaItem.TYPE_UNDEFINED
+        }
 
     return MediaItem.TYPE_UNDEFINED;
 }
@@ -180,6 +189,14 @@ fun ShelfItem.getTitle() = title?.getText()
 fun ShelfItem.getItemWrappers() = content?.horizontalListRenderer?.items
 fun ShelfItem.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
 fun ShelfItem.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
+
+////////
+
+/**
+ * In some cases chip item contains multiple shelfs<br/>
+ * Other regular shelfs in this case is empty
+ */
+fun ChipItem.getShelfItems() = chipCloudChipRenderer?.content?.sectionListRenderer?.contents?.map { it?.shelfRenderer }
 
 //////
 

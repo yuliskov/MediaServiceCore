@@ -37,6 +37,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    testImplementation project(':sharedtests')
+    testImplementation "co.infinum:retromock:1.1.1"
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 

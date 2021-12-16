@@ -78,7 +78,12 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
     private val suggestionList by lazy {
-        suggestedSections?.map { it?.let { MediaGroupImpl(it) } }
+        val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) MediaGroupImpl(it) else null }
+        if (list?.size ?: 0 > 0)
+            list
+        else
+            // In rare cases first chip item contains all shelfs
+            suggestedSections?.firstOrNull()?.getChipItems()?.firstOrNull()?.getShelfItems()?.map { it?.let { MediaGroupImpl(it) } }
     }
 
     private val viewCountText by lazy {

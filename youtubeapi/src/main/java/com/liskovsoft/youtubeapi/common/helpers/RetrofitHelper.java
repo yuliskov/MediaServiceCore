@@ -83,7 +83,7 @@ public class RetrofitHelper {
         return new JsonPathSkipTypeAdapter<>(parser, clazz);
     }
 
-    private static Retrofit buildRetrofit(Converter.Factory factory) {
+    public static Retrofit buildRetrofit(Converter.Factory factory) {
         Retrofit.Builder builder = createBuilder();
 
         return builder

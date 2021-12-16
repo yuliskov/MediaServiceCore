@@ -90,12 +90,21 @@ data class ChipItem(
             val content: Content?
     ) {
         data class Content(
-                val horizontalListRenderer: HorizontalListRenderer?
+                val horizontalListRenderer: HorizontalListRenderer?,
+                val sectionListRenderer: SectionListRenderer?
         ) {
             data class HorizontalListRenderer(
                     val items: List<ItemWrapper?>?,
                     val continuations: List<ContinuationItem?>?
             )
+
+            data class SectionListRenderer(
+                    val contents: List<Content?>?
+            ) {
+                data class Content(
+                        val shelfRenderer: ShelfItem?
+                )
+            }
         }
     }
 }
@@ -138,7 +147,8 @@ data class TileItem(
         val metadata: Metadata?,
         val header: Header?,
         val onSelectCommand: NavigationEndpointItem?,
-        val menu: MenuItem?
+        val menu: MenuItem?,
+        val contentType: String?
 ) {
     data class Metadata(
             val tileMetadataRenderer: TileMetadataRenderer?

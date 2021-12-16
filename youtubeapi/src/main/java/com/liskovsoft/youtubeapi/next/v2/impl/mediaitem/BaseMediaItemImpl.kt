@@ -7,10 +7,6 @@ import com.liskovsoft.youtubeapi.next.v2.gen.kt.TextItem
 import kotlin.math.abs
 
 open class BaseMediaItemImpl : MediaItem {
-    protected val BADGE_STYLE_LIVE = "LIVE"
-    protected val BADGE_STYLE_UPCOMING = "UPCOMING"
-    protected val BADGE_STYLE_DEFAULT = "DEFAULT"
-
     private var _titleItem: String? = null
     private var _descriptionItem: String? = null
     private var _channelIdItem: String? = null

@@ -116,7 +116,8 @@ let tileItem = {
             playlistId: ""
         }
     },
-    menu: menuItem
+    menu: menuItem,
+    contentType: ""
 };
 
 let musicItem = {
@@ -228,6 +229,13 @@ let chipItem = {
             horizontalListRenderer: {
                 items: [itemWrapper],
                 continuations: [continuationItem]
+            },
+            sectionListRenderer: {
+                contents: [
+                    {
+                        shelfRenderer: shelfItem
+                    }
+                ]
             }
         }
     }

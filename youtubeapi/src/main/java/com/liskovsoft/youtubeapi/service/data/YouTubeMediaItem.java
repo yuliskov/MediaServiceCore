@@ -85,7 +85,20 @@ public class YouTubeMediaItem implements MediaItem {
     public static YouTubeMediaItem from(TileItem item) {
         YouTubeMediaItem video = new YouTubeMediaItem();
 
-        video.mMediaItemType = MediaItem.TYPE_TILE;
+        switch (item.getContentType() != null ? item.getContentType() : "") {
+            case TileItem.CONTENT_TYPE_PLAYLIST:
+                video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
+                break;
+            case TileItem.CONTENT_TYPE_CHANNEL:
+                video.mMediaItemType = MediaItem.TYPE_CHANNEL;
+                break;
+            case TileItem.CONTENT_TYPE_VIDEO:
+                video.mMediaItemType = MediaItem.TYPE_VIDEO;
+                break;
+            default:
+                video.mMediaItemType = MediaItem.TYPE_UNDEFINED;
+                break;
+        }
 
         video.mTitle = item.getTitle();
         video.mDescription = YouTubeMediaServiceHelper.createDescription(

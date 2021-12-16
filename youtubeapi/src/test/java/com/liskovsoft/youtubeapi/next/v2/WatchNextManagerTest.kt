@@ -5,7 +5,9 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
-import org.junit.Assert
+import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
+import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextManagerMock
+import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextServiceV2Mock
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +18,9 @@ import org.robolectric.shadows.ShadowLog
 @RunWith(RobolectricTestRunner::class)
 class WatchNextManagerTest {
     private var mManager: WatchNextManager? = null
+    private var mManagerMock: WatchNextManagerMock? = null
     private var mServiceV2: WatchNextServiceV2? = null
+    private var mServiceV2Mock: WatchNextServiceV2Mock? = null
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -25,6 +29,16 @@ class WatchNextManagerTest {
         ShadowLog.stream = System.out // catch Log class output
         mManager = RetrofitHelper.withGson(WatchNextManager::class.java)
         mServiceV2 = WatchNextServiceV2.instance()
+
+        mManagerMock = MockUtils.mockWithGson(WatchNextManagerMock::class.java)
+        mServiceV2Mock = WatchNextServiceV2Mock.instance()
+    }
+
+    @Test
+    fun testThatMockedWatchNextResultNotNull() {
+        val watchNextResult = getMockedWatchNextResult()
+
+        assertNotNull("watchNextResult not null", watchNextResult)
     }
 
     @Test
@@ -32,6 +46,22 @@ class WatchNextManagerTest {
         val watchNextResult = getWatchNextResult()
 
         assertNotNull("watchNextResult not null", watchNextResult)
+    }
+
+    @Test
+    fun testThatMockedWatchNextResultCanBeConverted() {
+        val metadata = getMockedMediaItemMetadataUnsigned()
+
+        assertNotNull("Metadata isn't null", metadata)
+    }
+
+    @Test
+    fun testThatMockedWatchNextSuggestionsNotEmpty() {
+        val metadata = getMockedMediaItemMetadataUnsigned()
+
+        val anyItem = metadata?.suggestions?.getOrNull(0)?.mediaItems?.getOrNull(0)
+
+        assertNotNull("anyItem isn't null", anyItem)
     }
 
     @Test
@@ -68,11 +98,18 @@ class WatchNextManagerTest {
         assertNotNull("Contains date", metadata?.publishedDate)
     }
 
+    private fun getMockedMediaItemMetadataUnsigned() = mServiceV2Mock!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
     private fun getMediaItemMetadataUnsigned() = mServiceV2!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
         val wrapper = mManager!!.getWatchNextResultUnsigned(watchNextQuery)
+        return RetrofitHelper.get(wrapper)
+    }
+
+    private fun getMockedWatchNextResult(): WatchNextResult? {
+        val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val wrapper = mManagerMock!!.getWatchNextResultUnsigned(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 

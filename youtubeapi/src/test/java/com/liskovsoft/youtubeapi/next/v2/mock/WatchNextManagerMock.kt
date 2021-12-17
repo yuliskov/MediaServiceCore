@@ -17,3 +17,11 @@ interface WatchNextManagerMock: WatchNextManager {
     @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
     override fun getWatchNextResultUnsigned(@Body watchNextQuery: String?): Call<WatchNextResult?>?
 }
+
+interface WatchNextManagerMock2: WatchNextManager {
+    @Mock
+    @MockResponse(body = "next/v2/no_suggestions5.json")
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
+    override fun getWatchNextResultUnsigned(@Body watchNextQuery: String?): Call<WatchNextResult?>?
+}

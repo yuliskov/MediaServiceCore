@@ -197,6 +197,7 @@ fun ShelfItem.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
  * Other regular shelfs in this case is empty
  */
 fun ChipItem.getShelfItems() = chipCloudChipRenderer?.content?.sectionListRenderer?.contents?.map { it?.shelfRenderer }
+fun ChipItem.getTitle() = chipCloudChipRenderer?.text?.getText()
 
 //////
 

@@ -83,7 +83,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
             list
         else
             // In rare cases first chip item contains all shelfs
-            suggestedSections?.firstOrNull()?.getChipItems()?.firstOrNull()?.getShelfItems()?.map { it?.let { MediaGroupImpl(it) } }
+            suggestedSections?.firstOrNull()?.getChipItems()?.firstOrNull()?.run {
+                val chipTitle = getTitle() // shelfs inside a chip aren't have a titles
+                getShelfItems()?.map { it?.let { MediaGroupImpl(it).apply { title = title ?: chipTitle } } }
+            }
     }
 
     private val viewCountText by lazy {

@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextManagerMock
+import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextManagerMock2
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -18,6 +19,7 @@ import org.robolectric.shadows.ShadowLog
 class WatchNextManagerTest {
     private var mManager: WatchNextManager? = null
     private var mManagerMock: WatchNextManagerMock? = null
+    private var mManagerMock2: WatchNextManagerMock2? = null
     private var mServiceV2: WatchNextServiceV2? = null
     @Before
     fun setUp() {
@@ -29,6 +31,7 @@ class WatchNextManagerTest {
         mServiceV2 = WatchNextServiceV2.instance()
 
         mManagerMock = MockUtils.mockWithGson(WatchNextManagerMock::class.java)
+        mManagerMock2 = MockUtils.mockWithGson(WatchNextManagerMock2::class.java)
     }
 
     @Test
@@ -61,6 +64,32 @@ class WatchNextManagerTest {
         val metadata = getMediaItemMetadataUnsigned()
 
         val anyItem = metadata?.suggestions?.getOrNull(0)?.mediaItems?.getOrNull(0)
+
+        assertNotNull("anyItem isn't null", anyItem)
+    }
+
+    @Test
+    fun testThatMockedWatchNextResultCanBeConverted2() {
+        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextManager)
+
+        val metadata = getMediaItemMetadataUnsigned()
+
+        assertNotNull("Metadata isn't null", metadata)
+    }
+
+    @Test
+    fun testThatMockedWatchNextSuggestionsNotEmpty2() {
+        // Testing groups inside a Chip
+
+        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextManager)
+
+        val metadata = getMediaItemMetadataUnsigned()
+
+        val firstGroup = metadata?.suggestions?.getOrNull(0)
+
+        assertNotNull("Group inside a Chip has a title", firstGroup?.title)
+
+        val anyItem = firstGroup?.mediaItems?.getOrNull(0)
 
         assertNotNull("anyItem isn't null", anyItem)
     }

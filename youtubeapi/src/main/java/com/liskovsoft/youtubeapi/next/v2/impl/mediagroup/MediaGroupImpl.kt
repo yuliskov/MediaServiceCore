@@ -14,7 +14,7 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     private var _titleItem: String? = null
     private val titleItem by lazy { shelf.getTitle() }
     private var _mediaItemList: List<MediaItem?>? = null
-    private val mediaItemList by lazy { shelf.getItemWrappers()?.map { it?.let { MediaItemImpl(it) } } }
+    private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
     private var _nextPageKeyVal: String? = null
     private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 

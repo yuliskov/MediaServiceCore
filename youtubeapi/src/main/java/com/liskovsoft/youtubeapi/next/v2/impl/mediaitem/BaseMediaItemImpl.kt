@@ -14,7 +14,7 @@ open class BaseMediaItemImpl : MediaItem {
     private var _cardThumbImageUrl: String? = null
     private var _videoIdItem: String? = null
     private var _playlistIdItem: String? = null
-    private var _playlistIndexItem: Int = 0
+    private var _playlistIndexItem: Int? = null
     private var _playlistParamsItem: String? = null
 
     protected open val reloadPageKey: String?
@@ -39,7 +39,7 @@ open class BaseMediaItemImpl : MediaItem {
         get() = _cardThumbImageUrl
     protected open val playlistIdItem: String?
         get() = _playlistIdItem
-    protected open val playlistIndexItem: Int
+    protected open val playlistIndexItem: Int?
         get() = _playlistIndexItem
     protected open val channelIdItem: String?
         get() = _channelIdItem
@@ -132,7 +132,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getPlaylistIndex(): Int {
-        return _playlistIndexItem ?: playlistIndexItem
+        return _playlistIndexItem ?: playlistIndexItem ?: 0
     }
 
     fun setPlaylistIndex(index: Int) {

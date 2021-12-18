@@ -210,16 +210,20 @@ let videoMetadataItem = {
 
 let itemWrapper = {
     // TileItem
-    tileRenderer: tileItem, // VideoItem
-    gridVideoRenderer: videoItem, // SuggestedVideoItem
-    pivotVideoRenderer: videoItem, // MusicItem
-    tvMusicVideoRenderer: musicItem, // RadioItem
+    tileRenderer: tileItem, // universal items (video, music etc). new api
+    gridVideoRenderer: videoItem,
+    pivotVideoRenderer: videoItem, // suggested item
+    compactVideoRenderer: videoItem, // history/search result item
+    tvMusicVideoRenderer: musicItem,
     gridRadioRenderer: radioItem,
-    pivotRadioRenderer: radioItem, // ChannelItem
+    pivotRadioRenderer: radioItem,
+    compactRadioRenderer: radioItem,
     gridChannelRenderer: channelItem,
-    pivotChannelRenderer: channelItem, // PlaylistItem
+    pivotChannelRenderer: channelItem,
+    compactChannelRenderer: channelItem,
     gridPlaylistRenderer: playlistItem,
-    pivotPlaylistRenderer: playlistItem
+    pivotPlaylistRenderer: playlistItem,
+    compactPlaylistRenderer: playlistItem
 };
 
 let chipItem = {

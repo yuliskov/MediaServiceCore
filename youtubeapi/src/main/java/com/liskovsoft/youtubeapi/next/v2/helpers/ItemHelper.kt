@@ -89,12 +89,12 @@ fun TileItem.getContentType() = contentType
 
 ////////////
 
-private fun ItemWrapper.getTileItem() = tileRenderer
-private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: pivotVideoRenderer
+private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
-private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer
-private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer
-private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer
+private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
+private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer
+private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer ?: compactRadioRenderer
+private fun ItemWrapper.getTileItem() = tileRenderer
 
 fun ItemWrapper.getType(): Int {
     if (getChannelItem() != null)

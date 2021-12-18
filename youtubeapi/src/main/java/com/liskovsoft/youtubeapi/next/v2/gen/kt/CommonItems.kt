@@ -134,13 +134,17 @@ data class ItemWrapper(
         val tileRenderer: TileItem?,
         val gridVideoRenderer: VideoItem?,
         val pivotVideoRenderer: VideoItem?,
+        val compactVideoRenderer: VideoItem?,
         val tvMusicVideoRenderer: MusicItem?,
         val gridRadioRenderer: RadioItem?,
         val pivotRadioRenderer: RadioItem?,
+        val compactRadioRenderer: RadioItem?,
         val gridChannelRenderer: ChannelItem?,
         val pivotChannelRenderer: ChannelItem?,
+        val compactChannelRenderer: ChannelItem?,
         val gridPlaylistRenderer: PlaylistItem?,
-        val pivotPlaylistRenderer: PlaylistItem?
+        val pivotPlaylistRenderer: PlaylistItem?,
+        val compactPlaylistRenderer: PlaylistItem?
 )
 
 data class TileItem(

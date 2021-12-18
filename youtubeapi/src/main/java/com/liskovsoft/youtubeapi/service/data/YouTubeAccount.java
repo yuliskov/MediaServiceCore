@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
@@ -31,7 +30,7 @@ public class YouTubeAccount implements Account {
             return null;
         }
 
-        String[] split = spec.split(",");
+        String[] split = Helpers.splitObjectLegacy(spec);
 
         YouTubeAccount account = new YouTubeAccount();
 
@@ -57,7 +56,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s", mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail);
+        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail);
     }
 
     @Override

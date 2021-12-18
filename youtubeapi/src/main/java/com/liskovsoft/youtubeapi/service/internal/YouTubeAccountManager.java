@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
@@ -138,20 +139,17 @@ public class YouTubeAccountManager {
     }
 
     private void persistAccounts() {
-        StringBuilder result = new StringBuilder();
+        List<Account> nonEmptyAccounts = new ArrayList<>();
 
         for (Account account : mAccounts) {
             if (account.isEmpty()) {
                 continue;
             }
 
-            if (result.length() != 0) {
-                result.append("|");
-            }
-            result.append(account);
+            nonEmptyAccounts.add(account);
         }
 
-        setAccountManagerData(result.toString());
+        setAccountManagerData(Helpers.mergeArray(nonEmptyAccounts.toArray()));
 
         mSignInManager.invalidateCache();
     }
@@ -160,7 +158,7 @@ public class YouTubeAccountManager {
         String data = getAccountManagerData();
 
         if (data != null) {
-            String[] split = data.split("\\|");
+            String[] split = Helpers.splitArrayLegacy(data);
             mAccounts.clear();
 
             for (String spec : split) {

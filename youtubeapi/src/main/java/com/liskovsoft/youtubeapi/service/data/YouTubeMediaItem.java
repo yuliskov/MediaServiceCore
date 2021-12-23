@@ -284,6 +284,9 @@ public class YouTubeMediaItem implements MediaItem {
         return video;
     }
 
+    /**
+     * Special item derived from tab (e.g. user Library sections)
+     */
     public static YouTubeMediaItem from(GridTab tab, int type) {
         YouTubeMediaItem item = new YouTubeMediaItem();
         

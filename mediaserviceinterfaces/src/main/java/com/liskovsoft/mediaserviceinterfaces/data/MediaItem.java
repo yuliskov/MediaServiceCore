@@ -9,10 +9,6 @@ public interface MediaItem {
     int TYPE_CHANNEL = 2;
     int TYPE_PLAYLIST = 3;
 
-    // Special type of items derived from groups.
-    // Such items should have same ids.
-    int TYPE_PLAYLISTS_SECTION = 8;
-    int TYPE_CHANNELS_SECTION = 12;
     int getType();
 
     // Music/Video props

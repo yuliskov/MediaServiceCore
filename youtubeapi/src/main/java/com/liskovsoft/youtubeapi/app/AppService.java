@@ -238,7 +238,7 @@ public class AppService {
         return mCachedAppInfo != null ? mCachedAppInfo.getBaseUrl() : null;
     }
 
-    private void updateAppInfoData() {
+    private synchronized void updateAppInfoData() {
         if (mCachedAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
@@ -252,7 +252,7 @@ public class AppService {
         }
     }
 
-    private void updatePlayerData() {
+    private synchronized void updatePlayerData() {
         if (mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
@@ -266,7 +266,7 @@ public class AppService {
         }
     }
 
-    private void updateBaseData() {
+    private synchronized void updateBaseData() {
         if (mCachedBaseData != null && System.currentTimeMillis() - mBaseDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
             return;
         }

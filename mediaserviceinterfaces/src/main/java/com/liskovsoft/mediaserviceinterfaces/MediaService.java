@@ -6,4 +6,5 @@ public interface MediaService {
     MediaGroupManager getMediaGroupManager();
     MediaItemManager getMediaItemManager();
     void invalidateCache();
+    void refreshCacheIfNeeded();
 }

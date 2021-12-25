@@ -7,9 +7,13 @@ import com.liskovsoft.mediaserviceinterfaces.RemoteManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
@@ -18,6 +22,7 @@ public class YouTubeMediaService implements MediaService {
     private final YouTubeRemoteManager mDeviceLinkManager;
     private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
+    private Disposable mRefreshCacheAction;
 
     private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
@@ -62,6 +67,19 @@ public class YouTubeMediaService implements MediaService {
         YouTubeMediaItemManager.instance().invalidateCache();
         YouTubeSignInManager.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)
         LocaleManager.unhold();
+    }
+
+    @Override
+    public void refreshCacheIfNeeded() {
+        if (RxUtils.isAnyActionRunning(mRefreshCacheAction)) {
+            return;
+        }
+
+        mRefreshCacheAction = RxUtils.execute(refreshCacheIfNeededObserve());
+    }
+
+    private Observable<Void> refreshCacheIfNeededObserve() {
+        return ObservableHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
     }
 
     public static String serialize(MediaItem mediaItem) {

@@ -285,4 +285,10 @@ public class AppService {
         mCachedPlayerData = null;
         mCachedBaseData = null;
     }
+
+    public void refreshCacheIfNeeded() {
+        updateAppInfoData();
+        updatePlayerData();
+        updateBaseData();
+    }
 }

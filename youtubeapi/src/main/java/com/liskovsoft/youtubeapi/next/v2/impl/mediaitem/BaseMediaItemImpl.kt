@@ -3,49 +3,48 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.TextItem
 import kotlin.math.abs
 
 open class BaseMediaItemImpl : MediaItem {
     private var _titleItem: String? = null
+        get() = field ?: titleItem
     private var _descriptionItem: String? = null
+        get() = field ?: descriptionItem
     private var _channelIdItem: String? = null
+        get() = field ?: channelIdItem
     private var _reloadPageKey: String? = null
+        get() = field ?: reloadPageKey
     private var _cardThumbImageUrl: String? = null
+        get() = field ?: cardThumbImageUrl
     private var _videoIdItem: String? = null
+        get() = field ?: videoIdItem
     private var _playlistIdItem: String? = null
+        get() = field ?: playlistIdItem
     private var _playlistIndexItem: Int? = null
+        get() = field ?: playlistIndexItem
     private var _playlistParamsItem: String? = null
+        get() = field ?: playlistParamsItem
 
-    protected open val reloadPageKey: String?
-        get() = _reloadPageKey
     private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
 
+    protected open val reloadPageKey: String? = null
     protected open val badgeTextItem: String? = null
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
-    protected open val videoIdItem: String?
-        get() = _videoIdItem
-    protected open val titleItem: String?
-        get() = _titleItem
+    protected open val videoIdItem: String? = null
+    protected open val titleItem: String? = null
     protected open val descBadgeText: String? = null
     protected open val userName: String? = null
     protected open val publishedTime: String? = null
     protected open val viewCountText: String? = null
     protected open val upcomingEventText: String? = null
     protected open val durationItemMs: Int = 0
-    protected open val descriptionItem: String?
-        get() = _descriptionItem
-    protected open val cardThumbImageUrl: String?
-        get() = _cardThumbImageUrl
-    protected open val playlistIdItem: String?
-        get() = _playlistIdItem
-    protected open val playlistIndexItem: Int?
-        get() = _playlistIndexItem
-    protected open val channelIdItem: String?
-        get() = _channelIdItem
+    protected open val descriptionItem: String? = null
+    protected open val cardThumbImageUrl: String? = null
+    protected open val playlistIdItem: String? = null
+    protected open val playlistIndexItem: Int? = null
+    protected open val channelIdItem: String? = null
     protected open val mediaUrl: String? = null
-    protected open val playlistParamsItem: String?
-        get() = _playlistParamsItem
+    protected open val playlistParamsItem: String? = null
     protected open val isLiveItem: Boolean = false
     protected open val isUpcomingItem: Boolean = false
 
@@ -80,15 +79,23 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getTitle(): String? {
-        return _titleItem ?: titleItem
+        return _titleItem
+    }
+
+    fun setTitle(title: String?) {
+        _titleItem = title
     }
 
     override fun getDescription(): String? {
-        return _descriptionItem ?: descriptionItem
+        return _descriptionItem
+    }
+
+    fun setDescription(description: String?) {
+        _descriptionItem = description
     }
 
     override fun getVideoId(): String? {
-        return videoIdItem
+        return _videoIdItem
     }
 
     override fun getProductionDate(): String? {
@@ -96,15 +103,15 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getCardImageUrl(): String? {
-        return cardThumbImageUrl
+        return _cardThumbImageUrl
     }
 
     override fun getBackgroundImageUrl(): String? {
-        return cardThumbImageUrl
+        return _cardThumbImageUrl
     }
 
     override fun getPlaylistParams(): String? {
-        return _playlistParamsItem ?: playlistParamsItem
+        return _playlistParamsItem
     }
 
     fun setPlaylistParams(params: String?) {
@@ -120,7 +127,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getPlaylistId(): String? {
-        return playlistIdItem
+        return _playlistIdItem
     }
 
     override fun getVideoUrl(): String? {
@@ -128,11 +135,15 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getChannelId(): String? {
-        return _channelIdItem ?: channelIdItem
+        return _channelIdItem
+    }
+
+    fun setChannelId(channelId: String?) {
+        _channelIdItem = channelId
     }
 
     override fun getPlaylistIndex(): Int {
-        return _playlistIndexItem ?: playlistIndexItem ?: 0
+        return _playlistIndexItem ?: 0
     }
 
     fun setPlaylistIndex(index: Int) {
@@ -217,18 +228,6 @@ open class BaseMediaItemImpl : MediaItem {
 
     open fun isEmpty(): Boolean {
         return title == null && cardImageUrl == null
-    }
-
-    fun setTitle(title: String?) {
-        _titleItem = title
-    }
-
-    fun setDescription(description: String?) {
-        _descriptionItem = description
-    }
-
-    fun setChannelId(channelId: String?) {
-        _channelIdItem = channelId
     }
 
     open fun sync(metadata: MediaItemMetadata?) {

@@ -37,6 +37,10 @@ class WatchNextServiceV2 private constructor() {
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {
         val nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup)
 
+        if (nextKey == null) {
+            return null;
+        }
+
         val continuation = continueWatchNext(BrowseManagerParams.getContinuationQuery(nextKey))
 
         return MediaGroupImpl.from(continuation, mediaGroup)

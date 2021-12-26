@@ -12,14 +12,19 @@ import java.util.*
 
 data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     private var _titleItem: String? = null
-    private val titleItem by lazy { shelf.getTitle() }
+                    get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
-    private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
+                    get() = field ?: mediaItemList
     private var _nextPageKeyVal: String? = null
+                    get() = if (field == "") null else field ?: nextPageKeyVal
+                    set(value) { field = value ?: "" }
+
+    private val titleItem by lazy { shelf.getTitle() }
+    private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
     private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 
     fun getNextPageKey(): String? {
-        return _nextPageKeyVal ?: nextPageKeyVal
+        return _nextPageKeyVal
     }
 
     fun setNextPageKey(key: String?) {
@@ -33,7 +38,7 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     }
 
     override fun getMediaItems(): List<MediaItem?>? {
-        return _mediaItemList ?: mediaItemList
+        return _mediaItemList
     }
 
     fun setMediaItems(list: List<MediaItem?>?) {
@@ -41,7 +46,7 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     }
 
     override fun getTitle(): String? {
-        return _titleItem ?: titleItem
+        return _titleItem
     }
 
     override fun setTitle(title: String?) {

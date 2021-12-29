@@ -5,9 +5,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
@@ -34,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoungeService {
     private static final String TAG = LoungeService.class.getSimpleName();
-    private static final long TOKEN_ACTIVE_TIME_MS = 60 * 60 * 1_000;
+    private static final long TOKEN_ACTIVE_TIME_MS = 30 * 60 * 1_000;
     private static LoungeService sInstance;
     private final BindManager mBindManager;
     private final InfoManager mInfoManager;

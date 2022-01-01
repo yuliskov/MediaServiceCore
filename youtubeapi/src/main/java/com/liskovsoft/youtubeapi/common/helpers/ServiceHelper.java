@@ -40,7 +40,7 @@ public class ServiceHelper {
      */
     public static int timeTextToMillis(String lengthText) {
         if (lengthText == null || lengthText.contains(",")) {
-            return 0;
+            return -1;
         }
 
         String[] timeParts = lengthText.split(TIME_TEXT_DELIM);

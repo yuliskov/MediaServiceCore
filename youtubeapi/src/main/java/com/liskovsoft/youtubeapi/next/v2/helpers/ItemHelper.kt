@@ -130,9 +130,9 @@ fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() 
 fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
 fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getLengthText()
 fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
-fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex() ?: 0
-fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: false
-fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming() ?: false
+fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
+fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
+fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
 
 /////
 
@@ -206,5 +206,5 @@ fun NextVideoItem.getTitle() = item?.previewButtonRenderer?.title?.getText()
 fun NextVideoItem.getAuthor() = item?.previewButtonRenderer?.byline?.getText()
 fun NextVideoItem.getThumbnails() = item?.previewButtonRenderer?.thumbnail
 fun NextVideoItem.getPlaylistId() = endpoint?.watchEndpoint?.playlistId
-fun NextVideoItem.getPlaylistIndex() = endpoint?.watchEndpoint?.index ?: 0
+fun NextVideoItem.getPlaylistIndex() = endpoint?.watchEndpoint?.index
 fun NextVideoItem.getParams() = endpoint?.watchEndpoint?.params

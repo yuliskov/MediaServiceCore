@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import kotlin.math.abs
 
 open class BaseMediaItemImpl : MediaItem {
@@ -37,7 +38,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val publishedTime: String? = null
     protected open val viewCountText: String? = null
     protected open val upcomingEventText: String? = null
-    protected open val durationItemMs: Int = 0
+    protected open val lengthText: String? = null
     protected open val descriptionItem: String? = null
     protected open val cardThumbImageUrl: String? = null
     protected open val playlistIdItem: String? = null
@@ -45,8 +46,8 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val channelIdItem: String? = null
     protected open val mediaUrl: String? = null
     protected open val playlistParamsItem: String? = null
-    protected open val isLiveItem: Boolean = false
-    protected open val isUpcomingItem: Boolean = false
+    protected open val isLiveItem: Boolean? = null
+    protected open val isUpcomingItem: Boolean? = null
 
     protected companion object {
         var sId: Int = 0
@@ -119,7 +120,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getDurationMs(): Int {
-        return durationItemMs;
+        return lengthText?.let { ServiceHelper.timeTextToMillis(it) } ?: -1
     }
 
     override fun getBadgeText(): String? {
@@ -143,7 +144,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getPlaylistIndex(): Int {
-        return _playlistIndexItem ?: 0
+        return _playlistIndexItem ?: -1
     }
 
     fun setPlaylistIndex(index: Int) {
@@ -151,15 +152,15 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun isLive(): Boolean {
-        return isLiveItem
+        return isLiveItem ?: false
     }
 
     override fun isUpcoming(): Boolean {
-        return isUpcomingItem
+        return isUpcomingItem ?: false
     }
 
     override fun getPercentWatched(): Int {
-        return 0
+        return -1
     }
 
     override fun getAuthor(): String? {

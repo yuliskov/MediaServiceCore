@@ -87,7 +87,7 @@ public class TileItem {
     }
 
     public int getPercentWatched() {
-        return mHeader != null ? mHeader.getPercentWatched() : 0;
+        return mHeader != null ? mHeader.getPercentWatched() : -1;
     }
 
     public String getRichThumbnailUrl() {

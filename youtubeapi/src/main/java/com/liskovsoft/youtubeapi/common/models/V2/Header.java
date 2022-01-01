@@ -11,7 +11,7 @@ public class Header {
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text")
     private TextItem mDuration;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
-    private int mPercentWatched;
+    private int mPercentWatched = -1;
     @JsonPath({
             "$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style",
             "$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style"

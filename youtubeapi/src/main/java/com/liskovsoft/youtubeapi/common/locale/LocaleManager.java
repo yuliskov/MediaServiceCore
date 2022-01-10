@@ -82,7 +82,7 @@ public class LocaleManager {
         Locale locale;
 
         // Proper locale
-        if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.getContext() != null) {
+        if (GlobalPreferences.isInitialized()) {
             locale = LocaleUpdater.getSavedLocale(GlobalPreferences.sInstance.getContext());
 
             if (locale == null) {

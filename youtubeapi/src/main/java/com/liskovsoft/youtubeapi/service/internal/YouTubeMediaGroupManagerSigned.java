@@ -1,9 +1,13 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.R;
 import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
@@ -14,7 +18,9 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();
@@ -22,6 +28,7 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     private final BrowseServiceSigned mBrowseServiceSigned;
     private final YouTubeSignInManager mSignInManager;
     private static YouTubeMediaGroupManagerSigned sInstance;
+    private final Map<String, Section> mTopSections = new HashMap<>();
 
     private YouTubeMediaGroupManagerSigned() {
         mSearchServiceSigned = SearchServiceSigned.instance();
@@ -93,7 +100,9 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     @Override
     public SectionTab getHomeTab() {
         Log.d(TAG, "Emitting home group...");
-        return mBrowseServiceSigned.getHome(mSignInManager.getAuthorizationHeader());
+        SectionTab home = mBrowseServiceSigned.getHome(mSignInManager.getAuthorizationHeader());
+        //moveToTop(home); // not working properly
+        return home;
     }
 
     @Override
@@ -144,6 +153,53 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     @Override
     public SectionTabContinuation continueSectionTab(String nextPageKey) {
         Log.d(TAG, "Continue tab...");
-        return mBrowseServiceSigned.continueSectionTab(nextPageKey, mSignInManager.getAuthorizationHeader());
+        SectionTabContinuation continuation = mBrowseServiceSigned.continueSectionTab(nextPageKey, mSignInManager.getAuthorizationHeader());
+        //moveToTop(continuation); // not working properly
+        return continuation;
+    }
+
+    private void moveToTop(SectionTab sectionTab) {
+        if (sectionTab == null || !GlobalPreferences.isInitialized()) {
+            return;
+        }
+
+        List<Section> sections = sectionTab.getSections();
+
+        if (sections != null) {
+            extractTopSections(sections);
+
+            if (!mTopSections.isEmpty()) {
+                sections.addAll(0, mTopSections.values());
+            }
+        }
+    }
+
+    private void moveToTop(SectionTabContinuation continuation) {
+        if (continuation == null || !GlobalPreferences.isInitialized()) {
+            return;
+        }
+
+        List<Section> sections = continuation.getSections();
+
+        extractTopSections(sections);
+    }
+
+    private void extractTopSections(List<Section> sections) {
+        if (sections == null || !GlobalPreferences.isInitialized()) {
+            return;
+        }
+
+        // In this step locale always english (investigate why)
+        Object[] trending = new String[] {"В тренде", "Популярне", "Trending"};
+        Helpers.removeIf(sections, section -> {
+            if (Helpers.equalsAny(section.getTitle(), trending)) {
+                // Remove if the section already moved to top (to avoid duplicates)
+                boolean remove = mTopSections.containsKey(section.getTitle());
+                mTopSections.put(section.getTitle(), section);
+                return remove;
+            }
+
+            return false;
+        });
     }
 }

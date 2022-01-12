@@ -107,7 +107,7 @@ public class RetrofitHelper {
         return sOkHttpClient;
     }
 
-    private static OkHttpClient createOkHttpClient() {
+    public static OkHttpClient createOkHttpClient() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
         //disableCache(okBuilder);

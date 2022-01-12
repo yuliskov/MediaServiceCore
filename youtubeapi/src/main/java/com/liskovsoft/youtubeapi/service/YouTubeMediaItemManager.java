@@ -127,11 +127,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex) {
-        return getMetadataV2(videoId, playlistId, playlistIndex, null);
-    }
-
-    private YouTubeMediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+    public YouTubeMediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
         checkSigned();
 
         WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams);
@@ -203,8 +199,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex) {
-        return ObservableHelper.fromNullable(() -> getMetadata(videoId, playlistId, playlistIndex));
+    public Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+        return ObservableHelper.fromNullable(() -> getMetadata(videoId, playlistId, playlistIndex, playlistParams));
     }
 
     @Override

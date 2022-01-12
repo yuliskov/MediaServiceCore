@@ -21,7 +21,7 @@ public interface MediaItemManager {
     MediaItemStoryboard getStoryboard(String videoId);
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
-    MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex);
+    MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams);
     MediaGroup continueGroup(MediaGroup mediaGroup);
     void updateHistoryPosition(MediaItem item, float positionSec);
     void updateHistoryPosition(String videoId, float positionSec);
@@ -48,7 +48,7 @@ public interface MediaItemManager {
     Observable<MediaItemStoryboard> getStoryboardObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
     Observable<MediaItemMetadata> getMetadataObserve(String videoId);
-    Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex);
+    Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex, String playlistParams);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
     Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec);
     Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec);

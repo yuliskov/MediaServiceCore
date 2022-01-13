@@ -127,7 +127,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public YouTubeMediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+    public MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+        return getMetadataV2(videoId, playlistId, playlistIndex, playlistParams);
+    }
+
+    private MediaItemMetadata getMetadataV1(String videoId, String playlistId, int playlistIndex, String playlistParams) {
         checkSigned();
 
         WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams);
@@ -144,7 +148,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         return getMetadataIntV2(videoId);
     }
 
-    private YouTubeMediaItemMetadata getMetadataInt(String videoId) {
+    private YouTubeMediaItemMetadata getMetadataIntV1(String videoId) {
         checkSigned();
 
         WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId);

@@ -485,6 +485,7 @@ public class YouTubeMediaItem implements MediaItem {
         return mClickTrackingParams;
     }
 
+    @Override
     public void sync(MediaItemMetadata metadata) {
         if (metadata == null) {
             return;

@@ -231,7 +231,7 @@ open class BaseMediaItemImpl : MediaItem {
         return title == null && cardImageUrl == null
     }
 
-    open fun sync(metadata: MediaItemMetadata?) {
+    override fun sync(metadata: MediaItemMetadata?) {
         if (metadata == null) {
             return
         }

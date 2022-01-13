@@ -78,4 +78,5 @@ public interface MediaItem {
     double getRatingScore();
     boolean hasUploads();
     String getClickTrackingParams();
+    void sync(MediaItemMetadata metadata);
 }

@@ -184,11 +184,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             MediaItemMetadata metadata = getMetadata(item);
 
             if (metadata != null) {
-                if (item instanceof YouTubeMediaItem) {
-                    ((YouTubeMediaItem) item).sync(metadata);
-                } else if (item instanceof MediaItemImpl) {
-                    ((MediaItemImpl) item).sync(metadata);
-                }
+                item.sync(metadata);
                 emitter.onNext(metadata);
                 emitter.onComplete();
             } else {

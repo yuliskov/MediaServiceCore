@@ -43,8 +43,12 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create(new YouTubeMediaGroup(type), browseResult.getItemWrappers(), browseResult.getNextPageKey());
     }
 
-    public static MediaGroup from(GridTabContinuation continuation) {
-        return from(continuation, new YouTubeMediaGroup(MediaGroup.TYPE_UNDEFINED));
+    public static MediaGroup from(GridTabContinuation continuation, String groupTitle) {
+        MediaGroup mediaGroup = from(continuation, new YouTubeMediaGroup(MediaGroup.TYPE_UNDEFINED));
+        if (mediaGroup != null) {
+            mediaGroup.setTitle(groupTitle);
+        }
+        return mediaGroup;
     }
 
     public static MediaGroup from(GridTabContinuation continuation, MediaGroup baseGroup) {

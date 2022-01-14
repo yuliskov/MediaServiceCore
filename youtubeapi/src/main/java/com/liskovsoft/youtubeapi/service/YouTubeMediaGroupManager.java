@@ -187,7 +187,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         GridTabContinuation continuation = mMediaGroupManagerReal.continueGridTab(((YouTubeMediaItem) mediaItem).getReloadPageKey());
 
-        return YouTubeMediaGroup.from(continuation);
+        return YouTubeMediaGroup.from(continuation, mediaItem.getTitle());
     }
 
     @Override

@@ -25,6 +25,7 @@ public interface MediaGroupManagerInt {
     SectionTab getNewsTab();
     SectionTab getGamingTab();
     SectionList getChannel(String channelId);
+    GridTab getGridChannel(String channelId);
     List<GridTab> getPlaylists();
     SearchResultContinuation continueSearch(String nextKey);
     SectionContinuation continueSection(String nextKey);

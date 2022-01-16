@@ -142,6 +142,12 @@ public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
     }
 
     @Override
+    public GridTab getGridChannel(String channelId) {
+        // NotImplemented
+        return null;
+    }
+
+    @Override
     public SectionTabContinuation continueSectionTab(String nextPageKey) {
         Log.d(TAG, "Continue tab...");
         return mBrowseServiceUnsigned.continueSectionTab(nextPageKey);

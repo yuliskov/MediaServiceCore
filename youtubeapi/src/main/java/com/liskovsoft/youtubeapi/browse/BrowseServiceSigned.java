@@ -49,7 +49,7 @@ public class BrowseServiceSigned {
     }
 
     public GridTab getSubscriptions(String authorization) {
-        GridTab subs = getGridTab(0, BrowseManagerParams.getSubscriptionsQuery(), authorization);
+        GridTab subs = getGridTab(BrowseManagerParams.getSubscriptionsQuery(), authorization);
 
         // LIVE & UPCOMING videos always on top
         if (subs != null && subs.getItemWrappers() != null) {
@@ -111,7 +111,7 @@ public class BrowseServiceSigned {
     }
 
     public GridTab getHistory(String authorization) {
-        return getGridTab(0, BrowseManagerParams.getHistoryQuery(), authorization); // web client version (needs new parser but can remove item from history)
+        return getGridTab(BrowseManagerParams.getHistoryQuery(), authorization); // web client version (needs new parser but can remove item from history)
         //return getGridTab(0, BrowseManagerParams.getMyLibraryQuery(), authorization);
     }
 
@@ -149,6 +149,13 @@ public class BrowseServiceSigned {
         return getSectionList(BrowseManagerParams.getChannelQuery(channelId), authorization);
     }
 
+    /**
+     * Special type of channel that could be found inside Music section (see Liked row More button)
+     */
+    public GridTab getGridChannel(String channelId, String authorization) {
+        return getGridTab(BrowseManagerParams.getChannelQuery(channelId), authorization);
+    }
+
     private List<GridTab> getGridTabs(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getGridTabs: authorization is null.");
@@ -170,16 +177,24 @@ public class BrowseServiceSigned {
         return result;
     }
 
-    private GridTab getGridTab(int index, String query, String authorization) {
+    private GridTab getGridTab(String query, String authorization) {
         List<GridTab> gridTabs = getGridTabs(query, authorization);
 
-        GridTab result = null;
+        return firstWithItems(gridTabs);
+    }
 
-        if (gridTabs != null) {
-            result = gridTabs.get(index);
+    private GridTab firstWithItems(List<GridTab> gridTabs) {
+        if (gridTabs == null || gridTabs.isEmpty()) {
+            return null;
         }
 
-        return result;
+        for (GridTab tab : gridTabs) {
+            if (tab.getItemWrappers() != null) {
+                return tab;
+            }
+        }
+
+        return gridTabs.get(0); // fallback to first item (don't know whether it's used somewhere)
     }
 
     private List<GridTab> getGridTabs(int fromIndex, String query, String authorization) {

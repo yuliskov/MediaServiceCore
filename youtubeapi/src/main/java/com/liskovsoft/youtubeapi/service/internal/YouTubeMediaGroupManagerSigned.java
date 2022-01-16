@@ -122,6 +122,11 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
+    public GridTab getGridChannel(String channelId) {
+        return mBrowseServiceSigned.getGridChannel(channelId, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
     public List<GridTab> getPlaylists() {
         Log.d(TAG, "Start loading playlists...");
 

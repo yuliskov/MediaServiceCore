@@ -281,9 +281,16 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         return Observable.create(emitter -> {
             checkSigned();
 
-            SectionList sectionList = mMediaGroupManagerReal.getChannel(channelId);
+            // Special type of channel that could be found inside Music section (see Liked row More button)
+            if (channelId != null && channelId.startsWith("FE")) {
+                GridTab gridChannel = mMediaGroupManagerReal.getGridChannel(channelId);
 
-            emitGroups(emitter, sectionList, MediaGroup.TYPE_CHANNEL);
+                emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
+            } else {
+                SectionList channel = mMediaGroupManagerReal.getChannel(channelId);
+
+                emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
+            }
         });
     }
 
@@ -351,6 +358,26 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             ObservableHelper.onError(emitter, msg);
         } else {
             emitter.onNext(groups);
+            emitter.onComplete();
+        }
+    }
+
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, GridTab grid, int type) {
+        if (grid == null) {
+            String msg = "emitGroups: Grid is null";
+            Log.e(TAG, msg);
+            ObservableHelper.onError(emitter, msg);
+            return;
+        }
+
+        MediaGroup group = YouTubeMediaGroup.from(grid, type);
+
+        if (group == null) {
+            String msg = "emitGroups: Grid content is null";
+            Log.e(TAG, msg);
+            ObservableHelper.onError(emitter, msg);
+        } else {
+            emitter.onNext(Collections.singletonList(group));
             emitter.onComplete();
         }
     }

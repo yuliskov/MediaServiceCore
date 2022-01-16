@@ -186,7 +186,7 @@ public class RetrofitHelper {
      * Usage: <code>OkHttpClient newClient = wrapDns(client)</code><br/>
      * https://github.com/square/okhttp/blob/master/okhttp-dnsoverhttps/src/test/java/okhttp3/dnsoverhttps/DohProviders.java
      */
-    private static OkHttpClient wrapDns(OkHttpClient client) {
+    public static OkHttpClient wrapDns(OkHttpClient client) {
         return client.newBuilder().dns(buildGoogle(client)).build();
     }
 

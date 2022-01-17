@@ -86,9 +86,9 @@ public class AppManagerTest {
     public void testThatClientIdAndSecretNotEmpty() {
         for (String userAgent : new String[]{
                 AppConstants.USER_AGENT_COBALT,
-                AppConstants.USER_AGENT_LEGACY,
-                AppConstants.USER_AGENT_LEGACY_2,
-                AppConstants.USER_AGENT_MODERN
+                AppConstants.USER_AGENT_SAMSUNG,
+                AppConstants.USER_AGENT_SAMSUNG_2,
+                AppConstants.USER_AGENT_LG_2013
         }) {
             testThatClientIdAndSecretNotEmpty(userAgent);
         }

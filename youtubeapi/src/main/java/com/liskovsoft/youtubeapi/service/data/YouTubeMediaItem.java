@@ -113,6 +113,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mProductionDate = item.getPublishedTime();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
+        video.mPlaylistParams = item.getPlaylistParams();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
@@ -437,7 +438,9 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     public void setPlaylistParams(String params) {
-        mPlaylistParams = params;
+        if (params != null) {
+            mPlaylistParams = params;
+        }
     }
 
     @Override

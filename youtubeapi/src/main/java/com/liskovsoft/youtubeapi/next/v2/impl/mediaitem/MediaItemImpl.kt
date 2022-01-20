@@ -1,8 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.helpers.*
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.ItemWrapper
+import com.liskovsoft.youtubeapi.next.v2.helpers.*
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {

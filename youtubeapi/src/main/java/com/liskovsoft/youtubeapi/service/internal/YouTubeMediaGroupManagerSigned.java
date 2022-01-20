@@ -116,9 +116,9 @@ public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
     }
 
     @Override
-    public SectionList getChannel(String channelId) {
+    public SectionList getChannel(String channelId, String params) {
         Log.d(TAG, "Emitting channel sections...");
-        return mBrowseServiceSigned.getChannel(channelId, mSignInManager.getAuthorizationHeader());
+        return mBrowseServiceSigned.getChannel(channelId, params, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

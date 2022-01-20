@@ -14,6 +14,7 @@ public class BrowseManagerParams {
     private static final String MUSIC = "\"browseId\":\"FEtopics\",\"params\":\"-gIFbXVzaWM%3D\"";
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
+    private static final String CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\"";
     private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
 
     public static String getHomeQuery() {
@@ -45,7 +46,11 @@ public class BrowseManagerParams {
     }
 
     public static String getChannelQuery(String channelId) {
-        String channelTemplate = String.format(CHANNEL, channelId);
+        return getChannelQuery(channelId, null);
+    }
+
+    public static String getChannelQuery(String channelId, String params) {
+        String channelTemplate = params != null ? String.format(CHANNEL_FULL, channelId, params) : String.format(CHANNEL, channelId);
         return ServiceHelper.createQuery(channelTemplate);
     }
 

@@ -279,6 +279,10 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<List<MediaGroup>> getChannelObserve(String channelId) {
+        return getChannelObserve(channelId, null);
+    }
+
+    private Observable<List<MediaGroup>> getChannelObserve(String channelId, String params) {
         return Observable.create(emitter -> {
             checkSigned();
 
@@ -288,7 +292,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
             } else {
-                SectionList channel = mMediaGroupManagerReal.getChannel(channelId);
+                SectionList channel = mMediaGroupManagerReal.getChannel(channelId, params);
 
                 emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
             }
@@ -297,7 +301,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
     @Override
     public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
-        return getChannelObserve(item.getChannelId());
+        return getChannelObserve(item.getChannelId(), item.getPlaylistParams());
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {

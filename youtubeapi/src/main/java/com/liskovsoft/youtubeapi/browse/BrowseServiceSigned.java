@@ -149,6 +149,10 @@ public class BrowseServiceSigned {
         return getSectionList(BrowseManagerParams.getChannelQuery(channelId), authorization);
     }
 
+    public SectionList getChannel(String channelId, String params, String authorization) {
+        return getSectionList(BrowseManagerParams.getChannelQuery(channelId, params), authorization);
+    }
+
     /**
      * Special type of channel that could be found inside Music section (see Liked row More button)
      */

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.browse;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
@@ -13,6 +14,7 @@ public class BrowseManagerParams {
     private static final String MUSIC = "\"browseId\":\"FEtopics\",\"params\":\"-gIFbXVzaWM%3D\"";
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
+    private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
 
     public static String getHomeQuery() {
         return ServiceHelper.createQuery(HOME);
@@ -59,5 +61,12 @@ public class BrowseManagerParams {
 
     public static String getGuideQuery() {
         return ServiceHelper.createQuery("");
+    }
+
+    public static boolean isGridChannel(String channelId) {
+        // FEtopics (rows)
+        // FEmusic_liked_videos (grid)
+
+        return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID);
     }
 }

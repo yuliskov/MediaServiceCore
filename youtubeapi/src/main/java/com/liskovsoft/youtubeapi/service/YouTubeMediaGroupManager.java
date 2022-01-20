@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
@@ -282,7 +283,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             checkSigned();
 
             // Special type of channel that could be found inside Music section (see Liked row More button)
-            if (channelId != null && channelId.startsWith("FE")) {
+            if (BrowseManagerParams.isGridChannel(channelId)) {
                 GridTab gridChannel = mMediaGroupManagerReal.getGridChannel(channelId);
 
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);

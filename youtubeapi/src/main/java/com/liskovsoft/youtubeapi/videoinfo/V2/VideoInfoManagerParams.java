@@ -55,6 +55,10 @@ public class VideoInfoManagerParams {
         return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_EMBED, videoId, clickTrackingParams);
     }
 
+    public static String getVideoInfoQueryRegular(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
+    }
+
     public static String getVideoInfoQueryPrivate(String videoId) {
         return getVideoInfoQueryPrivate(videoId, null);
     }

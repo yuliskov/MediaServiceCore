@@ -6,6 +6,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons;
 import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.app.AppConstants;
@@ -17,6 +18,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
+import okhttp3.Dns;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
@@ -28,8 +30,10 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class RetrofitHelper {
     // Ignored when specified url is absolute
@@ -112,6 +116,8 @@ public class RetrofitHelper {
 
         //disableCache(okBuilder);
 
+        forceIPv4Dns(okBuilder);
+
         OkHttpCommons.setupConnectionFix(okBuilder);
 
         OkHttpCommons.setupConnectionParams(okBuilder);
@@ -180,6 +186,14 @@ public class RetrofitHelper {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         okBuilder.addInterceptor(logging);
+    }
+
+    private static void forceIPv4Dns(OkHttpClient.Builder okBuilder) {
+        okBuilder.dns(hostname -> {
+            List<InetAddress> lookup = Dns.SYSTEM.lookup(hostname);
+            List<InetAddress> filter = Helpers.filter(lookup, value -> value instanceof Inet4Address);
+            return filter != null ? filter : lookup;
+        });
     }
 
     /**

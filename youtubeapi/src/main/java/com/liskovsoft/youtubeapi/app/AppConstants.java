@@ -26,7 +26,7 @@ public interface AppConstants {
     // 2.20211014.05.00-canary_control
     String CLIENT_VERSION_WEB = "2.20220119.01.00";
     // 16.20
-    String CLIENT_VERSION_ANDROID = "17.03";
+    String CLIENT_VERSION_ANDROID = "16.49";
     String CLIENT_NAME_TV = "TVHTML5";
     String CLIENT_NAME_WEB = "WEB";
     String CLIENT_NAME_ANDROID = "ANDROID";

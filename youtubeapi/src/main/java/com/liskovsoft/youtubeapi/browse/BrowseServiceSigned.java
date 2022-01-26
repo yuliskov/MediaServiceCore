@@ -193,7 +193,7 @@ public class BrowseServiceSigned {
         }
 
         for (GridTab tab : gridTabs) {
-            if (tab.getItemWrappers() != null) {
+            if (tab != null && tab.getItemWrappers() != null) {
                 return tab;
             }
         }

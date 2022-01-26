@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceSigned;
@@ -14,6 +15,7 @@ import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
+    private static final String TAG = YouTubeMediaItemManagerSigned.class.getSimpleName();
     private static YouTubeMediaItemManagerSigned sInstance;
     private final WatchNextServiceSigned mWatchNextServiceSigned;
     private final YouTubeSignInManager mSignInManager;
@@ -89,6 +91,11 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
 
     @Override
     public void updateHistoryPosition(String videoId, String lengthSec, String eventId, String vmData, float positionSec) {
+        if (lengthSec == null) {
+            Log.e(TAG, "Can't update history: lengthSec is null");
+            return;
+        }
+
         mTrackingService.updateWatchTime(
                 videoId, positionSec, Float.parseFloat(lengthSec), eventId,
                 vmData, mSignInManager.getAuthorizationHeader());

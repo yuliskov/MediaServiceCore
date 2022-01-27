@@ -116,7 +116,7 @@ public class RetrofitHelper {
 
         //disableCache(okBuilder);
 
-        // Cause crashes (especially on Android 8)?
+        // Cause hangs and crashes (especially on Android 8 devices or Dune HD)
         //forceIPv4Dns(okBuilder);
 
         OkHttpCommons.setupConnectionFix(okBuilder);

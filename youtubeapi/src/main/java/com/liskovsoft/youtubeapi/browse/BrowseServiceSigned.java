@@ -160,7 +160,10 @@ public class BrowseServiceSigned {
         return getGridTab(BrowseManagerParams.getChannelQuery(channelId), authorization);
     }
 
-    private List<GridTab> getGridTabs(String query, String authorization) {
+    /**
+     * Make synchronized to fix race conditions between launcher channels and section items
+     */
+    synchronized private List<GridTab> getGridTabs(String query, String authorization) {
         if (authorization == null) {
             Log.e(TAG, "getGridTabs: authorization is null.");
             return null;

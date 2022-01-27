@@ -116,7 +116,8 @@ public class RetrofitHelper {
 
         //disableCache(okBuilder);
 
-        forceIPv4Dns(okBuilder);
+        // Cause crashes (especially on Android 8)?
+        //forceIPv4Dns(okBuilder);
 
         OkHttpCommons.setupConnectionFix(okBuilder);
 

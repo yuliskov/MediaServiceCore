@@ -8,19 +8,25 @@ import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
  * We're using the first one.
  */
 public class ModernClientData implements ClientData {
-    // We need first occurrence (Android TV)
+    /**
+     *  We need first occurrence of the pattern (Android TV device).<br/>
+     *  Move newest patterns to the top to improve memory usage.
+     */
     @RegExp({
+            "clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",mi:\"\\w+\"",
             "var [$\\w]+=\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\n?[$\\w]+=\"\\w+\"",
-            "\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",[$\\w]+=\"\\w+\"",
-            "clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",mi:\"\\w+\""
+            "\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",[$\\w]+=\"\\w+\""
     })
     private String mClientId;
 
-    // We need first occurrence (Android TV)
+    /**
+     *  We need first occurrence of the pattern (Android TV device).<br/>
+     *  Move newest patterns to the top to improve memory usage.
+     */
     @RegExp({
+            "clientId:\"[-\\w]+\\.apps\\.googleusercontent\\.com\",mi:\"(\\w+)\"",
             "var [$\\w]+=\"[-\\w]+\\.apps\\.googleusercontent\\.com\",\\n?[$\\w]+=\"(\\w+)\"",
-            "\"[-\\w]+\\.apps\\.googleusercontent\\.com\",[$\\w]+=\"(\\w+)\"",
-            "clientId:\"[-\\w]+\\.apps\\.googleusercontent\\.com\",mi:\"(\\w+)\""
+            "\"[-\\w]+\\.apps\\.googleusercontent\\.com\",[$\\w]+=\"(\\w+)\""
     })
     private String mClientSecret;
 

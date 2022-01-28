@@ -2,8 +2,10 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.R;
 import com.liskovsoft.youtubeapi.common.converters.FieldNullable;
 
@@ -84,10 +86,11 @@ public class ReflectionHelper {
         }
 
         File destination = new File(FileHelpers.getCacheDir(context), type.getSimpleName());
-
-        MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
-
         FileHelpers.streamToFile(content, destination);
+
+        if (BuildConfig.DEBUG || Helpers.equalsAny(context.getPackageName(), "com.liskovsoft.smarttubetv.beta")) {
+            MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
+        }
     }
 
     public static boolean isNullable(Field field) {

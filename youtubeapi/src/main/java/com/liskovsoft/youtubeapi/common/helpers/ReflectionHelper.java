@@ -85,7 +85,7 @@ public class ReflectionHelper {
             return;
         }
 
-        File destination = new File(FileHelpers.getCacheDir(context), type.getSimpleName());
+        File destination = new File(FileHelpers.getExternalFilesDir(context), type.getSimpleName());
         FileHelpers.streamToFile(content, destination);
 
         if (BuildConfig.DEBUG || Helpers.equalsAny(context.getPackageName(), "com.liskovsoft.smarttubetv.beta")) {

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
 import android.content.Context;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -84,7 +85,10 @@ public class ReflectionHelper {
             return;
         }
 
-        File destination = new File(FileHelpers.getExternalFilesDir(context), type.getSimpleName());
+        FileHelpers.deleteByPrefix(FileHelpers.getExternalFilesDir(context), type.getSimpleName());
+
+        File destination =
+                new File(FileHelpers.getExternalFilesDir(context), String.format("%s_%s", type.getSimpleName(), AppInfoHelpers.getAppVersionName(context)));
         FileHelpers.streamToFile(content, destination);
 
         if (BuildConfig.DEBUG) {

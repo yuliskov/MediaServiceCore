@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.BuildConfig;
@@ -88,7 +87,7 @@ public class ReflectionHelper {
         File destination = new File(FileHelpers.getExternalFilesDir(context), type.getSimpleName());
         FileHelpers.streamToFile(content, destination);
 
-        if (BuildConfig.DEBUG || Helpers.equalsAny(context.getPackageName(), "com.liskovsoft.smarttubetv.beta")) {
+        if (BuildConfig.DEBUG) {
             MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
         }
     }

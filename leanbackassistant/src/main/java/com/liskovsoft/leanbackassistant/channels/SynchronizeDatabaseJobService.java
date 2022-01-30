@@ -13,7 +13,6 @@ import com.liskovsoft.leanbackassistant.media.ClipService;
 import com.liskovsoft.leanbackassistant.media.Playlist;
 import com.liskovsoft.leanbackassistant.recommendations.RecommendationsProvider;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.locale.LocaleUpdater;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
@@ -28,7 +27,6 @@ import java.util.concurrent.TimeUnit;
  * appear in the TV provider database, and that these and all other programs are synchronized with
  * TV provider database.
  */
-
 @TargetApi(21)
 public class SynchronizeDatabaseJobService extends JobService {
     private SynchronizeDatabaseTask mSynchronizeDatabaseTask;
@@ -36,7 +34,7 @@ public class SynchronizeDatabaseJobService extends JobService {
     private static boolean sInProgress;
 
     static void schedule(Context context) {
-        if (VERSION.SDK_INT >= 23) {
+        if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
             Log.d(TAG, "Registering Channels update job...");
             JobScheduler scheduler = context.getSystemService(JobScheduler.class);
 

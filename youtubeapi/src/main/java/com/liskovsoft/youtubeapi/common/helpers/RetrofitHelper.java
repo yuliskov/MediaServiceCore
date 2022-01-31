@@ -137,7 +137,13 @@ public class RetrofitHelper {
 
         debugSetup(okBuilder);
 
-        return okBuilder.build();
+        OkHttpClient client = okBuilder.build();
+
+        if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isDnsOverHttpsEnabled()) {
+            client = wrapDnsOverHttps(client);
+        }
+
+        return client;
     }
 
     private static void disableCache(OkHttpClient.Builder okBuilder) {
@@ -213,7 +219,7 @@ public class RetrofitHelper {
      * Usage: <code>OkHttpClient newClient = wrapDns(client)</code><br/>
      * https://github.com/square/okhttp/blob/master/okhttp-dnsoverhttps/src/test/java/okhttp3/dnsoverhttps/DohProviders.java
      */
-    public static OkHttpClient wrapDns(OkHttpClient client) {
+    public static OkHttpClient wrapDnsOverHttps(OkHttpClient client) {
         return client.newBuilder().dns(buildGoogle(client)).build();
     }
 

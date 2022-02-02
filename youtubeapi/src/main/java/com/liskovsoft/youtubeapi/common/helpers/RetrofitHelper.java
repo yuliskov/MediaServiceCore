@@ -220,7 +220,7 @@ public class RetrofitHelper {
      * https://github.com/square/okhttp/blob/master/okhttp-dnsoverhttps/src/test/java/okhttp3/dnsoverhttps/DohProviders.java
      */
     public static OkHttpClient wrapDnsOverHttps(OkHttpClient client) {
-        return client.newBuilder().dns(buildCleanBrowsingDnsOverHttps(client)).build();
+        return client.newBuilder().dns(buildCloudflareDnsOverHttps(client)).build();
     }
 
     private static DnsOverHttps buildGoogleDnsOverHttps(OkHttpClient bootstrapClient) {
@@ -228,15 +228,21 @@ public class RetrofitHelper {
                 .client(bootstrapClient)
                 .url(HttpUrl.get("https://dns.google/dns-query"))
                 .bootstrapDnsHosts(getByIp("8.8.4.4"), getByIp("8.8.8.8"))
-                .includeIPv6(false)
                 .build();
     }
 
     private static DnsOverHttps buildCleanBrowsingDnsOverHttps(OkHttpClient bootstrapClient) {
         return new DnsOverHttps.Builder()
                 .client(bootstrapClient)
-                .url(HttpUrl.get("https://doh.cleanbrowsing.org/doh/security-filter/"))
-                .bootstrapDnsHosts(getByIp("185.228.168.9"), getByIp("185.228.169.9"))
+                .url(HttpUrl.get("https://doh.cleanbrowsing.org/doh/family-filter/"))
+                .includeIPv6(false)
+                .build();
+    }
+
+    private static DnsOverHttps buildCloudflareDnsOverHttps(OkHttpClient bootstrapClient) {
+        return new DnsOverHttps.Builder()
+                .client(bootstrapClient)
+                .url(HttpUrl.get("https://1.1.1.1/dns-query"))
                 .includeIPv6(false)
                 .build();
     }

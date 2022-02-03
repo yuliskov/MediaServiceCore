@@ -91,9 +91,9 @@ public class ReflectionHelper {
                 new File(FileHelpers.getExternalFilesDir(context), String.format("%s_%s", type.getSimpleName(), AppInfoHelpers.getAppVersionName(context)));
         FileHelpers.streamToFile(content, destination);
 
-        if (BuildConfig.DEBUG) {
-            MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
-        }
+        //if (BuildConfig.DEBUG) {
+        //    MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
+        //}
     }
 
     public static boolean isNullable(Field field) {

@@ -29,23 +29,33 @@ import java.util.concurrent.TimeUnit;
  */
 @TargetApi(21)
 public class SynchronizeDatabaseJobService extends JobService {
-    private SynchronizeDatabaseTask mSynchronizeDatabaseTask;
     private static final String TAG = SynchronizeDatabaseJobService.class.getSimpleName();
+    private static final int SYNC_JOB_ID = 1;
     private static boolean sInProgress;
+    private SynchronizeDatabaseTask mSynchronizeDatabaseTask;
 
-    static void schedule(Context context) {
+    public static void schedule(Context context) {
         if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
             Log.d(TAG, "Registering Channels update job...");
             JobScheduler scheduler = context.getSystemService(JobScheduler.class);
 
             // setup scheduled job
             scheduler.schedule(
-                    new JobInfo.Builder(1, new ComponentName(context, SynchronizeDatabaseJobService.class))
+                    new JobInfo.Builder(SYNC_JOB_ID, new ComponentName(context, SynchronizeDatabaseJobService.class))
                             .setPeriodic(TimeUnit.MINUTES.toMillis(30))
                             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                             .setRequiresDeviceIdle(false)
                             .setRequiresCharging(false)
                             .build());
+        }
+    }
+
+    public static void cancel(Context context) {
+        if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
+            Log.d(TAG, "Registering Channels update job...");
+            JobScheduler scheduler = context.getSystemService(JobScheduler.class);
+
+            scheduler.cancel(SYNC_JOB_ID);
         }
     }
 
@@ -59,9 +69,6 @@ public class SynchronizeDatabaseJobService extends JobService {
         Log.d(TAG, "Starting Channels update job...");
 
         sInProgress = true;
-
-        // Apply pre-saved locale
-        //LocaleUpdater.applySavedLocale(this);
 
         mSynchronizeDatabaseTask = new SynchronizeDatabaseTask(this, jobParameters);
         // NOTE: fetching channels in background

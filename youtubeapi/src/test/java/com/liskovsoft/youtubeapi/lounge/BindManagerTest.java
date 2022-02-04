@@ -37,6 +37,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(RobolectricTestRunner.class)
 public class BindManagerTest {
     private static final String SCREEN_NAME = "TubeNext";
+    private static final String DEVICE_ID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671"; // Should be random UUID
     private BindManager mBindManager;
     private InfoManager mInfoManager;
     private CommandManager mCommandManager;
@@ -104,6 +105,7 @@ public class BindManagerTest {
 
         String url = BindParams.createBindRpcUrl(
                 SCREEN_NAME,
+                DEVICE_ID,
                 screen.getLoungeToken(),
                 sessionId,
                 gSessionId);
@@ -136,7 +138,7 @@ public class BindManagerTest {
     }
 
     private CommandList getFirstBind(String loungeToken) {
-        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(SCREEN_NAME, loungeToken, 0);
+        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(SCREEN_NAME, DEVICE_ID, loungeToken, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }

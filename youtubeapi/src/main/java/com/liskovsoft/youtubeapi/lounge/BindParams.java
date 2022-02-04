@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 public class BindParams {
-    public static final String DEVICE_ID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671";
+    //public static final String DEVICE_ID = "2a026ce9-4429-4c5e-8ef5-0101eddf5671"; // Should be random UUID
     public static final String ZX = "xxxxxxxxxxxx";
     public static final String RID = "1337";
     public static final String AID = "42";
@@ -17,7 +17,6 @@ public class BindParams {
             "&v=2" +
             "&t=1" +
             "&app=" + APP +
-            "&id=" + DEVICE_ID +
             "&AID=" + AID +
             "&zx=" + ZX;
 
@@ -26,12 +25,14 @@ public class BindParams {
     private static final String BIND_RPC_URL = BASE_BIND_URL + "&RID=rpc&CI=0";
 
     public static String createBindRpcUrl(String screenName,
+                                          String deviceId,
                                           String loungeToken,
                                           String sessionId,
                                           String gSessionId) {
-        return String.format("%s&name=%s&loungeIdToken=%s&SID=%s&gsessionid=%s",
+        return String.format("%s&name=%s&id=%s&loungeIdToken=%s&SID=%s&gsessionid=%s",
                 BIND_RPC_URL,
                 screenName,
+                deviceId,
                 loungeToken,
                 sessionId,
                 gSessionId);

@@ -41,6 +41,7 @@ public class LoungeService {
     private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
     private String mScreenName;
     private String mLoungeToken;
+    private String mDeviceId;
     private long mTokenInitTimeMs;
     private String mScreenId;
     private String mSessionId;
@@ -81,7 +82,7 @@ public class LoungeService {
                 mScreenName,
                 BindParams.ACCESS_TYPE,
                 BindParams.APP,
-                BindParams.DEVICE_ID,
+                mDeviceId,
                 BindParams.QR);
         PairingCodeV2 pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
@@ -131,6 +132,10 @@ public class LoungeService {
                 mTokenInitTimeMs = System.currentTimeMillis();
             }
         }
+
+        if (mDeviceId == null) {
+            mDeviceId = MediaServiceData.instance().getDeviceId();
+        }
     }
 
     private void startListeningInt(OnCommand callback) throws IOException {
@@ -151,6 +156,7 @@ public class LoungeService {
 
         String url = BindParams.createBindRpcUrl(
                 mScreenName,
+                mDeviceId,
                 mLoungeToken,
                 mSessionId,
                 mGSessionId);
@@ -285,7 +291,7 @@ public class LoungeService {
     }
 
     private CommandList getSessionBind() {
-        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(mScreenName, mLoungeToken, 0);
+        Call<CommandList> bindDataWrapper = mCommandManager.getSessionData(mScreenName, mDeviceId, mLoungeToken, 0);
 
         return RetrofitHelper.get(bindDataWrapper);
     }
@@ -301,7 +307,7 @@ public class LoungeService {
         }
 
         Call<Void> wrapper = mCommandManager.postCommand(
-                mScreenName, mLoungeToken, mSessionId, mGSessionId,
+                mScreenName, mDeviceId, mLoungeToken, mSessionId, mGSessionId,
                 command);
         RetrofitHelper.get(wrapper);
     }

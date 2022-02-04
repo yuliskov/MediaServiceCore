@@ -4,10 +4,13 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
+import java.util.UUID;
+
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
     private static MediaServiceData sInstance;
     private String mScreenId;
+    private String mDeviceId;
 
     private MediaServiceData() {
         restoreData();
@@ -30,6 +33,18 @@ public class MediaServiceData {
         return mScreenId;
     }
 
+    /**
+     * Unique per app instance
+     */
+    public String getDeviceId() {
+        if (mDeviceId == null) {
+            mDeviceId = UUID.randomUUID().toString();
+            persistData();
+        }
+
+        return mDeviceId;
+    }
+
     private void restoreData() {
         if (GlobalPreferences.sInstance == null) {
             Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
@@ -41,6 +56,7 @@ public class MediaServiceData {
         String[] split = Helpers.splitObject(data);
 
         mScreenId = Helpers.parseStr(split, 1);
+        mDeviceId = Helpers.parseStr(split, 2);
     }
 
     private void persistData() {
@@ -48,6 +64,6 @@ public class MediaServiceData {
             return;
         }
 
-        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergeObject(null, mScreenId)); // null for ScreenItem
+        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergeObject(null, mScreenId, mDeviceId)); // null for ScreenItem
     }
 }

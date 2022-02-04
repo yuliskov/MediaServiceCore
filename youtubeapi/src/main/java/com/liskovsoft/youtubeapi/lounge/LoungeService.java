@@ -224,7 +224,7 @@ public class LoungeService {
         }
 
         if (durationMs > 0 && positionMs <= durationMs) {
-            Log.d(TAG, "Post onStateChange pos: %s, dur: %s...", positionMs, durationMs);
+            Log.d(TAG, "Post onStateChange pos: %s, dur: %s, playing: %s...", positionMs, durationMs, isPlaying);
 
             Map<String, String> stateChange = CommandParams.getOnStateChange(
                     positionMs,

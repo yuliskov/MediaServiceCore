@@ -90,6 +90,7 @@ public class ReflectionHelper {
 
         //MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
 
+        // NOTE: Send file from crashlytics is useless. All strings are truncated!
         //FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
         //crashlytics.log(fileName + ": " + Helpers.toString(content));
         //crashlytics.recordException(new Exception(fileName));

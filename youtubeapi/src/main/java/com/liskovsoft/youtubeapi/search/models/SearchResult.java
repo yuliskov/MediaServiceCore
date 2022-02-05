@@ -18,6 +18,12 @@ public class SearchResult {
     private String mNextPageKey;
 
     /**
+     * Search result with multiple rows
+     */
+    @JsonPath("$.contents.sectionListRenderer.contents[*]")
+    private List<SearchSection> mSections;
+
+    /**
      * Presents even when there is no results
      */
     @JsonPath("$.estimatedResults")
@@ -33,5 +39,9 @@ public class SearchResult {
 
     public List<ItemWrapper> getItemWrappers() {
         return mItemWrappers;
+    }
+
+    public List<SearchSection> getSections() {
+        return mSections;
     }
 }

@@ -373,6 +373,7 @@ data class VideoMetadataItem(
         val shortViewCountText: TextItem?,
         val viewCount: ViewCount?,
         val likeStatus: String?,
+        val likeButton: LikeButton?,
         val badges: List<Badge?>?,
         val thumbnailOverlays: List<ThumbnailOverlayItem?>?
 ) {
@@ -387,6 +388,14 @@ data class VideoMetadataItem(
                 val viewCount: TextItem?,
                 val shortViewCount: TextItem?,
                 val isLive: Boolean?
+        )
+    }
+
+    data class LikeButton(
+            val likeButtonRenderer: LikeButtonRenderer?
+    ) {
+        data class LikeButtonRenderer(
+                val likeStatus: String?
         )
     }
 

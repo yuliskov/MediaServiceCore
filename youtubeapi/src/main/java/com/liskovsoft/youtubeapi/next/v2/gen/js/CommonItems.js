@@ -198,6 +198,11 @@ let videoMetadataItem = {
         }
     },
     likeStatus: "",
+    likeButton: {
+        likeButtonRenderer: {
+            likeStatus: ""
+        }
+    },
     badges: [{
         upcomingEventBadge: {
             label: textItem

@@ -163,7 +163,7 @@ fun VideoMetadataItem.getViewCountText() = viewCount?.videoViewCountRenderer?.vi
 fun VideoMetadataItem.isLive() = viewCount?.videoViewCountRenderer?.isLive
 fun VideoMetadataItem.getDateText() = dateText?.getText()
 fun VideoMetadataItem.getPublishedTime() = publishedTimeText?.getText() ?: albumName?.getText()
-fun VideoMetadataItem.getLikeStatus() = likeStatus
+fun VideoMetadataItem.getLikeStatus() = likeStatus ?: likeButton?.likeButtonRenderer?.likeStatus
 fun VideoMetadataItem.isUpcoming() = badges?.firstNotNullOfOrNull { it?.upcomingEventBadge?.label?.getText() }?.let { true } ?: false
 fun VideoMetadataItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
 

@@ -6,16 +6,16 @@ import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import java.util.List;
 
 public class SearchResult {
-    @JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*]")
-    private List<ItemWrapper> mItemWrappers;
-
-    /**
-     * Nowadays, search result may contains two rows.<br/>
-     * First of them with continuation is interested for us.
-     */
-    @JsonPath({"$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
-               "$.contents.sectionListRenderer.contents[1].itemSectionRenderer.continuations[0].nextContinuationData.continuation"})
-    private String mNextPageKey;
+    //@JsonPath("$.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents[*]")
+    //private List<ItemWrapper> mItemWrappers;
+    //
+    ///**
+    // * Nowadays, search result may contains two rows.<br/>
+    // * First of them with continuation is interested for us.
+    // */
+    //@JsonPath({"$.contents.sectionListRenderer.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
+    //           "$.contents.sectionListRenderer.contents[1].itemSectionRenderer.continuations[0].nextContinuationData.continuation"})
+    //private String mNextPageKey;
 
     /**
      * Search result with multiple rows
@@ -30,18 +30,18 @@ public class SearchResult {
     private String mEstimatedResults;
 
     public String getNextPageKey() {
-        return mNextPageKey;
-    }
-
-    public String getEstimatedResults() {
-        return mEstimatedResults;
+        return mSections != null && mSections.size() > 0 ? mSections.get(0).getNextPageKey() : null;
     }
 
     public List<ItemWrapper> getItemWrappers() {
-        return mItemWrappers;
+        return mSections != null && mSections.size() > 0 ? mSections.get(0).getItemWrappers() : null;
     }
 
     public List<SearchSection> getSections() {
         return mSections;
+    }
+
+    public String getEstimatedResults() {
+        return mEstimatedResults;
     }
 }

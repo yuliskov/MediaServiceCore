@@ -70,6 +70,16 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
     }
 
     @Test
+    public void testThatResultContainsMultipleRows() {
+        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(SEARCH_TEXT_2));
+        SearchResult searchResult = RetrofitHelper.get(wrapper);
+
+        assertTrue("Contains multiple rows", searchResult.getSections().size() > 1);
+
+        checkSearchResultTileItem(searchResult.getSections().get(0).getItemWrappers().get(0).getTileItem());
+    }
+
+    @Test
     public void testThatSearchResultIsProperlyLocalized() {
         LocaleManager.instance().setLanguage("en");
 

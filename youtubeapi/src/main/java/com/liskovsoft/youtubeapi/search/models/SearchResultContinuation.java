@@ -13,7 +13,7 @@ import java.util.List;
 public class SearchResultContinuation {
     // V2
     @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].tileRenderer")
-    private List<TileItem> mTitleItems;
+    private List<TileItem> mTileItems;
 
     @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer", // V7
                "$.continuationContents.itemSectionContinuation.contents[*].compactVideoRenderer"}) // V6
@@ -73,7 +73,7 @@ public class SearchResultContinuation {
         return mEstimatedResults;
     }
 
-    public List<TileItem> getTitleItems() {
-        return mTitleItems;
+    public List<TileItem> getTileItems() {
+        return mTileItems;
     }
 }

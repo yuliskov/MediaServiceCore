@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.models.SearchSection;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +36,17 @@ public class SearchManagerTestBase {
         assertNotNull("Search result not null", searchResult);
         assertNotNull("Search result contains items", searchResult.getItemWrappers());
         assertTrue("Search result contains more than one item", searchResult.getItemWrappers().size() > 2);
-        assertNotNull("Search result contains next key", searchResult.getNextPageKey());
+
+        String nexKey = null;
+
+        for (SearchSection section : searchResult.getSections()) {
+            if (section.getNextPageKey() != null) {
+                nexKey = section.getNextPageKey();
+                break;
+            }
+        }
+
+        assertNotNull("At least one search result row contains next key", nexKey);
 
         for (ItemWrapper wrapper : searchResult.getItemWrappers()) {
             if (wrapper.getVideoItem() != null) {

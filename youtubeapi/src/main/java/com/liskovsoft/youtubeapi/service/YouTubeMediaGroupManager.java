@@ -182,18 +182,32 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         return ObservableHelper.fromNullable(this::getHistory);
     }
 
-    @Override
-    public MediaGroup getGroup(MediaItem mediaItem) {
+    private MediaGroup getGroup(String reloadPageKey, String title) {
         checkSigned();
 
-        GridTabContinuation continuation = mMediaGroupManagerReal.continueGridTab(((YouTubeMediaItem) mediaItem).getReloadPageKey());
+        GridTabContinuation continuation = mMediaGroupManagerReal.continueGridTab(reloadPageKey);
 
-        return YouTubeMediaGroup.from(continuation, mediaItem.getTitle());
+        return YouTubeMediaGroup.from(continuation, reloadPageKey, title);
+    }
+
+    @Override
+    public MediaGroup getGroup(String reloadPageKey) {
+        return getGroup(reloadPageKey, null);
+    }
+
+    @Override
+    public MediaGroup getGroup(MediaItem mediaItem) {
+        return getGroup(mediaItem.getReloadPageKey(), mediaItem.getTitle());
     }
 
     @Override
     public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
         return ObservableHelper.fromNullable(() -> getGroup(mediaItem));
+    }
+
+    @Override
+    public Observable<MediaGroup> getGroupObserve(String reloadPageKey) {
+        return ObservableHelper.fromNullable(() -> getGroup(reloadPageKey, null));
     }
 
     @Override

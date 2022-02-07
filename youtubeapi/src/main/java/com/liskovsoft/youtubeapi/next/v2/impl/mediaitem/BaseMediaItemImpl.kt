@@ -13,8 +13,8 @@ open class BaseMediaItemImpl : MediaItem {
         get() = field ?: descriptionItem
     private var _channelIdItem: String? = null
         get() = field ?: channelIdItem
-    private var _reloadPageKey: String? = null
-        get() = field ?: reloadPageKey
+    private var _reloadPageKeyItem: String? = null
+        get() = field ?: reloadPageKeyItem
     private var _cardThumbImageUrl: String? = null
         get() = field ?: cardThumbImageUrl
     private var _videoIdItem: String? = null
@@ -28,7 +28,7 @@ open class BaseMediaItemImpl : MediaItem {
 
     private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
 
-    protected open val reloadPageKey: String? = null
+    protected open val reloadPageKeyItem: String? = null // TODO: override in the subclasses
     protected open val badgeTextItem: String? = null
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String? = null
@@ -60,7 +60,7 @@ open class BaseMediaItemImpl : MediaItem {
                 return null
             }
             val mediaItem = BaseMediaItemImpl()
-            mediaItem._reloadPageKey = Helpers.parseStr(split[0])
+            mediaItem._reloadPageKeyItem = Helpers.parseStr(split[0])
             mediaItem._titleItem = Helpers.parseStr(split[1])
             mediaItem._descriptionItem = Helpers.parseStr(split[2])
             mediaItem._cardThumbImageUrl = Helpers.parseStr(split[3])
@@ -117,6 +117,10 @@ open class BaseMediaItemImpl : MediaItem {
 
     fun setPlaylistParams(params: String?) {
         _playlistParamsItem = params
+    }
+
+    override fun getReloadPageKey(): String? {
+        return _reloadPageKeyItem
     }
 
     override fun getDurationMs(): Int {

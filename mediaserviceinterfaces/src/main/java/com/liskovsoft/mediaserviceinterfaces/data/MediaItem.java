@@ -20,9 +20,10 @@ public interface MediaItem {
 
     // Playlist props
     String getPlaylistId();
-
-    // Replacement for playlist id in channel section
-    String getPlaylistParams();
+    int getPlaylistIndex();
+    
+    String getPlaylistParams(); // Replacement for playlist id in channel section (use with caution: such list can't be updated)
+    String getReloadPageKey(); // Replacement for playlist id in channel section
 
     // Channel props
     boolean hasNewContent();
@@ -54,7 +55,6 @@ public interface MediaItem {
     String getChannelId();
     String getChannelUrl();
     String getVideoPreviewUrl();
-    int getPlaylistIndex();
     /**
      * Num of audio channels.<br/>
      * Example: <b>"2.0"</b>

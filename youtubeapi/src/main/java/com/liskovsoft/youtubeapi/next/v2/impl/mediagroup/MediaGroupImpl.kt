@@ -61,6 +61,10 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
         return null
     }
 
+    override fun getReloadPageKey(): String? {
+        return null
+    }
+
     override fun getChannelUrl(): String? {
         return null
     }

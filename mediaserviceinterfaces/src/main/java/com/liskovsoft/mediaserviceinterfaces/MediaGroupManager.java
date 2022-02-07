@@ -11,13 +11,20 @@ public interface MediaGroupManager {
     MediaGroup getSearch(String searchText, int options);
     List<String> getSearchTags(String searchText);
     MediaGroup getSubscriptions();
-    MediaGroup getRecommended(); // Note, that recommended is a part of Home
+    /**
+     * NOTE: recommended is a part of Home
+     */
+    MediaGroup getRecommended();
     MediaGroup getHistory();
     List<MediaGroup> getHome();
     MediaGroup getSubscribedChannelsUpdate();
     MediaGroup getSubscribedChannelsAZ();
     MediaGroup getSubscribedChannelsLastViewed();
     MediaGroup getGroup(MediaItem mediaGroup);
+    /**
+     * NOTE: returns unnamed group
+     */
+    MediaGroup getGroup(String reloadPageKey);
     MediaGroup continueGroup(MediaGroup mediaGroup);
 
     // RxJava interfaces
@@ -25,7 +32,10 @@ public interface MediaGroupManager {
     Observable<MediaGroup> getSearchObserve(String searchText, int options);
     Observable<List<String>> getSearchTagsObserve(String searchText);
     Observable<MediaGroup> getSubscriptionsObserve();
-    Observable<MediaGroup> getRecommendedObserve(); // Note, that recommended is a part of Home
+    /**
+     * NOTE: recommended is a part of Home
+     */
+    Observable<MediaGroup> getRecommendedObserve();
     Observable<MediaGroup> getHistoryObserve();
     Observable<List<MediaGroup>> getHomeObserve();
     Observable<List<MediaGroup>> getMusicObserve();
@@ -39,5 +49,9 @@ public interface MediaGroupManager {
     Observable<MediaGroup> getSubscribedChannelsAZObserve();
     Observable<MediaGroup> getSubscribedChannelsLastViewedObserve();
     Observable<MediaGroup> getGroupObserve(MediaItem mediaItem);
+    /**
+     * NOTE: returns unnamed group
+     */
+    Observable<MediaGroup> getGroupObserve(String reloadPageKey);
     Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
 }

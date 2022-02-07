@@ -499,6 +499,7 @@ public class YouTubeMediaItem implements MediaItem {
         mChannelId = metadata.getChannelId();
     }
 
+    @Override
     public String getReloadPageKey() {
         return mReloadPageKey;
     }

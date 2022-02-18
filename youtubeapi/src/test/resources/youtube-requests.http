@@ -825,7 +825,7 @@ origin: https://www.youtube.com
 
 ###
 
-POST https://www.youtube.com/youtubei/v1/player
+POST https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8
 Content-Type: application/json
 Accept-Encoding: identity
 authorization: SAPISIDHASH 1645062921_df354f673ee52822175a0a9f4813c39eea0f95cc

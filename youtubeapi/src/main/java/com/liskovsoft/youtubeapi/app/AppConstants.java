@@ -51,8 +51,4 @@ public interface AppConstants {
      * Used when parsing video_info data
      */
     String VIDEO_INFO_JSON_CONTENT_PARAM = "player_response";
-
-    String RESTRICTED_AUTHORIZATION = "SAPISIDHASH 1645062921_df354f673ee52822175a0a9f4813c39eea0f95cc";
-    String RESTRICTED_COOKIE =
-            "__Secure-3PAPISID=JbTGDgqvynRIJ6ZM/A4LyWqJOh5AEa1zzf; __Secure-3PSID=GgjMe58C83cWIeEgmGKn9cRE2zjRGwRwlmFHwIk2x-O3_0TgTrK-lKpZ6q3MDo-To6Ahgw.";
 }

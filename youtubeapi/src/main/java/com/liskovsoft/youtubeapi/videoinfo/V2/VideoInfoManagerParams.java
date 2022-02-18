@@ -51,7 +51,7 @@ public class VideoInfoManagerParams {
     /**
      * Support restricted (18+) videos viewing
      */
-    public static String getVideoInfoQueryRestricted(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryEmbed(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_EMBED, videoId, clickTrackingParams);
     }
 

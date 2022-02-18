@@ -31,7 +31,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
             result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
         } else if (result != null && result.isUnplayable()) {
             Log.e(TAG, "Found restricted video. Retrying with different query method...");
-            result = getVideoInfoRestricted(videoId, clickTrackingParams, result.getEventId(), result.getVisitorMonitoringData());;
+            result = getVideoInfoEmbed(videoId, clickTrackingParams, authorization);
         }
 
         if (result != null) {
@@ -82,7 +82,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams, String eventId, String visitorMonitoringData) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorData());
 
         VideoInfo videoInfo = RetrofitHelper.get(wrapper);
 

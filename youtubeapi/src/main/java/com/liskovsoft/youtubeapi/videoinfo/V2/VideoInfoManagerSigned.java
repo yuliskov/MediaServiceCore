@@ -24,5 +24,5 @@ public interface VideoInfoManagerSigned {
             "Cookie: " + AppConstants.RESTRICTED_COOKIE
     })
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfoRestricted(@Body String videoQuery);
+    Call<VideoInfo> getVideoInfoRestricted(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
 }

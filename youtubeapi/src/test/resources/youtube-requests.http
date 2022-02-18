@@ -817,7 +817,7 @@ origin: https://www.youtube.com
 ### TV
 
 POST https://www.youtube.com/youtubei/v1/verify_age
-authorization: Bearer ya29.A0ARrdaM8eeIF_ykr1d5qiWRG1knJgVp318IrPdzKrPO6To_nUjE1h_Gc2tyg5tQR6b4lQoeqCX-3_kLD7bCCz0zM-t-6ite4aZ57JY1pbkZChO3DyHhYiSa_zBTL7X3uXG3BK85gdvvr7zdJkhpsbq090FnZyGUfNDneP_IW5Wy9S
+Authorization: Bearer ya29.A0ARrdaM_lDXgRzDgWor9xqvMFIITaCVfeYvZesVZEo51t3Luz0Zk79Hrjglj2a7JusLSJ5XwWI5QY_K6OtrBhdvHO59byuRNIVqQ1HaYzbL96rg-Dw4qHxKAqUVb4fYo7A2sO26oYyzVaH_10unJU1xvgmVhBpOLIO2Tt1CJvvkSl
 content-type: application/json
 origin: https://www.youtube.com
 

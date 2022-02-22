@@ -60,9 +60,9 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:' + okhttpVersion
     implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:' + okhttpVersion
+    implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpVersion
     implementation 'com.squareup.okhttp3:okhttp-brotli:' + okhttpBrotliVersion
     implementation 'com.itkacher.okhttpprofiler:okhttpprofiler:' + okhttpProfilerVersion
-    implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpLoggerVersion
     //implementation 'com.squareup.okio:okio:' + okioVersion
 
     implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion

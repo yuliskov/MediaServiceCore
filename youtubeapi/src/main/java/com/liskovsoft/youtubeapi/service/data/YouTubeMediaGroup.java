@@ -133,7 +133,10 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), searchSection.getItemWrappers(), searchSection.getNextPageKey());
+        YouTubeMediaGroup baseGroup = new YouTubeMediaGroup(type);
+        baseGroup.setTitle(searchSection.getTitle());
+
+        return create(baseGroup, searchSection.getItemWrappers(), searchSection.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {

@@ -11,7 +11,7 @@ public class TextItem {
     @JsonPath("$.runs[1].text")
     private String mText2;
 
-    @JsonPath("$.title.runs[2].text")
+    @JsonPath("$.runs[2].text")
     private String mText3;
 
     @JsonPath("$.simpleText")

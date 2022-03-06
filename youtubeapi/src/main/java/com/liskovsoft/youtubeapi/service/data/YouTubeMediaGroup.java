@@ -18,6 +18,7 @@ import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
+import com.liskovsoft.youtubeapi.search.models.SearchSection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,12 +114,26 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
-    public static MediaGroup from(SearchResult searchResult, int type) {
-        if (searchResult == null) {
+    public static List<MediaGroup> from(SearchResult searchResult, int type) {
+        if (searchResult == null || searchResult.getSections() == null || searchResult.getSections().size() == 0) {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), searchResult.getItemWrappers(), searchResult.getNextPageKey());
+        List<MediaGroup> result = new ArrayList<>();
+
+        for (SearchSection section : searchResult.getSections()) {
+            result.add(from(section, type));
+        }
+
+        return result;
+    }
+
+    public static MediaGroup from(SearchSection searchSection, int type) {
+        if (searchSection == null) {
+            return null;
+        }
+
+        return create(new YouTubeMediaGroup(type), searchSection.getItemWrappers(), searchSection.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {

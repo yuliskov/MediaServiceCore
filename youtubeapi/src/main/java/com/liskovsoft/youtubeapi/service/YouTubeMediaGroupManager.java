@@ -51,11 +51,29 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         checkSigned();
 
         SearchResult search = mMediaGroupManagerReal.getSearch(searchText);
-        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        List<MediaGroup> groups = YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return groups != null && groups.size() > 0 ? groups.get(0) : null;
     }
 
     @Override
     public MediaGroup getSearch(String searchText, int options) {
+        checkSigned();
+
+        SearchResult search = mMediaGroupManagerReal.getSearch(searchText, options);
+        List<MediaGroup> groups = YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return groups != null && groups.size() > 0 ? groups.get(0) : null;
+    }
+
+    @Override
+    public List<MediaGroup> getSearchAlt(String searchText) {
+        checkSigned();
+
+        SearchResult search = mMediaGroupManagerReal.getSearch(searchText);
+        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+    }
+
+    @Override
+    public List<MediaGroup> getSearchAlt(String searchText, int options) {
         checkSigned();
 
         SearchResult search = mMediaGroupManagerReal.getSearch(searchText, options);
@@ -70,6 +88,16 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText, int options) {
         return ObservableHelper.fromNullable(() -> getSearch(searchText, options));
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getSearchAltObserve(String searchText) {
+        return ObservableHelper.fromNullable(() -> getSearchAlt(searchText));
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options) {
+        return ObservableHelper.fromNullable(() -> getSearchAlt(searchText, options));
     }
 
     @Override

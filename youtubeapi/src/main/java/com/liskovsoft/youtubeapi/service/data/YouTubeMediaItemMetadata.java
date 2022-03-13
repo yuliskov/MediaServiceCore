@@ -61,13 +61,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
             mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
                     mediaItemMetadata.mAuthor, videoDetails.getPublishedDate(),
-                    videoDetails.getViewCountText(),
-                    videoDetails.isLive() ? "LIVE" : "");
+                    videoDetails.getViewCountText());
             mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
                     mediaItemMetadata.mAuthor,
                     videoDetails.getPublishedDate(),
-                    videoDetails.getShortViewCountText(),
-                    videoDetails.isLive() ? "LIVE" : "");
+                    videoDetails.getShortViewCountText());
         }
 
         if (videoOwner != null) {
@@ -83,13 +81,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mTitle = videoMetadata.getTitle();
             mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
                     author, publishedTime,
-                    videoMetadata.getShortViewCount(),
-                    videoMetadata.isLive() ? "LIVE" : "");
+                    videoMetadata.getShortViewCount());
             mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
                     author,
                     videoMetadata.getPublishedDate(),
-                    videoMetadata.getShortViewCount(),
-                    videoMetadata.isLive() ? "LIVE" : "");
+                    videoMetadata.getShortViewCount());
             mediaItemMetadata.mVideoId = videoMetadata.getVideoId();
             mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
             mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();

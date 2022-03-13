@@ -66,14 +66,12 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     private val videoFullDescription by lazy { videoMetadata?.description?.getText() }
     private val videoDescription by lazy {
         YouTubeMediaServiceHelper.createDescription(
-                videoAuthor, viewCountText, publishedTime,
-                if (isLiveStream) "LIVE" else ""
+                videoAuthor, viewCountText, publishedTime
         )
     }
     private val videoDescriptionAlt by lazy {
         YouTubeMediaServiceHelper.createDescription(
-                videoAuthor, viewCountText, publishedDate,
-                if (isLiveStream) "LIVE" else ""
+                videoAuthor, viewCountText, publishedDate
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }

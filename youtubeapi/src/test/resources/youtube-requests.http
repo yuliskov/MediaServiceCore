@@ -835,3 +835,25 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 x-goog-visitor-id: CgtyOTR5Ym42Q0QzMCjgjbyQBg%3D%3D
 
 {"context":{"client":{"clientName":"WEB","clientVersion":"2.20220119.01.00","clientScreen":"EMBED","visitorData":"CgtyOTR5Ym42Q0QzMCjgjbyQBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19040}},"videoId":"ujpejC8-vx8","cpn":"IlJ9fr2YgcOnzI1c"}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/next
+Authorization: Bearer ya29.A0ARrdaM8te1AVJScqhdIJl8CZUS8L9geLurD9zPibAflg5LQyO6cnHtMiFdmdJOfpRn4rmxYGMbLcIsm2-GSN8oJM3uB-nwl94UOVpCVkK4lqJfN4Wd4OxYDbVuRbYNtSVikW6pM00XL9QaSHE9VRCmWkZGnIu6uFwHpFftB-G-NP
+content-type: application/json
+Accept-Encoding: identity
+origin: https://www.youtube.com
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"webpSupport":false,"animatedWebpSupport":false,"visitorData":"CgtTQVZWQ2RFSDlJMCiDys2RBg%3D%3D","clientName":"TVHTML5","clientVersion":"7.20220315.10.00","timeZone":"Europe/Kiev"},"user":{"enableSafetyMode":false}},"videoId":"EPfmNxKLDG4","playlistId":"PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz","playlistIndex":0,"racyCheckOk":true,"contentCheckOk":true}
+
+###
+
+POST https://www.youtube.com/youtubei/v1/next
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.A0ARrdaM8te1AVJScqhdIJl8CZUS8L9geLurD9zPibAflg5LQyO6cnHtMiFdmdJOfpRn4rmxYGMbLcIsm2-GSN8oJM3uB-nwl94UOVpCVkK4lqJfN4Wd4OxYDbVuRbYNtSVikW6pM00XL9QaSHE9VRCmWkZGnIu6uFwHpFftB-G-NP
+Referer: https://www.youtube.com
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20220315.10.00","platform":"DESKTOP","clientScreen":"WATCH","webpSupport":true,"animatedWebpSupport":true,"acceptRegion":"DE","acceptLanguage":"en-DE","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"videoId":"EPfmNxKLDG4","playlistId":"PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz","playlistIndex":0}

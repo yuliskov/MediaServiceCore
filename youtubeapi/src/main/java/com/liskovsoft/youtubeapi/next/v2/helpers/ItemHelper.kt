@@ -69,7 +69,7 @@ fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.fir
 fun TileItem.getUserName() = null
 fun TileItem.getPublishedTime() = null
 fun TileItem.getViewCountText() =
-    YouTubeMediaServiceHelper.createDescription(*metadata?.tileMetadataRenderer?.lines?.map {
+    YouTubeMediaServiceHelper.createSubtitle(*metadata?.tileMetadataRenderer?.lines?.map {
         ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: null)
     }?.toTypedArray() ?: null) ?: null
 fun TileItem.getUpcomingEventText() = null

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ServiceHelper {
     private static final String BULLET_SYMBOL = "\u2022";
-    private static final String DESCRIPTION_DIVIDER = " " + BULLET_SYMBOL + " ";
+    private static final String ITEMS_DIVIDER = " " + BULLET_SYMBOL + " ";
     private static final String TIME_TEXT_DELIM = ":";
 
     public static String videoIdToFullUrl(String videoId) {
@@ -66,8 +66,11 @@ public class ServiceHelper {
                 localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
     }
 
-    public static String itemsToDescription(Object... items) {
-        return combineItems(DESCRIPTION_DIVIDER, items);
+    /**
+     * Additional video info such as user, published etc.
+     */
+    public static String itemsToSubtitle(Object... items) {
+        return combineItems(ITEMS_DIVIDER, items);
     }
 
     public static String combineText(Object... items) {

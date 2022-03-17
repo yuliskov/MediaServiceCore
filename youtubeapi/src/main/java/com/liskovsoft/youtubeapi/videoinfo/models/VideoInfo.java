@@ -140,7 +140,7 @@ public class VideoInfo {
     }
 
     public String getPlayabilityStatus() {
-        return ServiceHelper.itemsToDescription(mPlayabilityReason, mPlayabilityDescription);
+        return ServiceHelper.itemsToSubtitle(mPlayabilityReason, mPlayabilityDescription);
     }
 
     /**

@@ -19,11 +19,13 @@ import java.util.List;
 public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private static final String TAG = YouTubeMediaItemMetadata.class.getSimpleName();
     private String mTitle;
+    private String mSubtitle;
+    private String mSubtitleAlt;
+    private String mDescription;
     private String mAuthor;
     private String mViewCount;
     private String mLikesCount;
     private String mDislikesCount;
-    private String mFullDescription;
     private String mPublishedDate;
     private boolean mIsSubscribed;
     private int mLikeStatus;
@@ -32,8 +34,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private int mPercentWatched;
     private MediaItem mNextVideo;
     private List<MediaGroup> mSuggestions;
-    private String mDescription;
-    private String mDescriptionAlt;
     private boolean mIsLive;
     private boolean mIsUpcoming;
 
@@ -59,10 +59,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mVideoId = videoDetails.getVideoId();
             mediaItemMetadata.mPublishedDate = videoDetails.getPublishedDate();
 
-            mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
+            mediaItemMetadata.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(
                     mediaItemMetadata.mAuthor, videoDetails.getPublishedDate(),
                     videoDetails.getViewCountText());
-            mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
+            mediaItemMetadata.mSubtitleAlt = YouTubeMediaServiceHelper.createSubtitle(
                     mediaItemMetadata.mAuthor,
                     videoDetails.getPublishedDate(),
                     videoDetails.getShortViewCountText());
@@ -79,15 +79,15 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             String author = mediaItemMetadata.mAuthor != null ? mediaItemMetadata.mAuthor : videoMetadata.getByLine();
             String publishedTime = videoMetadata.getPublishedTime() != null ? videoMetadata.getPublishedTime() : videoMetadata.getAlbumName();
             mediaItemMetadata.mTitle = videoMetadata.getTitle();
-            mediaItemMetadata.mDescription = YouTubeMediaServiceHelper.createDescription(
+            mediaItemMetadata.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(
                     author, publishedTime,
                     videoMetadata.getShortViewCount());
-            mediaItemMetadata.mDescriptionAlt = YouTubeMediaServiceHelper.createDescription(
+            mediaItemMetadata.mSubtitleAlt = YouTubeMediaServiceHelper.createSubtitle(
                     author,
                     videoMetadata.getPublishedDate(),
                     videoMetadata.getShortViewCount());
             mediaItemMetadata.mVideoId = videoMetadata.getVideoId();
-            mediaItemMetadata.mFullDescription = videoMetadata.getDescription();
+            mediaItemMetadata.mDescription = videoMetadata.getDescription();
             mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
             mediaItemMetadata.mLikesCount = videoMetadata.getLikesCount();
             mediaItemMetadata.mViewCount = videoMetadata.getViewCount();
@@ -159,6 +159,21 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
+    public String getSubtitle() {
+        return mSubtitle;
+    }
+
+    @Override
+    public String getSubtitleAlt() {
+        return mSubtitleAlt;
+    }
+
+    @Override
+    public String getDescription() {
+        return mDescription;
+    }
+
+    @Override
     public String getAuthor() {
         return mAuthor;
     }
@@ -176,11 +191,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public String getDislikesCount() {
         return mDislikesCount;
-    }
-
-    @Override
-    public String getFullDescription() {
-        return mFullDescription;
     }
 
     @Override
@@ -231,15 +241,5 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public List<MediaGroup> getSuggestions() {
         return mSuggestions;
-    }
-
-    @Override
-    public String getDescription() {
-        return mDescription;
-    }
-
-    @Override
-    public String getDescriptionAlt() {
-        return mDescriptionAlt;
     }
 }

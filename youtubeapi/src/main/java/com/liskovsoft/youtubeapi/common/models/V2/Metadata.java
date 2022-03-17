@@ -29,7 +29,7 @@ public class Metadata {
     }
 
     public String getViewCountText() {
-        return YouTubeMediaServiceHelper.createDescription(getViewCountText1(), getViewCountText2());
+        return YouTubeMediaServiceHelper.createSubtitle(getViewCountText1(), getViewCountText2());
     }
 
     public String getPublishedTime() {

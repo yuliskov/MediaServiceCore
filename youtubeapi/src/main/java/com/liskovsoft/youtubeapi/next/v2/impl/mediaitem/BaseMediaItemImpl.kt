@@ -9,8 +9,8 @@ import kotlin.math.abs
 open class BaseMediaItemImpl : MediaItem {
     private var _titleItem: String? = null
         get() = field ?: titleItem
-    private var _descriptionItem: String? = null
-        get() = field ?: descriptionItem
+    private var _subtitleItem: String? = null
+        get() = field ?: subtitleItem
     private var _channelIdItem: String? = null
         get() = field ?: channelIdItem
     private var _reloadPageKeyItem: String? = null
@@ -33,13 +33,13 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String? = null
     protected open val titleItem: String? = null
+    protected open val subtitleItem: String? = null
     protected open val descBadgeText: String? = null
     protected open val userName: String? = null
     protected open val publishedTime: String? = null
     protected open val viewCountText: String? = null
     protected open val upcomingEventText: String? = null
     protected open val lengthText: String? = null
-    protected open val descriptionItem: String? = null
     protected open val cardThumbImageUrl: String? = null
     protected open val playlistIdItem: String? = null
     protected open val playlistIndexItem: Int? = null
@@ -62,7 +62,7 @@ open class BaseMediaItemImpl : MediaItem {
             val mediaItem = BaseMediaItemImpl()
             mediaItem._reloadPageKeyItem = Helpers.parseStr(split[0])
             mediaItem._titleItem = Helpers.parseStr(split[1])
-            mediaItem._descriptionItem = Helpers.parseStr(split[2])
+            mediaItem._subtitleItem = Helpers.parseStr(split[2])
             mediaItem._cardThumbImageUrl = Helpers.parseStr(split[3])
             mediaItem._videoIdItem = Helpers.parseStr(split[4])
             mediaItem._playlistIdItem = Helpers.parseStr(split[5])
@@ -87,12 +87,12 @@ open class BaseMediaItemImpl : MediaItem {
         _titleItem = title
     }
 
-    override fun getDescription(): String? {
-        return _descriptionItem
+    override fun getSubtitle(): String? {
+        return _subtitleItem
     }
 
-    fun setDescription(description: String?) {
-        _descriptionItem = description
+    fun setSubtitle(details: String?) {
+        _subtitleItem = details
     }
 
     override fun getVideoId(): String? {
@@ -226,7 +226,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getRatingScore(): Double {
-        return 4.0;
+        return 4.0
     }
 
     // End Fake params
@@ -240,12 +240,12 @@ open class BaseMediaItemImpl : MediaItem {
             return
         }
         title = metadata.title
-        description = metadata.description
+        subtitle = metadata.subtitle
         channelId = metadata.channelId
     }
 
     override fun toString(): String {
-        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", reloadPageKey, title, description, cardImageUrl, videoId, playlistId, channelId)
+        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", reloadPageKey, title, subtitle, cardImageUrl, videoId, playlistId, channelId)
     }
 
     override fun equals(other: Any?): Boolean {

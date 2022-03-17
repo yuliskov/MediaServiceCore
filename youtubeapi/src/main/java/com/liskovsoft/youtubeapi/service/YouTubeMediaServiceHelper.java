@@ -17,8 +17,11 @@ public final class YouTubeMediaServiceHelper {
         return thumbnails.get(thumbnails.size() - 1).getUrl();
     }
 
-    public static String createDescription(Object... items) {
-        return ServiceHelper.itemsToDescription(items);
+    /**
+     * Additional video info such as user, published etc.
+     */
+    public static String createSubtitle(Object... items) {
+        return ServiceHelper.itemsToSubtitle(items);
     }
 
     public static String extractNextKey(MediaGroup mediaTab) {

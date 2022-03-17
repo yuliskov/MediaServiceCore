@@ -21,7 +21,7 @@ public class YouTubeMediaItem implements MediaItem {
     private static int sId;
     private int mId;
     private String mTitle;
-    private String mSubtitle;
+    private String mInfo;
     private String mVideoId;
     private String mChannelId;
     private String mPlaylistId;
@@ -101,7 +101,7 @@ public class YouTubeMediaItem implements MediaItem {
         }
 
         video.mTitle = item.getTitle();
-        video.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(
+        video.mInfo = YouTubeMediaServiceHelper.createInfo(
                 item.getDescBadgeText(), // Mostly it's a 4K label
                 item.getUserName(),
                 item.getPublishedTime(),
@@ -139,7 +139,7 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mTitle = item.getTitle();
-        video.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(
+        video.mInfo = YouTubeMediaServiceHelper.createInfo(
                 item.getDescBadgeText(), // Mostly it's a 4K label
                 item.getUserName(),
                 item.getPublishedDate(),
@@ -176,7 +176,7 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
         video.mTitle = item.getTitle();
-        video.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(
+        video.mInfo = YouTubeMediaServiceHelper.createInfo(
                 item.getUserName(),
                 item.getViewsAndPublished());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
@@ -206,7 +206,7 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_CHANNEL;
         video.mTitle = item.getTitle();
-        video.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(item.getSubscriberCountText());
+        video.mInfo = YouTubeMediaServiceHelper.createInfo(item.getSubscriberCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
@@ -223,7 +223,7 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
         video.mTitle = item.getTitle();
-        video.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(item.getVideoCountText());
+        video.mInfo = YouTubeMediaServiceHelper.createInfo(item.getVideoCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
@@ -240,7 +240,7 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
         video.mTitle = item.getTitle();
-        video.mSubtitle = YouTubeMediaServiceHelper.createSubtitle(item.getVideoCountText());
+        video.mInfo = YouTubeMediaServiceHelper.createInfo(item.getVideoCountText());
         String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mCardImageUrl = highResThumbnailUrl;
         video.mBackgroundImageUrl = highResThumbnailUrl;
@@ -328,8 +328,8 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getSubtitle() {
-        return mSubtitle;
+    public String getInfo() {
+        return mInfo;
     }
 
     @Override
@@ -495,7 +495,7 @@ public class YouTubeMediaItem implements MediaItem {
         }
 
         mTitle = metadata.getTitle();
-        mSubtitle = metadata.getSubtitle();
+        mInfo = metadata.getInfo();
         mChannelId = metadata.getChannelId();
     }
 
@@ -511,7 +511,7 @@ public class YouTubeMediaItem implements MediaItem {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", mReloadPageKey, mTitle, mSubtitle, mCardImageUrl, mVideoId, mPlaylistId, mChannelId);
+        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", mReloadPageKey, mTitle, mInfo, mCardImageUrl, mVideoId, mPlaylistId, mChannelId);
     }
 
     public static MediaItem fromString(String spec) {
@@ -529,7 +529,7 @@ public class YouTubeMediaItem implements MediaItem {
 
         mediaItem.mReloadPageKey = Helpers.parseStr(split[0]);
         mediaItem.mTitle = Helpers.parseStr(split[1]);
-        mediaItem.mSubtitle = Helpers.parseStr(split[2]);
+        mediaItem.mInfo = Helpers.parseStr(split[2]);
         mediaItem.mCardImageUrl = Helpers.parseStr(split[3]);
         mediaItem.mVideoId = Helpers.parseStr(split[4]);
         mediaItem.mPlaylistId = Helpers.parseStr(split[5]);

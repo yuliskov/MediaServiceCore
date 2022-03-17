@@ -9,8 +9,8 @@ import kotlin.math.abs
 open class BaseMediaItemImpl : MediaItem {
     private var _titleItem: String? = null
         get() = field ?: titleItem
-    private var _subtitleItem: String? = null
-        get() = field ?: subtitleItem
+    private var _infoItem: String? = null
+        get() = field ?: infoItem
     private var _channelIdItem: String? = null
         get() = field ?: channelIdItem
     private var _reloadPageKeyItem: String? = null
@@ -33,7 +33,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String? = null
     protected open val titleItem: String? = null
-    protected open val subtitleItem: String? = null
+    protected open val infoItem: String? = null
     protected open val descBadgeText: String? = null
     protected open val userName: String? = null
     protected open val publishedTime: String? = null
@@ -62,7 +62,7 @@ open class BaseMediaItemImpl : MediaItem {
             val mediaItem = BaseMediaItemImpl()
             mediaItem._reloadPageKeyItem = Helpers.parseStr(split[0])
             mediaItem._titleItem = Helpers.parseStr(split[1])
-            mediaItem._subtitleItem = Helpers.parseStr(split[2])
+            mediaItem._infoItem = Helpers.parseStr(split[2])
             mediaItem._cardThumbImageUrl = Helpers.parseStr(split[3])
             mediaItem._videoIdItem = Helpers.parseStr(split[4])
             mediaItem._playlistIdItem = Helpers.parseStr(split[5])
@@ -87,12 +87,12 @@ open class BaseMediaItemImpl : MediaItem {
         _titleItem = title
     }
 
-    override fun getSubtitle(): String? {
-        return _subtitleItem
+    override fun getInfo(): String? {
+        return _infoItem
     }
 
-    fun setSubtitle(details: String?) {
-        _subtitleItem = details
+    fun setInfo(details: String?) {
+        _infoItem = details
     }
 
     override fun getVideoId(): String? {
@@ -240,12 +240,12 @@ open class BaseMediaItemImpl : MediaItem {
             return
         }
         title = metadata.title
-        subtitle = metadata.subtitle
+        info = metadata.info
         channelId = metadata.channelId
     }
 
     override fun toString(): String {
-        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", reloadPageKey, title, subtitle, cardImageUrl, videoId, playlistId, channelId)
+        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", reloadPageKey, title, info, cardImageUrl, videoId, playlistId, channelId)
     }
 
     override fun equals(other: Any?): Boolean {

@@ -202,7 +202,7 @@ public class VideoContentProvider extends ContentProvider {
         return new Object[] {
             mediaItem.getId(),
             mediaItem.getTitle(),
-            mediaItem.getSubtitle(),
+            mediaItem.getInfo(),
             mediaItem.getCardImageUrl(),
             mediaItem.getContentType(),
             mediaItem.isLive(),

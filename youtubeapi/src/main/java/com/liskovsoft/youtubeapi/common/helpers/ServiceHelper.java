@@ -69,7 +69,7 @@ public class ServiceHelper {
     /**
      * Additional video info such as user, published etc.
      */
-    public static String itemsToSubtitle(Object... items) {
+    public static String itemsToInfo(Object... items) {
         return combineItems(ITEMS_DIVIDER, items);
     }
 

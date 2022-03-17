@@ -34,7 +34,7 @@ public interface MediaItem {
     /**
      * Additional video info such as user, published etc.
      */
-    String getSubtitle();
+    String getInfo();
     String getVideoUrl();
     String getVideoId();
     /**

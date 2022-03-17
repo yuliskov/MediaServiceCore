@@ -128,7 +128,7 @@ public class ClipService {
             for (MediaItem v : videos) {
                 clips.add(new Clip(
                         v.getTitle(),
-                        v.getSubtitle(),
+                        v.getInfo(),
                         v.getDurationMs(),
                         v.getBackgroundImageUrl(),
                         v.getCardImageUrl(),

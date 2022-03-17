@@ -20,8 +20,8 @@ public final class YouTubeMediaServiceHelper {
     /**
      * Additional video info such as user, published etc.
      */
-    public static String createSubtitle(Object... items) {
-        return ServiceHelper.itemsToSubtitle(items);
+    public static String createInfo(Object... items) {
+        return ServiceHelper.itemsToInfo(items);
     }
 
     public static String extractNextKey(MediaGroup mediaTab) {

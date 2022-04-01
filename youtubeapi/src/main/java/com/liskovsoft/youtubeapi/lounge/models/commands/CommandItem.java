@@ -12,7 +12,7 @@ public class CommandItem {
     public static final String TYPE_REMOTE_DISCONNECTED = "remoteDisconnected";
     public static final String TYPE_GET_NOW_PLAYING = "getNowPlaying";
     public static final String TYPE_UPDATE_PLAYLIST = "updatePlaylist";
-    public static final String TYPE_NOP = "noop";
+    public static final String TYPE_NOOP = "noop";
     public static final String TYPE_PLAY = "play";
     public static final String TYPE_PAUSE = "pause";
     public static final String TYPE_NEXT = "next";
@@ -20,10 +20,17 @@ public class CommandItem {
     public static final String TYPE_SEEK_TO = "seekTo";
     public static final String TYPE_SET_VOLUME = "setVolume";
     public static final String TYPE_STOP_VIDEO = "stopVideo";
+    public static final String TYPE_DPAD = "dpadCommand";
     // Special commands
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";
-    
+    public static final String KEY_UP = "UP";
+    public static final String KEY_DOWN = "DOWN";
+    public static final String KEY_LEFT = "LEFT";
+    public static final String KEY_RIGHT = "RIGHT";
+    public static final String KEY_ENTER = "ENTER";
+    public static final String KEY_BACK = "BACK";
+
     @JsonPath("$[0]")
     private int mIndex;
 
@@ -44,6 +51,9 @@ public class CommandItem {
 
     @JsonPath("$[1][1:]")
     private List<String> mParams;
+
+    @JsonPath("$[1][1].key")
+    private String mKey;
 
     public int getIndex() {
         return mIndex;
@@ -71,6 +81,10 @@ public class CommandItem {
 
     public VolumeParams getVolumeParams() {
         return mVolumeParams;
+    }
+
+    public String getKey() {
+        return mKey;
     }
 
     @NonNull

@@ -18,6 +18,7 @@ public class YouTubeCommand implements Command {
     private String mDeviceId;
     private int mPlaylistIndex;
     private int mVolume;
+    private int mKey = Command.KEY_UNDEFINED;
 
     public static Command from(CommandItem info) {
         if (info == null) {
@@ -80,8 +81,31 @@ public class YouTubeCommand implements Command {
                 command.mDeviceName = remoteParams.getDeviceName();
                 command.mDeviceId = remoteParams.getDeviceId();
                 break;
-            case CommandItem.TYPE_NOP:
+            case CommandItem.TYPE_NOOP:
                 command.mType = Command.TYPE_IDLE;
+                break;
+            case CommandItem.TYPE_DPAD:
+                command.mType = Command.TYPE_DPAD;
+                switch (info.getKey()) {
+                    case CommandItem.KEY_UP:
+                        command.mKey = Command.KEY_UP;
+                        break;
+                    case CommandItem.KEY_DOWN:
+                        command.mKey = Command.KEY_DOWN;
+                        break;
+                    case CommandItem.KEY_LEFT:
+                        command.mKey = Command.KEY_LEFT;
+                        break;
+                    case CommandItem.KEY_RIGHT:
+                        command.mKey = Command.KEY_RIGHT;
+                        break;
+                    case CommandItem.KEY_ENTER:
+                        command.mKey = Command.KEY_ENTER;
+                        break;
+                    case CommandItem.KEY_BACK:
+                        command.mKey = Command.KEY_BACK;
+                        break;
+                }
                 break;
         }
 
@@ -126,5 +150,10 @@ public class YouTubeCommand implements Command {
     @Override
     public int getVolume() {
         return mVolume;
+    }
+
+    @Override
+    public int getKey() {
+        return mKey;
     }
 }

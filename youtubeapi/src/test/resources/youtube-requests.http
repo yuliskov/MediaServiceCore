@@ -807,6 +807,15 @@ x-goog-visitor-id: Cgs3Q01ZVlNMcF9nMCiLzd6NBg%3D%3D
 ### Web (age restricted videos)
 
 POST https://www.youtube.com/youtubei/v1/player
+Authorization: Bearer ya29.A0ARrdaM_gvdqExxv9LKcdO7yDt1-aqGX70iZjbEVQgFcj8PBfZjjX-6Bpy2pZaIUe5NtdvkulVxAt6eaiOAhO9iyBBblGXbtIvBYBFrWMbkqaxhFHX0aYXMrzwgxErN_AuDZSdRN1Jn_YgPBD14G7rsGasv-h4pcyaOZFLaropSqy
+content-type: application/json
+origin: https://www.youtube.com
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20220119.01.00","clientScreen":"WATCH","visitorData":"CgtyOTR5Ym42Q0QzMCjgjbyQBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19040}},"videoId":"ujpejC8-vx8","cpn":"IlJ9fr2YgcOnzI1c"}
+
+### Web (age restricted videos)
+
+POST https://www.youtube.com/youtubei/v1/player
 authorization: SAPISIDHASH 1645062921_df354f673ee52822175a0a9f4813c39eea0f95cc
 cookie: __Secure-3PAPISID=JbTGDgqvynRIJ6ZM/A4LyWqJOh5AEa1zzf; __Secure-3PSID=GgjMe58C83cWIeEgmGKn9cRE2zjRGwRwlmFHwIk2x-O3_0TgTrK-lKpZ6q3MDo-To6Ahgw.
 content-type: application/json
@@ -817,7 +826,7 @@ origin: https://www.youtube.com
 ### TV
 
 POST https://www.youtube.com/youtubei/v1/verify_age
-Authorization: Bearer ya29.A0ARrdaM_lDXgRzDgWor9xqvMFIITaCVfeYvZesVZEo51t3Luz0Zk79Hrjglj2a7JusLSJ5XwWI5QY_K6OtrBhdvHO59byuRNIVqQ1HaYzbL96rg-Dw4qHxKAqUVb4fYo7A2sO26oYyzVaH_10unJU1xvgmVhBpOLIO2Tt1CJvvkSl
+Authorization: Bearer ya29.A0ARrdaM_gvdqExxv9LKcdO7yDt1-aqGX70iZjbEVQgFcj8PBfZjjX-6Bpy2pZaIUe5NtdvkulVxAt6eaiOAhO9iyBBblGXbtIvBYBFrWMbkqaxhFHX0aYXMrzwgxErN_AuDZSdRN1Jn_YgPBD14G7rsGasv-h4pcyaOZFLaropSqy
 content-type: application/json
 origin: https://www.youtube.com
 
@@ -857,3 +866,24 @@ Referer: https://www.youtube.com
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 
 {"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20220315.10.00","platform":"DESKTOP","clientScreen":"WATCH","webpSupport":true,"animatedWebpSupport":true,"acceptRegion":"DE","acceptLanguage":"en-DE","utcOffsetMinutes":"120"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"videoId":"EPfmNxKLDG4","playlistId":"PLbl01QFpbBY3k5A8412DEqxwNuHBDudBz","playlistIndex":0}
+
+### TEMP
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.A0ARrdaM9HehYyZRhJJ4bacDCmOD-LODIyGIVWFUzUOvqHQ5enq6VFtRdyRcEHFPpIjbTQHGvSxpCFyuyfYeYC0LSTWvmEeoBGL8DVaj_W6HL3llQFY5jHUUp_7olg1z4lEI_H03OsMk2PFOVlRa_GWAyqyRRbdZ9mmnhHgbpdefiA
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+x-goog-visitor-id: Cgt4M1A3QllrTWpGayjDtKOSBg%3D%3D
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20220119.01.00","clientScreen":"EMBED","visitorData":"Cgt4M1A3QllrTWpGayjDtKOSBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"DE","acceptLanguage":"ru-DE","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19082}},"videoId":"ujpejC8-vx8","cpn":"slZP4Hc5hkz4vaH6"}
+
+### TEMP
+
+GET https://www.youtube.com/get_video_info?c=TVHTML5&cver=7.20210428.10.00&el=detailpage&html5=1&video_id=Cr381pDsSsA&access_token=ya29.A0ARrdaM_gvdqExxv9LKcdO7yDt1-aqGX70iZjbEVQgFcj8PBfZjjX-6Bpy2pZaIUe5NtdvkulVxAt6eaiOAhO9iyBBblGXbtIvBYBFrWMbkqaxhFHX0aYXMrzwgxErN_AuDZSdRN1Jn_YgPBD14G7rsGasv-h4pcyaOZFLaropSqy
+
+### TEMP
+
+GET https://www.youtube.com/get_video_info?html5=1&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=7.20210428.10.00&video_id=6EQBy1h82Bs&access_token=ya29.a0AfH6SMAK3XdkElqPYLAhAO1Wd__1Vy_4hgiOL2pJDO0Qvhum2GPeIqycbty-jg5iiIvYpi_VdFBag3Apw9JaXc8XHUiwkg_OMhCwrE0LglmtVQNcCIP-vg9fLc5nJQ_zuBn0h8VxsAxZrF-Nh_5PBy0KBsQcNiFKk8NA1jw&hl=uk-UA
+authorization: Bearer ya29.a0AfH6SMAK3XdkElqPYLAhAO1Wd__1Vy_4hgiOL2pJDO0Qvhum2GPeIqycbty-jg5iiIvYpi_VdFBag3Apw9JaXc8XHUiwkg_OMhCwrE0LglmtVQNcCIP-vg9fLc5nJQ_zuBn0h8VxsAxZrF-Nh_5PBy0KBsQcNiFKk8NA1jw

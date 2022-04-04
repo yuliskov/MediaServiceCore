@@ -887,3 +887,15 @@ GET https://www.youtube.com/get_video_info?c=TVHTML5&cver=7.20210428.10.00&el=de
 
 GET https://www.youtube.com/get_video_info?html5=1&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=7.20210428.10.00&video_id=6EQBy1h82Bs&access_token=ya29.a0AfH6SMAK3XdkElqPYLAhAO1Wd__1Vy_4hgiOL2pJDO0Qvhum2GPeIqycbty-jg5iiIvYpi_VdFBag3Apw9JaXc8XHUiwkg_OMhCwrE0LglmtVQNcCIP-vg9fLc5nJQ_zuBn0h8VxsAxZrF-Nh_5PBy0KBsQcNiFKk8NA1jw&hl=uk-UA
 authorization: Bearer ya29.a0AfH6SMAK3XdkElqPYLAhAO1Wd__1Vy_4hgiOL2pJDO0Qvhum2GPeIqycbty-jg5iiIvYpi_VdFBag3Apw9JaXc8XHUiwkg_OMhCwrE0LglmtVQNcCIP-vg9fLc5nJQ_zuBn0h8VxsAxZrF-Nh_5PBy0KBsQcNiFKk8NA1jw
+
+###
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.A0ARrdaM_rTIehHG33nt6fukbOTqGQmYBWgbWIV5ahIFGqgdqEew9WhdjYmGK0Jwjf_Tk0tbUMZB8xvZgCUYOXeUeoP2MaEHflfx0Ys_xj6040DlmPjEendrRXy_LqXdndVvZPxY1QYLkq2_g6vlgnZKBQEDrBWl8tQJafsYrcn3OF
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+x-goog-visitor-id: CgtMVXZ3SHFNZUw2ayilsquSBg%3D%3D
+
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","visitorData":"CgtMVXZ3SHFNZUw2ayilsquSBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"DE","acceptLanguage":"ru-DE","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19082}},"videoId":"OMqJMo9SQ8Y","cpn":"1jSrfw0TVEEFlfpC"}

@@ -30,8 +30,13 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
             Log.e(TAG, "Enable seeking support on the live streams...");
             result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
         } else if (result != null && result.isUnplayable()) {
-            Log.e(TAG, "Found restricted video. Retrying with different query method...");
+            Log.e(TAG, "Found restricted video. Retrying with embed query method...");
             result = getVideoInfoEmbed(videoId, clickTrackingParams, authorization);
+
+            if (result != null && result.isUnplayable()) {
+                Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
+                result = getVideoInfoRestricted(videoId, clickTrackingParams);
+            }
         }
 
         if (result != null) {
@@ -58,18 +63,14 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams, String eventId, String visitorMonitoringData) {
+    /**
+     * NOTE: user history won't work with this method
+     */
+    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorData());
 
-        VideoInfo videoInfo = RetrofitHelper.get(wrapper);
-
-        if (videoInfo != null) {
-            videoInfo.setEventId(eventId);
-            videoInfo.setVisitorMonitoringData(visitorMonitoringData);
-        }
-
-        return videoInfo;
+        return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoEmbed(String videoId, String clickTrackingParams, String authorization) {

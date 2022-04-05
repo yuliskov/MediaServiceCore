@@ -25,10 +25,13 @@ public interface AppConstants {
     String CLIENT_VERSION_TV = "7.20220118.09.00";
     // 2.20211014.05.00-canary_control
     String CLIENT_VERSION_WEB = "2.20220119.01.00";
+    // Special embed version (thanks for github thread)
+    String CLIENT_VERSION_EMBED = "2.0";
     // 16.20
     String CLIENT_VERSION_ANDROID = "16.49";
     String CLIENT_NAME_TV = "TVHTML5";
     String CLIENT_NAME_WEB = "WEB";
+    String CLIENT_NAME_EMBED = "TVHTML5_SIMPLY_EMBEDDED_PLAYER";
     String CLIENT_NAME_ANDROID = "ANDROID";
     String CLIENT_SCREEN_WATCH = "WATCH"; // won't play 18+ restricted videos
     String CLIENT_SCREEN_EMBED = "EMBED"; // no 18+ restriction but not all video embeddable, and no descriptions

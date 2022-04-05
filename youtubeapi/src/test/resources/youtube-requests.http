@@ -804,6 +804,16 @@ x-goog-visitor-id: Cgs3Q01ZVlNMcF9nMCiLzd6NBg%3D%3D
 
 {"context":{"client":{"clientName":"WEB","clientVersion":"2.20211014.05.00-canary_control","clientScreen":"WATCH","visitorData":"Cgs3Q01ZVlNMcF9nMCiLzd6NBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":18970}},"videoId":"-mPHEd3ePGg","cpn":"uVEaysVI2UHxERUO"}
 
+### Web (age restricted videos!!!!)
+
+POST https://www.youtube.com/youtubei/v1/player
+Authorization: Bearer ya29.A0ARrdaM_w8n0rhhqA9uQVnybHR_G5EhXBqBcgiy91M4lZTqzIpwgBUjOeeyBVmvqiUg2y-UuNBJLW2Nm1-PF8K5pTJZsA3SPLCyZKNBgSVITRT5wVNH8MN_6xg6rvko2D1MjsOkS6lQczVGDSw4_P9h9pT1Xyrq7myqgEgegup9HV
+content-type: application/json
+origin: https://www.youtube.com
+
+{"context":{"client":{"clientName":"TVHTML5_SIMPLY_EMBEDDED_PLAYER","clientVersion":"2.0","clientScreen":"WATCH","visitorData":"CgtyOTR5Ym42Q0QzMCjgjbyQBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"RU","acceptLanguage":"ru-RU","utcOffsetMinutes":"120"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19040}},"videoId":"ujpejC8-vx8","cpn":"IlJ9fr2YgcOnzI1c"}
+
+
 ### Web (age restricted videos)
 
 POST https://www.youtube.com/youtubei/v1/player
@@ -899,3 +909,7 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 x-goog-visitor-id: CgtMVXZ3SHFNZUw2ayilsquSBg%3D%3D
 
 {"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","visitorData":"CgtMVXZ3SHFNZUw2ayilsquSBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"DE","acceptLanguage":"ru-DE","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19082}},"videoId":"OMqJMo9SQ8Y","cpn":"1jSrfw0TVEEFlfpC"}
+
+###
+
+

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
+import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -100,6 +101,8 @@ public class LoungeService {
                 initConstants();
                 startListeningInt(callback);
                 Thread.sleep(3_000); // fix too frequent request
+            } catch (SocketTimeoutException e) {
+                Log.e(TAG, "Connection hanged. Reconnecting...");
             } catch (InterruptedIOException e) {
                 Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
                 break;
@@ -163,8 +166,8 @@ public class LoungeService {
         Request request = new Builder().url(url).build();
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        // Read infinitely
-        builder.readTimeout(0, TimeUnit.MILLISECONDS);
+        // No command during one minute could be a sign of hanged connection.
+        builder.readTimeout(60_000, TimeUnit.MILLISECONDS);
 
         OkHttpClient client = builder.build();
 
@@ -188,7 +191,9 @@ public class LoungeService {
 
             result += line + "\n";
 
-            if (line.equals("]") && !result.endsWith("\"noop\"]\n]\n")) {
+            boolean isLastLine = line.equals("]") && !result.endsWith("\"noop\"]\n]\n");
+
+            if (isLastLine) {
                 Log.d(TAG, "New command: \n" + result);
 
                 CommandList infos = toCommandInfos(result);

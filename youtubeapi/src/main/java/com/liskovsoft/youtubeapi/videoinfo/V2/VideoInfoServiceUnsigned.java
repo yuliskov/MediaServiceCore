@@ -26,9 +26,14 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams);
 
-        if (result != null && result.isAgeRestricted()) {
+        if (result != null && result.isUnplayable()) {
             Log.e(TAG, "Found restricted video. Retrying with different query method...");
             result = getVideoInfoEmbed(videoId, clickTrackingParams);
+
+            if (result != null && result.isUnplayable()) {
+                Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
+                result = getVideoInfoRestricted(videoId, clickTrackingParams);
+            }
         }
 
         if (result != null) {
@@ -51,6 +56,13 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     private VideoInfo getVideoInfoEmbed(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryEmbed2(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery);
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoInfoQuery);
 
         return RetrofitHelper.get(wrapper);
     }

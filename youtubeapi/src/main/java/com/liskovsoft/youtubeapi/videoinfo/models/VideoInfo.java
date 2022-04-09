@@ -132,10 +132,14 @@ public class VideoInfo {
         return mWatchTimeUrl;
     }
 
+    public boolean isUnplayable() {
+        return isEmbedRestricted() || isAgeRestricted();
+    }
+
     /**
      * Video cannot be embedded
      */
-    public boolean isUnplayable() {
+    public boolean isEmbedRestricted() {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE, STATUS_ERROR);
     }
 

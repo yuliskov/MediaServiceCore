@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +17,7 @@ public interface VideoInfoManagerSigned {
     Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("Authorization") String auth);
 
     /**
-     * Not working at this moment.<br/>
+     * History is not working with this method.<br/>
      * Authorization need to be obtained from the current user credentials.<br/>
      * <a href="https://github.com/zerodytrash/Simple-YouTube-Age-Restriction-Bypass">More info</a><br/>
      * <a href="https://github.com/zerodytrash/Simple-YouTube-Age-Restriction-Bypass/raw/main/dist/Simple-YouTube-Age-Restriction-Bypass.user.js">Sample script</a>

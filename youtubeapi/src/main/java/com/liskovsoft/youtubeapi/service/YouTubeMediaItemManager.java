@@ -108,7 +108,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public MediaItemStoryboard getStoryboard(String videoId) {
-        return getFormatInfo(videoId).createStoryboard();
+        YouTubeMediaItemFormatInfo format = getFormatInfo(videoId);
+        return format != null ? format.createStoryboard() : null;
     }
 
     @Override

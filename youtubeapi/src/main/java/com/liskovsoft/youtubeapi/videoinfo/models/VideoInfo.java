@@ -139,15 +139,15 @@ public class VideoInfo {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE, STATUS_ERROR);
     }
 
-    public String getPlayabilityStatus() {
-        return ServiceHelper.itemsToInfo(mPlayabilityReason, mPlayabilityDescription);
-    }
-
     /**
      * Age restricted video
      */
     public boolean isAgeRestricted() {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_LOGIN_REQUIRED, STATUS_AGE_CHECK_REQUIRED, STATUS_CONTENT_CHECK_REQUIRED);
+    }
+
+    public String getPlayabilityStatus() {
+        return ServiceHelper.itemsToInfo(mPlayabilityReason, mPlayabilityDescription);
     }
 
     public String getStoryboardSpec() {

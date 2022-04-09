@@ -29,11 +29,11 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on the live streams...");
             result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
-        } else if (result != null && result.isUnplayable()) {
+        } else if (result != null && result.isAgeRestricted()) {
             Log.e(TAG, "Found restricted video. Retrying with embed query method...");
             result = getVideoInfoEmbed(videoId, clickTrackingParams, authorization);
 
-            if (result != null && result.isUnplayable()) {
+            if (result != null && result.isAgeRestricted()) {
                 Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
                 result = getVideoInfoRestricted(videoId, clickTrackingParams);
             }

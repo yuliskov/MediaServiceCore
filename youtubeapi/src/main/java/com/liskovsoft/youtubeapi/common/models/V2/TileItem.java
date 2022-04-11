@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.common.models.V2;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class TileItem {
     private static final String BADGE_STYLE_LIVE = "LIVE";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
+    private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
 
     @JsonPath("$.header.tileHeaderRenderer")
     private Header mHeader;
@@ -20,7 +23,11 @@ public class TileItem {
     @JsonPath("$.metadata.tileMetadataRenderer")
     private Metadata mMetadata;
 
-    @JsonPath("$.onSelectCommand.watchEndpoint.videoId")
+    @JsonPath({
+            "$.contentId", // regular video or movie trailer
+            "$.onSelectCommand.watchEndpoint.videoId", // regular video (duplicate)
+            "$.onSelectCommand.showMenuCommand.contentId" // movie trailer (duplicate)
+    })
     private String mVideoId;
 
     @JsonPath({
@@ -58,7 +65,7 @@ public class TileItem {
     }
 
     public String getDescBadgeText() {
-        return mMetadata != null ? mMetadata.getDescBadgeText() : null;
+        return mMetadata != null && mMetadata.getBadgeLabels() != null ? mMetadata.getBadgeLabels().get(0) : null;
     }
 
     public String getUserName() {
@@ -114,11 +121,15 @@ public class TileItem {
     }
 
     public boolean isLive() {
-        return BADGE_STYLE_LIVE.equals(mHeader != null ? mHeader.getBadgeStyle() : mMetadata.getBadgeStyle() != null ? mMetadata.getBadgeStyle() : null);
+        return Helpers.equalsAny(BADGE_STYLE_LIVE, getBadgeStyles());
     }
 
     public boolean isUpcoming() {
-        return BADGE_STYLE_UPCOMING.equals(mHeader != null ? mHeader.getBadgeStyle() : mMetadata.getBadgeStyle() != null ? mMetadata.getBadgeStyle() : null);
+        return Helpers.equalsAny(BADGE_STYLE_UPCOMING, getBadgeStyles());
+    }
+
+    public boolean isMovie() {
+        return Helpers.equalsAny(BADGE_STYLE_MOVIE, getBadgeStyles());
     }
 
     public String getFeedbackToken() {
@@ -131,5 +142,10 @@ public class TileItem {
 
     public String getContentType() {
         return mContentType != null ? mContentType : CONTENT_TYPE_UNDEFINED;
+    }
+
+    @Nullable
+    private Object[] getBadgeStyles() {
+        return mHeader != null ? new String[] {mHeader.getBadgeStyle()} : mMetadata.getBadgeStyles() != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
     }
 }

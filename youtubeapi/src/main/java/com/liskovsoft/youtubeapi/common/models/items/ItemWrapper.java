@@ -61,4 +61,8 @@ public class ItemWrapper {
     public boolean isUpcoming() {
         return mVideoItem != null ? mVideoItem.isUpcoming() : mTileItem != null ? mTileItem.isUpcoming() : false;
     }
+
+    public boolean isMovie() {
+        return mTileItem != null ? mTileItem.isMovie() : false;
+    }
 }

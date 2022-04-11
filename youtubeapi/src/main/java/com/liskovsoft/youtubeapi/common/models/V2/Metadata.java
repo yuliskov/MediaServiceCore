@@ -13,12 +13,10 @@ public class Metadata {
     private List<TextItem> mViewsAndDateText1;
     @JsonPath("$.lines[1].lineRenderer.items[*].lineItemRenderer.text")
     private List<TextItem> mViewsAndDateText2;
-    @JsonPath({"$.lines[0].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style",
-            "$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style"})
-    private String mBadgeStyle;
-    @JsonPath({"$.lines[0].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label",
-            "$.lines[1].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label"})
-    private String mDescBadgeText;
+    @JsonPath("$.lines[*].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style")
+    private List<String> mBadgeStyles;
+    @JsonPath("$.lines[*].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label")
+    private List<String> mBadgeLabels;
 
     public String getTitle() {
         return mTitle != null ? mTitle.getText() : null;
@@ -36,12 +34,12 @@ public class Metadata {
         return null; // should be null (views and dates is combined)
     }
 
-    public String getBadgeStyle() {
-        return mBadgeStyle;
+    public List<String> getBadgeStyles() {
+        return mBadgeStyles;
     }
 
-    public String getDescBadgeText() {
-        return mDescBadgeText;
+    public List<String> getBadgeLabels() {
+        return mBadgeLabels;
     }
 
     private String getViewCountText1() {

@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
@@ -55,12 +56,14 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.reason")
     private String mPlayabilityReason;
 
-    @JsonPath({"$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason.simpleText",
-               "$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason.runs[0].text"})
-    private String mPlayabilityDescription;
+    @JsonPath("$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason")
+    private TextItem mPlayabilityDescription;
 
     @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
     private String mStoryboardSpec;
+
+    @JsonPath("$.playabilityStatus.errorScreen.playerLegacyDesktopYpcTrailerRenderer.trailerVideoId")
+    private String mTrailerVideoId;
 
     // Values used in tracking actions
     private String mEventId;
@@ -132,6 +135,10 @@ public class VideoInfo {
         return mWatchTimeUrl;
     }
 
+    public boolean isRent() {
+        return isUnplayable() && getTrailerVideoId() != null;
+    }
+
     public boolean isUnplayable() {
         return isEmbedRestricted() || isAgeRestricted();
     }
@@ -156,6 +163,10 @@ public class VideoInfo {
 
     public String getStoryboardSpec() {
         return mStoryboardSpec;
+    }
+
+    public String getTrailerVideoId() {
+        return mTrailerVideoId;
     }
 
     public boolean isHfr() {

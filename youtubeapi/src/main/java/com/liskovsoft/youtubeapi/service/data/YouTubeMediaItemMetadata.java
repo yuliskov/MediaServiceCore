@@ -19,8 +19,8 @@ import java.util.List;
 public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private static final String TAG = YouTubeMediaItemMetadata.class.getSimpleName();
     private String mTitle;
-    private String mInfo;
-    private String mInfoAlt;
+    private String mSecondTitle;
+    private String mSecondTitleAlt;
     private String mDescription;
     private String mAuthor;
     private String mViewCount;
@@ -59,11 +59,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mVideoId = videoDetails.getVideoId();
             mediaItemMetadata.mPublishedDate = videoDetails.getPublishedDate();
 
-            mediaItemMetadata.mInfo = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
                     mediaItemMetadata.mAuthor,
                     videoDetails.getPublishedDate(),
                     videoDetails.getViewCountText());
-            mediaItemMetadata.mInfoAlt = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitleAlt = YouTubeMediaServiceHelper.createInfo(
                     mediaItemMetadata.mAuthor,
                     videoDetails.getPublishedDate(),
                     videoDetails.getShortViewCountText());
@@ -80,10 +80,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             String author = mediaItemMetadata.mAuthor != null ? mediaItemMetadata.mAuthor : videoMetadata.getByLine();
             String publishedTime = videoMetadata.getPublishedTime() != null ? videoMetadata.getPublishedTime() : videoMetadata.getAlbumName();
             mediaItemMetadata.mTitle = videoMetadata.getTitle();
-            mediaItemMetadata.mInfo = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
                     author, publishedTime,
                     videoMetadata.getShortViewCount());
-            mediaItemMetadata.mInfoAlt = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitleAlt = YouTubeMediaServiceHelper.createInfo(
                     author,
                     videoMetadata.getPublishedDate(),
                     videoMetadata.getShortViewCount());
@@ -160,13 +160,13 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public String getInfo() {
-        return mInfo;
+    public String getSecondTitle() {
+        return mSecondTitle;
     }
 
     @Override
-    public String getInfoAlt() {
-        return mInfoAlt;
+    public String getSecondTitleAlt() {
+        return mSecondTitleAlt;
     }
 
     @Override

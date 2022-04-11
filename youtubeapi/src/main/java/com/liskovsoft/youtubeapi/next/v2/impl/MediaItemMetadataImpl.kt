@@ -64,12 +64,12 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         }
     }
     private val videoDescription by lazy { videoMetadata?.description?.getText() }
-    private val videoInfo by lazy {
+    private val videoSecondTitle by lazy {
         YouTubeMediaServiceHelper.createInfo(
                 videoAuthor, viewCountText, publishedTime
         )
     }
-    private val videoInfoAlt by lazy {
+    private val videoSecondTitleAlt by lazy {
         YouTubeMediaServiceHelper.createInfo(
                 videoAuthor, viewCountText, publishedDate
         )
@@ -111,12 +111,12 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         return videoTitle
     }
 
-    override fun getInfo(): String? {
-        return videoInfo
+    override fun getSecondTitle(): String? {
+        return videoSecondTitle
     }
 
-    override fun getInfoAlt(): String? {
-        return videoInfoAlt
+    override fun getSecondTitleAlt(): String? {
+        return videoSecondTitleAlt
     }
 
     override fun getDescription(): String? {

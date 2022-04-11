@@ -120,8 +120,8 @@ class WatchNextManagerTest {
 
     private fun testBaseFields(metadata: MediaItemMetadata?) {
         assertNotNull("Contains title", metadata?.title)
-        assertNotNull("Contains desc", metadata?.info)
-        assertNotNull("Contains desc alt", metadata?.infoAlt)
+        assertNotNull("Contains desc", metadata?.secondTitle)
+        assertNotNull("Contains desc alt", metadata?.secondTitleAlt)
         assertNotNull("Contains desc full", metadata?.description)
         assertNotNull("Contains video id", metadata?.videoId)
         assertNotNull("Contains view count", metadata?.viewCount)

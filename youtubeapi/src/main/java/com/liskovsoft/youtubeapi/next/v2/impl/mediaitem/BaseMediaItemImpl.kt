@@ -9,7 +9,7 @@ import kotlin.math.abs
 open class BaseMediaItemImpl : MediaItem {
     private var _titleItem: String? = null
         get() = field ?: titleItem
-    private var _infoItem: String? = null
+    private var _secondTitleItem: String? = null
         get() = field ?: infoItem
     private var _channelIdItem: String? = null
         get() = field ?: channelIdItem
@@ -62,7 +62,7 @@ open class BaseMediaItemImpl : MediaItem {
             val mediaItem = BaseMediaItemImpl()
             mediaItem._reloadPageKeyItem = Helpers.parseStr(split[0])
             mediaItem._titleItem = Helpers.parseStr(split[1])
-            mediaItem._infoItem = Helpers.parseStr(split[2])
+            mediaItem._secondTitleItem = Helpers.parseStr(split[2])
             mediaItem._cardThumbImageUrl = Helpers.parseStr(split[3])
             mediaItem._videoIdItem = Helpers.parseStr(split[4])
             mediaItem._playlistIdItem = Helpers.parseStr(split[5])
@@ -87,12 +87,12 @@ open class BaseMediaItemImpl : MediaItem {
         _titleItem = title
     }
 
-    override fun getInfo(): String? {
-        return _infoItem
+    override fun getSecondTitle(): String? {
+        return _secondTitleItem
     }
 
-    fun setInfo(details: String?) {
-        _infoItem = details
+    fun setSecondTitle(details: String?) {
+        _secondTitleItem = details
     }
 
     override fun getVideoId(): String? {
@@ -240,12 +240,12 @@ open class BaseMediaItemImpl : MediaItem {
             return
         }
         title = metadata.title
-        info = metadata.info
+        secondTitle = metadata.secondTitle
         channelId = metadata.channelId
     }
 
     override fun toString(): String {
-        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", reloadPageKey, title, info, cardImageUrl, videoId, playlistId, channelId)
+        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", reloadPageKey, title, secondTitle, cardImageUrl, videoId, playlistId, channelId)
     }
 
     override fun equals(other: Any?): Boolean {

@@ -23,12 +23,11 @@ public class TileItem {
     @JsonPath("$.metadata.tileMetadataRenderer")
     private Metadata mMetadata;
 
-    @JsonPath({
-            "$.contentId", // regular video or movie trailer
-            "$.onSelectCommand.watchEndpoint.videoId", // regular video (duplicate)
-            "$.onSelectCommand.showMenuCommand.contentId" // movie trailer (duplicate)
-    })
+    @JsonPath("$.onSelectCommand.watchEndpoint.videoId")
     private String mVideoId;
+
+    @JsonPath("$.onSelectCommand.showMenuCommand.contentId")
+    private String mContentId; // ??? movie trailer
 
     @JsonPath({
             "$.onSelectCommand.watchEndpoint.playlistId",

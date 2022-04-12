@@ -27,7 +27,7 @@ public class TileItem {
     private String mVideoId;
 
     @JsonPath("$.onSelectCommand.showMenuCommand.contentId")
-    private String mContentId; // ??? movie trailer
+    private String mContentId; // ??? videoId or channelId
 
     @JsonPath({
             "$.onSelectCommand.watchEndpoint.playlistId",

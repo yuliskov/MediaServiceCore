@@ -73,7 +73,7 @@ data class ShelfItem(
             val chipCloudRenderer: ChipCloudRenderer?
     ) {
         data class ShelfHeaderRenderer(
-                val title: String?
+                val title: TextItem?
         )
 
         data class ChipCloudRenderer(

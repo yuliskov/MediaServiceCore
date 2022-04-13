@@ -185,7 +185,7 @@ fun MenuItem.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.men
 
 ///////
 
-fun ShelfItem.getTitle() = title?.getText()
+fun ShelfItem.getTitle() = title?.getText() ?: headerRenderer?.shelfHeaderRenderer?.title?.getText()
 fun ShelfItem.getItemWrappers() = content?.horizontalListRenderer?.items
 fun ShelfItem.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
 fun ShelfItem.getChipItems() = headerRenderer?.chipCloudRenderer?.chips

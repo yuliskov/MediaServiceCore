@@ -915,12 +915,12 @@ x-goog-visitor-id: CgtMVXZ3SHFNZUw2ayilsquSBg%3D%3D
 POST https://www.youtube.com/youtubei/v1/player
 Content-Type: application/json
 Accept-Encoding: identity
-Authorization: Bearer ya29.A0ARrdaM8m7DTn5d6w34vbalpi58c6tatSSszE2KkdK85SrJj56COVabZK5KG8m-cn8ys7hRppuOm-FFk0ACgA7R_DbA8IIJekcl2u4PEnR4X0YpHYlcNcM5Q8UbN2aJRbUApRQPCB254nWKYBL79TlTnn8QM6f6wxf8Aeb4lb9jpV
+Authorization: Bearer ya29.A0ARrdaM93DPGCFxYZtaYtp1ewvgu3sM85iyUQcV-SmMRoHh_7MoaoFqapTuuIULsY4-HlJHB-n4mAW8ZBhR6cnoney34bvSHHmxj0lt-Da4V1baUzihLvmePLlZnGTpkQ1KLpkHj7YtbywD10qrfoBTi47TmFw7YUOKJHrNoZ2waO
 Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 x-goog-visitor-id: CgtTRDhXQ0QtSW9SYyi8zM2SBg%3D%3D
 
-{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","visitorData":"CgtTRDhXQ0QtSW9SYyi8zM2SBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"DE","acceptLanguage":"ru-DE","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19089}},"videoId":"UtAcWTESi3U","cpn":"1UTDaNCJPqHMXIk1"}
+{"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","visitorData":"CgtTRDhXQ0QtSW9SYyi8zM2SBg%3D%3D","thirdParty":{"embedUrl":"https://www.youtube.com/tv#/"},"acceptRegion":"DE","acceptLanguage":"ru-DE","utcOffsetMinutes":"180"},"user":{"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"autoCaptionsDefaultOn": true, "html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19089}},"videoId":"589s8ZcglS0","cpn":"1UTDaNCJPqHMXIk1"}
 
 ###
 

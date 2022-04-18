@@ -160,8 +160,7 @@ public class RetrofitHelper {
             requestBuilder.header("User-Agent", AppConstants.APP_USER_AGENT);
 
             // Enable compression in production
-            requestBuilder.header("Accept-Encoding", BuildConfig.DEBUG ?
-                    AppConstants.ACCEPT_ENCODING_IDENTITY : AppConstants.ACCEPT_ENCODING_DEFAULT);
+            requestBuilder.header("Accept-Encoding", AppConstants.ACCEPT_ENCODING_DEFAULT);
 
             // Emulate browser request
             //requestBuilder.header("Connection", "keep-alive");

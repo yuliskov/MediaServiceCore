@@ -14,7 +14,7 @@ public interface AppConstants {
     /**
      * NOTE: Possible OOM exception!!! Uses more RAM because of decompression.
      */
-    String ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br";
+    String ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br"; // NOTE: Old format live streams won't work with compression.
     /**
      * No compression. Optimal RAM usage!
      */

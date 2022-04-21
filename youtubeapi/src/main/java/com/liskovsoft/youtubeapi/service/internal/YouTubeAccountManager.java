@@ -128,7 +128,7 @@ public class YouTubeAccountManager {
         }
     }
 
-    public Account getSelectedAccount() {
+    synchronized public Account getSelectedAccount() {
         for (Account account : mAccounts) {
             if (account != null && account.isSelected()) {
                 return account;

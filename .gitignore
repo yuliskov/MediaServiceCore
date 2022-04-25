@@ -1,3 +1,7 @@
+# test data
+youtube-requests.http
+youtube-requests2.http
+
 /android.keystore
 /android-upd2.keystore
 build.log

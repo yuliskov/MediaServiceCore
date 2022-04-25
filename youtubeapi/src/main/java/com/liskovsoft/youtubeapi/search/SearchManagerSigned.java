@@ -25,4 +25,7 @@ public interface SearchManagerSigned {
 
     @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8&hl=en&gl=us")
     Call<SearchTags> getSearchTags(@Query("q") String searchQuery, @Query("tok") String suggestToken, @Header("Authorization") String auth);
+
+    @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8")
+    Call<SearchTags> getSearchTags(@Query("q") String searchQuery, @Query("tok") String suggestToken, @Header("Authorization") String auth, @Query("gl") String country, @Query("hl") String language);
 }

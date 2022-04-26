@@ -18,9 +18,11 @@ public class SearchServiceUnsigned {
     private static final String TAG = SearchServiceUnsigned.class.getSimpleName();
     private static SearchServiceUnsigned sInstance;
     private final SearchManagerUnsigned mSearchManagerUnsigned;
+    private final AppService mAppService;
 
     private SearchServiceUnsigned() {
         mSearchManagerUnsigned = RetrofitHelper.withJsonPath(SearchManagerUnsigned.class);
+        mAppService = AppService.instance();
     }
 
     public static SearchServiceUnsigned instance() {
@@ -41,7 +43,7 @@ public class SearchServiceUnsigned {
 
     public SearchResult getSearch(String searchText, int options) {
         Call<SearchResult> wrapper =
-                mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options), AppService.instance().getVisitorId());
+                mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options), mAppService.getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -82,7 +84,7 @@ public class SearchServiceUnsigned {
                 searchText,
                 localeManager.getCountry(),
                 localeManager.getLanguage(),
-                AppService.instance().getVisitorId()
+                mAppService.getVisitorId()
         );
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 

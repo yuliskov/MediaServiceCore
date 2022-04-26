@@ -54,28 +54,28 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoLive(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryLive(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoEmbed(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryEmbed2(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryLive(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery);
+        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }

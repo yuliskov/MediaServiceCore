@@ -20,6 +20,16 @@ public interface AppManager {
     Call<AppInfo> getAppInfo(@Header("User-Agent") String userAgent);
 
     /**
+     * Get player version that associated with specified user agent.<br/>
+     * Note, that user agent should be obtained from the Smart TV device.<br/>
+     * Note, 'visitorInfoLive' is used to obtain right 'googleVisitorId' (preserves anonymous history trace).<br/>
+     * Player url example: <b>"player_url":"\/s\/player\/e49bfb00\/tv-player-ias.vflset\/tv-player-ias.js"</b><br/>
+     * Lang change tv's url: https://www.youtube.com/tv?hrld=1
+     */
+    @GET("https://www.youtube.com/tv")
+    Call<AppInfo> getAppInfo(@Header("User-Agent") String userAgent, @Header("Cookie") String visitorInfoLive);
+
+    /**
      * Returns useful player data such as Decipher function and Client Playback Nonce (CPN) constant
      */
     @GET

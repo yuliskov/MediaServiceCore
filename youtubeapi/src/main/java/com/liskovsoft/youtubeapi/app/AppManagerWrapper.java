@@ -1,11 +1,13 @@
 package com.liskovsoft.youtubeapi.app;
 
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ModernClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
+import retrofit2.Response;
 
 public class AppManagerWrapper {
     private final AppManager mAppManager;
@@ -13,10 +15,26 @@ public class AppManagerWrapper {
     public AppManagerWrapper() {
         mAppManager = RetrofitHelper.withRegExp(AppManager.class);
     }
-    
+
+    /**
+     * Obtains info with respect of anonymous browsing data (visitor cookie)
+     */
     public AppInfo getAppInfo(String userAgent) {
-        Call<AppInfo> wrapper = mAppManager.getAppInfo(userAgent);
-        return RetrofitHelper.get(wrapper);
+        String visitorInfoLive = GlobalPreferences.getVisitorInfoLive();
+        Call<AppInfo> wrapper = mAppManager.getAppInfo(userAgent, visitorInfoLive);
+        AppInfo result = null;
+
+        if (visitorInfoLive == null) {
+            Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
+            if (response != null) {
+                GlobalPreferences.setVisitorInfoLive(RetrofitHelper.getCookieValue(response, AppConstants.VISITOR_INFO_LIVE_COOKIE));
+                result = response.body();
+            }
+        } else {
+            result = RetrofitHelper.get(wrapper);
+        }
+
+        return result;
     }
     
     public PlayerData getPlayerData(String playerUrl) {

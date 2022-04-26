@@ -60,4 +60,6 @@ public interface AppConstants {
      * Used when parsing video_info data
      */
     String VIDEO_INFO_JSON_CONTENT_PARAM = "player_response";
+
+    String VISITOR_INFO_LIVE_COOKIE = "VISITOR_INFO1_LIVE";
 }

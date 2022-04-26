@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -39,7 +40,8 @@ public class SearchServiceUnsigned {
     }
 
     public SearchResult getSearch(String searchText, int options) {
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options));
+        Call<SearchResult> wrapper =
+                mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options), AppService.instance().getVisitorData());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -79,7 +81,8 @@ public class SearchServiceUnsigned {
         Call<SearchTags> wrapper = mSearchManagerUnsigned.getSearchTags(
                 searchText,
                 localeManager.getCountry(),
-                localeManager.getLanguage()
+                localeManager.getLanguage(),
+                AppService.instance().getVisitorData()
         );
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 

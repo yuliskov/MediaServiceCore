@@ -29,6 +29,7 @@ import okhttp3.dnsoverhttps.DnsOverHttps;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Converter;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
@@ -70,6 +71,17 @@ public class RetrofitHelper {
     public static <T> T get(Call<T> wrapper) {
         try {
             return wrapper.execute().body();
+        } catch (IOException e) {
+            //wrapper.cancel(); // fix background running when RxJava object is disposed
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static <T> Response<T> getResponse(Call<T> wrapper) {
+        try {
+            return wrapper.execute();
         } catch (IOException e) {
             //wrapper.cancel(); // fix background running when RxJava object is disposed
             e.printStackTrace();
@@ -255,6 +267,22 @@ public class RetrofitHelper {
             // unlikely
             throw new RuntimeException(e);
         }
+    }
+
+    public static <T> String getCookieValue(Response<T> response, String cookieName) {
+        if (response == null) {
+            return null;
+        }
+
+        List<String> cookies = response.headers().values("Set-Cookie");
+
+        for (String cookie : cookies) {
+            if (cookie.startsWith(cookieName)) {
+                return cookie.split(";")[0].split("=")[1];
+            }
+        }
+
+        return null;
     }
 
     private static class PreferIpv4Dns implements Dns {

@@ -41,7 +41,7 @@ public class SearchServiceUnsigned {
 
     public SearchResult getSearch(String searchText, int options) {
         Call<SearchResult> wrapper =
-                mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options), AppService.instance().getVisitorData());
+                mSearchManagerUnsigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options), AppService.instance().getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -82,7 +82,7 @@ public class SearchServiceUnsigned {
                 searchText,
                 localeManager.getCountry(),
                 localeManager.getLanguage(),
-                AppService.instance().getVisitorData()
+                AppService.instance().getVisitorId()
         );
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 

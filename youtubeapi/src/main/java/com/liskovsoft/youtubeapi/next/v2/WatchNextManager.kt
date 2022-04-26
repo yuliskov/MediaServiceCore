@@ -15,18 +15,26 @@ interface WatchNextManager {
     fun getWatchNextResultSigned(@Body suggestQuery: String?, @Header("Authorization") auth: String?): Call<WatchNextResult?>?
 
     @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/next")
+    fun getWatchNextResultSigned(@Body suggestQuery: String?, @Header("Authorization") auth: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>?
+
+    @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
     fun getWatchNextResultUnsigned(@Body watchNextQuery: String?): Call<WatchNextResult?>?
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/next")
-    fun continueWatchNextResultSigned(@Body suggestQuery: String?, @Header("Authorization") auth: String?): Call<WatchNextResultContinuation?>?
+    @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
+    fun getWatchNextResultUnsigned(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>?
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
-    fun continueWatchNextResultUnsigned(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResultContinuation?>?
+    @POST("https://www.youtube.com/youtubei/v1/next")
+    fun continueWatchNextResultSigned(@Body suggestQuery: String?, @Header("Authorization") auth: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResultContinuation?>?
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
     fun continueWatchNextResultUnsigned(@Body watchNextQuery: String?): Call<WatchNextResultContinuation?>?
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/next?key=" + AppConstants.API_KEY)
+    fun continueWatchNextResultUnsigned(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResultContinuation?>?
 }

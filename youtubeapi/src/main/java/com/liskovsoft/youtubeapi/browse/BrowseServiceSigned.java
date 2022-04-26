@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
@@ -29,11 +30,13 @@ import java.util.Map;
 public class BrowseServiceSigned {
     private static final String TAG = BrowseServiceSigned.class.getSimpleName();
     private final BrowseManagerSigned mBrowseManagerSigned;
+    private final AppService mAppService;
     private static BrowseServiceSigned sInstance;
     private Map<String, Guide> mGuideMap = new HashMap<>();
 
     private BrowseServiceSigned() {
         mBrowseManagerSigned = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
+        mAppService = AppService.instance();
     }
 
     public static BrowseServiceSigned instance() {
@@ -238,7 +241,7 @@ public class BrowseServiceSigned {
         }
 
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
-        Call<SectionContinuation> wrapper = mBrowseManagerSigned.continueSection(query, authorization);
+        Call<SectionContinuation> wrapper = mBrowseManagerSigned.continueSection(query, authorization, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -273,7 +276,7 @@ public class BrowseServiceSigned {
 
         String query = BrowseManagerParams.getContinuationQuery(nextKey);
 
-        Call<SectionTabContinuation> wrapper = mBrowseManagerSigned.continueSectionTab(query, authorization);
+        Call<SectionTabContinuation> wrapper = mBrowseManagerSigned.continueSectionTab(query, authorization, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -317,7 +320,7 @@ public class BrowseServiceSigned {
 
         Log.d(TAG, "Getting section tab list for query: %s", query);
 
-        Call<SectionTabList> wrapper = mBrowseManagerSigned.getSectionTabList(query, authorization);
+        Call<SectionTabList> wrapper = mBrowseManagerSigned.getSectionTabList(query, authorization, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -344,7 +347,7 @@ public class BrowseServiceSigned {
             return null;
         }
 
-        Call<SectionList> wrapper = mBrowseManagerSigned.getSectionList(query, authorization);
+        Call<SectionList> wrapper = mBrowseManagerSigned.getSectionList(query, authorization, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }

@@ -269,7 +269,10 @@ public class RetrofitHelper {
         }
     }
 
-    public static <T> String getCookieValue(Response<T> response, String cookieName) {
+    /**
+     * Get cookie pair: cookieName=cookieValue
+     */
+    public static <T> String getCookie(Response<T> response, String cookieName) {
         if (response == null) {
             return null;
         }
@@ -278,7 +281,7 @@ public class RetrofitHelper {
 
         for (String cookie : cookies) {
             if (cookie.startsWith(cookieName)) {
-                return cookie.split(";")[0].split("=")[1];
+                return cookie.split(";")[0];
             }
         }
 

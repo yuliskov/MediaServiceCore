@@ -61,5 +61,5 @@ public interface AppConstants {
      */
     String VIDEO_INFO_JSON_CONTENT_PARAM = "player_response";
 
-    String VISITOR_INFO_LIVE_COOKIE = "VISITOR_INFO1_LIVE";
+    String VISITOR_COOKIE_NAME = "VISITOR_INFO1_LIVE";
 }

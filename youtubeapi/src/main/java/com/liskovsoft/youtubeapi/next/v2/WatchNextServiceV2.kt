@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
+import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.BrowseManagerParams
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
@@ -15,6 +16,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInManager
 class WatchNextServiceV2 private constructor() {
     private var mWatchNextManager = RetrofitHelper.withGson(WatchNextManager::class.java)
     private val mSignInManager = YouTubeSignInManager.instance()
+    private val mAppService = AppService.instance();
 
     fun getMetadata(videoId: String): MediaItemMetadata? {
         return getMetadata(videoId, null, 0)
@@ -60,18 +62,18 @@ class WatchNextServiceV2 private constructor() {
 
     private fun getWatchNext(query: String): WatchNextResult? {
         val wrapper = if (mSignInManager.checkAuthHeader())
-            mWatchNextManager.getWatchNextResultSigned(query, mSignInManager.authorizationHeader)
+            mWatchNextManager.getWatchNextResultSigned(query, mSignInManager.authorizationHeader, mAppService.visitorId)
         else
-            mWatchNextManager.getWatchNextResultUnsigned(query)
+            mWatchNextManager.getWatchNextResultUnsigned(query, mAppService.visitorId)
 
         return RetrofitHelper.get(wrapper)
     }
 
     private fun continueWatchNext(query: String): WatchNextResultContinuation? {
         val wrapper = if (mSignInManager.checkAuthHeader())
-            mWatchNextManager.continueWatchNextResultSigned(query, mSignInManager.authorizationHeader)
+            mWatchNextManager.continueWatchNextResultSigned(query, mSignInManager.authorizationHeader, mAppService.visitorId)
         else
-            mWatchNextManager.continueWatchNextResultUnsigned(query)
+            mWatchNextManager.continueWatchNextResultUnsigned(query, mAppService.visitorId)
         return RetrofitHelper.get(wrapper)
     }
 

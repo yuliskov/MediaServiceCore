@@ -31,7 +31,15 @@ public interface BrowseManagerSigned {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
+    Call<SectionTabList> getSectionTabList(@Body String browseQuery, @Header("Authorization") String auth, @Header("X-Goog-Visitor-Id") String visitorId);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse")
     Call<SectionTabContinuation> continueSectionTab(@Body String browseQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    Call<SectionTabContinuation> continueSectionTab(@Body String browseQuery, @Header("Authorization") String auth, @Header("X-Goog-Visitor-Id") String visitorId);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -39,7 +47,15 @@ public interface BrowseManagerSigned {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
+    Call<SectionContinuation> continueSection(@Body String browseQuery, @Header("Authorization") String auth, @Header("X-Goog-Visitor-Id") String visitorId);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse")
     Call<SectionList> getSectionList(@Body String browseQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    Call<SectionList> getSectionList(@Body String browseQuery, @Header("Authorization") String auth, @Header("X-Goog-Visitor-Id") String visitorId);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/guide")

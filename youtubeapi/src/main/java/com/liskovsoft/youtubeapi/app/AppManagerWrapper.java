@@ -20,14 +20,14 @@ public class AppManagerWrapper {
      * Obtains info with respect of anonymous browsing data (visitor cookie)
      */
     public AppInfo getAppInfo(String userAgent) {
-        String visitorInfoLive = GlobalPreferences.getVisitorInfoLive();
-        Call<AppInfo> wrapper = mAppManager.getAppInfo(userAgent, visitorInfoLive);
+        String visitorCookie = GlobalPreferences.getVisitorCookie();
+        Call<AppInfo> wrapper = mAppManager.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
 
-        if (visitorInfoLive == null) {
+        if (visitorCookie == null) {
             Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
             if (response != null) {
-                GlobalPreferences.setVisitorInfoLive(RetrofitHelper.getCookieValue(response, AppConstants.VISITOR_INFO_LIVE_COOKIE));
+                GlobalPreferences.setVisitorCookie(RetrofitHelper.getCookie(response, AppConstants.VISITOR_COOKIE_NAME));
                 result = response.body();
             }
         } else {

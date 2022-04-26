@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
-    public final AppService mAppService;
+    protected final AppService mAppService;
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();

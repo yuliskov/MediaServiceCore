@@ -32,6 +32,10 @@ public interface BrowseManagerUnsigned {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
+    Call<SectionTabList> getSectionTabList(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/browse?key=" + AppConstants.API_KEY)
     Call<SectionTabContinuation> continueSectionTab(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
 
     @Headers("Content-Type: application/json")

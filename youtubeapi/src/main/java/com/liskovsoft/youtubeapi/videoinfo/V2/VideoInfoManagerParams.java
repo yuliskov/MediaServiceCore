@@ -82,7 +82,7 @@ public class VideoInfoManagerParams {
                 clientName,
                 clientVersion,
                 screenType,
-                AppService.instance().getVisitorData(),
+                AppService.instance().getVisitorId(),
                 clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "",
                 localeManager.getCountry(),
                 localeManager.getLanguage(),

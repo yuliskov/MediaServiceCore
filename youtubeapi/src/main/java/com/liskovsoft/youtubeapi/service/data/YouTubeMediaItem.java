@@ -119,8 +119,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale's specific delimiters
-        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getLengthText());
-        video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
+        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getBadgeText());
+        video.mBadgeText = item.getBadgeText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
@@ -156,7 +156,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
-        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getLengthText());
+        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getLengthText() != null ? item.getLengthText() : item.getBadgeText());
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();

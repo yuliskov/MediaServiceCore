@@ -16,6 +16,7 @@ fun VideoItem.getTitle() = title?.getText()
 fun VideoItem.getVideoId() = videoId
 fun VideoItem.getThumbnails() = thumbnail
 fun VideoItem.getDescBadgeText() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
+fun VideoItem.getLengthText() = lengthText?.getText()
 fun VideoItem.getBadgeText() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() } ?:
     badges?.firstNotNullOfOrNull { it?.liveBadge?.label?.getText() ?: it?.upcomingEventBadge?.label?.getText() }
 fun VideoItem.getUserName() = shortBylineText?.getText() ?: longBylineText?.getText()
@@ -28,7 +29,6 @@ fun VideoItem.getChannelId() =
     menu?.getBrowseId()
 fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
-fun VideoItem.getLengthText() = lengthText?.getText()
 fun VideoItem.isLive() = false
 fun VideoItem.isUpcoming() = false
 
@@ -66,6 +66,7 @@ fun TileItem.getPlaylistId() = onSelectCommand?.watchEndpoint?.playlistId ?: onS
 fun TileItem.getPlaylistIndex() = 0
 fun TileItem.getDescBadgeText() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }
+fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched }
 fun TileItem.getUserName() = null
 fun TileItem.getPublishedTime() = null
 fun TileItem.getViewCountText() =
@@ -75,9 +76,7 @@ fun TileItem.getViewCountText() =
 fun TileItem.getUpcomingEventText() = null
 fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
 fun TileItem.getBadgeStyle() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
-fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.getOrNull(0)?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched
 fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
-fun TileItem.getLengthText() = header?.tileHeaderRenderer?.thumbnailOverlays?.getOrNull(0)?.thumbnailOverlayTimeStatusRenderer?.text?.getText()
 fun TileItem.getChannelId() = menu?.getBrowseId()
 fun TileItem.isLive() = BADGE_STYLE_LIVE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
@@ -122,13 +121,13 @@ fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.g
 fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle()
 fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails()
 fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
+fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
 fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
 fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
 fun ItemWrapper.getPublishedTime() = getVideoItem()?.getPublishedTimeText() ?: getMusicItem()?.getViewsAndPublished() ?: getTileItem()?.getPublishedTime()
 fun ItemWrapper.getViewCountText() = getVideoItem()?.getViewCount() ?: getMusicItem()?.getViewsCountText() ?: getTileItem()?.getViewCountText()
 fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText() ?: getTileItem()?.getUpcomingEventText()
 fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
-fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getLengthText()
 fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
 fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
 fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()

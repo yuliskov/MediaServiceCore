@@ -87,10 +87,6 @@ public class TileItem {
         return mHeader != null ? mHeader.getThumbnails() : null;
     }
 
-    public String getLengthText() {
-        return mHeader != null ? mHeader.getDuration() : null;
-    }
-
     public String getBadgeText() {
         return mHeader != null ? mHeader.getBadgeText() : null;
     }

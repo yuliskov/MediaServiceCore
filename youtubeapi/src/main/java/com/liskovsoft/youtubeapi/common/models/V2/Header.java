@@ -8,17 +8,12 @@ import java.util.List;
 public class Header {
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
-    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text")
-    private TextItem mDuration;
-    @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
-    private int mPercentWatched = -1;
-    @JsonPath({
-            "$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style",
-            "$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style"
-    })
-    private String mBadgeStyle;
-    @JsonPath("$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.text")
-    private TextItem mBadgeText;
+    @JsonPath("$.thumbnailOverlays[*].thumbnailOverlayTimeStatusRenderer.text")
+    private List<TextItem> mBadgeText;
+    @JsonPath("$.thumbnailOverlays[*].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
+    private List<Integer> mPercentWatched;
+    @JsonPath("$.thumbnailOverlays[*].thumbnailOverlayTimeStatusRenderer.style")
+    private List<String> mBadgeStyle;
     @JsonPath("$.movingThumbnail.thumbnails[0].url")
     private String mMovingThumbnailUrl;
 
@@ -26,20 +21,16 @@ public class Header {
         return mThumbnails;
     }
 
-    public String getDuration() {
-        return mDuration != null ? mDuration.getText() : null;
+    public String getBadgeText() {
+        return mBadgeText != null ? mBadgeText.get(0).getText() : null;
     }
 
     public int getPercentWatched() {
-        return mPercentWatched;
+        return mPercentWatched != null ? mPercentWatched.get(0) : -1;
     }
 
     public String getBadgeStyle() {
-        return mBadgeStyle;
-    }
-
-    public String getBadgeText() {
-        return mBadgeText != null ? mBadgeText.getText() : null;
+        return mBadgeStyle != null ? mBadgeStyle.get(0) : null;
     }
 
     /**

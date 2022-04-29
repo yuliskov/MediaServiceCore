@@ -32,7 +32,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mContentType;
     private boolean mIsLive;
     private boolean mIsUpcoming;
-    private int mDurationMs;
+    private String mLengthText;
     private String mBadgeText;
     private String mProductionDate;
     private int mWidth;
@@ -119,7 +119,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale's specific delimiters
-        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getBadgeText());
+        video.mLengthText = item.getBadgeText();
         video.mBadgeText = item.getBadgeText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
@@ -156,7 +156,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
-        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getLengthText() != null ? item.getLengthText() : item.getBadgeText());
+        video.mLengthText = item.getLengthText() != null ? item.getLengthText() : item.getBadgeText();
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
@@ -190,7 +190,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
-        video.mDurationMs = ServiceHelper.timeTextToMillis(item.getLengthText());
+        video.mLengthText = item.getLengthText();
         video.mBadgeText = item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
@@ -414,7 +414,7 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public int getDurationMs() {
-        return mDurationMs;
+        return ServiceHelper.timeTextToMillis(mLengthText);
     }
 
     @Override

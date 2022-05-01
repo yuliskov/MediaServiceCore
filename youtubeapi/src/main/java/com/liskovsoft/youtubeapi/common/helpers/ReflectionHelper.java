@@ -84,11 +84,10 @@ public class ReflectionHelper {
 
         String fileName = String.format("%s_%s", type.getSimpleName(), AppInfoHelpers.getAppVersionName(context));
 
-        FileHelpers.deleteByPrefix(FileHelpers.getExternalFilesDir(context), type.getSimpleName());
-        File destination = new File(FileHelpers.getExternalFilesDir(context), fileName);
+        File filesDir = FileHelpers.getExternalFilesDir(context);
+        FileHelpers.deleteByPrefix(filesDir, type.getSimpleName());
+        File destination = new File(filesDir, fileName);
         FileHelpers.streamToFile(content, destination);
-
-        //MessageHelpers.showLongMessage(context, context.getString(R.string.dump_debug_info, destination));
 
         // NOTE: Send file from crashlytics is useless. All strings are truncated!
         //FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();

@@ -15,10 +15,8 @@ import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceV2;
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
-import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
@@ -346,10 +344,10 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public List<VideoPlaylistInfo> getVideoPlaylistsInfos(String videoId) {
+    public List<VideoPlaylistInfo> getVideoPlaylistsInfo(String videoId) {
         checkSigned();
 
-        PlaylistsResult playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfos(videoId);
+        PlaylistsResult playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfo(videoId);
 
         return YouTubeVideoPlaylistInfo.from(playlistsInfo);
     }
@@ -397,8 +395,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfosObserve(String videoId) {
-        return Observable.fromCallable(() -> getVideoPlaylistsInfos(videoId));
+    public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfoObserve(String videoId) {
+        return Observable.fromCallable(() -> getVideoPlaylistsInfo(videoId));
     }
 
     @Override

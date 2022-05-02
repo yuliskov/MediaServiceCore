@@ -18,7 +18,7 @@ public interface MediaItemManagerInt {
     void removeDislike(String videoId);
     void subscribe(String channelId);
     void unsubscribe(String channelId);
-    PlaylistsResult getVideoPlaylistsInfos(String videoId);
+    PlaylistsResult getVideoPlaylistsInfo(String videoId);
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
     void savePlaylist(String playlistId);

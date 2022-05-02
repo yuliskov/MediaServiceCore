@@ -137,7 +137,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
-    public PlaylistsResult getVideoPlaylistsInfos(String videoId) {
+    public PlaylistsResult getVideoPlaylistsInfo(String videoId) {
         return mPlaylistService.getPlaylistsInfo(videoId, mSignInManager.getAuthorizationHeader());
     }
 

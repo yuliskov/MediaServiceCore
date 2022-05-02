@@ -92,7 +92,7 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     }
 
     @Override
-    public PlaylistsResult getVideoPlaylistsInfos(String videoId) {
+    public PlaylistsResult getVideoPlaylistsInfo(String videoId) {
         // Do nothing, user is unsigned
         return null;
     }

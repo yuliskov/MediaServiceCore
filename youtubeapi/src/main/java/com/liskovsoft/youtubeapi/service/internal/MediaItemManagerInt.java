@@ -21,5 +21,7 @@ public interface MediaItemManagerInt {
     PlaylistsResult getVideoPlaylistsInfos(String videoId);
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
+    void savePlaylist(String playlistId);
+    void removePlaylist(String playlistId);
     void markAsNotInterested(String feedbackToken);
 }

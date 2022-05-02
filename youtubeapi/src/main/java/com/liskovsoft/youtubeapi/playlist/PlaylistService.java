@@ -23,7 +23,7 @@ public class PlaylistService {
 
     public PlaylistsResult getPlaylistsInfo(String videoId, String authorization) {
         Call<PlaylistsResult> wrapper =
-                mPlaylistManager.getPlaylistsInfo(PlaylistManagerParams.getAllPlaylistsQuery(videoId), authorization);
+                mPlaylistManager.getPlaylistsInfo(PlaylistManagerParams.getPlaylistsInfoQuery(videoId), authorization);
 
         return RetrofitHelper.get(wrapper);
     }
@@ -38,6 +38,20 @@ public class PlaylistService {
     public void removeFromPlaylist(String playlistId, String videoId, String authorization) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(playlistId, videoId), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
+
+    public void savePlaylist(String playlistId, String authorization) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.savePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
+
+    public void removePlaylist(String playlistId, String authorization) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.removePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }

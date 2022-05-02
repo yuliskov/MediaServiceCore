@@ -106,4 +106,14 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     public void removeFromPlaylist(String playlistId, String videoId) {
         // Do nothing, user is unsigned
     }
+
+    @Override
+    public void savePlaylist(String playlistId) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
+    public void removePlaylist(String playlistId) {
+        // Do nothing, user is unsigned
+    }
 }

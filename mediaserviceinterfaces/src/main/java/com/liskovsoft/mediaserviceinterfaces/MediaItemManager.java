@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface MediaItemManager {
-    // Base interfaces
+    // Blocking interfaces
     MediaItemFormatInfo getFormatInfo(MediaItem item);
     MediaItemFormatInfo getFormatInfo(String videoId);
     MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams);
@@ -37,6 +37,8 @@ public interface MediaItemManager {
     List<VideoPlaylistInfo> getVideoPlaylistsInfos(String videoId);
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
+    void savePlaylist(String playlistId);
+    void removePlaylist(String playlistId);
     List<SponsorSegment> getSponsorSegments(String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories);
 
@@ -64,6 +66,8 @@ public interface MediaItemManager {
     Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfosObserve(String videoId);
     Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
+    Observable<Void> savePlaylistObserve(String playlistId);
+    Observable<Void> removePlaylistObserve(String playlistId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories);
 }

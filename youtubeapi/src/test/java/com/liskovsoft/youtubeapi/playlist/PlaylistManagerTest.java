@@ -85,7 +85,7 @@ public class PlaylistManagerTest {
     }
 
     private PlaylistsResult getPlaylistsInfo(String videoId) {
-        Call<PlaylistsResult> wrapper = mService.getPlaylistsInfo(PlaylistManagerParams.getAllPlaylistsQuery(videoId),
+        Call<PlaylistsResult> wrapper = mService.getPlaylistsInfo(PlaylistManagerParams.getPlaylistsInfoQuery(videoId),
                 TestHelpersV2.getAuthorization());
 
         return RetrofitHelper.get(wrapper);

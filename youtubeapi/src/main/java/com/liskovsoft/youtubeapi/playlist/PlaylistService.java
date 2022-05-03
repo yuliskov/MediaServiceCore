@@ -46,13 +46,21 @@ public class PlaylistService {
         Call<ActionResult> wrapper =
                 mPlaylistManager.savePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
 
-        RetrofitHelper.get(wrapper); // ignore result
+        ActionResult result = RetrofitHelper.get(wrapper);
+
+        if (result == null) {
+            throw new IllegalStateException("Can't savePlaylist. Unknown error.");
+        }
     }
 
     public void removePlaylist(String playlistId, String authorization) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.removePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
 
-        RetrofitHelper.get(wrapper); // ignore result
+        ActionResult result = RetrofitHelper.get(wrapper);
+
+        if (result == null) {
+            throw new IllegalStateException("Can't removePlaylist. Unknown error.");
+        }
     }
 }

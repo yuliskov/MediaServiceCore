@@ -381,6 +381,13 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public void createPlaylist(String playlistName) {
+        checkSigned();
+
+        mMediaItemManagerReal.createPlaylist(playlistName);
+    }
+
+    @Override
     public List<SponsorSegment> getSponsorSegments(String videoId) {
         SegmentList segmentList = mSponsorBlockService.getSegmentList(videoId);
 
@@ -417,6 +424,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<Void> removePlaylistObserve(String playlistId) {
         return ObservableHelper.fromVoidable(() -> removePlaylist(playlistId));
+    }
+
+    @Override
+    public Observable<Void> createPlaylistObserve(String playlistName) {
+        return ObservableHelper.fromVoidable(() -> createPlaylist(playlistName));
     }
 
     @Override

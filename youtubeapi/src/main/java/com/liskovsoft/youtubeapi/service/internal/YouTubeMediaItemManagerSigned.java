@@ -160,4 +160,9 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     public void removePlaylist(String playlistId) {
         mPlaylistService.removePlaylist(playlistId, mSignInManager.getAuthorizationHeader());
     }
+
+    @Override
+    public void createPlaylist(String playlistName) {
+        mPlaylistService.createPlaylist(playlistName, mSignInManager.getAuthorizationHeader());
+    }
 }

@@ -27,4 +27,8 @@ public interface PlaylistManager {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/removelike")
     Call<ActionResult> removePlaylist(@Body String saveRemovePlaylistQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/playlist/create")
+    Call<ActionResult> createPlaylist(@Body String createPlaylistQuery, @Header("Authorization") String auth);
 }

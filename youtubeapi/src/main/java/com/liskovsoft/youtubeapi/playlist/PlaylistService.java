@@ -63,4 +63,11 @@ public class PlaylistService {
             throw new IllegalStateException("Can't removePlaylist. Unknown error.");
         }
     }
+
+    public void createPlaylist(String playlistName, String authorization) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.createPlaylist(PlaylistManagerParams.getCreatePlaylistQuery(playlistName), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
 }

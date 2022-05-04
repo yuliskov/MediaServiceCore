@@ -20,10 +20,16 @@ public interface PlaylistManager {
     @POST("https://www.youtube.com/youtubei/v1/browse/edit_playlist")
     Call<ActionResult> editPlaylist(@Body String editPlaylistQuery, @Header("Authorization") String auth);
 
+    /**
+     * Works with foreign playlists
+     */
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/like")
     Call<ActionResult> savePlaylist(@Body String saveRemovePlaylistQuery, @Header("Authorization") String auth);
 
+    /**
+     * Works with foreign playlists
+     */
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/removelike")
     Call<ActionResult> removePlaylist(@Body String saveRemovePlaylistQuery, @Header("Authorization") String auth);
@@ -31,4 +37,11 @@ public interface PlaylistManager {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/playlist/create")
     Call<ActionResult> createPlaylist(@Body String createPlaylistQuery, @Header("Authorization") String auth);
+
+    /**
+     * Works with user playlists
+     */
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/playlist/delete")
+    Call<ActionResult> deletePlaylist(@Body String deletePlaylistQuery, @Header("Authorization") String auth);
 }

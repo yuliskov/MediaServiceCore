@@ -10,6 +10,7 @@ public class PlaylistManagerParams {
             "\"actions\":[{\"removedVideoId\":\"%s\",\"action\":\"ACTION_REMOVE_VIDEO_BY_VIDEO_ID\"}]";
     private static final String SAVE_REMOVE_PLAYLIST_QUERY = "\"target\":{\"playlistId\":\"%s\"}";
     private static final String CREATE_PLAYLIST_QUERY = "\"title\":\"%s\"";
+    private static final String DELETE_PLAYLIST_QUERY = "\"playlistId\":\"%s\"";
 
     public static String getPlaylistsInfoQuery(String videoId) {
         String queryTemplate = String.format(PLAYLISTS_INFO_QUERY, videoId);
@@ -33,6 +34,11 @@ public class PlaylistManagerParams {
 
     public static String getCreatePlaylistQuery(String playlistName) {
         String queryTemplate = String.format(CREATE_PLAYLIST_QUERY, playlistName);
+        return ServiceHelper.createQuery(queryTemplate);
+    }
+
+    public static String getDeletePlaylistQuery(String playlistName) {
+        String queryTemplate = String.format(DELETE_PLAYLIST_QUERY, playlistName);
         return ServiceHelper.createQuery(queryTemplate);
     }
 }

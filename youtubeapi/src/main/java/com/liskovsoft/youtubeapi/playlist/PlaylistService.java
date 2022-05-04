@@ -54,12 +54,17 @@ public class PlaylistService {
     }
 
     public void removePlaylist(String playlistId, String authorization) {
-        Call<ActionResult> wrapper =
+        // Try to remove foreign playlist first
+        Call<ActionResult> removeWrapper =
                 mPlaylistManager.removePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
+        ActionResult removeResult = RetrofitHelper.get(removeWrapper);
 
-        ActionResult result = RetrofitHelper.get(wrapper);
+        // Then, delete user playlist
+        Call<ActionResult> deleteWrapper =
+                mPlaylistManager.deletePlaylist(PlaylistManagerParams.getDeletePlaylistQuery(playlistId), authorization);
+        ActionResult deleteResult = RetrofitHelper.get(deleteWrapper);
 
-        if (result == null) {
+        if (removeResult == null && deleteResult == null) {
             throw new IllegalStateException("Can't removePlaylist. Unknown error.");
         }
     }

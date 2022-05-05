@@ -46,7 +46,11 @@ public class PlaylistService {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistManagerParams.getRenamePlaylistsQuery(playlistId, newName), authorization);
 
-        RetrofitHelper.get(wrapper); // ignore result
+        ActionResult result = RetrofitHelper.get(wrapper);
+
+        if (result == null) {
+            throw new IllegalStateException("Can't renamePlaylist. Unknown error.");
+        }
     }
 
     public void savePlaylist(String playlistId, String authorization) {

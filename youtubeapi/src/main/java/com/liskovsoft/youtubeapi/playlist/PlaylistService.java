@@ -69,9 +69,9 @@ public class PlaylistService {
         }
     }
 
-    public void createPlaylist(String playlistName, String authorization) {
+    public void createPlaylist(String playlistName, String videoId, String authorization) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.createPlaylist(PlaylistManagerParams.getCreatePlaylistQuery(playlistName), authorization);
+                mPlaylistManager.createPlaylist(PlaylistManagerParams.getCreatePlaylistQuery(playlistName, videoId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }

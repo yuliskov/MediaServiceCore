@@ -381,10 +381,10 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public void createPlaylist(String playlistName) {
+    public void createPlaylist(String playlistName, String videoId) {
         checkSigned();
 
-        mMediaItemManagerReal.createPlaylist(playlistName);
+        mMediaItemManagerReal.createPlaylist(playlistName, videoId);
     }
 
     @Override
@@ -427,8 +427,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
-    public Observable<Void> createPlaylistObserve(String playlistName) {
-        return ObservableHelper.fromVoidable(() -> createPlaylist(playlistName));
+    public Observable<Void> createPlaylistObserve(String playlistName, String videoId) {
+        return ObservableHelper.fromVoidable(() -> createPlaylist(playlistName, videoId));
     }
 
     @Override

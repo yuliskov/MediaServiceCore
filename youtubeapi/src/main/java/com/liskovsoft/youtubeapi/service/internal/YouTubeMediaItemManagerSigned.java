@@ -162,7 +162,7 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
-    public void createPlaylist(String playlistName) {
-        mPlaylistService.createPlaylist(playlistName, mSignInManager.getAuthorizationHeader());
+    public void createPlaylist(String playlistName, String videoId) {
+        mPlaylistService.createPlaylist(playlistName, videoId, mSignInManager.getAuthorizationHeader());
     }
 }

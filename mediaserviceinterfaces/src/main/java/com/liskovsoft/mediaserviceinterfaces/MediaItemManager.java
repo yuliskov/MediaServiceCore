@@ -39,7 +39,7 @@ public interface MediaItemManager {
     void removeFromPlaylist(String playlistId, String videoId);
     void savePlaylist(String playlistId);
     void removePlaylist(String playlistId);
-    void createPlaylist(String playlistName);
+    void createPlaylist(String playlistName, String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories);
 
@@ -69,7 +69,7 @@ public interface MediaItemManager {
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
     Observable<Void> savePlaylistObserve(String playlistId);
     Observable<Void> removePlaylistObserve(String playlistId);
-    Observable<Void> createPlaylistObserve(String playlistName);
+    Observable<Void> createPlaylistObserve(String playlistName, String videoId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories);
 }

@@ -42,6 +42,13 @@ public class PlaylistService {
         RetrofitHelper.get(wrapper); // ignore result
     }
 
+    public void renamePlaylist(String playlistId, String newName, String authorization) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.editPlaylist(PlaylistManagerParams.getRenamePlaylistsQuery(playlistId, newName), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
+
     public void savePlaylist(String playlistId, String authorization) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.savePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);

@@ -37,6 +37,7 @@ public interface MediaItemManager {
     List<VideoPlaylistInfo> getVideoPlaylistsInfo(String videoId);
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
+    void renamePlaylist(String playlistId, String newName);
     void savePlaylist(String playlistId);
     void removePlaylist(String playlistId);
     void createPlaylist(String playlistName, String videoId);
@@ -67,6 +68,7 @@ public interface MediaItemManager {
     Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfoObserve(String videoId);
     Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
+    Observable<Void> renamePlaylistObserve(String playlistId, String newName);
     Observable<Void> savePlaylistObserve(String playlistId);
     Observable<Void> removePlaylistObserve(String playlistId);
     Observable<Void> createPlaylistObserve(String playlistName, String videoId);

@@ -367,6 +367,13 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     }
 
     @Override
+    public void renamePlaylist(String playlistId, String newName) {
+        checkSigned();
+
+        mMediaItemManagerReal.renamePlaylist(playlistId, newName);
+    }
+
+    @Override
     public void savePlaylist(String playlistId) {
         checkSigned();
 
@@ -414,6 +421,11 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     @Override
     public Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId) {
         return ObservableHelper.fromVoidable(() -> removeFromPlaylist(playlistId, videoId));
+    }
+
+    @Override
+    public Observable<Void> renamePlaylistObserve(String playlistId, String newName) {
+        return ObservableHelper.fromVoidable(() -> renamePlaylist(playlistId, newName));
     }
 
     @Override

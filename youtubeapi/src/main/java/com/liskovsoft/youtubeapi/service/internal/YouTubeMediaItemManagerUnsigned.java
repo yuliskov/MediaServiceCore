@@ -108,6 +108,11 @@ public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
     }
 
     @Override
+    public void renamePlaylist(String playlistId, String newName) {
+        // Do nothing, user is unsigned
+    }
+
+    @Override
     public void savePlaylist(String playlistId) {
         // Do nothing, user is unsigned
     }

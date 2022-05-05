@@ -152,6 +152,11 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
+    public void renamePlaylist(String playlistId, String newName) {
+        mPlaylistService.renamePlaylist(playlistId, newName, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
     public void savePlaylist(String playlistId) {
         mPlaylistService.savePlaylist(playlistId, mSignInManager.getAuthorizationHeader());
     }

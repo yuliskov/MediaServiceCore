@@ -8,6 +8,8 @@ public class PlaylistManagerParams {
             "\"actions\":[{\"addedVideoId\":\"%s\",\"action\":\"ACTION_ADD_VIDEO\"}]";
     private static final String REMOVE_FROM_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
             "\"actions\":[{\"removedVideoId\":\"%s\",\"action\":\"ACTION_REMOVE_VIDEO_BY_VIDEO_ID\"}]";
+    private static final String RENAME_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
+            "\"actions\":[{\"playlistName\":\"%s\",\"action\":\"ACTION_SET_PLAYLIST_NAME\"}]";
     private static final String SAVE_REMOVE_PLAYLIST_QUERY = "\"target\":{\"playlistId\":\"%s\"}";
     private static final String CREATE_PLAYLIST_QUERY = "\"title\":\"%s\"";
     private static final String CREATE_PLAYLIST_AND_ADD_QUERY = "\"title\":\"%s\",\"videoIds\":[\"%s\"]";
@@ -25,6 +27,11 @@ public class PlaylistManagerParams {
 
     public static String getRemoveFromPlaylistsQuery(String playlistId, String videoId) {
         String queryTemplate = String.format(REMOVE_FROM_PLAYLISTS_QUERY, playlistId, videoId);
+        return ServiceHelper.createQuery(queryTemplate);
+    }
+
+    public static String getRenamePlaylistsQuery(String playlistId, String newName) {
+        String queryTemplate = String.format(RENAME_PLAYLISTS_QUERY, playlistId, newName);
         return ServiceHelper.createQuery(queryTemplate);
     }
 

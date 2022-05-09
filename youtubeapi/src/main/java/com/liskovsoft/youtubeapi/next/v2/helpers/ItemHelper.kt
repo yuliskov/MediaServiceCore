@@ -7,7 +7,11 @@ import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: "" } ?: simpleText
 
-fun ThumbnailItem.findHighResThumbnailUrl() = if (thumbnails.isNullOrEmpty()) null else thumbnails.last()?.getUrl()
+/**
+ * Find optimal thumbnail for tv screen
+ */
+fun ThumbnailItem.findLowResThumbnailUrl() = thumbnails?.getOrNull(2)?.getUrl()
+fun ThumbnailItem.findHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
 fun ThumbnailItem.Thumbnail.getUrl() = if (url?.startsWith("//") == true) "https:$url" else url
 
 //////////

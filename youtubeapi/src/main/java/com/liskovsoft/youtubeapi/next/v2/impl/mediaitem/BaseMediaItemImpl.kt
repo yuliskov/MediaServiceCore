@@ -17,6 +17,8 @@ open class BaseMediaItemImpl : MediaItem {
         get() = field ?: reloadPageKeyItem
     private var _cardThumbImageUrl: String? = null
         get() = field ?: cardThumbImageUrl
+    private var _backgroundThumbImageUrl: String? = null
+        get() = field ?: backgroundThumbImageUrl
     private var _videoIdItem: String? = null
         get() = field ?: videoIdItem
     private var _playlistIdItem: String? = null
@@ -41,6 +43,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val upcomingEventText: String? = null
     protected open val lengthText: String? = null
     protected open val cardThumbImageUrl: String? = null
+    protected open val backgroundThumbImageUrl: String? = null
     protected open val playlistIdItem: String? = null
     protected open val playlistIndexItem: Int? = null
     protected open val channelIdItem: String? = null
@@ -108,7 +111,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getBackgroundImageUrl(): String? {
-        return _cardThumbImageUrl
+        return _backgroundThumbImageUrl
     }
 
     override fun getPlaylistParams(): String? {

@@ -9,12 +9,35 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import java.util.List;
 
 public final class YouTubeMediaServiceHelper {
-    public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
-        if (thumbnails == null || thumbnails.size() == 0) {
+    /**
+     * Find optimal thumbnail for tv screen
+     */
+    public static String findLowResThumbnailUrl(List<Thumbnail> thumbnails) {
+        if (thumbnails == null) {
             return null;
         }
 
-        return thumbnails.get(thumbnails.size() - 1).getUrl();
+        int size = thumbnails.size();
+
+        if (size == 0) {
+            return null;
+        }
+
+        return thumbnails.get(size > 2 ? 2 : size - 1).getUrl();
+    }
+
+    public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
+        if (thumbnails == null) {
+            return null;
+        }
+
+        int size = thumbnails.size();
+
+        if (size == 0) {
+            return null;
+        }
+
+        return thumbnails.get(size - 1).getUrl();
     }
 
     /**

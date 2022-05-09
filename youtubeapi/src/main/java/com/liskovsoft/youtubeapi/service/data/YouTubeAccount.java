@@ -19,7 +19,7 @@ public class YouTubeAccount implements Account {
         
         account.mName = accountInt.getName();
         account.mEmail = accountInt.getEmail();
-        account.mImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(accountInt.getThumbnails());
+        account.mImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(accountInt.getThumbnails());
         account.mIsSelected = accountInt.isSelected();
 
         return account;

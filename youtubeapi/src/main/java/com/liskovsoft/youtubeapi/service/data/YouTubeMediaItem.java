@@ -107,9 +107,8 @@ public class YouTubeMediaItem implements MediaItem {
                 item.getPublishedTime(),
                 item.getViewCountText(),
                 item.getUpcomingEventText());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mProductionDate = item.getPublishedTime();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
@@ -145,9 +144,8 @@ public class YouTubeMediaItem implements MediaItem {
                 item.getPublishedDate(),
                 item.getShortViewCountText() != null ? item.getShortViewCountText() : item.getViewCountText(),
                 item.getUpcomingEventText());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mProductionDate = item.getPublishedDate();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
@@ -179,9 +177,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
                 item.getUserName(),
                 item.getViewsAndPublished());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mProductionDate = item.getViewsAndPublished();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
@@ -207,9 +204,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_CHANNEL;
         video.mTitle = item.getTitle();
         video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(item.getSubscriberCountText());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mChannelId = item.getChannelId();
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
 
@@ -224,9 +220,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
         video.mTitle = item.getTitle();
         video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(item.getVideoCountText());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mPlaylistId = item.getPlaylistId();
         video.mVideoId = item.getVideoId();
 
@@ -241,9 +236,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
         video.mTitle = item.getTitle();
         video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(item.getVideoCountText());
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mPlaylistId = item.getPlaylistId();
         video.mVideoId = item.getVideoId();
 
@@ -273,9 +267,8 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mTitle = item.getTitle();
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
-        video.mCardImageUrl = highResThumbnailUrl;
-        video.mBackgroundImageUrl = highResThumbnailUrl;
+        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistItemIndex();
@@ -293,9 +286,8 @@ public class YouTubeMediaItem implements MediaItem {
         
         item.mMediaItemType = type;
         item.mTitle = tab.getTitle();
-        String highResThumbnailUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(tab.getThumbnails());
-        item.mCardImageUrl = highResThumbnailUrl;
-        item.mBackgroundImageUrl = highResThumbnailUrl;
+        item.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(tab.getThumbnails());
+        item.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(tab.getThumbnails());
         item.mReloadPageKey = tab.getReloadPageKey();
         item.mHasNewContent = tab.hasNewContent();
         addCommonProps(item);

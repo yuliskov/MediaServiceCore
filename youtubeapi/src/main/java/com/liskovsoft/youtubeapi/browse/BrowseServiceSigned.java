@@ -52,17 +52,7 @@ public class BrowseServiceSigned {
     }
 
     public GridTab getSubscriptions(String authorization) {
-        GridTab subs = getGridTab(BrowseManagerParams.getSubscriptionsQuery(), authorization);
-
-        // LIVE & UPCOMING videos always on top
-        if (subs != null && subs.getItemWrappers() != null) {
-            Collections.sort(subs.getItemWrappers(), (o1, o2) ->
-                    o1.isLive() == o2.isLive() && o1.isUpcoming() == o2.isUpcoming() ? 0 :
-                    o1.isLive() || (o1.isUpcoming() && !o2.isLive()) ? -1 : 1
-            );
-        }
-
-        return subs;
+        return getGridTab(BrowseManagerParams.getSubscriptionsQuery(), authorization);
     }
 
     public List<GridTab> getSubscribedChannelsAZ(String authorization) {

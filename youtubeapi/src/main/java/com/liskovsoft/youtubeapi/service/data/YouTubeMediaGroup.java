@@ -19,6 +19,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.search.models.SearchSection;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -288,6 +289,8 @@ public class YouTubeMediaGroup implements MediaGroup {
         // Fix duplicated items after previous group reuse
         baseGroup.mMediaItems = !mediaItems.isEmpty() ? mediaItems : null;
         baseGroup.mNextPageKey = nextPageKey;
+
+        YouTubeMediaServiceHelper.filterIfNeeded(baseGroup);
 
         return baseGroup;
     }

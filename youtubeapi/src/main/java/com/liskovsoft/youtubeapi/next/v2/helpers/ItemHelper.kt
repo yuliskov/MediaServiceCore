@@ -10,7 +10,7 @@ fun TextItem.getText() = runs?.joinToString("") { it?.text ?: "" } ?: simpleText
 /**
  * Find optimal thumbnail for tv screen
  */
-fun ThumbnailItem.findLowResThumbnailUrl() = thumbnails?.getOrElse(2) { thumbnails.lastOrNull() } ?.getUrl()
+fun ThumbnailItem.findLowResThumbnailUrl() = thumbnails?.getOrElse(YouTubeMediaServiceHelper.LOW_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
 fun ThumbnailItem.findHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
 fun ThumbnailItem.Thumbnail.getUrl() = if (url?.startsWith("//") == true) "https:$url" else url
 

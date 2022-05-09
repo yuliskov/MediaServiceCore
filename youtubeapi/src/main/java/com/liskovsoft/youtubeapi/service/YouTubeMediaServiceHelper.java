@@ -10,6 +10,11 @@ import java.util.List;
 
 public final class YouTubeMediaServiceHelper {
     /**
+     * Optimal thumbnail for tv screen
+     */
+    public static final int LOW_RES_THUMBNAIL_INDEX = 2;
+
+    /**
      * Find optimal thumbnail for tv screen
      */
     public static String findLowResThumbnailUrl(List<Thumbnail> thumbnails) {
@@ -23,7 +28,7 @@ public final class YouTubeMediaServiceHelper {
             return null;
         }
 
-        return thumbnails.get(size > 2 ? 2 : size - 1).getUrl();
+        return thumbnails.get(size > LOW_RES_THUMBNAIL_INDEX ? LOW_RES_THUMBNAIL_INDEX : size - 1).getUrl();
     }
 
     public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {

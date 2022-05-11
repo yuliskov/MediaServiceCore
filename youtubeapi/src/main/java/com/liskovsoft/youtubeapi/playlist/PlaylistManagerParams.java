@@ -6,6 +6,8 @@ public class PlaylistManagerParams {
     private static final String PLAYLISTS_INFO_QUERY = "\"videoIds\":[\"%s\"]";
     private static final String ADD_TO_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
             "\"actions\":[{\"addedVideoId\":\"%s\",\"action\":\"ACTION_ADD_VIDEO\"}]";
+    private static final String PLAYLIST_ORDER_QUERY = "\"playlistId\":\"%s\"," +
+            "\"actions\":[{\"playlistVideoOrder\":\"%s\",\"action\":\"ACTION_SET_PLAYLIST_VIDEO_ORDER\"}]";
     private static final String REMOVE_FROM_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
             "\"actions\":[{\"removedVideoId\":\"%s\",\"action\":\"ACTION_REMOVE_VIDEO_BY_VIDEO_ID\"}]";
     private static final String RENAME_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
@@ -22,6 +24,11 @@ public class PlaylistManagerParams {
 
     public static String getAddToPlaylistQuery(String playlistId, String videoId) {
         String queryTemplate = String.format(ADD_TO_PLAYLISTS_QUERY, playlistId, videoId);
+        return ServiceHelper.createQuery(queryTemplate);
+    }
+
+    public static String getPlaylistOrderQuery(String playlistId, int playlistOrder) {
+        String queryTemplate = String.format(PLAYLIST_ORDER_QUERY, playlistId, playlistOrder);
         return ServiceHelper.createQuery(queryTemplate);
     }
 

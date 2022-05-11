@@ -8,6 +8,11 @@ import retrofit2.Call;
 public class PlaylistService {
     private static PlaylistService sInstance;
     private final PlaylistManager mPlaylistManager;
+    public static final int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
+    public static final int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
+    public static final int PLAYLIST_ORDER_POPULARITY = 3;
+    public static final int PLAYLIST_ORDER_PUBLISHED_DATE_NEWER_FIRST = 4;
+    public static final int PLAYLIST_ORDER_PUBLISHED_DATE_OLDER_FIRST = 5;
 
     private PlaylistService() {
         mPlaylistManager = RetrofitHelper.withJsonPath(PlaylistManager.class);
@@ -31,6 +36,13 @@ public class PlaylistService {
     public void addToPlaylist(String playlistId, String videoId, String authorization) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(playlistId, videoId), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
+    }
+
+    public void setPlaylistOrder(String playlistId, int playlistOrder, String authorization) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.editPlaylist(PlaylistManagerParams.getPlaylistOrderQuery(playlistId, playlistOrder), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }

@@ -27,11 +27,6 @@ public class PlaylistManagerParams {
         return ServiceHelper.createQuery(queryTemplate);
     }
 
-    public static String getPlaylistOrderQuery(String playlistId, int playlistOrder) {
-        String queryTemplate = String.format(PLAYLIST_ORDER_QUERY, playlistId, playlistOrder);
-        return ServiceHelper.createQuery(queryTemplate);
-    }
-
     public static String getRemoveFromPlaylistsQuery(String playlistId, String videoId) {
         String queryTemplate = String.format(REMOVE_FROM_PLAYLISTS_QUERY, playlistId, videoId);
         return ServiceHelper.createQuery(queryTemplate);
@@ -39,6 +34,11 @@ public class PlaylistManagerParams {
 
     public static String getRenamePlaylistsQuery(String playlistId, String newName) {
         String queryTemplate = String.format(RENAME_PLAYLISTS_QUERY, playlistId, newName);
+        return ServiceHelper.createQuery(queryTemplate);
+    }
+
+    public static String getPlaylistOrderQuery(String playlistId, int playlistOrder) {
+        String queryTemplate = String.format(PLAYLIST_ORDER_QUERY, playlistId, playlistOrder);
         return ServiceHelper.createQuery(queryTemplate);
     }
 

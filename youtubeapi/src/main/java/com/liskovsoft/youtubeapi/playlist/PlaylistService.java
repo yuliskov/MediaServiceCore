@@ -40,13 +40,6 @@ public class PlaylistService {
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void setPlaylistOrder(String playlistId, int playlistOrder, String authorization) {
-        Call<ActionResult> wrapper =
-                mPlaylistManager.editPlaylist(PlaylistManagerParams.getPlaylistOrderQuery(playlistId, playlistOrder), authorization);
-
-        RetrofitHelper.get(wrapper); // ignore result
-    }
-
     public void removeFromPlaylist(String playlistId, String videoId, String authorization) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(playlistId, videoId), authorization);
@@ -63,6 +56,13 @@ public class PlaylistService {
         if (result == null) {
             throw new IllegalStateException("Can't renamePlaylist. Unknown error.");
         }
+    }
+
+    public void setPlaylistOrder(String playlistId, int playlistOrder, String authorization) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.editPlaylist(PlaylistManagerParams.getPlaylistOrderQuery(playlistId, playlistOrder), authorization);
+
+        RetrofitHelper.get(wrapper); // ignore result
     }
 
     public void savePlaylist(String playlistId, String authorization) {

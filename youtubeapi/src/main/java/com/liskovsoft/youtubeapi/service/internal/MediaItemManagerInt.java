@@ -22,6 +22,7 @@ public interface MediaItemManagerInt {
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
     void renamePlaylist(String playlistId, String newName);
+    void setPlaylistOrder(String playlistId, int playlistOrder);
     void savePlaylist(String playlistId);
     void removePlaylist(String playlistId);
     void createPlaylist(String playlistName, String videoId);

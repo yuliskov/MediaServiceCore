@@ -157,6 +157,11 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
     }
 
     @Override
+    public void setPlaylistOrder(String playlistId, int playlistOrder) {
+        mPlaylistService.setPlaylistOrder(playlistId, playlistOrder, mSignInManager.getAuthorizationHeader());
+    }
+
+    @Override
     public void savePlaylist(String playlistId) {
         mPlaylistService.savePlaylist(playlistId, mSignInManager.getAuthorizationHeader());
     }

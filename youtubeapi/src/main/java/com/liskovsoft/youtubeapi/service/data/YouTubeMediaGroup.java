@@ -46,8 +46,8 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create(new YouTubeMediaGroup(type), browseResult.getItemWrappers(), browseResult.getNextPageKey());
     }
 
-    public static MediaGroup from(GridTabContinuation continuation, String reloadPageKey, String groupTitle) {
-        YouTubeMediaGroup baseGroup = new YouTubeMediaGroup(MediaGroup.TYPE_UNDEFINED);
+    public static MediaGroup from(GridTabContinuation continuation, String reloadPageKey, String groupTitle, int groupType) {
+        YouTubeMediaGroup baseGroup = new YouTubeMediaGroup(groupType);
         baseGroup.mReloadPageKey = reloadPageKey;
         MediaGroup mediaGroup = from(continuation, baseGroup);
         if (mediaGroup != null) {

@@ -62,7 +62,11 @@ public class PlaylistService {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistManagerParams.getPlaylistOrderQuery(playlistId, playlistOrder), authorization);
 
-        RetrofitHelper.get(wrapper); // ignore result
+        ActionResult result = RetrofitHelper.get(wrapper);
+
+        if (result == null) {
+            throw new IllegalStateException("Can't setPlaylistOrder. Unknown error.");
+        }
     }
 
     public void savePlaylist(String playlistId, String authorization) {

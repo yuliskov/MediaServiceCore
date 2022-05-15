@@ -445,6 +445,7 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
             case MediaGroup.TYPE_HISTORY:
             case MediaGroup.TYPE_SUBSCRIPTIONS:
             case MediaGroup.TYPE_USER_PLAYLISTS:
+            case MediaGroup.TYPE_CHANNEL_UPLOADS:
             case MediaGroup.TYPE_UNDEFINED:
                 return YouTubeMediaGroup.from(
                         mMediaGroupManagerReal.continueGridTab(nextKey),

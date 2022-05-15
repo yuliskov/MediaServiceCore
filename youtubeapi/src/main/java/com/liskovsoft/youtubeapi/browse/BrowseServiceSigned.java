@@ -112,11 +112,14 @@ public class BrowseServiceSigned {
         List<GridTab> playlists = getGridTabs(BrowseManagerParams.getMyLibraryQuery(), authorization);
 
         if (playlists != null) {
+            GridTab myVideos = playlists.get(1); // save "My videos" for later use
+            GridTab watchLater = playlists.get(2); // save "Watch later" for later use
             playlists.remove(0); // remove "History"
-            GridTab myVideos = playlists.get(0); // save "My videos" for later use
             playlists.remove(0); // remove "My videos"
-            playlists.remove(1); // remove "Purchases"
+            playlists.remove(0); // remove "Watch later"
+            playlists.remove(0); // remove "Purchases"
             playlists.add(myVideos); // add "My videos" to the end
+            playlists.add(watchLater); // add "Watch later" to the end
         }
 
         return playlists;

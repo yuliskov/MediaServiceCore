@@ -113,13 +113,13 @@ public class BrowseServiceSigned {
 
         if (playlists != null) {
             GridTab myVideos = playlists.get(1); // save "My videos" for later use
-            GridTab watchLater = playlists.get(2); // save "Watch later" for later use
+            //GridTab watchLater = playlists.get(2); // save "Watch later" for later use
+            playlists.remove(3); // remove "Purchases"
+            //playlists.remove(2); // remove "Watch later"
+            playlists.remove(1); // remove "My videos"
             playlists.remove(0); // remove "History"
-            playlists.remove(0); // remove "My videos"
-            playlists.remove(0); // remove "Watch later"
-            playlists.remove(0); // remove "Purchases"
             playlists.add(myVideos); // add "My videos" to the end
-            playlists.add(watchLater); // add "Watch later" to the end
+            //playlists.add(watchLater); // add "Watch later" to the end
         }
 
         return playlists;

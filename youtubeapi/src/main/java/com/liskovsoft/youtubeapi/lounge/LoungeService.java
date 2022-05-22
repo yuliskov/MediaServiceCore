@@ -87,6 +87,8 @@ public class LoungeService {
                 BindParams.QR);
         PairingCodeV2 pairingCode = RetrofitHelper.get(pairingCodeWrapper);
 
+        mLoungeToken = null; // apply changes (restart the service)
+
         // Pairing code XXX-XXX-XXX-XXX
         return pairingCode != null ? pairingCode.getPairingCode() : null;
     }

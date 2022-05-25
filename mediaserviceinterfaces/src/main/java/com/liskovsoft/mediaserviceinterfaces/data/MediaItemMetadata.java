@@ -11,6 +11,7 @@ public interface MediaItemMetadata {
     String getSecondTitleAlt();
     String getDescription();
     String getAuthor();
+    String getAuthorImageUrl();
     String getViewCount();
     String getLikesCount();
     String getDislikesCount();

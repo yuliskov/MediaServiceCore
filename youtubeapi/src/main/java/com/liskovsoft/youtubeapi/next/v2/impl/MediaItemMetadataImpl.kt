@@ -75,6 +75,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
+    private val videoAuthorImageUrl by lazy { videoOwner?.getThumbnails()?.findLowResThumbnailUrl() }
     private val suggestionList by lazy {
         val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) MediaGroupImpl(it) else null }
         if (list?.size ?: 0 > 0)
@@ -125,6 +126,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     override fun getAuthor(): String? {
         return videoAuthor
+    }
+
+    override fun getAuthorImageUrl(): String? {
+        return videoAuthorImageUrl
     }
 
     override fun getViewCount(): String? {

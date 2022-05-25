@@ -23,6 +23,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private String mSecondTitleAlt;
     private String mDescription;
     private String mAuthor;
+    private String mAuthorImageUrl;
     private String mViewCount;
     private String mLikesCount;
     private String mDislikesCount;
@@ -71,6 +72,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         if (videoOwner != null) {
             mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
+            mediaItemMetadata.mAuthorImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(videoOwner.getThumbnails());
             mediaItemMetadata.mChannelId = videoOwner.getChannelId();
             Boolean subscribed = videoOwner.isSubscribed();
             mediaItemMetadata.mIsSubscribed = subscribed != null && subscribed;
@@ -177,6 +179,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public String getAuthor() {
         return mAuthor;
+    }
+
+    @Override
+    public String getAuthorImageUrl() {
+        return mAuthorImageUrl;
     }
 
     @Override

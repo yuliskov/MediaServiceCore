@@ -66,6 +66,12 @@ public class ServiceHelper {
                 localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
     }
 
+    public static String createQueryAndroid(String template) {
+        LocaleManager localeManager = LocaleManager.instance();
+        return String.format(AppConstants.JSON_POST_DATA_TEMPLATE_ANDROID,
+                localeManager.getCountry(), localeManager.getLanguage(), localeManager.getUtcOffsetMinutes(), template);
+    }
+
     /**
      * Additional video info such as user, published etc.
      */

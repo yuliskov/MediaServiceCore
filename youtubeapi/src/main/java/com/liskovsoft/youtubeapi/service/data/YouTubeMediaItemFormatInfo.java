@@ -218,6 +218,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
+    public boolean containsMedia() {
+        return containsDashUrl() || containsHlsUrl() || containsDashVideoInfo() || containsUrlListInfo();
+    }
+
+    @Override
     public boolean containsDashInfo() {
         return mAdaptiveFormats != null;
     }

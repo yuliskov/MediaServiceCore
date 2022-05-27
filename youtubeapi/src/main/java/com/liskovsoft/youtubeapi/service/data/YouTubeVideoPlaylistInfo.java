@@ -50,4 +50,8 @@ public class YouTubeVideoPlaylistInfo implements VideoPlaylistInfo {
     public boolean isSelected() {
         return mIsSelected;
     }
+
+    public void setSelected(boolean selected) {
+        mIsSelected = selected;
+    }
 }

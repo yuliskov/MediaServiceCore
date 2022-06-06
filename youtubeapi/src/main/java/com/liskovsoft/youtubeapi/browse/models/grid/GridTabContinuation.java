@@ -30,7 +30,7 @@ public class GridTabContinuation {
     private List<ChannelButton> mChannelButtons;
 
     /**
-     * Channel doesn't contain any video. Special button is rendered.
+     * Channel doesn't contain any video. Only special button is rendered.
      */
     @JsonPath("$.continuationContents.tvSurfaceContentContinuation.content.genericPromoRenderer.actionButton.buttonRenderer")
     private ChannelButton mEmptyChannelButton;

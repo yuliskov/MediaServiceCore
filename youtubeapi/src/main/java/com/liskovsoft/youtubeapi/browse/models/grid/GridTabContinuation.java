@@ -28,6 +28,9 @@ public class GridTabContinuation {
     @JsonPath("$.continuationContents.tvSurfaceContentContinuation.header.tvSurfaceHeaderRenderer.buttons[*].buttonRenderer")
     private List<ChannelButton> mChannelButtons;
 
+    @JsonPath("$.continuationContents.tvSurfaceContentContinuation.content.genericPromoRenderer.actionButton.buttonRenderer")
+    private ChannelButton mChannelButton;
+
     /**
      * Generic wrapper if there's no continuation content
      */
@@ -50,7 +53,9 @@ public class GridTabContinuation {
      * Channel GridTab contains channel id and other stuff
      */
     public String getBrowseId() {
-        if (mChannelButtons != null) {
+        if (mChannelButton != null) {
+           return mChannelButton.getBrowseId();
+        } else if (mChannelButtons != null) {
             for (ChannelButton button : mChannelButtons) {
                 if (button.getBrowseId() != null) {
                     return button.getBrowseId();

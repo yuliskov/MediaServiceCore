@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.browse.models.grid;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,8 +29,11 @@ public class GridTabContinuation {
     @JsonPath("$.continuationContents.tvSurfaceContentContinuation.header.tvSurfaceHeaderRenderer.buttons[*].buttonRenderer")
     private List<ChannelButton> mChannelButtons;
 
+    /**
+     * Channel doesn't contain any video. Special button is rendered.
+     */
     @JsonPath("$.continuationContents.tvSurfaceContentContinuation.content.genericPromoRenderer.actionButton.buttonRenderer")
-    private ChannelButton mChannelButton;
+    private ChannelButton mEmptyChannelButton;
 
     /**
      * Generic wrapper if there's no continuation content
@@ -46,17 +50,15 @@ public class GridTabContinuation {
     }
 
     public List<ChannelButton> getChannelButtons() {
-        return mChannelButtons;
+        return mChannelButtons != null ? mChannelButtons : Collections.singletonList(mEmptyChannelButton);
     }
 
     /**
      * Channel GridTab contains channel id and other stuff
      */
     public String getBrowseId() {
-        if (mChannelButton != null) {
-           return mChannelButton.getBrowseId();
-        } else if (mChannelButtons != null) {
-            for (ChannelButton button : mChannelButtons) {
+        if (getChannelButtons() != null) {
+            for (ChannelButton button : getChannelButtons()) {
                 if (button.getBrowseId() != null) {
                     return button.getBrowseId();
                 }
@@ -70,8 +72,8 @@ public class GridTabContinuation {
      * Could be used as a playlistId replacement
      */
     public String getParams() {
-        if (mChannelButtons != null) {
-            for (ChannelButton button : mChannelButtons) {
+        if (getChannelButtons() != null) {
+            for (ChannelButton button : getChannelButtons()) {
                 if (button.getParams() != null) {
                     return button.getParams();
                 }
@@ -85,8 +87,8 @@ public class GridTabContinuation {
      * Channel GridTab contains channel id and other stuff
      */
     public String getCanonicalBaseUrl() {
-        if (mChannelButtons != null) {
-            for (ChannelButton button : mChannelButtons) {
+        if (getChannelButtons() != null) {
+            for (ChannelButton button : getChannelButtons()) {
                 if (button.getCanonicalBaseUrl() != null) {
                     return button.getCanonicalBaseUrl();
                 }

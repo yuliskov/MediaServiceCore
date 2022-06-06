@@ -30,7 +30,7 @@ public class GridTabContinuation {
     private List<ChannelButton> mChannelButtons;
 
     /**
-     * Channel doesn't contain any video. Only special button is rendered.
+     * Generic button when channel has no content.
      */
     @JsonPath("$.continuationContents.tvSurfaceContentContinuation.content.genericPromoRenderer.actionButton.buttonRenderer")
     private ChannelButton mEmptyChannelButton;
@@ -50,7 +50,16 @@ public class GridTabContinuation {
     }
 
     public List<ChannelButton> getChannelButtons() {
-        return mChannelButtons != null ? mChannelButtons : Collections.singletonList(mEmptyChannelButton);
+        if (mChannelButtons != null) {
+            return mChannelButtons;
+        }
+
+        // Generic button when channel has no content
+        if (mEmptyChannelButton != null) {
+            return Collections.singletonList(mEmptyChannelButton);
+        }
+
+        return null;
     }
 
     /**

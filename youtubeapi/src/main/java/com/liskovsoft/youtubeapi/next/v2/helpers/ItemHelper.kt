@@ -181,6 +181,7 @@ fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggle
 fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.getChannelId() = channelButton?.videoOwnerRenderer?.getChannelId()
+fun ButtonStateItem.getVideoOwner() = channelButton?.videoOwnerRenderer
 
 
 ////////

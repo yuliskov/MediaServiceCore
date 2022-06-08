@@ -26,7 +26,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         watchNextResult.getNextVideoItem()
     }
     private val videoOwner by lazy {
-        videoMetadata?.getVideoOwner()
+        videoMetadata?.getVideoOwner() ?: watchNextResult.transportControls?.transportControlsRenderer?.getVideoOwner()
     }
     private val videoDetails by lazy {
         watchNextResult.getVideoDetails()

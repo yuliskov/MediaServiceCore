@@ -368,6 +368,7 @@ data class VideoMetadataItem(
         val videoId: String?,
         val description: TextItem?,
         val publishedTimeText: TextItem?,
+        val publishedTime: TextItem?,
         val dateText: TextItem?,
         val viewCountText: TextItem?,
         val shortViewCountText: TextItem?,

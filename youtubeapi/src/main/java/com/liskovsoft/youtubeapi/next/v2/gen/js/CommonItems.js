@@ -187,6 +187,7 @@ let videoMetadataItem = {
     videoId: "",
     description: textItem,
     publishedTimeText: textItem,
+    publishedTime: textItem,
     dateText: textItem,
     viewCountText: textItem,
     shortViewCountText: textItem,

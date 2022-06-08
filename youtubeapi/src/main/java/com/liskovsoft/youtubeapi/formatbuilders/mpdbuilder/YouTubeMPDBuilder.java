@@ -394,7 +394,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             return MIME_WEBM_VIDEO;
         }
 
-        if (codecs.startsWith("mp4a")) {
+        if (codecs.startsWith("mp4a") ||
+                codecs.startsWith("ec-3") ||
+                    codecs.startsWith("ac-3")) {
             return MIME_MP4_AUDIO;
         }
 

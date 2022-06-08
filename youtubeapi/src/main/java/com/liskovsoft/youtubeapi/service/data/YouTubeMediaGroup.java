@@ -245,6 +245,11 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     @Override
+    public String getNextPageKey() {
+        return mNextPageKey;
+    }
+
+    @Override
     public boolean isEmpty() {
         return mMediaItems == null || mMediaItems.isEmpty();
     }

@@ -23,14 +23,6 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
     private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 
-    fun getNextPageKey(): String? {
-        return _nextPageKeyVal
-    }
-
-    fun setNextPageKey(key: String?) {
-        _nextPageKeyVal = key
-    }
-
     override fun getId(): Int = title?.hashCode() ?: hashCode()
 
     override fun getType(): Int {
@@ -63,6 +55,14 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
 
     override fun getReloadPageKey(): String? {
         return null
+    }
+
+    override fun getNextPageKey(): String? {
+        return _nextPageKeyVal
+    }
+
+    fun setNextPageKey(key: String?) {
+        _nextPageKeyVal = key
     }
 
     override fun getChannelUrl(): String? {

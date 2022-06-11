@@ -139,7 +139,9 @@ fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.i
 
 /////
 
-fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed
+fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed ?:
+    navigationEndpoint?.openPopupAction?.popup?.overlaySectionRenderer?.overlay
+        ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer?.content?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer?.isToggled }
 fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 fun VideoOwnerItem.getThumbnails() = thumbnail
 
@@ -180,7 +182,7 @@ fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
 fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
-fun ButtonStateItem.getChannelId() = channelButton?.videoOwnerRenderer?.getChannelId()
+fun ButtonStateItem.getChannelId() = getVideoOwner()?.getChannelId()
 fun ButtonStateItem.getVideoOwner() = channelButton?.videoOwnerRenderer
 
 

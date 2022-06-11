@@ -5,11 +5,51 @@ import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 data class NavigationEndpointItem(
         val browseEndpoint: BrowseEndpoint?,
         val watchEndpoint: WatchEndpointItem?,
-        val watchPlaylistEndpoint: WatchEndpointItem?
+        val watchPlaylistEndpoint: WatchEndpointItem?,
+        val openPopupAction: PopupActionItem?
 ) {
     data class BrowseEndpoint(
             val browseId: String?
     )
+    data class PopupActionItem(
+            val popup: Popup?
+    ) {
+        data class Popup(
+            val overlaySectionRenderer: OverlaySectionRenderer?
+        ) {
+            data class OverlaySectionRenderer(
+                val overlay: Overlay?
+            ) {
+                data class Overlay(
+                    val overlayTwoPanelRenderer: OverlayTwoPanelRenderer?
+                ) {
+                    data class OverlayTwoPanelRenderer(
+                        val actionPanel: ActionPanel?
+                    ) {
+                        data class ActionPanel(
+                            val overlayPanelRenderer: OverlayPanelRenderer?
+                        ) {
+                            data class OverlayPanelRenderer(
+                                val content: Content?
+                            ) {
+                                data class Content(
+                                    val overlayPanelItemListRenderer: OverlayPanelItemListRenderer?
+                                ) {
+                                    data class OverlayPanelItemListRenderer(
+                                        val items: List<Item?>?
+                                    ) {
+                                        data class Item(
+                                            val toggleButtonRenderer: ToggleButtonRenderer?
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 data class WatchEndpointItem(
@@ -417,32 +457,24 @@ data class ButtonStateItem(
 ) {
     data class SubscribeButton(
             val toggleButtonRenderer: ToggleButtonRenderer?
-    ) {
-        data class ToggleButtonRenderer(
-                val isToggled: Boolean?
-        )
-    }
+    )
 
     data class LikeButton(
             val toggleButtonRenderer: ToggleButtonRenderer?
-    ) {
-        data class ToggleButtonRenderer(
-                val isToggled: Boolean?
-        )
-    }
+    )
 
     data class DislikeButton(
             val toggleButtonRenderer: ToggleButtonRenderer?
-    ) {
-        data class ToggleButtonRenderer(
-                val isToggled: Boolean?
-        )
-    }
+    )
 
     data class ChannelButton(
             val videoOwnerRenderer: VideoOwnerItem?
     )
 }
+
+data class ToggleButtonRenderer(
+    val isToggled: Boolean?
+)
 
 data class ThumbnailOverlayItem(
         val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,

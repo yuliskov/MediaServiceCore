@@ -75,8 +75,8 @@ fun TileItem.getUserName() = null
 fun TileItem.getPublishedTime() = null
 fun TileItem.getViewCountText() =
     YouTubeMediaServiceHelper.createInfo(*metadata?.tileMetadataRenderer?.lines?.map {
-        ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: null)
-    }?.toTypedArray() ?: null) ?: null
+        ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: emptyArray())
+    }?.toTypedArray() ?: emptyArray()) ?: null
 fun TileItem.getUpcomingEventText() = null
 fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
 fun TileItem.getBadgeStyle() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }

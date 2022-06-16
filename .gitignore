@@ -1,6 +1,6 @@
 # test data
-youtube-requests.http
-youtube-requests2.http
+# youtube-requests.http
+# youtube-requests2.http
 
 /android.keystore
 /android-upd2.keystore

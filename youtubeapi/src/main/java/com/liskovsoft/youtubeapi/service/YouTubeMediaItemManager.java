@@ -68,8 +68,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
-        if (mCachedFormatInfo != null && !mCachedFormatInfo.isStale() &&
-                mCachedFormatInfo.getVideoId() != null && mCachedFormatInfo.getVideoId().equals(videoId)) {
+        if (isCacheActual(videoId)) {
             return mCachedFormatInfo;
         }
 
@@ -481,5 +480,12 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             mMediaItemManagerReal = YouTubeMediaItemManagerUnsigned.instance();
             YouTubeMediaItemManagerSigned.unhold();
         }
+    }
+
+    private boolean isCacheActual(String videoId) {
+        return  mCachedFormatInfo != null &&
+                mCachedFormatInfo.getVideoId() != null &&
+                mCachedFormatInfo.getVideoId().equals(videoId) &&
+                System.currentTimeMillis() - mCachedFormatInfo.getCreatedTimeMs() < 30_000;
     }
 }

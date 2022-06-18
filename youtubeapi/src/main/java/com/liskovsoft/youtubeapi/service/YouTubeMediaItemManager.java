@@ -9,6 +9,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
@@ -471,7 +472,8 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     private boolean isCacheActual(String videoId) {
         return  mCachedFormatInfo != null &&
                 mCachedFormatInfo.getVideoId() != null &&
-                mCachedFormatInfo.getVideoId().equals(videoId);
+                mCachedFormatInfo.getVideoId().equals(videoId) &&
+                AppService.instance().isCacheActual(); // cipher may be outdated
     }
 
     private void saveInCache(YouTubeMediaItemFormatInfo formatInfo) {

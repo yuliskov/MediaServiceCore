@@ -264,7 +264,6 @@ public class AppService {
 
         if (mCachedPlayerData != null) {
             mPlayerDataUpdateTimeMS = System.currentTimeMillis();
-            YouTubeMediaItemManager.instance().invalidateCache(); // cipher probably has changed
         }
     }
 
@@ -292,5 +291,9 @@ public class AppService {
         updateAppInfoData();
         updatePlayerData();
         updateBaseData();
+    }
+
+    public boolean isCacheActual() {
+        return System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS;
     }
 }

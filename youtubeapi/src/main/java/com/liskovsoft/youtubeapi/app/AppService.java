@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaItemManager;
 import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
@@ -263,6 +264,7 @@ public class AppService {
 
         if (mCachedPlayerData != null) {
             mPlayerDataUpdateTimeMS = System.currentTimeMillis();
+            YouTubeMediaItemManager.instance().invalidateCache(); // cipher probably has changed
         }
     }
 

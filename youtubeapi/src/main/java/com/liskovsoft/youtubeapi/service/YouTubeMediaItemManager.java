@@ -78,7 +78,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
 
         YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
-        mCachedFormatInfo = formatInfo;
+        saveInCache(formatInfo);
 
         return formatInfo;
     }
@@ -468,6 +468,20 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         mCachedFormatInfo = null;
     }
 
+    private boolean isCacheActual(String videoId) {
+        return  mCachedFormatInfo != null &&
+                mCachedFormatInfo.getVideoId() != null &&
+                mCachedFormatInfo.getVideoId().equals(videoId);
+    }
+
+    private void saveInCache(YouTubeMediaItemFormatInfo formatInfo) {
+        if (formatInfo == null || formatInfo.isLive() || !formatInfo.containsMedia()) {
+            return;
+        }
+
+        mCachedFormatInfo = formatInfo;
+    }
+
     private void checkSigned() {
         if (mSignInManager.checkAuthHeader()) {
             Log.d(TAG, "User signed.");
@@ -480,12 +494,5 @@ public class YouTubeMediaItemManager implements MediaItemManager {
             mMediaItemManagerReal = YouTubeMediaItemManagerUnsigned.instance();
             YouTubeMediaItemManagerSigned.unhold();
         }
-    }
-
-    private boolean isCacheActual(String videoId) {
-        return  mCachedFormatInfo != null &&
-                mCachedFormatInfo.getVideoId() != null &&
-                mCachedFormatInfo.getVideoId().equals(videoId) &&
-                System.currentTimeMillis() - mCachedFormatInfo.getCreatedTimeMs() < 30_000;
     }
 }

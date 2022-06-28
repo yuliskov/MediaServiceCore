@@ -14,7 +14,10 @@ public class Header {
     private List<Integer> mPercentWatched;
     @JsonPath("$.thumbnailOverlays[*].thumbnailOverlayTimeStatusRenderer.style")
     private List<String> mBadgeStyle;
-    @JsonPath("$.movingThumbnail.thumbnails[0].url")
+    @JsonPath({
+            "$.onFocusThumbnail.thumbnails[0].url", // v2
+            "$.movingThumbnail.thumbnails[0].url" // v1
+    })
     private String mMovingThumbnailUrl;
 
     public List<Thumbnail> getThumbnails() {

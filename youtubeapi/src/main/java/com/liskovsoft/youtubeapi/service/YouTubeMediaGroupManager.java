@@ -177,17 +177,15 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
 
         SectionTab homeTab = mMediaGroupManagerReal.getHomeTab();
 
-        Section recommended = null;
+        List<MediaGroup> groups = YouTubeMediaGroup.from(homeTab.getSections(), MediaGroup.TYPE_RECOMMENDED);
 
-        List<Section> rows = homeTab.getSections();
+        MediaGroup result = null;
 
-        if (rows != null) {
-            recommended = rows.get(0); // first one is recommended
+        if (!groups.isEmpty()) {
+            result = groups.get(0); // first one is recommended
         }
 
-        MediaGroup result = YouTubeMediaGroup.from(recommended, MediaGroup.TYPE_RECOMMENDED);
-
-        return result != null && result.isEmpty() ? continueGroup(result) : result; // Maybe Chip?
+        return result != null && result.isEmpty() ? continueGroup(result) : result; // Maybe a Chip?
     }
 
     @Override

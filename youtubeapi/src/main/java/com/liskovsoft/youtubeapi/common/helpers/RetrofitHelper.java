@@ -145,6 +145,8 @@ public class RetrofitHelper {
 
         OkHttpCommons.configureToIgnoreCertificate(okBuilder);
 
+        OkHttpCommons.fixStreamResetError(okBuilder);
+
         addCommonHeaders(okBuilder);
 
         enableDecompression(okBuilder);

@@ -26,7 +26,8 @@ public class ObservableHelper {
                 emitter.onNext(result);
             } else {
                 // Be aware of OnErrorNotImplementedException exception if error handler not implemented!
-                //onError(emitter, "fromNullable result is null");
+                // Essential part to notify about problems. Don't remove!
+                onError(emitter, "fromNullable result is null");
                 Log.e(TAG, "fromNullable result is null");
             }
 

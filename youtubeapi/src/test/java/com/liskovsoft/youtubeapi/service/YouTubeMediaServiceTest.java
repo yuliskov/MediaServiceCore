@@ -71,4 +71,11 @@ public class YouTubeMediaServiceTest {
         assertTrue("Counter not zero", await);
         assertTrue("Has media items", list.size() > 0);
     }
+
+    @Test
+    public void testThatRecommendedNotEmpty2() {
+        MediaGroup result = mService.getMediaGroupManager().getRecommended();
+
+        assertTrue("Has media items", !result.isEmpty());
+    }
 }

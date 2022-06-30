@@ -367,7 +367,13 @@ public class ChannelsProvider {
 
     private static void publishProgram(Context context, Clip clip, long channelId, int weight) {
         if (clip.getProgramId() != -1) {
-            Log.e(TAG, "Clip already published. Exiting...");
+            Log.e(TAG, "Clip already published. Skipping...");
+            return;
+        }
+
+        if (clip.getVideoUrl() == null) {
+            // Seems like this is an ads
+            Log.e(TAG, "Clip doesn't contain url. Skipping...");
             return;
         }
 

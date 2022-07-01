@@ -10,7 +10,8 @@ data class WatchNextResult(
         data class SingleColumnWatchNextResults(
             val pivot: Pivot?,
             val results: Results?,
-            val autoplay: Autoplay?
+            val autoplay: Autoplay?,
+            val conversationBar: ConversationBar?
         ) {
             data class Pivot(
                 val pivot: NestedPivot?,
@@ -62,6 +63,14 @@ data class WatchNextResult(
                         )
                     }
                 }
+            }
+
+            data class ConversationBar(
+                val liveChatRenderer: LiveChatRenderer?
+            ) {
+                data class LiveChatRenderer(
+                    val continuations: List<ContinuationItem?>?
+                )
             }
         }
     }

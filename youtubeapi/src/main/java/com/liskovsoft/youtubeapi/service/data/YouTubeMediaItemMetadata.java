@@ -227,6 +227,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
+    public String getLiveChatKey() {
+        return null;
+    }
+
+    @Override
     public boolean isUpcoming() {
         return mIsUpcoming;
     }

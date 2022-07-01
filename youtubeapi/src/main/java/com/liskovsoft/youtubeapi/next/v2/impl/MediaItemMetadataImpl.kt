@@ -25,6 +25,9 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     private val nextVideoItem by lazy {
         watchNextResult.getNextVideoItem()
     }
+    private val liveChatKeyItem by lazy {
+        watchNextResult.getLiveChatKey()
+    }
     private val videoOwner by lazy {
         videoMetadata?.getVideoOwner() ?: watchNextResult.transportControls?.transportControlsRenderer?.getVideoOwner()
     }
@@ -154,6 +157,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     override fun isLive(): Boolean {
         return isLiveStream
+    }
+
+    override fun getLiveChatKey(): String? {
+        return liveChatKeyItem
     }
 
     override fun isUpcoming(): Boolean {

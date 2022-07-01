@@ -58,6 +58,12 @@ let watchNextResult = {
                     ],
                     replayVideoRenderer: itemWrapper
                 }
+            },
+            // LIVE Chat Key
+            conversationBar: {
+                liveChatRenderer: {
+                    continuations: [continuationItem]
+                }
             }
         }
     },

@@ -147,16 +147,18 @@ fun VideoOwnerItem.getThumbnails() = thumbnail
 
 /////
 
-fun WatchNextResult.getSuggestedSections() = contents?.singleColumnWatchNextResults?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.map { it?.shelfRenderer }
-fun WatchNextResult.getVideoMetadata() = contents?.singleColumnWatchNextResults?.results?.results?.contents?.getOrNull(0)?.
+private fun WatchNextResult.getWatchNextResults() = contents?.singleColumnWatchNextResults
+fun WatchNextResult.getSuggestedSections() = getWatchNextResults()?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.map { it?.shelfRenderer }
+fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results?.contents?.getOrNull(0)?.
     itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
 
-fun WatchNextResult.getNextVideoItem() = contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.sets?.getOrNull(0)?.
+fun WatchNextResult.getNextVideoItem() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)?.
     nextVideoRenderer?.let { it.maybeHistoryEndpointRenderer ?: it.autoplayEndpointRenderer }
 
-fun WatchNextResult.getVideoDetails() = contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer?.pivotVideoRenderer
-fun WatchNextResult.getReplayItemWrapper() = contents?.singleColumnWatchNextResults?.autoplay?.autoplay?.replayVideoRenderer
+fun WatchNextResult.getVideoDetails() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer?.pivotVideoRenderer
+fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer
 fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsRenderer
+fun WatchNextResult.getLiveChatKey() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
 
 ///////
 

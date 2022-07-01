@@ -89,6 +89,7 @@ public final class YouTubeMediaServiceHelper {
             boolean isHideUpcomingEnabled = GlobalPreferences.sInstance.isHideUpcomingEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS;
 
             if (isHideShortsEnabled || isHideUpcomingEnabled) {
+                // NOTE: The group could be empty after filtering! Fix for that.
 
                 // Remove Shorts and/or Upcoming
                 // NOTE: Predicate replacement function for devices with Android 6.0 and below.

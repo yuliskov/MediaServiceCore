@@ -151,13 +151,23 @@ data class ChipItem(
 
 data class ContinuationItem(
         val reloadContinuationData: ReloadContinuationData?,
-        val nextContinuationData: NextContinuationData?
+        val nextContinuationData: NextContinuationData?,
+        val invalidationContinuationData: InvalidationContinuationData?, // live chats
+        val timedContinuationData: TimedContinuationData? // live chats
 ) {
     data class ReloadContinuationData(
             val continuation: String?
     )
 
     data class NextContinuationData(
+            val continuation: String?
+    )
+
+    data class InvalidationContinuationData(
+            val continuation: String?
+    )
+
+    data class TimedContinuationData(
             val continuation: String?
     )
 }

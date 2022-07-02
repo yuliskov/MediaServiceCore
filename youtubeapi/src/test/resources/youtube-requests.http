@@ -1103,4 +1103,16 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"ANDROID","clientVersion":"16.49","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en-US","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"browseId":"FEsubscriptions"}
 
+### Live Chat
+
+POST https://www.youtube.com/youtubei/v1/live_chat/get_live_chat
+Content-Type: application/json
+Accept-Encoding: identity
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"ANDROID","clientVersion":"16.49","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"US","acceptLanguage":"en-US","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"continuation":"0ofMyANuGlhDaWtxSndvWVZVTnFUR1JqY1d3dGVrdHFaWFpwUjJ4cVRURlNUVWhCRWd0WlJtZFJVMUI1U2sxNGR4b1Q2cWpkdVFFTkNndFpSbWRSVTFCNVNrMTRkeUFCMAGCAQIIBKABkc7B-pLb-AKoAQA%3D"}
+
+
+
 

@@ -59,8 +59,17 @@ data class WatchNextResult(
                     ) {
                         data class NextVideoRenderer(
                                 val maybeHistoryEndpointRenderer: NextVideoItem?,
-                                val autoplayEndpointRenderer: NextVideoItem?
-                        )
+                                val autoplayEndpointRenderer: NextVideoItem?,
+                                val autoplayVideoWrapperRenderer: AutoplayVideoWrapperRenderer?
+                        ) {
+                            data class AutoplayVideoWrapperRenderer(
+                                val primaryEndpointRenderer: PrimaryEndpointRenderer?
+                            ) {
+                                data class PrimaryEndpointRenderer(
+                                    val autoplayEndpointRenderer: NextVideoItem?
+                                )
+                            }
+                        }
                     }
                 }
             }

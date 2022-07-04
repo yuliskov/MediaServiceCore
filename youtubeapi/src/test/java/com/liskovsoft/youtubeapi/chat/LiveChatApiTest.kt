@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.chat
 
 import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatResult
 import com.liskovsoft.youtubeapi.chat.helpers.getActions
+import com.liskovsoft.youtubeapi.chat.helpers.getContinuation
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import org.junit.Before
 import org.junit.Test
@@ -14,7 +15,7 @@ import org.junit.Assert.assertNotNull
 class LiveChatApiTest {
     companion object {
         private const val LIVE_CHAT_KEY =
-            "0ofMyANuGlhDaWtxSndvWVZVTnFUR1JqY1d3dGVrdHFaWFpwUjJ4cVRURlNUVWhCRWd0WlJtZFJVMUI1U2sxNGR4b1Q2cWpkdVFFTkNndFpSbWRSVTFCNVNrMTRkeUFCMAGCAQIIBKABkc7B-pLb-AKoAQA%3D"
+            "0ofMyAN0GlhDaWtxSndvWVZVTnBjWFJVWW5veGR6Vk9jRzVGVGxFelRHZzFNM2xSRWd0RldGUllXRXBtT1dWaFFSb1Q2cWpkdVFFTkNndEZXRlJZV0VwbU9XVmhRU0FCMAGCAQIIBIgBAaABmN2Q297f-AKoAQCyAQA%3D"
     }
     private var mApi: LiveChatApi? = null
     @Before
@@ -28,14 +29,40 @@ class LiveChatApiTest {
 
     @Test
     fun testThatLiveChatResultIsNotEmpty() {
-        val liveChatResult = getLiveChatResult()
+        val liveChatResult = getLiveChatResult(LIVE_CHAT_KEY)
 
         assertNotNull("chat result not null", liveChatResult)
         assertNotNull("has actions", liveChatResult?.getActions()?.getOrNull(0))
     }
 
-    private fun getLiveChatResult(): LiveChatResult? {
-        val chatQuery = LiveChatApiParams.getLiveChatQuery(LIVE_CHAT_KEY)
+    @Test
+    fun testThatContinuationIsWorking() {
+        var liveChatResult = getLiveChatResult(LIVE_CHAT_KEY)
+        var timeoutMs = liveChatResult?.getContinuation()?.timeoutMs ?: -1
+        var nextChatResult: LiveChatResult? = null
+
+        for (i in 1..6) {
+            if (timeoutMs != -1) {
+                Thread.sleep(timeoutMs.toLong())
+                liveChatResult = getLiveChatResult(liveChatResult?.getContinuation()?.continuation)
+                timeoutMs = liveChatResult?.getContinuation()?.timeoutMs ?: -1
+
+                if (liveChatResult?.getActions()?.getOrNull(0) != null) {
+                    nextChatResult = liveChatResult
+                    break
+                }
+            }
+        }
+
+        assertNotNull("has actions", nextChatResult?.getActions()?.getOrNull(0))
+    }
+
+    private fun getLiveChatResult(chatKey: String?): LiveChatResult? {
+        if (chatKey.isNullOrEmpty()) {
+            return null
+        }
+
+        val chatQuery = LiveChatApiParams.getLiveChatQuery(chatKey)
         val wrapper = mApi!!.getLiveChat(chatQuery)
         return RetrofitHelper.get(wrapper)
     }

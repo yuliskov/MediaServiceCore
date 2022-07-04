@@ -23,6 +23,12 @@ public class YouTubeLiveChatService implements LiveChatService {
 
     @Override
     public Observable<ChatItem> openLiveChatObserve(String chatKey) {
-        return null;
+        return Observable.create(emitter -> {
+            mLiveChatServiceInt.openLiveChat(
+                    chatKey, emitter::onNext
+            );
+
+            emitter.onComplete();
+        });
     }
 }

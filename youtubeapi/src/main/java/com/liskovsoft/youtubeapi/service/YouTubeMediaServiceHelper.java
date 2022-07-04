@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.ThumbnailItem;
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
@@ -20,7 +21,8 @@ public final class YouTubeMediaServiceHelper {
     private static final int SHORTS_LEN_MS = 60 * 1_000;
 
     /**
-     * Find optimal thumbnail for tv screen
+     * Find optimal thumbnail for tv screen<br/>
+     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.next.v2.helpers.ItemHelperKt#findLowResThumbnailUrl(ThumbnailItem)}
      */
     public static String findLowResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null) {
@@ -36,6 +38,9 @@ public final class YouTubeMediaServiceHelper {
         return thumbnails.get(size > LOW_RES_THUMBNAIL_INDEX ? LOW_RES_THUMBNAIL_INDEX : size - 1).getUrl();
     }
 
+    /**
+     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.next.v2.helpers.ItemHelperKt#findHighResThumbnailUrl(ThumbnailItem)}
+     */
     public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null) {
             return null;

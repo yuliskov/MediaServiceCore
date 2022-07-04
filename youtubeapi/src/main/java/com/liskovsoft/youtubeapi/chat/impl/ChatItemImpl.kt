@@ -2,21 +2,28 @@ package com.liskovsoft.youtubeapi.chat.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
 import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatAction
+import com.liskovsoft.youtubeapi.next.v2.helpers.findLowResThumbnailUrl
+import com.liskovsoft.youtubeapi.next.v2.helpers.getText
 
 data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
-    override fun getId(): String {
-        TODO("Not yet implemented")
+    private val messageRenderer by lazy {
+        liveChatAction.addChatItemAction?.item?.liveChatTextMessageRenderer ?:
+        liveChatAction.addBannerToLiveChatCommand?.bannerRenderer?.liveChatBannerRenderer?.contents?.liveChatTextMessageRenderer
     }
 
-    override fun getMessage(): String {
-        TODO("Not yet implemented")
+    override fun getId(): String? {
+        return messageRenderer?.id
     }
 
-    override fun getAuthorName(): String {
-        TODO("Not yet implemented")
+    override fun getMessage(): String? {
+        return messageRenderer?.message?.getText()
     }
 
-    override fun getAuthorPhoto(): String {
-        TODO("Not yet implemented")
+    override fun getAuthorName(): String? {
+        return messageRenderer?.authorName?.getText()
+    }
+
+    override fun getAuthorPhoto(): String? {
+        return messageRenderer?.authorPhoto?.findLowResThumbnailUrl()
     }
 }

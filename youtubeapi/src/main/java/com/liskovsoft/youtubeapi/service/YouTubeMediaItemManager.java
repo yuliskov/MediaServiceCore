@@ -43,7 +43,7 @@ public class YouTubeMediaItemManager implements MediaItemManager {
     private YouTubeMediaItemManager() {
         mSignInManager = YouTubeSignInManager.instance();
         mSponsorBlockService = SponsorBlockService.instance();
-        mWatchNextServiceV2 = WatchNextServiceV2.Companion.instance();
+        mWatchNextServiceV2 = WatchNextServiceV2.instance();
     }
 
     public static YouTubeMediaItemManager instance() {

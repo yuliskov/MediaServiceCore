@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import io.reactivex.Observable;
 import org.junit.Before;
@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeMediaServiceTest {
-    private MediaService mService;
+public class YouTubeManagersFrontendTest {
+    private ManagersFrontend mService;
 
     @Before
     public void setUp() {
@@ -26,7 +26,7 @@ public class YouTubeMediaServiceTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
-        mService = YouTubeMediaService.instance();
+        mService = YouTubeManagersFrontend.instance();
     }
 
     /**

@@ -1,8 +1,9 @@
 package com.liskovsoft.youtubeapi.service;
 
+import com.liskovsoft.mediaserviceinterfaces.LiveChatManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
 import com.liskovsoft.mediaserviceinterfaces.RemoteManager;
 import com.liskovsoft.mediaserviceinterfaces.SignInManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
@@ -15,27 +16,29 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class YouTubeMediaService implements MediaService {
-    private static final String TAG = YouTubeMediaService.class.getSimpleName();
-    private static YouTubeMediaService sInstance;
+public class YouTubeManagersFrontend implements ManagersFrontend {
+    private static final String TAG = YouTubeManagersFrontend.class.getSimpleName();
+    private static YouTubeManagersFrontend sInstance;
     private final YouTubeSignInManager mSignInManager;
     private final YouTubeRemoteManager mDeviceLinkManager;
     private final MediaGroupManager mMediaGroupManager;
     private final MediaItemManager mMediaItemManager;
+    private final YouTubeLiveChatManager mLiveChatManager;
     private Disposable mRefreshCacheAction;
 
-    private YouTubeMediaService() {
+    private YouTubeManagersFrontend() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInManager.instance();
         mDeviceLinkManager = YouTubeRemoteManager.instance();
         mMediaGroupManager = YouTubeMediaGroupManager.instance();
         mMediaItemManager = YouTubeMediaItemManager.instance();
+        mLiveChatManager = YouTubeLiveChatManager.instance();
     }
 
-    public static MediaService instance() {
+    public static ManagersFrontend instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaService();
+            sInstance = new YouTubeManagersFrontend();
         }
 
         return sInstance;
@@ -49,6 +52,11 @@ public class YouTubeMediaService implements MediaService {
     @Override
     public RemoteManager getRemoteManager() {
         return mDeviceLinkManager;
+    }
+
+    @Override
+    public LiveChatManager getLiveChatManager() {
+        return mLiveChatManager;
     }
 
     @Override

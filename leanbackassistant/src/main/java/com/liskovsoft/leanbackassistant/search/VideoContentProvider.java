@@ -12,12 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
 import com.liskovsoft.sharedutils.rx.SchedulerProvider;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
+import com.liskovsoft.youtubeapi.service.YouTubeManagersFrontend;
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.List;
 public class VideoContentProvider extends ContentProvider {
     private static final String TAG = VideoContentProvider.class.getSimpleName();
     private static final int SEARCH_LIMIT = 40;
-    private MediaService mService;
+    private ManagersFrontend mService;
 
     // UriMatcher constant for search suggestions
     private static final int SEARCH_SUGGEST = 1;
@@ -66,7 +66,7 @@ public class VideoContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mService = YouTubeMediaService.instance();
+        mService = YouTubeManagersFrontend.instance();
         mUriMatcher = buildUriMatcher();
 
         return true;

@@ -5,10 +5,10 @@ import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
+import com.liskovsoft.youtubeapi.service.YouTubeManagersFrontend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +91,7 @@ public class ClipService {
         playlist.setPlaylistUrl(recommendedUrl);
         playlist.setLogoResId(logoResId);
 
-        MediaService service = YouTubeMediaService.instance();
+        ManagersFrontend service = YouTubeManagersFrontend.instance();
         MediaGroupManager mediaTabManager = service.getMediaGroupManager();
         MediaGroup selectedGroup = callback.call(mediaTabManager);
 

@@ -86,6 +86,7 @@ class WatchNextServiceV2 private constructor() {
 
     companion object {
         private var sInstance: WatchNextServiceV2? = null
+        @JvmStatic
         fun instance(): WatchNextServiceV2? {
             if (sInstance == null) {
                 sInstance = WatchNextServiceV2()
@@ -93,6 +94,7 @@ class WatchNextServiceV2 private constructor() {
             return sInstance
         }
 
+        @JvmStatic
         fun unhold() {
             sInstance = null
         }

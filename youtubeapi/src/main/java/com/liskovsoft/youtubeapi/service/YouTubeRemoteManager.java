@@ -8,8 +8,6 @@ import com.liskovsoft.youtubeapi.lounge.LoungeService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
-import java.io.InterruptedIOException;
-
 public class YouTubeRemoteManager implements RemoteManager {
     private static final String TAG = YouTubeRemoteManager.class.getSimpleName();
     private static YouTubeRemoteManager sInstance;

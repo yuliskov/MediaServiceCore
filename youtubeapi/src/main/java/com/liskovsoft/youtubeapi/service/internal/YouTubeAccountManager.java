@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 import io.reactivex.Observable;
 
@@ -21,7 +21,7 @@ public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
     private final AuthService mAuthService;
-    private final YouTubeSignInManager mSignInManager;
+    private final YouTubeSignInService mSignInManager;
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
@@ -40,12 +40,12 @@ public class YouTubeAccountManager {
         }
     };
 
-    private YouTubeAccountManager(YouTubeSignInManager signInManager) {
+    private YouTubeAccountManager(YouTubeSignInService signInManager) {
         mAuthService = AuthService.instance();
         mSignInManager = signInManager;
     }
 
-    public static YouTubeAccountManager instance(YouTubeSignInManager signInManager) {
+    public static YouTubeAccountManager instance(YouTubeSignInService signInManager) {
         if (sInstance == null) {
             sInstance = new YouTubeAccountManager(signInManager);
         }

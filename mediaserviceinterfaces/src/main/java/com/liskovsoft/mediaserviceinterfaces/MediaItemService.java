@@ -12,7 +12,7 @@ import io.reactivex.Observable;
 import java.util.List;
 import java.util.Set;
 
-public interface MediaItemManager {
+public interface MediaItemService {
     int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
     int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
     int PLAYLIST_ORDER_POPULARITY = 3;

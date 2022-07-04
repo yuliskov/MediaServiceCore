@@ -5,7 +5,7 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-public interface SignInManager {
+public interface SignInService {
     void signOut();
     boolean isSigned();
     List<Account> getAccounts();

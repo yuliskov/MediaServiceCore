@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.SignInManager;
+import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -12,16 +12,16 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-public class YouTubeSignInManager implements SignInManager {
-    private static final String TAG = YouTubeSignInManager.class.getSimpleName();
+public class YouTubeSignInService implements SignInService {
+    private static final String TAG = YouTubeSignInService.class.getSimpleName();
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
-    private static YouTubeSignInManager sInstance;
+    private static YouTubeSignInService sInstance;
     private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
     private String mCachedAuthorizationHeader;
     private long mLastUpdateTime;
 
-    private YouTubeSignInManager() {
+    private YouTubeSignInService() {
         mAuthService = AuthService.instance();
         mAccountManager = YouTubeAccountManager.instance(this);
 
@@ -31,9 +31,9 @@ public class YouTubeSignInManager implements SignInManager {
         });
     }
 
-    public static YouTubeSignInManager instance() {
+    public static YouTubeSignInService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeSignInManager();
+            sInstance = new YouTubeSignInService();
         }
 
         return sInstance;

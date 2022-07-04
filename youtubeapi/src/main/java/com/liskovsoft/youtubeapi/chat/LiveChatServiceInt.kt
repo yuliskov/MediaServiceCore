@@ -1,12 +1,12 @@
 package com.liskovsoft.youtubeapi.chat
 
-class LiveChatService private constructor() {
+class LiveChatServiceInt private constructor() {
     companion object {
-        private var sInstance: LiveChatService? = null
+        private var sInstance: LiveChatServiceInt? = null
         @JvmStatic
-        fun instance(): LiveChatService? {
+        fun instance(): LiveChatServiceInt? {
             if (sInstance == null) {
-                sInstance = LiveChatService()
+                sInstance = LiveChatServiceInt()
             }
             return sInstance
         }

@@ -14,20 +14,20 @@ import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 
 import java.util.List;
 
-public class YouTubeMediaGroupManagerUnsigned implements MediaGroupManagerInt {
-    private static final String TAG = YouTubeMediaGroupManagerUnsigned.class.getSimpleName();
-    private static YouTubeMediaGroupManagerUnsigned sInstance;
+public class YouTubeMediaGroupServiceUnsigned implements MediaGroupServiceInt {
+    private static final String TAG = YouTubeMediaGroupServiceUnsigned.class.getSimpleName();
+    private static YouTubeMediaGroupServiceUnsigned sInstance;
     private final BrowseServiceUnsigned mBrowseServiceUnsigned;
     private final SearchServiceUnsigned mSearchServiceUnsigned;
 
-    private YouTubeMediaGroupManagerUnsigned() {
+    private YouTubeMediaGroupServiceUnsigned() {
         mSearchServiceUnsigned = SearchServiceUnsigned.instance();
         mBrowseServiceUnsigned = BrowseServiceUnsigned.instance();
     }
 
-    public static YouTubeMediaGroupManagerUnsigned instance() {
+    public static YouTubeMediaGroupServiceUnsigned instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaGroupManagerUnsigned();
+            sInstance = new YouTubeMediaGroupServiceUnsigned();
         }
 
         return sInstance;

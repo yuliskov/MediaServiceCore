@@ -3,7 +3,7 @@ package com.liskovsoft.mediaserviceinterfaces;
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import io.reactivex.Observable;
 
-public interface RemoteManager {
+public interface RemoteService {
     String getPairingCode();
 
     // RxJava interfaces

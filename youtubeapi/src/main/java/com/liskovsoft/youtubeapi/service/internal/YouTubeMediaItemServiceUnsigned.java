@@ -7,19 +7,19 @@ import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
-public class YouTubeMediaItemManagerUnsigned implements MediaItemManagerInt {
-    private static YouTubeMediaItemManagerUnsigned sInstance;
+public class YouTubeMediaItemServiceUnsigned implements MediaItemServiceInt {
+    private static YouTubeMediaItemServiceUnsigned sInstance;
     private final WatchNextServiceUnsigned mWatchNextServiceUnsigned;
     private final VideoInfoServiceUnsigned mVideoInfoServiceUnsigned;
 
-    private YouTubeMediaItemManagerUnsigned() {
+    private YouTubeMediaItemServiceUnsigned() {
        mWatchNextServiceUnsigned = WatchNextServiceUnsigned.instance();
        mVideoInfoServiceUnsigned = VideoInfoServiceUnsigned.instance();
     }
 
-    public static YouTubeMediaItemManagerUnsigned instance() {
+    public static YouTubeMediaItemServiceUnsigned instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaItemManagerUnsigned();
+            sInstance = new YouTubeMediaItemServiceUnsigned();
         }
 
         return sInstance;

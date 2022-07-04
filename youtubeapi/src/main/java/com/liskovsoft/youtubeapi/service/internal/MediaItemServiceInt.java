@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
-public interface MediaItemManagerInt {
+public interface MediaItemServiceInt {
     WatchNextResult getWatchNextResult(String videoId);
     WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams);
     WatchNextResultContinuation continueWatchNext(String nextKey);

@@ -17,7 +17,6 @@ class LiveChatApiTest {
             "0ofMyANuGlhDaWtxSndvWVZVTnFUR1JqY1d3dGVrdHFaWFpwUjJ4cVRURlNUVWhCRWd0WlJtZFJVMUI1U2sxNGR4b1Q2cWpkdVFFTkNndFpSbWRSVTFCNVNrMTRkeUFCMAGCAQIIBKABkc7B-pLb-AKoAQA%3D"
     }
     private var mApi: LiveChatApi? = null
-    private var mService: LiveChatService? = null
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -25,7 +24,6 @@ class LiveChatApiTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         mApi = RetrofitHelper.withGson(LiveChatApi::class.java)
-        mService = LiveChatService.instance()
     }
 
     @Test

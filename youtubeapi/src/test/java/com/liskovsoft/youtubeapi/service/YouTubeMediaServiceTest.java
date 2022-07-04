@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import io.reactivex.Observable;
 import org.junit.Before;
@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeManagersFrontendTest {
-    private ManagersFrontend mService;
+public class YouTubeMediaServiceTest {
+    private MediaService mService;
 
     @Before
     public void setUp() {
@@ -26,7 +26,7 @@ public class YouTubeManagersFrontendTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
-        mService = YouTubeManagersFrontend.instance();
+        mService = YouTubeMediaService.instance();
     }
 
     /**
@@ -34,7 +34,7 @@ public class YouTubeManagersFrontendTest {
      */
     @Test
     public void testThatSearchNotEmpty() throws InterruptedException {
-        Observable<MediaGroup> result = mService.getMediaGroupManager().getSearchObserve("hello world");
+        Observable<MediaGroup> result = mService.getMediaGroupService().getSearchObserve("hello world");
 
         CountDownLatch finish = new CountDownLatch(1);
 
@@ -54,7 +54,7 @@ public class YouTubeManagersFrontendTest {
 
     @Test
     public void testThatRecommendedNotEmpty() throws InterruptedException {
-        Observable<MediaGroup> result = mService.getMediaGroupManager().getRecommendedObserve();
+        Observable<MediaGroup> result = mService.getMediaGroupService().getRecommendedObserve();
 
         CountDownLatch finish = new CountDownLatch(1);
 
@@ -74,7 +74,7 @@ public class YouTubeManagersFrontendTest {
 
     @Test
     public void testThatRecommendedNotEmpty2() {
-        MediaGroup result = mService.getMediaGroupManager().getRecommended();
+        MediaGroup result = mService.getMediaGroupService().getRecommended();
 
         assertTrue("Has media items", !result.isEmpty());
     }

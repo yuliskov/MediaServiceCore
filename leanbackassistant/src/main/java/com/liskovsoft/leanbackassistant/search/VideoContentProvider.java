@@ -12,12 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
 import com.liskovsoft.sharedutils.rx.SchedulerProvider;
-import com.liskovsoft.youtubeapi.service.YouTubeManagersFrontend;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.List;
 public class VideoContentProvider extends ContentProvider {
     private static final String TAG = VideoContentProvider.class.getSimpleName();
     private static final int SEARCH_LIMIT = 40;
-    private ManagersFrontend mService;
+    private MediaService mService;
 
     // UriMatcher constant for search suggestions
     private static final int SEARCH_SUGGEST = 1;
@@ -66,7 +66,7 @@ public class VideoContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mService = YouTubeManagersFrontend.instance();
+        mService = YouTubeMediaService.instance();
         mUriMatcher = buildUriMatcher();
 
         return true;
@@ -133,7 +133,7 @@ public class VideoContentProvider extends ContentProvider {
     private Cursor search(String query, int limit) {
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
-        mSearch = mService.getMediaGroupManager().getSearch(query);
+        mSearch = mService.getMediaGroupService().getSearch(query);
 
         if (mSearch != null) {
             List<MediaItem> mediaItems = mSearch.getMediaItems();
@@ -152,7 +152,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        mSearch = mService.getMediaGroupManager().continueGroup(mSearch);
+        mSearch = mService.getMediaGroupService().continueGroup(mSearch);
 
         if (mSearch != null) {
             List<MediaItem> mediaItems = mSearch.getMediaItems();

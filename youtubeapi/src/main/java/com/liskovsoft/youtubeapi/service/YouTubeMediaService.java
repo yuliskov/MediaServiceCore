@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.LiveChatManager;
-import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
-import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
-import com.liskovsoft.mediaserviceinterfaces.RemoteManager;
-import com.liskovsoft.mediaserviceinterfaces.SignInManager;
+import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.RemoteService;
+import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxUtils;
@@ -16,64 +16,64 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class YouTubeManagersFrontend implements ManagersFrontend {
-    private static final String TAG = YouTubeManagersFrontend.class.getSimpleName();
-    private static YouTubeManagersFrontend sInstance;
-    private final YouTubeSignInManager mSignInManager;
-    private final YouTubeRemoteManager mDeviceLinkManager;
-    private final MediaGroupManager mMediaGroupManager;
-    private final MediaItemManager mMediaItemManager;
-    private final YouTubeLiveChatManager mLiveChatManager;
+public class YouTubeMediaService implements MediaService {
+    private static final String TAG = YouTubeMediaService.class.getSimpleName();
+    private static YouTubeMediaService sInstance;
+    private final YouTubeSignInService mSignInManager;
+    private final YouTubeRemoteService mDeviceLinkManager;
+    private final MediaGroupService mMediaGroupManager;
+    private final MediaItemService mMediaItemManager;
+    private final YouTubeLiveChatService mLiveChatService;
     private Disposable mRefreshCacheAction;
 
-    private YouTubeManagersFrontend() {
+    private YouTubeMediaService() {
         Log.d(TAG, "Starting...");
 
-        mSignInManager = YouTubeSignInManager.instance();
-        mDeviceLinkManager = YouTubeRemoteManager.instance();
-        mMediaGroupManager = YouTubeMediaGroupManager.instance();
-        mMediaItemManager = YouTubeMediaItemManager.instance();
-        mLiveChatManager = YouTubeLiveChatManager.instance();
+        mSignInManager = YouTubeSignInService.instance();
+        mDeviceLinkManager = YouTubeRemoteService.instance();
+        mMediaGroupManager = YouTubeMediaGroupService.instance();
+        mMediaItemManager = YouTubeMediaItemService.instance();
+        mLiveChatService = YouTubeLiveChatService.instance();
     }
 
-    public static ManagersFrontend instance() {
+    public static MediaService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeManagersFrontend();
+            sInstance = new YouTubeMediaService();
         }
 
         return sInstance;
     }
 
     @Override
-    public SignInManager getSignInManager() {
+    public SignInService getSignInService() {
         return mSignInManager;
     }
 
     @Override
-    public RemoteManager getRemoteManager() {
+    public RemoteService getRemoteService() {
         return mDeviceLinkManager;
     }
 
     @Override
-    public LiveChatManager getLiveChatManager() {
-        return mLiveChatManager;
+    public LiveChatService getLiveChatService() {
+        return mLiveChatService;
     }
 
     @Override
-    public MediaGroupManager getMediaGroupManager() {
+    public MediaGroupService getMediaGroupService() {
         return mMediaGroupManager;
     }
 
     @Override
-    public MediaItemManager getMediaItemManager() {
+    public MediaItemService getMediaItemService() {
         return mMediaItemManager;
     }
 
     @Override
     public void invalidateCache() {
         AppService.instance().invalidateCache();
-        YouTubeMediaItemManager.instance().invalidateCache();
-        YouTubeSignInManager.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)
+        YouTubeMediaItemService.instance().invalidateCache();
+        YouTubeSignInService.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)
         LocaleManager.unhold();
     }
 

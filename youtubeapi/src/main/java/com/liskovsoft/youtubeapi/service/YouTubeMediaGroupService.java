@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -9,16 +9,13 @@ import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
-import com.liskovsoft.youtubeapi.service.internal.MediaGroupManagerInt;
-import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerSigned;
-import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupManagerUnsigned;
+import com.liskovsoft.youtubeapi.service.internal.MediaGroupServiceInt;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupServiceSigned;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupServiceUnsigned;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
@@ -26,21 +23,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class YouTubeMediaGroupManager implements MediaGroupManager {
-    private static final String TAG = YouTubeMediaGroupManager.class.getSimpleName();
-    private static YouTubeMediaGroupManager sInstance;
-    private final YouTubeSignInManager mSignInManager;
-    private MediaGroupManagerInt mMediaGroupManagerReal;
+public class YouTubeMediaGroupService implements MediaGroupService {
+    private static final String TAG = YouTubeMediaGroupService.class.getSimpleName();
+    private static YouTubeMediaGroupService sInstance;
+    private final YouTubeSignInService mSignInManager;
+    private MediaGroupServiceInt mMediaGroupManagerReal;
 
-    private YouTubeMediaGroupManager() {
+    private YouTubeMediaGroupService() {
         Log.d(TAG, "Starting...");
 
-        mSignInManager = YouTubeSignInManager.instance();
+        mSignInManager = YouTubeSignInService.instance();
     }
 
-    public static MediaGroupManager instance() {
+    public static MediaGroupService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaGroupManager();
+            sInstance = new YouTubeMediaGroupService();
         }
 
         return sInstance;
@@ -466,13 +463,13 @@ public class YouTubeMediaGroupManager implements MediaGroupManager {
         if (mSignInManager.checkAuthHeader()) {
             Log.d(TAG, "User signed.");
 
-            mMediaGroupManagerReal = YouTubeMediaGroupManagerSigned.instance();
-            YouTubeMediaGroupManagerUnsigned.unhold();
+            mMediaGroupManagerReal = YouTubeMediaGroupServiceSigned.instance();
+            YouTubeMediaGroupServiceUnsigned.unhold();
         } else {
             Log.d(TAG, "User doesn't signed.");
 
-            mMediaGroupManagerReal = YouTubeMediaGroupManagerUnsigned.instance();
-            YouTubeMediaGroupManagerSigned.unhold();
+            mMediaGroupManagerReal = YouTubeMediaGroupServiceUnsigned.instance();
+            YouTubeMediaGroupServiceSigned.unhold();
         }
     }
 

@@ -11,11 +11,11 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
-import com.liskovsoft.youtubeapi.service.YouTubeSignInManager
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
 class WatchNextServiceV2 private constructor() {
     private var mWatchNextManager = RetrofitHelper.withGson(WatchNextManager::class.java)
-    private val mSignInManager = YouTubeSignInManager.instance()
+    private val mSignInManager = YouTubeSignInService.instance()
     private val mAppService = AppService.instance();
 
     fun getMetadata(videoId: String): MediaItemMetadata? {

@@ -12,26 +12,26 @@ import com.liskovsoft.youtubeapi.search.SearchServiceSigned;
 import com.liskovsoft.youtubeapi.search.SearchServiceUnsigned;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 
 import java.util.List;
 
-public class YouTubeMediaGroupManagerSigned implements MediaGroupManagerInt {
-    private static final String TAG = YouTubeMediaGroupManagerSigned.class.getSimpleName();
+public class YouTubeMediaGroupServiceSigned implements MediaGroupServiceInt {
+    private static final String TAG = YouTubeMediaGroupServiceSigned.class.getSimpleName();
     private final SearchServiceSigned mSearchServiceSigned;
     private final BrowseServiceSigned mBrowseServiceSigned;
-    private final YouTubeSignInManager mSignInManager;
-    private static YouTubeMediaGroupManagerSigned sInstance;
+    private final YouTubeSignInService mSignInManager;
+    private static YouTubeMediaGroupServiceSigned sInstance;
 
-    private YouTubeMediaGroupManagerSigned() {
+    private YouTubeMediaGroupServiceSigned() {
         mSearchServiceSigned = SearchServiceSigned.instance();
         mBrowseServiceSigned = BrowseServiceSigned.instance();
-        mSignInManager = YouTubeSignInManager.instance();
+        mSignInManager = YouTubeSignInService.instance();
     }
 
-    public static YouTubeMediaGroupManagerSigned instance() {
+    public static YouTubeMediaGroupServiceSigned instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaGroupManagerSigned();
+            sInstance = new YouTubeMediaGroupServiceSigned();
         }
 
         return sInstance;

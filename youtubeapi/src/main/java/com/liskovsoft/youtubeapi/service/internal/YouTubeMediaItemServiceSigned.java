@@ -8,26 +8,26 @@ import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInManager;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
-public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
-    private static final String TAG = YouTubeMediaItemManagerSigned.class.getSimpleName();
-    private static YouTubeMediaItemManagerSigned sInstance;
+public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
+    private static final String TAG = YouTubeMediaItemServiceSigned.class.getSimpleName();
+    private static YouTubeMediaItemServiceSigned sInstance;
     private final WatchNextServiceSigned mWatchNextServiceSigned;
-    private final YouTubeSignInManager mSignInManager;
+    private final YouTubeSignInService mSignInManager;
     private final TrackingService mTrackingService;
     private final VideoInfoServiceSigned mVideoInfoServiceSigned;
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
     private final FeedbackService mFeedbackService;
 
-    private YouTubeMediaItemManagerSigned() {
+    private YouTubeMediaItemServiceSigned() {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
-        mSignInManager = YouTubeSignInManager.instance();
+        mSignInManager = YouTubeSignInService.instance();
         mTrackingService = TrackingService.instance();
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
         mActionsService = ActionsService.instance();
@@ -35,9 +35,9 @@ public class YouTubeMediaItemManagerSigned implements MediaItemManagerInt {
         mFeedbackService = FeedbackService.instance();
     }
 
-    public static YouTubeMediaItemManagerSigned instance() {
+    public static YouTubeMediaItemServiceSigned instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaItemManagerSigned();
+            sInstance = new YouTubeMediaItemServiceSigned();
         }
 
         return sInstance;

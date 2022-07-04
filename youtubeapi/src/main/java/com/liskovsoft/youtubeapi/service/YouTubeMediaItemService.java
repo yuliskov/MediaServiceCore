@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItemManager;
+import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -22,33 +22,33 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.service.data.YouTubeVideoPlaylistInfo;
-import com.liskovsoft.youtubeapi.service.internal.MediaItemManagerInt;
-import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerSigned;
-import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemManagerUnsigned;
+import com.liskovsoft.youtubeapi.service.internal.MediaItemServiceInt;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceSigned;
+import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
 
 import java.util.List;
 import java.util.Set;
 
-public class YouTubeMediaItemManager implements MediaItemManager {
-    private static final String TAG = YouTubeMediaItemManager.class.getSimpleName();
-    private static YouTubeMediaItemManager sInstance;
-    private final YouTubeSignInManager mSignInManager;
+public class YouTubeMediaItemService implements MediaItemService {
+    private static final String TAG = YouTubeMediaItemService.class.getSimpleName();
+    private static YouTubeMediaItemService sInstance;
+    private final YouTubeSignInService mSignInManager;
     private final SponsorBlockService mSponsorBlockService;
     private final WatchNextServiceV2 mWatchNextServiceV2;
-    private MediaItemManagerInt mMediaItemManagerReal;
+    private MediaItemServiceInt mMediaItemManagerReal;
     private YouTubeMediaItemFormatInfo mCachedFormatInfo;
 
-    private YouTubeMediaItemManager() {
-        mSignInManager = YouTubeSignInManager.instance();
+    private YouTubeMediaItemService() {
+        mSignInManager = YouTubeSignInService.instance();
         mSponsorBlockService = SponsorBlockService.instance();
         mWatchNextServiceV2 = WatchNextServiceV2.instance();
     }
 
-    public static YouTubeMediaItemManager instance() {
+    public static YouTubeMediaItemService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaItemManager();
+            sInstance = new YouTubeMediaItemService();
         }
 
         return sInstance;
@@ -488,13 +488,13 @@ public class YouTubeMediaItemManager implements MediaItemManager {
         if (mSignInManager.checkAuthHeader()) {
             Log.d(TAG, "User signed.");
 
-            mMediaItemManagerReal = YouTubeMediaItemManagerSigned.instance();
-            YouTubeMediaItemManagerUnsigned.unhold();
+            mMediaItemManagerReal = YouTubeMediaItemServiceSigned.instance();
+            YouTubeMediaItemServiceUnsigned.unhold();
         } else {
             Log.d(TAG, "User doesn't signed.");
 
-            mMediaItemManagerReal = YouTubeMediaItemManagerUnsigned.instance();
-            YouTubeMediaItemManagerSigned.unhold();
+            mMediaItemManagerReal = YouTubeMediaItemServiceUnsigned.instance();
+            YouTubeMediaItemServiceSigned.unhold();
         }
     }
 }

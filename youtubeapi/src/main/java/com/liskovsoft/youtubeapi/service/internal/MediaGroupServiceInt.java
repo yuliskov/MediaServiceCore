@@ -11,7 +11,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 
 import java.util.List;
 
-public interface MediaGroupManagerInt {
+public interface MediaGroupServiceInt {
     SearchResult getSearch(String searchText);
     SearchResult getSearch(String searchText, int options);
     List<String> getSearchTags(String searchText);

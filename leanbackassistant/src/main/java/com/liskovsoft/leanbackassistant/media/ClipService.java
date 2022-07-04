@@ -5,10 +5,10 @@ import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.ManagersFrontend;
+import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.MediaGroupManager;
-import com.liskovsoft.youtubeapi.service.YouTubeManagersFrontend;
+import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ClipService {
                 SUBS_PROGRAMS_IDS,
                 SUBSCRIPTIONS_URL,
                 R.drawable.generic_channels,
-                MediaGroupManager::getSubscriptions,
+                MediaGroupService::getSubscriptions,
                 false
         );
     }
@@ -63,7 +63,7 @@ public class ClipService {
                 HISTORY_PROGRAMS_IDS,
                 HISTORY_URL,
                 R.drawable.generic_channels,
-                MediaGroupManager::getHistory,
+                MediaGroupService::getHistory,
                 false);
     }
 
@@ -75,7 +75,7 @@ public class ClipService {
                 RECOMMENDED_PROGRAMS_IDS,
                 RECOMMENDED_URL,
                 R.drawable.generic_channels,
-                MediaGroupManager::getRecommended,
+                MediaGroupService::getRecommended,
                 true);
     }
 
@@ -91,8 +91,8 @@ public class ClipService {
         playlist.setPlaylistUrl(recommendedUrl);
         playlist.setLogoResId(logoResId);
 
-        ManagersFrontend service = YouTubeManagersFrontend.instance();
-        MediaGroupManager mediaTabManager = service.getMediaGroupManager();
+        MediaService service = YouTubeMediaService.instance();
+        MediaGroupService mediaTabManager = service.getMediaGroupService();
         MediaGroup selectedGroup = callback.call(mediaTabManager);
 
         if (selectedGroup != null) {
@@ -148,6 +148,6 @@ public class ClipService {
     }
 
     private interface GroupCallback {
-        MediaGroup call(MediaGroupManager mediaTabManager);
+        MediaGroup call(MediaGroupService mediaTabManager);
     }
 }

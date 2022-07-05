@@ -108,6 +108,9 @@ public class LoungeService {
             } catch (InterruptedIOException e) {
                 Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
                 break;
+            } catch (InterruptedException e) {
+                Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
+                break;
             } catch (NullPointerException e) {
                 Log.e(TAG, "Oops. Stopping. Got NPE.");
                 e.printStackTrace();

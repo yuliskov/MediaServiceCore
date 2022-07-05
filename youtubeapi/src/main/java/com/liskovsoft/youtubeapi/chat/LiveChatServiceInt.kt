@@ -25,6 +25,9 @@ class LiveChatServiceInt private constructor() {
             } catch (e: InterruptedIOException) {
                 Log.e(TAG, "Oops. Stopping. Listening thread interrupted.")
                 break
+            } catch (e: InterruptedException) {
+                Log.e(TAG, "Oops. Stopping. Listening thread interrupted.")
+                break
             } catch (e: NullPointerException) {
                 Log.e(TAG, "Oops. Stopping. Got NPE.")
                 e.printStackTrace()

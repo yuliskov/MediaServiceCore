@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
+import com.liskovsoft.youtubeapi.common.models.kt.findHighResThumbnailUrl
+import com.liskovsoft.youtubeapi.common.models.kt.findLowResThumbnailUrl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.ItemWrapper
 import com.liskovsoft.youtubeapi.next.v2.helpers.*
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper

@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.models.sections;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 

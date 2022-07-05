@@ -2,17 +2,9 @@ package com.liskovsoft.youtubeapi.next.v2.helpers
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.common.models.kt.getText
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
-
-fun TextItem.getText() = runs?.joinToString("") { it?.text ?: "" } ?: simpleText
-
-/**
- * Find optimal thumbnail for tv screen
- */
-fun ThumbnailItem.findLowResThumbnailUrl() = thumbnails?.getOrElse(YouTubeMediaServiceHelper.LOW_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
-fun ThumbnailItem.findHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
-fun ThumbnailItem.Thumbnail.getUrl() = if (url?.startsWith("//") == true) "https:$url" else url
 
 //////////
 

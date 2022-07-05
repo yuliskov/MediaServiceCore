@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
-import com.liskovsoft.youtubeapi.next.v2.helpers.getText
+import com.liskovsoft.youtubeapi.common.models.kt.TextItem
+import com.liskovsoft.youtubeapi.common.models.kt.ThumbnailItem
 
 data class NavigationEndpointItem(
         val browseEndpoint: BrowseEndpoint?,
@@ -58,30 +59,6 @@ data class WatchEndpointItem(
         val index: Int,
         val params: String?,
 )
-
-data class TextItem(
-        val runs: List<Run?>?,
-        val simpleText: String?
-) {
-    data class Run(
-            val text: String?,
-            val navigationEndpoint: NavigationEndpointItem?
-    )
-
-    override fun toString(): String {
-        return getText() ?: super.toString()
-    }
-}
-
-data class ThumbnailItem(
-        val thumbnails: List<Thumbnail?>?
-) {
-    data class Thumbnail(
-            val url: String?,
-            val width: String?,
-            val height: String?
-    )
-}
 
 data class NextVideoItem(
         val item: Item?,

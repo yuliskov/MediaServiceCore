@@ -1,0 +1,31 @@
+{
+  "emoji": {
+    "emojiId": "UCkszU2WH9gy1mb0dV-11UJg/CN2m5cKr49sCFYbFggodDFEKrg",
+    "shortcuts": [
+      ":oops:"
+    ],
+    "searchTerms": [
+      "oops"
+    ],
+    "image": {
+      "thumbnails": [
+        {
+          "url": "https://yt3.ggpht.com/qByNS7xmuQXsb_5hxW2ggxwQZRN8-biWVnnKuL5FK1zudxIeim48zRVPk6DRq_HgaeKltHhm=w24-h24-c-k-nd",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "url": "https://yt3.ggpht.com/qByNS7xmuQXsb_5hxW2ggxwQZRN8-biWVnnKuL5FK1zudxIeim48zRVPk6DRq_HgaeKltHhm=w48-h48-c-k-nd",
+          "width": 48,
+          "height": 48
+        }
+      ],
+      "accessibility": {
+        "accessibilityData": {
+          "label": "oops"
+        }
+      }
+    },
+    "isCustomEmoji": true
+  }
+}

@@ -17,7 +17,13 @@ data class TextItem(
     }
 }
 
-data class LiveChatEmoji(val emojiId: String?, val image: ThumbnailItem?, val variantIds: List<String?>?)
+data class LiveChatEmoji(
+    val emojiId: String?,
+    val image: ThumbnailItem?,
+    val variantIds: List<String?>?,
+    val shortcuts: List<String?>?,
+    val isCustomEmoji: Boolean?
+)
 
 data class ThumbnailItem(
     val thumbnails: List<Thumbnail?>?

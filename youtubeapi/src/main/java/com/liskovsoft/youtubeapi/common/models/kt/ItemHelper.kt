@@ -3,7 +3,11 @@ package com.liskovsoft.youtubeapi.common.models.kt
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
-fun LiveChatEmoji.getText() = emojiId
+
+/**
+ * Custom emoji should be rendered as images. Images not supported at this moment. Use shortcut name as workaround.
+ */
+fun LiveChatEmoji.getText() = if (isCustomEmoji == true) shortcuts?.getOrElse(0) { "" } else emojiId
 
 /**
  * Find optimal thumbnail for tv screen

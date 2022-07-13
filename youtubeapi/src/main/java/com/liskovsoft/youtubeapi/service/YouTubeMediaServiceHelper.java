@@ -15,9 +15,9 @@ import java.util.List;
 
 public final class YouTubeMediaServiceHelper {
     /**
-     * Optimal thumbnail for tv screen
+     * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
      */
-    public static final int LOW_RES_THUMBNAIL_INDEX = 2;
+    public static final int LOW_RES_THUMBNAIL_INDEX = 3;
     private static final int SHORTS_LEN_MS = 60 * 1_000;
 
     /**

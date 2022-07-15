@@ -55,6 +55,10 @@ public class ServiceHelper {
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
     }
 
+    public static String createQueryUA(String data) {
+        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, data, "uk", "UA");
+    }
+
     public static String createQuery(String data) {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, data);
     }
@@ -68,9 +72,19 @@ public class ServiceHelper {
     }
 
     private static String createQuery(String postTemplate, String data) {
+        return createQuery(postTemplate, data, null, null);
+    }
+
+    private static String createQuery(String postTemplate, String data, String language, String country) {
         LocaleManager localeManager = LocaleManager.instance();
         AppService appService = AppService.instance();
-        return String.format(postTemplate, localeManager.getCountry(), localeManager.getLanguage(),
+        if (language == null) {
+            language = localeManager.getLanguage();
+        }
+        if (country == null) {
+            country = localeManager.getCountry();
+        }
+        return String.format(postTemplate, language, country,
                 localeManager.getUtcOffsetMinutes(), appService.getVisitorId(), data);
     }
 

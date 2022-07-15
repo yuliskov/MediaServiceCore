@@ -134,7 +134,13 @@ public class BrowseServiceSigned {
     }
 
     public SectionTab getNews(String authorization) {
-        return getSectionTab(BrowseManagerParams.getNewsQuery(), authorization);
+        SectionTab newsTab = getSectionTab(BrowseManagerParams.getNewsQuery(), authorization);
+
+        if (newsTab == null) {
+            newsTab = getSectionTab(BrowseManagerParams.getNewsQueryUA(), authorization);
+        }
+
+        return newsTab;
     }
 
     public SectionTab getMusic(String authorization) {

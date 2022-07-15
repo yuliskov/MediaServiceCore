@@ -43,7 +43,13 @@ public class BrowseServiceUnsigned {
     }
 
     public SectionTab getNews() {
-        return getSectionTab(BrowseManagerParams.getNewsQuery());
+        SectionTab newsTab = getSectionTab(BrowseManagerParams.getNewsQuery());
+
+        if (newsTab == null) {
+            newsTab = getSectionTab(BrowseManagerParams.getNewsQueryUA());
+        }
+
+        return newsTab;
     }
 
     public SectionTab getMusic() {

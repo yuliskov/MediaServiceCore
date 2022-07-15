@@ -41,6 +41,10 @@ public class BrowseManagerParams {
         return ServiceHelper.createQuery(NEWS);
     }
 
+    public static String getNewsQueryUA() {
+        return ServiceHelper.createQueryUA(NEWS);
+    }
+
     public static String getMusicQuery() {
         return ServiceHelper.createQuery(MUSIC);
     }

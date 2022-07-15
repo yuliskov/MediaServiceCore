@@ -212,7 +212,7 @@ public class JsonPathTypeAdapter<T> {
                 field.set(obj, val);
             }
 
-            done = true; // at least one field is set
+            done = field.get(obj) != null; // field is set
         } catch (IllegalArgumentException e) {
             Log.d(TAG, "%s: Incompatible json value found %s. Same path on different types?", field.getType().getSimpleName(), jsonVal);
         } catch (IllegalAccessException e) {

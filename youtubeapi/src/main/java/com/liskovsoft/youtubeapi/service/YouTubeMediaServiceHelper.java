@@ -120,4 +120,15 @@ public final class YouTubeMediaServiceHelper {
         boolean isShortLength = lengthMs > 0 && lengthMs < SHORTS_LEN_MS;
         return isShortLength || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
     }
+
+    /**
+     * Avatar blocking fix
+     */
+    public static String avatarBlockFix(String url) {
+        if (url != null) {
+            url = url.replaceFirst("^https://yt3.ggpht.com", "https://yt4.ggpht.com");
+        }
+
+        return url;
+    }
 }

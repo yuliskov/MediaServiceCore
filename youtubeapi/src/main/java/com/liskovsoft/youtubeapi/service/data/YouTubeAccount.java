@@ -41,6 +41,8 @@ public class YouTubeAccount implements Account {
         account.mRefreshToken = Helpers.parseStr(split, 4);
         account.mEmail = Helpers.parseStr(split, 5);
 
+        account.mImageUrl = YouTubeMediaServiceHelper.avatarBlockFix(account.mImageUrl);
+
         return account;
     }
 

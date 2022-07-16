@@ -14,4 +14,10 @@ fun LiveChatEmoji.getText() = if (isCustomEmoji == true) shortcuts?.getOrElse(0)
  */
 fun ThumbnailItem.findLowResThumbnailUrl() = thumbnails?.getOrElse(YouTubeMediaServiceHelper.LOW_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
 fun ThumbnailItem.findHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
-fun ThumbnailItem.Thumbnail.getUrl() = if (url?.startsWith("//") == true) "https:$url" else url
+fun ThumbnailItem.Thumbnail.getUrl(): String? {
+    var newUrl = if (url?.startsWith("//") == true) "https:$url" else url
+
+    newUrl = YouTubeMediaServiceHelper.avatarBlockFix(newUrl)
+
+    return newUrl
+}

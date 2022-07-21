@@ -43,7 +43,7 @@ public class RetrofitHelper {
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
     public static boolean sForceEnableProfiler;
-    private static OkHttpClient sOkHttpClient;
+    private static OkHttpClient sSharedOkHttpClient;
 
     public static <T> T withGson(Class<T> clazz) {
         return buildRetrofit(GsonConverterFactory.create()).create(clazz);
@@ -118,15 +118,22 @@ public class RetrofitHelper {
         return retrofitBuilder;
     }
 
-    private static OkHttpClient getOkHttpClient() {
-        if (sOkHttpClient == null) {
-            sOkHttpClient = createOkHttpClient();
-        }
-
-        return sOkHttpClient;
+    public static void invalidateCache() {
+        sSharedOkHttpClient = null;
     }
 
+    /**
+     * Fix OOM: https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html
+     */
     public static OkHttpClient createOkHttpClient() {
+        if (sSharedOkHttpClient == null) {
+            sSharedOkHttpClient = createOkHttpClientInt();
+        }
+
+        return sSharedOkHttpClient;
+    }
+
+    private static OkHttpClient createOkHttpClientInt() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
         //disableCache(okBuilder);
@@ -150,6 +157,8 @@ public class RetrofitHelper {
         addCommonHeaders(okBuilder);
 
         enableDecompression(okBuilder);
+
+        disableCache(okBuilder);
 
         debugSetup(okBuilder);
 

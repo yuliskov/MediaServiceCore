@@ -11,7 +11,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
@@ -72,7 +71,6 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public void invalidateCache() {
-        RetrofitHelper.invalidateCache();
         AppService.instance().invalidateCache();
         YouTubeMediaItemService.instance().invalidateCache();
         YouTubeSignInService.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)

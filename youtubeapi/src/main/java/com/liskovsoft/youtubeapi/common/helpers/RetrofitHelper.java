@@ -118,10 +118,6 @@ public class RetrofitHelper {
         return retrofitBuilder;
     }
 
-    public static void invalidateCache() {
-        sSharedOkHttpClient = null;
-    }
-
     /**
      * Fix OOM: https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html
      */

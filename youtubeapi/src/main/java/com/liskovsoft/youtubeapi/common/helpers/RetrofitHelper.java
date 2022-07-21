@@ -132,15 +132,10 @@ public class RetrofitHelper {
     private static OkHttpClient createOkHttpClientInt() {
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
-        //disableCache(okBuilder);
-
-        // Cause hangs and crashes (especially on Android 8 devices or Dune HD)
-        //forceIPv4Dns(okBuilder);
-
-        if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isIPv4DnsPreferred()) {
-            // Cause hangs and crashes (especially on Android 8 devices or Dune HD)
-            preferIPv4Dns(okBuilder);
-        }
+        //if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isIPv4DnsPreferred()) {
+        //    // Cause hangs and crashes (especially on Android 8 devices or Dune HD)
+        //    preferIPv4Dns(okBuilder);
+        //}
 
         OkHttpCommons.setupConnectionFix(okBuilder);
 
@@ -160,9 +155,9 @@ public class RetrofitHelper {
 
         OkHttpClient client = okBuilder.build();
 
-        if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isDnsOverHttpsEnabled()) {
-            client = wrapDnsOverHttps(client);
-        }
+        //if (GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isDnsOverHttpsEnabled()) {
+        //    client = wrapDnsOverHttps(client);
+        //}
 
         return client;
     }

@@ -3,10 +3,9 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.youtubeapi.common.models.kt.findLowResThumbnailUrl
-import com.liskovsoft.youtubeapi.common.models.kt.getText
+import com.liskovsoft.youtubeapi.common.models.kt.*
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
-import com.liskovsoft.youtubeapi.next.v2.helpers.*
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
@@ -68,7 +67,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
             }
         }
     }
-    private val videoDescription by lazy { videoMetadata?.description?.getText() }
+    private val videoDescription by lazy { videoMetadata?.description?.getText() ?:
+        // Scroll to the end till we find description tile
+        suggestionList?.lastOrNull()?.shelf?.getItemWrappers()?.firstOrNull()?.getDescriptionText()
+    }
     private val videoSecondTitle by lazy {
         YouTubeMediaServiceHelper.createInfo(
                 videoAuthor, viewCountText, publishedTime

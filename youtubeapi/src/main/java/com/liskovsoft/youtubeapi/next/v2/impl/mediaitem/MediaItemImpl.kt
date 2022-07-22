@@ -1,9 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
-import com.liskovsoft.youtubeapi.common.models.kt.findHighResThumbnailUrl
-import com.liskovsoft.youtubeapi.common.models.kt.findLowResThumbnailUrl
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.ItemWrapper
-import com.liskovsoft.youtubeapi.next.v2.helpers.*
+import com.liskovsoft.youtubeapi.common.models.kt.*
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
@@ -25,4 +22,5 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val channelIdItem by lazy { itemWrapper.getChannelId() }
     override val isLiveItem by lazy { itemWrapper.isLive() }
     override val isUpcomingItem by lazy { itemWrapper.isUpcoming() }
+    val descriptionText by lazy { itemWrapper.getDescriptionText() }
 }

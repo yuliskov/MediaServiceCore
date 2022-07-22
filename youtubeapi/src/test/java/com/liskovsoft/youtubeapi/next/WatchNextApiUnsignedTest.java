@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
-public class WatchNextManagerUnsignedTest extends WatchNextManagerTestBase {
+public class WatchNextApiUnsignedTest extends WatchNextManagerTestBase {
     private WatchNextManagerUnsigned mManager;
 
     @Before

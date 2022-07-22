@@ -17,7 +17,7 @@ import retrofit2.Call;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
-public class WatchNextManagerSignedTest extends WatchNextManagerTestBase {
+public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
     private WatchNextManagerSigned mManager;
 
     @Before

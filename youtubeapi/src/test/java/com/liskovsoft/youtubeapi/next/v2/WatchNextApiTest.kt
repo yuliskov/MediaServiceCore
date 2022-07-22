@@ -6,8 +6,8 @@ import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
-import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextManagerMock
-import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextManagerMock2
+import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock
+import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock2
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -16,10 +16,10 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
-class WatchNextManagerTest {
-    private var mManager: WatchNextManager? = null
-    private var mManagerMock: WatchNextManagerMock? = null
-    private var mManagerMock2: WatchNextManagerMock2? = null
+class WatchNextApiTest {
+    private var mApi: WatchNextApi? = null
+    private var mManagerMock: WatchNextApiMock? = null
+    private var mManagerMock2: WatchNextApiMock2? = null
     private var mServiceV2: WatchNextServiceV2? = null
     @Before
     fun setUp() {
@@ -27,11 +27,11 @@ class WatchNextManagerTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mManager = RetrofitHelper.withGson(WatchNextManager::class.java)
+        mApi = RetrofitHelper.withGson(WatchNextApi::class.java)
         mServiceV2 = WatchNextServiceV2.instance()
 
-        mManagerMock = MockUtils.mockWithGson(WatchNextManagerMock::class.java)
-        mManagerMock2 = MockUtils.mockWithGson(WatchNextManagerMock2::class.java)
+        mManagerMock = MockUtils.mockWithGson(WatchNextApiMock::class.java)
+        mManagerMock2 = MockUtils.mockWithGson(WatchNextApiMock2::class.java)
     }
 
     @Test
@@ -50,7 +50,7 @@ class WatchNextManagerTest {
 
     @Test
     fun testThatMockedWatchNextResultCanBeConverted() {
-        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextManager)
+        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -59,7 +59,7 @@ class WatchNextManagerTest {
 
     @Test
     fun testThatMockedWatchNextSuggestionsNotEmpty() {
-        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextManager)
+        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -70,7 +70,7 @@ class WatchNextManagerTest {
 
     @Test
     fun testThatMockedWatchNextResultCanBeConverted2() {
-        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextManager)
+        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -81,7 +81,7 @@ class WatchNextManagerTest {
     fun testThatMockedWatchNextSuggestionsNotEmpty2() {
         // Testing groups inside a Chip
 
-        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextManager)
+        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -132,7 +132,7 @@ class WatchNextManagerTest {
 
     private fun getWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
-        val wrapper = mManager!!.getWatchNextResultUnsigned(watchNextQuery)
+        val wrapper = mApi!!.getWatchNextResultUnsigned(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 

@@ -3,14 +3,14 @@ package com.liskovsoft.youtubeapi.next.v2.mock
 import co.infinum.retromock.meta.Mock
 import co.infinum.retromock.meta.MockResponse
 import com.liskovsoft.youtubeapi.app.AppConstants
-import com.liskovsoft.youtubeapi.next.v2.WatchNextManager
+import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface WatchNextManagerMock: WatchNextManager {
+interface WatchNextApiMock: WatchNextApi {
     @Mock
     @MockResponse(body = "next/v2/no_suggestions3.json")
     @Headers("Content-Type: application/json")
@@ -18,7 +18,7 @@ interface WatchNextManagerMock: WatchNextManager {
     override fun getWatchNextResultUnsigned(@Body watchNextQuery: String?): Call<WatchNextResult?>?
 }
 
-interface WatchNextManagerMock2: WatchNextManager {
+interface WatchNextApiMock2: WatchNextApi {
     @Mock
     @MockResponse(body = "next/v2/no_suggestions5.json")
     @Headers("Content-Type: application/json")

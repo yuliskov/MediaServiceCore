@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
+import com.liskovsoft.youtubeapi.common.models.kt.ItemWrapper
+
 data class WatchNextResult(
     val contents: Contents?,
     val transportControls: TransportControls?

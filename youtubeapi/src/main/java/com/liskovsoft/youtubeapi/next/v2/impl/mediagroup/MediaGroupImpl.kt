@@ -2,11 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediagroup
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.ShelfItem
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResultContinuation
-import com.liskovsoft.youtubeapi.next.v2.helpers.getItemWrappers
-import com.liskovsoft.youtubeapi.next.v2.helpers.getNextPageKey
-import com.liskovsoft.youtubeapi.next.v2.helpers.getTitle
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 import java.util.*
 

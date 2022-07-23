@@ -14,6 +14,7 @@ public class SearchSection {
     private TextItem mTitle;
 
     @JsonPath({
+            "$.shelfRenderer.content.horizontalListRenderer.items[*]",
             "$.itemSectionRenderer.contents[0].shelfRenderer.content.horizontalListRenderer.items[*]",
             "$.itemSectionRenderer.contents[*]"
     })

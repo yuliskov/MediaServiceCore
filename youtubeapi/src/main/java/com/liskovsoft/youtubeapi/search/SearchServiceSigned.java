@@ -63,6 +63,7 @@ public class SearchServiceSigned {
     public SearchResultContinuation continueSearch(String nextSearchPageKey, String authorization) {
         if (nextSearchPageKey == null) {
             Log.e(TAG, "Can't get next search page. Next search key is empty.");
+            return null;
         }
         
         Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextSearchPageKey), authorization);

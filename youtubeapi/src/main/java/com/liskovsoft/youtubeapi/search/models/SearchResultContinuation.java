@@ -11,8 +11,10 @@ import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import java.util.List;
 
 public class SearchResultContinuation {
-    // V2
-    @JsonPath("$.continuationContents.itemSectionContinuation.contents[*].tileRenderer")
+    @JsonPath({
+            "$.continuationContents.horizontalListContinuation.items[*].tileRenderer", // V3
+            "$.continuationContents.itemSectionContinuation.contents[*].tileRenderer" // V2
+    })
     private List<TileItem> mTileItems;
 
     @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.contents[*].compactVideoRenderer", // V7
@@ -35,8 +37,11 @@ public class SearchResultContinuation {
                "$.continuationContents.itemSectionContinuation.contents[*].compactPlaylistRenderer"})
     private List<PlaylistItem> mPlaylistItems;
 
-    @JsonPath({"$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
-               "$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation"})
+    @JsonPath({
+            "$.continuationContents.horizontalListContinuation.continuations[0].nextContinuationData.continuation", // V3
+            "$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
+            "$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation"
+    })
     private String mNextPageKey;
 
     /**

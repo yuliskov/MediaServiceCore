@@ -447,6 +447,7 @@ public class ChannelsProvider {
             .setPreviewVideoUri(previewUri)
             .setInternalProviderId(clip.getClipId())
             .setContentId(clip.getContentId())
+            .setThumbnailAspectRatio(clip.getAspectRatio())
             .setPosterArtAspectRatio(clip.getAspectRatio())
             .setType(TvContractCompat.PreviewPrograms.TYPE_MOVIE);
 

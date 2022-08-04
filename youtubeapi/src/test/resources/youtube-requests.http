@@ -1123,6 +1123,16 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"GB","acceptLanguage":"uk-GB","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"continuation":"0ofMyAN0GlhDaWtxSndvWVZVTlNTMGxrUW1OMGRrWXhWRms1ZWpZeWJTMXFZWHBuRWd0T09XMXlaQzFoZFRjd01Cb1Q2cWpkdVFFTkNndE9PVzF5WkMxaGRUY3dNQ0FCMAGCAQIIBIgBAaAB-674g6Pg-AKoAQCyAQA%3D"}
 
+### Comments (extract continuation id from: https://www.youtube.com/watch?v=ZxUNaKiCuv8)
+
+POST https://www.youtube.com/youtubei/v1/next
+Content-Type: application/json
+Accept-Encoding: identity
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"WEB","clientVersion":"2.20220728.09.00","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"GB","acceptLanguage":"uk-GB","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"continuation":"Eg0SC1p4VU5hS2lDdXY4GAYyJSIRIgtaeFVOYUtpQ3V2ODAAeAJCEGNvbW1lbnRzLXNlY3Rpb24%3D"}
+
 
 
 

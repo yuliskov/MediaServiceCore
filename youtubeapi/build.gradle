@@ -72,6 +72,7 @@ dependencies {
     // implementation 'app.cash.quickjs:quickjs-android:' + quickjsVersion
     implementation 'com.squareup.duktape:duktape-android:' + duktapeVersion
     //implementation(name: 'duktape-android-1.3.0-my', ext: 'aar')
+    implementation 'org.mozilla:rhino:' + rhinoVersion
 
     // Add kotlin support libs
     implementation 'androidx.core:core-ktx:' + kotlinCoreVersion

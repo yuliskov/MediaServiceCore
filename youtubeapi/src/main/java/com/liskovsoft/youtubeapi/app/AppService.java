@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
+import com.liskovsoft.youtubeapi.common.helpers.JavaScript;
 import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
@@ -81,6 +82,19 @@ public class AppService {
 
         return runCode(throttleCode);
     }
+
+    /**
+     * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
+     */
+    //public String getClientPlaybackNonce() {
+    //    String code = createClientPlaybackNonceCode();
+    //
+    //    if (code == null) {
+    //        return null;
+    //    }
+    //
+    //    return JavaScript.evaluate(code);
+    //}
 
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
@@ -187,6 +201,14 @@ public class AppService {
     }
 
     private List<String> runCode(String code) {
+        String result = JavaScript.evaluate(code);
+
+        String[] values = result.split(",");
+
+        return Arrays.asList(values);
+    }
+
+    private List<String> runCodeOld(String code) {
         String result = getDuktape().evaluate(code).toString();
 
         String[] values = result.split(",");

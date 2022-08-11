@@ -25,6 +25,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeVideoPlaylistInfo;
 import com.liskovsoft.youtubeapi.service.internal.MediaItemServiceInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceUnsigned;
+import com.liskovsoft.youtubeapi.pageinfo.models.PageInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
 
@@ -76,8 +77,9 @@ public class YouTubeMediaItemService implements MediaItemService {
         checkSigned();
 
         VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId, clickTrackingParams);
+        PageInfo pageInfo = mMediaItemManagerReal.getPageInfo(videoId);
 
-        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
+        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo, pageInfo);
 
         saveInCache(formatInfo);
 

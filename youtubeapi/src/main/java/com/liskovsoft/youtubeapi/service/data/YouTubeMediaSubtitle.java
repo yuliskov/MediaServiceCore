@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
+import com.liskovsoft.youtubeapi.pageinfo.models.TranslationLanguage;
 
 public class YouTubeMediaSubtitle implements MediaSubtitle {
     private String mBaseUrl;
@@ -21,6 +22,22 @@ public class YouTubeMediaSubtitle implements MediaSubtitle {
         subtitle.mLanguageCode = track.getLanguageCode();
         subtitle.mVssId = track.getVssId();
         subtitle.mName = track.getName();
+        subtitle.mType = track.getType();
+        subtitle.mMimeType = track.getMimeType();
+        subtitle.mCodecs = track.getCodecs();
+
+        return subtitle;
+    }
+
+    public static MediaSubtitle from(TranslationLanguage language, CaptionTrack track) {
+        YouTubeMediaSubtitle subtitle = new YouTubeMediaSubtitle();
+        String languageCode = language.getLanguageCode();
+
+        subtitle.mBaseUrl = track.getBaseUrl() + "&tlang=" + languageCode;
+        subtitle.mIsTranslatable = false;
+        subtitle.mLanguageCode = languageCode;
+        subtitle.mVssId = track.getVssId() + "." + languageCode;
+        subtitle.mName = language.getLanguageName();
         subtitle.mType = track.getType();
         subtitle.mMimeType = track.getMimeType();
         subtitle.mCodecs = track.getCodecs();

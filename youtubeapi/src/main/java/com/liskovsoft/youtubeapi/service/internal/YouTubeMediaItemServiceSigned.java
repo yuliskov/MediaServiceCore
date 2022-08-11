@@ -12,6 +12,9 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceSigned;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
+import com.liskovsoft.youtubeapi.pageinfo.models.PageInfo;
+import com.liskovsoft.youtubeapi.pageinfo.V1.PageInfoServiceSigned;
+import com.liskovsoft.youtubeapi.pageinfo.V1.PageInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
@@ -21,6 +24,7 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
     private final YouTubeSignInService mSignInManager;
     private final TrackingService mTrackingService;
     private final VideoInfoServiceSigned mVideoInfoServiceSigned;
+    private final PageInfoServiceSigned mPageInfoServiceSigned;
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
     private final FeedbackService mFeedbackService;
@@ -30,6 +34,7 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
         mSignInManager = YouTubeSignInService.instance();
         mTrackingService = TrackingService.instance();
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mPageInfoServiceSigned = PageInfoServiceSigned.instance();
         mActionsService = ActionsService.instance();
         mPlaylistService = PlaylistService.instance();
         mFeedbackService = FeedbackService.instance();
@@ -84,6 +89,18 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
         // Fix no playback bug (temporal fix)
         if (result == null || !result.isValid()) {
             result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId, clickTrackingParams);
+        }
+
+        return result;
+    }
+
+    @Override
+    public PageInfo getPageInfo(String videoId) {
+        PageInfo result = mPageInfoServiceSigned.getPageInfo(videoId, mSignInManager.getAuthorizationHeader());
+
+        // Fix no playback bug (temporal fix)
+        if (result == null) {
+            result = PageInfoServiceUnsigned.instance().getPageInfo(videoId);
         }
 
         return result;

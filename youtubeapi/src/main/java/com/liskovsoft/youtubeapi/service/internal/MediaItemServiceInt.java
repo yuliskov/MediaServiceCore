@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
+import com.liskovsoft.youtubeapi.pageinfo.models.PageInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public interface MediaItemServiceInt {
@@ -10,6 +11,7 @@ public interface MediaItemServiceInt {
     WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams);
     WatchNextResultContinuation continueWatchNext(String nextKey);
     VideoInfo getVideoInfo(String videoId, String clickTrackingParams);
+    PageInfo getPageInfo(String videoId);
     void updateHistoryPosition(String videoId, String lengthSec,
                                String eventId, String vmData, float positionSec);
     void setLike(String videoId);

@@ -9,8 +9,10 @@ import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser.Storyboard;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
+import com.liskovsoft.youtubeapi.pageinfo.models.TranslationLanguage;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.pageinfo.models.PageInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 import io.reactivex.Observable;
@@ -48,8 +50,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mCreatedTimeMs = System.currentTimeMillis();
     }
 
-    public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo) {
-        if (videoInfo == null) {
+    public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo, PageInfo pageInfo) {
+        if (videoInfo == null || pageInfo == null) {
             return null;
         }
 
@@ -96,12 +98,19 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mIsStreamSeekable = videoInfo.isHfr();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
+        List<TranslationLanguage> translationLanguages = pageInfo.getTranslationLanguages();
 
         if (captionTracks != null) {
             formatInfo.mSubtitles = new ArrayList<>();
 
             for (CaptionTrack track : captionTracks) {
                 formatInfo.mSubtitles.add(YouTubeMediaSubtitle.from(track));
+
+                if (translationLanguages != null) {
+                    for (TranslationLanguage language : translationLanguages) {
+                        formatInfo.mSubtitles.add(YouTubeMediaSubtitle.from(language, track));
+                    }
+                }
             }
         }
 

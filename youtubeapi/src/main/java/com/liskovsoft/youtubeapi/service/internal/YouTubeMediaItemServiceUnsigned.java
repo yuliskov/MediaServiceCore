@@ -3,18 +3,22 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceUnsigned;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
+import com.liskovsoft.youtubeapi.pageinfo.models.PageInfo;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
+import com.liskovsoft.youtubeapi.pageinfo.V1.PageInfoServiceUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemServiceUnsigned implements MediaItemServiceInt {
     private static YouTubeMediaItemServiceUnsigned sInstance;
     private final WatchNextServiceUnsigned mWatchNextServiceUnsigned;
     private final VideoInfoServiceUnsigned mVideoInfoServiceUnsigned;
+    private final PageInfoServiceUnsigned mPageInfoServiceUnsigned;
 
     private YouTubeMediaItemServiceUnsigned() {
        mWatchNextServiceUnsigned = WatchNextServiceUnsigned.instance();
        mVideoInfoServiceUnsigned = VideoInfoServiceUnsigned.instance();
+       mPageInfoServiceUnsigned = PageInfoServiceUnsigned.instance();
     }
 
     public static YouTubeMediaItemServiceUnsigned instance() {
@@ -48,6 +52,11 @@ public class YouTubeMediaItemServiceUnsigned implements MediaItemServiceInt {
     @Override
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         return mVideoInfoServiceUnsigned.getVideoInfo(videoId, clickTrackingParams);
+    }
+
+    @Override
+    public PageInfo getPageInfo(String videoId) {
+        return mPageInfoServiceUnsigned.getPageInfo(videoId);
     }
 
     @Override

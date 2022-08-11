@@ -19,6 +19,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import com.liskovsoft.youtubeapi.common.converters.regexpandjsonpath.converter.RegExpAndJsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
@@ -66,6 +67,10 @@ public class RetrofitHelper {
 
     public static <T> T withRegExp(Class<T> clazz) {
         return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
+    }
+
+    public static <T> T withRegExpAndJsonPath(Class<T> clazz) {
+        return buildRetrofit(RegExpAndJsonPathConverterFactory.create()).create(clazz);
     }
 
     public static <T> T get(Call<T> wrapper) {

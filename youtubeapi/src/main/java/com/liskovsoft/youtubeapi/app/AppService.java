@@ -93,7 +93,7 @@ public class AppService {
             return null;
         }
 
-        return V8Runtime.evaluate(code);
+        return V8Runtime.instance().evaluate(code);
     }
 
     /**
@@ -201,7 +201,7 @@ public class AppService {
     }
 
     private List<String> runCode(String code) {
-        String result = V8Runtime.evaluate(code);
+        String result = V8Runtime.instance().evaluate(code);
 
         String[] values = result.split(",");
 
@@ -306,6 +306,8 @@ public class AppService {
         mCachedAppInfo = null;
         mCachedPlayerData = null;
         mCachedBaseData = null;
+        mDuktape = null;
+        V8Runtime.unhold();
     }
 
     public void refreshCacheIfNeeded() {

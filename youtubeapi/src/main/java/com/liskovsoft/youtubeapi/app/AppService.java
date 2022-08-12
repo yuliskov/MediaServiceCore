@@ -306,8 +306,6 @@ public class AppService {
         mCachedAppInfo = null;
         mCachedPlayerData = null;
         mCachedBaseData = null;
-        mDuktape = null;
-        V8Runtime.unhold();
     }
 
     public void refreshCacheIfNeeded() {

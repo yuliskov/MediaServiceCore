@@ -41,16 +41,6 @@ public abstract class VideoInfoServiceBase {
         return result;
     }
 
-    private static List<String> extractThrottledStrings(List<? extends VideoFormat> formats) {
-        List<String> result = new ArrayList<>();
-
-        for (VideoFormat format : formats) {
-            result.add(format.getThrottleCipher());
-        }
-
-        return result;
-    }
-
     private static void applyDecipheredStrings(List<String> deciphered, List<? extends VideoFormat> formats) {
         if (deciphered.size() != formats.size()) {
             throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
@@ -61,13 +51,28 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    private static void applyThrottleFixedStrings(List<String> throttleFixed, List<? extends VideoFormat> formats) {
-        if (throttleFixed.size() != formats.size()) {
-            throw new IllegalStateException("Sizes of formats and throttled strings should match!");
+    private static List<String> extractThrottledStrings(List<? extends VideoFormat> formats) {
+        List<String> result = new ArrayList<>();
+
+        for (VideoFormat format : formats) {
+            result.add(format.getThrottleCipher());
+            // All throttled strings has same values
+            break;
         }
 
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setThrottleCipher(throttleFixed.get(i));
+        return result;
+    }
+
+    private static void applyThrottleFixedStrings(List<String> throttleFixed, List<? extends VideoFormat> formats) {
+        if (throttleFixed.isEmpty()) {
+            return;
+        }
+
+        // All throttled strings has same values
+        String throttleCipher = throttleFixed.get(0);
+
+        for (VideoFormat format : formats) {
+            format.setThrottleCipher(throttleCipher);
         }
     }
 

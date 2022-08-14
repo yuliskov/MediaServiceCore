@@ -69,10 +69,10 @@ public abstract class VideoInfoServiceBase {
         }
 
         // All throttled strings has same values
-        String throttleCipher = throttleFixed.get(0);
+        boolean sameSize = throttleFixed.size() == formats.size();
 
-        for (VideoFormat format : formats) {
-            format.setThrottleCipher(throttleCipher);
+        for (int i = 0; i < formats.size(); i++) {
+            formats.get(i).setThrottleCipher(throttleFixed.get(sameSize ? i : 0));
         }
     }
 

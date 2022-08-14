@@ -19,9 +19,10 @@ public final class V8Runtime {
     }
 
     public static void unhold() {
-        if (sInstance != null) {
-            sInstance.mRuntime.release();
-        }
+        // NOTE: using 'release' produces 'Invalid V8 thread access: the locker has been released!'
+        //if (sInstance != null) {
+        //    sInstance.mRuntime.release();
+        //}
 
         sInstance = null;
     }

@@ -6,7 +6,6 @@ import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
-import com.squareup.duktape.Duktape;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +15,7 @@ public class AppService {
     private static final long CACHE_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static AppService sInstance;
     private final AppManagerWrapper mAppManager;
-    private Duktape mDuktape;
+    //private Duktape mDuktape;
     private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
     private ClientData mCachedBaseData;
@@ -41,13 +40,13 @@ public class AppService {
      * Note, lazy init for easy testing.<br/>
      * Could be tested only inside instrumented tests!
      */
-    private Duktape getDuktape() {
-        if (mDuktape == null) {
-            mDuktape = Duktape.create(); // js evaluator, contains native *.so libs
-        }
-
-        return mDuktape;
-    }
+    //private Duktape getDuktape() {
+    //    if (mDuktape == null) {
+    //        mDuktape = Duktape.create(); // js evaluator, contains native *.so libs
+    //    }
+    //
+    //    return mDuktape;
+    //}
 
     /**
      * Decipher strings using js code
@@ -99,15 +98,15 @@ public class AppService {
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
-    public String getClientPlaybackNonceDuktape() {
-        String code = createClientPlaybackNonceCode();
-
-        if (code == null) {
-            return null;
-        }
-
-        return getDuktape().evaluate(code).toString();
-    }
+    //public String getClientPlaybackNonceDuktape() {
+    //    String code = createClientPlaybackNonceCode();
+    //
+    //    if (code == null) {
+    //        return null;
+    //    }
+    //
+    //    return getDuktape().evaluate(code).toString();
+    //}
 
     /**
      * Constant used in {@link AuthManager}
@@ -208,13 +207,13 @@ public class AppService {
         return Arrays.asList(values);
     }
 
-    private List<String> runCodeDuktape(String code) {
-        String result = getDuktape().evaluate(code).toString();
-
-        String[] values = result.split(",");
-
-        return Arrays.asList(values);
-    }
+    //private List<String> runCodeDuktape(String code) {
+    //    String result = getDuktape().evaluate(code).toString();
+    //
+    //    String[] values = result.split(",");
+    //
+    //    return Arrays.asList(values);
+    //}
 
     private String createClientPlaybackNonceCode() {
         String playbackNonceFunction = getClientPlaybackNonceFunction();

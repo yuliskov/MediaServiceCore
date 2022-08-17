@@ -473,11 +473,11 @@ public class YouTubeMediaItemService implements MediaItemService {
         return  mCachedFormatInfo != null &&
                 mCachedFormatInfo.getVideoId() != null &&
                 mCachedFormatInfo.getVideoId().equals(videoId) &&
-                (AppService.instance().isCacheActual() || mCachedFormatInfo.isLive()); // Cipher may be outdated. Also fix finished live streams.
+                (AppService.instance().isCacheActual() || mCachedFormatInfo.isLive()); // Cipher may be outdated. Live streams aren't ciphered.
     }
 
     private void saveInCache(YouTubeMediaItemFormatInfo formatInfo) {
-        if (formatInfo == null || !formatInfo.containsMedia()) {
+        if (formatInfo == null || !formatInfo.containsMedia()) { // Cache live to fix finished live streams.
             return;
         }
 

@@ -512,13 +512,19 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         // https://docs.aws.amazon.com/mediapackage/latest/ug/segtemp-format-duration.html#how-stemp-dur-works
         // ((wall clock time - availabilityStartTime ) / (duration / timescale )) + startNumber
 
-        String targetDurationSec = format.getTargetDurationSec();
-        String segmentCount = String.valueOf(Integer.parseInt(mInfo.getLengthSeconds()) / Integer.parseInt(targetDurationSec));
+        int timeScale = 1000;
+        int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
+        int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
+        // To make long streams (12hrs) seekable we should decrease size of the segment a bit
+        String segmentDurationUnits = String.valueOf(targetDurationSec * timeScale * 999 / 1000);
+        // Increase count a bit to compensate previous tweak
+        String segmentCount = String.valueOf(lengthSeconds / targetDurationSec * 1000 / 999);
+        String unitsPerSecond = String.valueOf(timeScale);
 
         startTag("", "SegmentTemplate");
 
-        attribute("", "duration", targetDurationSec); // segment duration in units
-        attribute("", "timescale", "1"); // units per second
+        attribute("", "duration", segmentDurationUnits); // segment duration in units (could be safely omitted)
+        attribute("", "timescale", unitsPerSecond); // units per second
         attribute("", "media", format.getUrl() + "&sq=$Number$");
         attribute("", "startNumber", "0");
 
@@ -532,7 +538,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         startTag("", "S"); // segment set
 
         attribute("", "t", "0"); // start time (units)
-        attribute("", "d", targetDurationSec); // duration (units)
+        attribute("", "d", segmentDurationUnits); // duration (units)
         attribute("", "r", segmentCount); // repeat counts (number of segments)
 
         endTag("", "S");

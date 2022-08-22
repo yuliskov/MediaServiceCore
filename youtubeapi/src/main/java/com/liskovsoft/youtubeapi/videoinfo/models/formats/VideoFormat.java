@@ -94,6 +94,8 @@ public class VideoFormat {
     private String mEventId;
     private UrlQueryString mUrlQuery;
     private String mLanguage;
+    @JsonPath("$.targetDurationSec")
+    private int mTargetDurationSec;
 
     public String getUrl() {
         // Bypass query creation if url isn't transformed
@@ -338,6 +340,10 @@ public class VideoFormat {
 
     public String getLastModified() {
         return mLastModified;
+    }
+
+    public int getTargetDurationSec() {
+        return mTargetDurationSec;
     }
 
     public String getParam(String paramName) {

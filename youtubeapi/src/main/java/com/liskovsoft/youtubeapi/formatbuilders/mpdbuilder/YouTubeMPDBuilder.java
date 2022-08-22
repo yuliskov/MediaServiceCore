@@ -151,25 +151,25 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     }
 
     private void writeLiveHeaderSegmentList() {
-        startTag("", "SegmentList");
-
-        attribute("", "presentationTimeOffset", "3050000");
-        attribute("", "startNumber", "610");
-        attribute("", "timescale", "1000");
-
-        startTag("", "SegmentTimeline");
-
-        for (int i = 0; i < 3; i++) {
-            startTag("", "S");
-
-            attribute("", "d", "5000");
-
-            endTag("", "S");
-        }
-
-        endTag("", "SegmentTimeline");
-
-        endTag("", "SegmentList");
+        //startTag("", "SegmentList");
+        //
+        //attribute("", "presentationTimeOffset", "3050000");
+        //attribute("", "startNumber", "610");
+        //attribute("", "timescale", "1000");
+        //
+        //startTag("", "SegmentTimeline");
+        //
+        //for (int i = 0; i < 3; i++) {
+        //    startTag("", "S");
+        //
+        //    attribute("", "d", "5000");
+        //
+        //    endTag("", "S");
+        //}
+        //
+        //endTag("", "SegmentTimeline");
+        //
+        //endTag("", "SegmentList");
     }
 
     private void writeMediaTagsForGroup(List<MediaSubtitle> subs) {
@@ -443,7 +443,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
 
         // SegmentList tag
         if (isLive()) {
-            writeLiveMediaSegmentList();
+            writeLiveMediaSegmentList(format);
         } else if (format.getSegmentUrlList() != null) {
             writeSegmentList(format);
         } else if (format.getIndex() != null &&
@@ -492,21 +492,54 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         endTag("", "SegmentList");
     }
 
-    private void writeLiveMediaSegmentList() {
-        startTag("", "SegmentList");
+    private void writeLiveMediaSegmentList(MediaFormat format) {
+        //startTag("", "SegmentList");
+        //
+        //for (String mediaDesc : new String[]{
+        //        "sq/610/lmt/1546797364563137",
+        //        "sq/611/lmt/1546797365000899",
+        //        "sq/612/lmt/1546797369574434"}) {
+        //    startTag("", "SegmentURL");
+        //
+        //    attribute("", "media", mediaDesc);
+        //
+        //    endTag("", "SegmentURL");
+        //}
+        //
+        //endTag("", "SegmentList");
 
-        for (String mediaDesc : new String[]{
-                "sq/610/lmt/1546797364563137",
-                "sq/611/lmt/1546797365000899",
-                "sq/612/lmt/1546797369574434"}) {
-            startTag("", "SegmentURL");
+        // Last segment index:
+        // https://docs.aws.amazon.com/mediapackage/latest/ug/segtemp-format-duration.html#how-stemp-dur-works
+        // ((wall clock time - availabilityStartTime ) / (duration / timescale )) + startNumber
 
-            attribute("", "media", mediaDesc);
+        String targetDurationSec = format.getTargetDurationSec();
+        String segmentCount = String.valueOf(Integer.parseInt(mInfo.getLengthSeconds()) / Integer.parseInt(targetDurationSec));
 
-            endTag("", "SegmentURL");
-        }
+        startTag("", "SegmentTemplate");
 
-        endTag("", "SegmentList");
+        attribute("", "duration", targetDurationSec); // segment duration in units
+        attribute("", "timescale", "1"); // units per second
+        attribute("", "media", format.getUrl() + "&sq=$Number$");
+        attribute("", "startNumber", "0");
+
+        // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline
+        //  <SegmentTimeline>
+        //    <S t="0" d="180000" r="394"/>
+        //  </SegmentTimeline>
+
+        startTag("", "SegmentTimeline");
+
+        startTag("", "S"); // segment set
+
+        attribute("", "t", "0"); // start time (units)
+        attribute("", "d", targetDurationSec); // duration (units)
+        attribute("", "r", segmentCount); // repeat counts (number of segments)
+
+        endTag("", "S");
+
+        endTag("", "SegmentTimeline");
+
+        endTag("", "SegmentTemplate");
     }
 
     private void writeMediaFormatTag(MediaSubtitle sub) {

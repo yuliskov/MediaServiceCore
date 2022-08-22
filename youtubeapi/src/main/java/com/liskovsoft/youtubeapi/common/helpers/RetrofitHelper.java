@@ -149,7 +149,7 @@ public class RetrofitHelper {
 
         enableDecompression(okBuilder);
 
-        disableCache(okBuilder);
+        //disableCache(okBuilder);
 
         debugSetup(okBuilder);
 

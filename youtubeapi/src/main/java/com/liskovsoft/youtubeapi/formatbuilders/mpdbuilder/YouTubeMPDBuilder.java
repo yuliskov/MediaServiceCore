@@ -106,7 +106,12 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             attribute("", "minBufferTime", "PT1.500S");
             attribute("", "timeShiftBufferDepth", "PT14400.000S");
             attribute("", "minimumUpdatePeriod", "PT5.000S");
+            // TESTING
             // availabilityStartTime="2019-01-06T17:04:49"
+            //attribute("", "availabilityStartTime", "2022-08-23T16:43:01");
+            //attribute("", "timeShiftBufferDepth", "PT7200.000S");
+            //attribute("", "minimumUpdatePeriod", "PT1.000S");
+            //attribute("", "minBufferTime", "PT1.500S");
         } else {
             attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
             attribute("", "type", "static");
@@ -119,6 +124,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         if (isLive()) {
             // yt:segmentIngestTime="2019-01-06T17:55:24.836"
             attribute("", "start", "PT3050.000S");
+            // TESTING
+            //attribute("", "start", "PT0.000S");
+            //attribute("", "duration", "PT3050.000S");
         } else {
             attribute("", "duration", durationParam);
         }
@@ -515,6 +523,10 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int timeScale = 1000;
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
+        // TESTING (Live streams)
+        //if (lengthSeconds <= 0) {
+        //    lengthSeconds = 5 * 60 * 60;
+        //}
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
         String segmentDurationUnits = String.valueOf(targetDurationSec * timeScale * 999 / 1000);
         // Increase count a bit to compensate previous tweak
@@ -527,23 +539,27 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         attribute("", "timescale", unitsPerSecond); // units per second
         attribute("", "media", format.getUrl() + "&sq=$Number$");
         attribute("", "startNumber", "0");
+        // TESTING
+        //attribute("", "presentationTimeOffset", "12634");
 
-        // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline
-        //  <SegmentTimeline>
-        //    <S t="0" d="180000" r="394"/>
-        //  </SegmentTimeline>
+        if (lengthSeconds > 0) { // indicates past live stream
+            // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline
+            //  <SegmentTimeline>
+            //    <S t="0" d="180000" r="394"/>
+            //  </SegmentTimeline>
 
-        startTag("", "SegmentTimeline");
+            startTag("", "SegmentTimeline");
 
-        startTag("", "S"); // segment set
+            startTag("", "S"); // segment set
 
-        attribute("", "t", "0"); // start time (units)
-        attribute("", "d", segmentDurationUnits); // duration (units)
-        attribute("", "r", segmentCount); // repeat counts (number of segments)
+            attribute("", "t", "0"); // start time (units)
+            attribute("", "d", segmentDurationUnits); // duration (units)
+            attribute("", "r", segmentCount); // repeat counts (number of segments)
 
-        endTag("", "S");
+            endTag("", "S");
 
-        endTag("", "SegmentTimeline");
+            endTag("", "SegmentTimeline");
+        }
 
         endTag("", "SegmentTemplate");
     }

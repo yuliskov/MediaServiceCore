@@ -43,6 +43,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsUnplayable;
     private String mPlayabilityStatus;
     private final long mCreatedTimeMs;
+    private String mStartTimestamp;
 
     public YouTubeMediaItemFormatInfo() {
         mCreatedTimeMs = System.currentTimeMillis();
@@ -94,6 +95,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr();
+        formatInfo.mStartTimestamp = videoInfo.getStartTimestamp();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -307,6 +309,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean isStreamSeekable() {
         return mIsStreamSeekable;
+    }
+
+    @Override
+    public String getStartTimestamp() {
+        return mStartTimestamp;
     }
 
     public String getEventId() {

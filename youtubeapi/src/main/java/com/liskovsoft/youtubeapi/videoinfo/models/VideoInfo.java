@@ -65,6 +65,9 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.errorScreen.playerLegacyDesktopYpcTrailerRenderer.trailerVideoId")
     private String mTrailerVideoId;
 
+    @JsonPath("$.microformat.playerMicroformatRenderer.liveBroadcastDetails.startTimestamp")
+    private String mStartTimestamp;
+
     // Values used in tracking actions
     private String mEventId;
     private String mVisitorMonitoringData;
@@ -167,6 +170,10 @@ public class VideoInfo {
 
     public String getTrailerVideoId() {
         return mTrailerVideoId;
+    }
+
+    public String getStartTimestamp() {
+        return mStartTimestamp;
     }
 
     public boolean isHfr() {

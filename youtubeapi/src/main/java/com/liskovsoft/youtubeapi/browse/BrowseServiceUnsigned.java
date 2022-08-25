@@ -45,9 +45,9 @@ public class BrowseServiceUnsigned {
     public SectionTab getNews() {
         SectionTab newsTab = getSectionTab(BrowseManagerParams.getNewsQuery());
 
-        if (newsTab == null) {
-            newsTab = getSectionTab(BrowseManagerParams.getNewsQueryUA());
-        }
+        //if (newsTab == null) {
+        //    newsTab = getSectionTab(BrowseManagerParams.getNewsQueryUA());
+        //}
 
         return newsTab;
     }

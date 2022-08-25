@@ -136,9 +136,9 @@ public class BrowseServiceSigned {
     public SectionTab getNews(String authorization) {
         SectionTab newsTab = getSectionTab(BrowseManagerParams.getNewsQuery(), authorization);
 
-        if (newsTab == null) {
-            newsTab = getSectionTab(BrowseManagerParams.getNewsQueryUA(), authorization);
-        }
+        //if (newsTab == null) {
+        //    newsTab = getSectionTab(BrowseManagerParams.getNewsQueryUA(), authorization);
+        //}
 
         return newsTab;
     }

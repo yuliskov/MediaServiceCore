@@ -99,19 +99,23 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         attribute("", "xsi:schemaLocation", "urn:mpeg:DASH:schema:MPD:2011 DASH-MPD.xsd");
         attribute("", "minBufferTime", "PT1.500S");
 
+        // https://docs.unified-streaming.com/documentation/live/configure-dynamic-mpd.html
         if (isLive()) {
-            attribute("", "profiles", "urn:mpeg:dash:profile:isoff-main:2011");
+            attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011"); // Better caching. Default is isoff-main.
             attribute("", "type", "dynamic");
+            attribute("", "minimumUpdatePeriod", "P100Y"); // no refresh (there is no dash url)
 
-            attribute("", "minBufferTime", "PT1.500S");
-            attribute("", "timeShiftBufferDepth", "PT14400.000S");
-            attribute("", "minimumUpdatePeriod", "PT5.000S");
+            //attribute("", "minimumBufferTime", "PT30S"); // no effect?
+            //attribute("", "profiles", "urn:mpeg:dash:profile:isoff-live:2011");
+            //attribute("", "profiles", "urn:mpeg:dash:profile:isoff-main:2011");
+            //attribute("", "timeShiftBufferDepth", "PT14400.000S");
+            //attribute("", "minimumUpdatePeriod", "PT5.000S");
             // TESTING
             // availabilityStartTime="2019-01-06T17:04:49"
-            //attribute("", "availabilityStartTime", "2022-08-23T16:43:01");
-            //attribute("", "timeShiftBufferDepth", "PT7200.000S");
-            //attribute("", "minimumUpdatePeriod", "PT1.000S");
-            //attribute("", "minBufferTime", "PT1.500S");
+            //attribute("", "publishTime", "2022-08-25T00:00:00Z");
+            //attribute("", "availabilityStartTime", "2022-08-25T00:00:00Z");
+            //attribute("", "timeShiftBufferDepth", "PT120M");
+            //attribute("", "maxSegmentDuration", "PT2S");
         } else {
             attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
             attribute("", "type", "static");
@@ -123,9 +127,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
 
         if (isLive()) {
             // yt:segmentIngestTime="2019-01-06T17:55:24.836"
-            attribute("", "start", "PT3050.000S");
+            attribute("", "start", "PT0S"); // mandatory attr
             // TESTING
-            //attribute("", "start", "PT0.000S");
+            //attribute("", "start", "PT3050.000S");
             //attribute("", "duration", "PT3050.000S");
         } else {
             attribute("", "duration", durationParam);
@@ -540,7 +544,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         attribute("", "media", format.getUrl() + "&sq=$Number$");
         attribute("", "startNumber", "0");
         // TESTING
-        //attribute("", "presentationTimeOffset", "12634");
+        // SegmentBase, SegmentTemplate or BaseURL
+        //attribute("", "presentationTimeOffset", "12000");
+        //attribute("", "availabilityTimeOffset", "12000");
 
         if (lengthSeconds > 0) { // indicates past live stream
             // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline

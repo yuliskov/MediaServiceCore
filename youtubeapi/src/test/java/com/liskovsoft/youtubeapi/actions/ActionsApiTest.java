@@ -13,8 +13,8 @@ import retrofit2.Call;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
-public class ActionsManagerTest {
-    private ActionsManager mActionsManager;
+public class ActionsApiTest {
+    private ActionsApi mActionsManager;
 
     @Before
     public void setUp() {
@@ -24,13 +24,13 @@ public class ActionsManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mActionsManager = RetrofitHelper.withJsonPath(ActionsManager.class);
+        mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
     }
 
     @Test
     public void testThatLikeIsWorking() {
         Call<ActionResult> wrapper =
-                mActionsManager.setLike(ActionsManagerParams.getLikeActionQuery(TestHelpersV2.VIDEO_ID_CAPTIONS), TestHelpersV2.getAuthorization());
+                mActionsManager.setLike(ActionsApiParams.getLikeActionQuery(TestHelpersV2.VIDEO_ID_CAPTIONS), TestHelpersV2.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Like result not null", actionResult);
@@ -40,7 +40,7 @@ public class ActionsManagerTest {
     @Test
     public void testThatSubscribeIsWorking() {
         Call<ActionResult> wrapper =
-                mActionsManager.subscribe(ActionsManagerParams.getSubscribeActionQuery(TestHelpersV2.CHANNEL_ID_UNSUBSCRIBED), TestHelpersV2.getAuthorization());
+                mActionsManager.subscribe(ActionsApiParams.getSubscribeActionQuery(TestHelpersV2.CHANNEL_ID_UNSUBSCRIBED, null), TestHelpersV2.getAuthorization());
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Subscribe result not null", actionResult);

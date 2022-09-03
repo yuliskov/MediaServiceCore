@@ -45,7 +45,7 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
         return null
     }
 
-    override fun getPlaylistParams(): String? {
+    override fun getParams(): String? {
         return null
     }
 
@@ -87,7 +87,7 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
                             mediaItem.playlistIndex = i
                         }
 
-                        mediaItem.playlistParams = baseGroup?.playlistParams
+                        mediaItem.params = baseGroup?.params
                         mediaItems.add(mediaItem)
                     }
                 }

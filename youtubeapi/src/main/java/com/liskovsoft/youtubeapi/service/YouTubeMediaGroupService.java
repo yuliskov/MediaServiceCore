@@ -338,7 +338,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
-        return getChannelObserve(item.getChannelId(), item.getPlaylistParams());
+        return getChannelObserve(item.getChannelId(), item.getParams());
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {

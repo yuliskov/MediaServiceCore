@@ -8,10 +8,10 @@ import retrofit2.Call;
 public class ActionsService {
     private static final String TAG = ActionsService.class.getSimpleName();
     private static ActionsService sInstance;
-    private final ActionsManager mActionsManager;
+    private final ActionsApi mActionsManager;
 
     private ActionsService() {
-        mActionsManager = RetrofitHelper.withJsonPath(ActionsManager.class);
+        mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
     }
 
     public static ActionsService instance() {
@@ -24,40 +24,43 @@ public class ActionsService {
 
     public void setLike(String videoId, String authorization) {
         Call<ActionResult> wrapper =
-                mActionsManager.setLike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.setLike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
     public void removeLike(String videoId, String authorization) {
         Call<ActionResult> wrapper =
-                mActionsManager.removeLike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.removeLike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
     public void setDislike(String videoId, String authorization) {
         Call<ActionResult> wrapper =
-                mActionsManager.setDislike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.setDislike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
     public void removeDislike(String videoId, String authorization) {
         Call<ActionResult> wrapper =
-                mActionsManager.removeDislike(ActionsManagerParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.removeDislike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void subscribe(String channelId, String authorization) {
+    /**
+     * params needed for mobile notifications
+     */
+    public void subscribe(String channelId, String params, String authorization) {
         if (channelId == null) {
             Log.e(TAG, "Can't subscribe: ChannelId is null");
             return;
         }
 
         Call<ActionResult> wrapper =
-                mActionsManager.subscribe(ActionsManagerParams.getSubscribeActionQuery(channelId), authorization);
+                mActionsManager.subscribe(ActionsApiParams.getSubscribeActionQuery(channelId, params), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }
@@ -69,7 +72,7 @@ public class ActionsService {
         }
 
         Call<ActionResult> wrapper =
-                mActionsManager.unsubscribe(ActionsManagerParams.getSubscribeActionQuery(channelId), authorization);
+                mActionsManager.unsubscribe(ActionsApiParams.getSubscribeActionQuery(channelId, null), authorization);
 
         RetrofitHelper.get(wrapper); // ignore result
     }

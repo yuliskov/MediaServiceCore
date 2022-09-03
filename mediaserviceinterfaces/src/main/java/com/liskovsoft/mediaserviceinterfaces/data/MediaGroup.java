@@ -24,7 +24,7 @@ public interface MediaGroup {
     void setTitle(String title);
     // Below settings for Channel section group
     String getChannelId();
-    String getPlaylistParams();
+    String getParams();
     String getReloadPageKey();
     String getNextPageKey();
     String getChannelUrl();

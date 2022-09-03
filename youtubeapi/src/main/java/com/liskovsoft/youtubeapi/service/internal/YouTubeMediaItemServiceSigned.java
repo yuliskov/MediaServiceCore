@@ -122,8 +122,8 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
     }
 
     @Override
-    public void subscribe(String channelId) {
-        mActionsService.subscribe(channelId, mSignInManager.getAuthorizationHeader());
+    public void subscribe(String channelId, String params) {
+        mActionsService.subscribe(channelId, params, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

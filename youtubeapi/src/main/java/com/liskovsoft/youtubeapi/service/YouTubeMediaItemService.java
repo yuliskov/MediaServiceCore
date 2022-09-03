@@ -122,7 +122,7 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public MediaItemMetadata getMetadata(MediaItem item) {
-        return getMetadataV2(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getPlaylistParams());
+        return getMetadataV2(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getParams());
     }
 
     @Override
@@ -309,14 +309,18 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void subscribe(MediaItem item) {
-        subscribe(item.getChannelId());
+        subscribe(item.getChannelId(), item.getParams());
     }
 
     @Override
     public void subscribe(String channelId) {
+        subscribe(channelId, null);
+    }
+
+    private void subscribe(String channelId, String params) {
         checkSigned();
 
-        mMediaItemManagerReal.subscribe(channelId);
+        mMediaItemManagerReal.subscribe(channelId, params);
     }
 
     @Override

@@ -57,8 +57,31 @@ data class WatchEndpointItem(
     val params: String?,
 )
 
+data class ChannelsEndpoint(
+    val channelIds: List<String?>?,
+    val params: String?
+)
+
+data class DefaultServiceEndpoint(
+    val authDeterminedCommand: AuthDeterminedCommand?
+) {
+    data class AuthDeterminedCommand(
+        val authenticatedCommand: AuthenticatedCommand?
+    ) {
+        data class AuthenticatedCommand(
+            val subscribeEndpoint: ChannelsEndpoint?
+        )
+    }
+}
+
+data class ToggledServiceEndpoint(
+    val unsubscribeEndpoint: ChannelsEndpoint?
+)
+
 data class ToggleButtonRenderer(
-    val isToggled: Boolean?
+    val isToggled: Boolean?,
+    val defaultServiceEndpoint: DefaultServiceEndpoint?,
+    val toggledServiceEndpoint: ToggledServiceEndpoint?
 )
 
 data class TextItem(

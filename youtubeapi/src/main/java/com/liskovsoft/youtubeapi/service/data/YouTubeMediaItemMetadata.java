@@ -32,6 +32,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private int mLikeStatus;
     private String mVideoId;
     private String mChannelId;
+    private String mParams;
     private int mPercentWatched;
     private MediaItem mNextVideo;
     private List<MediaGroup> mSuggestions;
@@ -239,6 +240,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public String getChannelId() {
         return mChannelId;
+    }
+
+    @Override
+    public String getParams() {
+        return mParams;
     }
 
     @Override

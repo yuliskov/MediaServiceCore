@@ -7,7 +7,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface ActionsManager {
+public interface ActionsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/like")
     Call<ActionResult> setLike(@Body String actionQuery, @Header("Authorization") String auth);

@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.common.models.kt
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.next.v2.gen.kt.VideoOwnerItem
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
 
@@ -31,6 +32,9 @@ fun ThumbnailItem.Thumbnail.getUrl(): String? {
 ////////
 
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
+fun NavigationEndpointItem.getOverlaySubscribeButton() = getOverlayPanel()?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
+private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
+    ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer?.content?.overlayPanelItemListRenderer
 
 ////////
 
@@ -162,3 +166,13 @@ fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.i
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 
 /////
+
+fun DefaultServiceEndpoint.getChannelIds() = getSubscribeEndpoint()?.channelIds
+fun DefaultServiceEndpoint.getParams() = getSubscribeEndpoint()?.params
+private fun DefaultServiceEndpoint.getSubscribeEndpoint() =
+    authDeterminedCommand?.authenticatedCommand?.subscribeEndpoint
+
+/////
+
+fun ToggleButtonRenderer.getSubscribeParams() = defaultServiceEndpoint?.getParams()
+fun ToggleButtonRenderer.getUnsubscribeParams() = toggledServiceEndpoint?.unsubscribeEndpoint?.params

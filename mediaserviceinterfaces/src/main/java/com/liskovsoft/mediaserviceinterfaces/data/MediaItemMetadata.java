@@ -23,6 +23,7 @@ public interface MediaItemMetadata {
     String getLiveChatKey();
     boolean isUpcoming();
     String getChannelId();
+    String getParams();
     int getPercentWatched();
     int getLikeStatus();
     List<MediaGroup> getSuggestions();

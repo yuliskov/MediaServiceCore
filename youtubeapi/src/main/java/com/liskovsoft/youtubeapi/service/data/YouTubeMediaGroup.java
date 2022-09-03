@@ -31,7 +31,7 @@ public class YouTubeMediaGroup implements MediaGroup {
     public String mNextPageKey;
     private String mChannelUrl;
     private String mChannelId;
-    private String mPlaylistParams;
+    private String mParams;
     private String mReloadPageKey;
 
     public YouTubeMediaGroup(int type) {
@@ -66,7 +66,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             ((YouTubeMediaGroup) baseGroup).mChannelId = continuation.getBrowseId();
         }
         if (continuation.getParams() != null) {
-            ((YouTubeMediaGroup) baseGroup).mPlaylistParams = continuation.getParams();
+            ((YouTubeMediaGroup) baseGroup).mParams = continuation.getParams();
         }
         if (continuation.getCanonicalBaseUrl() != null) {
             ((YouTubeMediaGroup) baseGroup).mChannelUrl = continuation.getCanonicalBaseUrl();
@@ -235,8 +235,8 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     @Override
-    public String getPlaylistParams() {
-        return mPlaylistParams;
+    public String getParams() {
+        return mParams;
     }
 
     @Override
@@ -285,7 +285,7 @@ public class YouTubeMediaGroup implements MediaGroup {
                 ItemWrapper item = items.get(i);
                 YouTubeMediaItem mediaItem = YouTubeMediaItem.from(item, i);
                 if (mediaItem != null) {
-                    mediaItem.setPlaylistParams(baseGroup.mPlaylistParams);
+                    mediaItem.setParams(baseGroup.mParams);
                     mediaItems.add(mediaItem);
                 }
             }

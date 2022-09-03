@@ -77,7 +77,7 @@ public class YouTubeMediaItemServiceUnsigned implements MediaItemServiceInt {
     }
 
     @Override
-    public void subscribe(String channelId) {
+    public void subscribe(String channelId, String params) {
         // Do nothing, user is unsigned
     }
 

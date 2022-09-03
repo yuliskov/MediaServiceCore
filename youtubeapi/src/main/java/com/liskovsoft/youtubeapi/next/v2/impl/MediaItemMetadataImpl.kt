@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
     private val channelIdItem by lazy {
-        videoDetails?.getChannelId() ?: videoOwner?.getChannelId()
+        videoDetails?.getChannelId() ?: videoOwner?.getChannelId() ?: channelOwner?.getChannelId()
     }
     private val percentWatchedItem by lazy {
         videoMetadata?.getPercentWatched() ?: 0
@@ -30,7 +30,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         watchNextResult.getLiveChatKey()
     }
     private val videoOwner by lazy {
-        videoMetadata?.getVideoOwner() ?: watchNextResult.transportControls?.transportControlsRenderer?.getVideoOwner()
+        videoMetadata?.getVideoOwner()
+    }
+    private val channelOwner by lazy {
+        watchNextResult.transportControls?.transportControlsRenderer?.getChannelOwner()
     }
     private val videoDetails by lazy {
         watchNextResult.getVideoDetails()
@@ -39,7 +42,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         nextVideoItem?.let { NextMediaItemImpl(it) }
     }
     private val isSubscribedItem by lazy {
-        videoOwner?.isSubscribed() ?: false
+        videoOwner?.isSubscribed() ?: channelOwner?.isSubscribed() ?: false
+    }
+    private val paramsItem by lazy {
+        videoOwner?.getParams() ?: channelOwner?.getParams()
     }
     private val replayItemWrapper by lazy {
         watchNextResult.getReplayItemWrapper()
@@ -82,7 +88,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
-    private val videoAuthorImageUrl by lazy { videoOwner?.getThumbnails()?.findLowResThumbnailUrl() }
+    private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.findLowResThumbnailUrl() }
     private val suggestionList by lazy {
         val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) MediaGroupImpl(it) else null }
         if (list?.size ?: 0 > 0)
@@ -157,6 +163,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     override fun isSubscribed(): Boolean {
         return isSubscribedItem
+    }
+
+    override fun getParams(): String? {
+        return paramsItem
     }
 
     override fun isLive(): Boolean {

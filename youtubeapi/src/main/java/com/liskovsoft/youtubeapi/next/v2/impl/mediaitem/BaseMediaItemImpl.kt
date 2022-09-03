@@ -25,7 +25,7 @@ open class BaseMediaItemImpl : MediaItem {
         get() = field ?: playlistIdItem
     private var _playlistIndexItem: Int? = null
         get() = field ?: playlistIndexItem
-    private var _playlistParamsItem: String? = null
+    private var _paramsItem: String? = null
         get() = field ?: playlistParamsItem
 
     private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
@@ -114,12 +114,12 @@ open class BaseMediaItemImpl : MediaItem {
         return _backgroundThumbImageUrl
     }
 
-    override fun getPlaylistParams(): String? {
-        return _playlistParamsItem
+    override fun getParams(): String? {
+        return _paramsItem
     }
 
-    fun setPlaylistParams(params: String?) {
-        _playlistParamsItem = params
+    fun setParams(params: String?) {
+        _paramsItem = params
     }
 
     override fun getReloadPageKey(): String? {

@@ -22,7 +22,7 @@ public interface MediaItem {
     String getPlaylistId();
     int getPlaylistIndex();
     
-    String getPlaylistParams(); // Replacement for playlist id in channel section (use with caution: such list can't be updated)
+    String getParams(); // Replacement for playlist id in channel section (use with caution: such list can't be updated)
     String getReloadPageKey(); // Replacement for playlist id in channel section
 
     // Channel props

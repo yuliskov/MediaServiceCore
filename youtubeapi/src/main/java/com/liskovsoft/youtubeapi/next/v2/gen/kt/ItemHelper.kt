@@ -1,15 +1,17 @@
 package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
 import com.liskovsoft.youtubeapi.common.models.kt.getBrowseId
+import com.liskovsoft.youtubeapi.common.models.kt.getOverlaySubscribeButton
+import com.liskovsoft.youtubeapi.common.models.kt.getSubscribeParams
 import com.liskovsoft.youtubeapi.common.models.kt.getText
 
 //////
 
 fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed ?:
-    navigationEndpoint?.openPopupAction?.popup?.overlaySectionRenderer?.overlay
-        ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer?.content?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer?.isToggled }
+    navigationEndpoint?.getOverlaySubscribeButton()?.isToggled
 fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 fun VideoOwnerItem.getThumbnails() = thumbnail
+fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlaySubscribeButton()?.getSubscribeParams()
 
 /////
 
@@ -46,8 +48,8 @@ fun VideoMetadataItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrN
 fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled
 fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
-fun ButtonStateItem.getChannelId() = getVideoOwner()?.getChannelId()
-fun ButtonStateItem.getVideoOwner() = channelButton?.videoOwnerRenderer
+fun ButtonStateItem.getChannelId() = getChannelOwner()?.getChannelId()
+fun ButtonStateItem.getChannelOwner() = channelButton?.videoOwnerRenderer
 
 ///////
 

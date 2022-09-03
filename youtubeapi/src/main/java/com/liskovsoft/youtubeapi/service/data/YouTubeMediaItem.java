@@ -50,7 +50,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mReloadPageKey;
     private boolean mHasNewContent;
     private String mFeedbackToken;
-    private String mPlaylistParams;
+    private String mParams;
     private String mClickTrackingParams;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
@@ -112,7 +112,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mProductionDate = item.getPublishedTime();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
-        video.mPlaylistParams = item.getPlaylistParams();
+        video.mParams = item.getPlaylistParams();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
         video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
@@ -425,13 +425,13 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getPlaylistParams() {
-        return mPlaylistParams;
+    public String getParams() {
+        return mParams;
     }
 
-    public void setPlaylistParams(String params) {
+    public void setParams(String params) {
         if (params != null) {
-            mPlaylistParams = params;
+            mParams = params;
         }
     }
 
@@ -489,6 +489,7 @@ public class YouTubeMediaItem implements MediaItem {
         mTitle = metadata.getTitle();
         mSecondTitle = metadata.getSecondTitle();
         mChannelId = metadata.getChannelId();
+        mParams = metadata.getParams();
     }
 
     @Override

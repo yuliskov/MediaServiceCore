@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser;
@@ -336,6 +337,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
      * Format is used between multiple functions. Do a little cache.
      */
     public boolean isCacheActual() {
-        return System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
+        // Check app cipher first. It's not robust check (cipher may be updated not by us).
+        // So, also check internal cache state.
+        return AppService.instance().isCacheActual() && System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
     }
 }

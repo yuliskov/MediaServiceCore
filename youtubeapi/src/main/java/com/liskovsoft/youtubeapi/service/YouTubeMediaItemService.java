@@ -477,7 +477,6 @@ public class YouTubeMediaItemService implements MediaItemService {
         return  mCachedFormatInfo != null &&
                 mCachedFormatInfo.getVideoId() != null &&
                 mCachedFormatInfo.getVideoId().equals(videoId) &&
-                AppService.instance().isCacheActual() && // Cipher may be outdated (not robust, could be updated already).
                 mCachedFormatInfo.isCacheActual();
     }
 

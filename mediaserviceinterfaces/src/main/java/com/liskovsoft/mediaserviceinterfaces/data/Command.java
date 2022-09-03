@@ -16,6 +16,7 @@ public interface Command {
     int TYPE_IDLE = 11;
     int TYPE_STOP = 12;
     int TYPE_DPAD = 13;
+    int TYPE_VOICE = 14;
     int KEY_UNDEFINED = -1;
     int KEY_UP = 0;
     int KEY_DOWN = 1;
@@ -32,4 +33,5 @@ public interface Command {
     int getPlaylistIndex();
     int getVolume();
     int getKey();
+    boolean isVoiceStarted();
 }

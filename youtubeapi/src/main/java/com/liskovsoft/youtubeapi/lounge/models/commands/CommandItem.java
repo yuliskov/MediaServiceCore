@@ -21,6 +21,7 @@ public class CommandItem {
     public static final String TYPE_SET_VOLUME = "setVolume";
     public static final String TYPE_STOP_VIDEO = "stopVideo";
     public static final String TYPE_DPAD = "dpadCommand";
+    public static final String TYPE_VOICE = "voiceCommand";
     // Special commands
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";
@@ -48,6 +49,9 @@ public class CommandItem {
 
     @JsonPath("$[1][1]")
     private VolumeParams mVolumeParams;
+
+    @JsonPath("$[1][1]")
+    private VoiceParams mVoiceParams;
 
     @JsonPath("$[1][1:]")
     private List<String> mParams;
@@ -81,6 +85,10 @@ public class CommandItem {
 
     public VolumeParams getVolumeParams() {
         return mVolumeParams;
+    }
+
+    public VoiceParams getVoiceParams() {
+        return mVoiceParams;
     }
 
     public String getKey() {

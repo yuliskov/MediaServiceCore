@@ -1145,4 +1145,16 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"GB","acceptLanguage":"uk-GB","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"channelIds":["UCFzJjgVicCtFxJ5B0P_ei8A"],"params":""}
 
 
+### Open channel by name (https://www.youtube.com/c/BenAwad97)
+
+POST https://www.youtube.com/youtubei/v1/browse
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0AVA9y1vBrGCKgrb6pNgy_nBZB3I_9giibyck3Cb0XGP5JIbK6t9UxaxUZNaopb-wmKw8CBzM-rGrvIvVyGlkOs0L7hiN1266aQKGrBJXahFlLEmZ9WYCDowD-CqJ2Gcgl1p4rKeIbVkpz6AL9TDwCMfPpNDlok5tazKkHXcauXataCgYKATASAQASFQE65dr8AWO58FDAbYF46DssoyPvHw0179
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"utcOffsetMinutes":180,"hl":"en","gl":"RO","remoteHost":"46.98.136.216","deviceMake":"","deviceModel":"","visitorData":"CgtTQVZWQ2RFSDlJMCjbp8-YBg%3D%3D","userAgent":"Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/20.lts.2.0-gold (unlike Gecko) Starboard/11,gzip(gfe)","clientName":"TVHTML5","clientVersion":"7.20220831.10.00","osName":"","osVersion":"","originalUrl":"https://www.youtube.com/tv","theme":"CLASSIC","platform":"DESKTOP","clientFormFactor":"UNKNOWN_FORM_FACTOR","webpSupport":false,"configInfo":{"appInstallData":"CNunz5gGEPb__RIQuIuuBRCir64FEJOvrgUQ4rmuBRDL7P0SEPy6rgUQ1IOuBRDz__0SELfLrQUQ4ryuBRDYvq0F"},"animatedWebpSupport":true,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_FULL_ANIMATION","certificationScope":"","zylonLeftNav":true},"timeZone":"Europe/Kiev","browserName":"Cobalt","browserVersion":"20.lts.2.0-gold"},"user":{"enableSafetyMode":false},"request":{"internalExperimentFlags":[],"consistencyTokenJars":[]},"clickTracking":{"clickTrackingParams":"CAYQp0wYACITCKKIxZXV-fkCFY9msgodNRUIng=="}},"url":"/c/BenAwad97"}
+
+
 

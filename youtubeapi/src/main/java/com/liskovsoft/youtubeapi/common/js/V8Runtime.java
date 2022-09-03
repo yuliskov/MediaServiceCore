@@ -28,9 +28,15 @@ public final class V8Runtime {
     }
 
     public String evaluate(final String source) {
-        mRuntime.getLocker().acquire();
-        String result = mRuntime.executeStringScript(source);
-        mRuntime.getLocker().release();
+        String result;
+
+        try {
+            mRuntime.getLocker().acquire();
+            result = mRuntime.executeStringScript(source);
+        } finally { // Possible fix for acquire(): "Invalid V8 thread access: current thread is..."
+            mRuntime.getLocker().release();
+        }
+
         return result;
     }
 }

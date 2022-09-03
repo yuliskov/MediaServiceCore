@@ -19,9 +19,9 @@ public class AppService {
     private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
     private ClientData mCachedBaseData;
-    private long mAppInfoUpdateTimeMS;
-    private long mPlayerDataUpdateTimeMS;
-    private long mBaseDataUpdateTimeMS;
+    private long mAppInfoUpdateTimeMs;
+    private long mPlayerDataUpdateTimeMs;
+    private long mBaseDataUpdateTimeMs;
 
     private AppService() {
         mAppManager = new AppManagerWrapper();
@@ -260,7 +260,7 @@ public class AppService {
     }
 
     private synchronized void updateAppInfoData() {
-        if (mCachedAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
+        if (mCachedAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 
@@ -269,12 +269,12 @@ public class AppService {
         mCachedAppInfo = mAppManager.getAppInfo(AppConstants.APP_USER_AGENT);
 
         if (mCachedAppInfo != null) {
-            mAppInfoUpdateTimeMS = System.currentTimeMillis();
+            mAppInfoUpdateTimeMs = System.currentTimeMillis();
         }
     }
 
     private synchronized void updatePlayerData() {
-        if (mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
+        if (mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 
@@ -283,12 +283,12 @@ public class AppService {
         mCachedPlayerData = mAppManager.getPlayerData(getPlayerUrl());
 
         if (mCachedPlayerData != null) {
-            mPlayerDataUpdateTimeMS = System.currentTimeMillis();
+            mPlayerDataUpdateTimeMs = System.currentTimeMillis();
         }
     }
 
     private synchronized void updateBaseData() {
-        if (mCachedBaseData != null && System.currentTimeMillis() - mBaseDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS) {
+        if (mCachedBaseData != null && System.currentTimeMillis() - mBaseDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 
@@ -297,7 +297,7 @@ public class AppService {
         mCachedBaseData = mAppManager.getBaseData(getBaseUrl());
 
         if (mCachedBaseData != null) {
-            mBaseDataUpdateTimeMS = System.currentTimeMillis();
+            mBaseDataUpdateTimeMs = System.currentTimeMillis();
         }
     }
 
@@ -314,6 +314,6 @@ public class AppService {
     }
 
     public boolean isCacheActual() {
-        return System.currentTimeMillis() - mPlayerDataUpdateTimeMS < CACHE_REFRESH_PERIOD_MS;
+        return System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
     }
 }

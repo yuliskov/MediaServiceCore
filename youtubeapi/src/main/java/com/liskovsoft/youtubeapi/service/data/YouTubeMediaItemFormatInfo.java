@@ -332,7 +332,10 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mVisitorMonitoringData = visitorMonitoringData;
     }
 
-    public long getCreatedTimeMs() {
-        return mCreatedTimeMs;
+    /**
+     * Format is used between multiple functions. Do a little cache.
+     */
+    public boolean isCacheActual() {
+        return System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
     }
 }

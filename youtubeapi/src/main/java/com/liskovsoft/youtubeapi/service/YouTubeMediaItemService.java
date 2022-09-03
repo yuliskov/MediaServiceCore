@@ -477,14 +477,14 @@ public class YouTubeMediaItemService implements MediaItemService {
         return  mCachedFormatInfo != null &&
                 mCachedFormatInfo.getVideoId() != null &&
                 mCachedFormatInfo.getVideoId().equals(videoId) &&
-                AppService.instance().isCacheActual(); // Cipher may be outdated.
+                AppService.instance().isCacheActual() &&
+                mCachedFormatInfo.isCacheActual(); // Cipher may be outdated.
     }
 
     private void saveInCache(YouTubeMediaItemFormatInfo formatInfo) {
         // Don't cache:
         // 1) Future translations. Should be polled constantly.
-        // 2) Live streams. To make finished live streams available in full length.
-        if (formatInfo == null || !formatInfo.containsMedia() || formatInfo.isLive()) {
+        if (formatInfo == null || !formatInfo.containsMedia()) {
             return;
         }
 

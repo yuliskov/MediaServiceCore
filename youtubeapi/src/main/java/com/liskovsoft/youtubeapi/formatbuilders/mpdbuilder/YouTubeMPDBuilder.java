@@ -116,6 +116,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             //attribute("", "availabilityStartTime", "2022-08-25T00:00:00Z");
             //attribute("", "timeShiftBufferDepth", "PT120M");
             //attribute("", "maxSegmentDuration", "PT2S");
+
+            // TESTING (live position)
+            //attribute("", "timeShiftBufferDepth", "PT43200.000S");
+            //attribute("", "publishTime", "2022-09-04T10:00:00");
+            //attribute("", "availabilityStartTime", "2022-09-04T10:00:00");
         } else {
             attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
             attribute("", "type", "static");
@@ -527,10 +532,10 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int timeScale = 1000;
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
-        // TESTING (Live streams)
-        //if (lengthSeconds <= 0) {
-        //    lengthSeconds = 5 * 60 * 60;
-        //}
+        // TESTING (live streams, 12 hrs max)
+        if (lengthSeconds <= 0) {
+            lengthSeconds = 12 * 60 * 60;
+        }
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
         String segmentDurationUnits = String.valueOf(targetDurationSec * timeScale * 999 / 1000);
         // Increase count a bit to compensate previous tweak
@@ -545,8 +550,8 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         attribute("", "startNumber", "0");
         // TESTING
         // SegmentBase, SegmentTemplate or BaseURL
-        //attribute("", "presentationTimeOffset", "12000");
-        //attribute("", "availabilityTimeOffset", "12000");
+        //attribute("", "presentationTimeOffset", "21600000"); // in units
+        //attribute("", "availabilityTimeOffset", "43200000");
 
         if (lengthSeconds > 0) { // indicates past live stream
             // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline

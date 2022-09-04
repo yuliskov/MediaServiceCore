@@ -43,5 +43,9 @@ public interface MediaItemFormatInfo {
     boolean isUnplayable();
     String getPlayabilityStatus();
     boolean isStreamSeekable();
+    /**
+     * Stream starting time in UTC (!!!).<br/>
+     * E.g.: <b>2021-10-06T13:36:25+00:00</b>
+     */
     String getStartTimestamp();
 }

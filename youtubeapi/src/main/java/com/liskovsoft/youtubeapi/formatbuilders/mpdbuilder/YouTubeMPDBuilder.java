@@ -532,9 +532,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int timeScale = 1000;
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
-        // TESTING (live streams, 12 hrs max)
+        // TESTING (live streams, 24 hrs max)
         if (lengthSeconds <= 0) {
-            lengthSeconds = 12 * 60 * 60;
+            lengthSeconds = 24 * 60 * 60;
         }
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
         String segmentDurationUnits = String.valueOf(targetDurationSec * timeScale * 999 / 1000);

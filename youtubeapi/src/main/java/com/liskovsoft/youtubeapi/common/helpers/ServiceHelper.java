@@ -266,4 +266,8 @@ public class ServiceHelper {
             callback.onElement(elements.get(i), i);
         }
     }
+
+    public static <T> T getFirst(List<T> list) {
+        return list != null && !list.isEmpty() ? list.get(0) : null;
+    }
 }

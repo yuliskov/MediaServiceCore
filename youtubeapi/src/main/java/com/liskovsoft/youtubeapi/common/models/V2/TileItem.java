@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.common.models.V2;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,6 +36,18 @@ public class TileItem {
     })
     private String mPlaylistId;
 
+    @JsonPath({
+            // New videos row in Music section
+            "$.menu.menuRenderer.items[*].menuNavigationItemRenderer.navigationEndpoint.watchEndpoint.videoId"
+    })
+    private List<String> mVideoIds;
+
+    @JsonPath({
+            // New videos row in Music section
+            "$.menu.menuRenderer.items[*].menuNavigationItemRenderer.navigationEndpoint.watchEndpoint.playlistId"
+    })
+    private List<String> mPlaylistIds;
+
     @JsonPath("$.onSelectCommand.browseEndpoint.params")
     private String mPlaylistParams;
 
@@ -56,7 +69,7 @@ public class TileItem {
     }
 
     public String getVideoId() {
-        return mVideoId;
+        return mVideoId != null ? mVideoId : ServiceHelper.getFirst(mVideoIds);
     }
 
     public String getTitle() {
@@ -108,7 +121,7 @@ public class TileItem {
     }
 
     public String getPlaylistId() {
-        return mPlaylistId;
+        return mPlaylistId != null ? mPlaylistId : ServiceHelper.getFirst(mPlaylistIds);
     }
 
     public String getPlaylistParams() {
@@ -128,7 +141,7 @@ public class TileItem {
     }
 
     public String getFeedbackToken() {
-        return mFeedbackToken != null ? mFeedbackToken.get(0) : null;
+        return ServiceHelper.getFirst(mFeedbackToken);
     }
 
     public String getClickTrackingParams() {

@@ -51,6 +51,16 @@ public class YouTubeVideoPlaylistInfo implements VideoPlaylistInfo {
         return mIsSelected;
     }
 
+    @Override
+    public int getSize() {
+        return -1;
+    }
+
+    @Override
+    public int getCurrentIndex() {
+        return -1;
+    }
+
     public void setSelected(boolean selected) {
         mIsSelected = selected;
     }

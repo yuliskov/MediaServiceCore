@@ -17,17 +17,20 @@ object WatchNextApiParams {
      * PlaylistParams is used inside browse channel queries
      */
     fun getWatchNextQuery(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): String {
-        // always presents
-        var videoData = String.format("\"videoId\":\"%s\"", videoId)
+        // To load next data by index, videoId should be empty
+        var videoData = String.format("\"videoId\":\"%s\"", videoId ?: "")
 
-        // present only on play lists
-        // sometimes "params" present too: "params":"OAI%3D"
+        // Presents only on playlists
+        // Note, that negative playlistIndex values produce error
         if (playlistId != null) {
             videoData += String.format(",\"playlistId\":\"%s\",\"playlistIndex\":%s", playlistId, playlistIndex.coerceAtLeast(0))
         }
+
+        // Sometimes "params" presents too. E.g.: "params":"OAI%3D"
         if (playlistParams != null) {
             videoData += String.format(",\"params\":\"%s\"", playlistParams)
         }
+
         return ServiceHelper.createQuery(videoData)
     }
 }

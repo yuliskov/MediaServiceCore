@@ -181,3 +181,12 @@ data class ButtonStateItem(
             val videoOwnerRenderer: VideoOwnerItem?
     )
 }
+
+data class PlaylistInfo(
+    val title: String?,
+    val currentIndex: Int?,
+    val playlistId: String?,
+    val totalVideos: Int?,
+    val ownerName: TextItem?,
+    val isEditable: Boolean?
+)

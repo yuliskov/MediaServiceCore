@@ -13,7 +13,8 @@ data class WatchNextResult(
             val pivot: Pivot?,
             val results: Results?,
             val autoplay: Autoplay?,
-            val conversationBar: ConversationBar?
+            val conversationBar: ConversationBar?,
+            val playlist: Playlist?
         ) {
             data class Pivot(
                 val pivot: NestedPivot?,
@@ -83,6 +84,10 @@ data class WatchNextResult(
                     val continuations: List<ContinuationItem?>?
                 )
             }
+
+            data class Playlist(
+                val playlist: PlaylistInfo?
+            )
         }
     }
 

@@ -27,6 +27,7 @@ fun WatchNextResult.getVideoDetails() = getWatchNextResults()?.autoplay?.autopla
 fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer
 fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsRenderer
 fun WatchNextResult.getLiveChatKey() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
+fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlist
 
 ///////
 

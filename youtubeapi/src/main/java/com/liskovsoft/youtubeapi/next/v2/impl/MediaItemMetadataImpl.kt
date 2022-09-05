@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
+import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo
 import com.liskovsoft.youtubeapi.common.models.kt.*
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
@@ -121,6 +122,18 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         videoMetadata?.isLive() ?: false
     }
 
+    private val playlistInfoItem by lazy {
+        watchNextResult.getPlaylistInfo()?.let {
+            object: VideoPlaylistInfo {
+                override fun getTitle() = it.title
+                override fun getPlaylistId() = it.playlistId
+                override fun isSelected() = false
+                override fun getSize() = it.totalVideos ?: -1
+                override fun getCurrentIndex() = it.currentIndex ?: -1
+            }
+        }
+    }
+
     override fun getTitle(): String? {
         return videoTitle
     }
@@ -195,6 +208,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     override fun getSuggestions(): List<MediaGroup?>? {
         return suggestionList
+    }
+
+    override fun getPlaylistInfo(): VideoPlaylistInfo? {
+        return playlistInfoItem
     }
 
     override fun getLikesCount(): String? {

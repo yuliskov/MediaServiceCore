@@ -1156,5 +1156,28 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 
 {"context":{"client":{"screenWidthPoints":1280,"screenHeightPoints":720,"screenPixelDensity":1,"utcOffsetMinutes":180,"hl":"en","gl":"RO","remoteHost":"46.98.136.216","deviceMake":"","deviceModel":"","visitorData":"CgtTQVZWQ2RFSDlJMCjbp8-YBg%3D%3D","userAgent":"Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/20.lts.2.0-gold (unlike Gecko) Starboard/11,gzip(gfe)","clientName":"TVHTML5","clientVersion":"7.20220831.10.00","osName":"","osVersion":"","originalUrl":"https://www.youtube.com/tv","theme":"CLASSIC","platform":"DESKTOP","clientFormFactor":"UNKNOWN_FORM_FACTOR","webpSupport":false,"configInfo":{"appInstallData":"CNunz5gGEPb__RIQuIuuBRCir64FEJOvrgUQ4rmuBRDL7P0SEPy6rgUQ1IOuBRDz__0SELfLrQUQ4ryuBRDYvq0F"},"animatedWebpSupport":true,"tvAppInfo":{"appQuality":"TV_APP_QUALITY_FULL_ANIMATION","certificationScope":"","zylonLeftNav":true},"timeZone":"Europe/Kiev","browserName":"Cobalt","browserVersion":"20.lts.2.0-gold"},"user":{"enableSafetyMode":false},"request":{"internalExperimentFlags":[],"consistencyTokenJars":[]},"clickTracking":{"clickTrackingParams":"CAYQp0wYACITCKKIxZXV-fkCFY9msgodNRUIng=="}},"url":"/c/BenAwad97"}
 
+### Shuffle playlist
+
+POST https://www.youtube.com/youtubei/v1/next
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0AVA9y1vaumxoR-zUJSt0aRY1fTuLzO0b2b_PEixVjlPa9nB5WieXgP0R4-MjVxE6gLEJqcQw7rQDipelbRO-syF1-3rxglGHvjDA2oiEspsimCci7cHHGuc_K0XvUHIrQheiT6lW6dja0MBx-w2HChep9vORKCOjIaOsItx_kFhaaCgYKATASAQASFQE65dr87yOoY0MH4mAbwiAxu_B4Xg0179
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+X-Goog-Visitor-Id: CgtmVlYzaTRBbkdKNCi0l9WYBg%3D%3D
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"TVHTML5","clientVersion":"7.20220118.09.00","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptLanguage":"uk-US","acceptRegion":"US","utcOffsetMinutes":"180","visitorData":"CgtmVlYzaTRBbkdKNCi0l9WYBg%3D%3D"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playlistId":"PLbl01QFpbBY1YoJsNb6KE_QPGr2M4jIye","playlistIndex":10}
+
+### Load random video from playlist
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Accept-Encoding: identity
+Authorization: Bearer ya29.a0AVA9y1vznq_mivGC1sxMPWvRIcNGcVG-yDBZrSQz4v-gqaqu_eYvwqx1ccuY3o9StFfTVANMOQVjeFQVP-cjzKqT9jzL95DBRhoZc9nE4ZHCENHuk_LR-nv03zT0TUFqG7iQGLR4tX_1nEfbyRnCSq4s8tVba3wHvob8zHOXtJt2aCgYKATASAQASFQE65dr8m3jywNjcJ7zklsuJC4vSqQ0179
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+x-goog-visitor-id: CgtmVlYzaTRBbkdKNCjpwtWYBg%3D%3D
+
+{"context":{"client":{"hl":"en","gl":"RO","remoteHost":"46.98.136.216","deviceMake":"","deviceModel":"","visitorData":"CgtTQVZWQ2RFSDlJMCiP0dWYBg%3D%3D","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36,gzip(gfe)","clientName":"WEB","clientVersion":"2.20220902.01.00","osName":"Windows","osVersion":"10.0","originalUrl":"https://www.youtube.com/watch?v=8bzesUu_a4I&list=PLbl01QFpbBY1YoJsNb6KE_QPGr2M4jIye&index=77","platform":"DESKTOP","clientFormFactor":"UNKNOWN_FORM_FACTOR","configInfo":{"appInstallData":"CI_R1ZgGEOK8rgUQ7LmuBRC-tq4FEPy6rgUQy-z9EhD2__0SEJOvrgUQ4rmuBRDUg64FEPT__RIQt8utBRC4i64FEOzDrgUQ2L6tBRCR-PwS"},"timeZone":"Europe/Kiev","browserName":"Chrome","browserVersion":"104.0.0.0","screenWidthPoints":2240,"screenHeightPoints":625,"screenPixelDensity":1,"screenDensityFloat":0.75,"utcOffsetMinutes":180,"userInterfaceTheme":"USER_INTERFACE_THEME_LIGHT","memoryTotalKbytes":"4000000","clientScreen":"WATCH","mainAppWebInfo":{"graftUrl":"/watch?v=8bzesUu_a4I&list=PLbl01QFpbBY1YoJsNb6KE_QPGr2M4jIye&index=77","pwaInstallabilityStatus":"PWA_INSTALLABILITY_STATUS_CAN_BE_INSTALLED","webDisplayMode":"WEB_DISPLAY_MODE_BROWSER","isWebNativeShareAvailable":true}},"user":{"lockedSafetyMode":false},"request":{"useSsl":true,"internalExperimentFlags":[],"consistencyTokenJars":[]},"clickTracking":{"clickTrackingParams":"CFQQ0TkiEwjEx5L01vz5AhU5gvQHHRiMDtsyB2JmX3ByZXZI8a-LoMnF98QXmgEFCBEQ-B0="},"adSignalsInfo":{"params":[{"key":"dt","value":"1662347408360"},{"key":"flash","value":"0"},{"key":"frm","value":"0"},{"key":"u_tz","value":"180"},{"key":"u_his","value":"5"},{"key":"u_h","value":"1050"},{"key":"u_w","value":"1680"},{"key":"u_ah","value":"1010"},{"key":"u_aw","value":"1680"},{"key":"u_cd","value":"24"},{"key":"bc","value":"31"},{"key":"bih","value":"625"},{"key":"biw","value":"2217"},{"key":"brdim","value":"0,0,0,0,1680,0,1680,1010,2240,625"},{"key":"vis","value":"1"},{"key":"wgl","value":"true"},{"key":"ca_type","value":"image"}]}},"videoId":"","playlistId":"PLbl01QFpbBY1YoJsNb6KE_QPGr2M4jIye","playlistIndex":77,"playbackContext":{"contentPlaybackContext":{"currentUrl":"/watch?v=8bzesUu_a4I&list=PLbl01QFpbBY1YoJsNb6KE_QPGr2M4jIye&index=77","vis":0,"splay":false,"autoCaptionsDefaultOn":true,"autonavState":"STATE_ON","html5Preference":"HTML5_PREF_WANTS","signatureTimestamp":19237,"referer":"https://www.youtube.com/watch?v=F4neLJQC1_E&list=PLbl01QFpbBY1YoJsNb6KE_QPGr2M4jIye&index=4","lactMilliseconds":"-1"}},"racyCheckOk":false,"contentCheckOk":false}
 
 

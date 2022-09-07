@@ -115,7 +115,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     private val videoIdItem by lazy {
-        videoMetadata?.videoId
+        videoMetadata?.videoId ?: videoDetails?.videoId
     }
 
     private val isLiveStream by lazy {

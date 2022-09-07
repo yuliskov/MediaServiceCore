@@ -23,7 +23,7 @@ fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results
 fun WatchNextResult.getNextVideoItem() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)?.
     nextVideoRenderer?.let { it.maybeHistoryEndpointRenderer ?: it.autoplayEndpointRenderer ?: it.autoplayVideoWrapperRenderer?.primaryEndpointRenderer?.autoplayEndpointRenderer }
 
-fun WatchNextResult.getVideoDetails() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer?.pivotVideoRenderer
+fun WatchNextResult.getVideoDetails() = getReplayItemWrapper()?.pivotVideoRenderer
 fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer
 fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsRenderer
 fun WatchNextResult.getLiveChatKey() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation

@@ -4,10 +4,9 @@ import com.eclipsesource.v8.V8;
 
 public final class V8Runtime {
     private static V8Runtime sInstance;
-    private final V8 mRuntime;
+    private V8 mRuntime;
 
     private V8Runtime() {
-        mRuntime = V8.createV8Runtime();
     }
 
     public static V8Runtime instance() {
@@ -27,16 +26,36 @@ public final class V8Runtime {
         sInstance = null;
     }
 
-    public String evaluate(final String source) {
+    /**
+     * Not a thread safe. Possible 'Invalid V8 thread access' errors.
+     */
+    public String evaluateUnsafe(final String source) {
+        if (mRuntime == null) {
+            mRuntime = V8.createV8Runtime();
+        }
+
         String result;
 
         try {
-            mRuntime.getLocker().acquire();
+            mRuntime.getLocker().acquire(); // Possible 'Invalid V8 thread access' errors
             result = mRuntime.executeStringScript(source);
-        } finally { // Possible fix for acquire(): "Invalid V8 thread access: current thread is..."
-            mRuntime.getLocker().release();
+        } finally {
+            mRuntime.getLocker().release(); // Possible 'Invalid V8 thread access' errors
         }
 
         return result;
+    }
+
+    public String evaluate(final String source) {
+        V8 runtime = null;
+
+        try {
+            runtime = V8.createV8Runtime();
+            return runtime.executeStringScript(source);
+        } finally {
+            if (runtime != null) {
+                runtime.release(false);
+            }
+        }
     }
 }

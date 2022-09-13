@@ -532,9 +532,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int timeScale = 1000;
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
-        // TESTING (live streams, 24 hrs max)
+        // For live streams (length == 0) set window that exceeds normal limits - 48hrs
         if (lengthSeconds <= 0) {
-            lengthSeconds = 24 * 60 * 60;
+            lengthSeconds = 48 * 60 * 60;
         }
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
         String segmentDurationUnits = String.valueOf(targetDurationSec * timeScale * 999 / 1000);
@@ -553,24 +553,24 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         //attribute("", "presentationTimeOffset", "21600000"); // in units
         //attribute("", "availabilityTimeOffset", "43200000");
 
-        if (lengthSeconds > 0) { // indicates past live stream
-            // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline
-            //  <SegmentTimeline>
-            //    <S t="0" d="180000" r="394"/>
-            //  </SegmentTimeline>
+        // lengthSeconds > 0 indicates past live stream
 
-            startTag("", "SegmentTimeline");
+        // https://www.unified-streaming.com/blog/stop-numbering-underappreciated-power-dashs-segmenttimeline
+        //  <SegmentTimeline>
+        //    <S t="0" d="180000" r="394"/>
+        //  </SegmentTimeline>
 
-            startTag("", "S"); // segment set
+        startTag("", "SegmentTimeline");
 
-            attribute("", "t", "0"); // start time (units)
-            attribute("", "d", segmentDurationUnits); // duration (units)
-            attribute("", "r", segmentCount); // repeat counts (number of segments)
+        startTag("", "S"); // segment set
 
-            endTag("", "S");
+        attribute("", "t", "0"); // start time (units)
+        attribute("", "d", segmentDurationUnits); // duration (units)
+        attribute("", "r", segmentCount); // repeat counts (number of segments)
 
-            endTag("", "SegmentTimeline");
-        }
+        endTag("", "S");
+
+        endTag("", "SegmentTimeline");
 
         endTag("", "SegmentTemplate");
     }

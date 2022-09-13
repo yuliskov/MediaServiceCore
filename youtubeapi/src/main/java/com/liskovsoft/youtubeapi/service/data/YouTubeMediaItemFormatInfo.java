@@ -25,7 +25,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mTitle;
     private String mAuthor;
     private String mViewCount;
-    private String mTimestamp;
     private String mDescription;
     private String mVideoId;
     private String mChannelId;
@@ -164,16 +163,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public void setViewCount(String viewCount) {
         mViewCount = viewCount;
-    }
-
-    @Override
-    public String getTimestamp() {
-        return mTimestamp;
-    }
-
-    @Override
-    public void setTimestamp(String timestamp) {
-        mTimestamp = timestamp;
     }
 
     @Override

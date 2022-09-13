@@ -20,8 +20,6 @@ public interface MediaItemFormatInfo {
     void setAuthor(String author);
     String getViewCount();
     void setViewCount(String viewCount);
-    String getTimestamp();
-    void setTimestamp(String timestamp);
     String getDescription();
     void setDescription(String description);
     String getVideoId();

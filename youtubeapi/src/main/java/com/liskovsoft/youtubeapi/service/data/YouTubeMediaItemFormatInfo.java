@@ -326,8 +326,17 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
      * Format is used between multiple functions. Do a little cache.
      */
     public boolean isCacheActual() {
+        if (isLive()) { // live isn't ciphered
+            return true;
+        }
+
         // Check app cipher first. It's not robust check (cipher may be updated not by us).
         // So, also check internal cache state.
-        return AppService.instance().isCacheActual() && System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
+        // Future translations (no media) should be polled constantly.
+        return containsMedia() && isCreatedRecently() && AppService.instance().isCacheActual();
+    }
+
+    private boolean isCreatedRecently() {
+        return System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
     }
 }

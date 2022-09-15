@@ -481,12 +481,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private void saveInCache(YouTubeMediaItemFormatInfo formatInfo) {
-        // Don't cache:
-        // 1) Future translations. Should be polled constantly.
-        if (formatInfo == null || !formatInfo.containsMedia()) {
-            return;
-        }
-
         mCachedFormatInfo = formatInfo;
     }
 

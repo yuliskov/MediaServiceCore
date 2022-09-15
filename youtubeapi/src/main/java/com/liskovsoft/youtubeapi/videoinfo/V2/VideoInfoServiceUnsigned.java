@@ -28,7 +28,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
 
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on the live streams...");
-            result = getVideoInfoRegular(videoId, clickTrackingParams);
+            result = getVideoInfoLive(videoId, clickTrackingParams);
         } else if (result != null && result.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoRegular(result.getTrailerVideoId(), clickTrackingParams);
@@ -74,7 +74,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryLive(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoManagerParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);

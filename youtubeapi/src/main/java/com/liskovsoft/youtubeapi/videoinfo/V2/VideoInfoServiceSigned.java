@@ -28,7 +28,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
 
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on the live streams...");
-            result = getVideoInfoRegular(videoId, clickTrackingParams, authorization);
+            result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
         } else if (result != null && result.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams, authorization);

@@ -12,14 +12,14 @@ public class DashInfo {
     /**
      * minimumUpdatePeriod="PT5.000S"
      */
-    @RegExp("minimumUpdatePeriod=\"PT(.*?)S\"")
-    private String mSegmentDuration;
+    @RegExp("minimumUpdatePeriod=\"PT(.*?)\\.000S\"")
+    private String mSegmentDurationSec;
 
     /**
      * timeShiftBufferDepth="PT14400.000S"
      */
-    @RegExp("timeShiftBufferDepth=\"PT(.*?)S\"")
-    private String mTimeShiftBufferDepth;
+    @RegExp("timeShiftBufferDepth=\"PT(.*?)\\.000S\"")
+    private String mTimeShiftBufferDepthSec;
 
     /**
      * availabilityStartTime="2022-09-15T07:31:41"

@@ -2,6 +2,9 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
 import java.util.ArrayList;
@@ -9,10 +12,12 @@ import java.util.List;
 
 public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
+    private final DashInfoApi mDashInfo;
     protected final AppService mAppService;
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
+        mDashInfo = RetrofitHelper.withRegExp(DashInfoApi.class);
     }
 
     protected void decipherFormats(List<? extends VideoFormat> formats) {
@@ -84,5 +89,9 @@ public abstract class VideoInfoServiceBase {
             format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
             //format.setParam("alr", "yes");
         }
+    }
+
+    protected DashInfo getDashInfo(String url) {
+        return RetrofitHelper.get(mDashInfo.getDashInfo(url));
     }
 }

@@ -2,10 +2,9 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.videoinfo.V1.VideoInfoManagerSigned;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoManagerParams;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiParams;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiUnsigned;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -23,15 +22,15 @@ import static org.junit.Assert.assertTrue;
 /**
  * NOTE: testing with Duktape (native libs)!!!
  */
-public class VideoInfoManagerSignedV2Test {
-    private VideoInfoManagerSigned mService;
+public class VideoInfoApiUnsignedTest {
+    private VideoInfoApiUnsigned mService;
     private LocaleManager mLocaleManager;
 
     @Before
     public void setUp() {
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoManagerSigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApiUnsigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -103,12 +102,12 @@ public class VideoInfoManagerSignedV2Test {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiParams.getVideoInfoQuery(videoId));
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiParams.getVideoInfoQuery(videoId));
         return wrapper.execute().body();
     }
 }

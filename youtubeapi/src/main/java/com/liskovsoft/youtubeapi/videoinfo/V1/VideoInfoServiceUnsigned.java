@@ -10,11 +10,11 @@ import retrofit2.Call;
 public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceUnsigned.class.getSimpleName();
     private static VideoInfoServiceUnsigned sInstance;
-    private final VideoInfoManagerUnsignedV2 mVideoInfoManagerUnsigned;
+    private final VideoInfoApiUnsigned mVideoInfoApiUnsigned;
     private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceUnsigned() {
-        mVideoInfoManagerUnsigned = RetrofitHelper.withQueryString(VideoInfoManagerUnsignedV2.class);
+        mVideoInfoApiUnsigned = RetrofitHelper.withQueryString(VideoInfoApiUnsigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -49,13 +49,13 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
     
     private VideoInfo getVideoInfoHls(String videoId) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiUnsigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerUnsigned.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiUnsigned.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }

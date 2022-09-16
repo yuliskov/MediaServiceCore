@@ -8,7 +8,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface VideoInfoManagerUnsigned {
+public interface VideoInfoApiUnsigned {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player?key=" + AppConstants.API_KEY)
     Call<VideoInfo> getVideoInfo(@Body String videoQuery);

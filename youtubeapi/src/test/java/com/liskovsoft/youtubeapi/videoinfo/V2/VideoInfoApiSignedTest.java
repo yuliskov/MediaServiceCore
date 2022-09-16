@@ -25,8 +25,8 @@ import static org.junit.Assert.assertTrue;
  * NOTE: testing with Duktape (native libs)!!!
  */
 @RunWith(RobolectricTestRunner.class)
-public class VideoInfoManagerSignedV2Test {
-    private VideoInfoManagerSigned mService;
+public class VideoInfoApiSignedTest {
+    private VideoInfoApiSigned mService;
     private LocaleManager mLocaleManager;
 
     @Before
@@ -39,7 +39,7 @@ public class VideoInfoManagerSignedV2Test {
 
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoManagerSigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -113,12 +113,12 @@ public class VideoInfoManagerSignedV2Test {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParamsV2.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParamsV2.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
         return wrapper.execute().body();
     }
 }

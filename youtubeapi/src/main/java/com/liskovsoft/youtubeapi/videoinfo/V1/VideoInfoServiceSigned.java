@@ -11,11 +11,11 @@ import retrofit2.Call;
 public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceSigned.class.getSimpleName();
     private static VideoInfoServiceSigned sInstance;
-    private final VideoInfoManagerSignedV2 mVideoInfoManagerSigned;
+    private final VideoInfoApiSigned mVideoInfoApiSigned;
     private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceSigned() {
-        mVideoInfoManagerSigned = RetrofitHelper.withQueryString(VideoInfoManagerSignedV2.class);
+        mVideoInfoApiSigned = RetrofitHelper.withQueryString(VideoInfoApiSigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -53,19 +53,19 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoHls(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoHls(videoId, ServiceHelper.getToken(authorization), mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfoHls(videoId, ServiceHelper.getToken(authorization), mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRegular(videoId, ServiceHelper.getToken(authorization), mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfoRegular(videoId, ServiceHelper.getToken(authorization), mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId, String authorization) {
-        Call<VideoInfo> wrapper = mVideoInfoManagerSigned.getVideoInfoRestricted(videoId, ServiceHelper.getToken(authorization), mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfoRestricted(videoId, ServiceHelper.getToken(authorization), mLocaleManager.getLanguage());
 
         return RetrofitHelper.get(wrapper);
     }

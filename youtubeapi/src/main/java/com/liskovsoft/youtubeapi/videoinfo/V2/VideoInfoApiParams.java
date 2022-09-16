@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
-public class VideoInfoManagerParams {
+public class VideoInfoApiParams {
     /**
      * Used in player only<br/>
      * Previous client version: 7.20190214<br/>

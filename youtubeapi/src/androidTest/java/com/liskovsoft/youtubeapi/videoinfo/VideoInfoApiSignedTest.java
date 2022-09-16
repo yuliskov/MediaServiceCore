@@ -1,16 +1,16 @@
-package com.liskovsoft.youtubeapi.videoinfo.V2;
+package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.videoinfo.V1.VideoInfoApiSigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiParams;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
 import java.io.IOException;
@@ -23,30 +23,22 @@ import static org.junit.Assert.assertTrue;
 /**
  * NOTE: testing with Duktape (native libs)!!!
  */
-@RunWith(RobolectricTestRunner.class)
-public class VideoInfoManagerUnsignedV2Test {
-    private VideoInfoManagerUnsigned mService;
+public class VideoInfoApiSignedTest {
+    private VideoInfoApiSigned mService;
     private LocaleManager mLocaleManager;
 
     @Before
     public void setUp() {
-        // fix issue: No password supplied for PKCS#12 KeyStore
-        // https://github.com/robolectric/robolectric/issues/5115
-        System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-
-        ShadowLog.stream = System.out; // catch Log class output
-
         RetrofitHelper.sForceEnableProfiler = true;
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoManagerUnsigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 
-    // Not supported in anonymous mode?
-    //@Test
-    //public void testThatAgeRestrictedVideoContainsRequiredFields() throws IOException {
-    //    testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpersV1.VIDEO_ID_AGE_RESTRICTED));
-    //}
+    @Test
+    public void testThatAgeRestrictedVideoContainsRequiredFields() throws IOException {
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpersV1.VIDEO_ID_AGE_RESTRICTED));
+    }
 
     @Test
     public void testThatUnavailableVideoContainsRequiredFields() throws IOException {
@@ -111,12 +103,12 @@ public class VideoInfoManagerUnsignedV2Test {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParamsV2.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization(), "en");
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParamsV2.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization(), "en");
         return wrapper.execute().body();
     }
 }

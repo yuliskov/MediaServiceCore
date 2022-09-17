@@ -547,7 +547,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         attribute("", "duration", segmentDurationUnits); // segment duration in units (could be safely omitted)
         attribute("", "timescale", unitsPerSecond); // units per second
         attribute("", "media", format.getUrl() + "&sq=$Number$");
-        attribute("", "startNumber", "0");
+        attribute("", "startNumber", String.valueOf(mInfo.getStartSegmentNum()));
         // TESTING
         // SegmentBase, SegmentTemplate or BaseURL
         //attribute("", "presentationTimeOffset", "21600000"); // in units

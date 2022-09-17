@@ -42,8 +42,16 @@ public interface MediaItemFormatInfo {
     String getPlayabilityStatus();
     boolean isStreamSeekable();
     /**
-     * Stream starting time in UTC (!!!).<br/>
+     * Stream start time in UTC (!!!).<br/>
      * E.g.: <b>2021-10-06T13:36:25+00:00</b>
      */
     String getStartTimestamp();
+    /**
+     * Stream start time in UNIX format.<br/>
+     */
+    long getStartTimeMs();
+    /**
+     * Number of the stream first segment
+     */
+    int getStartSegmentNum();
 }

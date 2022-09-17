@@ -72,6 +72,9 @@ public class VideoInfo {
     private String mEventId;
     private String mVisitorMonitoringData;
 
+    private long mStartTimeMs;
+    private int mStartSegmentNum;
+
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
     }
@@ -176,6 +179,14 @@ public class VideoInfo {
         return mStartTimestamp;
     }
 
+    public long getStartTimeMs() {
+        return mStartTimeMs;
+    }
+
+    public int getStartSegmentNum() {
+        return mStartSegmentNum;
+    }
+
     public boolean isHfr() {
         return mDashManifestUrl != null && mDashManifestUrl.contains("/hfr/all");
     }
@@ -198,5 +209,14 @@ public class VideoInfo {
             mEventId = queryString.get(PARAM_EVENT_ID);
             mVisitorMonitoringData = queryString.get(PARAM_VM);
         }
+    }
+
+    public void sync(DashInfo dashInfo) {
+        if (dashInfo == null) {
+            return;
+        }
+
+        mStartTimeMs = dashInfo.getStartTimeMs();
+        mStartSegmentNum = dashInfo.getStartSegmentNum();
     }
 }

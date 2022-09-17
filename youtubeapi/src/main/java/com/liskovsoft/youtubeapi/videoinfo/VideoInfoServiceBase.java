@@ -92,6 +92,10 @@ public abstract class VideoInfoServiceBase {
     }
 
     protected DashInfo getDashInfo(String url) {
+        if (url == null) {
+            return null;
+        }
+
         return RetrofitHelper.get(mDashInfo.getDashInfo(url));
     }
 }

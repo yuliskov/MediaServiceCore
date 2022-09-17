@@ -126,6 +126,9 @@ public class DashInfo {
 
             if (mStartSegmentNum > 0) {
                 mStartTimeMs = getAvailabilityStartTimeMs() - additionalDurationMs;
+            } else {
+                mStartSegmentNum = 0;
+                mStartTimeMs = getAvailabilityStartTimeMs() - (getEarliestMediaSequenceNum() * getMinimumUpdatePeriodMs());
             }
         }
     }

@@ -36,6 +36,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = YouTubeMPDBuilder.class.getSimpleName();
     private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
+    private static final int MAX_DURATION_SEC = 48 * 60 * 60;
     private final MediaItemFormatInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
@@ -535,19 +536,24 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int unitsPerSecond = 1000;
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
-        // For live streams (length == 0) set window that exceeds normal limits - 48hrs
+
         if (lengthSeconds <= 0) {
-            lengthSeconds = 48 * 60 * 60;
+            // For live streams (length == 0) set window that exceeds normal limits - 48hrs
+            lengthSeconds = MAX_DURATION_SEC;
         }
+
+        int segmentDurationUnits = targetDurationSec * unitsPerSecond;
+        int segmentCount = lengthSeconds / targetDurationSec;
+
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
-        int segmentDurationUnits = targetDurationSec * unitsPerSecond * 999 / 1000;
+        segmentDurationUnits = segmentDurationUnits * 9999 / 10000;
         // Increase count a bit to compensate previous tweak
-        int segmentCount = lengthSeconds / targetDurationSec * 1000 / 999;
-        int offsetUnits = segmentDurationUnits * mInfo.getStartSegmentNum();
+        segmentCount = segmentCount * 10000 / 9999;
+
+        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum();
 
         String segmentDurationUnitsStr = String.valueOf(segmentDurationUnits);
-        //String offsetUnitsStr = String.valueOf(offsetUnits);
-        String offsetUnitsStr = "0";
+        String offsetUnitsStr = String.valueOf(offsetUnits);
 
         startTag("", "SegmentTemplate");
 

@@ -14,6 +14,12 @@ public class DashInfo {
     private String mEarliestMediaSequence;
 
     /**
+     * startNumber="122185"
+     */
+    @RegExp("startNumber=\"(.*?)\"")
+    private String mStartNumber; // usually the same as above but may be different on non-seekable streams
+
+    /**
      * Period start="PT14185.270S"
      */
     //@RegExp("Period start=\"PT(.*?)S\"")
@@ -45,11 +51,12 @@ public class DashInfo {
 
     private long mStartTimeMs = -1;
     private int mStartSegmentNum = -1;
+    private int mEarliestMediaSequenceNum = -1;
+    private int mSequenceStartNumber = -1;
     private long mMpdRequestTimeMs = -1;
     private long mPeriodStartTimeMs = -1;
     private long mAvailabilityStartTimeMs = -1;
     private int mMinimumUpdatePeriodMs = -1;
-    private int mEarliestMediaSequenceNum = -1;
     private int mTimeShiftBufferDepthMs = -1;
 
     public int getStartSegmentNum() {
@@ -62,6 +69,10 @@ public class DashInfo {
         calculateTimings();
 
         return mStartTimeMs;
+    }
+
+    public boolean isSeekable() {
+        return getEarliestMediaSequenceNum() == getSequenceStartNumber();
     }
 
     private long getMpdRequestTimeMs() {
@@ -82,8 +93,10 @@ public class DashInfo {
 
     private long getPeriodStartTimeMs() {
         if (mPeriodStartTimeMs == -1) {
-            if (getEarliestMediaSequenceNum() == 0) { // stream length < 4hrs
+            if (getSequenceStartNumber() == 0) { // stream length < 4hrs
                 mPeriodStartTimeMs = getAvailabilityStartTimeMs();
+            } else if (!isSeekable()) { // non-seekable stream
+                mPeriodStartTimeMs = getMpdRequestTimeMs();
             } else { // stream length > 4hrs
                 mPeriodStartTimeMs = getMpdRequestTimeMs() - getTimeShiftBufferDepthMs();
             }
@@ -116,13 +129,21 @@ public class DashInfo {
         return mEarliestMediaSequenceNum;
     }
 
+    private int getSequenceStartNumber() {
+        if (mSequenceStartNumber == -1) {
+            mSequenceStartNumber = Helpers.parseInt(mStartNumber);
+        }
+
+        return mSequenceStartNumber;
+    }
+
     private void calculateTimings() {
         if (mStartTimeMs != -1 && mStartSegmentNum != -1) {
             return;
         }
 
         mStartTimeMs = getPeriodStartTimeMs();
-        mStartSegmentNum = getEarliestMediaSequenceNum();
+        mStartSegmentNum = getSequenceStartNumber();
 
         int shortDurationMs = (int)(getMpdRequestTimeMs() - getPeriodStartTimeMs());
 
@@ -131,15 +152,15 @@ public class DashInfo {
         if (additionalDurationMs > 0) {
             int additionalSegmentsNum = additionalDurationMs / getMinimumUpdatePeriodMs();
 
-            int startSegmentNum = getEarliestMediaSequenceNum() - additionalSegmentsNum;
+            int startSegmentNum = getSequenceStartNumber() - additionalSegmentsNum;
 
             if (startSegmentNum > 0) {
                 mStartSegmentNum = startSegmentNum;
-                //mStartTimeMs = getPeriodStartTimeMs() - (getEarliestMediaSequenceNum() * getMinimumUpdatePeriodMs());
+                //mStartTimeMs = getPeriodStartTimeMs() - (getSequenceStartNumber() * getMinimumUpdatePeriodMs());
                 mStartTimeMs = getPeriodStartTimeMs() - additionalDurationMs;
             } else {
                 mStartSegmentNum = 0;
-                mStartTimeMs = getPeriodStartTimeMs() - (getEarliestMediaSequenceNum() * getMinimumUpdatePeriodMs());
+                mStartTimeMs = getPeriodStartTimeMs() - ((long) getSequenceStartNumber() * getMinimumUpdatePeriodMs());
             }
         }
     }

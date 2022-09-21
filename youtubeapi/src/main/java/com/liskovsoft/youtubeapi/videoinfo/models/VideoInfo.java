@@ -74,6 +74,7 @@ public class VideoInfo {
 
     private long mStartTimeMs;
     private int mStartSegmentNum;
+    private boolean mIsStreamSeekable;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -187,6 +188,10 @@ public class VideoInfo {
         return mStartSegmentNum;
     }
 
+    public boolean isStreamSeekable() {
+        return mIsStreamSeekable;
+    }
+
     public boolean isHfr() {
         return mDashManifestUrl != null && mDashManifestUrl.contains("/hfr/all");
     }
@@ -218,5 +223,6 @@ public class VideoInfo {
 
         mStartTimeMs = dashInfo.getStartTimeMs();
         mStartSegmentNum = dashInfo.getStartSegmentNum();
+        mIsStreamSeekable = dashInfo.isSeekable();
     }
 }

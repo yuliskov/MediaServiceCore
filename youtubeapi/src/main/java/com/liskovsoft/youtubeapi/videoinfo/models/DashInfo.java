@@ -5,7 +5,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
 public class DashInfo {
-    private static final int MAX_DURATION_MS = 12 * 60 * 60 * 1_000;
+    private static final int MAX_DURATION_MS = 24 * 60 * 60 * 1_000;
 
     /**
      * yt:earliestMediaSequence="1769487"
@@ -46,6 +46,7 @@ public class DashInfo {
     private long mStartTimeMs = -1;
     private int mStartSegmentNum = -1;
     private long mMpdRequestTimeMs = -1;
+    private long mPeriodStartTimeMs = -1;
     private long mAvailabilityStartTimeMs = -1;
     private int mMinimumUpdatePeriodMs = -1;
     private int mEarliestMediaSequenceNum = -1;
@@ -73,14 +74,22 @@ public class DashInfo {
 
     private long getAvailabilityStartTimeMs() {
         if (mAvailabilityStartTimeMs == -1) {
-            if (getEarliestMediaSequenceNum() == 0) {
-                mAvailabilityStartTimeMs = DateHelper.toUnixTimeMs(mAvailabilityStartTime);
-            } else {
-                mAvailabilityStartTimeMs = getMpdRequestTimeMs() - getTimeShiftBufferDepthMs();
-            }
+            mAvailabilityStartTimeMs = DateHelper.toUnixTimeMs(mAvailabilityStartTime);
         }
 
         return mAvailabilityStartTimeMs;
+    }
+
+    private long getPeriodStartTimeMs() {
+        if (mPeriodStartTimeMs == -1) {
+            if (getEarliestMediaSequenceNum() == 0) { // stream length < 4hrs
+                mPeriodStartTimeMs = getAvailabilityStartTimeMs();
+            } else { // stream length > 4hrs
+                mPeriodStartTimeMs = getMpdRequestTimeMs() - getTimeShiftBufferDepthMs();
+            }
+        }
+
+        return mPeriodStartTimeMs;
     }
 
     private int getMinimumUpdatePeriodMs() {
@@ -112,23 +121,25 @@ public class DashInfo {
             return;
         }
 
-        mStartTimeMs = getAvailabilityStartTimeMs();
+        mStartTimeMs = getPeriodStartTimeMs();
         mStartSegmentNum = getEarliestMediaSequenceNum();
 
-        int shortDurationMs = (int)(getMpdRequestTimeMs() - getAvailabilityStartTimeMs());
+        int shortDurationMs = (int)(getMpdRequestTimeMs() - getPeriodStartTimeMs());
 
         int additionalDurationMs = MAX_DURATION_MS - shortDurationMs;
 
         if (additionalDurationMs > 0) {
             int additionalSegmentsNum = additionalDurationMs / getMinimumUpdatePeriodMs();
 
-            mStartSegmentNum = getEarliestMediaSequenceNum() - additionalSegmentsNum;
+            int startSegmentNum = getEarliestMediaSequenceNum() - additionalSegmentsNum;
 
-            if (mStartSegmentNum > 0) {
-                mStartTimeMs = getAvailabilityStartTimeMs() - additionalDurationMs;
+            if (startSegmentNum > 0) {
+                mStartSegmentNum = startSegmentNum;
+                //mStartTimeMs = getPeriodStartTimeMs() - (getEarliestMediaSequenceNum() * getMinimumUpdatePeriodMs());
+                mStartTimeMs = getPeriodStartTimeMs() - additionalDurationMs;
             } else {
                 mStartSegmentNum = 0;
-                mStartTimeMs = getAvailabilityStartTimeMs() - (getEarliestMediaSequenceNum() * getMinimumUpdatePeriodMs());
+                mStartTimeMs = getPeriodStartTimeMs() - (getEarliestMediaSequenceNum() * getMinimumUpdatePeriodMs());
             }
         }
     }

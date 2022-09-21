@@ -105,12 +105,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             attribute("", "type", "dynamic");
             attribute("", "minimumUpdatePeriod", "P100Y"); // no refresh (there is no dash url)
 
+            // TESTING
             //attribute("", "minimumBufferTime", "PT30S"); // no effect?
             //attribute("", "profiles", "urn:mpeg:dash:profile:isoff-live:2011");
             //attribute("", "profiles", "urn:mpeg:dash:profile:isoff-main:2011");
-            //attribute("", "timeShiftBufferDepth", "PT14400.000S");
             //attribute("", "minimumUpdatePeriod", "PT5.000S");
-            // TESTING
             // availabilityStartTime="2019-01-06T17:04:49"
             //attribute("", "publishTime", "2022-08-25T00:00:00Z");
             //attribute("", "availabilityStartTime", "2022-08-25T00:00:00Z");
@@ -120,7 +119,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             // TESTING (live position)
             //attribute("", "timeShiftBufferDepth", "PT43200.000S");
             //attribute("", "publishTime", "2022-09-04T10:00:00");
-            //attribute("", "availabilityStartTime", "2022-09-04T10:00:00");
+            //attribute("", "profiles", "urn:mpeg:dash:profile:isoff-main:2011");
+            //attribute("", "minimumUpdatePeriod", "PT2.000S");
+            //attribute("", "timeShiftBufferDepth", "PT7200.000S");
+            //attribute("", "minBufferTime", "PT1.500S");
+            //attribute("", "availabilityStartTime", "2022-09-20T23:15:31");
         } else {
             attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
             attribute("", "type", "static");
@@ -529,7 +532,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         // https://docs.aws.amazon.com/mediapackage/latest/ug/segtemp-format-duration.html#how-stemp-dur-works
         // ((wall clock time - availabilityStartTime ) / (duration / timescale )) + startNumber
 
-        int timeScale = 1000;
+        int unitsPerSecond = 1000;
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
         // For live streams (length == 0) set window that exceeds normal limits - 48hrs
@@ -537,20 +540,24 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             lengthSeconds = 48 * 60 * 60;
         }
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
-        String segmentDurationUnits = String.valueOf(targetDurationSec * timeScale * 999 / 1000);
+        int segmentDurationUnits = targetDurationSec * unitsPerSecond * 999 / 1000;
         // Increase count a bit to compensate previous tweak
-        String segmentCount = String.valueOf(lengthSeconds / targetDurationSec * 1000 / 999);
-        String unitsPerSecond = String.valueOf(timeScale);
+        int segmentCount = lengthSeconds / targetDurationSec * 1000 / 999;
+        int offsetUnits = segmentDurationUnits * mInfo.getStartSegmentNum();
+
+        String segmentDurationUnitsStr = String.valueOf(segmentDurationUnits);
+        //String offsetUnitsStr = String.valueOf(offsetUnits);
+        String offsetUnitsStr = "0";
 
         startTag("", "SegmentTemplate");
 
-        attribute("", "duration", segmentDurationUnits); // segment duration in units (could be safely omitted)
-        attribute("", "timescale", unitsPerSecond); // units per second
+        attribute("", "duration", segmentDurationUnitsStr); // segment duration in units (could be safely omitted)
+        attribute("", "timescale", String.valueOf(unitsPerSecond)); // units per second
         attribute("", "media", format.getUrl() + "&sq=$Number$");
         attribute("", "startNumber", String.valueOf(mInfo.getStartSegmentNum()));
         // TESTING
         // SegmentBase, SegmentTemplate or BaseURL
-        //attribute("", "presentationTimeOffset", "21600000"); // in units
+        attribute("", "presentationTimeOffset", offsetUnitsStr); // in units
         //attribute("", "availabilityTimeOffset", "43200000");
 
         // lengthSeconds > 0 indicates past live stream
@@ -564,9 +571,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
 
         startTag("", "S"); // segment set
 
-        attribute("", "t", "0"); // start time (units)
-        attribute("", "d", segmentDurationUnits); // duration (units)
-        attribute("", "r", segmentCount); // repeat counts (number of segments)
+        attribute("", "t", offsetUnitsStr); // start time (units)
+        attribute("", "d", segmentDurationUnitsStr); // duration (units)
+        attribute("", "r", String.valueOf(segmentCount)); // repeat counts (number of segments)
 
         endTag("", "S");
 

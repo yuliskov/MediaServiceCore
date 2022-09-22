@@ -542,17 +542,15 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             lengthSeconds = MAX_DURATION_SEC;
         }
 
-        int segmentDurationUnits = targetDurationSec * unitsPerSecond;
-        int segmentCount = lengthSeconds / targetDurationSec;
-
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
-        segmentDurationUnits = segmentDurationUnits * 9999 / 10000;
+        int segmentDurationUnits = targetDurationSec * unitsPerSecond * 9999 / 10000;
         // Increase count a bit to compensate previous tweak
-        segmentCount = segmentCount * 10000 / 9999;
-
-        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum();
+        int segmentCount = lengthSeconds / targetDurationSec * 10000 / 9999;
+        // Increase offset a bit to compensate previous tweaks
+        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum() * 10000 / 9999;
 
         String segmentDurationUnitsStr = String.valueOf(segmentDurationUnits);
+        // Use offset to sync player timeline with MPD timeline!!!
         String offsetUnitsStr = String.valueOf(offsetUnits);
 
         startTag("", "SegmentTemplate");
@@ -561,8 +559,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         attribute("", "timescale", String.valueOf(unitsPerSecond)); // units per second
         attribute("", "media", format.getUrl() + "&sq=$Number$");
         attribute("", "startNumber", String.valueOf(mInfo.getStartSegmentNum()));
-        // TESTING
-        // SegmentBase, SegmentTemplate or BaseURL
+        // Used in SegmentBase, SegmentTemplate or BaseURL
         attribute("", "presentationTimeOffset", offsetUnitsStr); // in units
         //attribute("", "availabilityTimeOffset", "43200000");
 

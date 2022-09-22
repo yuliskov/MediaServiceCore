@@ -537,8 +537,8 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
 
-        if (lengthSeconds <= 0) {
-            // For live streams (length == 0) set window that exceeds normal limits - 48hrs
+        // For premiere streams (length > 0) or regular streams (length == 0) set window that exceeds normal limits - 48hrs
+        if (mInfo.isLive() || lengthSeconds <= 0) {
             lengthSeconds = MAX_DURATION_SEC;
         }
 
@@ -547,7 +547,9 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         // Increase count a bit to compensate previous tweak
         int segmentCount = lengthSeconds / targetDurationSec * 10000 / 9999;
         // Increase offset a bit to compensate previous tweaks
-        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum() * 10000 / 9999;
+        // Streams to check:
+        // https://www.youtube.com/watch?v=drdemkJpgao
+        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum() * 100000 / 99999;
 
         String segmentDurationUnitsStr = String.valueOf(segmentDurationUnits);
         // Use offset to sync player timeline with MPD timeline!!!

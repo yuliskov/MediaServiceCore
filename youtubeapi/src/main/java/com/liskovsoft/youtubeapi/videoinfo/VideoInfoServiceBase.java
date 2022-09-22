@@ -12,12 +12,12 @@ import java.util.List;
 
 public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
-    private final DashInfoApi mDashInfo;
+    private final DashInfoApi mDashInfoApi;
     protected final AppService mAppService;
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
-        mDashInfo = RetrofitHelper.withRegExp(DashInfoApi.class);
+        mDashInfoApi = RetrofitHelper.withRegExp(DashInfoApi.class);
     }
 
     protected void decipherFormats(List<? extends VideoFormat> formats) {
@@ -96,6 +96,6 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        return RetrofitHelper.get(mDashInfo.getDashInfo(url));
+        return RetrofitHelper.get(mDashInfoApi.getDashInfo(url));
     }
 }

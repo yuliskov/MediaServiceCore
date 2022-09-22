@@ -100,6 +100,10 @@ public class VideoInfo {
         return mDashManifestUrl;
     }
 
+    public void setDashManifestUrl(String dashManifestUrl) {
+        mDashManifestUrl = dashManifestUrl;
+    }
+
     public String getPlayerStoryboardSpec() {
         return mPlayerStoryboardSpec;
     }

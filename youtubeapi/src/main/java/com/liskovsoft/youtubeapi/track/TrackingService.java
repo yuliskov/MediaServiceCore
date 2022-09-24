@@ -11,12 +11,12 @@ import retrofit2.Call;
 public class TrackingService {
     private static final String TAG = TrackingService.class.getSimpleName();
     private static TrackingService sInstance;
-    private final TrackingManager mTrackingManager;
+    private final TrackingApi mTrackingApi;
     private final AppService mAppService;
     private final VideoInfoServiceSigned mVideoInfoServiceSigned;
 
     private TrackingService() {
-        mTrackingManager = RetrofitHelper.withJsonPath(TrackingManager.class);
+        mTrackingApi = RetrofitHelper.withJsonPath(TrackingApi.class);
         mAppService = AppService.instance();
         mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
     }
@@ -70,6 +70,16 @@ public class TrackingService {
         );
     }
 
+    public void pauseWatchHistory(String authorization) {
+        Call<Void> wrapper = mTrackingApi.pauseWatchHistory(TrackingApiParams.getHistoryQuery(), authorization);
+        RetrofitHelper.get(wrapper);
+    }
+
+    public void resumeWatchHistory(String authorization) {
+        Call<Void> wrapper = mTrackingApi.resumeWatchHistory(TrackingApiParams.getHistoryQuery(), authorization);
+        RetrofitHelper.get(wrapper);
+    }
+
     private void updateWatchTime(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
                                      String eventId, String visitorMonitoringData, String authorization) {
         updateWatchTimeFull(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, authorization);
@@ -87,7 +97,7 @@ public class TrackingService {
             return;
         }
 
-        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecord(
+        Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
                 videoId,
                 lengthSec, positionSec, positionSec,
                 clientPlaybackNonce,
@@ -98,7 +108,7 @@ public class TrackingService {
 
         RetrofitHelper.get(wrapper); // execute
 
-        wrapper = mTrackingManager.updateWatchTime(
+        wrapper = mTrackingApi.updateWatchTime(
                 videoId, lengthSec, positionSec, positionSec,
                 clientPlaybackNonce, eventId, authorization
         );
@@ -111,7 +121,7 @@ public class TrackingService {
 
         Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
-        Call<WatchTimeEmptyResult> wrapper = mTrackingManager.createWatchRecordShort(
+        Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecordShort(
                 videoId,
                 clientPlaybackNonce,
                 eventId,
@@ -121,7 +131,7 @@ public class TrackingService {
 
         RetrofitHelper.get(wrapper); // execute
 
-        wrapper = mTrackingManager.updateWatchTimeShort(
+        wrapper = mTrackingApi.updateWatchTimeShort(
                 videoId, positionSec, positionSec,
                 clientPlaybackNonce, eventId, authorization
         );

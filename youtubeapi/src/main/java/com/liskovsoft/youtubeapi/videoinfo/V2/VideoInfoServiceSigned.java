@@ -23,6 +23,10 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         return sInstance;
     }
 
+    public VideoInfo getVideoInfo(String videoId, String authorization) {
+        return getVideoInfo(videoId, null, authorization);
+    }
+
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams, String authorization) {
         VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization);
 

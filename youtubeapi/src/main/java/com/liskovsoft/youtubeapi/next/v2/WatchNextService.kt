@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
-class WatchNextServiceV2 private constructor() {
+class WatchNextService private constructor() {
     private var mWatchNextManager = RetrofitHelper.withGson(WatchNextApi::class.java)
     private val mSignInManager = YouTubeSignInService.instance()
     private val mAppService = AppService.instance();
@@ -85,11 +85,11 @@ class WatchNextServiceV2 private constructor() {
     }
 
     companion object {
-        private var sInstance: WatchNextServiceV2? = null
+        private var sInstance: WatchNextService? = null
         @JvmStatic
-        fun instance(): WatchNextServiceV2? {
+        fun instance(): WatchNextService? {
             if (sInstance == null) {
-                sInstance = WatchNextServiceV2()
+                sInstance = WatchNextService()
             }
             return sInstance
         }

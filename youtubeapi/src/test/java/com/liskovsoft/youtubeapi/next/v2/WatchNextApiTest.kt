@@ -20,7 +20,7 @@ class WatchNextApiTest {
     private var mApi: WatchNextApi? = null
     private var mManagerMock: WatchNextApiMock? = null
     private var mManagerMock2: WatchNextApiMock2? = null
-    private var mServiceV2: WatchNextServiceV2? = null
+    private var mService: WatchNextService? = null
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -28,7 +28,7 @@ class WatchNextApiTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         mApi = RetrofitHelper.withGson(WatchNextApi::class.java)
-        mServiceV2 = WatchNextServiceV2.instance()
+        mService = WatchNextService.instance()
 
         mManagerMock = MockUtils.mockWithGson(WatchNextApiMock::class.java)
         mManagerMock2 = MockUtils.mockWithGson(WatchNextApiMock2::class.java)
@@ -50,7 +50,7 @@ class WatchNextApiTest {
 
     @Test
     fun testThatMockedWatchNextResultCanBeConverted() {
-        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextApi)
+        mService!!.setWatchNextManager(mManagerMock as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -59,7 +59,7 @@ class WatchNextApiTest {
 
     @Test
     fun testThatMockedWatchNextSuggestionsNotEmpty() {
-        mServiceV2!!.setWatchNextManager(mManagerMock as WatchNextApi)
+        mService!!.setWatchNextManager(mManagerMock as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -70,7 +70,7 @@ class WatchNextApiTest {
 
     @Test
     fun testThatMockedWatchNextResultCanBeConverted2() {
-        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextApi)
+        mService!!.setWatchNextManager(mManagerMock2 as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -81,7 +81,7 @@ class WatchNextApiTest {
     fun testThatMockedWatchNextSuggestionsNotEmpty2() {
         // Testing groups inside a Chip
 
-        mServiceV2!!.setWatchNextManager(mManagerMock2 as WatchNextApi)
+        mService!!.setWatchNextManager(mManagerMock2 as WatchNextApi)
 
         val metadata = getMediaItemMetadataUnsigned()
 
@@ -106,7 +106,7 @@ class WatchNextApiTest {
         val metadata = getMediaItemMetadataUnsigned()
 
         val firstGroup = metadata?.suggestions?.first()
-        val continuation = mServiceV2!!.continueGroup(firstGroup)
+        val continuation = mService!!.continueGroup(firstGroup)
 
         assertNotNull("Continuation not null", continuation)
     }
@@ -128,7 +128,7 @@ class WatchNextApiTest {
         assertNotNull("Contains date", metadata?.publishedDate)
     }
 
-    private fun getMediaItemMetadataUnsigned() = mServiceV2!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
+    private fun getMediaItemMetadataUnsigned() = mService!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)

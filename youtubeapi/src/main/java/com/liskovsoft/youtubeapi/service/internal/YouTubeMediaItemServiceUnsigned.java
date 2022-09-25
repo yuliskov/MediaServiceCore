@@ -52,7 +52,7 @@ public class YouTubeMediaItemServiceUnsigned implements MediaItemServiceInt {
 
     @Override
     public void updateHistoryPosition(String videoId, String lengthSec,
-                                      String eventId, String vmData, float positionSec) {
+                                      String eventId, String vmData, String ofParam, float positionSec) {
         // Do nothing, user is unsigned
     }
 

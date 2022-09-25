@@ -225,7 +225,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         }
 
         mMediaItemManagerReal.updateHistoryPosition(formatInfo.getVideoId(), formatInfo.getLengthSeconds(),
-                formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), positionSec);
+                formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam(), positionSec);
     }
 
     @Override

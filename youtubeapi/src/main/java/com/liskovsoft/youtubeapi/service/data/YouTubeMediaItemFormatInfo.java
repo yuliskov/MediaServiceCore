@@ -39,6 +39,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mHlsManifestUrl;
     private String mEventId; // used in tracking
     private String mVisitorMonitoringData; // used in tracking
+    private String mOfParam; // used in tracking
     private String mStoryboardSpec;
     private boolean mIsUnplayable;
     private String mPlayabilityStatus;
@@ -93,6 +94,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
         formatInfo.mEventId = videoInfo.getEventId();
         formatInfo.mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
+        formatInfo.mOfParam = videoInfo.getOfParam();
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
@@ -324,16 +326,12 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mEventId;
     }
 
-    public void setEventId(String eventId) {
-        mEventId = eventId;
-    }
-
     public String getVisitorMonitoringData() {
         return mVisitorMonitoringData;
     }
 
-    public void setVisitorMonitoringData(String visitorMonitoringData) {
-        mVisitorMonitoringData = visitorMonitoringData;
+    public String getOfParam() {
+        return mOfParam;
     }
 
     /**

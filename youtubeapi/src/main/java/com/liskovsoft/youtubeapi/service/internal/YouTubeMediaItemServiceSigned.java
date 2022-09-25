@@ -90,7 +90,7 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
     }
 
     @Override
-    public void updateHistoryPosition(String videoId, String lengthSec, String eventId, String vmData, float positionSec) {
+    public void updateHistoryPosition(String videoId, String lengthSec, String eventId, String vmData, String ofParam, float positionSec) {
         if (lengthSec == null) {
             Log.e(TAG, "Can't update history: lengthSec is null");
             return;
@@ -98,7 +98,7 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
 
         mTrackingService.updateWatchTime(
                 videoId, positionSec, Float.parseFloat(lengthSec), eventId,
-                vmData, mSignInManager.getAuthorizationHeader());
+                vmData, ofParam, mSignInManager.getAuthorizationHeader());
     }
 
     @Override

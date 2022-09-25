@@ -98,7 +98,7 @@ public class TrackingApiInstrumentedTest {
         VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecordShort(
-                videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
+                videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam(), sAuthorization
         );
 
         return wrapper.execute();
@@ -122,7 +122,7 @@ public class TrackingApiInstrumentedTest {
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
-                positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), sAuthorization
+                positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam(), sAuthorization
         );
 
         return wrapper.execute();

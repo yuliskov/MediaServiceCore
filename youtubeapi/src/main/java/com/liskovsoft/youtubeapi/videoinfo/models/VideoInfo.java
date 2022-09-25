@@ -13,6 +13,7 @@ import java.util.List;
 public class VideoInfo {
     private static final String PARAM_EVENT_ID = "ei";
     private static final String PARAM_VM = "vm";
+    private static final String PARAM_OF = "of";
     private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";
     private static final String STATUS_ERROR = "ERROR";
     private static final String STATUS_OFFLINE = "LIVE_STREAM_OFFLINE";
@@ -71,6 +72,7 @@ public class VideoInfo {
     // Values used in tracking actions
     private String mEventId;
     private String mVisitorMonitoringData;
+    private String mOfParam;
 
     private long mStartTimeMs;
     private int mStartSegmentNum;
@@ -136,6 +138,19 @@ public class VideoInfo {
      */
     public void setVisitorMonitoringData(String visitorMonitoringData) {
         mVisitorMonitoringData = visitorMonitoringData;
+    }
+
+    public String getOfParam() {
+        parseTrackingParams();
+
+        return mOfParam;
+    }
+
+    /**
+     * Intended to merge signed and unsigned infos (no-playback fix)
+     */
+    public void setOfParam(String ofParam) {
+        mOfParam = ofParam;
     }
 
     public String getPlaybackUrl() {
@@ -217,6 +232,7 @@ public class VideoInfo {
 
             mEventId = queryString.get(PARAM_EVENT_ID);
             mVisitorMonitoringData = queryString.get(PARAM_VM);
+            mOfParam = queryString.get(PARAM_OF);
         }
     }
 

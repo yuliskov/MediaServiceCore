@@ -33,11 +33,13 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on the live streams...");
             // Contains dashManifestUrl!!!
-            VideoInfo infoLive = getVideoInfoLive(videoId, clickTrackingParams, authorization);
-            if (infoLive != null && infoLive.getDashManifestUrl() != null) {
-                result.sync(getDashInfo(infoLive.getDashManifestUrl()));
-                result.setDashManifestUrl(infoLive.getDashManifestUrl());
-            }
+            //result = getVideoInfoLive(videoId, clickTrackingParams, authorization);
+            result.sync(getDashInfo2(result));
+            //VideoInfo infoLive = getVideoInfoLive(videoId, clickTrackingParams, authorization);
+            //if (infoLive != null && infoLive.getDashManifestUrl() != null) {
+            //    result.sync(getDashInfo(infoLive.getDashManifestUrl()));
+            //    result.setDashManifestUrl(infoLive.getDashManifestUrl());
+            //}
         } else if (result != null && result.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams, authorization);

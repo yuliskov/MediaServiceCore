@@ -4,7 +4,10 @@ import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
-import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
 import java.util.ArrayList;
@@ -91,11 +94,25 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    protected DashInfo getDashInfo(String url) {
+    protected DashInfoUrl getDashInfo(String url) {
         if (url == null) {
             return null;
         }
 
         return RetrofitHelper.get(mDashInfoApi.getDashInfo(url));
+    }
+
+    protected DashInfoFormat getDashInfo2(VideoInfo videoInfo) {
+        if (videoInfo == null || videoInfo.getAdaptiveFormats() == null || videoInfo.getAdaptiveFormats().isEmpty()) {
+            return null;
+        }
+
+        AdaptiveVideoFormat format = videoInfo.getAdaptiveFormats().get(videoInfo.getAdaptiveFormats().size() - 1); // smallest format
+        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
+        DashInfoFormat dashInfo = RetrofitHelper.get(mDashInfoApi.getDashInfo2(format.getUrl()));
+        if (dashInfo != null) {
+            dashInfo.setSegmentDurationSec(format.getTargetDurationSec());
+        }
+        return dashInfo;
     }
 }

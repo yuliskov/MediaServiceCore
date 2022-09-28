@@ -98,8 +98,10 @@ public class VideoFormat {
     private int mTargetDurationSec;
     @JsonPath("$.maxDvrDurationSec")
     private int mMaxDvrDurationSec;
+    private String mExtractedCipher;
 
     public String getUrl() {
+        parseCipher();
         // Bypass query creation if url isn't transformed
         return mUrlQuery != null ? mUrlQuery.toString() : mUrl;
     }
@@ -109,7 +111,8 @@ public class VideoFormat {
     }
 
     public String getSignatureCipher() {
-        return parseCipher();
+        parseCipher();
+        return mExtractedCipher;
     }
 
     public void setSignature(String signature) {
@@ -316,20 +319,16 @@ public class VideoFormat {
         return mLanguage;
     }
 
-    private String parseCipher() {
-        String result = null;
-
+    private void parseCipher() {
         if (mUrl == null) { // items signatures are ciphered
             String cipherUri = mCipher == null ? mSignatureCipher : mCipher;
 
             if (cipherUri != null) {
                 UrlQueryString queryString = UrlQueryStringFactory.parse(cipherUri);
                 mUrl = queryString.get(PARAM_URL);
-                result = queryString.get(PARAM_S);
+                mExtractedCipher = queryString.get(PARAM_S);
             }
         }
-
-        return result;
     }
 
     public String getApproxDurationMs() {

@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AppService {
@@ -47,6 +48,14 @@ public class AppService {
     //
     //    return mDuktape;
     //}
+
+    public String decipher(String ciphered) {
+        if (ciphered == null) {
+            return null;
+        }
+
+        return decipher(Collections.singletonList(ciphered)).get(0);
+    }
 
     /**
      * Decipher strings using js code

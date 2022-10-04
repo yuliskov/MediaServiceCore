@@ -2,14 +2,12 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
-public class DashInfoFormat implements DashInfo {
-    private static final int MAX_DURATION_MS = 24 * 60 * 60 * 1_000;
-
+public class DashInfoFormat extends DashInfoFormatBase {
     /**
-     * Sequence-Number: 309188
+     * Sequence-Number: 309188 (inaccurate???)
      */
     @RegExp("Sequence-Number: (\\d*)")
-    private String mLastSegmentNum;
+    private String mLastSegmentNumStr;
 
     /**
      * Ingestion-Walltime-Us: 1664281048614296
@@ -30,53 +28,40 @@ public class DashInfoFormat implements DashInfo {
     @RegExp("Stream-Duration-Us: (\\d*)")
     private String mStreamDurationUs;
 
-    private int mSegmentDurationSec;
-    private long mStartTimeMs = -1;
-    private int mStartSegmentNum = -1;
+    /**
+     * Target-Duration-Us: 2000000 (inaccurate???)
+     */
+    //@RegExp("Target-Duration-Us: (\\d*)")
+    //private String mSegmentDurationUs;
 
-    private int getLastSegmentNum() {
-        if (mLastSegmentNum == null) {
-            return 0;
+    private int mLastSegmentNum = -1;
+    private long mLastSegmentTimeMs = -1;
+    private long mStreamDurationMs = -1;
+
+    @Override
+    protected int getLastSegmentNum() {
+        if (mLastSegmentNum == -1) {
+            mLastSegmentNum = Integer.parseInt(mLastSegmentNumStr);
         }
 
-        return Integer.parseInt(mLastSegmentNum);
-    }
-
-    private long getLastSegmentTimeMs() {
-        if (mLastSegmentTimeUs == null) {
-            return 0;
-        }
-
-        return Long.parseLong(mLastSegmentTimeUs) / 1_000;
-    }
-
-    public void setSegmentDurationSec(int durationSec) {
-        mSegmentDurationSec = durationSec;
+        return mLastSegmentNum;
     }
 
     @Override
-    public long getStartTimeMs() {
-        if (mStartTimeMs == -1) {
-            int segmentNum = getLastSegmentNum() - getStartSegmentNum();
-            mStartTimeMs = getLastSegmentTimeMs() - ((long) segmentNum * mSegmentDurationSec * 1_000);
+    protected long getLastSegmentTimeMs() {
+        if (mLastSegmentTimeMs == -1) {
+            mLastSegmentTimeMs = Long.parseLong(mLastSegmentTimeUs) / 1_000;
         }
 
-        return mStartTimeMs;
+        return mLastSegmentTimeMs;
     }
 
     @Override
-    public int getStartSegmentNum() {
-        if (mStartSegmentNum == -1) {
-            int maxSegmentCount = MAX_DURATION_MS / (mSegmentDurationSec * 1_000);
-            int startSegment = getLastSegmentNum() - maxSegmentCount;
-            mStartSegmentNum = Math.max(startSegment, 0);
+    protected long getStreamDurationMs() {
+        if (mStreamDurationMs == -1) {
+            mStreamDurationMs = Long.parseLong(mStreamDurationUs) / 1_000;
         }
 
-        return mStartSegmentNum;
-    }
-
-    @Override
-    public boolean isSeekable() {
-        return true;
+        return mStreamDurationMs;
     }
 }

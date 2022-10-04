@@ -67,6 +67,11 @@ public class DashInfoUrl implements DashInfo {
     private int mTimeShiftBufferDepthMs = -1;
 
     @Override
+    public int getSegmentDurationUs() {
+        return getMinimumUpdatePeriodMs() * 1_000;
+    }
+
+    @Override
     public int getStartSegmentNum() {
         calculateTimings();
 

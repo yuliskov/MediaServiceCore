@@ -47,6 +47,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mStartTimestamp;
     private long mStartTimeMs;
     private int mStartSegmentNum;
+    private int mSegmentDurationUs;
 
     public YouTubeMediaItemFormatInfo() {
         mCreatedTimeMs = System.currentTimeMillis();
@@ -102,6 +103,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mStartTimestamp = videoInfo.getStartTimestamp();
         formatInfo.mStartTimeMs = videoInfo.getStartTimeMs();
         formatInfo.mStartSegmentNum = videoInfo.getStartSegmentNum();
+        formatInfo.mSegmentDurationUs = videoInfo.getSegmentDurationUs();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -320,6 +322,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public int getStartSegmentNum() {
         return mStartSegmentNum;
+    }
+
+    @Override
+    public int getSegmentDurationUs() {
+        return mSegmentDurationUs;
     }
 
     public String getEventId() {

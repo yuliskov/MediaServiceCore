@@ -1,15 +1,15 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeOtfSegmentParser.OtfSegment;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
-import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeOtfSegmentParser.OtfSegment;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -21,21 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
  */
 public class YouTubeMPDBuilder implements MPDBuilder {
-    private static final String MIME_WEBM_AUDIO = "audio/webm";
-    private static final String MIME_WEBM_VIDEO = "video/webm";
-    private static final String MIME_MP4_AUDIO = "audio/mp4";
-    private static final String MIME_MP4_VIDEO = "video/mp4";
     private static final String NULL_INDEX_RANGE = "0-0";
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = YouTubeMPDBuilder.class.getSimpleName();
-    private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
     private static final int MAX_DURATION_SEC = 48 * 60 * 60;
     private final MediaItemFormatInfo mInfo;
     private XmlSerializer mXmlSerializer;
@@ -224,7 +217,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             break;
         }
 
-        writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem), firstItem.getLanguage());
+        writeMediaListPrologue(String.valueOf(mId++), MediaFormatUtils.extractMimeType(firstItem), firstItem.getLanguage());
 
         // Representation
         for (MediaFormat item : filtered) {
@@ -366,19 +359,19 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         //fixOTF(mediaItem);
 
         Set<MediaFormat> placeholder = null;
-        String mimeType = extractMimeType(mediaItem);
+        String mimeType = MediaFormatUtils.extractMimeType(mediaItem);
         if (mimeType != null) {
             switch (mimeType) {
-                case MIME_MP4_VIDEO:
+                case MediaFormatUtils.MIME_MP4_VIDEO:
                     placeholder = mMP4Videos;
                     break;
-                case MIME_WEBM_VIDEO:
+                case MediaFormatUtils.MIME_WEBM_VIDEO:
                     placeholder = mWEBMVideos;
                     break;
-                case MIME_MP4_AUDIO:
+                case MediaFormatUtils.MIME_MP4_AUDIO:
                     placeholder = getMP4Audios(mediaItem.getLanguage());
                     break;
-                case MIME_WEBM_AUDIO:
+                case MediaFormatUtils.MIME_WEBM_AUDIO:
                     placeholder = getWEBMAudios(mediaItem.getLanguage());
                     break;
             }
@@ -399,41 +392,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         mSubs.add(sub);
     }
 
-    private String extractMimeType(MediaFormat item) {
-        if (item.getGlobalSegmentList() != null) {
-            return item.getMimeType();
-        }
-
-        String codecs = extractCodecs(item);
-
-        if (codecs.startsWith("vorbis") ||
-                codecs.startsWith("opus")) {
-            return MIME_WEBM_AUDIO;
-        }
-
-        if (codecs.startsWith("vp9")) {
-            return MIME_WEBM_VIDEO;
-        }
-
-        if (codecs.startsWith("mp4a") ||
-                codecs.startsWith("ec-3") ||
-                    codecs.startsWith("ac-3")) {
-            return MIME_MP4_AUDIO;
-        }
-
-        if (codecs.startsWith("avc") ||
-                codecs.startsWith("av01")) {
-            return MIME_MP4_VIDEO;
-        }
-
-        return null;
-    }
-
     private void writeMediaFormatTag(MediaFormat format) {
         startTag("", "Representation");
 
         attribute("", "id", format.getITag());
-        attribute("", "codecs", extractCodecs(format));
+        attribute("", "codecs", MediaFormatUtils.extractCodecs(format));
         attribute("", "startWithSAP", "1");
         attribute("", "bandwidth", format.getBitrate());
 
@@ -533,23 +496,33 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         // https://docs.aws.amazon.com/mediapackage/latest/ug/segtemp-format-duration.html#how-stemp-dur-works
         // ((wall clock time - availabilityStartTime ) / (duration / timescale )) + startNumber
 
-        int unitsPerSecond = 1000;
-        int targetDurationSec = Integer.parseInt(format.getTargetDurationSec());
+        int unitsPerSecond = 1_000_000;
+
+        // Present on live streams only.
+        int segmentDurationUs = mInfo.getSegmentDurationUs();
+
+        if (segmentDurationUs <= 0) {
+            // Inaccurate. Present on past (!) live streams.
+            segmentDurationUs = Integer.parseInt(format.getTargetDurationSec()) * 1_000_000;
+        }
+
         int lengthSeconds = Integer.parseInt(mInfo.getLengthSeconds());
 
-        // For premiere streams (length > 0) or regular streams (length == 0) set window that exceeds normal limits - 48hrs
         if (mInfo.isLive() || lengthSeconds <= 0) {
+            // For premiere streams (length > 0) or regular streams (length == 0) set window that exceeds normal limits - 48hrs
             lengthSeconds = MAX_DURATION_SEC;
         }
 
         // To make long streams (12hrs) seekable we should decrease size of the segment a bit
-        int segmentDurationUnits = targetDurationSec * unitsPerSecond * 9999 / 10000;
+        //long segmentDurationUnits = (long) targetDurationSec * unitsPerSecond * 9999 / 10000;
+        int segmentDurationUnits = (int)(segmentDurationUs * (long) unitsPerSecond / 1_000_000);
         // Increase count a bit to compensate previous tweak
-        int segmentCount = lengthSeconds / targetDurationSec * 10000 / 9999;
+        //long segmentCount = (long) lengthSeconds / targetDurationSec * 10000 / 9999;
+        int segmentCount = (int)(lengthSeconds * (long) unitsPerSecond / segmentDurationUnits);
         // Increase offset a bit to compensate previous tweaks
         // Streams to check:
         // https://www.youtube.com/watch?v=drdemkJpgao
-        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum() * 100000 / 99999;
+        long offsetUnits = (long) segmentDurationUnits * mInfo.getStartSegmentNum();
 
         String segmentDurationUnitsStr = String.valueOf(segmentDurationUnits);
         // Use offset to sync player timeline with MPD timeline!!!
@@ -621,13 +594,6 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    private String extractCodecs(MediaFormat item) {
-        // input example: video/mp4;+codecs="avc1.640033"
-        Matcher matcher = CODECS_PATTERN.matcher(item.getMimeType());
-        matcher.find();
-        return matcher.group(1);
     }
 
     /**
@@ -730,22 +696,14 @@ public class YouTubeMPDBuilder implements MPDBuilder {
 
     private boolean isLive() {
         for (MediaFormat item : mMP4Videos) {
-            return isLiveMedia(item);
+            return MediaFormatUtils.isLiveMedia(item);
         }
 
         for (MediaFormat item : mWEBMVideos) {
-            return isLiveMedia(item);
+            return MediaFormatUtils.isLiveMedia(item);
         }
 
         return false;
-    }
-
-    private boolean isLiveMedia(MediaFormat item) {
-        boolean isLive =
-                item.getUrl().contains("live=1") ||
-                        item.getUrl().contains("yt_live_broadcast");
-
-        return isLive;
     }
 
     private void fixOTF(MediaFormat mediaItem) {

@@ -8,8 +8,11 @@ import retrofit2.http.Url;
 
 public interface DashInfoApi {
     @GET()
-    Call<DashInfoUrl> getDashInfo(@Url String url);
+    Call<DashInfoUrl> getDashInfoUrl(@Url String url);
 
     @GET()
-    Call<DashInfoFormat> getDashInfo2(@Url String url);
+    Call<DashInfoFormat> getDashInfoFormat(@Url String url);
+
+    @GET()
+    Call<Void> getDashInfoFormat2(@Url String url);
 }

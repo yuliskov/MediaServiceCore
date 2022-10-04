@@ -35,7 +35,7 @@ public class DashInfoApiTest {
 
     @Test
     public void testDashInfoNotEmpty() throws IOException {
-        Call<DashInfoUrl> dashInfoWrapper = mService.getDashInfo(DASH_URL);
+        Call<DashInfoUrl> dashInfoWrapper = mService.getDashInfoUrl(DASH_URL);
 
         DashInfoUrl dashInfo = dashInfoWrapper.execute().body();
 
@@ -44,10 +44,9 @@ public class DashInfoApiTest {
 
     @Test
     public void testDashInfo2NotEmpty() throws IOException {
-        Call<DashInfoFormat> dashInfoWrapper = mService.getDashInfo2(DASH_URL2);
+        Call<DashInfoFormat> dashInfoWrapper = mService.getDashInfoFormat(DASH_URL2);
 
         DashInfoFormat dashInfo = dashInfoWrapper.execute().body();
-        dashInfo.setSegmentDurationSec(2);
 
         assertTrue("start segment not null", dashInfo.getStartSegmentNum() > 0);
         assertTrue("start segment time not null", dashInfo.getStartTimeMs() > 0);

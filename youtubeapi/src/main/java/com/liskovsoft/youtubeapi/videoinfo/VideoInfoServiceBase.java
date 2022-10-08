@@ -110,9 +110,16 @@ public abstract class VideoInfoServiceBase {
         AdaptiveVideoFormat format = videoInfo.getAdaptiveFormats().get(videoInfo.getAdaptiveFormats().size() - 1); // smallest format
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        //DashInfoFormat dashInfo = RetrofitHelper.get(mDashInfoApi.getDashInfoFormat(format.getUrl()));
-        //return dashInfo;
 
-        return new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+        DashInfo dashInfo;
+
+        try {
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+        } catch (ArithmeticException | NumberFormatException ex) {
+            // Empty results received. Url isn't available or something like that
+            dashInfo = RetrofitHelper.get(mDashInfoApi.getDashInfoFormat(format.getUrl()));
+        }
+
+        return dashInfo;
     }
 }

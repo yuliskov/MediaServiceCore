@@ -29,7 +29,8 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams, String authorization) {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
-        VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization);
+        //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
+        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams, authorization);
 
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on the live streams...");
@@ -57,6 +58,9 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         return result;
     }
 
+    /**
+     * NOTE: Doesn't contain dash manifest url and hls link
+     */
     private VideoInfo getVideoInfoPrivate(String videoId, String clickTrackingParams, String authorization) {
         String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryPrivate(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorId());

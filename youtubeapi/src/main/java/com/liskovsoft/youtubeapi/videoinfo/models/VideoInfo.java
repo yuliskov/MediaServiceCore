@@ -107,6 +107,10 @@ public class VideoInfo {
         mDashManifestUrl = dashManifestUrl;
     }
 
+    public void setHlsManifestUrl(String hlsManifestUrl) {
+        mHlsManifestUrl = hlsManifestUrl;
+    }
+
     public String getPlayerStoryboardSpec() {
         return mPlayerStoryboardSpec;
     }

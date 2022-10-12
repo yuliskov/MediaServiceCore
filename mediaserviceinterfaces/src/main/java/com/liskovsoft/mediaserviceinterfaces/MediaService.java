@@ -8,4 +8,6 @@ public interface MediaService {
     LiveChatService getLiveChatService();
     void invalidateCache();
     void refreshCacheIfNeeded();
+    boolean isOldStreamsEnabled();
+    void enableOldStreams(boolean enable);
 }

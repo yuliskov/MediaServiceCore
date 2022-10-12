@@ -42,7 +42,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
                 result.setDashManifestUrl(result2.getDashManifestUrl());
                 result.setHlsManifestUrl(result2.getHlsManifestUrl());
             }
-        } else if (result != null && result.isRent()) {
+        } else if (result != null && result.isRent() && result.isUnplayable()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams, authorization);
         } else if (result != null && result.isUnplayable()) {

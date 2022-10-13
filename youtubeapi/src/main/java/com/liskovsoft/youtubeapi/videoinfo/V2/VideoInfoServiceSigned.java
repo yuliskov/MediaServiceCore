@@ -30,18 +30,19 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams, String authorization) {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
-        VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
+        //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
+        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams, authorization);
 
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on the live streams...");
             result.sync(getDashInfo2(result));
 
             // Add dash and hls manifests (for backward compatibility)
-            if (YouTubeMediaService.instance().isOldStreamsEnabled()) {
-                VideoInfo result2 = getVideoInfoLive(videoId, clickTrackingParams, authorization);
-                result.setDashManifestUrl(result2.getDashManifestUrl());
-                result.setHlsManifestUrl(result2.getHlsManifestUrl());
-            }
+            //if (YouTubeMediaService.instance().isOldStreamsEnabled()) {
+            //    VideoInfo result2 = getVideoInfoLive(videoId, clickTrackingParams, authorization);
+            //    result.setDashManifestUrl(result2.getDashManifestUrl());
+            //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
+            //}
         } else if (result != null && result.isRent() && result.isUnplayable()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams, authorization);

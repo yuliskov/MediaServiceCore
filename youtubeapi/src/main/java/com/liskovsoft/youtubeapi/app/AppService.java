@@ -57,6 +57,14 @@ public class AppService {
         return decipher(Collections.singletonList(ciphered)).get(0);
     }
 
+    public String throttleFix(String throttled) {
+        if (throttled == null) {
+            return null;
+        }
+
+        return throttleFix(Collections.singletonList(throttled)).get(0);
+    }
+
     /**
      * Decipher strings using js code
      */

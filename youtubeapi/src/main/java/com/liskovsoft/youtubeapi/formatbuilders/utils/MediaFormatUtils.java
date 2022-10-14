@@ -107,4 +107,12 @@ public class MediaFormatUtils {
 
         return isLive;
     }
+
+    public static boolean isAudio(String mimeType) {
+        return Helpers.startsWith(mimeType, "audio");
+    }
+
+    public static boolean isVideo(String mimeType) {
+        return Helpers.startsWith(mimeType, "video");
+    }
 }

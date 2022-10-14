@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoFormat2;
@@ -108,9 +109,8 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        //AdaptiveVideoFormat format = videoInfo.getAdaptiveFormats().get(videoInfo.getAdaptiveFormats().size() - 1); // smallest format
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
-                item -> Helpers.startsWith(item.getMimeType(), "audio")); // smallest format
+                item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
         format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));

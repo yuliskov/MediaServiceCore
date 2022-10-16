@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common.models.V2;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class Metadata {
     }
 
     public String getViewCountText() {
-        return YouTubeMediaServiceHelper.createInfo(getViewCountText1(), getViewCountText2());
+        return YouTubeHelper.createInfo(getViewCountText1(), getViewCountText2());
     }
 
     public String getPublishedTime() {

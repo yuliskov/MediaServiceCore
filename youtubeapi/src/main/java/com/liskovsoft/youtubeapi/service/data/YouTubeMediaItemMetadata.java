@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +62,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mVideoId = videoDetails.getVideoId();
             mediaItemMetadata.mPublishedDate = videoDetails.getPublishedDate();
 
-            mediaItemMetadata.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitle = YouTubeHelper.createInfo(
                     mediaItemMetadata.mAuthor,
                     videoDetails.getPublishedDate(),
                     videoDetails.getViewCountText());
-            mediaItemMetadata.mSecondTitleAlt = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitleAlt = YouTubeHelper.createInfo(
                     mediaItemMetadata.mAuthor,
                     videoDetails.getPublishedDate(),
                     videoDetails.getShortViewCountText());
@@ -74,7 +74,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         if (videoOwner != null) {
             mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
-            mediaItemMetadata.mAuthorImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(videoOwner.getThumbnails());
+            mediaItemMetadata.mAuthorImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(videoOwner.getThumbnails());
             mediaItemMetadata.mChannelId = videoOwner.getChannelId();
             Boolean subscribed = videoOwner.isSubscribed();
             mediaItemMetadata.mIsSubscribed = subscribed != null && subscribed;
@@ -84,10 +84,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             String author = mediaItemMetadata.mAuthor != null ? mediaItemMetadata.mAuthor : videoMetadata.getByLine();
             String publishedTime = videoMetadata.getPublishedTime() != null ? videoMetadata.getPublishedTime() : videoMetadata.getAlbumName();
             mediaItemMetadata.mTitle = videoMetadata.getTitle();
-            mediaItemMetadata.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitle = YouTubeHelper.createInfo(
                     author, publishedTime,
                     videoMetadata.getShortViewCount());
-            mediaItemMetadata.mSecondTitleAlt = YouTubeMediaServiceHelper.createInfo(
+            mediaItemMetadata.mSecondTitleAlt = YouTubeHelper.createInfo(
                     author,
                     videoMetadata.getPublishedDate(),
                     videoMetadata.getShortViewCount());

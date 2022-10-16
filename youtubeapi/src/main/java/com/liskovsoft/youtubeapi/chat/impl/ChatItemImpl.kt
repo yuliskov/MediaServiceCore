@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.chat.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
 import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatAction
-import com.liskovsoft.youtubeapi.common.models.kt.findLowResThumbnailUrl
+import com.liskovsoft.youtubeapi.common.models.kt.findOptimalResThumbnailUrl
 import com.liskovsoft.youtubeapi.common.models.kt.getText
 
 data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
@@ -24,6 +24,6 @@ data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
     }
 
     override fun getAuthorPhoto(): String? {
-        return messageRenderer?.authorPhoto?.findLowResThumbnailUrl()
+        return messageRenderer?.authorPhoto?.findOptimalResThumbnailUrl()
     }
 }

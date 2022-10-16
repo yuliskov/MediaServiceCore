@@ -11,6 +11,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupServiceInt;
@@ -430,7 +431,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
-        String nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup);
+        String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
 
         switch (mediaGroup.getType()) {
             case MediaGroup.TYPE_SEARCH:

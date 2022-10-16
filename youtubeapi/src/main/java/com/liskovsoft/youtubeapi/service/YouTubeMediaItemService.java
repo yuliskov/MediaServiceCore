@@ -12,6 +12,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
@@ -162,7 +163,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         checkSigned();
 
-        String nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup);
+        String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
 
         if (mediaGroup instanceof YouTubeMediaGroup) {
             return YouTubeMediaGroup.from(

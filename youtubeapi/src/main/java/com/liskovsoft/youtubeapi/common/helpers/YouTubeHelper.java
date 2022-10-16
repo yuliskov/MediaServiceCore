@@ -1,10 +1,9 @@
-package com.liskovsoft.youtubeapi.service;
+package com.liskovsoft.youtubeapi.common.helpers;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.common.models.kt.ThumbnailItem;
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
@@ -13,18 +12,18 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import java.util.Collections;
 import java.util.List;
 
-public final class YouTubeMediaServiceHelper {
+public final class YouTubeHelper {
     /**
      * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
      */
-    public static final int LOW_RES_THUMBNAIL_INDEX = 3;
+    public static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
     private static final int SHORTS_LEN_MS = 60 * 1_000;
 
     /**
      * Find optimal thumbnail for tv screen<br/>
-     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.common.models.kt.ItemHelperKt#findLowResThumbnailUrl(ThumbnailItem)}
+     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.common.models.kt.ItemHelperKt#findOptimalResThumbnailUrl(ThumbnailItem)}
      */
-    public static String findLowResThumbnailUrl(List<Thumbnail> thumbnails) {
+    public static String findOptimalResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null) {
             return null;
         }
@@ -35,7 +34,7 @@ public final class YouTubeMediaServiceHelper {
             return null;
         }
 
-        return thumbnails.get(size > LOW_RES_THUMBNAIL_INDEX ? LOW_RES_THUMBNAIL_INDEX : size - 1).getUrl();
+        return thumbnails.get(size > OPTIMAL_RES_THUMBNAIL_INDEX ? OPTIMAL_RES_THUMBNAIL_INDEX : size - 1).getUrl();
     }
 
     /**

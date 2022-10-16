@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class YouTubeAccount implements Account {
     private int mId;
@@ -19,7 +19,7 @@ public class YouTubeAccount implements Account {
         
         account.mName = accountInt.getName();
         account.mEmail = accountInt.getEmail();
-        account.mImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(accountInt.getThumbnails());
+        account.mImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(accountInt.getThumbnails());
         account.mIsSelected = accountInt.isSelected();
 
         return account;
@@ -41,7 +41,7 @@ public class YouTubeAccount implements Account {
         account.mRefreshToken = Helpers.parseStr(split, 4);
         account.mEmail = Helpers.parseStr(split, 5);
 
-        account.mImageUrl = YouTubeMediaServiceHelper.avatarBlockFix(account.mImageUrl);
+        account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
         return account;
     }

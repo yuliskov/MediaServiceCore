@@ -9,7 +9,7 @@ public class YouTubeLiveChatService implements LiveChatService {
     private static YouTubeLiveChatService sInstance;
     private final LiveChatServiceInt mLiveChatServiceInt;
 
-    public YouTubeLiveChatService() {
+    private YouTubeLiveChatService() {
         mLiveChatServiceInt = LiveChatServiceInt.instance();
     }
 

@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResultContinuation
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
 class WatchNextService private constructor() {
@@ -37,7 +37,7 @@ class WatchNextService private constructor() {
     }
 
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {
-        val nextKey = YouTubeMediaServiceHelper.extractNextKey(mediaGroup)
+        val nextKey = YouTubeHelper.extractNextKey(mediaGroup)
 
         if (nextKey == null) {
             return null;

@@ -15,7 +15,7 @@ import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.v1.models.NextVideo;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class YouTubeMediaItem implements MediaItem {
     private static int sId;
@@ -101,14 +101,14 @@ public class YouTubeMediaItem implements MediaItem {
         }
 
         video.mTitle = item.getTitle();
-        video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
+        video.mSecondTitle = YouTubeHelper.createInfo(
                 item.getDescBadgeText(), // Mostly it's a 4K label
                 item.getUserName(),
                 item.getPublishedTime(),
                 item.getViewCountText(),
                 item.getUpcomingEventText());
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mProductionDate = item.getPublishedTime();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
@@ -138,14 +138,14 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mTitle = item.getTitle();
-        video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
+        video.mSecondTitle = YouTubeHelper.createInfo(
                 item.getDescBadgeText(), // Mostly it's a 4K label
                 item.getUserName(),
                 item.getPublishedDate(),
                 item.getShortViewCountText() != null ? item.getShortViewCountText() : item.getViewCountText(),
                 item.getUpcomingEventText());
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mProductionDate = item.getPublishedDate();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
@@ -174,11 +174,11 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_MUSIC;
         video.mTitle = item.getTitle();
-        video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(
+        video.mSecondTitle = YouTubeHelper.createInfo(
                 item.getUserName(),
                 item.getViewsAndPublished());
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mProductionDate = item.getViewsAndPublished();
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
@@ -203,9 +203,9 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_CHANNEL;
         video.mTitle = item.getTitle();
-        video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(item.getSubscriberCountText());
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mSecondTitle = YouTubeHelper.createInfo(item.getSubscriberCountText());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mChannelId = item.getChannelId();
         video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
 
@@ -219,9 +219,9 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
         video.mTitle = item.getTitle();
-        video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(item.getVideoCountText());
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mSecondTitle = YouTubeHelper.createInfo(item.getVideoCountText());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mPlaylistId = item.getPlaylistId();
         video.mVideoId = item.getVideoId();
 
@@ -235,9 +235,9 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_PLAYLIST;
         video.mTitle = item.getTitle();
-        video.mSecondTitle = YouTubeMediaServiceHelper.createInfo(item.getVideoCountText());
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mSecondTitle = YouTubeHelper.createInfo(item.getVideoCountText());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mPlaylistId = item.getPlaylistId();
         video.mVideoId = item.getVideoId();
 
@@ -267,8 +267,8 @@ public class YouTubeMediaItem implements MediaItem {
 
         video.mMediaItemType = MediaItem.TYPE_VIDEO;
         video.mTitle = item.getTitle();
-        video.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(item.getThumbnails());
-        video.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(item.getThumbnails());
+        video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
+        video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistItemIndex();
@@ -286,8 +286,8 @@ public class YouTubeMediaItem implements MediaItem {
         
         item.mMediaItemType = type;
         item.mTitle = tab.getTitle();
-        item.mCardImageUrl = YouTubeMediaServiceHelper.findLowResThumbnailUrl(tab.getThumbnails());
-        item.mBackgroundImageUrl = YouTubeMediaServiceHelper.findHighResThumbnailUrl(tab.getThumbnails());
+        item.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(tab.getThumbnails());
+        item.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(tab.getThumbnails());
         item.mReloadPageKey = tab.getReloadPageKey();
         item.mHasNewContent = tab.hasNewContent();
         addCommonProps(item);

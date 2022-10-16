@@ -19,7 +19,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.search.models.SearchSection;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -295,7 +295,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         baseGroup.mMediaItems = !mediaItems.isEmpty() ? mediaItems : null;
         baseGroup.mNextPageKey = nextPageKey;
 
-        YouTubeMediaServiceHelper.filterIfNeeded(baseGroup);
+        YouTubeHelper.filterIfNeeded(baseGroup);
 
         return baseGroup;
     }

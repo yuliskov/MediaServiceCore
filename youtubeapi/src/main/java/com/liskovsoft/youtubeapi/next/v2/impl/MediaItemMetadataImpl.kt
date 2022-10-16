@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
     private val channelIdItem by lazy {
@@ -79,17 +79,17 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         suggestionList?.lastOrNull()?.shelf?.getItemWrappers()?.firstOrNull()?.getDescriptionText()
     }
     private val videoSecondTitle by lazy {
-        YouTubeMediaServiceHelper.createInfo(
+        YouTubeHelper.createInfo(
                 videoAuthor, viewCountText, publishedTime
         )
     }
     private val videoSecondTitleAlt by lazy {
-        YouTubeMediaServiceHelper.createInfo(
+        YouTubeHelper.createInfo(
                 videoAuthor, viewCountText, publishedDate
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
-    private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.findLowResThumbnailUrl() }
+    private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.findOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
         val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) MediaGroupImpl(it) else null }
         if (list?.size ?: 0 > 0)

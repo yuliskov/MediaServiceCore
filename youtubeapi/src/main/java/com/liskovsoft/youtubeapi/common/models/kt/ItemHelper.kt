@@ -1,9 +1,8 @@
 package com.liskovsoft.youtubeapi.common.models.kt
 
-import com.liskovsoft.youtubeapi.service.YouTubeMediaServiceHelper
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.VideoOwnerItem
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
 
@@ -19,12 +18,12 @@ fun LiveChatEmoji.getText() = if (isCustomEmoji == true) "" else emojiId
 /**
  * Find optimal thumbnail for tv screen
  */
-fun ThumbnailItem.findLowResThumbnailUrl() = thumbnails?.getOrElse(YouTubeMediaServiceHelper.LOW_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
+fun ThumbnailItem.findOptimalResThumbnailUrl() = thumbnails?.getOrElse(YouTubeHelper.OPTIMAL_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
 fun ThumbnailItem.findHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
 fun ThumbnailItem.Thumbnail.getUrl(): String? {
     var newUrl = if (url?.startsWith("//") == true) "https:$url" else url
 
-    newUrl = YouTubeMediaServiceHelper.avatarBlockFix(newUrl)
+    newUrl = YouTubeHelper.avatarBlockFix(newUrl)
 
     return newUrl
 }
@@ -100,7 +99,7 @@ fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays
 fun TileItem.getUserName() = null
 fun TileItem.getPublishedTime() = null
 fun TileItem.getViewCountText() =
-    YouTubeMediaServiceHelper.createInfo(*metadata?.tileMetadataRenderer?.lines?.map {
+    YouTubeHelper.createInfo(*metadata?.tileMetadataRenderer?.lines?.map {
         ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: emptyArray())
     }?.toTypedArray() ?: emptyArray()) ?: null
 fun TileItem.getUpcomingEventText() = null

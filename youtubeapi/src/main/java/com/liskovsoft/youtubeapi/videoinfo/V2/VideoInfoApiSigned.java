@@ -25,8 +25,8 @@ public interface VideoInfoApiSigned {
     @Headers({
             "Content-Type: application/json",
             "Origin: https://www.youtube.com",
-            "Authorization: SAPISIDHASH 1645062921_df354f673ee52822175a0a9f4813c39eea0f95cc",
-            "Cookie: __Secure-3PAPISID=JbTGDgqvynRIJ6ZM/A4LyWqJOh5AEa1zzf; __Secure-3PSID=GgjMe58C83cWIeEgmGKn9cRE2zjRGwRwlmFHwIk2x-O3_0TgTrK-lKpZ6q3MDo-To6Ahgw."
+            "Authorization: SAPISIDHASH 1665939741_f4314063cef6be2d7def26469eddbc875e4e1ec2",
+            "Cookie: __Secure-3PAPISID=uW97ftb2dTRkzljG/Azlth7GUL391eRj-s; __Secure-3PSID=PgjMe0R8IngkPF9NH3eR5kxkwyb7_c5ApEluxRGPp4KAkk73HgvcqNlkQAkaK4DVwf52Dw."
     })
     @POST("https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8")
     Call<VideoInfo> getVideoInfoRestricted(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);

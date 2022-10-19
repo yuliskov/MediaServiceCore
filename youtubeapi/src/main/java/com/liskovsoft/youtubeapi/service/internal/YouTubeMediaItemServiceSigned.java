@@ -10,8 +10,7 @@ import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.track.TrackingService;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceUnsigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
@@ -20,7 +19,7 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
     private final WatchNextServiceSigned mWatchNextServiceSigned;
     private final YouTubeSignInService mSignInManager;
     private final TrackingService mTrackingService;
-    private final VideoInfoServiceSigned mVideoInfoServiceSigned;
+    private final VideoInfoService mVideoInfoService;
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
     private final FeedbackService mFeedbackService;
@@ -29,7 +28,7 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
         mWatchNextServiceSigned = WatchNextServiceSigned.instance();
         mSignInManager = YouTubeSignInService.instance();
         mTrackingService = TrackingService.instance();
-        mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mVideoInfoService = VideoInfoService.instance();
         mActionsService = ActionsService.instance();
         mPlaylistService = PlaylistService.instance();
         mFeedbackService = FeedbackService.instance();
@@ -79,11 +78,11 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
     @Override
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         // Enable history (temporally, until no playback be fixed)
-        VideoInfo result = mVideoInfoServiceSigned.getVideoInfo(videoId, clickTrackingParams, mSignInManager.getAuthorizationHeader());
+        VideoInfo result = mVideoInfoService.getVideoInfo(videoId, clickTrackingParams, mSignInManager.getAuthorizationHeader());
 
         // Fix no playback bug (temporal fix)
         if (result == null || !result.isValid()) {
-            result = VideoInfoServiceUnsigned.instance().getVideoInfo(videoId, clickTrackingParams);
+            result = mVideoInfoService.getVideoInfo(videoId, clickTrackingParams, null);
         }
 
         return result;

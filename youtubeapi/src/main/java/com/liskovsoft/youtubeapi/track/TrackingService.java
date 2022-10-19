@@ -4,8 +4,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceSigned;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import retrofit2.Call;
 
 public class TrackingService {
@@ -13,12 +12,12 @@ public class TrackingService {
     private static TrackingService sInstance;
     private final TrackingApi mTrackingApi;
     private final AppService mAppService;
-    private final VideoInfoServiceSigned mVideoInfoServiceSigned;
+    private final VideoInfoService mVideoInfoService;
 
     private TrackingService() {
         mTrackingApi = RetrofitHelper.withJsonPath(TrackingApi.class);
         mAppService = AppService.instance();
-        mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mVideoInfoService = VideoInfoService.instance();
     }
 
     public static TrackingService instance() {

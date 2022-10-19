@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceSigned;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoServiceSigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 public class TrackingApiInstrumentedTest {
     private AppService mAppService;
     private TrackingApi mTrackingApi;
-    private VideoInfoServiceSigned mVideoInfoServiceSigned;
+    private VideoInfoService mVideoInfoService;
     private AuthService mAuthService;
     private static String sAuthorization;
     private BrowseServiceSigned mBrowseServiceSigned;
@@ -35,7 +35,7 @@ public class TrackingApiInstrumentedTest {
     public void setUp() {
         mTrackingApi = RetrofitHelper.withJsonPath(TrackingApi.class);
         mAppService = AppService.instance();
-        mVideoInfoServiceSigned = VideoInfoServiceSigned.instance();
+        mVideoInfoService = VideoInfoService.instance();
         mAuthService = AuthService.instance();
         if (sAuthorization == null) {
             sAuthorization = TestHelpersV2.getAuthorization();
@@ -95,7 +95,7 @@ public class TrackingApiInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecordShort(
                 videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam(), sAuthorization
@@ -118,7 +118,7 @@ public class TrackingApiInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
@@ -130,7 +130,7 @@ public class TrackingApiInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> updateWatchTime(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTime(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
@@ -142,7 +142,7 @@ public class TrackingApiInstrumentedTest {
 
     private Response<WatchTimeEmptyResult> updateWatchTimeAlt(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoServiceSigned.getVideoInfo(videoId, sAuthorization);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null, sAuthorization);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTimeShort(
                 videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId(), sAuthorization

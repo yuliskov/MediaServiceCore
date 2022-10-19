@@ -2,30 +2,27 @@ package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 
-public class VideoInfoServiceSigned extends VideoInfoServiceBase {
-    private static final String TAG = VideoInfoServiceSigned.class.getSimpleName();
-    private static VideoInfoServiceSigned sInstance;
+public class VideoInfoService extends VideoInfoServiceBase {
+    private static final String TAG = VideoInfoService.class.getSimpleName();
+    private static VideoInfoService sInstance;
     private final VideoInfoApiSigned mVideoInfoApiSigned;
+    private final VideoInfoApiUnsigned mVideoInfoApiUnsigned;
 
-    private VideoInfoServiceSigned() {
+    private VideoInfoService() {
         mVideoInfoApiSigned = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
+        mVideoInfoApiUnsigned = RetrofitHelper.withJsonPath(VideoInfoApiUnsigned.class);
     }
 
-    public static VideoInfoServiceSigned instance() {
+    public static VideoInfoService instance() {
         if (sInstance == null) {
-            sInstance = new VideoInfoServiceSigned();
+            sInstance = new VideoInfoService();
         }
 
         return sInstance;
-    }
-
-    public VideoInfo getVideoInfo(String videoId, String authorization) {
-        return getVideoInfo(videoId, null, authorization);
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams, String authorization) {
@@ -71,23 +68,17 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
      */
     private VideoInfo getVideoInfoPrivate(String videoId, String clickTrackingParams, String authorization) {
         String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryPrivate(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorId());
-
-        return RetrofitHelper.get(wrapper);
+        return getVideoInfo(videoInfoQuery, authorization);
     }
 
     private VideoInfo getVideoInfoLive(String videoId, String clickTrackingParams, String authorization) {
         String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryLive(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorId());
-
-        return RetrofitHelper.get(wrapper);
+        return getVideoInfo(videoInfoQuery, authorization);
     }
 
     private VideoInfo getVideoInfoEmbed(String videoId, String clickTrackingParams, String authorization) {
         String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryEmbed2(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorId());
-
-        return RetrofitHelper.get(wrapper);
+        return getVideoInfo(videoInfoQuery, authorization);
     }
 
     /**
@@ -102,7 +93,17 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams, String authorization) {
         String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorId());
+        return getVideoInfo(videoInfoQuery, authorization);
+    }
+
+    private VideoInfo getVideoInfo(String videoInfoQuery, String authorization) {
+        Call<VideoInfo> wrapper;
+
+        if (authorization != null) {
+            wrapper = mVideoInfoApiSigned.getVideoInfo(videoInfoQuery, authorization, mAppService.getVisitorId());
+        } else {
+            wrapper = mVideoInfoApiUnsigned.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
+        }
 
         return RetrofitHelper.get(wrapper);
     }

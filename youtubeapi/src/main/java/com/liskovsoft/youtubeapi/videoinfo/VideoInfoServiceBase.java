@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
@@ -109,21 +110,48 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
+        //AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
+        //
+        //DashInfo dashInfo;
+        //
+        //try {
+        //    dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+        //} catch (ArithmeticException | NumberFormatException ex) {
+        //    // Empty results received. Url isn't available or something like that
+        //    dashInfo = RetrofitHelper.get(mDashInfoApi.getDashInfoFormat(format.getUrl()));
+        //}
+        
+        DashInfo dashInfo;
+
+        try {
+            AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+        } catch (ArithmeticException | NumberFormatException ex) {
+            // Segment isn't available
+            AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+        }
+
+        return dashInfo;
+    }
+
+    @NonNull
+    private AdaptiveVideoFormat getSmallestAudio(VideoInfo videoInfo) {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
         format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        return format;
+    }
 
-        DashInfo dashInfo;
+    @NonNull
+    private AdaptiveVideoFormat getSmallestVideo(VideoInfo videoInfo) {
+        AdaptiveVideoFormat format = Helpers.findLast(videoInfo.getAdaptiveFormats(),
+                item -> MediaFormatUtils.isVideo(item.getMimeType())); // smallest format
 
-        try {
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
-        } catch (ArithmeticException | NumberFormatException ex) {
-            // Empty results received. Url isn't available or something like that
-            dashInfo = RetrofitHelper.get(mDashInfoApi.getDashInfoFormat(format.getUrl()));
-        }
-
-        return dashInfo;
+        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
+        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        return format;
     }
 }

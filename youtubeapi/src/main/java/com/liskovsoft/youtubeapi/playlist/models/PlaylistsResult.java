@@ -6,9 +6,9 @@ import java.util.List;
 
 public class PlaylistsResult {
     @JsonPath("$.contents[0].addToPlaylistRenderer.playlists[*].playlistAddToOptionRenderer")
-    private List<PlaylistInfo> mPlaylists;
+    private List<PlaylistInfoItem> mPlaylists;
 
-    public List<PlaylistInfo> getPlaylists() {
+    public List<PlaylistInfoItem> getPlaylists() {
         return mPlaylists;
     }
 }

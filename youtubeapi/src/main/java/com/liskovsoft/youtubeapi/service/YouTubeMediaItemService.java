@@ -7,7 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
-import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
@@ -21,7 +21,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
-import com.liskovsoft.youtubeapi.service.data.YouTubeVideoPlaylistInfo;
+import com.liskovsoft.youtubeapi.service.data.YouTubePlaylistInfo;
 import com.liskovsoft.youtubeapi.service.internal.MediaItemServiceInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceUnsigned;
@@ -348,12 +348,12 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public List<VideoPlaylistInfo> getVideoPlaylistsInfo(String videoId) {
+    public List<PlaylistInfo> getPlaylistsInfo(String videoId) {
         checkSigned();
 
         PlaylistsResult playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfo(videoId);
 
-        return YouTubeVideoPlaylistInfo.from(playlistsInfo);
+        return YouTubePlaylistInfo.from(playlistsInfo);
     }
 
     @Override
@@ -420,8 +420,8 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfoObserve(String videoId) {
-        return Observable.fromCallable(() -> getVideoPlaylistsInfo(videoId));
+    public Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId) {
+        return Observable.fromCallable(() -> getPlaylistsInfo(videoId));
     }
 
     @Override

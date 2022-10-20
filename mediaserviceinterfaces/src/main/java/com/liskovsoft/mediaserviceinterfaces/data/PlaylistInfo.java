@@ -1,6 +1,6 @@
 package com.liskovsoft.mediaserviceinterfaces.data;
 
-public interface VideoPlaylistInfo {
+public interface PlaylistInfo {
     String getTitle();
     String getPlaylistId();
     boolean isSelected();

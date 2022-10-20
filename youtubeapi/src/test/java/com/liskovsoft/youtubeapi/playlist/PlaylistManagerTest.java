@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.playlist;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
-import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfo;
+import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfoItem;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class PlaylistManagerTest {
         Thread.sleep(10_000);
 
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
-        PlaylistInfo firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
+        PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
         Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylistItem.getPlaylistId(),
                 TestHelpersV2.VIDEO_ID_AGE_RESTRICTED), TestHelpersV2.getAuthorization());
@@ -67,7 +67,7 @@ public class PlaylistManagerTest {
         Thread.sleep(10_000);
 
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
-        PlaylistInfo firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
+        PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
         Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylistItem.getPlaylistId(),
                 TestHelpersV2.VIDEO_ID_AGE_RESTRICTED), TestHelpersV2.getAuthorization());
@@ -91,7 +91,7 @@ public class PlaylistManagerTest {
         return RetrofitHelper.get(wrapper);
     }
 
-    private void testFields(PlaylistInfo playlist) {
+    private void testFields(PlaylistInfoItem playlist) {
         assertNotNull("Playlist contains title", playlist.getTitle());
         assertNotNull("Playlist contains id", playlist.getPlaylistId());
         assertNotNull("Playlist contains other data", playlist.getContainsSelected());

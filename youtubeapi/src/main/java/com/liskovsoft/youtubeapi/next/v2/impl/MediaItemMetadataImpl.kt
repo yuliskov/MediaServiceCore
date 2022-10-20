@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
 import com.liskovsoft.youtubeapi.common.models.kt.*
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
@@ -124,7 +124,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     private val playlistInfoItem by lazy {
         watchNextResult.getPlaylistInfo()?.let {
-            object: VideoPlaylistInfo {
+            object: PlaylistInfo {
                 override fun getTitle() = it.title
                 override fun getPlaylistId() = it.playlistId
                 override fun isSelected() = false
@@ -210,7 +210,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         return suggestionList
     }
 
-    override fun getPlaylistInfo(): VideoPlaylistInfo? {
+    override fun getPlaylistInfo(): PlaylistInfo? {
         return playlistInfoItem
     }
 

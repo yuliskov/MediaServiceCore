@@ -6,7 +6,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
-import com.liskovsoft.mediaserviceinterfaces.data.VideoPlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import io.reactivex.Observable;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public interface MediaItemService {
     void unsubscribe(MediaItem item);
     void unsubscribe(String channelId);
     void markAsNotInterested(MediaItem item);
-    List<VideoPlaylistInfo> getVideoPlaylistsInfo(String videoId);
+    List<PlaylistInfo> getPlaylistsInfo(String videoId);
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
     void renamePlaylist(String playlistId, String newName);
@@ -72,7 +72,7 @@ public interface MediaItemService {
     Observable<Void> removeLikeObserve(MediaItem item);
     Observable<Void> setDislikeObserve(MediaItem item);
     Observable<Void> removeDislikeObserve(MediaItem item);
-    Observable<List<VideoPlaylistInfo>> getVideoPlaylistsInfoObserve(String videoId);
+    Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId);
     Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
     Observable<Void> renamePlaylistObserve(String playlistId, String newName);

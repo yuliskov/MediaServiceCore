@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.playlist.models;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 
-public class PlaylistInfo {
+public class PlaylistInfoItem {
     private static final String CONTAINS_SELECTED_NONE = "NONE";
     private static final String CONTAINS_SELECTED_ALL = "ALL";
 

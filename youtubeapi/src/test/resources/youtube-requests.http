@@ -989,7 +989,7 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 ### Playlists info
 
 POST https://www.youtube.com/youtubei/v1/playlist/get_add_to_playlist
-authorization: Bearer ya29.A0ARrdaM_ZwNmJyz2EHv8GerrpTfeZWtEsdLAxpgazrVH3IfDvBGGP0gcv0OB9BJAGGQjYvBIeCu_RpL9-wAM4Ptr2S2KbzSlJP3s_puyKBL6hs4Kibqj7uEyCgc9H0hNI80nDcCrOWbMHj6ilrRZFVD27Kcx5bCn9GchJqcY3eyLY
+authorization: Bearer ya29.a0Aa4xrXPTWTqUqzanG-JidhqOLA1zOnPH0OSHW8cbIg1HmMMR-pZQ2vmKAVBf-tsSP3sUzCUBNJFJnYhspM9Du4v_IWSOmy8R5v5BwRbdeZ-TOytrO0tmmkRV6gfFQAY3FmYxqbvyR4d-FSDHAIPB26zte0hiuHQyzFiB7Jfsp2czaCgYKATASARMSFQEjDvL9bcRpT1mDYAWgXKHODnjb7A0179
 Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 

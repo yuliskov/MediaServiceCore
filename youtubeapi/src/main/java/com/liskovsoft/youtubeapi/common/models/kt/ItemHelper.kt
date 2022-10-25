@@ -88,6 +88,7 @@ private const val TILE_CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
 private const val BADGE_STYLE_LIVE = "LIVE"
 private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
+private const val BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
 
 fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
 fun TileItem.getVideoId() = onSelectCommand?.watchEndpoint?.videoId
@@ -112,6 +113,7 @@ fun TileItem.getContentType() = contentType
 fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
 
 fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
+fun TileItem.isMovie() = BADGE_STYLE_MOVIE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 
 fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
@@ -162,6 +164,7 @@ fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem(
 fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
 fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
 fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
+fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 
 /////

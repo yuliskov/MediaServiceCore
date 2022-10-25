@@ -52,6 +52,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mFeedbackToken;
     private String mParams;
     private String mClickTrackingParams;
+    private boolean mIsMovie;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -127,6 +128,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mIsUpcoming = item.isUpcoming();
         video.mFeedbackToken = item.getFeedbackToken();
         video.mClickTrackingParams = item.getClickTrackingParams();
+        video.mIsMovie = item.isMovie();
 
         addCommonProps(video);
 
@@ -362,6 +364,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public boolean isUpcoming() {
         return mIsUpcoming;
+    }
+
+    @Override
+    public boolean isMovie() {
+        return mIsMovie;
     }
 
     @Override

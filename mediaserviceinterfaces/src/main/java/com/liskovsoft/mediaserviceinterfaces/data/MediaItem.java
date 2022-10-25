@@ -76,6 +76,7 @@ public interface MediaItem {
      * Example: <b>4.05f</b>
      */
     double getRatingScore();
+    boolean isMovie();
     boolean hasUploads();
     String getClickTrackingParams();
     void sync(MediaItemMetadata metadata);

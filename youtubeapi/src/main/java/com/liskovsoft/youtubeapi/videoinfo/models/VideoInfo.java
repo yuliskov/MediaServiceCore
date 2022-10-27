@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
@@ -29,6 +30,9 @@ public class VideoInfo {
 
     @JsonPath("$.captions.playerCaptionsTracklistRenderer.captionTracks[*]")
     private List<CaptionTrack> mCaptionTracks;
+
+    @JsonPath("$.captions.playerCaptionsTracklistRenderer.translationLanguages[*]")
+    private List<TranslationLanguage> mTranslationLanguages;
 
     @JsonPath("$.streamingData.hlsManifestUrl")
     private String mHlsManifestUrl;
@@ -78,6 +82,7 @@ public class VideoInfo {
     private int mStartSegmentNum;
     private int mSegmentDurationUs;
     private boolean mIsStreamSeekable;
+    private List<CaptionTrack> mMergedCaptionTracks;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -96,7 +101,7 @@ public class VideoInfo {
     }
 
     public List<CaptionTrack> getCaptionTracks() {
-        return mCaptionTracks;
+        return mergeCaptionTracks();
     }
 
     public String getDashManifestUrl() {
@@ -233,6 +238,17 @@ public class VideoInfo {
         return getEventId() != null && getVisitorMonitoringData() != null;
     }
 
+    public void sync(DashInfo dashInfo) {
+        if (dashInfo == null) {
+            return;
+        }
+
+        mSegmentDurationUs = dashInfo.getSegmentDurationUs();
+        mStartTimeMs = dashInfo.getStartTimeMs();
+        mStartSegmentNum = dashInfo.getStartSegmentNum();
+        mIsStreamSeekable = dashInfo.isSeekable();
+    }
+
     private void parseTrackingParams() {
         boolean parseDone = mEventId != null || mVisitorMonitoringData != null;
 
@@ -245,14 +261,21 @@ public class VideoInfo {
         }
     }
 
-    public void sync(DashInfo dashInfo) {
-        if (dashInfo == null) {
-            return;
+    private List<CaptionTrack> mergeCaptionTracks() {
+        if (mMergedCaptionTracks == null) {
+            mMergedCaptionTracks = mCaptionTracks;
+
+            if (mTranslationLanguages != null && mCaptionTracks != null) {
+                CaptionTrack originTrack = mCaptionTracks.get(0);
+                String tag = Helpers.runMultiMatcher(originTrack.getName(), "\\(.*\\)$");
+                for (TranslationLanguage language : mTranslationLanguages) {
+                    if (!Helpers.equals(originTrack.getLanguageCode(), language.getLanguageCode())) {
+                        mMergedCaptionTracks.add(new CaptionTrackWrapper(originTrack, language, tag));
+                    }
+                }
+            }
         }
 
-        mSegmentDurationUs = dashInfo.getSegmentDurationUs();
-        mStartTimeMs = dashInfo.getStartTimeMs();
-        mStartSegmentNum = dashInfo.getStartSegmentNum();
-        mIsStreamSeekable = dashInfo.isSeekable();
+        return mMergedCaptionTracks;
     }
 }

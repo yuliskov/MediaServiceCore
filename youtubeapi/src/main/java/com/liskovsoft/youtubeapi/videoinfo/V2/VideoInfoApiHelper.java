@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
-public class VideoInfoApiParams {
+public class VideoInfoApiHelper {
     /**
      * Used in player only<br/>
      * Previous client version: 7.20190214<br/>
@@ -72,6 +72,16 @@ public class VideoInfoApiParams {
 
     public static String getVideoInfoQueryPrivate(String videoId) {
         return getVideoInfoQueryPrivate(videoId, null);
+    }
+
+    public static String getDashInfoFormatUrl(String originUrl) {
+        if (originUrl == null) {
+            return null;
+        }
+
+        // Maybe this can fix empty DashInfo response?
+        // alr=yes&cpn=zdi3fp0GozNItWoY&cver=2.20221026.05.00&headm=3&rn=1&rbuf=0
+        return originUrl + "&alr=yes&headm=3&rn=1&rbuf=0";
     }
 
     private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams) {

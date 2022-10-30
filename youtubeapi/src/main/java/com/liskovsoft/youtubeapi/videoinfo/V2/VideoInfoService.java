@@ -67,17 +67,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
      * NOTE: Doesn't contain dash manifest url and hls link
      */
     private VideoInfo getVideoInfoPrivate(String videoId, String clickTrackingParams, String authorization) {
-        String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryPrivate(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryPrivate(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery, authorization);
     }
 
     private VideoInfo getVideoInfoLive(String videoId, String clickTrackingParams, String authorization) {
-        String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryLive(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryLive(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery, authorization);
     }
 
     private VideoInfo getVideoInfoEmbed(String videoId, String clickTrackingParams, String authorization) {
-        String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryEmbed2(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryEmbed2(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery, authorization);
     }
 
@@ -85,14 +85,14 @@ public class VideoInfoService extends VideoInfoServiceBase {
      * NOTE: user history won't work with this method
      */
     private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
         Call<VideoInfo> wrapper = mVideoInfoApiSigned.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams, String authorization) {
-        String videoInfoQuery = VideoInfoApiParams.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery, authorization);
     }
 

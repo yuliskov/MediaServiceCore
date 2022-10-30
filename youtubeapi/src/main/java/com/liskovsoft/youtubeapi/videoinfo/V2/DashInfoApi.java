@@ -12,7 +12,7 @@ public interface DashInfoApi {
 
     @GET()
     Call<DashInfoFormat> getDashInfoFormat(@Url String url);
-
+    
     @GET()
     Call<Void> getDashInfoFormat2(@Url String url);
 }

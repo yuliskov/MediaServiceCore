@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
 import androidx.annotation.NonNull;
-import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;

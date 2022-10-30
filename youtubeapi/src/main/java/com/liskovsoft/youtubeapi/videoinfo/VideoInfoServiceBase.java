@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoFormat2;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -125,11 +126,11 @@ public abstract class VideoInfoServiceBase {
 
         try {
             AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(VideoInfoApiHelper.getDashInfoFormatUrl(format.getUrl())));
         } catch (ArithmeticException | NumberFormatException ex) {
             // Segment isn't available
             AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(VideoInfoApiHelper.getDashInfoFormatUrl(format.getUrl())));
         }
 
         return dashInfo;

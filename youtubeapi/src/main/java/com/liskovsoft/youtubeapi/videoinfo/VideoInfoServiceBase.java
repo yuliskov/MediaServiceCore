@@ -126,11 +126,16 @@ public abstract class VideoInfoServiceBase {
 
         try {
             AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(VideoInfoApiHelper.getDashInfoFormatUrl(format.getUrl())));
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
         } catch (ArithmeticException | NumberFormatException ex) {
             // Segment isn't available
-            AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(VideoInfoApiHelper.getDashInfoFormatUrl(format.getUrl())));
+            try {
+                AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
+                dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+            } catch (ArithmeticException | NumberFormatException exc) {
+                AdaptiveVideoFormat format = getLargestVideo(videoInfo);
+                dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+            }
         }
 
         return dashInfo;
@@ -150,6 +155,16 @@ public abstract class VideoInfoServiceBase {
     private AdaptiveVideoFormat getSmallestVideo(VideoInfo videoInfo) {
         AdaptiveVideoFormat format = Helpers.findLast(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isVideo(item.getMimeType())); // smallest format
+
+        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
+        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        return format;
+    }
+
+    @NonNull
+    private AdaptiveVideoFormat getLargestVideo(VideoInfo videoInfo) {
+        AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
+                item -> MediaFormatUtils.isVideo(item.getMimeType())); // first is largest
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
         format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));

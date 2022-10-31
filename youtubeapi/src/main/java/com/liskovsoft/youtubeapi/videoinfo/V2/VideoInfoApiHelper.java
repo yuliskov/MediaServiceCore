@@ -74,14 +74,17 @@ public class VideoInfoApiHelper {
         return getVideoInfoQueryPrivate(videoId, null);
     }
 
+    /**
+     * Is bugged. 'alr=yes' makes some streams unplayable<br/>
+     * New part of the request: alr=yes&cpn=zdi3fp0GozNItWoY&cver=2.20221026.05.00&headm=3&rn=1&rbuf=0
+     */
     public static String getDashInfoFormatUrl(String originUrl) {
         if (originUrl == null) {
             return null;
         }
 
         // Maybe this can fix empty DashInfo response?
-        // alr=yes&cpn=zdi3fp0GozNItWoY&cver=2.20221026.05.00&headm=3&rn=1&rbuf=0
-        return originUrl + "&alr=yes&headm=3&rn=1&rbuf=0";
+        return originUrl + "&alr=no&headm=3&rn=1&rbuf=0"; // alr=yes is bugged
     }
 
     private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams) {

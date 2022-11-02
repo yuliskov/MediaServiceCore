@@ -129,13 +129,8 @@ public abstract class VideoInfoServiceBase {
             dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
         } catch (ArithmeticException | NumberFormatException ex) {
             // Segment isn't available
-            try {
-                AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-                dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
-            } catch (ArithmeticException | NumberFormatException exc) {
-                AdaptiveVideoFormat format = getLargestVideo(videoInfo);
-                dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
-            }
+            AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
+            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
         }
 
         return dashInfo;

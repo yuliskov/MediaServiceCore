@@ -87,4 +87,8 @@ public interface TrackingApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/history/resume_watch_history")
     Call<Void> resumeWatchHistory(@Body String historyQuery, @Header("Authorization") String auth);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/history/clear_watch_history")
+    Call<Void> clearWatchHistory(@Body String historyQuery, @Header("Authorization") String auth);
 }

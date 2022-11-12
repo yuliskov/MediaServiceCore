@@ -38,6 +38,11 @@ public class TrackingService {
         RetrofitHelper.get(wrapper);
     }
 
+    public void clearWatchHistory(String authorization) {
+        Call<Void> wrapper = mTrackingApi.clearWatchHistory(TrackingApiParams.getHistoryQuery(), authorization);
+        RetrofitHelper.get(wrapper);
+    }
+
     public void updateWatchTime(String videoId, float positionSec, float lengthSeconds,
                                 String eventId, String visitorMonitoringData, String ofParam, String authorization) {
         updateWatchTimeFull(

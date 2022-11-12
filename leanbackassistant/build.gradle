@@ -30,8 +30,6 @@ android {
     flavorDimensions "default"
 
     productFlavors {
-        orig {}
-        beta {}
         stbeta {}
         ststable {}
         storig {}

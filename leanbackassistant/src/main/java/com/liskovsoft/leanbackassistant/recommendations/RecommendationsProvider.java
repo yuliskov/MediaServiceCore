@@ -45,7 +45,7 @@ public class RecommendationsProvider {
                             .setDescription(clip.getDescription())
                             .setImage(image)
                             .setTitle(clip.getTitle())
-                            .setSmallIcon(R.drawable.app_icon)
+                            .setSmallIcon(R.drawable.generic_channels)
                             .setIntent(AppUtil.getInstance(context).createAppPendingIntent(clip.getVideoUrl()))
                             .build();
 

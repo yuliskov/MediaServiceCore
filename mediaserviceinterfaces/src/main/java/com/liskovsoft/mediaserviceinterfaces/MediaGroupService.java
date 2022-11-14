@@ -28,6 +28,8 @@ public interface MediaGroupService {
      */
     MediaGroup getGroup(String reloadPageKey);
     MediaGroup continueGroup(MediaGroup mediaGroup);
+    void enableHistory(boolean enable);
+    void clearHistory();
 
     // RxJava interfaces
     Observable<MediaGroup> getSearchObserve(String searchText);

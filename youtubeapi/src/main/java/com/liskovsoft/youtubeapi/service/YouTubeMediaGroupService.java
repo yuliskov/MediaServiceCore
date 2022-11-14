@@ -10,13 +10,14 @@ import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
-import com.liskovsoft.youtubeapi.common.helpers.ObservableHelper;
+import com.liskovsoft.sharedutils.rx.ObservableHelper;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupServiceInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupServiceSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupServiceUnsigned;
+import com.liskovsoft.youtubeapi.track.TrackingService;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
@@ -27,13 +28,15 @@ import java.util.List;
 public class YouTubeMediaGroupService implements MediaGroupService {
     private static final String TAG = YouTubeMediaGroupService.class.getSimpleName();
     private static YouTubeMediaGroupService sInstance;
-    private final YouTubeSignInService mSignInManager;
+    private final YouTubeSignInService mSignInService;
+    private final TrackingService mTrackingService;
     private MediaGroupServiceInt mMediaGroupManagerReal;
 
     private YouTubeMediaGroupService() {
         Log.d(TAG, "Starting...");
 
-        mSignInManager = YouTubeSignInService.instance();
+        mSignInService = YouTubeSignInService.instance();
+        mTrackingService = TrackingService.instance();
     }
 
     public static MediaGroupService instance() {
@@ -461,7 +464,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     private void checkSigned() {
-        if (mSignInManager.checkAuthHeader()) {
+        if (mSignInService.checkAuthHeader()) {
             Log.d(TAG, "User signed.");
 
             mMediaGroupManagerReal = YouTubeMediaGroupServiceSigned.instance();
@@ -515,5 +518,19 @@ public class YouTubeMediaGroupService implements MediaGroupService {
                 ObservableHelper.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
             }
         });
+    }
+
+    @Override
+    public void enableHistory(boolean enable) {
+        if (enable) {
+            mTrackingService.resumeWatchHistory();
+        } else {
+            mTrackingService.pauseWatchHistory();
+        }
+    }
+
+    @Override
+    public void clearHistory() {
+        mTrackingService.clearWatchHistory();
     }
 }

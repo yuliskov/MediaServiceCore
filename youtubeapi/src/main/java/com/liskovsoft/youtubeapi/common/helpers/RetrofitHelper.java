@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
 import androidx.annotation.NonNull;
-import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -9,7 +8,6 @@ import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.BuildConfig;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory;
@@ -20,6 +18,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -33,6 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -71,9 +71,16 @@ public class RetrofitHelper {
     public static <T> T get(Call<T> wrapper) {
         try {
             return wrapper.execute().body();
-        } catch (IOException e) {
-            //wrapper.cancel(); // fix background running when RxJava object is disposed
+        } catch (InterruptedIOException e) {
+            // Thread interrupted
+            // Don't rethrow!!! This exception cannot be caught!!!
             e.printStackTrace();
+        } catch (IOException e) {
+            // ConnectException - server is down
+            // SocketException - no internet
+            //wrapper.cancel(); // fix background running when RxJava object is disposed?
+            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
 
         return null;

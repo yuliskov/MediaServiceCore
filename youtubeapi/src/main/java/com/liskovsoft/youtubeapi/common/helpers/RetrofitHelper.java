@@ -73,7 +73,7 @@ public class RetrofitHelper {
             return wrapper.execute().body();
         } catch (InterruptedIOException e) {
             // Thread interrupted
-            // Don't rethrow!!! This exception cannot be caught!!!
+            // Don't rethrow!!! This exception cannot be caught inside RxJava!!! Thread died!!!
             e.printStackTrace();
         } catch (IOException e) {
             // ConnectException - server is down

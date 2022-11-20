@@ -27,7 +27,12 @@ public class YouTubeSignInService implements SignInService {
 
         GlobalPreferences.setOnInit(() -> {
             mAccountManager.init();
-            this.updateAuthorizationHeader();
+            try {
+                this.updateAuthorizationHeader();
+            } catch (Exception e) {
+                // Host not found
+                e.printStackTrace();
+            }
         });
     }
 

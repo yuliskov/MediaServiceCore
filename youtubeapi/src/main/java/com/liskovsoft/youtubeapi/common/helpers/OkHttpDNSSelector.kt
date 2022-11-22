@@ -7,6 +7,7 @@ import java.net.InetAddress
 
 /**
  * Fix for the [issue](https://github.com/facebook/react-native/issues/32730)
+ *
  * See also:
  * [1](https://gist.github.com/danmaas/c60af5fed9f55d2bc616ce302696540d)
  * [2](https://github.com/square/okhttp/issues/6954)

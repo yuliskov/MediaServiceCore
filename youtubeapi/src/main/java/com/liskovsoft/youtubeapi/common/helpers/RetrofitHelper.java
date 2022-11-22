@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
-import androidx.annotation.NonNull;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -17,6 +16,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import com.liskovsoft.youtubeapi.common.helpers.tmp.PreferIpv4Dns;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import okhttp3.Dns;
@@ -36,7 +36,6 @@ import java.io.InterruptedIOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RetrofitHelper {
@@ -144,6 +143,8 @@ public class RetrofitHelper {
         //    preferIPv4Dns(okBuilder);
         //}
 
+        ipv4DnsFix(okBuilder);
+
         OkHttpCommons.setupConnectionFix(okBuilder);
 
         OkHttpCommons.setupConnectionParams(okBuilder);
@@ -225,6 +226,10 @@ public class RetrofitHelper {
         okBuilder.addInterceptor(logging);
     }
 
+    private static void ipv4DnsFix(Builder okBuilder) {
+        okBuilder.dns(new OkHttpDNSSelector(OkHttpDNSSelector.IPvMode.IPV4_FIRST));
+    }
+
     private static void preferIPv4Dns(OkHttpClient.Builder okBuilder) {
         okBuilder.dns(new PreferIpv4Dns());
     }
@@ -295,31 +300,5 @@ public class RetrofitHelper {
         }
 
         return null;
-    }
-
-    private static class PreferIpv4Dns implements Dns {
-        @NonNull
-        @Override
-        public List<InetAddress> lookup(@NonNull String hostname) throws UnknownHostException {
-            InetAddress[] addresses = InetAddress.getAllByName(hostname);
-            if (addresses == null || addresses.length == 0) {
-                throw new UnknownHostException("Bad host: " + hostname);
-            }
-
-            // prefer IPv4; list IPv4 first
-            ArrayList<InetAddress> result = new ArrayList<>();
-            for (InetAddress address : addresses) {
-                if (address instanceof Inet4Address) {
-                    result.add(address);
-                }
-            }
-            for (InetAddress address : addresses) {
-                if (!(address instanceof Inet4Address)) {
-                    result.add(address);
-                }
-            }
-
-            return result;
-        }
     }
 }

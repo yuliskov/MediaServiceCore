@@ -4,7 +4,8 @@ import com.liskovsoft.youtubeapi.common.models.kt.ItemWrapper
 
 data class WatchNextResult(
     val contents: Contents?,
-    val transportControls: TransportControls?
+    val transportControls: TransportControls?,
+    val playerOverlays: PlayerOverlays?
 ) {
     data class Contents(
         val singleColumnWatchNextResults: SingleColumnWatchNextResults?
@@ -94,4 +95,37 @@ data class WatchNextResult(
     data class TransportControls(
         val transportControlsRenderer: ButtonStateItem?
     )
+
+    data class PlayerOverlays(
+        val playerOverlayRenderer: PlayerOverlayRenderer?
+    ) {
+        data class PlayerOverlayRenderer(
+            val decoratedPlayerBarRenderer: DecoratedPlayerBar?
+        ) {
+            data class DecoratedPlayerBar(
+                val decoratedPlayerBarRenderer: DecoratedPlayerBarRenderer?
+            ) {
+                data class DecoratedPlayerBarRenderer(
+                    val playerBar: PlayerBar?
+                ) {
+                    data class PlayerBar(
+                        val multiMarkersPlayerBarRenderer: MultiMarkersPlayerBarRenderer?
+                    ) {
+                        data class MultiMarkersPlayerBarRenderer(
+                            val markersMap: List<MapItem?>?
+                        ) {
+                            data class MapItem(
+                                val key: String?,
+                                val value: Value?
+                            ) {
+                                data class Value(
+                                    val chapters: List<ChapterItem?>?
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

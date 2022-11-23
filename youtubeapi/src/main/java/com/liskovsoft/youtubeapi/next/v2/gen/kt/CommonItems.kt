@@ -190,3 +190,13 @@ data class PlaylistInfo(
     val ownerName: TextItem?,
     val isEditable: Boolean?
 )
+
+data class ChapterItem(
+   val chapterRenderer: ChapterRenderer?
+) {
+    data class ChapterRenderer(
+        val title: TextItem?,
+        val timeRangeStartMillis: Int?,
+        val thumbnail: ThumbnailItem?
+    )
+}

@@ -16,6 +16,7 @@ fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlaySubscribeButton()
 /////
 
 private fun WatchNextResult.getWatchNextResults() = contents?.singleColumnWatchNextResults
+private fun WatchNextResult.getPlayerOverlays() = playerOverlays?.playerOverlayRenderer
 fun WatchNextResult.getSuggestedSections() = getWatchNextResults()?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.map { it?.shelfRenderer }
 fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results?.contents?.getOrNull(0)?.
     itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
@@ -28,6 +29,8 @@ fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.au
 fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsRenderer
 fun WatchNextResult.getLiveChatKey() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
 fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlist
+fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
+    playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters
 
 ///////
 

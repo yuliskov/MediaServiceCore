@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.impl
 
+import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
@@ -134,6 +135,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         }
     }
 
+    private val chapterList by lazy {
+        watchNextResult.getChapters()
+    }
+
     override fun getTitle(): String? {
         return videoTitle
     }
@@ -220,5 +225,15 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     override fun getDislikesCount(): String? {
         return null
+    }
+
+    override fun getChapters(): List<ChapterItem>? {
+        return chapterList?.map {
+            object : ChapterItem {
+                override fun getTitle() = it?.getTitle()
+                override fun getStartTimeMs() = it?.getStartTimeMs() ?: -1
+                override fun getCardImageUrl() = it?.getThumbnailUrl()
+            }
+        }
     }
 }

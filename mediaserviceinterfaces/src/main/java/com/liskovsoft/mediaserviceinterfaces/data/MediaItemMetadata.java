@@ -28,4 +28,5 @@ public interface MediaItemMetadata {
     int getLikeStatus();
     List<MediaGroup> getSuggestions();
     PlaylistInfo getPlaylistInfo();
+    List<ChapterItem> getChapters();
 }

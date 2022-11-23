@@ -1,9 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.gen.kt
 
-import com.liskovsoft.youtubeapi.common.models.kt.getBrowseId
-import com.liskovsoft.youtubeapi.common.models.kt.getOverlaySubscribeButton
-import com.liskovsoft.youtubeapi.common.models.kt.getSubscribeParams
-import com.liskovsoft.youtubeapi.common.models.kt.getText
+import com.liskovsoft.youtubeapi.common.models.kt.*
 
 //////
 
@@ -80,3 +77,9 @@ fun NextVideoItem.getThumbnails() = item?.previewButtonRenderer?.thumbnail
 fun NextVideoItem.getPlaylistId() = endpoint?.watchEndpoint?.playlistId
 fun NextVideoItem.getPlaylistIndex() = endpoint?.watchEndpoint?.index
 fun NextVideoItem.getParams() = endpoint?.watchEndpoint?.params
+
+///////
+
+fun ChapterItem.getTitle() = chapterRenderer?.title?.toString()
+fun ChapterItem.getStartTimeMs() = chapterRenderer?.timeRangeStartMillis
+fun ChapterItem.getThumbnailUrl() = chapterRenderer?.thumbnail?.findOptimalResThumbnailUrl()

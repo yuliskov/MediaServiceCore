@@ -16,7 +16,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
-import com.liskovsoft.youtubeapi.common.helpers.tmp.PreferIpv4Dns;
+import com.liskovsoft.youtubeapi.common.helpers.old.PreferIpv4Dns;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import okhttp3.Dns;

@@ -136,7 +136,13 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     private val chapterList by lazy {
-        watchNextResult.getChapters()
+        watchNextResult.getChapters()?.map {
+            object : ChapterItem {
+                override fun getTitle() = it?.getTitle()
+                override fun getStartTimeMs() = it?.getStartTimeMs() ?: -1
+                override fun getCardImageUrl() = it?.getThumbnailUrl()
+            }
+        }
     }
 
     override fun getTitle(): String? {
@@ -228,12 +234,6 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
 
     override fun getChapters(): List<ChapterItem>? {
-        return chapterList?.map {
-            object : ChapterItem {
-                override fun getTitle() = it?.getTitle()
-                override fun getStartTimeMs() = it?.getStartTimeMs() ?: -1
-                override fun getCardImageUrl() = it?.getThumbnailUrl()
-            }
-        }
+        return chapterList
     }
 }

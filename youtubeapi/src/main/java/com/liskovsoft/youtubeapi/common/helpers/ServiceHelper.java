@@ -61,8 +61,8 @@ public class ServiceHelper {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(hours);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours);
         return hours != 0 ?
-                String.format(Locale.US, "%02d%s%02d%s%02d", hours, TIME_TEXT_DELIM, minutes, TIME_TEXT_DELIM, seconds) :
-                String.format(Locale.US, "%02d%s%02d", minutes, TIME_TEXT_DELIM, seconds);
+                String.format(Locale.US, "%d%s%02d%s%02d", hours, TIME_TEXT_DELIM, minutes, TIME_TEXT_DELIM, seconds) :
+                String.format(Locale.US, "%d%s%02d", minutes, TIME_TEXT_DELIM, seconds);
     }
 
     public static String createQueryUA(String data) {

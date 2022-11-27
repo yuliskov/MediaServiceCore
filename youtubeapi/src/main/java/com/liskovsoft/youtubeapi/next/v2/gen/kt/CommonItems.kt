@@ -196,7 +196,7 @@ data class ChapterItem(
 ) {
     data class ChapterRenderer(
         val title: TextItem?,
-        val timeRangeStartMillis: Int?,
+        val timeRangeStartMillis: Long?,
         val thumbnail: ThumbnailItem?
     )
 }

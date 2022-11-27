@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class ServiceHelper {
@@ -53,6 +54,15 @@ public class ServiceHelper {
         int seconds = Helpers.parseInt(timeParts, length - 1, 0);
 
         return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
+    }
+
+    public static String millisToTimeText(long millis) {
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(hours);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours);
+        return hours != 0 ?
+                String.format(Locale.US, "%02d%s%02d%s%02d", hours, TIME_TEXT_DELIM, minutes, TIME_TEXT_DELIM, seconds) :
+                String.format(Locale.US, "%02d%s%02d", minutes, TIME_TEXT_DELIM, seconds);
     }
 
     public static String createQueryUA(String data) {

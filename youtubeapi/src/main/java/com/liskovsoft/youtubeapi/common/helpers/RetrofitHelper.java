@@ -16,7 +16,6 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
-import com.liskovsoft.youtubeapi.common.helpers.old.PreferIpv4Dns;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import okhttp3.Dns;
@@ -32,9 +31,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -70,16 +69,17 @@ public class RetrofitHelper {
     public static <T> T get(Call<T> wrapper) {
         try {
             return wrapper.execute().body();
-        } catch (InterruptedIOException e) {
-            // Thread interrupted
-            // Don't rethrow!!! This exception cannot be caught inside RxJava!!! Thread died!!!
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SocketException e) {
             // ConnectException - server is down
             // SocketException - no internet
             //wrapper.cancel(); // fix background running when RxJava object is disposed?
             e.printStackTrace();
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e); // notify called about network condition
+        } catch (IOException e) {
+            // InterruptedIOException - Thread interrupted. Thread died!!
+            // UnknownHostException: Unable to resolve host (DNS error) Thread died?
+            // Don't rethrow!!! These exceptions cannot be caught inside RxJava!!! Thread died!!!
+            e.printStackTrace();
         }
 
         return null;
@@ -142,8 +142,6 @@ public class RetrofitHelper {
         //    // Cause hangs and crashes (especially on Android 8 devices or Dune HD)
         //    preferIPv4Dns(okBuilder);
         //}
-
-        ipv4DnsFix(okBuilder);
 
         OkHttpCommons.setupConnectionFix(okBuilder);
 
@@ -226,12 +224,9 @@ public class RetrofitHelper {
         okBuilder.addInterceptor(logging);
     }
 
-    private static void ipv4DnsFix(Builder okBuilder) {
-        okBuilder.dns(new OkHttpDNSSelector(OkHttpDNSSelector.IPvMode.IPV4_FIRST));
-    }
-
     private static void preferIPv4Dns(OkHttpClient.Builder okBuilder) {
-        okBuilder.dns(new PreferIpv4Dns());
+        okBuilder.dns(new OkHttpDNSSelector(OkHttpDNSSelector.IPvMode.IPV4_FIRST));
+        //okBuilder.dns(new PreferIpv4Dns());
     }
 
     private static void forceIPv4Dns(OkHttpClient.Builder okBuilder) {

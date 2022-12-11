@@ -16,6 +16,7 @@ public class BrowseManagerParams {
     private static final String CHANNEL = "\"browseId\":\"%s\"";
     private static final String CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\"";
     private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
+    private static final String SUBSCRIBED_MUSIC_BROWSE_ID = "FEmusic_library_corpus_artists";
 
     public static String getHomeQuery() {
         return ServiceHelper.createQuery(HOME);
@@ -73,9 +74,6 @@ public class BrowseManagerParams {
     }
 
     public static boolean isGridChannel(String channelId) {
-        // FEtopics (rows)
-        // FEmusic_liked_videos (grid)
-
-        return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID);
+        return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID, SUBSCRIBED_MUSIC_BROWSE_ID);
     }
 }

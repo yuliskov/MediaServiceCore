@@ -12,6 +12,7 @@ import java.util.List;
 
 public class SearchResultContinuation {
     @JsonPath({
+            "$.continuationContents.sectionListContinuation.contents[0].shelfRenderer.content.horizontalListRenderer.items[*].tileRenderer", // V4
             "$.continuationContents.horizontalListContinuation.items[*].tileRenderer", // V3
             "$.continuationContents.itemSectionContinuation.contents[*].tileRenderer" // V2
     })
@@ -38,6 +39,7 @@ public class SearchResultContinuation {
     private List<PlaylistItem> mPlaylistItems;
 
     @JsonPath({
+            "$.continuationContents.sectionListContinuation.contents[0].shelfRenderer.content.horizontalListRenderer.continuations[0].nextContinuationData.continuation", // V4
             "$.continuationContents.horizontalListContinuation.continuations[0].nextContinuationData.continuation", // V3
             "$.continuationContents.sectionListContinuation.contents[0].itemSectionRenderer.continuations[0].nextContinuationData.continuation",
             "$.continuationContents.itemSectionContinuation.continuations[0].nextContinuationData.continuation"

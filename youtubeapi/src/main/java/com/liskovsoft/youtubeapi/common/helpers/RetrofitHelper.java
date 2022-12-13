@@ -67,8 +67,14 @@ public class RetrofitHelper {
     }
 
     public static <T> T get(Call<T> wrapper) {
+        Response<T> response = getResponse(wrapper);
+
+        return response != null ? response.body() : null;
+    }
+
+    public static <T> Response<T> getResponse(Call<T> wrapper) {
         try {
-            return wrapper.execute().body();
+            return wrapper.execute();
         } catch (SocketException e) {
             // ConnectException - server is down
             // SocketException - no internet
@@ -79,17 +85,6 @@ public class RetrofitHelper {
             // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
             // Don't rethrow!!! These exceptions cannot be caught inside RxJava!!! Thread died!!!
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static <T> Response<T> getResponse(Call<T> wrapper) {
-        try {
-            return wrapper.execute();
-        } catch (IOException e) {
-            //wrapper.cancel(); // fix background running when RxJava object is disposed
             e.printStackTrace();
         }
 

@@ -153,7 +153,7 @@ public class TileItem {
     }
 
     @Nullable
-    private Object[] getBadgeStyles() {
+    private String[] getBadgeStyles() {
         return mHeader != null ? new String[] {mHeader.getBadgeStyle()} : mMetadata.getBadgeStyles() != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
     }
 }

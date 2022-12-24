@@ -18,7 +18,10 @@ public class TileItem {
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
     private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
 
-    @JsonPath("$.header.tileHeaderRenderer")
+    @JsonPath({
+            "$.header.tileHeaderRenderer",
+            "$.header.trackTileHeaderRenderer" // Music playlist
+    })
     private Header mHeader;
 
     @JsonPath("$.metadata.tileMetadataRenderer")
@@ -73,7 +76,7 @@ public class TileItem {
     }
 
     public String getTitle() {
-        return mMetadata != null ? mMetadata.getTitle() : null;
+        return mMetadata != null ? mMetadata.getTitle() : mHeader.getTitle();
     }
 
     public String getDescBadgeText() {
@@ -154,6 +157,6 @@ public class TileItem {
 
     @Nullable
     private String[] getBadgeStyles() {
-        return mHeader != null ? new String[] {mHeader.getBadgeStyle()} : mMetadata.getBadgeStyles() != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
+        return mHeader != null ? new String[] {mHeader.getBadgeStyle()} : mMetadata != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
     }
 }

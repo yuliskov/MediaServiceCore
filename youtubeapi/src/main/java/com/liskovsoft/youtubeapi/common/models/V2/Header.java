@@ -19,6 +19,8 @@ public class Header {
             "$.movingThumbnail.thumbnails[0].url" // v1
     })
     private String mMovingThumbnailUrl;
+    @JsonPath("$.title")
+    private TextItem mTitle;
 
     public List<Thumbnail> getThumbnails() {
         return mThumbnails;
@@ -41,5 +43,9 @@ public class Header {
      */
     public String getMovingThumbnailUrl() {
         return mMovingThumbnailUrl;
+    }
+
+    public String getTitle() {
+        return mTitle != null ? mTitle.getText() : null;
     }
 }

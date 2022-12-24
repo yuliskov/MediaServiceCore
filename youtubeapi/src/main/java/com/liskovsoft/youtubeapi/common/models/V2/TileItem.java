@@ -76,7 +76,7 @@ public class TileItem {
     }
 
     public String getTitle() {
-        return mMetadata != null ? mMetadata.getTitle() : mHeader.getTitle();
+        return mMetadata != null ? mMetadata.getTitle() : mHeader != null ? mHeader.getTitle() : null;
     }
 
     public String getDescBadgeText() {

@@ -309,10 +309,9 @@ public class VideoFormat {
             String xtags = getUrlQuery().get("xtags");
 
             if (xtags != null) {
-                String[] split = xtags.split("=");
-                if (split.length == 2) {
-                    mLanguage = split[1];
-                }
+                // Example: acont=dubbed:lang=ar
+                UrlQueryString xtagsQuery = UrlQueryStringFactory.parse(xtags.replace(":", "&"));
+                mLanguage = xtagsQuery.get("lang");
             }
         }
 

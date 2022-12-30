@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.next.v2.gen.kt
+package com.liskovsoft.youtubeapi.next.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.kt.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
 data class WatchNextResult(
     val contents: Contents?,
@@ -43,8 +43,8 @@ data class WatchNextResult(
                             val contents: List<Content?>?
                         ) {
                             data class Content(
-                                    val videoMetadataRenderer: VideoMetadataItem?,
-                                    val musicWatchMetadataRenderer: VideoMetadataItem?
+                                val videoMetadataRenderer: VideoMetadataItem?,
+                                val musicWatchMetadataRenderer: VideoMetadataItem?
                             )
                         }
                     }
@@ -62,9 +62,9 @@ data class WatchNextResult(
                         val nextVideoRenderer: NextVideoRenderer?
                     ) {
                         data class NextVideoRenderer(
-                                val maybeHistoryEndpointRenderer: NextVideoItem?,
-                                val autoplayEndpointRenderer: NextVideoItem?,
-                                val autoplayVideoWrapperRenderer: AutoplayVideoWrapperRenderer?
+                            val maybeHistoryEndpointRenderer: NextVideoItem?,
+                            val autoplayEndpointRenderer: NextVideoItem?,
+                            val autoplayVideoWrapperRenderer: AutoplayVideoWrapperRenderer?
                         ) {
                             data class AutoplayVideoWrapperRenderer(
                                 val primaryEndpointRenderer: PrimaryEndpointRenderer?

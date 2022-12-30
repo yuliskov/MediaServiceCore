@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.next.v2.gen.kt
+package com.liskovsoft.youtubeapi.next.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.kt.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
 
 //////
 
@@ -14,7 +14,7 @@ fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlaySubscribeButton()
 
 private fun WatchNextResult.getWatchNextResults() = contents?.singleColumnWatchNextResults
 private fun WatchNextResult.getPlayerOverlays() = playerOverlays?.playerOverlayRenderer
-fun WatchNextResult.getSuggestedSections() = getWatchNextResults()?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.map { it?.shelfRenderer }
+fun WatchNextResult.getSuggestedSections() = getWatchNextResults()?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.mapNotNull { it?.shelfRenderer }
 fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results?.contents?.getOrNull(0)?.
     itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
 
@@ -82,4 +82,8 @@ fun NextVideoItem.getParams() = endpoint?.watchEndpoint?.params
 
 fun ChapterItem.getTitle() = chapterRenderer?.title?.toString()
 fun ChapterItem.getStartTimeMs() = chapterRenderer?.timeRangeStartMillis
-fun ChapterItem.getThumbnailUrl() = chapterRenderer?.thumbnail?.findOptimalResThumbnailUrl()
+fun ChapterItem.getThumbnailUrl() = chapterRenderer?.thumbnail?.getOptimalResThumbnailUrl()
+
+///////
+
+fun ContinuationItem.getContinuationKey(): String? = nextContinuationData?.continuation

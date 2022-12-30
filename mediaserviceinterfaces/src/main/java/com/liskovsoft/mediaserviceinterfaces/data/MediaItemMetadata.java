@@ -21,6 +21,7 @@ public interface MediaItemMetadata {
     boolean isSubscribed();
     boolean isLive();
     String getLiveChatKey();
+    String getCommentsKey();
     boolean isUpcoming();
     String getChannelId();
     String getParams();

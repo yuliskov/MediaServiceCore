@@ -2,12 +2,11 @@ package com.liskovsoft.youtubeapi.chat
 
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
 import com.liskovsoft.sharedutils.mylogger.Log
-import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatResult
-import com.liskovsoft.youtubeapi.chat.helpers.getActions
-import com.liskovsoft.youtubeapi.chat.helpers.getContinuation
+import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
+import com.liskovsoft.youtubeapi.chat.gen.getActions
+import com.liskovsoft.youtubeapi.chat.gen.getContinuation
 import com.liskovsoft.youtubeapi.chat.impl.ChatItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.ContinuationItem
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 

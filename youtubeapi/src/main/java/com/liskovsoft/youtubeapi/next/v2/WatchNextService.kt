@@ -8,8 +8,8 @@ import com.liskovsoft.youtubeapi.browse.BrowseManagerParams
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResultContinuation
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 

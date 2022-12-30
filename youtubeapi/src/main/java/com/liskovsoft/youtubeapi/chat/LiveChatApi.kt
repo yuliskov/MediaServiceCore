@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.chat
 
-import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatResult
+import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers

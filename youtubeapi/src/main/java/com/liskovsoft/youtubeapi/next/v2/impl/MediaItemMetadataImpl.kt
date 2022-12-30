@@ -5,12 +5,12 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
-import com.liskovsoft.youtubeapi.common.models.kt.*
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.next.v2.gen.*
 
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
     private val channelIdItem by lazy {
@@ -30,6 +30,9 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     }
     private val liveChatKeyItem by lazy {
         watchNextResult.getLiveChatKey()
+    }
+    private val commentsKeyItem: String? by lazy {
+        suggestedSections?.lastOrNull()?.getItemWrappers()?.getOrNull(1)?.getContinuationKey()
     }
     private val videoOwner by lazy {
         videoMetadata?.getVideoOwner()
@@ -90,7 +93,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
-    private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.findOptimalResThumbnailUrl() }
+    private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
         val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) MediaGroupImpl(it) else null }
         if (list?.size ?: 0 > 0)
@@ -199,6 +202,10 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
 
     override fun getLiveChatKey(): String? {
         return liveChatKeyItem
+    }
+
+    override fun getCommentsKey(): String? {
+        return commentsKeyItem
     }
 
     override fun isUpcoming(): Boolean {

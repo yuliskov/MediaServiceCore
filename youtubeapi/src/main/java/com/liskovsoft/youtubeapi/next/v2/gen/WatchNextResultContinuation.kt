@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.next.v2.gen.kt
+package com.liskovsoft.youtubeapi.next.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.kt.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
 data class WatchNextResultContinuation(
     val continuationContents: ContinuationContents?,

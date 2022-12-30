@@ -1,6 +1,4 @@
-package com.liskovsoft.youtubeapi.chat.helpers
-
-import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatResult
+package com.liskovsoft.youtubeapi.chat.gen
 
 fun LiveChatResult.getActions() = continuationContents?.liveChatContinuation?.actions
 fun LiveChatResult.getContinuation() = continuationContents?.liveChatContinuation?.continuations?.getOrNull(0)

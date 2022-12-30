@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.chat
 
-import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatResult
-import com.liskovsoft.youtubeapi.chat.helpers.getActions
-import com.liskovsoft.youtubeapi.chat.helpers.getContinuation
+import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
+import com.liskovsoft.youtubeapi.chat.gen.getActions
+import com.liskovsoft.youtubeapi.chat.gen.getContinuation
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import org.junit.Before
 import org.junit.Test

@@ -1,10 +1,10 @@
-package com.liskovsoft.youtubeapi.next.v2.gen.kt
+package com.liskovsoft.youtubeapi.next.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.kt.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
 
 data class NextVideoItem(
-        val item: Item?,
-        val endpoint: Endpoint?
+    val item: Item?,
+    val endpoint: Endpoint?
 ) {
     data class Item(val previewButtonRenderer: PreviewButtonRenderer?) {
         data class PreviewButtonRenderer(val thumbnail: ThumbnailItem?, val title: TextItem?, val byline: TextItem?)
@@ -14,9 +14,9 @@ data class NextVideoItem(
 }
 
 data class ShelfItem(
-        val title: TextItem?,
-        val content: Content?,
-        val headerRenderer: HeaderRenderer?
+    val title: TextItem?,
+    val content: Content?,
+    val headerRenderer: HeaderRenderer?
 ) {
     data class Content(
             val horizontalListRenderer: HorizontalListRenderer?
@@ -28,8 +28,8 @@ data class ShelfItem(
     }
 
     data class HeaderRenderer(
-            val shelfHeaderRenderer: ShelfHeaderRenderer?,
-            val chipCloudRenderer: ChipCloudRenderer?
+        val shelfHeaderRenderer: ShelfHeaderRenderer?,
+        val chipCloudRenderer: ChipCloudRenderer?
     ) {
         data class ShelfHeaderRenderer(
                 val title: TextItem?
@@ -49,8 +49,8 @@ data class ChipItem(
             val content: Content?
     ) {
         data class Content(
-                val horizontalListRenderer: HorizontalListRenderer?,
-                val sectionListRenderer: SectionListRenderer?
+            val horizontalListRenderer: HorizontalListRenderer?,
+            val sectionListRenderer: SectionListRenderer?
         ) {
             data class HorizontalListRenderer(
                     val items: List<ItemWrapper?>?,
@@ -69,10 +69,10 @@ data class ChipItem(
 }
 
 data class ContinuationItem(
-        val reloadContinuationData: ReloadContinuationData?,
-        val nextContinuationData: NextContinuationData?,
-        val invalidationContinuationData: LiveChatContinuationData?, // live chats
-        val timedContinuationData: LiveChatContinuationData? // live chats
+    val reloadContinuationData: ReloadContinuationData?,
+    val nextContinuationData: NextContinuationData?,
+    val invalidationContinuationData: LiveChatContinuationData?, // live chats
+    val timedContinuationData: LiveChatContinuationData? // live chats
 ) {
     data class ReloadContinuationData(
             val continuation: String?
@@ -89,12 +89,12 @@ data class ContinuationItem(
 }
 
 data class VideoOwnerItem(
-        val thumbnail: ThumbnailItem?,
-        val title: TextItem?,
-        val subscribed: Boolean?,
-        val subscriptionButton: SubscriptionButton?,
-        val subscribeButton: SubscribeButton?,
-        val navigationEndpoint: NavigationEndpointItem?
+    val thumbnail: ThumbnailItem?,
+    val title: TextItem?,
+    val subscribed: Boolean?,
+    val subscriptionButton: SubscriptionButton?,
+    val subscribeButton: SubscribeButton?,
+    val navigationEndpoint: NavigationEndpointItem?
 ) {
     data class SubscriptionButton(
             val subscribed: Boolean?
@@ -111,22 +111,22 @@ data class VideoOwnerItem(
 }
 
 data class VideoMetadataItem(
-        val owner: Owner?,
-        val title: TextItem?,
-        val byline: TextItem?,
-        val albumName: TextItem?,
-        val videoId: String?,
-        val description: TextItem?,
-        val publishedTimeText: TextItem?,
-        val publishedTime: TextItem?,
-        val dateText: TextItem?,
-        val viewCountText: TextItem?,
-        val shortViewCountText: TextItem?,
-        val viewCount: ViewCount?,
-        val likeStatus: String?,
-        val likeButton: LikeButton?,
-        val badges: List<Badge?>?,
-        val thumbnailOverlays: List<ThumbnailOverlayItem?>?
+    val owner: Owner?,
+    val title: TextItem?,
+    val byline: TextItem?,
+    val albumName: TextItem?,
+    val videoId: String?,
+    val description: TextItem?,
+    val publishedTimeText: TextItem?,
+    val publishedTime: TextItem?,
+    val dateText: TextItem?,
+    val viewCountText: TextItem?,
+    val shortViewCountText: TextItem?,
+    val viewCount: ViewCount?,
+    val likeStatus: String?,
+    val likeButton: LikeButton?,
+    val badges: List<Badge?>?,
+    val thumbnailOverlays: List<ThumbnailOverlayItem?>?
 ) {
     data class Owner(
             val videoOwnerRenderer: VideoOwnerItem?
@@ -160,10 +160,10 @@ data class VideoMetadataItem(
 }
 
 data class ButtonStateItem(
-        val subscribeButton: SubscribeButton?,
-        val likeButton: LikeButton?,
-        val dislikeButton: DislikeButton?,
-        val channelButton: ChannelButton?
+    val subscribeButton: SubscribeButton?,
+    val likeButton: LikeButton?,
+    val dislikeButton: DislikeButton?,
+    val channelButton: ChannelButton?
 ) {
     data class SubscribeButton(
             val toggleButtonRenderer: ToggleButtonRenderer?

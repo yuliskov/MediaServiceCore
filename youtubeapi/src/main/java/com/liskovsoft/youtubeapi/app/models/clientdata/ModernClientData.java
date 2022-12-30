@@ -3,8 +3,8 @@ package com.liskovsoft.youtubeapi.app.models.clientdata;
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
 /**
- * Data contained withing m=base js file<br/>
- * NOTE: Same pattern could be encountered 3 times or more<br/>
+ * Data contained inside m=base js file<br/>
+ * NOTE: Same pattern can be encountered 3 times or more<br/>
  * We're using the first one.
  */
 public class ModernClientData implements ClientData {

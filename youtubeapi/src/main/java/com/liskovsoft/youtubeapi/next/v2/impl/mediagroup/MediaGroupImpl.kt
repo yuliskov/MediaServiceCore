@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2.impl.mediagroup
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.*
+import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 import java.util.*
 

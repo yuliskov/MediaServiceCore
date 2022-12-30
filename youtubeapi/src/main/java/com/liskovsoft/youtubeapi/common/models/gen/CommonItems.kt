@@ -1,4 +1,6 @@
-package com.liskovsoft.youtubeapi.common.models.kt
+package com.liskovsoft.youtubeapi.common.models.gen
+
+import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 
 data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
@@ -31,7 +33,8 @@ data class NavigationEndpointItem(
                                 val content: Content?
                             ) {
                                 data class Content(
-                                    val overlayPanelItemListRenderer: OverlayPanelItemListRenderer?
+                                    val overlayPanelItemListRenderer: OverlayPanelItemListRenderer?,
+                                    val itemSectionRenderer: ItemSectionRenderer?
                                 ) {
                                     data class OverlayPanelItemListRenderer(
                                         val items: List<Item?>?
@@ -40,6 +43,10 @@ data class NavigationEndpointItem(
                                             val toggleButtonRenderer: ToggleButtonRenderer?
                                         )
                                     }
+
+                                    data class ItemSectionRenderer(
+                                        val continuations: List<ContinuationItem?>?
+                                    )
                                 }
                             }
                         }

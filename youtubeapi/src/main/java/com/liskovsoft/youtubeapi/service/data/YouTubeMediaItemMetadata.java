@@ -235,6 +235,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
+    public String getCommentsKey() {
+        return null;
+    }
+
+    @Override
     public boolean isUpcoming() {
         return mIsUpcoming;
     }

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.comments
 
-import com.liskovsoft.youtubeapi.comments.gen.kt.CommentsResult
+import com.liskovsoft.youtubeapi.comments.gen.CommentsResult
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers

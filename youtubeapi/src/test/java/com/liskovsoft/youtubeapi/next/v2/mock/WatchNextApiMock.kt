@@ -4,7 +4,7 @@ import co.infinum.retromock.meta.Mock
 import co.infinum.retromock.meta.MockResponse
 import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers

@@ -4,7 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.WatchNextResult
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock2

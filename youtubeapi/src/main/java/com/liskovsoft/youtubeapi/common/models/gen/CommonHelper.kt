@@ -1,8 +1,9 @@
-package com.liskovsoft.youtubeapi.common.models.kt
+package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
 
@@ -18,8 +19,8 @@ fun LiveChatEmoji.getText() = if (isCustomEmoji == true) "" else emojiId
 /**
  * Find optimal thumbnail for tv screen
  */
-fun ThumbnailItem.findOptimalResThumbnailUrl() = thumbnails?.getOrElse(YouTubeHelper.OPTIMAL_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
-fun ThumbnailItem.findHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
+fun ThumbnailItem.getOptimalResThumbnailUrl() = thumbnails?.getOrElse(YouTubeHelper.OPTIMAL_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
+fun ThumbnailItem.getHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
 fun ThumbnailItem.Thumbnail.getUrl(): String? {
     var newUrl = if (url?.startsWith("//") == true) "https:$url" else url
 
@@ -31,9 +32,10 @@ fun ThumbnailItem.Thumbnail.getUrl(): String? {
 ////////
 
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
-fun NavigationEndpointItem.getOverlaySubscribeButton() = getOverlayPanel()?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
-private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
-    ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer?.content?.overlayPanelItemListRenderer
+fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
+fun NavigationEndpointItem.getContinuationKey(): String? = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)?.getContinuationKey()
+private fun NavigationEndpointItem.getContent() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
+    ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer?.content
 
 ////////
 
@@ -111,6 +113,7 @@ fun TileItem.getChannelId() = menu?.getBrowseId()
 fun TileItem.isLive() = BADGE_STYLE_LIVE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.getContentType() = contentType
 fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
+fun TileItem.getContinuationKey() = onSelectCommand?.getContinuationKey()
 
 fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.isMovie() = BADGE_STYLE_MOVIE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
@@ -166,6 +169,7 @@ fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() 
 fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
 fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
+fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()
 
 /////
 

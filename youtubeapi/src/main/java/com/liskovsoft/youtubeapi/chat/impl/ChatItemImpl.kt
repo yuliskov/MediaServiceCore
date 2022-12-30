@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.chat.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
-import com.liskovsoft.youtubeapi.chat.gen.kt.LiveChatAction
-import com.liskovsoft.youtubeapi.common.models.kt.findOptimalResThumbnailUrl
-import com.liskovsoft.youtubeapi.common.models.kt.getText
+import com.liskovsoft.youtubeapi.chat.gen.LiveChatAction
+import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
+import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
     private val messageRenderer by lazy {
@@ -24,6 +24,6 @@ data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
     }
 
     override fun getAuthorPhoto(): String? {
-        return messageRenderer?.authorPhoto?.findOptimalResThumbnailUrl()
+        return messageRenderer?.authorPhoto?.getOptimalResThumbnailUrl()
     }
 }

@@ -1,6 +1,6 @@
-package com.liskovsoft.youtubeapi.chat.gen.kt
+package com.liskovsoft.youtubeapi.chat.gen
 
-import com.liskovsoft.youtubeapi.next.v2.gen.kt.ContinuationItem
+import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 
 data class LiveChatResult(
     val continuationContents: ContinuationContents?

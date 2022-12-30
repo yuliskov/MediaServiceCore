@@ -1,7 +1,7 @@
-package com.liskovsoft.youtubeapi.chat.gen.kt
+package com.liskovsoft.youtubeapi.chat.gen
 
-import com.liskovsoft.youtubeapi.common.models.kt.TextItem
-import com.liskovsoft.youtubeapi.common.models.kt.ThumbnailItem
+import com.liskovsoft.youtubeapi.common.models.gen.TextItem
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
 data class LiveChatAction(
     val addBannerToLiveChatCommand: AddBannerToLiveChatCommand?,

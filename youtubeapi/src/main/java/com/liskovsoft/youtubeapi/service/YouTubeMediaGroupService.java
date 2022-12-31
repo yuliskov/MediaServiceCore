@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
-import com.liskovsoft.sharedutils.rx.ObservableHelper;
+import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
@@ -83,22 +83,22 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return ObservableHelper.fromNullable(() -> getSearch(searchText));
+        return RxUtils.fromNullable(() -> getSearch(searchText));
     }
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText, int options) {
-        return ObservableHelper.fromNullable(() -> getSearch(searchText, options));
+        return RxUtils.fromNullable(() -> getSearch(searchText, options));
     }
 
     @Override
     public Observable<List<MediaGroup>> getSearchAltObserve(String searchText) {
-        return ObservableHelper.fromNullable(() -> getSearchAlt(searchText));
+        return RxUtils.fromNullable(() -> getSearchAlt(searchText));
     }
 
     @Override
     public Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options) {
-        return ObservableHelper.fromNullable(() -> getSearchAlt(searchText, options));
+        return RxUtils.fromNullable(() -> getSearchAlt(searchText, options));
     }
 
     @Override
@@ -110,7 +110,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<String>> getSearchTagsObserve(String searchText) {
-        return ObservableHelper.fromNullable(() -> getSearchTags(searchText));
+        return RxUtils.fromNullable(() -> getSearchTags(searchText));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
-        return ObservableHelper.fromNullable(this::getSubscriptions);
+        return RxUtils.fromNullable(this::getSubscriptions);
     }
 
     @Override
@@ -157,17 +157,17 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsUpdateObserve() {
-        return ObservableHelper.fromNullable(this::getSubscribedChannelsUpdate);
+        return RxUtils.fromNullable(this::getSubscribedChannelsUpdate);
     }
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsAZObserve() {
-        return ObservableHelper.fromNullable(this::getSubscribedChannelsAZ);
+        return RxUtils.fromNullable(this::getSubscribedChannelsAZ);
     }
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsLastViewedObserve() {
-        return ObservableHelper.fromNullable(this::getSubscribedChannelsLastViewed);
+        return RxUtils.fromNullable(this::getSubscribedChannelsLastViewed);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> getRecommendedObserve() {
-        return ObservableHelper.fromNullable(this::getRecommended);
+        return RxUtils.fromNullable(this::getRecommended);
     }
 
     @Override
@@ -206,7 +206,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
-        return ObservableHelper.fromNullable(this::getHistory);
+        return RxUtils.fromNullable(this::getHistory);
     }
 
     private MediaGroup getGroup(String reloadPageKey, String title, int type) {
@@ -229,12 +229,12 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
-        return ObservableHelper.fromNullable(() -> getGroup(mediaItem));
+        return RxUtils.fromNullable(() -> getGroup(mediaItem));
     }
 
     @Override
     public Observable<MediaGroup> getGroupObserve(String reloadPageKey) {
-        return ObservableHelper.fromNullable(() -> getGroup(reloadPageKey, null, MediaGroup.TYPE_UNDEFINED));
+        return RxUtils.fromNullable(() -> getGroup(reloadPageKey, null, MediaGroup.TYPE_UNDEFINED));
     }
 
     @Override
@@ -276,7 +276,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             SectionTab tab = mMediaGroupManagerReal.getHomeTab();
@@ -287,7 +287,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getMusicObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             SectionTab tab = mMediaGroupManagerReal.getMusicTab();
@@ -298,7 +298,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getNewsObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             SectionTab tab = mMediaGroupManagerReal.getNewsTab();
@@ -309,7 +309,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getGamingObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             SectionTab tab = mMediaGroupManagerReal.getGamingTab();
@@ -324,7 +324,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     private Observable<List<MediaGroup>> getChannelObserve(String channelId, String params) {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             // Special type of channel that could be found inside Music section (see Liked row More button)
@@ -349,7 +349,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         if (tab == null) {
             String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
             Log.e(TAG, msg);
-            ObservableHelper.onError(emitter, msg);
+            RxUtils.onError(emitter, msg);
             return;
         }
 
@@ -361,7 +361,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         if (groups.isEmpty()) {
             String msg = "Media group is empty: " + type;
             Log.e(TAG, msg);
-            ObservableHelper.onError(emitter, msg);
+            RxUtils.onError(emitter, msg);
         } else {
             while (!groups.isEmpty()) {
                 for (MediaGroup group : groups) { // Preserve positions
@@ -392,7 +392,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         if (sectionList == null) {
             String msg = "emitGroups: SectionList is null";
             Log.e(TAG, msg);
-            ObservableHelper.onError(emitter, msg);
+            RxUtils.onError(emitter, msg);
             return;
         }
 
@@ -401,7 +401,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         if (groups.isEmpty()) {
             String msg = "emitGroups: SectionList content is null";
             Log.e(TAG, msg);
-            ObservableHelper.onError(emitter, msg);
+            RxUtils.onError(emitter, msg);
         } else {
             emitter.onNext(groups);
             emitter.onComplete();
@@ -412,7 +412,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         if (grid == null) {
             String msg = "emitGroups: Grid is null";
             Log.e(TAG, msg);
-            ObservableHelper.onError(emitter, msg);
+            RxUtils.onError(emitter, msg);
             return;
         }
 
@@ -421,7 +421,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         if (group == null) {
             String msg = "emitGroups: Grid content is null";
             Log.e(TAG, msg);
-            ObservableHelper.onError(emitter, msg);
+            RxUtils.onError(emitter, msg);
         } else {
             emitter.onNext(Collections.singletonList(group));
             emitter.onComplete();
@@ -460,7 +460,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
-        return ObservableHelper.fromNullable(() -> continueGroup(mediaGroup));
+        return RxUtils.fromNullable(() -> continueGroup(mediaGroup));
     }
 
     private void checkSigned() {
@@ -479,7 +479,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getPlaylistsObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             List<GridTab> tabs = mMediaGroupManagerReal.getPlaylists();
@@ -499,14 +499,14 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
                 emitter.onComplete();
             } else {
-                ObservableHelper.onError(emitter, "getPlaylistsObserve: tab is null");
+                RxUtils.onError(emitter, "getPlaylistsObserve: tab is null");
             }
         });
     }
 
     @Override
     public Observable<MediaGroup> getEmptyPlaylistsObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             checkSigned();
 
             List<GridTab> tabs = mMediaGroupManagerReal.getPlaylists();
@@ -515,7 +515,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
                 emitter.onNext(YouTubeMediaGroup.fromTabs(tabs, MediaGroup.TYPE_USER_PLAYLISTS));
                 emitter.onComplete();
             } else {
-                ObservableHelper.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
+                RxUtils.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
             }
         });
     }

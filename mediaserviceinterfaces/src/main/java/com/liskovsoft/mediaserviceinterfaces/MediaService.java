@@ -6,6 +6,7 @@ public interface MediaService {
     MediaGroupService getMediaGroupService();
     MediaItemService getMediaItemService();
     LiveChatService getLiveChatService();
+    CommentsService getCommentsService();
     void invalidateCache();
     void refreshCacheIfNeeded();
     boolean isOldStreamsEnabled();

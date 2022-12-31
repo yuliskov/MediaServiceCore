@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import com.liskovsoft.mediaserviceinterfaces.CommentsService;
 import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
@@ -10,7 +11,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.sharedutils.rx.ObservableHelper;
+import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
@@ -24,6 +25,7 @@ public class YouTubeMediaService implements MediaService {
     private final MediaGroupService mMediaGroupManager;
     private final MediaItemService mMediaItemManager;
     private final YouTubeLiveChatService mLiveChatService;
+    private final YouTubeCommentsService mCommentsService;
     private Disposable mRefreshCacheAction;
     private boolean mOldStreamsEnabled;
 
@@ -35,6 +37,7 @@ public class YouTubeMediaService implements MediaService {
         mMediaGroupManager = YouTubeMediaGroupService.instance();
         mMediaItemManager = YouTubeMediaItemService.instance();
         mLiveChatService = YouTubeLiveChatService.instance();
+        mCommentsService = YouTubeCommentsService.instance();
     }
 
     public static MediaService instance() {
@@ -58,6 +61,11 @@ public class YouTubeMediaService implements MediaService {
     @Override
     public LiveChatService getLiveChatService() {
         return mLiveChatService;
+    }
+
+    @Override
+    public CommentsService getCommentsService() {
+        return mCommentsService;
     }
 
     @Override
@@ -98,7 +106,7 @@ public class YouTubeMediaService implements MediaService {
     }
 
     private Observable<Void> refreshCacheIfNeededObserve() {
-        return ObservableHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
+        return RxUtils.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
     }
 
     public static String serialize(MediaItem mediaItem) {

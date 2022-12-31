@@ -96,7 +96,7 @@ public class JsonPathTypeAdapter<T> {
     //
     //        List<Field> fields = ReflectionHelper.getAllFields(type);
     //
-    //        List<Boolean> results = Observable.fromIterable(fields)
+    //        List<Boolean> results = RxUtils.fromIterable(fields)
     //                .map(field -> processField(field, obj, type, parser))
     //                .subscribeOn(Schedulers.io())
     //                .observeOn(Schedulers.io())

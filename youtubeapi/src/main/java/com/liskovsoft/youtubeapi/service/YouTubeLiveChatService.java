@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
+import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.chat.LiveChatServiceInt;
 import io.reactivex.Observable;
 
@@ -23,7 +24,7 @@ public class YouTubeLiveChatService implements LiveChatService {
 
     @Override
     public Observable<ChatItem> openLiveChatObserve(String chatKey) {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             mLiveChatServiceInt.openLiveChat(
                     chatKey, emitter::onNext
             );

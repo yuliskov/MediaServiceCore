@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
@@ -56,7 +57,7 @@ public class YouTubeSignInService implements SignInService {
 
     @Override
     public Observable<Void> signOutObserve() {
-        return Observable.create(emitter -> {
+        return RxUtils.create(emitter -> {
             signOut();
             emitter.onComplete();
         });
@@ -77,7 +78,7 @@ public class YouTubeSignInService implements SignInService {
 
     @Override
     public Observable<Boolean> isSignedObserve() {
-        return Observable.fromCallable(this::isSigned);
+        return RxUtils.fromCallable(this::isSigned);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class YouTubeSignInService implements SignInService {
 
     @Override
     public Observable<List<Account>> getAccountsObserve() {
-        return Observable.fromCallable(this::getAccounts);
+        return RxUtils.fromCallable(this::getAccounts);
     }
 
     public String getAuthorizationHeader() {

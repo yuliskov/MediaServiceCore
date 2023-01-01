@@ -31,6 +31,10 @@ fun ThumbnailItem.Thumbnail.getUrl(): String? {
 
 ////////
 
+fun AccessibilityItem.getText(): String? = accessibilityData?.label
+
+////////
+
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
 fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
 fun NavigationEndpointItem.getContinuationKey(): String? = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)?.getContinuationKey()

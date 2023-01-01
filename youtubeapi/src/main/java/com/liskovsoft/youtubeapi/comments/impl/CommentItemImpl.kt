@@ -25,7 +25,7 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
 
-    private val likesCountItem by lazy { commentRenderer?.voteCount?.getText() }
+    private val likesCountItem by lazy { commentRenderer?.voteCount?.accessibility?.getText() }
 
     override fun getId(): String? = idItem
 

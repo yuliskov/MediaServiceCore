@@ -93,7 +93,8 @@ data class ToggleButtonRenderer(
 
 data class TextItem(
     val runs: List<Run?>?,
-    val simpleText: String?
+    val simpleText: String?,
+    val accessibility: AccessibilityItem?
 ) {
     data class Run(
         val text: String?,
@@ -121,6 +122,14 @@ data class ThumbnailItem(
         val url: String?,
         val width: String?,
         val height: String?
+    )
+}
+
+data class AccessibilityItem(
+    val accessibilityData: AccessibilityData?
+) {
+    data class AccessibilityData(
+        val label: String?
     )
 }
 

@@ -19,6 +19,8 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
 
     private val authorPhotoItem by lazy { commentRenderer?.authorThumbnail?.getOptimalResThumbnailUrl() }
 
+    private val publishedDateItem by lazy { commentRenderer?.publishedTimeText?.getText() }
+
     private val nestedCommentKeyItem by lazy { commentRenderer?.detailViewEndpoint?.getContinuationKey() }
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
@@ -32,6 +34,8 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
     override fun getAuthorName(): String? = authorNameItem
 
     override fun getAuthorPhoto(): String? = authorPhotoItem
+
+    override fun getPublishedDate(): String? = publishedDateItem
 
     override fun getNestedCommentsKey(): String? = nestedCommentKeyItem
 

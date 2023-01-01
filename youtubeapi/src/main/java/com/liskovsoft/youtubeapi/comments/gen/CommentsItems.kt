@@ -20,6 +20,7 @@ data class CommentRenderer(
     val commentId: String?,
     val authorText: TextItem?,
     val authorThumbnail: ThumbnailItem?,
+    val publishedTimeText: TextItem?,
     val contentText: TextItem?,
     val detailViewEndpoint: NavigationEndpointItem?,
     val isLiked: Boolean?,

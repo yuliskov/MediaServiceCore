@@ -12,6 +12,8 @@ public interface CommentItem {
     @Nullable
     String getAuthorPhoto();
     @Nullable
+    String getPublishedDate();
+    @Nullable
     String getNestedCommentsKey();
     boolean isLiked();
     @Nullable

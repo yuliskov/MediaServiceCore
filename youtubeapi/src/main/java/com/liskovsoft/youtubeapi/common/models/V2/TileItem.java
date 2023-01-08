@@ -157,6 +157,7 @@ public class TileItem {
 
     @Nullable
     private String[] getBadgeStyles() {
-        return mHeader != null ? new String[] {mHeader.getBadgeStyle()} : mMetadata != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
+        return mHeader != null ? new String[] {mHeader.getBadgeStyle()} :
+                mMetadata != null && mMetadata.getBadgeStyles() != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
     }
 }

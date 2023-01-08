@@ -5,18 +5,24 @@ import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class BrowseManagerParams {
+    private static final String HOME = "\"browseId\":\"default\"";
+    private static final String GAMING = "\"browseId\":\"FEtopics_gaming\"";
+    private static final String NEWS = "\"browseId\":\"FEtopics_news\"";
+    private static final String SPORTS = "\"browseId\":\"FEtopics_sports\"";
+    private static final String MUSIC = "\"browseId\":\"FEtopics_music\"";
+    private static final String MOVIES = "\"browseId\":\"FEtopics_movies\"";
     private static final String SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\"";
     private static final String MY_LIBRARY = "\"browseId\":\"FEmy_youtube\"";
     private static final String HISTORY = "\"browseId\":\"FEhistory\"";
-    private static final String HOME = "\"browseId\":\"FEtopics\"";
-    private static final String GAMING = "\"browseId\":\"FEtopics\",\"params\":\"-gIGZ2FtaW5n\"";
-    private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
-    private static final String MUSIC = "\"browseId\":\"FEtopics\",\"params\":\"-gIFbXVzaWM%3D\"";
+    private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
+    private static final String SUBSCRIBED_MUSIC_BROWSE_ID = "FEmusic_library_corpus_artists";
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
     private static final String CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\"";
-    private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
-    private static final String SUBSCRIBED_MUSIC_BROWSE_ID = "FEmusic_library_corpus_artists";
+    //private static final String HOME = "\"browseId\":\"FEtopics\"";
+    //private static final String GAMING = "\"browseId\":\"FEtopics\",\"params\":\"-gIGZ2FtaW5n\"";
+    //private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
+    //private static final String MUSIC = "\"browseId\":\"FEtopics\",\"params\":\"-gIFbXVzaWM%3D\"";
 
     public static String getHomeQuery() {
         return ServiceHelper.createQuery(HOME);

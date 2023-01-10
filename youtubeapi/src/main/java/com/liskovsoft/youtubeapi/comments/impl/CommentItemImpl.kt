@@ -2,7 +2,8 @@ package com.liskovsoft.youtubeapi.comments.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
 import com.liskovsoft.youtubeapi.comments.gen.CommentItemWrapper
-import com.liskovsoft.youtubeapi.common.models.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.comments.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.comments.gen.getContinuationLabel
 import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
@@ -21,7 +22,9 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
 
     private val publishedDateItem by lazy { commentRenderer?.publishedTimeText?.getText() }
 
-    private val nestedCommentKeyItem by lazy { commentRenderer?.detailViewEndpoint?.getContinuationKey() }
+    private val nestedCommentKeyItem by lazy { commentRenderer?.getContinuationKey() }
+
+    private val repliesCountItem by lazy { commentRenderer?.getContinuationLabel() }
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
 
@@ -42,4 +45,6 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
     override fun isLiked(): Boolean = isLikedItem
 
     override fun getLikesCount(): String? = likesCountItem
+
+    override fun getRepliesCount(): String? = repliesCountItem
 }

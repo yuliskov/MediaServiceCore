@@ -18,4 +18,6 @@ public interface CommentItem {
     boolean isLiked();
     @Nullable
     String getLikesCount();
+    @Nullable
+    String getRepliesCount();
 }

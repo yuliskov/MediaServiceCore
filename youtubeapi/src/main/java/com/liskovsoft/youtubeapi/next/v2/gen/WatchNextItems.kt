@@ -79,7 +79,8 @@ data class ContinuationItem(
     )
 
     data class NextContinuationData(
-            val continuation: String?
+            val continuation: String?,
+            val label: TextItem?
     )
 
     data class LiveChatContinuationData(

@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.common.models.gen
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getKey
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
 
@@ -37,9 +37,12 @@ fun AccessibilityItem.getText(): String? = accessibilityData?.label
 
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
 fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
-fun NavigationEndpointItem.getContinuationKey(): String? = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)?.getContinuationKey()
-private fun NavigationEndpointItem.getContent() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
-    ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer?.content
+fun NavigationEndpointItem.getContinuation() = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)
+fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
+private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
+    ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer
+private fun NavigationEndpointItem.getContent() = getOverlayPanel()?.content
+private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
 
 ////////
 
@@ -117,7 +120,7 @@ fun TileItem.getChannelId() = menu?.getBrowseId()
 fun TileItem.isLive() = BADGE_STYLE_LIVE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.getContentType() = contentType
 fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
-fun TileItem.getContinuationKey() = onSelectCommand?.getContinuationKey()
+fun TileItem.getContinuationKey() = onSelectCommand?.getContinuation()?.getKey()
 
 fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.isMovie() = BADGE_STYLE_MOVIE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()

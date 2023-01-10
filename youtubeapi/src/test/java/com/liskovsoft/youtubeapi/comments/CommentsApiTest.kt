@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.comments
 
-import com.liskovsoft.youtubeapi.comments.gen.CommentsResult
-import com.liskovsoft.youtubeapi.comments.gen.getComments
-import com.liskovsoft.youtubeapi.comments.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.comments.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.models.gen.getContinuation
+import com.liskovsoft.youtubeapi.next.v2.gen.getKey
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -40,7 +40,7 @@ class CommentsApiTest {
     fun testThatCommentCanBeContinued() {
         val commentsResult = getCommentsResult(COMMENTS_KEY)
 
-        assertNotNull("Has continuation key", commentsResult?.getComments()?.getOrNull(0)?.getContinuationKey())
+        assertNotNull("Has continuation key", commentsResult?.getComments()?.getOrNull(0)?.getCommentItem()?.getContinuationKey())
         assertNotNull("Has continuation key", commentsResult?.getContinuationKey())
     }
 
@@ -51,7 +51,7 @@ class CommentsApiTest {
         val commentsResultNext = getCommentsResult(commentsResult?.getContinuationKey())
         assertNotNull("Has continuations", commentsResultNext?.getComments()?.isNotEmpty())
 
-        val nestedCommentsResult = getCommentsResult(commentsResult?.getComments()?.getOrNull(0)?.getContinuationKey())
+        val nestedCommentsResult = getCommentsResult(commentsResult?.getComments()?.getOrNull(0)?.getCommentItem()?.getContinuationKey())
         assertNotNull("Has nested comments", nestedCommentsResult?.getComments()?.isNotEmpty())
     }
 

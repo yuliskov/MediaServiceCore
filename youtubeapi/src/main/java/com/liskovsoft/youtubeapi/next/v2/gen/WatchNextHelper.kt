@@ -86,4 +86,5 @@ fun ChapterItem.getThumbnailUrl() = chapterRenderer?.thumbnail?.getOptimalResThu
 
 ///////
 
-fun ContinuationItem.getContinuationKey(): String? = nextContinuationData?.continuation
+fun ContinuationItem.getKey(): String? = nextContinuationData?.continuation
+fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()

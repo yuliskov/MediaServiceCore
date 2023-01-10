@@ -30,7 +30,8 @@ data class NavigationEndpointItem(
                             val overlayPanelRenderer: OverlayPanelRenderer?
                         ) {
                             data class OverlayPanelRenderer(
-                                val content: Content?
+                                val content: Content?,
+                                val header: Header?
                             ) {
                                 data class Content(
                                     val overlayPanelItemListRenderer: OverlayPanelItemListRenderer?,
@@ -46,6 +47,13 @@ data class NavigationEndpointItem(
 
                                     data class ItemSectionRenderer(
                                         val continuations: List<ContinuationItem?>?
+                                    )
+                                }
+                                data class Header(
+                                    val overlayPanelHeaderRenderer: OverlayPanelHeaderRenderer?
+                                ) {
+                                    data class OverlayPanelHeaderRenderer(
+                                        val title: TextItem?
                                     )
                                 }
                             }

@@ -13,7 +13,7 @@ public class PlayerData {
     private static final Pattern SIGNATURE_DECIPHER = Pattern.compile("function [$\\w]+\\(a\\)");
     private static final Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE_V1 = Pattern.compile("function [$\\w]+\\(\\)");
     private static final Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE_V2 =
-            Pattern.compile("(;function [$\\w]+\\(a?\\)[\\S\\s]*)(function [$\\w]+\\(a?\\))([\\S\\s]*)");
+            Pattern.compile("(function [$\\w]+\\(a?\\)[\\S\\s]*)(function [$\\w]+\\(a?\\))([\\S\\s]*)");
     private static final Pattern SIGNATURE_THROTTLE = Pattern.compile("^;function [$\\w]+\\(a\\)");
 
     /**
@@ -22,7 +22,7 @@ public class PlayerData {
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
     @RegExp({
-        ";var [$\\w]+=\\{[\\S\\s]{10,200}?a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
+        ";\\w+ [$\\w]+=\\{[\\S\\s]{10,200}?a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
         //";var [$\\w]+=\\{.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
         //";var [$\\w]+=\\{.*\\n.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
         //";var [$\\w]+=\\{.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}"
@@ -48,8 +48,8 @@ public class PlayerData {
      * Note: [\S\s]* - match any char (including new lines) after getRandomValues<br/>
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
-    @RegExp(";function [$\\w]+\\(a?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues[\\S\\s]*?" +
-            "function [$\\w]+\\(a?\\)\\{.*for\\(var .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
+    @RegExp("function [$\\w]+\\(a?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues[\\S\\s]*?" +
+            "function [$\\w]+\\(a?\\)\\{.*for\\(\\w+ .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
     private String mClientPlaybackNonceFunctionV2;
 
     @RegExp(";function [$\\w]+\\(a\\)\\{var b=a\\.split\\(\"\"\\)[\\S\\s]*?return b\\.join\\(\"\"\\)\\}")

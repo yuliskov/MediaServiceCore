@@ -55,13 +55,13 @@ object AppConstants {
         "Mozilla/5.0 (Linux ${Build.CPU_ABI}; Android ${Build.VERSION.RELEASE}) Cobalt/$COBALT_VER (unlike Gecko) v8/$V8_VER gles Starboard/$STARBOARD_VER, ${Build.BRAND}_ATV_${Build.HARDWARE}_0/${Build.ID} (${Build.BRAND}, ${Build.MODEL}) com.google.android.youtube.tv/$APK_VER"
 
     @JvmField
-    val APP_USER_AGENT = USER_AGENT_SAMSUNG_3
+    val APP_USER_AGENT = USER_AGENT_ATV_COMBINED
 
     const val ACCEPT_ENCODING_DEFAULT = ACCEPT_ENCODING_IDENTITY
     const val SCRIPTS_URL_BASE = "https://www.youtube.com"
     const val API_KEY = API_KEY_NEW
     const val FUNCTION_RANDOM_BYTES =
-        "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}}"
+        "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}};"
 
     // 7.20211013.10.00
     const val CLIENT_VERSION_TV = "7.20220118.09.00"

@@ -37,6 +37,8 @@ fun AccessibilityItem.getText(): String? = accessibilityData?.label
 
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
 fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
+fun NavigationEndpointItem.isSubscribed() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
+    ?.subscribed
 fun NavigationEndpointItem.getContinuation() = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)
 fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
 private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay

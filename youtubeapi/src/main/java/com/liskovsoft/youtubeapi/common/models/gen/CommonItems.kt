@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
+import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
 
 data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
@@ -41,7 +42,8 @@ data class NavigationEndpointItem(
                                         val items: List<Item?>?
                                     ) {
                                         data class Item(
-                                            val toggleButtonRenderer: ToggleButtonRenderer?
+                                            val toggleButtonRenderer: ToggleButtonRenderer?,
+                                            val subscribeButtonRenderer: SubscribeButtonRenderer?
                                         )
                                     }
 
@@ -97,6 +99,11 @@ data class ToggleButtonRenderer(
     val isToggled: Boolean?,
     val defaultServiceEndpoint: DefaultServiceEndpoint?,
     val toggledServiceEndpoint: ToggledServiceEndpoint?
+)
+
+data class SubscribeButtonRenderer(
+    val subscribed: Boolean?,
+    val channelId: String?
 )
 
 data class TextItem(

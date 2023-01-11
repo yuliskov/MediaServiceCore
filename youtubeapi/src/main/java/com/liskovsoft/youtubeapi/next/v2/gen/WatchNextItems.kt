@@ -103,12 +103,7 @@ data class VideoOwnerItem(
 
     data class SubscribeButton(
             val subscribeButtonRenderer: SubscribeButtonRenderer?
-    ) {
-        data class SubscribeButtonRenderer(
-                val subscribed: Boolean?,
-                val channelId: String?
-        )
-    }
+    )
 }
 
 data class VideoMetadataItem(

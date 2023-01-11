@@ -5,10 +5,10 @@ import com.liskovsoft.youtubeapi.common.models.gen.*
 //////
 
 fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed ?:
-    navigationEndpoint?.getOverlaySubscribeButton()?.isToggled ?: navigationEndpoint?.isSubscribed()
+    navigationEndpoint?.getOverlayToggleButton()?.isToggled ?: navigationEndpoint?.getOverlaySubscribeButton()?.subscribed
 fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 fun VideoOwnerItem.getThumbnails() = thumbnail
-fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlaySubscribeButton()?.getSubscribeParams()
+fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlayToggleButton()?.getSubscribeParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams()
 
 /////
 

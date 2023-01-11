@@ -103,7 +103,8 @@ data class ToggleButtonRenderer(
 
 data class SubscribeButtonRenderer(
     val subscribed: Boolean?,
-    val channelId: String?
+    val channelId: String?,
+    val serviceEndpoints: List<DefaultServiceEndpoint?>?
 )
 
 data class TextItem(

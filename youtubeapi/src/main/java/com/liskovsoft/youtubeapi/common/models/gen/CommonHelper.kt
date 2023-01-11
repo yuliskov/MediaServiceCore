@@ -36,7 +36,8 @@ fun AccessibilityItem.getText(): String? = accessibilityData?.label
 ////////
 
 fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
-fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
+fun NavigationEndpointItem.getOverlayToggleButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
+fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
 fun NavigationEndpointItem.isSubscribed() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
     ?.subscribed
 fun NavigationEndpointItem.getContinuation() = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)
@@ -191,3 +192,7 @@ private fun DefaultServiceEndpoint.getSubscribeEndpoint() =
 
 fun ToggleButtonRenderer.getSubscribeParams() = defaultServiceEndpoint?.getParams()
 fun ToggleButtonRenderer.getUnsubscribeParams() = toggledServiceEndpoint?.unsubscribeEndpoint?.params
+
+//////
+
+fun SubscribeButtonRenderer.getParams() = serviceEndpoints?.firstNotNullOfOrNull { it?.getParams() }

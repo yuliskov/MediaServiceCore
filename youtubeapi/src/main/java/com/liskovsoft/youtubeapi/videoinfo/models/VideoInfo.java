@@ -270,7 +270,7 @@ public class VideoInfo {
                 String tag = Helpers.runMultiMatcher(originTrack.getName(), "\\(.*\\)$");
                 for (TranslationLanguage language : mTranslationLanguages) {
                     if (!Helpers.equals(originTrack.getLanguageCode(), language.getLanguageCode())) {
-                        mMergedCaptionTracks.add(new CaptionTrackWrapper(originTrack, language, tag));
+                        mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));
                     }
                 }
             }

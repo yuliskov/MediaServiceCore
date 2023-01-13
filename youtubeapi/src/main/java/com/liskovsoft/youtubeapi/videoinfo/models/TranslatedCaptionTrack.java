@@ -1,11 +1,12 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-public class CaptionTrackWrapper extends CaptionTrack {
+public class TranslatedCaptionTrack extends CaptionTrack {
+    public final static String TRANSLATE_MARKER = "*";
     private final CaptionTrack mOriginTrack;
     private final TranslationLanguage mLanguage;
     private final String mTag;
 
-    public CaptionTrackWrapper(CaptionTrack originTrack, TranslationLanguage language, String tag) {
+    public TranslatedCaptionTrack(CaptionTrack originTrack, TranslationLanguage language, String tag) {
         mOriginTrack = originTrack;
         mLanguage = language;
         mTag = tag;
@@ -33,7 +34,7 @@ public class CaptionTrackWrapper extends CaptionTrack {
 
     @Override
     public String getName() {
-        return mLanguage.getLanguageName() + (mTag != null ? " " + mTag : "");
+        return mLanguage.getLanguageName() + (mTag != null ? " " + mTag : "") + TRANSLATE_MARKER;
     }
 
     @Override

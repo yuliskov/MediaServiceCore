@@ -196,3 +196,36 @@ data class ChapterItem(
         val thumbnail: ThumbnailItem?
     )
 }
+
+//////////
+
+data class EngagementPanel(
+    val engagementPanelSectionListRenderer: EngagementPanelSectionListRenderer?
+) {
+    data class EngagementPanelSectionListRenderer(
+        val panelIdentifier: String?,
+        val header: Header?
+    ) {
+        data class Header(
+            val engagementPanelTitleHeaderRenderer: EngagementPanelTitleHeaderRenderer?
+        ) {
+            data class EngagementPanelTitleHeaderRenderer(
+                val menu: Menu?
+            )
+        }
+    }
+}
+
+data class Menu(
+    val sortFilterSubMenuRenderer: SortFilterSubMenuRenderer?
+) {
+    data class SortFilterSubMenuRenderer(
+        val subMenuItems: List<SubMenuItem>
+    )
+}
+
+data class SubMenuItem(
+    val continuation: ContinuationItem?
+)
+
+//////////

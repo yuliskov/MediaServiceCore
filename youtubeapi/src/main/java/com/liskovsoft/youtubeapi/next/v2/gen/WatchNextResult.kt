@@ -5,7 +5,8 @@ import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 data class WatchNextResult(
     val contents: Contents?,
     val transportControls: TransportControls?,
-    val playerOverlays: PlayerOverlays?
+    val playerOverlays: PlayerOverlays?,
+    val engagementPanels: List<EngagementPanel?>?
 ) {
     data class Contents(
         val singleColumnWatchNextResults: SingleColumnWatchNextResults?

@@ -28,11 +28,16 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
     private val nextVideoItem by lazy {
         watchNextResult.getNextVideoItem()
     }
+    private val commentsPanel by lazy {
+        watchNextResult.engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
+    }
     private val liveChatKeyItem by lazy {
         watchNextResult.getLiveChatKey()
     }
     private val commentsKeyItem: String? by lazy {
-        suggestedSections?.lastOrNull()?.getItemWrappers()?.getOrNull(1)?.getContinuationKey()
+        commentsPanel?.getTopCommentsKey()
+        // Old val
+        //suggestedSections?.lastOrNull()?.getItemWrappers()?.getOrNull(1)?.getContinuationKey()
     }
     private val videoOwner by lazy {
         videoMetadata?.getVideoOwner()

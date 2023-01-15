@@ -86,5 +86,13 @@ fun ChapterItem.getThumbnailUrl() = chapterRenderer?.thumbnail?.getOptimalResThu
 
 ///////
 
-fun ContinuationItem.getKey(): String? = nextContinuationData?.continuation
+fun ContinuationItem.getKey(): String? = nextContinuationData?.continuation ?: reloadContinuationData?.continuation
 fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()
+
+///////
+
+fun EngagementPanel.getMenu() = engagementPanelSectionListRenderer?.header?.engagementPanelTitleHeaderRenderer?.menu
+fun EngagementPanel.getTopCommentsKey(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getKey()
+fun EngagementPanel.getNewCommentsKey(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getKey()
+fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
+fun Menu.getSubMenuItems() = sortFilterSubMenuRenderer?.subMenuItems

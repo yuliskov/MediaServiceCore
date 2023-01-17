@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getKey
 
 fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
+fun TextItem.getAccessibilityLabel() = accessibility?.accessibilityData?.label
 
 /**
  * Use shortcut name as workaround to display custom emoji. Custom emoji are images.
@@ -28,10 +29,6 @@ fun ThumbnailItem.Thumbnail.getUrl(): String? {
 
     return newUrl
 }
-
-////////
-
-fun AccessibilityItem.getText(): String? = accessibilityData?.label
 
 ////////
 

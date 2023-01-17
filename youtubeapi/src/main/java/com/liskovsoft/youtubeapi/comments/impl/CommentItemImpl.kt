@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.comments.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.comments.gen.CommentItemWrapper
 import com.liskovsoft.youtubeapi.comments.gen.getContinuationKey
 import com.liskovsoft.youtubeapi.comments.gen.getContinuationLabel
@@ -28,7 +29,7 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
 
-    private val likesCountItem by lazy { commentRenderer?.voteCount?.accessibility?.getText() }
+    private val likesCountItem by lazy { commentRenderer?.voteCount?.getText()?.let { "$it ${Helpers.THUMB_UP}" } }
 
     override fun getId(): String? = idItem
 

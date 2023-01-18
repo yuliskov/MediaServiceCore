@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.RemoteService;
+import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -8,12 +8,12 @@ import com.liskovsoft.youtubeapi.lounge.LoungeService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
-public class YouTubeRemoteService implements RemoteService {
-    private static final String TAG = YouTubeRemoteService.class.getSimpleName();
-    private static YouTubeRemoteService sInstance;
+public class YouTubeRemoteControlService implements RemoteControlService {
+    private static final String TAG = YouTubeRemoteControlService.class.getSimpleName();
+    private static YouTubeRemoteControlService sInstance;
     private final LoungeService mLoungeService;
 
-    private YouTubeRemoteService() {
+    private YouTubeRemoteControlService() {
         mLoungeService = LoungeService.instance();
 
         GlobalPreferences.setOnInit(() -> {
@@ -22,9 +22,9 @@ public class YouTubeRemoteService implements RemoteService {
         });
     }
 
-    public static YouTubeRemoteService instance() {
+    public static YouTubeRemoteControlService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeRemoteService();
+            sInstance = new YouTubeRemoteControlService();
         }
 
         return sInstance;

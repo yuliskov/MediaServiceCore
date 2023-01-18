@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
-import com.liskovsoft.mediaserviceinterfaces.RemoteService;
+import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -20,7 +20,7 @@ public class YouTubeMediaService implements MediaService {
     private static final String TAG = YouTubeMediaService.class.getSimpleName();
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInService mSignInManager;
-    private final YouTubeRemoteService mDeviceLinkManager;
+    private final YouTubeRemoteControlService mDeviceLinkManager;
     private final MediaGroupService mMediaGroupManager;
     private final MediaItemService mMediaItemManager;
     private final YouTubeLiveChatService mLiveChatService;
@@ -32,7 +32,7 @@ public class YouTubeMediaService implements MediaService {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInService.instance();
-        mDeviceLinkManager = YouTubeRemoteService.instance();
+        mDeviceLinkManager = YouTubeRemoteControlService.instance();
         mMediaGroupManager = YouTubeMediaGroupService.instance();
         mMediaItemManager = YouTubeMediaItemService.instance();
         mLiveChatService = YouTubeLiveChatService.instance();
@@ -53,7 +53,7 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public RemoteService getRemoteService() {
+    public RemoteControlService getRemoteControlService() {
         return mDeviceLinkManager;
     }
 

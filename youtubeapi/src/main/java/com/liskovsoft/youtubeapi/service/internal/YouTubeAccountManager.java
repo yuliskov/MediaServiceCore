@@ -54,7 +54,7 @@ public class YouTubeAccountManager {
     }
 
     public Observable<String> signInObserve() {
-        return RxHelper.create(emitter -> {
+        return RxHelper.createLong(emitter -> {
             UserCode userCodeResult = mAuthService.getUserCode();
 
             if (userCodeResult == null) {

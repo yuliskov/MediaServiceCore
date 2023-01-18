@@ -9,9 +9,8 @@ import com.liskovsoft.mediaserviceinterfaces.RemoteService;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxUtils;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.sharedutils.rx.RxUtils;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
@@ -88,11 +87,11 @@ public class YouTubeMediaService implements MediaService {
 
     @Override
     public void refreshCacheIfNeeded() {
-        if (RxUtils.isAnyActionRunning(mRefreshCacheAction)) {
+        if (RxHelper.isAnyActionRunning(mRefreshCacheAction)) {
             return;
         }
 
-        mRefreshCacheAction = RxUtils.execute(refreshCacheIfNeededObserve());
+        mRefreshCacheAction = RxHelper.execute(refreshCacheIfNeededObserve());
     }
 
     @Override
@@ -106,7 +105,7 @@ public class YouTubeMediaService implements MediaService {
     }
 
     private Observable<Void> refreshCacheIfNeededObserve() {
-        return RxUtils.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
+        return RxHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
     }
 
     public static String serialize(MediaItem mediaItem) {

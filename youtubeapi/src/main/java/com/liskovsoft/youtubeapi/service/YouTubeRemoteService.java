@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.RemoteService;
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.sharedutils.rx.RxUtils;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.lounge.LoungeService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
@@ -37,12 +37,12 @@ public class YouTubeRemoteService implements RemoteService {
 
     @Override
     public Observable<String> getPairingCodeObserve() {
-        return RxUtils.fromNullable(this::getPairingCode);
+        return RxHelper.fromNullable(this::getPairingCode);
     }
 
     @Override
     public Observable<Command> getCommandObserve() {
-        return RxUtils.create(emitter -> {
+        return RxHelper.createLong(emitter -> {
             mLoungeService.startListening(
                     info -> emitter.onNext(YouTubeCommand.from(info))
             );
@@ -53,21 +53,21 @@ public class YouTubeRemoteService implements RemoteService {
 
     @Override
     public Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs, boolean isPlaying) {
-        return RxUtils.fromVoidable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, isPlaying));
+        return RxHelper.fromVoidable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, isPlaying));
     }
 
     @Override
     public Observable<Void> postStateChangeObserve(long positionMs, long durationMs, boolean isPlaying) {
-        return RxUtils.fromVoidable(() -> mLoungeService.postStateChange(positionMs, durationMs, isPlaying));
+        return RxHelper.fromVoidable(() -> mLoungeService.postStateChange(positionMs, durationMs, isPlaying));
     }
 
     @Override
     public Observable<Void> postVolumeChangeObserve(int volume) {
-        return RxUtils.fromVoidable(() -> mLoungeService.postVolumeChange(volume));
+        return RxHelper.fromVoidable(() -> mLoungeService.postVolumeChange(volume));
     }
 
     @Override
     public Observable<Void> resetDataObserve() {
-        return RxUtils.fromVoidable(mLoungeService::resetData);
+        return RxHelper.fromVoidable(mLoungeService::resetData);
     }
 }

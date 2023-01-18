@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.service
 
 import com.liskovsoft.mediaserviceinterfaces.CommentsService
 import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup
-import com.liskovsoft.sharedutils.rx.RxUtils
+import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.comments.CommentsServiceInt
 import io.reactivex.Observable
 
@@ -32,6 +32,6 @@ class YouTubeCommentsService private constructor(): CommentsService {
     }
 
     override fun getCommentsObserve(key: String?): Observable<CommentGroup> {
-        return RxUtils.fromNullable { getComments(key) }
+        return RxHelper.fromNullable { getComments(key) }
     }
 }

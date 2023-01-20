@@ -91,8 +91,9 @@ public final class YouTubeHelper {
                     (GlobalPreferences.sInstance.isHideShortsFromHomeEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
                     (GlobalPreferences.sInstance.isHideShortsFromHistoryEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HISTORY);
             boolean isHideUpcomingEnabled = GlobalPreferences.sInstance.isHideUpcomingEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS;
+            boolean isHideStreamsEnabled = (GlobalPreferences.sInstance.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
 
-            if (isHideShortsEnabled || isHideUpcomingEnabled) {
+            if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled) {
                 // NOTE: The group could be empty after filtering! Fix for that.
 
                 // Remove Shorts and/or Upcoming
@@ -102,7 +103,8 @@ public final class YouTubeHelper {
                         return false;
                     }
 
-                    return (isHideShortsEnabled && isShort(mediaItem)) || (isHideUpcomingEnabled && mediaItem.isUpcoming());
+                    return (isHideShortsEnabled && isShort(mediaItem)) || (isHideUpcomingEnabled && mediaItem.isUpcoming()) ||
+                            (isHideStreamsEnabled && mediaItem.isLive());
                 });
             }
         }

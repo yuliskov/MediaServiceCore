@@ -119,7 +119,8 @@ data class TextItem(
     )
 
     override fun toString(): String {
-        return getText() ?: super.toString()
+        // Use empty string instead of super.toString() to fix output like "com.package.name.TextItem@0"
+        return getText() ?: ""
     }
 }
 

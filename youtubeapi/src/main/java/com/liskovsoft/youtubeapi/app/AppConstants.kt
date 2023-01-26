@@ -57,7 +57,7 @@ object AppConstants {
     @JvmField
     val APP_USER_AGENT = USER_AGENT_ATV_COMBINED
 
-    const val ACCEPT_ENCODING_DEFAULT = ACCEPT_ENCODING_IDENTITY
+    const val ACCEPT_ENCODING_DEFAULT = ACCEPT_ENCODING_COMPRESSED
     const val SCRIPTS_URL_BASE = "https://www.youtube.com"
     const val API_KEY = API_KEY_NEW
     const val FUNCTION_RANDOM_BYTES =

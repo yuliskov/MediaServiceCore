@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import android.os.Build;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -162,7 +163,11 @@ public class RetrofitHelper {
         //    client = wrapDnsOverHttps(client);
         //}
 
-        client = wrapDnsOverHttps(client);
+        // SSLHandshakeException on Android 4
+        // https://stackoverflow.com/questions/49980508/okhttp-sslhandshakeexception-ssl-handshake-aborted-failure-in-ssl-library-a-pro/49981435#49981435
+        if (Build.VERSION.SDK_INT > 19) {
+            client = wrapDnsOverHttps(client);
+        }
 
         return client;
     }

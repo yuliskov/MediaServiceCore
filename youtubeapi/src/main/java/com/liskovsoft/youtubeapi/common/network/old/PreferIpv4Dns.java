@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.helpers.old;
+package com.liskovsoft.youtubeapi.common.network.old;
 
 import androidx.annotation.NonNull;
 import okhttp3.Dns;

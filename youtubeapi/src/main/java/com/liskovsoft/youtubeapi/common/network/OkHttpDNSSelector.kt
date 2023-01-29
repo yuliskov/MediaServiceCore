@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.helpers
+package com.liskovsoft.youtubeapi.common.network
 
 import okhttp3.Dns
 import java.net.Inet4Address

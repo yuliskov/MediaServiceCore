@@ -17,6 +17,8 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.interceptors.UnzippingInterceptor;
+import com.liskovsoft.youtubeapi.common.network.DohProviders;
+import com.liskovsoft.youtubeapi.common.network.OkHttpDNSSelector;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
@@ -160,6 +162,8 @@ public class RetrofitHelper {
         //    client = wrapDnsOverHttps(client);
         //}
 
+        client = wrapDnsOverHttps(client);
+
         return client;
     }
 
@@ -237,40 +241,7 @@ public class RetrofitHelper {
      * https://github.com/square/okhttp/blob/master/okhttp-dnsoverhttps/src/test/java/okhttp3/dnsoverhttps/DohProviders.java
      */
     public static OkHttpClient wrapDnsOverHttps(OkHttpClient client) {
-        return client.newBuilder().dns(buildCloudflareDnsOverHttps(client)).build();
-    }
-
-    private static DnsOverHttps buildGoogleDnsOverHttps(OkHttpClient bootstrapClient) {
-        return new DnsOverHttps.Builder()
-                .client(bootstrapClient)
-                .url(HttpUrl.get("https://dns.google/dns-query"))
-                .bootstrapDnsHosts(getByIp("8.8.4.4"), getByIp("8.8.8.8"))
-                .build();
-    }
-
-    private static DnsOverHttps buildCleanBrowsingDnsOverHttps(OkHttpClient bootstrapClient) {
-        return new DnsOverHttps.Builder()
-                .client(bootstrapClient)
-                .url(HttpUrl.get("https://doh.cleanbrowsing.org/doh/family-filter/"))
-                .includeIPv6(false)
-                .build();
-    }
-
-    private static DnsOverHttps buildCloudflareDnsOverHttps(OkHttpClient bootstrapClient) {
-        return new DnsOverHttps.Builder()
-                .client(bootstrapClient)
-                .url(HttpUrl.get("https://1.1.1.1/dns-query"))
-                .includeIPv6(false)
-                .build();
-    }
-
-    private static InetAddress getByIp(String host) {
-        try {
-            return InetAddress.getByName(host);
-        } catch (UnknownHostException e) {
-            // unlikely
-            throw new RuntimeException(e);
-        }
+        return client.newBuilder().dns(DohProviders.buildGoogle(client)).build();
     }
 
     /**

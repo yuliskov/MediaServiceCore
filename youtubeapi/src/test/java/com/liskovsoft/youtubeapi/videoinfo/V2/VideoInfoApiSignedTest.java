@@ -37,8 +37,6 @@ public class VideoInfoApiSignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        RetrofitHelper.sForceEnableProfiler = true;
-
         mService = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
         mLocaleManager = LocaleManager.instance();
     }

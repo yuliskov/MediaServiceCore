@@ -28,8 +28,6 @@ public class DashInfoApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        RetrofitHelper.sForceEnableProfiler = true;
-
         mService = RetrofitHelper.withRegExp(DashInfoApi.class);
     }
 

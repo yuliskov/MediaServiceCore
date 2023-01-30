@@ -35,8 +35,6 @@ public class VideoInfoApiUnsignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        RetrofitHelper.sForceEnableProfiler = true;
-
         mService = RetrofitHelper.withQueryString(VideoInfoApiUnsigned.class);
         mLocaleManager = LocaleManager.instance();
     }

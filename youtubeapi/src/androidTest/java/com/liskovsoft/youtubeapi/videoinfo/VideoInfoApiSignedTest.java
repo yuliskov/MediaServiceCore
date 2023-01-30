@@ -29,8 +29,6 @@ public class VideoInfoApiSignedTest {
 
     @Before
     public void setUp() {
-        RetrofitHelper.sForceEnableProfiler = true;
-
         mService = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
         mLocaleManager = LocaleManager.instance();
     }

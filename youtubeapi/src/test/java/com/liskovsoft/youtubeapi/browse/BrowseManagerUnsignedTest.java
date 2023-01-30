@@ -38,8 +38,6 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        RetrofitHelper.sForceEnableProfiler = true;
-
         mService = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
     }
 

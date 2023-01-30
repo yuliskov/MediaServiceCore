@@ -28,8 +28,6 @@ public class VideoInfoApiUnsignedTest {
 
     @Before
     public void setUp() {
-        RetrofitHelper.sForceEnableProfiler = true;
-
         mService = RetrofitHelper.withJsonPath(VideoInfoApiUnsigned.class);
         mLocaleManager = LocaleManager.instance();
     }

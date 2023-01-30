@@ -58,15 +58,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
-    implementation 'com.squareup.okhttp3:okhttp:' + okhttpVersion
-    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:' + okhttpVersion
-    implementation 'com.squareup.okhttp3:logging-interceptor:' + okhttpVersion
-    implementation 'com.squareup.okhttp3:okhttp-brotli:' + okhttpBrotliVersion
-    implementation('com.localebro:okhttpprofiler:' + okhttpProfilerVersion) {
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp' // force global okhttp version
-    }
-    //implementation 'com.squareup.okio:okio:' + okioVersion
-
     implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion
 
     // js interpreter

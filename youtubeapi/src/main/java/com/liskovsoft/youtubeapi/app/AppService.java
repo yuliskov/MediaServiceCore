@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.okhttp.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
@@ -283,7 +284,7 @@ public class AppService {
 
         Log.d(TAG, "updateAppInfoData");
 
-        mCachedAppInfo = mAppManager.getAppInfo(AppConstants.APP_USER_AGENT);
+        mCachedAppInfo = mAppManager.getAppInfo(DefaultHeaders.APP_USER_AGENT);
 
         if (mCachedAppInfo != null) {
             mAppInfoUpdateTimeMs = System.currentTimeMillis();

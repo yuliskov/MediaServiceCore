@@ -1,8 +1,9 @@
 package com.liskovsoft.youtubeapi.app;
 
+import com.liskovsoft.sharedutils.okhttp.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
+import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,13 +33,13 @@ public class AppManagerTest {
 
     @Test
     public void testThatAppInfoContainsAllRequiredFields() throws IOException {
-        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
+        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
         assertTrue("Player url should ends with js", playerUrl.endsWith(".js"));
     }
 
     @Test
     public void testThatDecipherFunctionIsValid() {
-        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
+        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
 
         PlayerData playerData = mManager.getPlayerData(playerUrl);
 
@@ -54,7 +55,7 @@ public class AppManagerTest {
 
     @Test
     public void testThatPlaybackNonceFunctionIsValid() {
-        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
+        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
 
         PlayerData clientPlaybackNonceFunction = mManager.getPlayerData(playerUrl);
 
@@ -69,7 +70,7 @@ public class AppManagerTest {
 
     @Test
     public void testThrottleFunctionIsValid() {
-        String playerUrl = getPlayerUrl(AppConstants.USER_AGENT_COBALT);
+        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
 
         PlayerData playerData = mManager.getPlayerData(playerUrl);
 
@@ -85,10 +86,10 @@ public class AppManagerTest {
     @Test
     public void testThatClientIdAndSecretNotEmpty() {
         for (String userAgent : new String[]{
-                AppConstants.USER_AGENT_COBALT,
-                AppConstants.USER_AGENT_SAMSUNG,
-                AppConstants.USER_AGENT_SAMSUNG_2,
-                AppConstants.USER_AGENT_LG_2013
+                DefaultHeaders.USER_AGENT_COBALT,
+                DefaultHeaders.USER_AGENT_SAMSUNG,
+                DefaultHeaders.USER_AGENT_SAMSUNG_2,
+                DefaultHeaders.USER_AGENT_LG_2013
         }) {
             testThatClientIdAndSecretNotEmpty(userAgent);
         }

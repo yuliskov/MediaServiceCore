@@ -1,14 +1,14 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.sharedutils.okhttp.DefaultHeaders;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
-import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
+import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
-import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
-import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -81,7 +81,7 @@ public class BindManagerTest {
     @Test
     public void testThatRequestInSuccessfulRaw() throws IOException {
         Map<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", AppConstants.APP_USER_AGENT);
+        headers.put("User-Agent", DefaultHeaders.APP_USER_AGENT);
 
         Response response = OkHttpHelpers.doPostOkHttpRequest("https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl" +
                         "&capabilities=dsp%2Cmic%2Cdpa" + "&mdxVersion=2&VER=8&v=2&t=1&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx" +

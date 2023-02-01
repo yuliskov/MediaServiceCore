@@ -54,7 +54,7 @@ public class AppManagerWrapper {
         Call<ModernClientData> wrapper = mAppManager.getModernClientData(baseUrl);
         ClientData baseData = RetrofitHelper.get(wrapper);
 
-        // Seem that lacy script encountered.
+        // Seems that legacy script encountered.
         // Needed values is stored in main script, not in base.
         if (baseData == null) {
             baseData = RetrofitHelper.get(mAppManager.getLegacyClientData(getMainUrl(baseUrl)));

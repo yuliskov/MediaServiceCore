@@ -4,7 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.SearchOptions;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 class SearchFilterHelper {
-    private static final int MAX_PARAMS = 6;
+    private static final int MAX_PARAMS = 7;
 
     private static final int UPLOAD_DATE_ALL = 0;
     private static final int UPLOAD_DATE_LAST_HOUR = 1;
@@ -28,6 +28,9 @@ class SearchFilterHelper {
     private static final int FEATURE_LIVE = 1;
     private static final int FEATURE_4K = 2;
     private static final int FEATURE_HDR = 3;
+    private static final int FEATURE_LIVE_4K = 4;
+    private static final int FEATURE_4K_HDR = 5;
+    private static final int FEATURE_LIVE_4K_HDR = 6;
 
     private static final String[][][][] PARAMS = new String[MAX_PARAMS][MAX_PARAMS][MAX_PARAMS][MAX_PARAMS];
 
@@ -49,9 +52,12 @@ class SearchFilterHelper {
         PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_PLAYLIST][FEATURE_ANY] = "EgIQAw%3D%3D";
         PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_MOVIE][FEATURE_ANY] = "EgIQBA%3D%3D";
 
-        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE] = "EgQQAUAB";
-        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_4K] = "EgQQAXAB";
-        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_HDR] = "EgUQAcgBAQ%3D%3D";
+        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE] = "EgJAAQ%3D%3D";
+        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_4K] = "EgJwAQ%3D%3D";
+        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_HDR] = "EgPIAQE%3D";
+        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE_4K] = "EgRAAXAB";
+        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_4K_HDR] = "EgVwAcgBAQ%3D%3D";
+        PARAMS[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE_4K_HDR] = "EgdAAXAByAEB";
 
         // Various combinations
 
@@ -127,7 +133,13 @@ class SearchFilterHelper {
     private static int getFeaturesIndex(int options) {
         int index = FEATURE_ANY;
 
-        if (Helpers.check(options, SearchOptions.FEATURE_LIVE)) {
+        if (Helpers.check(options, SearchOptions.FEATURE_LIVE | SearchOptions.FEATURE_4K | SearchOptions.FEATURE_HDR)) {
+            index = FEATURE_LIVE_4K_HDR;
+        } else if (Helpers.check(options, SearchOptions.FEATURE_LIVE | SearchOptions.FEATURE_4K)) {
+            index = FEATURE_LIVE_4K;
+        } else if (Helpers.check(options, SearchOptions.FEATURE_4K | SearchOptions.FEATURE_HDR)) {
+            index = FEATURE_4K_HDR;
+        } else if (Helpers.check(options, SearchOptions.FEATURE_LIVE)) {
             index = FEATURE_LIVE;
         } else if (Helpers.check(options, SearchOptions.FEATURE_4K)) {
             index = FEATURE_4K;

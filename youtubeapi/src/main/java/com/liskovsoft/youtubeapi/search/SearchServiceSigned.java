@@ -45,7 +45,7 @@ public class SearchServiceSigned {
     }
 
     public SearchResult getSearch(String searchText, int options, String authorization) {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams.getSearchQuery(searchText, options), authorization, mAppService.getVisitorId());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams2.getSearchQuery(searchText, options), authorization, mAppService.getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -66,7 +66,7 @@ public class SearchServiceSigned {
             return null;
         }
         
-        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams.getContinuationQuery(nextSearchPageKey), authorization);
+        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams2.getContinuationQuery(nextSearchPageKey), authorization);
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {

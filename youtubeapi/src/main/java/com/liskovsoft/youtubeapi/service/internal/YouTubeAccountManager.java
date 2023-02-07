@@ -95,6 +95,7 @@ public class YouTubeAccountManager {
 
         if (accountsInt != null) {
             for (AccountInt accountInt : accountsInt) {
+                // Refresh token should be unique per account but we only have one.
                 if (accountInt.isSelected()) {
                     YouTubeAccount account = YouTubeAccount.from(accountInt);
                     account.setRefreshToken(refreshToken);

@@ -2,11 +2,8 @@ package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface TrackingApi {
@@ -79,16 +76,4 @@ public interface TrackingApi {
             @Query("ei") String eventId,                 // Event Id, ei param from get_video_info
             @Header("Authorization") String auth
     );
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/pause_watch_history")
-    Call<Void> pauseWatchHistory(@Body String historyQuery, @Header("Authorization") String auth);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/resume_watch_history")
-    Call<Void> resumeWatchHistory(@Body String historyQuery, @Header("Authorization") String auth);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/clear_watch_history")
-    Call<Void> clearWatchHistory(@Body String historyQuery, @Header("Authorization") String auth);
 }

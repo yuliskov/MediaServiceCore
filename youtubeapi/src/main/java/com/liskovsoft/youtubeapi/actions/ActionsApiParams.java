@@ -18,4 +18,8 @@ public class ActionsApiParams {
         String channelTemplate = String.format(CHANNEL_ID_TEMPLATE, channelId, params != null ? params : "");
         return ServiceHelper.createQuery(channelTemplate);
     }
+
+    public static String getEmptyQuery() {
+        return ServiceHelper.createQuery("\"nop\":\"false\"");
+    }
 }

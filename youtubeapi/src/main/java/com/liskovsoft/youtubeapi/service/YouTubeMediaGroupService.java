@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
@@ -17,7 +18,6 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaGroupServiceInt;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupServiceSigned;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaGroupServiceUnsigned;
-import com.liskovsoft.youtubeapi.track.TrackingService;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
@@ -29,14 +29,14 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     private static final String TAG = YouTubeMediaGroupService.class.getSimpleName();
     private static YouTubeMediaGroupService sInstance;
     private final YouTubeSignInService mSignInService;
-    private final TrackingService mTrackingService;
+    private final ActionsService mActionsService;
     private MediaGroupServiceInt mMediaGroupManagerReal;
 
     private YouTubeMediaGroupService() {
         Log.d(TAG, "Starting...");
 
         mSignInService = YouTubeSignInService.instance();
-        mTrackingService = TrackingService.instance();
+        mActionsService = ActionsService.instance();
     }
 
     public static MediaGroupService instance() {
@@ -523,14 +523,14 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     @Override
     public void enableHistory(boolean enable) {
         if (enable) {
-            mTrackingService.resumeWatchHistory();
+            mActionsService.resumeWatchHistory();
         } else {
-            mTrackingService.pauseWatchHistory();
+            mActionsService.pauseWatchHistory();
         }
     }
 
     @Override
     public void clearHistory() {
-        mTrackingService.clearWatchHistory();
+        mActionsService.clearWatchHistory();
     }
 }

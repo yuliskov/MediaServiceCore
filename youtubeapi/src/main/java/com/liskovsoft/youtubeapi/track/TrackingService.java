@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.track;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import retrofit2.Call;
 
@@ -12,12 +11,10 @@ public class TrackingService {
     private static TrackingService sInstance;
     private final TrackingApi mTrackingApi;
     private final AppService mAppService;
-    private final YouTubeSignInService mSignInService;
 
     private TrackingService() {
         mTrackingApi = RetrofitHelper.withJsonPath(TrackingApi.class);
         mAppService = AppService.instance();
-        mSignInService = YouTubeSignInService.instance();
     }
 
     public static TrackingService instance() {
@@ -26,39 +23,6 @@ public class TrackingService {
         }
 
         return sInstance;
-    }
-
-    public void pauseWatchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mTrackingApi.pauseWatchHistory(TrackingApiParams.getHistoryQuery(), authorization);
-        RetrofitHelper.get(wrapper);
-    }
-
-    public void resumeWatchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mTrackingApi.resumeWatchHistory(TrackingApiParams.getHistoryQuery(), authorization);
-        RetrofitHelper.get(wrapper);
-    }
-
-    public void clearWatchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mTrackingApi.clearWatchHistory(TrackingApiParams.getHistoryQuery(), authorization);
-        RetrofitHelper.get(wrapper);
     }
 
     public void updateWatchTime(String videoId, float positionSec, float lengthSeconds,

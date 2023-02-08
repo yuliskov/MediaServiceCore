@@ -97,7 +97,7 @@ public class RetrofitHelper {
     private static Retrofit.Builder createBuilder() {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
 
-        retrofitBuilder.client(OkHttpHelpers.getOkHttpClient());
+        retrofitBuilder.client(RetrofitOkHttpClient.getInstance());
 
         return retrofitBuilder;
     }

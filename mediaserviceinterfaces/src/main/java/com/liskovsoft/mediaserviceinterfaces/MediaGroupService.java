@@ -30,6 +30,7 @@ public interface MediaGroupService {
     MediaGroup continueGroup(MediaGroup mediaGroup);
     void enableHistory(boolean enable);
     void clearHistory();
+    void clearSearchHistory();
 
     // RxJava interfaces
     Observable<MediaGroup> getSearchObserve(String searchText);

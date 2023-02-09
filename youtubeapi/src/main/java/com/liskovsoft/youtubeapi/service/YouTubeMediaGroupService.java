@@ -533,4 +533,9 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     public void clearHistory() {
         mActionsService.clearWatchHistory();
     }
+
+    @Override
+    public void clearSearchHistory() {
+        mActionsService.clearSearchHistory();
+    }
 }

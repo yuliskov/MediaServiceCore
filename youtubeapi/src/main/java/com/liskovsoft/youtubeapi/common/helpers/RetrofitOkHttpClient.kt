@@ -14,17 +14,21 @@ object RetrofitOkHttpClient {
 
     @JvmStatic
     val instance: OkHttpClient by lazy {
-        val builder = OkHttpCommons.createBuilder()
+        val builder = OkHttpClient.Builder()
         addCommonHeaders(builder)
+        OkHttpCommons.setupBuilder(builder)
         builder.build()
     }
 
     private fun addCommonHeaders(builder: OkHttpClient.Builder) {
         builder.addInterceptor { chain ->
-            val requestBuilder = chain.request().newBuilder()
+            val request = chain.request()
+            val headers = request.headers()
+            val requestBuilder = request.newBuilder()
 
             for (header in HEADERS) {
-                requestBuilder.header(header.key, header.value)
+                // Don't override existing headers
+                headers[header.key] ?: requestBuilder.header(header.key, header.value)
             }
 
             chain.proceed(requestBuilder.build())

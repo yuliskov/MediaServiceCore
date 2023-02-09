@@ -60,7 +60,7 @@ public class YouTubeOtfSegmentParser {
         List<OtfSegment> result = null;
 
         if (url != null) {
-            Response response = OkHttpHelpers.doGetOkHttpRequest(url);
+            Response response = OkHttpHelpers.doGetRequest(url);
 
             if (response != null && response.body() != null) {
                 result = parseInt(response.body().charStream());

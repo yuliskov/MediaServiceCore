@@ -2,12 +2,10 @@ package com.liskovsoft.leanbackassistant.recommendations;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build.VERSION;
 import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.leanbackassistant.media.Clip;
 import com.liskovsoft.leanbackassistant.media.Playlist;
@@ -32,7 +30,7 @@ public class RecommendationsProvider {
                         break;
                     }
 
-                    Response response = OkHttpHelpers.doGetOkHttpRequest(clip.getCardImageUrl());
+                    Response response = OkHttpHelpers.doGetRequest(clip.getCardImageUrl());
 
                     Bitmap image = null;
 

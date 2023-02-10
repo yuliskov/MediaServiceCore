@@ -7,11 +7,13 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeAccountManager;
 import io.reactivex.Observable;
 
 import java.util.List;
+import java.util.Map;
 
 public class YouTubeSignInService implements SignInService {
     private static final String TAG = YouTubeSignInService.class.getSimpleName();
@@ -104,6 +106,8 @@ public class YouTubeSignInService implements SignInService {
     public void setAuthorizationHeader(String authorizationHeader) {
         mCachedAuthorizationHeader = authorizationHeader;
         mLastUpdateTime = System.currentTimeMillis();
+
+        syncWithRetrofit();
     }
 
     @Override
@@ -140,6 +144,8 @@ public class YouTubeSignInService implements SignInService {
         } else {
             Log.e(TAG, "Access token is null!");
         }
+
+        syncWithRetrofit();
     }
 
     private AccessToken obtainAccessToken() {
@@ -167,5 +173,15 @@ public class YouTubeSignInService implements SignInService {
         }
 
         return token;
+    }
+
+    private void syncWithRetrofit() {
+        Map<String, String> headers = RetrofitOkHttpClient.getAuthHeaders();
+
+        if (mCachedAuthorizationHeader != null) {
+            headers.put("Authorization", mCachedAuthorizationHeader);
+        } else {
+            headers.remove("Authorization");
+        }
     }
 }

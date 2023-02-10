@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceUnsigned;
-import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
@@ -28,16 +27,6 @@ public class YouTubeMediaItemServiceUnsigned implements MediaItemServiceInt {
     public static void unhold() {
         sInstance = null;
         WatchNextServiceUnsigned.unhold();
-    }
-
-    @Override
-    public WatchNextResult getWatchNextResult(String videoId) {
-        return mWatchNextServiceUnsigned.getWatchNextResult(videoId);
-    }
-
-    @Override
-    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        return mWatchNextServiceUnsigned.getWatchNextResult(videoId, playlistId, playlistIndex);
     }
 
     @Override

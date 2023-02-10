@@ -1,14 +1,11 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons
 import com.liskovsoft.youtubeapi.app.AppConstants
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.HttpUrl
-
-
-
 
 object RetrofitOkHttpClient {
     @JvmStatic
@@ -29,7 +26,7 @@ object RetrofitOkHttpClient {
         "Referer" to "https://www.youtube.com/tv"
     )
 
-    private const val API_URL = "https://www.youtube.com/youtubei/v1/"
+    private val apiPrefixes = arrayOf("https://www.youtube.com/youtubei/v1/", "https://www.youtube.com/api/stats/")
 
     private fun addCommonHeaders(builder: OkHttpClient.Builder) {
         builder.addInterceptor { chain ->
@@ -39,7 +36,7 @@ object RetrofitOkHttpClient {
 
             apply(this.headers, headers, requestBuilder)
 
-            if (request.url().toString().startsWith(API_URL)) {
+            if (Helpers.startsWithAny(request.url().toString(), *apiPrefixes)) {
                 if (authHeaders.isEmpty()) {
                     applyApiKey(request, requestBuilder)
                 } else {

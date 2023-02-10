@@ -3,18 +3,15 @@ package com.liskovsoft.youtubeapi.actions;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import retrofit2.Call;
 
 public class ActionsService {
     private static final String TAG = ActionsService.class.getSimpleName();
     private static ActionsService sInstance;
     private final ActionsApi mActionsManager;
-    private final YouTubeSignInService mSignInService;
 
     private ActionsService() {
         mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
-        mSignInService = YouTubeSignInService.instance();
     }
 
     public static ActionsService instance() {
@@ -25,30 +22,30 @@ public class ActionsService {
         return sInstance;
     }
 
-    public void setLike(String videoId, String authorization) {
+    public void setLike(String videoId) {
         Call<ActionResult> wrapper =
-                mActionsManager.setLike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.setLike(ActionsApiHelper.getLikeActionQuery(videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void removeLike(String videoId, String authorization) {
+    public void removeLike(String videoId) {
         Call<ActionResult> wrapper =
-                mActionsManager.removeLike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.removeLike(ActionsApiHelper.getLikeActionQuery(videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void setDislike(String videoId, String authorization) {
+    public void setDislike(String videoId) {
         Call<ActionResult> wrapper =
-                mActionsManager.setDislike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.setDislike(ActionsApiHelper.getLikeActionQuery(videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void removeDislike(String videoId, String authorization) {
+    public void removeDislike(String videoId) {
         Call<ActionResult> wrapper =
-                mActionsManager.removeDislike(ActionsApiParams.getLikeActionQuery(videoId), authorization);
+                mActionsManager.removeDislike(ActionsApiHelper.getLikeActionQuery(videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
@@ -56,71 +53,47 @@ public class ActionsService {
     /**
      * params needed for mobile notifications
      */
-    public void subscribe(String channelId, String params, String authorization) {
+    public void subscribe(String channelId, String params) {
         if (channelId == null) {
             Log.e(TAG, "Can't subscribe: ChannelId is null");
             return;
         }
 
         Call<ActionResult> wrapper =
-                mActionsManager.subscribe(ActionsApiParams.getSubscribeActionQuery(channelId, params), authorization);
+                mActionsManager.subscribe(ActionsApiHelper.getSubscribeActionQuery(channelId, params));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void unsubscribe(String channelId, String authorization) {
+    public void unsubscribe(String channelId) {
         if (channelId == null) {
             Log.e(TAG, "Can't unsubscribe: ChannelId is null");
             return;
         }
 
         Call<ActionResult> wrapper =
-                mActionsManager.unsubscribe(ActionsApiParams.getSubscribeActionQuery(channelId, null), authorization);
+                mActionsManager.unsubscribe(ActionsApiHelper.getSubscribeActionQuery(channelId, null));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
     public void pauseWatchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mActionsManager.pauseWatchHistory(ActionsApiParams.getEmptyQuery(), authorization);
+        Call<Void> wrapper = mActionsManager.pauseWatchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper);
     }
 
     public void resumeWatchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mActionsManager.resumeWatchHistory(ActionsApiParams.getEmptyQuery(), authorization);
+        Call<Void> wrapper = mActionsManager.resumeWatchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper);
     }
 
     public void clearWatchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mActionsManager.clearWatchHistory(ActionsApiParams.getEmptyQuery(), authorization);
+        Call<Void> wrapper = mActionsManager.clearWatchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper);
     }
 
     public void clearSearchHistory() {
-        String authorization = mSignInService.getAuthorizationHeader();
-
-        if (authorization == null) {
-            return;
-        }
-
-        Call<Void> wrapper = mActionsManager.clearSearchHistory(ActionsApiParams.getEmptyQuery(), authorization);
+        Call<Void> wrapper = mActionsManager.clearSearchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper);
     }
 }

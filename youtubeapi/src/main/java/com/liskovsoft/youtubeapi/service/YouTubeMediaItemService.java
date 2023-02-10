@@ -130,14 +130,6 @@ public class YouTubeMediaItemService implements MediaItemService {
         return getMetadataV2(videoId, playlistId, playlistIndex, playlistParams);
     }
 
-    private MediaItemMetadata getMetadataV1(String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        checkSigned();
-
-        WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams);
-
-        return YouTubeMediaItemMetadata.from(watchNextResult);
-    }
-
     private MediaItemMetadata getMetadataV2(String videoId, String playlistId, int playlistIndex, String playlistParams) {
         return mWatchNextService.getMetadata(videoId, playlistId, playlistIndex, playlistParams);
     }
@@ -145,14 +137,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public MediaItemMetadata getMetadata(String videoId) {
         return getMetadataIntV2(videoId);
-    }
-
-    private YouTubeMediaItemMetadata getMetadataIntV1(String videoId) {
-        checkSigned();
-
-        WatchNextResult watchNextResult = mMediaItemManagerReal.getWatchNextResult(videoId);
-
-        return YouTubeMediaItemMetadata.from(watchNextResult);
     }
 
     private MediaItemMetadata getMetadataIntV2(String videoId) {

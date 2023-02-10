@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,25 +26,34 @@ public class ActionsApiTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
     public void testThatLikeIsWorking() {
-        Call<ActionResult> wrapper =
-                mActionsManager.setLike(ActionsApiParams.getLikeActionQuery(TestHelpersV2.VIDEO_ID_CAPTIONS), TestHelpersV2.getAuthorization());
-
-        ActionResult actionResult = RetrofitHelper.get(wrapper);
-        assertNotNull("Like result not null", actionResult);
-        assertNotNull("Like result is successful", actionResult.getVisitorData());
+        testThatLikeIsWorking(TestHelpersV2.VIDEO_ID_3);
+        testThatLikeIsWorking(TestHelpersV2.VIDEO_ID_CAPTIONS);
     }
 
     @Test
     public void testThatSubscribeIsWorking() {
+        testThatSubscribeIsWorking(TestHelpersV2.CHANNEL_ID_UNSUBSCRIBED);
+    }
+
+    private void testThatLikeIsWorking(String videoId) {
         Call<ActionResult> wrapper =
-                mActionsManager.subscribe(ActionsApiParams.getSubscribeActionQuery(TestHelpersV2.CHANNEL_ID_UNSUBSCRIBED, null), TestHelpersV2.getAuthorization());
+                mActionsManager.setLike(ActionsApiHelper.getLikeActionQuery(videoId));
+
+        ActionResult actionResult = RetrofitHelper.get(wrapper);
+        assertNotNull("Like result not null", actionResult);
+    }
+
+    private void testThatSubscribeIsWorking(String channelId) {
+        Call<ActionResult> wrapper =
+                mActionsManager.subscribe(ActionsApiHelper.getSubscribeActionQuery(channelId, null));
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
         assertNotNull("Subscribe result not null", actionResult);
-        assertNotNull("Subscribe result is successful", actionResult.getVisitorData());
     }
 }

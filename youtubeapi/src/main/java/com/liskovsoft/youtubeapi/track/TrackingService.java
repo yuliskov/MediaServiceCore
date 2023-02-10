@@ -26,7 +26,7 @@ public class TrackingService {
     }
 
     public void updateWatchTime(String videoId, float positionSec, float lengthSeconds,
-                                String eventId, String visitorMonitoringData, String ofParam, String authorization) {
+                                String eventId, String visitorMonitoringData, String ofParam) {
         updateWatchTimeFull(
                 videoId,
                 lengthSeconds,
@@ -34,20 +34,19 @@ public class TrackingService {
                 mAppService.getClientPlaybackNonce(),
                 eventId,
                 visitorMonitoringData,
-                ofParam,
-                authorization
+                ofParam
         );
     }
 
     private void updateWatchTimeFull(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
-                                 String eventId, String visitorMonitoringData, String ofParam, String authorization) {
+                                 String eventId, String visitorMonitoringData, String ofParam) {
 
         Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
         // Mark video as full watched if less than couple minutes remains
         boolean isVideoAlmostWatched = lengthSec - positionSec < 3 * 60;
         if (isVideoAlmostWatched) {
-            updateWatchTimeShort(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam, authorization);
+            updateWatchTimeShort(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
             return;
         }
 
@@ -57,22 +56,21 @@ public class TrackingService {
                 clientPlaybackNonce,
                 eventId,
                 visitorMonitoringData,
-                ofParam,
-                authorization
+                ofParam
         );
 
         RetrofitHelper.get(wrapper); // execute
 
         wrapper = mTrackingApi.updateWatchTime(
                 videoId, lengthSec, positionSec, positionSec,
-                clientPlaybackNonce, eventId, authorization
+                clientPlaybackNonce, eventId
         );
 
         RetrofitHelper.get(wrapper); // execute
     }
 
     private void updateWatchTimeShort(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
-                                 String eventId, String visitorMonitoringData, String ofParam, String authorization) {
+                                 String eventId, String visitorMonitoringData, String ofParam) {
 
         Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
@@ -81,15 +79,14 @@ public class TrackingService {
                 clientPlaybackNonce,
                 eventId,
                 visitorMonitoringData,
-                ofParam,
-                authorization
+                ofParam
         );
 
         RetrofitHelper.get(wrapper); // execute
 
         wrapper = mTrackingApi.updateWatchTimeShort(
                 videoId, positionSec, positionSec,
-                clientPlaybackNonce, eventId, authorization
+                clientPlaybackNonce, eventId
         );
 
         RetrofitHelper.get(wrapper); // execute

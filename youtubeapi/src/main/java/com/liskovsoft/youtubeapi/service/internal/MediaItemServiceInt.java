@@ -6,8 +6,6 @@ import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 
 public interface MediaItemServiceInt {
-    WatchNextResult getWatchNextResult(String videoId);
-    WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams);
     WatchNextResultContinuation continueWatchNext(String nextKey);
     VideoInfo getVideoInfo(String videoId, String clickTrackingParams);
     void updateHistoryPosition(String videoId, String lengthSec,

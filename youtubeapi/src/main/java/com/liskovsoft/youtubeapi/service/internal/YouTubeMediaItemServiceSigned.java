@@ -4,7 +4,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v1.WatchNextServiceSigned;
-import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
@@ -48,16 +47,6 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
     }
 
     @Override
-    public WatchNextResult getWatchNextResult(String videoId) {
-        return mWatchNextServiceSigned.getWatchNextResult(videoId, mSignInManager.getAuthorizationHeader());
-    }
-
-    @Override
-    public WatchNextResult getWatchNextResult(String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        return mWatchNextServiceSigned.getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams, mSignInManager.getAuthorizationHeader());
-    }
-
-    @Override
     public WatchNextResultContinuation continueWatchNext(String nextKey) {
         return mWatchNextServiceSigned.continueWatchNext(nextKey, mSignInManager.getAuthorizationHeader());
     }
@@ -97,37 +86,37 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
 
         mTrackingService.updateWatchTime(
                 videoId, positionSec, Float.parseFloat(lengthSec), eventId,
-                vmData, ofParam, mSignInManager.getAuthorizationHeader());
+                vmData, ofParam);
     }
 
     @Override
     public void setLike(String videoId) {
-        mActionsService.setLike(videoId, mSignInManager.getAuthorizationHeader());
+        mActionsService.setLike(videoId);
     }
 
     @Override
     public void removeLike(String videoId) {
-        mActionsService.removeLike(videoId, mSignInManager.getAuthorizationHeader());
+        mActionsService.removeLike(videoId);
     }
 
     @Override
     public void setDislike(String videoId) {
-        mActionsService.setDislike(videoId, mSignInManager.getAuthorizationHeader());
+        mActionsService.setDislike(videoId);
     }
 
     @Override
     public void removeDislike(String videoId) {
-        mActionsService.removeDislike(videoId, mSignInManager.getAuthorizationHeader());
+        mActionsService.removeDislike(videoId);
     }
 
     @Override
     public void subscribe(String channelId, String params) {
-        mActionsService.subscribe(channelId, params, mSignInManager.getAuthorizationHeader());
+        mActionsService.subscribe(channelId, params);
     }
 
     @Override
     public void unsubscribe(String channelId) {
-        mActionsService.unsubscribe(channelId, mSignInManager.getAuthorizationHeader());
+        mActionsService.unsubscribe(channelId);
     }
 
     @Override

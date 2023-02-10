@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
-public class ActionsApiParams {
+public class ActionsApiHelper {
     private static final String VIDEO_ID_TEMPLATE = "\"target\":{\"videoId\":\"%s\"}";
     /**
      * params is needed for mobile notifications

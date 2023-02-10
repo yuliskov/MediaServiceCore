@@ -1,9 +1,14 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons
+import com.liskovsoft.youtubeapi.app.AppConstants
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.HttpUrl
+
+
+
 
 object RetrofitOkHttpClient {
     @JvmStatic
@@ -35,7 +40,11 @@ object RetrofitOkHttpClient {
             apply(this.headers, headers, requestBuilder)
 
             if (request.url().toString().startsWith(API_URL)) {
-                apply(authHeaders, headers, requestBuilder)
+                if (authHeaders.isEmpty()) {
+                    applyApiKey(request, requestBuilder)
+                } else {
+                    apply(authHeaders, headers, requestBuilder)
+                }
             }
 
             chain.proceed(requestBuilder.build())
@@ -46,6 +55,19 @@ object RetrofitOkHttpClient {
         for (header in newHeaders) {
             // Don't override existing headers
             oldHeaders[header.key] ?: builder.header(header.key, header.value)
+        }
+    }
+
+    private fun applyApiKey(request: Request, builder: Request.Builder) {
+        val originUrl = request.url()
+
+        originUrl.queryParameter("key") ?: run {
+            val newUrl = originUrl
+                .newBuilder()
+                .addQueryParameter("key", AppConstants.API_KEY)
+                .build()
+
+            builder.url(newUrl)
         }
     }
 }

@@ -132,13 +132,13 @@ class WatchNextApiTest {
 
     private fun getWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
-        val wrapper = mApi!!.getWatchNextResultUnsigned(watchNextQuery)
+        val wrapper = mApi!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 
     private fun getMockedWatchNextResult(): WatchNextResult? {
         val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
-        val wrapper = mManagerMock!!.getWatchNextResultUnsigned(watchNextQuery)
+        val wrapper = mManagerMock!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 

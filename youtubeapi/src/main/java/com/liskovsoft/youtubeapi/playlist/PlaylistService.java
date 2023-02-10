@@ -7,15 +7,10 @@ import retrofit2.Call;
 
 public class PlaylistService {
     private static PlaylistService sInstance;
-    private final PlaylistManager mPlaylistManager;
-    public static final int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
-    public static final int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
-    public static final int PLAYLIST_ORDER_POPULARITY = 3;
-    public static final int PLAYLIST_ORDER_PUBLISHED_DATE_NEWER_FIRST = 4;
-    public static final int PLAYLIST_ORDER_PUBLISHED_DATE_OLDER_FIRST = 5;
+    private final PlaylistApi mPlaylistManager;
 
     private PlaylistService() {
-        mPlaylistManager = RetrofitHelper.withJsonPath(PlaylistManager.class);
+        mPlaylistManager = RetrofitHelper.withJsonPath(PlaylistApi.class);
     }
 
     public static PlaylistService instance() {
@@ -26,30 +21,30 @@ public class PlaylistService {
         return sInstance;
     }
 
-    public PlaylistsResult getPlaylistsInfo(String videoId, String authorization) {
+    public PlaylistsResult getPlaylistsInfo(String videoId) {
         Call<PlaylistsResult> wrapper =
-                mPlaylistManager.getPlaylistsInfo(PlaylistManagerParams.getPlaylistsInfoQuery(videoId), authorization);
+                mPlaylistManager.getPlaylistsInfo(PlaylistApiHelper.getPlaylistsInfoQuery(videoId));
 
         return RetrofitHelper.get(wrapper);
     }
 
-    public void addToPlaylist(String playlistId, String videoId, String authorization) {
+    public void addToPlaylist(String playlistId, String videoId) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(playlistId, videoId), authorization);
+                mPlaylistManager.editPlaylist(PlaylistApiHelper.getAddToPlaylistQuery(playlistId, videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void removeFromPlaylist(String playlistId, String videoId, String authorization) {
+    public void removeFromPlaylist(String playlistId, String videoId) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(playlistId, videoId), authorization);
+                mPlaylistManager.editPlaylist(PlaylistApiHelper.getRemoveFromPlaylistsQuery(playlistId, videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void renamePlaylist(String playlistId, String newName, String authorization) {
+    public void renamePlaylist(String playlistId, String newName) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.editPlaylist(PlaylistManagerParams.getRenamePlaylistsQuery(playlistId, newName), authorization);
+                mPlaylistManager.editPlaylist(PlaylistApiHelper.getRenamePlaylistsQuery(playlistId, newName));
 
         ActionResult result = RetrofitHelper.get(wrapper);
 
@@ -58,9 +53,9 @@ public class PlaylistService {
         }
     }
 
-    public void setPlaylistOrder(String playlistId, int playlistOrder, String authorization) {
+    public void setPlaylistOrder(String playlistId, int playlistOrder) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.editPlaylist(PlaylistManagerParams.getPlaylistOrderQuery(playlistId, playlistOrder), authorization);
+                mPlaylistManager.editPlaylist(PlaylistApiHelper.getPlaylistOrderQuery(playlistId, playlistOrder));
 
         ActionResult result = RetrofitHelper.get(wrapper);
 
@@ -69,9 +64,9 @@ public class PlaylistService {
         }
     }
 
-    public void savePlaylist(String playlistId, String authorization) {
+    public void savePlaylist(String playlistId) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.savePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
+                mPlaylistManager.savePlaylist(PlaylistApiHelper.getSaveRemovePlaylistQuery(playlistId));
 
         ActionResult result = RetrofitHelper.get(wrapper);
 
@@ -80,15 +75,15 @@ public class PlaylistService {
         }
     }
 
-    public void removePlaylist(String playlistId, String authorization) {
+    public void removePlaylist(String playlistId) {
         // Try to remove foreign playlist first
         Call<ActionResult> removeWrapper =
-                mPlaylistManager.removePlaylist(PlaylistManagerParams.getSaveRemovePlaylistQuery(playlistId), authorization);
+                mPlaylistManager.removePlaylist(PlaylistApiHelper.getSaveRemovePlaylistQuery(playlistId));
         ActionResult removeResult = RetrofitHelper.get(removeWrapper);
 
         // Then, delete user playlist
         Call<ActionResult> deleteWrapper =
-                mPlaylistManager.deletePlaylist(PlaylistManagerParams.getDeletePlaylistQuery(playlistId), authorization);
+                mPlaylistManager.deletePlaylist(PlaylistApiHelper.getDeletePlaylistQuery(playlistId));
         ActionResult deleteResult = RetrofitHelper.get(deleteWrapper);
 
         if (removeResult == null && deleteResult == null) {
@@ -96,9 +91,9 @@ public class PlaylistService {
         }
     }
 
-    public void createPlaylist(String playlistName, String videoId, String authorization) {
+    public void createPlaylist(String playlistName, String videoId) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.createPlaylist(PlaylistManagerParams.getCreatePlaylistQuery(playlistName, videoId), authorization);
+                mPlaylistManager.createPlaylist(PlaylistApiHelper.getCreatePlaylistQuery(playlistName, videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
     }

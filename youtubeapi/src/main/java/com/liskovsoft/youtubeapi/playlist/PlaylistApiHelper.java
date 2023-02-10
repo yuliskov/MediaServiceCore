@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
-public class PlaylistManagerParams {
+public class PlaylistApiHelper {
     private static final String PLAYLISTS_INFO_QUERY = "\"videoIds\":[\"%s\"]";
     private static final String ADD_TO_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
             "\"actions\":[{\"addedVideoId\":\"%s\",\"action\":\"ACTION_ADD_VIDEO\"}]";

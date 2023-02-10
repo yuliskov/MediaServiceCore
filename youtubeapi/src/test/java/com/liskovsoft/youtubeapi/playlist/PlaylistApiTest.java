@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfoItem;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
@@ -17,8 +18,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class PlaylistManagerTest {
-    private PlaylistManager mService;
+public class PlaylistApiTest {
+    private PlaylistApi mService;
 
     @Before
     public void setUp() {
@@ -28,7 +29,9 @@ public class PlaylistManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(PlaylistManager.class);
+        mService = RetrofitHelper.withJsonPath(PlaylistApi.class);
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
@@ -47,8 +50,8 @@ public class PlaylistManagerTest {
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
-        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getAddToPlaylistQuery(firstPlaylistItem.getPlaylistId(),
-                TestHelpersV2.VIDEO_ID_AGE_RESTRICTED), TestHelpersV2.getAuthorization());
+        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistApiHelper.getAddToPlaylistQuery(firstPlaylistItem.getPlaylistId(),
+                TestHelpersV2.VIDEO_ID_AGE_RESTRICTED));
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
 
@@ -69,8 +72,8 @@ public class PlaylistManagerTest {
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
-        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistManagerParams.getRemoveFromPlaylistsQuery(firstPlaylistItem.getPlaylistId(),
-                TestHelpersV2.VIDEO_ID_AGE_RESTRICTED), TestHelpersV2.getAuthorization());
+        Call<ActionResult> wrapper = mService.editPlaylist(PlaylistApiHelper.getRemoveFromPlaylistsQuery(firstPlaylistItem.getPlaylistId(),
+                TestHelpersV2.VIDEO_ID_AGE_RESTRICTED));
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
 
@@ -85,8 +88,7 @@ public class PlaylistManagerTest {
     }
 
     private PlaylistsResult getPlaylistsInfo(String videoId) {
-        Call<PlaylistsResult> wrapper = mService.getPlaylistsInfo(PlaylistManagerParams.getPlaylistsInfoQuery(videoId),
-                TestHelpersV2.getAuthorization());
+        Call<PlaylistsResult> wrapper = mService.getPlaylistsInfo(PlaylistApiHelper.getPlaylistsInfoQuery(videoId));
 
         return RetrofitHelper.get(wrapper);
     }

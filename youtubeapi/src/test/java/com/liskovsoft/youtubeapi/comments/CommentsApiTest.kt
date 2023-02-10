@@ -61,7 +61,7 @@ class CommentsApiTest {
         }
 
         val commentsQuery = CommentsApiParams.getCommentsQuery(key)
-        val wrapper = mApi!!.getComments(commentsQuery, null)
+        val wrapper = mApi!!.getComments(commentsQuery)
         return RetrofitHelper.get(wrapper)
     }
 }

@@ -137,41 +137,41 @@ public class YouTubeMediaItemServiceSigned implements MediaItemServiceInt {
 
     @Override
     public PlaylistsResult getVideoPlaylistsInfo(String videoId) {
-        return mPlaylistService.getPlaylistsInfo(videoId, mSignInManager.getAuthorizationHeader());
+        return mPlaylistService.getPlaylistsInfo(videoId);
     }
 
     @Override
     public void addToPlaylist(String playlistId, String videoId) {
-        mPlaylistService.addToPlaylist(playlistId, videoId, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.addToPlaylist(playlistId, videoId);
     }
 
     @Override
     public void removeFromPlaylist(String playlistId, String videoId) {
-        mPlaylistService.removeFromPlaylist(playlistId, videoId, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.removeFromPlaylist(playlistId, videoId);
     }
 
     @Override
     public void renamePlaylist(String playlistId, String newName) {
-        mPlaylistService.renamePlaylist(playlistId, newName, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.renamePlaylist(playlistId, newName);
     }
 
     @Override
     public void setPlaylistOrder(String playlistId, int playlistOrder) {
-        mPlaylistService.setPlaylistOrder(playlistId, playlistOrder, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.setPlaylistOrder(playlistId, playlistOrder);
     }
 
     @Override
     public void savePlaylist(String playlistId) {
-        mPlaylistService.savePlaylist(playlistId, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.savePlaylist(playlistId);
     }
 
     @Override
     public void removePlaylist(String playlistId) {
-        mPlaylistService.removePlaylist(playlistId, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.removePlaylist(playlistId);
     }
 
     @Override
     public void createPlaylist(String playlistName, String videoId) {
-        mPlaylistService.createPlaylist(playlistName, videoId, mSignInManager.getAuthorizationHeader());
+        mPlaylistService.createPlaylist(playlistName, videoId);
     }
 }

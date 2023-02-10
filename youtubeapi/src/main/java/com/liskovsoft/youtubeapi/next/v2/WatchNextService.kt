@@ -11,11 +11,9 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
 class WatchNextService private constructor() {
     private var mWatchNextManager = RetrofitHelper.withGson(WatchNextApi::class.java)
-    private val mSignInManager = YouTubeSignInService.instance()
     private val mAppService = AppService.instance();
 
     fun getMetadata(videoId: String): MediaItemMetadata? {
@@ -49,31 +47,26 @@ class WatchNextService private constructor() {
     }
 
     private fun getWatchNextResult(videoId: String?): WatchNextResult? {
-        return getWatchNext(WatchNextApiParams.getWatchNextQuery(videoId!!))
+        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(videoId!!))
     }
 
     private fun getWatchNextResult(videoId: String?, playlistId: String?, playlistIndex: Int): WatchNextResult? {
-        return getWatchNext(WatchNextApiParams.getWatchNextQuery(videoId, playlistId, playlistIndex))
+        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(videoId, playlistId, playlistIndex))
     }
 
     private fun getWatchNextResult(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): WatchNextResult? {
-        return getWatchNext(WatchNextApiParams.getWatchNextQuery(videoId, playlistId, playlistIndex, playlistParams))
+        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(videoId, playlistId, playlistIndex, playlistParams))
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {
-        val wrapper = if (mSignInManager.checkAuthHeader())
-            mWatchNextManager.getWatchNextResultSigned(query, mSignInManager.authorizationHeader, mAppService.visitorId)
-        else
-            mWatchNextManager.getWatchNextResultUnsigned(query, mAppService.visitorId)
+        val wrapper = mWatchNextManager.getWatchNextResult(query, mAppService.visitorId)
 
         return RetrofitHelper.get(wrapper)
     }
 
     private fun continueWatchNext(query: String): WatchNextResultContinuation? {
-        val wrapper = if (mSignInManager.checkAuthHeader())
-            mWatchNextManager.continueWatchNextResultSigned(query, mSignInManager.authorizationHeader, mAppService.visitorId)
-        else
-            mWatchNextManager.continueWatchNextResultUnsigned(query, mAppService.visitorId)
+        val wrapper = mWatchNextManager.continueWatchNextResult(query, mAppService.visitorId)
+
         return RetrofitHelper.get(wrapper)
     }
 

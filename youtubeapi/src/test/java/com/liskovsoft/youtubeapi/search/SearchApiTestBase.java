@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchSection;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class SearchManagerTestBase {
+public class SearchApiTestBase {
     protected void checkSearchResultContinuation(SearchResultContinuation searchResult) {
         assertNotNull("Search result not null", searchResult);
         assertNotNull("Search result contains items",

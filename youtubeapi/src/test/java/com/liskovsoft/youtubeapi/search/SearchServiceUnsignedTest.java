@@ -1,8 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.tmp.SearchServiceUnsigned;
+import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchServiceUnsignedTest {
-    private SearchServiceUnsigned mService;
+    private SearchService mService;
 
     @Before
     public void setUp() {
@@ -23,7 +22,7 @@ public class SearchServiceUnsignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = SearchServiceUnsigned.instance();
+        mService = SearchService.instance();
     }
 
     @Test

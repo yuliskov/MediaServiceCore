@@ -18,12 +18,12 @@ import java.util.List;
 public class SearchService {
     private static final String TAG = SearchService.class.getSimpleName();
     private static SearchService sInstance;
-    private final SearchApi mSearchManagerSigned;
+    private final SearchApi mSearchApi;
     private final BrowseService mBrowseService;
     private final AppService mAppService;
 
     private SearchService() {
-        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchApi.class);
+        mSearchApi = RetrofitHelper.withJsonPath(SearchApi.class);
         mBrowseService = BrowseService.instance();
         mAppService = AppService.instance();
     }
@@ -45,7 +45,7 @@ public class SearchService {
     }
 
     public SearchResult getSearch(String searchText, int options) {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -66,7 +66,7 @@ public class SearchService {
             return null;
         }
         
-        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchApiHelper.getContinuationQuery(nextSearchPageKey));
+        Call<SearchResultContinuation> wrapper = mSearchApi.continueSearchResult(SearchApiHelper.getContinuationQuery(nextSearchPageKey));
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {
@@ -84,7 +84,7 @@ public class SearchService {
         LocaleManager localeManager = LocaleManager.instance();
 
         Call<SearchTags> wrapper =
-                mSearchManagerSigned.getSearchTags(
+                mSearchApi.getSearchTags(
                         searchText,
                         mBrowseService.getSuggestToken(),
                         localeManager.getCountry(),

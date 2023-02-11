@@ -5,7 +5,6 @@ import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.search.tmp.SearchManagerUnsigned;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +15,11 @@ import retrofit2.Call;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchManagerUnsignedTest extends SearchManagerTestBase {
+public class SearchApiUnsignedTest extends SearchApiTestBase {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
     private static final String SEARCH_TEXT_2 = "miley cyrus";
     private static final String SEARCH_TEXT_SPECIAL_CHAR = "What's Trending";
-    private SearchManagerUnsigned mSearchManagerUnsigned;
+    private SearchApi mSearchApi;
 
     @Before
     public void setUp() {
@@ -30,17 +29,17 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mSearchManagerUnsigned = RetrofitHelper.withJsonPath(SearchManagerUnsigned.class);
+        mSearchApi = RetrofitHelper.withJsonPath(SearchApi.class);
     }
 
     @Test
     public void testThatSearchResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
 
-        wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR));
+        wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR));
         searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
@@ -48,19 +47,19 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatContinuationResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT));
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT));
         SearchResult result = RetrofitHelper.get(wrapper);
         checkSearchResult(result);
 
         String nextPageKey = result.getNextPageKey();
-        Call<SearchResultContinuation> wrapper2 = mSearchManagerUnsigned.continueSearchResult(SearchApiHelper.getContinuationQuery(nextPageKey));
+        Call<SearchResultContinuation> wrapper2 = mSearchApi.continueSearchResult(SearchApiHelper.getContinuationQuery(nextPageKey));
         SearchResultContinuation result2 = RetrofitHelper.get(wrapper2);
         checkSearchResultContinuation(result2);
     }
 
     @Test
     public void testThatResultContainsMultipleItems() {
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         assertTrue("Contains multiple items", searchResult.getItemWrappers().size() > 5);
@@ -70,7 +69,7 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatResultContainsMultipleRows() {
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         assertTrue("Contains multiple rows", searchResult.getSections().size() > 1);
@@ -82,7 +81,7 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
     public void testThatSearchResultIsProperlyLocalized() {
         LocaleManager.instance().setLanguage("en");
 
-        Call<SearchResult> wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         TileItem item = searchResult.getItemWrappers().get(0).getTileItem();
@@ -91,7 +90,7 @@ public class SearchManagerUnsignedTest extends SearchManagerTestBase {
 
         LocaleManager.instance().setLanguage("ru");
 
-        wrapper = mSearchManagerUnsigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
+        wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_2));
         searchResult = RetrofitHelper.get(wrapper);
 
         item = searchResult.getItemWrappers().get(0).getTileItem();

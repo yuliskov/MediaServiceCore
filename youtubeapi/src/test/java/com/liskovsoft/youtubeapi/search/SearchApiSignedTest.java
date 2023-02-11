@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchApiTest extends SearchManagerTestBase {
+public class SearchApiSignedTest extends SearchApiTestBase {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
     private static final String SEARCH_TEXT_SPECIAL_CHAR = "What's Trending";
     private SearchApi mSearchManagerSigned;

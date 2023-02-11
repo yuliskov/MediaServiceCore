@@ -6,25 +6,22 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
-import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
+import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
-import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
+import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata;
-import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.service.data.YouTubePlaylistInfo;
-import com.liskovsoft.youtubeapi.service.internal.MediaItemServiceInt;
-import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceSigned;
-import com.liskovsoft.youtubeapi.service.internal.YouTubeMediaItemServiceUnsigned;
+import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
+import com.liskovsoft.youtubeapi.track.TrackingService;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
 
@@ -37,13 +34,24 @@ public class YouTubeMediaItemService implements MediaItemService {
     private final YouTubeSignInService mSignInManager;
     private final SponsorBlockService mSponsorBlockService;
     private final WatchNextService mWatchNextService;
-    private MediaItemServiceInt mMediaItemManagerReal;
+    //private final WatchNextServiceOld mWatchNextServiceOld;
+    private final TrackingService mTrackingService;
+    private final VideoInfoService mVideoInfoService;
+    private final ActionsService mActionsService;
+    private final PlaylistService mPlaylistService;
+    private final FeedbackService mFeedbackService;
     private YouTubeMediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemService() {
         mSignInManager = YouTubeSignInService.instance();
         mSponsorBlockService = SponsorBlockService.instance();
         mWatchNextService = WatchNextService.instance();
+        //mWatchNextServiceOld = WatchNextServiceOld.instance();
+        mTrackingService = TrackingService.instance();
+        mVideoInfoService = VideoInfoService.instance();
+        mActionsService = ActionsService.instance();
+        mPlaylistService = PlaylistService.instance();
+        mFeedbackService = FeedbackService.instance();
     }
 
     public static YouTubeMediaItemService instance() {
@@ -75,7 +83,7 @@ public class YouTubeMediaItemService implements MediaItemService {
 
         checkSigned();
 
-        VideoInfo videoInfo = mMediaItemManagerReal.getVideoInfo(videoId, clickTrackingParams);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, clickTrackingParams);
 
         YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
@@ -143,22 +151,29 @@ public class YouTubeMediaItemService implements MediaItemService {
         return mWatchNextService.getMetadata(videoId);
     }
 
+    //@Override
+    //public MediaGroup continueGroup(MediaGroup mediaGroup) {
+    //    checkSigned();
+    //
+    //    String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
+    //
+    //    if (mediaGroup instanceof YouTubeMediaGroup) {
+    //        return YouTubeMediaGroup.from(
+    //                mWatchNextServiceOld.continueWatchNext(nextKey),
+    //                mediaGroup
+    //        );
+    //    } else if (mediaGroup instanceof MediaGroupImpl) {
+    //        return mWatchNextService.continueGroup(mediaGroup);
+    //    }
+    //
+    //    return null;
+    //}
+
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         checkSigned();
 
-        String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
-
-        if (mediaGroup instanceof YouTubeMediaGroup) {
-            return YouTubeMediaGroup.from(
-                    mMediaItemManagerReal.continueWatchNext(nextKey),
-                    mediaGroup
-            );
-        } else if (mediaGroup instanceof MediaGroupImpl) {
-            return mWatchNextService.continueGroup(mediaGroup);
-        }
-
-        return null;
+        return mWatchNextService.continueGroup(mediaGroup);
     }
 
     @Override
@@ -209,8 +224,9 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
-        mMediaItemManagerReal.updateHistoryPosition(formatInfo.getVideoId(), formatInfo.getLengthSeconds(),
-                formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam(), positionSec);
+        mTrackingService.updateWatchTime(
+                formatInfo.getVideoId(), positionSec, Float.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
+                formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam());
     }
 
     @Override
@@ -267,28 +283,28 @@ public class YouTubeMediaItemService implements MediaItemService {
     public void setLike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.setLike(item.getVideoId());
+        mActionsService.setLike(item.getVideoId());
     }
 
     @Override
     public void removeLike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.removeLike(item.getVideoId());
+        mActionsService.removeLike(item.getVideoId());
     }
 
     @Override
     public void setDislike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.setDislike(item.getVideoId());
+        mActionsService.setDislike(item.getVideoId());
     }
 
     @Override
     public void removeDislike(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.removeDislike(item.getVideoId());
+        mActionsService.removeDislike(item.getVideoId());
     }
 
     @Override
@@ -304,7 +320,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     private void subscribe(String channelId, String params) {
         checkSigned();
 
-        mMediaItemManagerReal.subscribe(channelId, params);
+        mActionsService.subscribe(channelId, params);
     }
 
     @Override
@@ -316,14 +332,14 @@ public class YouTubeMediaItemService implements MediaItemService {
     public void unsubscribe(String channelId) {
         checkSigned();
 
-        mMediaItemManagerReal.unsubscribe(channelId);
+        mActionsService.unsubscribe(channelId);
     }
 
     @Override
     public void markAsNotInterested(MediaItem item) {
         checkSigned();
 
-        mMediaItemManagerReal.markAsNotInterested(item.getFeedbackToken());
+        mFeedbackService.markAsNotInterested(item.getFeedbackToken());
     }
 
     @Override
@@ -335,7 +351,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     public List<PlaylistInfo> getPlaylistsInfo(String videoId) {
         checkSigned();
 
-        PlaylistsResult playlistsInfo = mMediaItemManagerReal.getVideoPlaylistsInfo(videoId);
+        PlaylistsResult playlistsInfo = mPlaylistService.getPlaylistsInfo(videoId);
 
         return YouTubePlaylistInfo.from(playlistsInfo);
     }
@@ -344,49 +360,49 @@ public class YouTubeMediaItemService implements MediaItemService {
     public void addToPlaylist(String playlistId, String videoId) {
         checkSigned();
 
-        mMediaItemManagerReal.addToPlaylist(playlistId, videoId);
+        mPlaylistService.addToPlaylist(playlistId, videoId);
     }
 
     @Override
     public void removeFromPlaylist(String playlistId, String videoId) {
         checkSigned();
 
-        mMediaItemManagerReal.removeFromPlaylist(playlistId, videoId);
+        mPlaylistService.removeFromPlaylist(playlistId, videoId);
     }
 
     @Override
     public void renamePlaylist(String playlistId, String newName) {
         checkSigned();
 
-        mMediaItemManagerReal.renamePlaylist(playlistId, newName);
+        mPlaylistService.renamePlaylist(playlistId, newName);
     }
 
     @Override
     public void setPlaylistOrder(String playlistId, int playlistOrder) {
         checkSigned();
 
-        mMediaItemManagerReal.setPlaylistOrder(playlistId, playlistOrder);
+        mPlaylistService.setPlaylistOrder(playlistId, playlistOrder);
     }
 
     @Override
     public void savePlaylist(String playlistId) {
         checkSigned();
 
-        mMediaItemManagerReal.savePlaylist(playlistId);
+        mPlaylistService.savePlaylist(playlistId);
     }
 
     @Override
     public void removePlaylist(String playlistId) {
         checkSigned();
 
-        mMediaItemManagerReal.removePlaylist(playlistId);
+        mPlaylistService.removePlaylist(playlistId);
     }
 
     @Override
     public void createPlaylist(String playlistName, String videoId) {
         checkSigned();
 
-        mMediaItemManagerReal.createPlaylist(playlistName, videoId);
+        mPlaylistService.createPlaylist(playlistName, videoId);
     }
 
     @Override
@@ -469,16 +485,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private void checkSigned() {
-        if (mSignInManager.checkAuthHeader()) {
-            Log.d(TAG, "User signed.");
-
-            mMediaItemManagerReal = YouTubeMediaItemServiceSigned.instance();
-            YouTubeMediaItemServiceUnsigned.unhold();
-        } else {
-            Log.d(TAG, "User doesn't signed.");
-
-            mMediaItemManagerReal = YouTubeMediaItemServiceUnsigned.instance();
-            YouTubeMediaItemServiceSigned.unhold();
-        }
+        mSignInManager.checkAuthHeader();
     }
 }

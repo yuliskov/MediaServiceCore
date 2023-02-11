@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -17,11 +18,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchManagerSignedTest extends SearchManagerTestBase {
+public class SearchApiTest extends SearchManagerTestBase {
     private static final String SEARCH_TEXT = "thrones season 8 trailer";
     private static final String SEARCH_TEXT_SPECIAL_CHAR = "What's Trending";
-    private SearchManagerSigned mSearchManagerSigned;
-    private BrowseServiceSigned mBrowseServiceSigned;
+    private SearchApi mSearchManagerSigned;
+    private BrowseService mBrowseServiceSigned;
 
     @Before
     public void setUp() {
@@ -31,18 +32,20 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchManagerSigned.class);
-        mBrowseServiceSigned = BrowseServiceSigned.instance();
+        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchApi.class);
+        mBrowseServiceSigned = BrowseService.instance();
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
     public void testThatSearchResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams2.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
 
-        wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams2.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR), TestHelpersV2.getAuthorization());
+        wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR), TestHelpersV2.getAuthorization());
         searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
@@ -50,12 +53,12 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
 
     @Test
     public void testThatContinuationResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams2.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
         SearchResult result = RetrofitHelper.get(wrapper);
         checkSearchResult(result);
 
         String nextPageKey = result.getNextPageKey();
-        Call<SearchResultContinuation> wrapper2 = mSearchManagerSigned.continueSearchResult(SearchManagerParams2.getContinuationQuery(nextPageKey), TestHelpersV2.getAuthorization());
+        Call<SearchResultContinuation> wrapper2 = mSearchManagerSigned.continueSearchResult(SearchApiHelper.getContinuationQuery(nextPageKey));
         SearchResultContinuation result2 = RetrofitHelper.get(wrapper2);
         checkSearchResultContinuation(result2);
     }
@@ -63,8 +66,7 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
     @Test
     public void testThatSearchTagsNotEmpty() {
         Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("bc",
-                mBrowseServiceSigned.getSuggestToken(TestHelpersV2.getAuthorization()),
-                TestHelpersV2.getAuthorization());
+                mBrowseServiceSigned.getSuggestToken());
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 
         assertNotNull("Search tags not empty", searchTags);
@@ -74,8 +76,7 @@ public class SearchManagerSignedTest extends SearchManagerTestBase {
     @Test
     public void testThatSearchTagsHistoryNotEmpty() {
         Call<SearchTags> wrapper = mSearchManagerSigned.getSearchTags("",
-                mBrowseServiceSigned.getSuggestToken(TestHelpersV2.getAuthorization()),
-                TestHelpersV2.getAuthorization());
+                mBrowseServiceSigned.getSuggestToken());
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 
         assertNotNull("Search tags not empty", searchTags);

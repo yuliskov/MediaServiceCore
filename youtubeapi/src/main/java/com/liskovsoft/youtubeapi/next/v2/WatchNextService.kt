@@ -4,7 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.app.AppService
-import com.liskovsoft.youtubeapi.browse.BrowseManagerParams
+import com.liskovsoft.youtubeapi.browse.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
@@ -41,7 +41,7 @@ class WatchNextService private constructor() {
             return null;
         }
 
-        val continuation = continueWatchNext(BrowseManagerParams.getContinuationQuery(nextKey))
+        val continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
 
         return MediaGroupImpl.from(continuation, mediaGroup)
     }

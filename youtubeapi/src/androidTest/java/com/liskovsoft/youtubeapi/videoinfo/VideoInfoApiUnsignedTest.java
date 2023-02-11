@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiUnsigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
  * NOTE: testing with Duktape (native libs)!!!
  */
 public class VideoInfoApiUnsignedTest {
-    private VideoInfoApiUnsigned mService;
+    private VideoInfoApi mService;
     private LocaleManager mLocaleManager;
 
     @Before
     public void setUp() {
-        mService = RetrofitHelper.withJsonPath(VideoInfoApiUnsigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
     }
 

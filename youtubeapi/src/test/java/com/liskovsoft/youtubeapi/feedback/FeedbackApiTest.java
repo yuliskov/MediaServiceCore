@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.feedback;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
 import org.junit.Before;
@@ -13,9 +14,9 @@ import retrofit2.Call;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class FeedbackManagerTest {
+public class FeedbackApiTest {
     private static final String SAMPLE_TOKEN = "AB9zfpIM9cPZbJlLPimo5tD6dMauYqUvQdwDIKB3mOBOnh1nwz5zztz28BZ75alUCedlk2Tfe6qzogkqvHWGY9rSEQNcMugsEAuapP5WDnszLi5GLCZg2D8uK2bSJbnGocCchc5KKoE2";
-    private FeedbackManager mService;
+    private FeedbackApi mService;
 
     @Before
     public void setUp() {
@@ -25,13 +26,14 @@ public class FeedbackManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(FeedbackManager.class);
+        mService = RetrofitHelper.withJsonPath(FeedbackApi.class);
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
     public void testThatFeedbackIsSuccessful() {
-        Call<FeedbackResponse> wrapper = mService.setNotInterested(FeedbackManagerParams.getNotInterestedQuery(SAMPLE_TOKEN),
-                TestHelpersV2.getAuthorization());
+        Call<FeedbackResponse> wrapper = mService.setNotInterested(FeedbackApiHelper.getNotInterestedQuery(SAMPLE_TOKEN));
 
         FeedbackResponse feedbackResponse = RetrofitHelper.get(wrapper);
 

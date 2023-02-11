@@ -14,34 +14,32 @@ import retrofit2.http.Query;
 /**
  * Example url: https://www.youtube.com/youtubei/v1/search
  */
-public interface SearchManagerSigned {
+public interface SearchApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<SearchResult> getSearchResult(@Body String searchQuery, @Header("Authorization") String auth);
+    Call<SearchResult> getSearchResult(@Body String searchQuery);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<SearchResult> getSearchResult(@Body String searchQuery, @Header("Authorization") String auth, @Header("X-Goog-Visitor-Id") String visitorId);
+    Call<SearchResult> getSearchResult(@Body String searchQuery, @Header("X-Goog-Visitor-Id") String visitorId);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/search")
-    Call<SearchResultContinuation> continueSearchResult(@Body String searchQuery, @Header("Authorization") String auth);
+    Call<SearchResultContinuation> continueSearchResult(@Body String searchQuery);
 
     @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8&hl=en&gl=us")
-    Call<SearchTags> getSearchTags(@Query("q") String searchQuery, @Query("tok") String suggestToken, @Header("Authorization") String auth);
+    Call<SearchTags> getSearchTags(@Query("q") String searchQuery, @Query("tok") String suggestToken);
+
+    @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8")
+    Call<SearchTags> getSearchTags(@Query("q") String searchQuery,
+                                   @Query("tok") String suggestToken,
+                                   @Query("gl") String country,
+                                   @Query("hl") String language);
 
     @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8")
     Call<SearchTags> getSearchTags(@Query("q") String searchQuery,
                                    @Query("tok") String suggestToken,
                                    @Query("gl") String country,
                                    @Query("hl") String language,
-                                   @Header("Authorization") String auth);
-
-    @GET("https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8")
-    Call<SearchTags> getSearchTags(@Query("q") String searchQuery,
-                                   @Query("tok") String suggestToken,
-                                   @Query("gl") String country,
-                                   @Query("hl") String language,
-                                   @Header("Authorization") String auth,
                                    @Header("X-Goog-Visitor-Id") String visitorId);
 }

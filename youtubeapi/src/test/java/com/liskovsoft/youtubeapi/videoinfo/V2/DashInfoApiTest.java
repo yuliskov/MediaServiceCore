@@ -1,8 +1,15 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import androidx.annotation.NonNull;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
+import okhttp3.Headers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +23,11 @@ import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class DashInfoApiTest {
-    private static final String DASH_URL = "https://manifest.googlevideo.com/api/manifest/dash/expire/1663394208/ei/QA0lY8PPG87JyAXejrLgBg/ip/46.98.136.44/id/YG0lEwYLaxk.2/source/yt_live_broadcast/requiressl/yes/tx/24268153/txs/24268153%2C24268154%2C24268155/as/fmp4_audio_clear%2Cwebm_audio_clear%2Cwebm2_audio_clear%2Cfmp4_sd_hd_clear%2Cwebm2_sd_hd_clear/spc/yR2vp-_1lfmEB9ByjNPjRkdtdwGrsJoa0D7ozXfABSib/vprv/1/pacing/0/keepalive/yes/fexp/24001373%2C24007246/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Ctx%2Ctxs%2Cas%2Cspc%2Cvprv%2Citag%2Cplaylist_type/sig/AOq0QJ8wRgIhALFhmJZZhUtrIei9W-fpxacS9-CCsFglimyezLDAUtwhAiEAgQW8EadW-ejfA6Cyq9chY4qC1ffPUWmHU0dp2ZrdzU8%3D";
-    private static final String DASH_URL2 = "https://rr1---sn-4gxb5u-qo3z.googlevideo.com/videoplayback?expire=1664364889&ei=-dwzY-PoLIGD0u8Plr-iiAY&ip=46.98.137.152&id=5dVG__s_bqk.1&itag=140&aitags=140&source=yt_live_broadcast&requiressl=yes&mh=MG&mm=44%2C29&mn=sn-4gxb5u-qo3z%2Csn-3c27sne7&ms=lva%2Crdu&mv=m&mvi=1&pl=23&hcs=%2Csd&smhost=%2Crr12---sn-3c27sn7d.googlevideo.com&initcwndbps=782500&defrag=1&vprv=1&live=1&hang=1&noclen=1&mime=audio%2Fmp4&ns=LamJI6Uf8u-I0rnIkqcdViQI&gir=yes&mt=1664342931&fvip=15&keepalive=yes&fexp=24001373%2C24007246&c=TVHTML5&n=GjORtRiOffHG-Q&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cdefrag%2Cvprv%2Clive%2Chang%2Cnoclen%2Cmime%2Cns%2Cgir&sig=AOq0QJ8wRgIhAKdbxii2cP4lhsL5bDc-sUNA5NMDa92BV_juUradWdQEAiEAy2JTNUx_2vdMrcqHZk6mzxJP0GeHGTHLZvOidmmmyyw%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Chcs%2Csmhost%2Cinitcwndbps&lsig=AG3C_xAwRAIgFC4T42BkFeXxcWXDefm_N1HD7PJ8b5Y9eJU6j4TTFBQCIACRWdRu4T3LEYkv9rYRLZQoTBU6o9SdYltUyoE4dtVe&alr=yes&cpn=T-7nsD1507axLAN6&cver=7.20220926.09.00&sq=340297&rn=6&rbuf=0";
+    private static final String SEQ_NUM = "X-Sequence-Num";
+    private static final String STREAM_DUR_MS = "X-Head-Time-Millis";
+    private static final String LAST_SEG_TIME_MS = "X-Walltime-Ms";
     private DashInfoApi mService;
+    private VideoInfoApi mService2;
 
     @Before
     public void setUp() throws Exception {
@@ -29,11 +38,14 @@ public class DashInfoApiTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mService = RetrofitHelper.withRegExp(DashInfoApi.class);
+
+        mService2 = RetrofitHelper.withJsonPath(VideoInfoApi.class);
     }
 
     @Test
-    public void testDashInfoNotEmpty() throws IOException {
-        Call<DashInfoUrl> dashInfoWrapper = mService.getDashInfoUrl(DASH_URL);
+    public void testDashInfoUrlNotEmpty() throws IOException {
+        VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
+        Call<DashInfoUrl> dashInfoWrapper = mService.getDashInfoUrl(videoInfo.getDashManifestUrl());
 
         DashInfoUrl dashInfo = dashInfoWrapper.execute().body();
 
@@ -41,12 +53,41 @@ public class DashInfoApiTest {
     }
 
     @Test
-    public void testDashInfo2NotEmpty() throws IOException {
-        Call<DashInfoFormat> dashInfoWrapper = mService.getDashInfoFormat(DASH_URL2);
+    public void testDashInfoFormatNotEmpty() throws IOException {
+        VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
+        Call<DashInfoFormat> dashInfoWrapper = mService.getDashInfoFormat(getSmallestAudio(videoInfo).getUrl());
 
         DashInfoFormat dashInfo = dashInfoWrapper.execute().body();
 
         assertTrue("start segment not null", dashInfo.getStartSegmentNum() > 0);
         assertTrue("start segment time not null", dashInfo.getStartTimeMs() > 0);
+    }
+
+    @Test
+    public void testDashInfoFormat2NotEmpty() throws IOException {
+        VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
+        Call<Void> dashInfoWrapper = mService.getDashInfoFormat2(getSmallestAudio(videoInfo).getUrl());
+
+        Headers headers = dashInfoWrapper.execute().headers();
+        int lastSegmentNum = Integer.parseInt(headers.get(SEQ_NUM));
+        long streamDurationMs = Long.parseLong(headers.get(STREAM_DUR_MS));
+        long lastSegmentTimeMs = Long.parseLong(headers.get(LAST_SEG_TIME_MS));
+
+        assertTrue("last segment num not null", lastSegmentNum > 0);
+        assertTrue("stream duration not null", streamDurationMs > 0);
+        assertTrue("last segment time not null", lastSegmentTimeMs > 0);
+    }
+
+    private VideoInfo getVideoInfo(String videoId) throws IOException {
+        Call<VideoInfo> wrapper = mService2.getVideoInfo(VideoInfoApiTestHelper.getVideoInfoQuery(videoId));
+        return wrapper.execute().body();
+    }
+
+    @NonNull
+    private AdaptiveVideoFormat getSmallestAudio(VideoInfo videoInfo) {
+        AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
+                item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
+
+        return format;
     }
 }

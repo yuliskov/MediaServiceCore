@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
-public class WatchNextManagerParams {
+public class WatchNextApiHelper {
     public static String getWatchNextQuery(@NonNull String videoId) {
         return getWatchNextQuery(videoId, null, 0);
     }

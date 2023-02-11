@@ -11,12 +11,16 @@ import retrofit2.http.POST;
 /**
  * For signed users!
  */
-public interface WatchNextManagerSigned {
+public interface WatchNextApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    Call<WatchNextResult> getWatchNextResult(@Body String suggestQuery, @Header("Authorization") String auth);
+    Call<WatchNextResult> getWatchNextResult(@Body String watchNextQuery);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    Call<WatchNextResultContinuation> continueWatchNextResult(@Body String suggestQuery, @Header("Authorization") String auth);
+    Call<WatchNextResultContinuation> continueWatchNextResult(@Body String watchNextQuery);
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/next")
+    Call<WatchNextResultContinuation> continueWatchNextResult(@Body String suggestQuery, @Header("X-Goog-Visitor-Id") String visitorId);
 }

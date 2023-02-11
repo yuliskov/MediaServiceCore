@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class BrowseManagerTestBase {
+public class BrowseApiTestBase {
     protected void testThatItemsIsUnique(ItemWrapper item1, ItemWrapper item2) {
         String title1 = null;
         String title2 = null;

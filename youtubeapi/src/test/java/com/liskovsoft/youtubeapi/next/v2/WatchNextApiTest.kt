@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
-import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams
+import com.liskovsoft.youtubeapi.next.v1.WatchNextApiHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock
@@ -131,13 +131,13 @@ class WatchNextApiTest {
     private fun getMediaItemMetadataUnsigned() = mService!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {
-        val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
         val wrapper = mApi!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 
     private fun getMockedWatchNextResult(): WatchNextResult? {
-        val watchNextQuery = WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
         val wrapper = mManagerMock!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }

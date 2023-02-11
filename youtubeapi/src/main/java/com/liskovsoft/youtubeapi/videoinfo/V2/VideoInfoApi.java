@@ -7,14 +7,14 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface VideoInfoApiSigned {
+public interface VideoInfoApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("Authorization") String auth, @Header("x-goog-visitor-id") String visitorId);
+    Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("Authorization") String auth);
+    Call<VideoInfo> getVideoInfo(@Body String videoQuery);
 
     /**
      * History is not working with this method.<br/>

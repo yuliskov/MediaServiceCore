@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(RobolectricTestRunner.class)
 public class VideoInfoApiUnsignedTest {
-    private VideoInfoApiUnsigned mService;
+    private VideoInfoApi mService;
     private LocaleManager mLocaleManager;
 
     @Before
@@ -36,7 +36,7 @@ public class VideoInfoApiUnsignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoApiUnsigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
     }
 
@@ -109,12 +109,12 @@ public class VideoInfoApiUnsignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiTestHelper.getVideoInfoQuery(videoId));
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiTestHelper.getVideoInfoQuery(videoId));
         return wrapper.execute().body();
     }
 }

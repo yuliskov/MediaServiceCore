@@ -6,10 +6,10 @@ import retrofit2.Call;
 
 public class FeedbackService {
     private static FeedbackService sInstance;
-    private final FeedbackManager mFeedbackManager;
+    private final FeedbackApi mFeedbackApi;
 
     private FeedbackService() {
-        mFeedbackManager = RetrofitHelper.withJsonPath(FeedbackManager.class);
+        mFeedbackApi = RetrofitHelper.withJsonPath(FeedbackApi.class);
     }
 
     public static FeedbackService instance() {
@@ -20,9 +20,9 @@ public class FeedbackService {
         return sInstance;
     }
 
-    public void markAsNotInterested(String feedbackToken, String auth) {
-        Call<FeedbackResponse> wrapper = mFeedbackManager.setNotInterested(
-                FeedbackManagerParams.getNotInterestedQuery(feedbackToken), auth);
+    public void markAsNotInterested(String feedbackToken) {
+        Call<FeedbackResponse> wrapper = mFeedbackApi.setNotInterested(
+                FeedbackApiHelper.getNotInterestedQuery(feedbackToken));
         RetrofitHelper.get(wrapper); // ignore result
     }
 }

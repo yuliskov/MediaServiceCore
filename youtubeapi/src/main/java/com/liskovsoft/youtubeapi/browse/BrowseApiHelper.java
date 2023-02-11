@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
-public class BrowseManagerParams {
+public class BrowseApiHelper {
     private static final String HOME = "\"browseId\":\"default\"";
     private static final String GAMING = "\"browseId\":\"FEtopics_gaming\"";
     private static final String NEWS = "\"browseId\":\"FEtopics_news\"";

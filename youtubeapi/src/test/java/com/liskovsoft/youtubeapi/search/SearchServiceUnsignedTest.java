@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.tmp.SearchServiceUnsigned;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,6 @@ public class SearchServiceUnsignedTest {
         assertTrue("search not empty?", searchResult.getItemWrappers().size() != 0);
 
         SearchResultContinuation nextSearchResult = mService.continueSearch(searchResult.getNextPageKey());
-        assertTrue("next search not empty?", nextSearchResult.getVideoItems().size() != 0);
+        assertTrue("next search not empty?", nextSearchResult.getTileItems().size() != 0);
     }
 }

@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
@@ -27,8 +28,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
-    private BrowseManagerUnsigned mService;
+public class BrowseApiUnsignedTest extends BrowseApiTestBase {
+    private BrowseApi mService;
 
     @Before
     public void setUp() throws IOException {
@@ -38,7 +39,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(BrowseManagerUnsigned.class);
+        mService = RetrofitHelper.withJsonPath(BrowseApi.class);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
     }
 
     private Section getRecommended() {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         SectionTabList browseResult = RetrofitHelper.get(wrapper);
 
@@ -88,7 +89,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testEnsureNextResultIsUnique() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -102,7 +103,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
         String visitorId = browseResult.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), visitorId);
+        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey), visitorId);
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation nextBrowseResult = execute.body();
 
@@ -122,7 +123,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatTabbedResultNotEmpty() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         SectionTabList browseResult1 = wrapper.execute().body();
 
@@ -134,14 +135,14 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
         String visitorId = browseResult1.getVisitorData();
         assertNotNull("Next page key not null", visitorId);
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), visitorId);
+        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey), visitorId);
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation browseResult2 = execute.body();
 
         nextSectionResultNotEmpty(browseResult2);
 
         String nextTabbedPageKey = firstNotEmptyTab(browseResult1).getNextPageKey();
-        Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseManagerParams.getContinuationQuery(nextTabbedPageKey), visitorId);
+        Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseApiHelper.getContinuationQuery(nextTabbedPageKey), visitorId);
         Response<SectionTabContinuation> executeTabbed = nextTabbed.execute();
         SectionTabContinuation browseTabbedResult2 = executeTabbed.body();
 
@@ -150,7 +151,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatAllTabsSectionHaveTitles() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         Response<SectionTabList> execute = wrapper.execute();
         SectionTabList browseResult = execute.body();
@@ -166,7 +167,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatMusicTabNotEmpty() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getMusicQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getMusicQuery());
 
         Response<SectionTabList> execute = wrapper.execute();
         SectionTabList browseResult = execute.body();
@@ -176,7 +177,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatChannelResultNotEmpty() throws IOException {
-        Call<SectionList> wrapper = mService.getSectionList(BrowseManagerParams.getChannelQuery(TestHelpersV1.CHANNEL_ID_UNSUBSCRIBED));
+        Call<SectionList> wrapper = mService.getSectionList(BrowseApiHelper.getChannelQuery(TestHelpersV1.CHANNEL_ID_UNSUBSCRIBED));
 
         Response<SectionList> execute = wrapper.execute();
         SectionList browseResult = execute.body();
@@ -193,7 +194,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
         Section firstSection = firstNotEmptyTab(browseResult).getSections().get(0);
 
         Call<SectionContinuation> wrapper2 =
-                mService.continueSection(BrowseManagerParams.getContinuationQuery(firstSection.getNextPageKey()), visitorData);
+                mService.continueSection(BrowseApiHelper.getContinuationQuery(firstSection.getNextPageKey()), visitorData);
 
         SectionContinuation musicContinuation = RetrofitHelper.get(wrapper2);
 
@@ -219,11 +220,11 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
     public void testThatVideoContainsAnimatedPreview() {
         Section recommended = getRecommended();
 
-        VideoItem videoItem = null;
+        TileItem videoItem = null;
 
         for (ItemWrapper itemWrapper : recommended.getItemWrappers()) {
-            if (itemWrapper.getVideoItem() != null && !itemWrapper.getVideoItem().isLive()) {
-                videoItem = itemWrapper.getVideoItem();
+            if (itemWrapper.getTileItem() != null && !itemWrapper.getTileItem().isLive()) {
+                videoItem = itemWrapper.getTileItem();
                 break;
             }
         }
@@ -249,7 +250,7 @@ public class BrowseManagerUnsignedTest extends BrowseManagerTestBase {
     }
 
     private SectionTabList getMusicTab() {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getMusicQuery());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getMusicQuery());
 
         SectionTabList browseResult = RetrofitHelper.get(wrapper);
 

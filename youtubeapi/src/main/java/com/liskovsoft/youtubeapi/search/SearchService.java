@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.browse.BrowseServiceSigned;
+import com.liskovsoft.youtubeapi.browse.BrowseService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -13,24 +13,24 @@ import retrofit2.Call;
 import java.util.List;
 
 /**
- * Wraps result from the {@link SearchManagerSigned}
+ * Wraps result from the {@link SearchApi}
  */
-public class SearchServiceSigned {
-    private static final String TAG = SearchServiceSigned.class.getSimpleName();
-    private static SearchServiceSigned sInstance;
-    private final SearchManagerSigned mSearchManagerSigned;
-    private final BrowseServiceSigned mBrowseService;
+public class SearchService {
+    private static final String TAG = SearchService.class.getSimpleName();
+    private static SearchService sInstance;
+    private final SearchApi mSearchManagerSigned;
+    private final BrowseService mBrowseService;
     private final AppService mAppService;
 
-    private SearchServiceSigned() {
-        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchManagerSigned.class);
-        mBrowseService = BrowseServiceSigned.instance();
+    private SearchService() {
+        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchApi.class);
+        mBrowseService = BrowseService.instance();
         mAppService = AppService.instance();
     }
 
-    public static SearchServiceSigned instance() {
+    public static SearchService instance() {
         if (sInstance == null) {
-            sInstance = new SearchServiceSigned();
+            sInstance = new SearchService();
         }
 
         return sInstance;
@@ -40,12 +40,12 @@ public class SearchServiceSigned {
         sInstance = null;
     }
 
-    public SearchResult getSearch(String searchText, String authorization) {
-        return getSearch(searchText, -1, authorization);
+    public SearchResult getSearch(String searchText) {
+        return getSearch(searchText, -1);
     }
 
-    public SearchResult getSearch(String searchText, int options, String authorization) {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchManagerParams2.getSearchQuery(searchText, options), authorization, mAppService.getVisitorId());
+    public SearchResult getSearch(String searchText, int options) {
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -57,16 +57,16 @@ public class SearchServiceSigned {
     }
 
     /**
-     * Method uses results from the {@link #getSearch(String, String)} call
+     * Method uses results from the {@link #getSearch(String)} call
      * @return video items
      */
-    public SearchResultContinuation continueSearch(String nextSearchPageKey, String authorization) {
+    public SearchResultContinuation continueSearch(String nextSearchPageKey) {
         if (nextSearchPageKey == null) {
             Log.e(TAG, "Can't get next search page. Next search key is empty.");
             return null;
         }
         
-        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchManagerParams2.getContinuationQuery(nextSearchPageKey), authorization);
+        Call<SearchResultContinuation> wrapper = mSearchManagerSigned.continueSearchResult(SearchApiHelper.getContinuationQuery(nextSearchPageKey));
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 
         if (searchResult == null) {
@@ -76,7 +76,7 @@ public class SearchServiceSigned {
         return searchResult;
     }
 
-    public List<String> getSearchTags(String searchText, String authorization) {
+    public List<String> getSearchTags(String searchText) {
         if (searchText == null) {
             searchText = "";
         }
@@ -86,10 +86,9 @@ public class SearchServiceSigned {
         Call<SearchTags> wrapper =
                 mSearchManagerSigned.getSearchTags(
                         searchText,
-                        mBrowseService.getSuggestToken(authorization),
+                        mBrowseService.getSuggestToken(),
                         localeManager.getCountry(),
                         localeManager.getLanguage(),
-                        authorization,
                         mAppService.getVisitorId()
                 );
         SearchTags searchTags = RetrofitHelper.get(wrapper);

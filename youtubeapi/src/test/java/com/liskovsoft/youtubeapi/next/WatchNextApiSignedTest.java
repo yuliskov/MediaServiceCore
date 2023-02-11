@@ -1,10 +1,11 @@
 package com.liskovsoft.youtubeapi.next;
 
-import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
+import com.liskovsoft.youtubeapi.browse.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerSigned;
+import com.liskovsoft.youtubeapi.next.v1.WatchNextApiHelper;
+import com.liskovsoft.youtubeapi.next.v1.WatchNextApi;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import org.junit.Before;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
-    private WatchNextManagerSigned mManager;
+    private WatchNextApi mManager;
 
     @Before
     public void setUp() throws Exception {
@@ -28,13 +29,15 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mManager = RetrofitHelper.withJsonPath(WatchNextManagerSigned.class);
+        mManager = RetrofitHelper.withJsonPath(WatchNextApi.class);
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
     public void testThatWatchNextContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
-                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpersV2.VIDEO_ID_SUBSCRIBED), TestHelpersV2.getAuthorization());
+                mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_SUBSCRIBED));
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedWatchNextResultFields(watchNextResult);
@@ -43,8 +46,8 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
     @Test
     public void testThatWatchNextPlaylistItemContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
-                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(
-                        TestHelpersV2.VIDEO_ID_MUSIC, TestHelpersV2.PLAYLIST_ID, TestHelpersV2.PLAYLIST_VIDEO_INDEX), TestHelpersV2.getAuthorization());
+                mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(
+                        TestHelpersV2.VIDEO_ID_MUSIC, TestHelpersV2.PLAYLIST_ID, TestHelpersV2.PLAYLIST_VIDEO_INDEX));
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedPlaylistWatchNextResultFields(watchNextResult);
@@ -53,8 +56,8 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
     @Test
     public void testThatWatchNextNullPlaylistItemContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
-                mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(
-                        null, TestHelpersV2.PLAYLIST_ID, 0), TestHelpersV2.getAuthorization());
+                mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(
+                        null, TestHelpersV2.PLAYLIST_ID, 0));
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedPlaylistWatchNextResultFields(watchNextResult);
@@ -77,14 +80,14 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
 
     private WatchNextResultContinuation continueWatchNext(String nextPageKey) {
         Call<WatchNextResultContinuation> wrapper =
-                mManager.continueWatchNextResult(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpersV2.getAuthorization());
+                mManager.continueWatchNextResult(BrowseApiHelper.getContinuationQuery(nextPageKey));
 
         return RetrofitHelper.get(wrapper);
     }
 
     private WatchNextResult getWatchNextResult() {
         Call<WatchNextResult> wrapper = mManager.getWatchNextResult(
-                WatchNextManagerParams.getWatchNextQuery(TestHelpersV2.VIDEO_ID_CAPTIONS), TestHelpersV2.getAuthorization());
+                WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_CAPTIONS));
         return RetrofitHelper.get(wrapper);
     }
 }

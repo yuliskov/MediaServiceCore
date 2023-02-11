@@ -7,8 +7,11 @@ import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
 import com.liskovsoft.youtubeapi.browse.models.sections.Section;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTab;
+import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import org.junit.Before;
@@ -26,11 +29,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class BrowseManagerSignedTest extends BrowseManagerTestBase {
+public class BrowseApiSignedTest extends BrowseApiTestBase {
     /**
      * Authorization should be updated each hour
      */
-    private BrowseManagerSigned mService;
+    private BrowseApi mService;
 
     @Before
     public void setUp() {
@@ -40,12 +43,14 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(BrowseManagerSigned.class);
+        mService = RetrofitHelper.withJsonPath(BrowseApi.class);
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
     public void testThatSubscriptionsNotEmpty() throws IOException {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseApiHelper.getSubscriptionsQuery());
 
         GridTabList browseResult = RetrofitHelper.get(wrapper);
 
@@ -60,7 +65,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
         assertNotNull("Item not null", nextPageKey);
 
-        Call<GridTabContinuation> browseResult2 = mService.continueGridTab(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpersV2.getAuthorization());
+        Call<GridTabContinuation> browseResult2 = mService.continueGridTab(BrowseApiHelper.getContinuationQuery(nextPageKey));
         GridTabContinuation body = browseResult2.execute().body();
 
         assertNotNull("Items not null", body);
@@ -69,7 +74,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatSubscribedChannelsContainsRequiredFields() {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseApiHelper.getSubscriptionsQuery());
 
         GridTabList browseResult = RetrofitHelper.get(wrapper);
 
@@ -83,7 +88,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatChannelHasContent() {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseApiHelper.getSubscriptionsQuery());
 
         GridTabList browseResult = RetrofitHelper.get(wrapper);
 
@@ -92,7 +97,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
         GridTab channel = browseResult.getTabs().get(10);
 
         Call<GridTabContinuation> wrapper2 =
-                mService.continueGridTab(BrowseManagerParams.getContinuationQuery(channel.getReloadPageKey()), TestHelpersV2.getAuthorization());
+                mService.continueGridTab(BrowseApiHelper.getContinuationQuery(channel.getReloadPageKey()));
 
         GridTabContinuation continuation = RetrofitHelper.get(wrapper2);
 
@@ -111,7 +116,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
     }
 
     private List<ItemWrapper> getSubscriptions() throws IOException {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getSubscriptionsQuery(), TestHelpersV2.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseApiHelper.getSubscriptionsQuery());
 
         GridTabList browseResult = wrapper.execute().body();
 
@@ -126,7 +131,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
     }
 
     private List<ItemWrapper> getRecommended() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpersV2.getAuthorization());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -138,7 +143,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatHomeNotEmpty() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpersV2.getAuthorization());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -149,7 +154,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
         String nextPageKey = browseResult.getTabs().get(0).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(nextPageKey), TestHelpersV2.getAuthorization());
+        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey));
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation browseResult2 = execute.body();
 
@@ -158,7 +163,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatGamesNotEmpty() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getGamingQuery(), TestHelpersV2.getAuthorization());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getGamingQuery());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -172,7 +177,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatPlaylistsNotEmpty() {
-        Call<GridTabList> wrapper = mService.getGridTabList(BrowseManagerParams.getMyLibraryQuery(), TestHelpersV2.getAuthorization());
+        Call<GridTabList> wrapper = mService.getGridTabList(BrowseApiHelper.getMyLibraryQuery());
 
         GridTabList gridTabResult = RetrofitHelper.get(wrapper);
 
@@ -183,7 +188,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
         assertNotNull("Contains reload key", lastGridTab.getReloadPageKey());
 
           Call<GridTabContinuation> wrapper2 =
-                mService.continueGridTab(BrowseManagerParams.getContinuationQuery(lastGridTab.getReloadPageKey()), TestHelpersV2.getAuthorization());
+                mService.continueGridTab(BrowseApiHelper.getContinuationQuery(lastGridTab.getReloadPageKey()));
 
         GridTabContinuation gridTabContinuation = RetrofitHelper.get(wrapper2);
 
@@ -194,7 +199,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatGuideNotEmpty() {
-        Call<Guide> wrapper = mService.getGuide(BrowseManagerParams.getGuideQuery(), TestHelpersV2.getAuthorization());
+        Call<Guide> wrapper = mService.getGuide(BrowseApiHelper.getGuideQuery());
         Guide guide = RetrofitHelper.get(wrapper);
 
         assertNotNull("Guide not null", guide);
@@ -205,7 +210,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
     @Test
     public void testThatHomeChipsNotEmpty() throws IOException {
-        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseManagerParams.getHomeQuery(), TestHelpersV2.getAuthorization());
+        Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());
 
         SectionTabList browseResult = wrapper.execute().body();
 
@@ -213,7 +218,7 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
 
         assertNotNull("Contains tabs", browseResult.getTabs());
 
-        Section section = browseResult.getTabs().get(0).getSections().get(0);
+        Section section = getChipsSection(browseResult.getTabs().get(0));
 
         assertNotNull("Contains chips", section.getChips());
 
@@ -223,11 +228,37 @@ public class BrowseManagerSignedTest extends BrowseManagerTestBase {
         
         assertNotNull("Chip contains reload key", firstChip.getReloadPageKey());
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseManagerParams.getContinuationQuery(firstChip.getReloadPageKey()), TestHelpersV2.getAuthorization());
+        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(firstChip.getReloadPageKey()));
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation browseResult2 = execute.body();
 
         tabbedNextResultNotEmpty(browseResult2);
+    }
+
+    private Section getChipsSection(SectionTab sectionTab) throws IOException {
+        for (Section section : sectionTab.getSections()) {
+            if (section.getChips() != null) {
+                return section;
+            }
+        }
+
+        Call<SectionTabContinuation> continuation = mService.continueSectionTab(BrowseApiHelper.getContinuationQuery(sectionTab.getNextPageKey()));
+
+
+        return getChipsSection(continuation.execute().body());
+    }
+
+    private Section getChipsSection(SectionTabContinuation continuationTab) throws IOException {
+        for (Section section : continuationTab.getSections()) {
+            if (section.getChips() != null) {
+                return section;
+            }
+        }
+
+        Call<SectionTabContinuation> continuation = mService.continueSectionTab(continuationTab.getNextPageKey());
+
+
+        return getChipsSection(continuation.execute().body());
     }
 
     private void tabbedNextResultNotEmpty(SectionContinuation browseResult) {

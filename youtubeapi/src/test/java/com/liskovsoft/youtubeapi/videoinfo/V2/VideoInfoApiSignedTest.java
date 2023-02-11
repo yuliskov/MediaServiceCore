@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(RobolectricTestRunner.class)
 public class VideoInfoApiSignedTest {
-    private VideoInfoApiSigned mService;
+    private VideoInfoApi mService;
     private LocaleManager mLocaleManager;
 
     @Before
@@ -37,8 +38,10 @@ public class VideoInfoApiSignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
+
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
@@ -111,12 +114,12 @@ public class VideoInfoApiSignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiTestHelper.getVideoInfoQuery(videoId));
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoManagerParams.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiTestHelper.getVideoInfoQuery(videoId));
         return wrapper.execute().body();
     }
 }

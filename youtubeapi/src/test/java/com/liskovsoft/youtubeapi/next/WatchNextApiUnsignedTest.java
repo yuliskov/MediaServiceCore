@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.next;
 
-import com.liskovsoft.youtubeapi.browse.BrowseManagerParams;
+import com.liskovsoft.youtubeapi.browse.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerParams;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextManagerUnsigned;
+import com.liskovsoft.youtubeapi.next.v1.WatchNextApiHelper;
+import com.liskovsoft.youtubeapi.next.v1.tmp.WatchNextManagerUnsigned;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
@@ -74,13 +74,13 @@ public class WatchNextApiUnsignedTest extends WatchNextManagerTestBase {
     }
 
     private WatchNextResultContinuation continueWatchNext(String nextPageKey) {
-        Call<WatchNextResultContinuation> wrapper = mManager.continueWatchNextResult(BrowseManagerParams.getContinuationQuery(nextPageKey));
+        Call<WatchNextResultContinuation> wrapper = mManager.continueWatchNextResult(BrowseApiHelper.getContinuationQuery(nextPageKey));
 
         return RetrofitHelper.get(wrapper);
     }
 
     private WatchNextResult getWatchNextResult() {
-        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS));
+        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS));
         return RetrofitHelper.get(wrapper);
     }
 }

@@ -2,7 +2,10 @@ package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
-public class VideoInfoManagerParams {
+/**
+ * V8-windows not exists fix
+ */
+public class VideoInfoApiTestHelper {
     private static final String CHECK_PARAMS =
             "\"playbackContext\":{\"contentPlaybackContext\":{\"html5Preference\":\"HTML5_PREF_WANTS\",\"signatureTimestamp\":%s}}";
     private static final String VIDEO_ID = "\"videoId\":\"%s\"";

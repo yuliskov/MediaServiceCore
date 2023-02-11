@@ -26,7 +26,11 @@ object RetrofitOkHttpClient {
         "Referer" to "https://www.youtube.com/tv"
     )
 
-    private val apiPrefixes = arrayOf("https://www.youtube.com/youtubei/v1/", "https://www.youtube.com/api/stats/")
+    private val apiPrefixes = arrayOf(
+        "https://www.youtube.com/youtubei/v1/",
+        "https://www.youtube.com/api/stats/",
+        "https://clients1.google.com/complete/"
+    )
 
     private fun addCommonHeaders(builder: OkHttpClient.Builder) {
         builder.addInterceptor { chain ->

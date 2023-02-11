@@ -10,8 +10,8 @@ import retrofit2.http.POST;
 /**
  * For signed users!
  */
-public interface FeedbackManager {
+public interface FeedbackApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/feedback")
-    Call<FeedbackResponse> setNotInterested(@Body String feedbackQuery, @Header("Authorization") String auth);
+    Call<FeedbackResponse> setNotInterested(@Body String feedbackQuery);
 }

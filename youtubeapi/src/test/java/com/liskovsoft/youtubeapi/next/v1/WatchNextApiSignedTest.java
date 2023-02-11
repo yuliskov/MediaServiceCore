@@ -1,14 +1,13 @@
-package com.liskovsoft.youtubeapi.next;
+package com.liskovsoft.youtubeapi.next.v1;
 
 import com.liskovsoft.youtubeapi.browse.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextApiHelper;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextApi;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -17,6 +16,7 @@ import retrofit2.Call;
 
 import static org.junit.Assert.assertNotNull;
 
+@Ignore("Old api")
 @RunWith(RobolectricTestRunner.class)
 public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
     private WatchNextApi mManager;

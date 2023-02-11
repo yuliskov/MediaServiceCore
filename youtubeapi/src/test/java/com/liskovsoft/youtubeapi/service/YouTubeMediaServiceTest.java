@@ -1,9 +1,8 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import io.reactivex.Observable;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +10,9 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class YouTubeMediaServiceTest {
@@ -33,42 +31,28 @@ public class YouTubeMediaServiceTest {
      * <a href="https://www.ibm.com/developerworks/ru/library/j-5things5/index.html">More info about concurrent utils...</a>
      */
     @Test
-    public void testThatSearchNotEmpty() throws InterruptedException {
-        Observable<MediaGroup> result = mService.getMediaGroupService().getSearchObserve("hello world");
-
-        CountDownLatch finish = new CountDownLatch(1);
+    public void testThatSearchNotEmpty() {
+        MediaGroup mediaGroup = mService.getMediaGroupService().getSearch("hello world");
 
         List<MediaItem> list = new ArrayList<>();
 
-        result.subscribe(mediaTab -> {
-            MediaItem mediaItem = mediaTab.getMediaItems().get(0);
-            list.add(mediaItem);
-            assertNotNull(mediaItem);
-            finish.countDown();
-        }, throwable -> fail());
+        MediaItem mediaItem = mediaGroup.getMediaItems().get(0);
+        list.add(mediaItem);
+        assertNotNull(mediaItem);
 
-        boolean await = finish.await(5_000, TimeUnit.MILLISECONDS);
-        assertTrue("Counter not zero", await);
         assertTrue("Has media items", list.size() > 0);
     }
-
+    
     @Test
     public void testThatRecommendedNotEmpty() throws InterruptedException {
-        Observable<MediaGroup> result = mService.getMediaGroupService().getRecommendedObserve();
-
-        CountDownLatch finish = new CountDownLatch(1);
+        MediaGroup mediaGroup = mService.getMediaGroupService().getRecommended();
 
         List<MediaItem> list = new ArrayList<>();
 
-        result.subscribe(mediaTab -> {
-            MediaItem mediaItem = mediaTab.getMediaItems().get(0);
-            list.add(mediaItem);
-            assertNotNull(mediaItem);
-            finish.countDown();
-        }, throwable -> fail());
+        MediaItem mediaItem = mediaGroup.getMediaItems().get(0);
+        list.add(mediaItem);
+        assertNotNull(mediaItem);
 
-        boolean await = finish.await(5_000, TimeUnit.MILLISECONDS);
-        assertTrue("Counter not zero", await);
         assertTrue("Has media items", list.size() > 0);
     }
 

@@ -100,10 +100,10 @@ public class BrowseApiUnsignedTest extends BrowseApiTestBase {
         String nextPageKey = firstSection.getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        String visitorId = browseResult.getVisitorData();
-        assertNotNull("Next page key not null", visitorId);
+        //String visitorId = browseResult.getVisitorData();
+        //assertNotNull("Next page key not null", visitorId);
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey), visitorId);
+        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey));
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation nextBrowseResult = execute.body();
 
@@ -132,17 +132,17 @@ public class BrowseApiUnsignedTest extends BrowseApiTestBase {
         String nextPageKey = firstNotEmptyTab(browseResult1).getSections().get(0).getNextPageKey();
         assertNotNull("Next page key not null", nextPageKey);
 
-        String visitorId = browseResult1.getVisitorData();
-        assertNotNull("Next page key not null", visitorId);
+        //String visitorId = browseResult1.getVisitorData();
+        //assertNotNull("Next page key not null", visitorId);
 
-        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey), visitorId);
+        Call<SectionContinuation> next = mService.continueSection(BrowseApiHelper.getContinuationQuery(nextPageKey));
         Response<SectionContinuation> execute = next.execute();
         SectionContinuation browseResult2 = execute.body();
 
         nextSectionResultNotEmpty(browseResult2);
 
         String nextTabbedPageKey = firstNotEmptyTab(browseResult1).getNextPageKey();
-        Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseApiHelper.getContinuationQuery(nextTabbedPageKey), visitorId);
+        Call<SectionTabContinuation> nextTabbed = mService.continueSectionTab(BrowseApiHelper.getContinuationQuery(nextTabbedPageKey));
         Response<SectionTabContinuation> executeTabbed = nextTabbed.execute();
         SectionTabContinuation browseTabbedResult2 = executeTabbed.body();
 
@@ -223,7 +223,9 @@ public class BrowseApiUnsignedTest extends BrowseApiTestBase {
         TileItem videoItem = null;
 
         for (ItemWrapper itemWrapper : recommended.getItemWrappers()) {
-            if (itemWrapper.getTileItem() != null && !itemWrapper.getTileItem().isLive()) {
+            if (itemWrapper.getTileItem() != null
+                    && itemWrapper.getTileItem().getRichThumbnailUrl() != null
+                    && !itemWrapper.getTileItem().isLive()) {
                 videoItem = itemWrapper.getTileItem();
                 break;
             }

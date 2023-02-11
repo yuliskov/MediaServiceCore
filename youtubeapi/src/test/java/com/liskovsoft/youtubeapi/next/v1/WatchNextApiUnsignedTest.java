@@ -1,15 +1,14 @@
-package com.liskovsoft.youtubeapi.next;
+package com.liskovsoft.youtubeapi.next.v1;
 
 import com.liskovsoft.youtubeapi.browse.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.next.v1.WatchNextApiHelper;
-import com.liskovsoft.youtubeapi.next.v1.tmp.WatchNextManagerUnsigned;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -19,9 +18,10 @@ import retrofit2.Call;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@Ignore("Old api")
 @RunWith(RobolectricTestRunner.class)
 public class WatchNextApiUnsignedTest extends WatchNextManagerTestBase {
-    private WatchNextManagerUnsigned mManager;
+    private WatchNextApi mManager;
 
     @Before
     public void setUp() {
@@ -31,7 +31,7 @@ public class WatchNextApiUnsignedTest extends WatchNextManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mManager = RetrofitHelper.withJsonPath(WatchNextManagerUnsigned.class);
+        mManager = RetrofitHelper.withJsonPath(WatchNextApi.class);
     }
 
     @Test

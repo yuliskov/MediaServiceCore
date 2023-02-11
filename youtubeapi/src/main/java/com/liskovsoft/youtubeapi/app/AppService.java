@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
-import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
+import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 
 import java.util.Arrays;
@@ -127,7 +127,7 @@ public class AppService {
     //}
 
     /**
-     * Constant used in {@link AuthManager}
+     * Constant used in {@link AuthApi}
      */
     public String getClientId() {
         updateBaseData();
@@ -137,7 +137,7 @@ public class AppService {
     }
 
     /**
-     * Constant used in {@link AuthManager}
+     * Constant used in {@link AuthApi}
      */
     public String getClientSecret() {
         updateBaseData();

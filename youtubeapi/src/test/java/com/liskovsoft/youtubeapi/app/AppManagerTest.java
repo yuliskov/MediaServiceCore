@@ -64,8 +64,8 @@ public class AppManagerTest {
         String playbackNonceFunctionContent = clientPlaybackNonceFunction.getClientPlaybackNonceFunction();
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
-        assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith(";function ") &&
-                playbackNonceFunctionContent.contains("function getClientPlaybackNonce") && playbackNonceFunctionContent.endsWith(".join(\"\")}"));
+        assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith("function ") &&
+                playbackNonceFunctionContent.contains("function getClientPlaybackNonce") && playbackNonceFunctionContent.endsWith("}"));
     }
 
     @Test

@@ -37,8 +37,8 @@ public class TestHelpersV2 {
     // Cyberpunk
     public static final String VIDEO_ID_AGE_RESTRICTED = "8X2kIfS6fb8";
 
-    // NEWS ONE
-    public static final String VIDEO_ID_LIVE = "3e0FsU1N6OQ";
+    // Lofi Girl
+    public static final String VIDEO_ID_LIVE = "jfKfPfyJRdk";
 
     // Mathematik
     public static final String VIDEO_ID_MUSIC_2 = "0YEZiDtnbdA";

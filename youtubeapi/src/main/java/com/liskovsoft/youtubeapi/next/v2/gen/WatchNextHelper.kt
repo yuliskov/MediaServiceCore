@@ -28,6 +28,7 @@ fun WatchNextResult.getLiveChatKey() = getWatchNextResults()?.conversationBar?.l
 fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlist
 fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
     playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters
+fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 
 ///////
 

@@ -13,7 +13,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface AuthManager {
+public interface AuthApi {
     @FormUrlEncoded
     @POST("https://www.youtube.com/o/oauth2/device/code")
     Call<UserCode> getUserCode(@Field("client_id") String clientId,

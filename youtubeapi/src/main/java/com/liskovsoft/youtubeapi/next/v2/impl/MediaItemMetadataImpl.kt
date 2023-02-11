@@ -29,7 +29,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         watchNextResult.getNextVideoItem()
     }
     private val commentsPanel by lazy {
-        watchNextResult.engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
+        watchNextResult.getCommentPanel()
     }
     private val liveChatKeyItem by lazy {
         watchNextResult.getLiveChatKey()

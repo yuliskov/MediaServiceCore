@@ -35,6 +35,9 @@ public class BrowseApiTestBase {
         } else if (item1.getChannelItem() != null) {
             title1 = item1.getChannelItem().getTitle();
             title2 = item2.getChannelItem().getTitle();
+        } else if (item1.getTileItem() != null) {
+            title1 = item1.getTileItem().getTitle();
+            title2 = item2.getTileItem().getTitle();
         }
 
         assertNotNull("Video1 not null", title1);

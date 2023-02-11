@@ -4,6 +4,10 @@ import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
 import com.liskovsoft.youtubeapi.chat.gen.getActions
 import com.liskovsoft.youtubeapi.chat.gen.getContinuation
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
+import com.liskovsoft.youtubeapi.next.v2.WatchNextApiHelper
+import com.liskovsoft.youtubeapi.next.v2.gen.getLiveChatKey
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,11 +17,8 @@ import org.junit.Assert.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 class LiveChatApiTest {
-    companion object {
-        private const val LIVE_CHAT_KEY =
-            "0ofMyAN0GlhDaWtxSndvWVZVTnBjWFJVWW5veGR6Vk9jRzVGVGxFelRHZzFNM2xSRWd0RldGUllXRXBtT1dWaFFSb1Q2cWpkdVFFTkNndEZXRlJZV0VwbU9XVmhRU0FCMAGCAQIIBIgBAaABmN2Q297f-AKoAQCyAQA%3D"
-    }
     private var mApi: LiveChatApi? = null
+    private var mApi2: WatchNextApi? = null
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -25,11 +26,15 @@ class LiveChatApiTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         mApi = RetrofitHelper.withGson(LiveChatApi::class.java)
+        mApi2 = RetrofitHelper.withGson(WatchNextApi::class.java)
     }
 
     @Test
     fun testThatLiveChatResultIsNotEmpty() {
-        val liveChatResult = getLiveChatResult(LIVE_CHAT_KEY)
+        val watchNextResult = mApi2?.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_LIVE))
+        val watchNext = watchNextResult?.execute()?.body()
+
+        val liveChatResult = getLiveChatResult(watchNext?.getLiveChatKey())
 
         assertNotNull("chat result not null", liveChatResult)
         assertNotNull("has actions", liveChatResult?.getActions()?.getOrNull(0))
@@ -37,7 +42,10 @@ class LiveChatApiTest {
 
     @Test
     fun testThatContinuationIsWorking() {
-        var liveChatResult = getLiveChatResult(LIVE_CHAT_KEY)
+        val watchNextResult = mApi2?.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_LIVE))
+        val watchNext = watchNextResult?.execute()?.body()
+
+        var liveChatResult = getLiveChatResult(watchNext?.getLiveChatKey())
         var timeoutMs = liveChatResult?.getContinuation()?.timeoutMs ?: -1
         var nextChatResult: LiveChatResult? = null
 

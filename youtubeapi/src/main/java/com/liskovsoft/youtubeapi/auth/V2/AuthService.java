@@ -15,13 +15,13 @@ import java.util.List;
 public class AuthService {
     private static final String TAG = AuthService.class.getSimpleName();
     private static AuthService sInstance;
-    private final AuthManager mAuthManager;
+    private final AuthApi mAuthApi;
     private static final int REFRESH_TOKEN_ATTEMPTS = 200;
     private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 3_000;
     private final AppService mAppService;
 
     private AuthService() {
-        mAuthManager = RetrofitHelper.withJsonPath(AuthManager.class);
+        mAuthApi = RetrofitHelper.withJsonPath(AuthApi.class);
         mAppService = AppService.instance();
     }
 
@@ -39,8 +39,8 @@ public class AuthService {
      * @return response with user code and device code
      */
     public UserCode getUserCode() {
-        Call<UserCode> wrapper = mAuthManager.getUserCode(
-                AuthParams.getUserCodeQuery(mAppService.getClientId())
+        Call<UserCode> wrapper = mAuthApi.getUserCode(
+                AuthApiHelper.getUserCodeQuery(mAppService.getClientId())
         );
         return RetrofitHelper.get(wrapper);
     }
@@ -52,8 +52,8 @@ public class AuthService {
      * @return refresh token that should be stored inside the app registry for future use
      */
     public RefreshToken getRefreshToken(String deviceCode) {
-        Call<RefreshToken> wrapper = mAuthManager.getRefreshToken(
-                AuthParams.getRefreshTokenQuery(
+        Call<RefreshToken> wrapper = mAuthApi.getRefreshToken(
+                AuthApiHelper.getRefreshTokenQuery(
                         deviceCode,
                         mAppService.getClientId(),
                         mAppService.getClientSecret())
@@ -67,8 +67,8 @@ public class AuthService {
      * @return temporal access token
      */
     public AccessToken getAccessToken(String refreshToken) {
-        Call<AccessToken> wrapper = mAuthManager.getAccessToken(
-                AuthParams.getAccessTokenQuery(refreshToken,
+        Call<AccessToken> wrapper = mAuthApi.getAccessToken(
+                AuthApiHelper.getAccessTokenQuery(refreshToken,
                         mAppService.getClientId(),
                         mAppService.getClientSecret())
         );
@@ -76,7 +76,7 @@ public class AuthService {
     }
 
     public AccessToken getAccessTokenRaw(String rawJsonAuthData) {
-        Call<AccessToken> wrapper = mAuthManager.getAccessToken(rawJsonAuthData);
+        Call<AccessToken> wrapper = mAuthApi.getAccessToken(rawJsonAuthData);
         return RetrofitHelper.get(wrapper);
     }
 
@@ -107,8 +107,8 @@ public class AuthService {
         }
     }
 
-    public List<AccountInt> getAccounts(String authorization) {
-        Call<AccountsList> wrapper = mAuthManager.getAccountsList(AuthParams.getAccountsListQuery(), authorization);
+    public List<AccountInt> getAccounts() {
+        Call<AccountsList> wrapper = mAuthApi.getAccountsList(AuthApiHelper.getAccountsListQuery());
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 

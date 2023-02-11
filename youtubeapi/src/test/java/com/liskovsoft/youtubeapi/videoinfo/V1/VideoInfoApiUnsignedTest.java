@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo;
+package com.liskovsoft.youtubeapi.videoinfo.V1;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
+@Ignore("Old api")
 @RunWith(RobolectricTestRunner.class)
 public class VideoInfoApiUnsignedTest {
     private VideoInfoApiUnsigned mService;

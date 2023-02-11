@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.auth.V1.AuthManager;
+import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.models.grid.GridTabList;
@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * For auth users only!<br/>
- * Wraps result from the {@link AuthManager} and {@link BrowseApi}
+ * Wraps result from the {@link AuthApi} and {@link BrowseApi}
  */
 public class BrowseService {
     private static final String TAG = BrowseService.class.getSimpleName();

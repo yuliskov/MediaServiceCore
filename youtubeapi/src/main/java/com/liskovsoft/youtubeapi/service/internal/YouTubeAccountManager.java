@@ -91,7 +91,7 @@ public class YouTubeAccountManager {
 
         addAccount(YouTubeAccount.fromToken(refreshToken));
 
-        List<AccountInt> accountsInt = mAuthService.getAccounts(mSignInManager.getAuthorizationHeader());
+        List<AccountInt> accountsInt = mAuthService.getAccounts();
 
         if (accountsInt != null) {
             for (AccountInt accountInt : accountsInt) {

@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import okhttp3.RequestBody;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -23,14 +24,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@Ignore("Old api")
 @RunWith(RobolectricTestRunner.class)
-public class AuthManagerTest {
+public class AuthApiTest {
     private static final String RAW_POST_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU&grant_type=refresh_token";
     private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
     private static final String GRANT_TYPE = "refresh_token";
     private static final String REFRESH_TOKEN = "1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU";
-    private AuthManager mService;
+    private AuthApi mService;
     private AppService mAppService;
 
     @Before
@@ -41,7 +43,7 @@ public class AuthManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(AuthManager.class);
+        mService = RetrofitHelper.withJsonPath(AuthApi.class);
         mAppService = AppService.instance();
     }
 
@@ -87,7 +89,7 @@ public class AuthManagerTest {
 
     @Test
     public void testThatAccountsListNotEmpty() {
-        Call<AccountsList> wrapper = mService.getAccountsList(AuthParams.getAccountsListQuery(), TestHelpersV2.getAuthorization());
+        Call<AccountsList> wrapper = mService.getAccountsList(AuthApiHelper.getAccountsListQuery(), TestHelpersV2.getAuthorization());
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 
@@ -104,7 +106,7 @@ public class AuthManagerTest {
     }
 
     private UserCode getUserCode() throws IOException {
-        Call<UserCode> userCode = mService.getUserCode(mAppService.getClientId(), AuthParams.getAppScope());
+        Call<UserCode> userCode = mService.getUserCode(mAppService.getClientId(), AuthApiHelper.getAppScope());
         Response<UserCode> response = userCode.execute();
         return response.body();
     }
@@ -113,7 +115,7 @@ public class AuthManagerTest {
         UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<RefreshToken> token = mService.getRefreshToken(userCode.getDeviceCode(), mAppService.getClientId(), mAppService.getClientSecret(), AuthParams.getAccessGrantType());
+        Call<RefreshToken> token = mService.getRefreshToken(userCode.getDeviceCode(), mAppService.getClientId(), mAppService.getClientSecret(), AuthApiHelper.getAccessGrantType());
         Response<RefreshToken> response = token.execute();
         return response.body();
     }

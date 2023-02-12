@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
+import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getItems
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient
@@ -46,5 +47,22 @@ class BrowseApiTest {
         val subs = RetrofitHelper.get(subsResult)
 
         assertNotNull("Contains feedback token", subs?.getItems()?.getOrNull(0)?.getFeedbackToken())
+    }
+
+    @Test
+    fun testThatSubsCanBeContinued() {
+        val subsResult = mService?.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
+
+        val subs = RetrofitHelper.get(subsResult)
+
+        assertNotNull("Contains continuation token", subs?.getContinuationToken())
+
+        val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(subs?.getContinuationToken()))
+
+        val continuation = RetrofitHelper.get(continuationResult)
+
+        assertNotNull("Contains items", continuation?.getItems()?.getOrNull(0))
+
+        assertNotNull("Contains continuation token", continuation?.getContinuationToken())
     }
 }

@@ -79,6 +79,16 @@ public class BrowseApiHelper {
         return ServiceHelper.createQuery(continuation);
     }
 
+    /**
+     * Get data param for the next search/grid etc
+     * @param nextPageKey {@link GridTab#getNextPageKey()}
+     * @return data param
+     */
+    public static String getContinuationQueryWeb(String nextPageKey) {
+        String continuation = String.format(CONTINUATION, nextPageKey);
+        return ServiceHelper.createQueryWeb(continuation);
+    }
+
     public static String getGuideQuery() {
         return ServiceHelper.createQuery("");
     }

@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Url;
 
-public interface AppManager {
+public interface AppApi {
     /**
      * Get player version that associated with specified user agent.<br/>
      * Note, that user agent should be obtained from the Smart TV device.<br/>

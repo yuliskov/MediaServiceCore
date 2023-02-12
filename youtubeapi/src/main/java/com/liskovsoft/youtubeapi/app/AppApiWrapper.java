@@ -9,11 +9,11 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class AppManagerWrapper {
-    private final AppManager mAppManager;
+public class AppApiWrapper {
+    private final AppApi mAppApi;
 
-    public AppManagerWrapper() {
-        mAppManager = RetrofitHelper.withRegExp(AppManager.class);
+    public AppApiWrapper() {
+        mAppApi = RetrofitHelper.withRegExp(AppApi.class);
     }
 
     /**
@@ -21,7 +21,7 @@ public class AppManagerWrapper {
      */
     public AppInfo getAppInfo(String userAgent) {
         String visitorCookie = GlobalPreferences.getVisitorCookie();
-        Call<AppInfo> wrapper = mAppManager.getAppInfo(userAgent, visitorCookie);
+        Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
 
         if (visitorCookie == null) {
@@ -42,7 +42,7 @@ public class AppManagerWrapper {
             return null;
         }
 
-        Call<PlayerData> wrapper = mAppManager.getPlayerData(playerUrl);
+        Call<PlayerData> wrapper = mAppApi.getPlayerData(playerUrl);
         return RetrofitHelper.get(wrapper);
     }
     
@@ -51,13 +51,13 @@ public class AppManagerWrapper {
             return null;
         }
 
-        Call<ModernClientData> wrapper = mAppManager.getModernClientData(baseUrl);
+        Call<ModernClientData> wrapper = mAppApi.getModernClientData(baseUrl);
         ClientData baseData = RetrofitHelper.get(wrapper);
 
         // Seems that legacy script encountered.
         // Needed values is stored in main script, not in base.
         if (baseData == null) {
-            baseData = RetrofitHelper.get(mAppManager.getLegacyClientData(getMainUrl(baseUrl)));
+            baseData = RetrofitHelper.get(mAppApi.getLegacyClientData(getMainUrl(baseUrl)));
         }
 
         return baseData;

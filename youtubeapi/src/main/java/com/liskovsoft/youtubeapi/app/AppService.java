@@ -16,7 +16,7 @@ public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 30 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static AppService sInstance;
-    private final AppManagerWrapper mAppManager;
+    private final AppApiWrapper mAppApiWrapper;
     //private Duktape mDuktape;
     private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
@@ -26,7 +26,7 @@ public class AppService {
     private long mBaseDataUpdateTimeMs;
 
     private AppService() {
-        mAppManager = new AppManagerWrapper();
+        mAppApiWrapper = new AppApiWrapper();
     }
 
     public static AppService instance() {
@@ -284,7 +284,7 @@ public class AppService {
 
         Log.d(TAG, "updateAppInfoData");
 
-        mCachedAppInfo = mAppManager.getAppInfo(DefaultHeaders.APP_USER_AGENT);
+        mCachedAppInfo = mAppApiWrapper.getAppInfo(DefaultHeaders.APP_USER_AGENT);
 
         if (mCachedAppInfo != null) {
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
@@ -298,7 +298,7 @@ public class AppService {
 
         Log.d(TAG, "updatePlayerData");
 
-        mCachedPlayerData = mAppManager.getPlayerData(getPlayerUrl());
+        mCachedPlayerData = mAppApiWrapper.getPlayerData(getPlayerUrl());
 
         if (mCachedPlayerData != null) {
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
@@ -312,7 +312,7 @@ public class AppService {
 
         Log.d(TAG, "updateBaseData");
 
-        mCachedBaseData = mAppManager.getBaseData(getBaseUrl());
+        mCachedBaseData = mAppApiWrapper.getBaseData(getBaseUrl());
 
         if (mCachedBaseData != null) {
             mBaseDataUpdateTimeMs = System.currentTimeMillis();

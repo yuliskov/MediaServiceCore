@@ -17,8 +17,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class AppManagerTest {
-    private AppManagerWrapper mManager;
+public class AppApiTest {
+    private AppApiWrapper mAppApiWrapper;
 
     @Before
     public void setUp() {
@@ -28,7 +28,7 @@ public class AppManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mManager = new AppManagerWrapper();
+        mAppApiWrapper = new AppApiWrapper();
     }
 
     @Test
@@ -41,7 +41,7 @@ public class AppManagerTest {
     public void testThatDecipherFunctionIsValid() {
         String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
 
-        PlayerData playerData = mManager.getPlayerData(playerUrl);
+        PlayerData playerData = mAppApiWrapper.getPlayerData(playerUrl);
 
         assertNotNull("Decipher result not null", playerData);
 
@@ -57,7 +57,7 @@ public class AppManagerTest {
     public void testThatPlaybackNonceFunctionIsValid() {
         String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
 
-        PlayerData clientPlaybackNonceFunction = mManager.getPlayerData(playerUrl);
+        PlayerData clientPlaybackNonceFunction = mAppApiWrapper.getPlayerData(playerUrl);
 
         assertNotNull("Playback nonce result not null", clientPlaybackNonceFunction);
 
@@ -72,7 +72,7 @@ public class AppManagerTest {
     public void testThrottleFunctionIsValid() {
         String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_COBALT);
 
-        PlayerData playerData = mManager.getPlayerData(playerUrl);
+        PlayerData playerData = mAppApiWrapper.getPlayerData(playerUrl);
 
         assertNotNull("PlayerData not null", playerData);
 
@@ -98,7 +98,7 @@ public class AppManagerTest {
     public void testThatClientIdAndSecretNotEmpty(String userAgent) {
         String baseUrl = getBaseUrl(userAgent);
 
-        ClientData baseData = mManager.getBaseData(baseUrl);
+        ClientData baseData = mAppApiWrapper.getBaseData(baseUrl);
 
         assertNotNull("Base data not null", baseData);
 
@@ -107,7 +107,7 @@ public class AppManagerTest {
     }
 
     private String getPlayerUrl(String userAgent) {
-        AppInfo appInfo = mManager.getAppInfo(userAgent);
+        AppInfo appInfo = mAppApiWrapper.getAppInfo(userAgent);
 
         assertNotNull("AppInfo not null", appInfo);
 
@@ -119,7 +119,7 @@ public class AppManagerTest {
     }
 
     private String getBaseUrl(String userAgent) {
-        AppInfo appInfo = mManager.getAppInfo(userAgent);
+        AppInfo appInfo = mAppApiWrapper.getAppInfo(userAgent);
 
         assertNotNull("AppInfo not null", appInfo);
 

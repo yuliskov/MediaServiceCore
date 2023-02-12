@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.track;
 
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.browse.BrowseService;
-import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
+import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;

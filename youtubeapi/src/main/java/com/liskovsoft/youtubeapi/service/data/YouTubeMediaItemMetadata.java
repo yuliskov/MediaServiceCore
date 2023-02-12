@@ -6,7 +6,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
+import com.liskovsoft.youtubeapi.browse.v1.models.sections.Chip;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.v1.models.ButtonStates;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;

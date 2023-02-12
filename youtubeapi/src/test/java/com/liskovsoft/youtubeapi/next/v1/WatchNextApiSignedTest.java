@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v1;
 
-import com.liskovsoft.youtubeapi.browse.BrowseApiHelper;
+import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;

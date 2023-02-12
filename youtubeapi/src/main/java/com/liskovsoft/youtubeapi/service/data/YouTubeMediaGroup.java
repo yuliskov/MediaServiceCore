@@ -2,11 +2,11 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.youtubeapi.browse.models.grid.GridTab;
-import com.liskovsoft.youtubeapi.browse.models.grid.GridTabContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.Chip;
-import com.liskovsoft.youtubeapi.browse.models.sections.SectionContinuation;
-import com.liskovsoft.youtubeapi.browse.models.sections.Section;
+import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
+import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTabContinuation;
+import com.liskovsoft.youtubeapi.browse.v1.models.sections.Chip;
+import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionContinuation;
+import com.liskovsoft.youtubeapi.browse.v1.models.sections.Section;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;

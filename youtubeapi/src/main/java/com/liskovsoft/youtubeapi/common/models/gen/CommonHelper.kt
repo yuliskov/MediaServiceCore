@@ -47,6 +47,9 @@ private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
 ////////
 
 fun MenuItem.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId() }
+fun MenuItem.getFeedbackToken() = menuRenderer?.items?.firstNotNullOfOrNull {
+    it?.menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
+}
 
 //////////
 
@@ -177,6 +180,7 @@ fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.i
 fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()
+fun ItemWrapper.getFeedbackToken() = getVideoItem()?.menu?.getFeedbackToken()
 
 /////
 

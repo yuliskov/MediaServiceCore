@@ -23,5 +23,6 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val isLiveItem by lazy { itemWrapper.isLive() }
     override val isUpcomingItem by lazy { itemWrapper.isUpcoming() }
     override val isMovieItem by lazy { itemWrapper.isMovie() }
+    override val feedbackTokenItem by lazy { itemWrapper.getFeedbackToken() }
     val descriptionText by lazy { itemWrapper.getDescriptionText() }
 }

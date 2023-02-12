@@ -52,6 +52,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val isLiveItem: Boolean? = null
     protected open val isUpcomingItem: Boolean? = null
     protected open val isMovieItem: Boolean? = null
+    protected open val feedbackTokenItem: String? = null
 
     protected companion object {
         var sId: Int = 0
@@ -180,7 +181,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getFeedbackToken(): String? {
-        return null
+        return feedbackTokenItem
     }
 
     override fun hasNewContent(): Boolean {

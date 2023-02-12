@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
-fun BrowseResult.getItems(): List<ItemWrapper?>? = getContents()?.getOrNull(0)?.getItems()
+fun BrowseResult.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
 fun BrowseResult.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull {
     it?.getContinuationToken()
 }
@@ -12,7 +12,7 @@ private fun BrowseResult.getContents() = contents?.twoColumnBrowseResultsRendere
 
 /////
 
-fun ContinuationResult.getItems(): List<ItemWrapper?>? = getContinuations()?.getOrNull(0)?.getItems()
+fun ContinuationResult.getItems(): List<ItemWrapper?>? = getContinuations()?.flatMap { it?.getItems() ?: emptyList() }
 fun ContinuationResult.getContinuationToken(): String? = getContinuations()?.firstNotNullOfOrNull {
     it?.getContinuationToken()
 }

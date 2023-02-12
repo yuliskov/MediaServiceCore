@@ -13,6 +13,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -121,9 +122,18 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
         checkSigned();
 
-        GridTab subscriptions = mBrowseService.getSubscriptions();
-        return YouTubeMediaGroup.from(subscriptions, MediaGroup.TYPE_SUBSCRIPTIONS);
+        return BrowseService2.getSubscriptions();
     }
+
+    //@Override
+    //public MediaGroup getSubscriptions() {
+    //    Log.d(TAG, "Getting subscriptions...");
+    //
+    //    checkSigned();
+    //
+    //    GridTab subscriptions = mBrowseService.getSubscriptions();
+    //    return YouTubeMediaGroup.from(subscriptions, MediaGroup.TYPE_SUBSCRIPTIONS);
+    //}
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
@@ -430,6 +440,36 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         }
     }
 
+    //@Override
+    //public MediaGroup continueGroup(MediaGroup mediaGroup) {
+    //    checkSigned();
+    //
+    //    Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
+    //
+    //    String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
+    //
+    //    switch (mediaGroup.getType()) {
+    //        case MediaGroup.TYPE_SEARCH:
+    //            return YouTubeMediaGroup.from(
+    //                    mSearchService.continueSearch(nextKey),
+    //                    mediaGroup);
+    //        case MediaGroup.TYPE_HISTORY:
+    //        case MediaGroup.TYPE_SUBSCRIPTIONS:
+    //        case MediaGroup.TYPE_USER_PLAYLISTS:
+    //        case MediaGroup.TYPE_CHANNEL_UPLOADS:
+    //        case MediaGroup.TYPE_UNDEFINED:
+    //            return YouTubeMediaGroup.from(
+    //                    mBrowseService.continueGridTab(nextKey),
+    //                    mediaGroup
+    //            );
+    //        default:
+    //            return YouTubeMediaGroup.from(
+    //                    mBrowseService.continueSection(nextKey),
+    //                    mediaGroup
+    //            );
+    //    }
+    //}
+
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         checkSigned();
@@ -439,12 +479,14 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
 
         switch (mediaGroup.getType()) {
+            case MediaGroup.TYPE_SUBSCRIPTIONS:
+                return BrowseService2.continueGroup(mediaGroup);
             case MediaGroup.TYPE_SEARCH:
                 return YouTubeMediaGroup.from(
                         mSearchService.continueSearch(nextKey),
                         mediaGroup);
             case MediaGroup.TYPE_HISTORY:
-            case MediaGroup.TYPE_SUBSCRIPTIONS:
+            //case MediaGroup.TYPE_SUBSCRIPTIONS:
             case MediaGroup.TYPE_USER_PLAYLISTS:
             case MediaGroup.TYPE_CHANNEL_UPLOADS:
             case MediaGroup.TYPE_UNDEFINED:

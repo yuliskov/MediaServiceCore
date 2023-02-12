@@ -70,8 +70,8 @@ fun VideoItem.getChannelId() =
     menu?.getBrowseId()
 fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
-fun VideoItem.isLive() = false
-fun VideoItem.isUpcoming() = false
+fun VideoItem.isLive() = OLD_BADGE_STYLE_LIVE == badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
+fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 
 ////////////
 
@@ -101,6 +101,7 @@ private const val BADGE_STYLE_LIVE = "LIVE"
 private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 private const val BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
+private const val OLD_BADGE_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
 
 fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
 fun TileItem.getVideoId() = onSelectCommand?.watchEndpoint?.videoId

@@ -259,7 +259,8 @@ data class VideoItem(
         )
 
         data class MetadataBadgeRenderer(
-            val label: String?
+            val label: String?,
+            val style: String?
         )
     }
 

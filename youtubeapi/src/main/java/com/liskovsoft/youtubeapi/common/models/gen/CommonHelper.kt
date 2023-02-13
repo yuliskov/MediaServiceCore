@@ -78,6 +78,7 @@ fun VideoItem.getBadgeText() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thu
 fun VideoItem.getUserName() = shortBylineText?.getText() ?: longBylineText?.getText()
 fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
 fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText()
+// No real date, just placeholder. We should do this themselves.
 fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.getText()
     ?.replace("DATE_PLACEHOLDER", Helpers.toShortDate(upcomingEventData.getStartTimeMs()))
 fun VideoItem.getChannelId() =

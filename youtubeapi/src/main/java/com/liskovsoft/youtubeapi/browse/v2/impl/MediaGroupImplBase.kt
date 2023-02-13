@@ -8,13 +8,15 @@ import com.liskovsoft.youtubeapi.common.models.gen.isShorts
 import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 
-abstract class MediaGroupImplBase(
-    private val removeShorts: Boolean = true,
-    private val removeLive: Boolean = false,
-    private val removeUpcoming: Boolean = false
-): MediaGroup {
+data class MediaGroupOptions(val removeShorts: Boolean = true,
+                             val removeLive: Boolean = false,
+                             val removeUpcoming: Boolean = false)
+
+abstract class MediaGroupImplBase(private val options: MediaGroupOptions = MediaGroupOptions()): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
-        (removeShorts && it.isShorts() == true) || (removeLive && it.isLive() == true) || (removeUpcoming && it.isUpcoming() == true)
+        (options.removeShorts && it.isShorts() == true) ||
+        (options.removeLive && it.isLive() == true) ||
+        (options.removeUpcoming && it.isUpcoming() == true)
     }
     private var _titleItem: String? = null
         get() = field ?: titleItem

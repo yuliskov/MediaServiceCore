@@ -216,7 +216,8 @@ data class TileItem(
         data class TileHeaderRenderer(
             val thumbnail: ThumbnailItem,
             val thumbnailOverlays: List<ThumbnailOverlayItem?>?,
-            val movingThumbnail: ThumbnailItem?
+            val movingThumbnail: ThumbnailItem?, // v1
+            val onFocusThumbnail: ThumbnailItem? // v2
         )
 
         /**

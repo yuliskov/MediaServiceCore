@@ -44,6 +44,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val lengthText: String? = null
     protected open val cardThumbImageUrl: String? = null
     protected open val backgroundThumbImageUrl: String? = null
+    protected open val previewUrl: String? = null
     protected open val playlistIdItem: String? = null
     protected open val playlistIndexItem: Int? = null
     protected open val channelIdItem: String? = null
@@ -197,7 +198,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getVideoPreviewUrl(): String? {
-        return null
+        return previewUrl
     }
 
     override fun hasUploads(): Boolean {

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl
@@ -14,15 +15,27 @@ object BrowseService2 {
     @JvmStatic
     fun getSubscriptions(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
+        val prefs = GlobalPreferences.sInstance
 
-        return RetrofitHelper.get(browseResult)?.let { MediaGroupImpl(it) }
+        return RetrofitHelper.get(browseResult)?.let { MediaGroupImpl(
+            it,
+            prefs?.isHideShortsFromSubscriptionsEnabled ?: true,
+            prefs?.isHideStreamsFromSubscriptionsEnabled ?: false,
+            prefs?.isHideUpcomingEnabled ?: false
+        ) }
     }
 
     @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
         val continuationResult =
             mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group?.nextPageKey))
+        val prefs = GlobalPreferences.sInstance
 
-        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImpl2(it) }
+        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImpl2(
+            it,
+            prefs?.isHideShortsFromSubscriptionsEnabled ?: true,
+            prefs?.isHideStreamsFromSubscriptionsEnabled ?: false,
+            prefs?.isHideUpcomingEnabled ?: false
+        ) }
     }
 }

@@ -15,6 +15,7 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val upcomingEventText by lazy { itemWrapper.getUpcomingEventText() }
     override val cardThumbImageUrl by lazy { itemWrapper.getThumbnails()?.getOptimalResThumbnailUrl() }
     override val backgroundThumbImageUrl by lazy { itemWrapper.getThumbnails()?.getHighResThumbnailUrl() }
+    override val previewUrl: String? by lazy { itemWrapper.getMovingThumbnails()?.getOptimalResThumbnailUrl() }
     override val playlistIdItem by lazy { itemWrapper.getPlaylistId() }
     override val playlistIndexItem by lazy { itemWrapper.getPlaylistIndex() }
     override val badgeTextItem by lazy { itemWrapper.getBadgeText() }

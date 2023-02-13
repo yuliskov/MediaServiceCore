@@ -3,9 +3,19 @@ package com.liskovsoft.youtubeapi.browse.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.isLive
+import com.liskovsoft.youtubeapi.common.models.gen.isShorts
+import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 
-abstract class MediaGroupImplBase: MediaGroup {
+abstract class MediaGroupImplBase(
+    private val removeShorts: Boolean = true,
+    private val removeLive: Boolean = false,
+    private val removeUpcoming: Boolean = false
+): MediaGroup {
+    private val filter: ((ItemWrapper) -> Boolean) = {
+        (removeShorts && it.isShorts() == true) || (removeLive && it.isLive() == true) || (removeUpcoming && it.isUpcoming() == true)
+    }
     private var _titleItem: String? = null
         get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
@@ -15,7 +25,12 @@ abstract class MediaGroupImplBase: MediaGroup {
         set(value) { field = value ?: "" }
 
     private val titleItem by lazy { getTitleInt() }
-    private val mediaItemList by lazy { getItemWrappersInt()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
+    private val mediaItemList by lazy { getItemWrappersInt()
+        ?.mapIndexedNotNull { index, it -> it
+            ?.let { if (filter.invoke(it)) null else it }
+            ?.let { MediaItemImpl(it).apply { playlistIndex = index } }
+        }
+    }
     private val nextPageKeyVal by lazy { getNextPageKeyInt() }
 
     abstract fun getItemWrappersInt(): List<ItemWrapper?>?

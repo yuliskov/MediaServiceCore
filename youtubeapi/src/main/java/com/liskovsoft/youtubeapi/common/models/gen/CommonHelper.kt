@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getKey
 
@@ -78,6 +79,7 @@ fun VideoItem.getUserName() = shortBylineText?.getText() ?: longBylineText?.getT
 fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
 fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText()
 fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.getText()
+    ?.replace("DATE_PLACEHOLDER", Helpers.toShortDate(upcomingEventData.getStartTimeMs()))
 fun VideoItem.getChannelId() =
     shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
@@ -205,3 +207,7 @@ fun ToggleButtonRenderer.getUnsubscribeParams() = toggledServiceEndpoint?.unsubs
 //////
 
 fun SubscribeButtonRenderer.getParams() = serviceEndpoints?.firstNotNullOfOrNull { it?.getParams() }
+
+//////
+
+fun VideoItem.UpcomingEvent.getStartTimeMs() = startTime?.toLong()?.let { it * 1_000 } ?: -1

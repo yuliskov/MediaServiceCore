@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 
@@ -25,5 +26,7 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val isUpcomingItem by lazy { itemWrapper.isUpcoming() }
     override val isMovieItem by lazy { itemWrapper.isMovie() }
     override val feedbackTokenItem by lazy { itemWrapper.getFeedbackToken() }
+    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
+    //override val playlistParamsItem by lazy { itemWrapper.getParams() }
     val descriptionText by lazy { itemWrapper.getDescriptionText() }
 }

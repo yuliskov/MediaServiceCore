@@ -92,8 +92,8 @@ public class ClipService {
         playlist.setLogoResId(logoResId);
 
         MediaService service = YouTubeMediaService.instance();
-        MediaGroupService mediaTabManager = service.getMediaGroupService();
-        MediaGroup selectedGroup = callback.call(mediaTabManager);
+        MediaGroupService mediaGroupService = service.getMediaGroupService();
+        MediaGroup selectedGroup = callback.call(mediaGroupService);
 
         if (selectedGroup != null) {
             List<MediaItem> mediaItems = selectedGroup.getMediaItems();
@@ -102,7 +102,7 @@ public class ClipService {
             if (mediaItems != null && !mediaItems.isEmpty()) {
                 if (mediaItems.size() < 20) {
                     for (int i = 0; i < 3; i++) {
-                        MediaGroup mediaGroup = mediaTabManager.continueGroup(selectedGroup);
+                        MediaGroup mediaGroup = mediaGroupService.continueGroup(selectedGroup);
                         if (mediaGroup == null) {
                             break;
                         }

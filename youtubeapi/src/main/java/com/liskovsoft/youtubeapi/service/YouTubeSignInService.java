@@ -110,6 +110,12 @@ public class YouTubeSignInService implements SignInService {
         syncWithRetrofit();
     }
 
+    public void invalidateCache() {
+        mCachedAuthorizationHeader = null;
+
+        syncWithRetrofit();
+    }
+
     @Override
     public void selectAccount(Account account) {
         mAccountManager.selectAccount(account);
@@ -118,10 +124,6 @@ public class YouTubeSignInService implements SignInService {
     @Override
     public void removeAccount(Account account) {
         mAccountManager.removeAccount(account);
-    }
-
-    public void invalidateCache() {
-        mCachedAuthorizationHeader = null;
     }
 
     /**

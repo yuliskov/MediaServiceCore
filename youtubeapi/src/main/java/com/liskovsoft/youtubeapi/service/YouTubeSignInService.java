@@ -65,11 +65,9 @@ public class YouTubeSignInService implements SignInService {
         });
     }
 
-    public boolean checkAuthHeader() {
+    public void checkAuth() {
         // get or create authorization on fly
         updateAuthorizationHeader();
-
-        return mCachedAuthorizationHeader != null;
     }
 
     @Override
@@ -91,13 +89,6 @@ public class YouTubeSignInService implements SignInService {
     @Override
     public Observable<List<Account>> getAccountsObserve() {
         return RxHelper.fromCallable(this::getAccounts);
-    }
-
-    public String getAuthorizationHeader() {
-        // get or create authorization on fly
-        updateAuthorizationHeader();
-
-        return mCachedAuthorizationHeader;
     }
 
     /**

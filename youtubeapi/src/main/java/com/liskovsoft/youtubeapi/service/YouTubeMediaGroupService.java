@@ -508,7 +508,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     private void checkSigned() {
-        mSignInService.checkAuthHeader();
+        mSignInService.checkAuth();
     }
 
     @Override

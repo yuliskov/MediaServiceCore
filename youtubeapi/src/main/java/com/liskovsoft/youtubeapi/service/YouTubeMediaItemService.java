@@ -485,6 +485,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private void checkSigned() {
-        mSignInManager.checkAuthHeader();
+        mSignInManager.checkAuth();
     }
 }

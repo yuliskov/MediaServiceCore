@@ -135,6 +135,7 @@ public class ClipService {
                         v.getVideoUrl(),
                         null,
                         false,
+                        v.isLive(),
                         null,
                         Integer.toString(v.getId()),
                         null,

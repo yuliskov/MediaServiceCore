@@ -16,6 +16,7 @@ package com.liskovsoft.leanbackassistant.media;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.tvprovider.media.tv.BasePreviewProgram.AspectRatio;
 
 import java.net.URI;
@@ -44,13 +45,14 @@ public class Clip implements Parcelable {
     private final String mVideoUrl;
     private final String mPreviewVideoUrl;
     private final boolean mIsVideoProtected;
+    private final boolean mIsLive;
     private final String mCategory;
     private int mAspectRatio;
     private long mProgramId = -1;
     private int mViewCount;
 
     Clip(String title, String description, int durationMs, String bgImageUrl, String cardImageUrl,
-            String videoUrl, String previewVideoUrl, boolean isVideoProtected, String category,
+            String videoUrl, String previewVideoUrl, boolean isVideoProtected, boolean isLive, String category,
             String clipId, String contentId, int aspectRatio) {
         mClipId = clipId;
         mContentId = contentId;
@@ -62,6 +64,7 @@ public class Clip implements Parcelable {
         mVideoUrl = videoUrl;
         mPreviewVideoUrl = previewVideoUrl;
         mIsVideoProtected = isVideoProtected;
+        mIsLive = isLive;
         mCategory = category;
         mAspectRatio = aspectRatio;
     }
@@ -77,6 +80,7 @@ public class Clip implements Parcelable {
         mVideoUrl = in.readString();
         mPreviewVideoUrl = in.readString();
         mIsVideoProtected = in.readByte() == 1;
+        mIsLive = in.readByte() == 1;
         mCategory = in.readString();
         mProgramId = in.readLong();
         mViewCount = in.readInt();
@@ -120,6 +124,10 @@ public class Clip implements Parcelable {
 
     public boolean isVideoProtected() {
         return mIsVideoProtected;
+    }
+
+    public boolean isLive() {
+        return mIsLive;
     }
 
     String getBackgroundImageUrl() {
@@ -176,11 +184,13 @@ public class Clip implements Parcelable {
         dest.writeString(mVideoUrl);
         dest.writeString(mPreviewVideoUrl);
         dest.writeByte((byte) (isVideoProtected() ? 1 : 0));
+        dest.writeByte((byte) (isLive() ? 1 : 0));
         dest.writeString(mCategory);
         dest.writeLong(mProgramId);
         dest.writeInt(mViewCount);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Clip{" +

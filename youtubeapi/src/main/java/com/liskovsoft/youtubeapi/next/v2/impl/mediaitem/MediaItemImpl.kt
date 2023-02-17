@@ -8,7 +8,10 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val typeItem by lazy { itemWrapper.getType() }
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
-    override val infoItem by lazy { YouTubeHelper.createInfo(descBadgeText, userName, viewCountText, publishedTime, upcomingEventText) ?: null }
+    // Don't tag live streams. However tagging 4K videos is useful.
+    override val infoItem by lazy {
+        YouTubeHelper.createInfo(if (isLiveItem == true) null else descBadgeText, userName, viewCountText, publishedTime, upcomingEventText)
+    }
     override val descBadgeText by lazy { itemWrapper.getDescBadgeText() }
     override val userName by lazy { itemWrapper.getUserName() }
     override val publishedTime by lazy { itemWrapper.getPublishedTime() }

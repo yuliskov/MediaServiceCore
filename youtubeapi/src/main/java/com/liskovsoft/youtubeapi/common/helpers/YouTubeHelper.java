@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -57,7 +58,7 @@ public final class YouTubeHelper {
     /**
      * Additional video info such as user, published etc.
      */
-    public static String createInfo(Object... items) {
+    public static @Nullable String createInfo(Object... items) {
         return ServiceHelper.itemsToInfo(items);
     }
 

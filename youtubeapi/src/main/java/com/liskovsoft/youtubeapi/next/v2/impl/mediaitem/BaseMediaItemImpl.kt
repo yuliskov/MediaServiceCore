@@ -130,7 +130,9 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun getDurationMs(): Int {
-        return lengthText?.let { ServiceHelper.timeTextToMillis(it) } ?: -1
+        //return lengthText?.let { ServiceHelper.timeTextToMillis(it) } ?: -1
+        // TODO: time conversion doesn't take into account locale specific delimiters
+        return ServiceHelper.timeTextToMillis(lengthText ?: badgeTextItem)
     }
 
     override fun getBadgeText(): String? {

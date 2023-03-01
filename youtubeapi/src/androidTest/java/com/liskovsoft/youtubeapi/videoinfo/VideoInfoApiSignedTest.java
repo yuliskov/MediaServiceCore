@@ -1,10 +1,11 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.videoinfo.V1.VideoInfoApiSigned;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -24,13 +25,14 @@ import static org.junit.Assert.assertTrue;
  * NOTE: testing with Duktape (native libs)!!!
  */
 public class VideoInfoApiSignedTest {
-    private VideoInfoApiSigned mService;
+    private VideoInfoApi mService;
     private LocaleManager mLocaleManager;
 
     @Before
     public void setUp() {
-        mService = RetrofitHelper.withJsonPath(VideoInfoApiSigned.class);
+        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
+        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
@@ -101,12 +103,12 @@ public class VideoInfoApiSignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization(), "en");
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(videoId), "en");
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(videoId), TestHelpersV2.getAuthorization(), "en");
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(videoId), "en");
         return wrapper.execute().body();
     }
 }

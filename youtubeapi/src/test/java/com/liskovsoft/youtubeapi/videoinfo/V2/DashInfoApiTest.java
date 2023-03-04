@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
-import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import okhttp3.Headers;
@@ -55,9 +55,9 @@ public class DashInfoApiTest {
     @Test
     public void testDashInfoFormatNotEmpty() throws IOException {
         VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
-        Call<DashInfoFormat> dashInfoWrapper = mService.getDashInfoFormat(getSmallestAudio(videoInfo).getUrl());
+        Call<DashInfoContent> dashInfoWrapper = mService.getDashInfoContent(getSmallestAudio(videoInfo).getUrl());
 
-        DashInfoFormat dashInfo = dashInfoWrapper.execute().body();
+        DashInfoContent dashInfo = dashInfoWrapper.execute().body();
 
         assertTrue("start segment not null", dashInfo.getStartSegmentNum() > 0);
         assertTrue("start segment time not null", dashInfo.getStartTimeMs() > 0);
@@ -66,7 +66,7 @@ public class DashInfoApiTest {
     @Test
     public void testDashInfoFormat2NotEmpty() throws IOException {
         VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
-        Call<Void> dashInfoWrapper = mService.getDashInfoFormat2(getSmallestAudio(videoInfo).getUrl());
+        Call<Void> dashInfoWrapper = mService.getDashInfoHeaders(getSmallestAudio(videoInfo).getUrl());
 
         Headers headers = dashInfoWrapper.execute().headers();
         int lastSegmentNum = Integer.parseInt(headers.get(SEQ_NUM));

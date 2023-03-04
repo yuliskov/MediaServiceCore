@@ -5,7 +5,7 @@ import retrofit2.Call;
 
 import java.io.IOException;
 
-public class DashInfoFormat2 extends DashInfoFormatBase {
+public class DashInfoHeaders extends DashInfoBase {
     private static final String SEQ_NUM = "X-Sequence-Num";
     private static final String STREAM_DUR_MS = "X-Head-Time-Millis";
     private static final String LAST_SEG_TIME_MS = "X-Walltime-Ms";
@@ -13,7 +13,7 @@ public class DashInfoFormat2 extends DashInfoFormatBase {
     private long mStreamDurationMs;
     private long mLastSegmentTimeMs;
 
-    public DashInfoFormat2(Call<Void> format) {
+    public DashInfoHeaders(Call<Void> format) {
         try {
             Headers headers = format.execute().headers();
             mLastSegmentNum = Integer.parseInt(headers.get(SEQ_NUM));

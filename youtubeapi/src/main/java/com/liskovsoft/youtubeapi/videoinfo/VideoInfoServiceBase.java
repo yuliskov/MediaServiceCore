@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
-import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoFormat2;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoHeaders;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
@@ -20,6 +20,8 @@ public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
     private final DashInfoApi mDashInfoApi;
     protected final AppService mAppService;
+    // Make response smaller
+    private final String SMALL_RANGE = "&range=0-200";
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
@@ -102,7 +104,7 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        return RetrofitHelper.get(mDashInfoApi.getDashInfoUrl(url));
+        return RetrofitHelper.get(mDashInfoApi.getDashInfoUrl(url + SMALL_RANGE));
     }
 
     protected DashInfo getDashInfo2(VideoInfo videoInfo) {
@@ -125,11 +127,11 @@ public abstract class VideoInfoServiceBase {
 
         try {
             AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+            dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
         } catch (ArithmeticException | NumberFormatException ex) {
             // Segment isn't available
             AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-            dashInfo = new DashInfoFormat2(mDashInfoApi.getDashInfoFormat2(format.getUrl()));
+            dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
         }
 
         return dashInfo;

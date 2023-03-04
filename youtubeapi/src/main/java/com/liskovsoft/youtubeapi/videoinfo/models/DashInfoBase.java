@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-public abstract class DashInfoFormatBase implements DashInfo {
+public abstract class DashInfoBase implements DashInfo {
     private static final int MAX_DURATION_MS = 24 * 60 * 60 * 1_000;
 
     private int mSegmentDurationUs = -1;

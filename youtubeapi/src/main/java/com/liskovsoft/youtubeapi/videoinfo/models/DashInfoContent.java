@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 
-public class DashInfoFormat extends DashInfoFormatBase {
+public class DashInfoContent extends DashInfoBase {
     /**
      * Sequence-Number: 309188 (inaccurate???)
      */

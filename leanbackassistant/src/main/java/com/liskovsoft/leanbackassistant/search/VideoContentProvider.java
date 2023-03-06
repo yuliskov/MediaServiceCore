@@ -33,7 +33,6 @@ import java.util.List;
 public class VideoContentProvider extends ContentProvider {
     private static final String TAG = VideoContentProvider.class.getSimpleName();
     private static final int SEARCH_LIMIT = 40;
-    private MediaService mService;
 
     // UriMatcher constant for search suggestions
     private static final int SEARCH_SUGGEST = 1;
@@ -66,7 +65,6 @@ public class VideoContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mService = YouTubeMediaService.instance();
         mUriMatcher = buildUriMatcher();
 
         return true;
@@ -133,7 +131,7 @@ public class VideoContentProvider extends ContentProvider {
     private Cursor search(String query, int limit) {
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
-        mSearch = mService.getMediaGroupService().getSearch(query);
+        mSearch = YouTubeMediaService.instance().getMediaGroupService().getSearch(query);
 
         if (mSearch != null) {
             List<MediaItem> mediaItems = mSearch.getMediaItems();
@@ -152,7 +150,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        mSearch = mService.getMediaGroupService().continueGroup(mSearch);
+        mSearch = YouTubeMediaService.instance().getMediaGroupService().continueGroup(mSearch);
 
         if (mSearch != null) {
             List<MediaItem> mediaItems = mSearch.getMediaItems();

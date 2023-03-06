@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import retrofit2.Call;
 
 import java.util.ArrayList;
@@ -270,7 +270,7 @@ public class BrowseService {
     public String getSuggestToken() {
         String result = null;
 
-        String authorization = RetrofitOkHttpClient.getAuthHeaders().get("Authorization");
+        String authorization = RetrofitOkHttpHelper.getAuthHeaders().get("Authorization");
 
         Guide guide = mGuideMap.get(authorization);
 

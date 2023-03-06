@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class ActionsApiTest {
 
         mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
 
-        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test

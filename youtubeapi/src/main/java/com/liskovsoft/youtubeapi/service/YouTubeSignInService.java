@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeAccountManager;
 import io.reactivex.Observable;
@@ -169,7 +169,7 @@ public class YouTubeSignInService implements SignInService {
     }
 
     private void syncWithRetrofit() {
-        Map<String, String> headers = RetrofitOkHttpClient.getAuthHeaders();
+        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
 
         if (mCachedAuthorizationHeader != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);

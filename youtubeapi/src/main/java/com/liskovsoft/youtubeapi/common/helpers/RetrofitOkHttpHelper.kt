@@ -7,17 +7,12 @@ import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-object RetrofitOkHttpClient {
+object RetrofitOkHttpHelper {
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()
 
     @JvmStatic
-    val instance: OkHttpClient by lazy {
-        val builder = OkHttpClient.Builder()
-        addCommonHeaders(builder)
-        OkHttpCommons.setupBuilder(builder)
-        builder.build()
-    }
+    val client: OkHttpClient by lazy { createClient() }
 
     private val headers = mapOf(
         "User-Agent" to DefaultHeaders.APP_USER_AGENT,
@@ -31,6 +26,13 @@ object RetrofitOkHttpClient {
         "https://www.youtube.com/api/stats/",
         "https://clients1.google.com/complete/"
     )
+
+    private fun createClient(): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        addCommonHeaders(builder)
+        OkHttpCommons.setupBuilder(builder)
+        return builder.build()
+    }
 
     private fun addCommonHeaders(builder: OkHttpClient.Builder) {
         builder.addInterceptor { chain ->

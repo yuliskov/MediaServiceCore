@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.feedback;
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpClient;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class FeedbackApiTest {
 
         mService = RetrofitHelper.withJsonPath(FeedbackApi.class);
 
-        RetrofitOkHttpClient.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test

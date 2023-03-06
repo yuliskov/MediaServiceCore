@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class VideoInfo {
     private static final String PARAM_EVENT_ID = "ei";
@@ -21,6 +22,7 @@ public class VideoInfo {
     private static final String STATUS_LOGIN_REQUIRED = "LOGIN_REQUIRED";
     private static final String STATUS_AGE_CHECK_REQUIRED = "AGE_CHECK_REQUIRED";
     private static final String STATUS_CONTENT_CHECK_REQUIRED = "CONTENT_CHECK_REQUIRED";
+    private static final Pattern tagPattern = Pattern.compile("\\(.*\\)$");
 
     @JsonPath("$.streamingData.formats[*]")
     private List<RegularVideoFormat> mRegularFormats;
@@ -267,7 +269,7 @@ public class VideoInfo {
 
             if (mTranslationLanguages != null && mCaptionTracks != null) {
                 CaptionTrack originTrack = mCaptionTracks.get(0);
-                String tag = Helpers.runMultiMatcher(originTrack.getName(), "\\(.*\\)$");
+                String tag = Helpers.runMultiMatcher(originTrack.getName(), tagPattern);
                 for (TranslationLanguage language : mTranslationLanguages) {
                     if (!Helpers.equals(originTrack.getLanguageCode(), language.getLanguageCode())) {
                         mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));

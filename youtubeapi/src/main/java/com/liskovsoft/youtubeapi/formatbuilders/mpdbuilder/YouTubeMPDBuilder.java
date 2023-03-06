@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 /**
  * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
@@ -42,6 +43,8 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     private final YouTubeOtfSegmentParser mSegmentParser;
     private String mLimitVideoCodec;
     private String mLimitAudioCodec;
+    private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
+    private static final Pattern durationPattern2 = Pattern.compile("/dur/([^/]*)");
 
     public YouTubeMPDBuilder(MediaItemFormatInfo info) {
         mInfo = info;
@@ -612,7 +615,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             url = item.getUrl();
             break; // get first item
         }
-        String res = Helpers.runMultiMatcher(url, "dur=([^&]*)", "/dur/([^/]*)");
+        String res = Helpers.runMultiMatcher(url, durationPattern1, durationPattern2);
         return res;
     }
 

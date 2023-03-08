@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
@@ -83,7 +83,7 @@ public class BindManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("User-Agent", DefaultHeaders.APP_USER_AGENT);
 
-        Response response = OkHttpHelpers.doPostRequest("https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl" +
+        Response response = OkHttpManager.instance().doPostRequest("https://www.youtube.com/api/lounge/bc/bind?device=LOUNGE_SCREEN&theme=cl" +
                         "&capabilities=dsp%2Cmic%2Cdpa" + "&mdxVersion=2&VER=8&v=2&t=1&app=lb-v4&id=2a026ce9-4429-4c5e-8ef5-0101eddf5671&AID=42&zx" +
                         "=xxxxxxxxxxxx&RID=1337&name=SmartTubeNext" + "%20on%20Yuriy%27s%20Fire%20TV&loungeIdToken=AGdO5p" +
                         "-IRMDTZHHW3EtJN26YLqcM_a1UqaC8WwXGENvetjadXhf0a3tiTZqSUEO5SzNbft" + "-ASL5gG9oW7jKspjLpMD5nFTcKXIWtTyHU4HtLioA9COHHVwE", headers,

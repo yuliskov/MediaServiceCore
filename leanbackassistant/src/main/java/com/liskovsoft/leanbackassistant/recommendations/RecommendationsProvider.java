@@ -11,7 +11,7 @@ import com.liskovsoft.leanbackassistant.media.Clip;
 import com.liskovsoft.leanbackassistant.media.Playlist;
 import com.liskovsoft.leanbackassistant.utils.AppUtil;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import okhttp3.Response;
 
 @TargetApi(21)
@@ -30,7 +30,7 @@ public class RecommendationsProvider {
                         break;
                     }
 
-                    Response response = OkHttpHelpers.doGetRequest(clip.getCardImageUrl());
+                    Response response = OkHttpManager.instance().doGetRequest(clip.getCardImageUrl());
 
                     Bitmap image = null;
 

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import okhttp3.Response;
 
 import java.io.BufferedReader;
@@ -60,7 +60,7 @@ public class YouTubeOtfSegmentParser {
         List<OtfSegment> result = null;
 
         if (url != null) {
-            Response response = OkHttpHelpers.doGetRequest(url);
+            Response response = OkHttpManager.instance().doGetRequest(url);
 
             if (response != null && response.body() != null) {
                 result = parseInt(response.body().charStream());

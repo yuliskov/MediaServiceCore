@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.app;
 
 import android.Manifest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,6 +27,7 @@ public class AppServiceInstrumentedTest {
 
     @Before
     public void setUp() {
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mAppService = AppService.instance();
     }
 

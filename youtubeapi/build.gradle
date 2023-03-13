@@ -23,6 +23,10 @@ android {
         // small tests: https://stackoverflow.com/questions/4671923/what-is-the-purpose-of-smalltest-mediumtest-and-largetest-annotations-in-an
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // More info: http://myhexaville.com/2017/03/10/android-multidex/
+        // Additionally, you should extend your application from MultiDexApplication
+        multiDexEnabled = true
+
         // consumerProguardFiles 'proguard-rules.txt' // embed this file to aar
     }
 
@@ -54,6 +58,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
     implementation 'com.google.code.gson:gson:' + gsonVersion
     implementation 'com.jayway.jsonpath:json-path:' + jsonPathVersion
+
+    implementation 'com.google.net.cronet:cronet-okhttp:' + cronetOkHttpVersion
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion

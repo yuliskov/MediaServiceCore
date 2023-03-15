@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
@@ -13,9 +14,9 @@ public class VideoInfoApiHelper {
      */
     private static final String JSON_POST_DATA_TEMPLATE =
             "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-            "\"clientScreen\":\"%s\",\"visitorData\":\"%s\",%s" +
+            "\"clientScreen\":\"%s\",\"visitorData\":\"%s\"," +
             "\"thirdParty\":{\"embedUrl\":\"https://www.youtube.com/tv#/\"}," +
-            "\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\",\"utcOffsetMinutes\":\"%s\"}," +
+            "\"acceptRegion\":\"%s\",\"acceptLanguage\":\"%s\",\"utcOffsetMinutes\":\"%s\"},%s" +
             "\"user\":{\"lockedSafetyMode\":false}}," +
             "\"racyCheckOk\":true,\"contentCheckOk\":true,%s}";
 
@@ -28,6 +29,10 @@ public class VideoInfoApiHelper {
             "\"clickTracking\":{\"clickTrackingParams\":\"%s\"},";
 
     private static final String VIDEO_ID = "\"videoId\":\"%s\",\"cpn\":\"%s\"";
+
+    // Magic val to fix throttling
+    // https://github.com/TeamNewPipe/NewPipe/issues/9038#issuecomment-1289756816
+    private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
 
     public static String getVideoInfoQuery(String videoId) {
         return getVideoInfoQueryLive(videoId, null);
@@ -90,20 +95,20 @@ public class VideoInfoApiHelper {
     private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(clientName, clientVersion, screenType, checkParamsTemplate + "," + videoIdTemplate, clickTrackingParams);
+        return createQuery(clientName, clientVersion, screenType, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate, PROTOBUF_VAL));
     }
 
-    private static String createQuery(String clientName, String clientVersion, String screenType, String template, String clickTrackingParams) {
+    private static String createQuery(String clientName, String clientVersion, String screenType, String clickTrackingParams, String template) {
         LocaleManager localeManager = LocaleManager.instance();
         return String.format(JSON_POST_DATA_TEMPLATE,
                 clientName,
                 clientVersion,
                 screenType,
                 AppService.instance().getVisitorId(),
-                clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "",
                 localeManager.getCountry(),
                 localeManager.getLanguage(),
                 localeManager.getUtcOffsetMinutes(),
+                clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "",
                 template);
     }
 }

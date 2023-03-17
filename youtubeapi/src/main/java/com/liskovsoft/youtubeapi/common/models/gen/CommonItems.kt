@@ -159,6 +159,7 @@ data class AccessibilityItem(
 data class ItemWrapper(
     val tileRenderer: TileItem?,
     val gridVideoRenderer: VideoItem?,
+    val videoRenderer: VideoItem?,
     val pivotVideoRenderer: VideoItem?,
     val compactVideoRenderer: VideoItem?,
     val tvMusicVideoRenderer: MusicItem?,

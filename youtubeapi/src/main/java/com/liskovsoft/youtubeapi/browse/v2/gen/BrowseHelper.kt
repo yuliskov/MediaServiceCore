@@ -22,6 +22,6 @@ private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.g
 
 /////
 
-fun Section.getItems() = itemSectionRenderer?.contents?.getOrNull(0)?.shelfRenderer?.content?.gridRenderer?.items
+fun Section.getItems() = itemSectionRenderer?.contents?.getOrNull(0)?.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items }
 fun Section.getContinuationToken() = continuationItemRenderer?.continuationEndpoint?.continuationCommand?.token
 

@@ -143,7 +143,7 @@ fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNul
 
 ////////////
 
-private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer
+private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
 private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer

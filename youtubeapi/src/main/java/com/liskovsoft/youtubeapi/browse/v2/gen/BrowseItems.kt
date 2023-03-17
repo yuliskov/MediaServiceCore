@@ -16,9 +16,14 @@ data class Section(
                 val content: Content?
             ) {
                 data class Content(
-                    val gridRenderer: GridRenderer?
+                    val gridRenderer: GridRenderer?,
+                    val expandedShelfContentsRenderer: ExpandedShelfContentsRenderer?
                 ) {
                     data class GridRenderer(
+                        val items: List<ItemWrapper?>?
+                    )
+
+                    data class ExpandedShelfContentsRenderer(
                         val items: List<ItemWrapper?>?
                     )
                 }

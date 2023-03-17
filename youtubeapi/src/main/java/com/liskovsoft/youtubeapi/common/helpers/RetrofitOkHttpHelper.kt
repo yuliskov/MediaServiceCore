@@ -79,6 +79,9 @@ object RetrofitOkHttpHelper {
     }
 
     private fun addCronetInterceptor(builder: OkHttpClient.Builder) {
-        builder.addInterceptor(CronetInterceptor.newBuilder(CronetManager.getEngine(GlobalPreferences.sInstance.context)).build())
+        val engine = CronetManager.getEngine(GlobalPreferences.sInstance.context)
+        if (engine != null) {
+            builder.addInterceptor(CronetInterceptor.newBuilder(engine).build())
+        }
     }
 }

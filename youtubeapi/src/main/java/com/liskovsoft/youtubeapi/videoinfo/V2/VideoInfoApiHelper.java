@@ -30,9 +30,10 @@ public class VideoInfoApiHelper {
 
     private static final String VIDEO_ID = "\"videoId\":\"%s\",\"cpn\":\"%s\"";
 
-    // Magic val to fix throttling
+    // NOTE: completely removes storyboard (seek previews) from the result!
+    // Magic val to fix throttling???
     // https://github.com/TeamNewPipe/NewPipe/issues/9038#issuecomment-1289756816
-    private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
+    //private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
 
     public static String getVideoInfoQuery(String videoId) {
         return getVideoInfoQueryLive(videoId, null);
@@ -95,7 +96,7 @@ public class VideoInfoApiHelper {
     private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(clientName, clientVersion, screenType, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate, PROTOBUF_VAL));
+        return createQuery(clientName, clientVersion, screenType, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate));
     }
 
     private static String createQuery(String clientName, String clientVersion, String screenType, String clickTrackingParams, String template) {

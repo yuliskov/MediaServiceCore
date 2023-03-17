@@ -159,7 +159,8 @@ data class ButtonStateItem(
     val subscribeButton: SubscribeButton?,
     val likeButton: LikeButton?,
     val dislikeButton: DislikeButton?,
-    val channelButton: ChannelButton?
+    val channelButton: ChannelButton?,
+    val buttons: List<GenericButton?>?
 ) {
     data class SubscribeButton(
             val toggleButtonRenderer: ToggleButtonRenderer?
@@ -176,6 +177,17 @@ data class ButtonStateItem(
     data class ChannelButton(
             val videoOwnerRenderer: VideoOwnerItem?
     )
+
+    data class GenericButton(
+            val type: String?,
+            val button: ButtonContent?
+    ) {
+        data class ButtonContent(
+            val videoOwnerRenderer: VideoOwnerItem?,
+            val toggleButtonRenderer: ToggleButtonRenderer?,
+            val buttonRenderer: ButtonRenderer?
+        )
+    }
 }
 
 data class PlaylistInfo(

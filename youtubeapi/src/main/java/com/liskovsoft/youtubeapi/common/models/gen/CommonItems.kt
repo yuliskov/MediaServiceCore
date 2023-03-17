@@ -95,8 +95,14 @@ data class ToggledServiceEndpoint(
     val unsubscribeEndpoint: ChannelsEndpoint?
 )
 
+data class ButtonRenderer(
+    val isDisabled: Boolean?,
+    val text: TextItem?
+)
+
 data class ToggleButtonRenderer(
     val isToggled: Boolean?,
+    val isDisabled: Boolean?,
     val defaultServiceEndpoint: DefaultServiceEndpoint?,
     val toggledServiceEndpoint: ToggledServiceEndpoint?
 )

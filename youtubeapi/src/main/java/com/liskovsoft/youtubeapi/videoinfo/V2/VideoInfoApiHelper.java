@@ -33,7 +33,7 @@ public class VideoInfoApiHelper {
     // NOTE: completely removes storyboard (seek previews) from the result!
     // Magic val to fix throttling???
     // https://github.com/TeamNewPipe/NewPipe/issues/9038#issuecomment-1289756816
-    //private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
+    private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
 
     public static String getVideoInfoQuery(String videoId) {
         return getVideoInfoQueryLive(videoId, null);

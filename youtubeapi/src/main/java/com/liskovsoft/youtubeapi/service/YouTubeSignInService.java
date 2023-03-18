@@ -168,7 +168,7 @@ public class YouTubeSignInService implements SignInService {
         return token;
     }
 
-    private void syncWithRetrofit() {
+    private synchronized void syncWithRetrofit() {
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
 
         if (mCachedAuthorizationHeader != null) {

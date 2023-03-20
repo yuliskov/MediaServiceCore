@@ -9,6 +9,4 @@ public interface MediaService {
     CommentsService getCommentsService();
     void invalidateCache();
     void refreshCacheIfNeeded();
-    boolean isOldStreamsEnabled();
-    void enableOldStreams(boolean enable);
 }

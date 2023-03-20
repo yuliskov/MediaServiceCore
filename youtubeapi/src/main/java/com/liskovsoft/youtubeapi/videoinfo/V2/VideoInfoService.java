@@ -48,6 +48,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
             if (result != null && result.isUnplayable()) {
                 Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
                 result = getVideoInfoRestricted(videoId, clickTrackingParams);
+
+                if (result != null && result.isUnplayable()) {
+                    Log.e(TAG, "Found video clip blocked in current location...");
+                    result = getVideoInfoGeoBlocked(videoId, clickTrackingParams);
+                }
             }
         }
 
@@ -79,14 +84,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getVideoInfo(videoInfoQuery);
     }
 
-    /**
-     * NOTE: user history won't work with this method
-     */
-    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
-        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId());
-
-        return RetrofitHelper.get(wrapper);
+    private VideoInfo getVideoInfoGeoBlocked(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeoBlocked(videoId, clickTrackingParams);
+        return getVideoInfo(videoInfoQuery);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
@@ -96,6 +96,16 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfo(String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    /**
+     * NOTE: user history won't work with this method
+     */
+    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }

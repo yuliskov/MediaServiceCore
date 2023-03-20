@@ -76,6 +76,10 @@ public class VideoInfoApiHelper {
         return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
     }
 
+    public static String getVideoInfoQueryGeoBlocked(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams, PROTOBUF_VAL);
+    }
+
     public static String getVideoInfoQueryPrivate(String videoId) {
         return getVideoInfoQueryPrivate(videoId, null);
     }
@@ -94,9 +98,13 @@ public class VideoInfoApiHelper {
     }
 
     private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams) {
+        return createCheckedQuery(clientName, clientVersion, screenType, videoId, clickTrackingParams, null);
+    }
+
+    private static String createCheckedQuery(String clientName, String clientVersion, String screenType, String videoId, String clickTrackingParams, String params) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        return createQuery(clientName, clientVersion, screenType, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate));
+        return createQuery(clientName, clientVersion, screenType, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate, params));
     }
 
     private static String createQuery(String clientName, String clientVersion, String screenType, String clickTrackingParams, String template) {

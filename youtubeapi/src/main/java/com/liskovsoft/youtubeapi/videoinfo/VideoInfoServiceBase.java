@@ -123,15 +123,17 @@ public abstract class VideoInfoServiceBase {
         //    dashInfo = RetrofitHelper.get(mDashInfoApi.getDashInfoFormat(format.getUrl()));
         //}
         
-        DashInfo dashInfo;
+        DashInfo dashInfo = null;
 
         try {
             AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
             dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
         } catch (ArithmeticException | NumberFormatException ex) {
             // Segment isn't available
-            AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-            dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
+            //AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
+            //dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
+
+            // NOP. Revert to old stream format.
         }
 
         return dashInfo;

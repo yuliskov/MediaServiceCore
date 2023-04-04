@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
 data class Section(
     val itemSectionRenderer: ItemSectionRenderer?,
+    val richItemRenderer: RichItemRenderer?,
     val continuationItemRenderer: ContinuationItemRenderer?
 ) {
     data class ItemSectionRenderer(
@@ -30,23 +31,19 @@ data class Section(
             }
         }
     }
-    data class ContinuationItemRenderer(
-        val continuationEndpoint: ContinuationEndpoint?
-    ) {
-        data class ContinuationEndpoint(
-            val continuationCommand: ContinuationCommand?
-        ) {
-            data class ContinuationCommand(
-                val token: String?
-            )
-        }
-    }
-}
-
-data class RichContent(
-    val richItemRenderer: RichItemRenderer?
-) {
     data class RichItemRenderer(
         val content: ItemWrapper?
     )
+}
+
+data class ContinuationItemRenderer(
+    val continuationEndpoint: ContinuationEndpoint?
+) {
+    data class ContinuationEndpoint(
+        val continuationCommand: ContinuationCommand?
+    ) {
+        data class ContinuationCommand(
+            val token: String?
+        )
+    }
 }

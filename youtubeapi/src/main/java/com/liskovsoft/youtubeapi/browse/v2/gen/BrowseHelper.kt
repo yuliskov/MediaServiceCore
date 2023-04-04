@@ -2,12 +2,15 @@ package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
-fun BrowseResult.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
+fun BrowseResult.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
+    getRichContents()?.map { it?.getItem() }
 fun BrowseResult.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull {
     it?.getContinuationToken()
 }
-private fun BrowseResult.getContents() = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(0)
-    ?.tabRenderer?.content?.sectionListRenderer?.contents
+private fun BrowseResult.getContent() = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(0)
+    ?.tabRenderer?.content
+private fun BrowseResult.getContents() = getContent()?.sectionListRenderer?.contents
+private fun BrowseResult.getRichContents() = getContent()?.richGridRenderer?.contents
 
 
 /////
@@ -22,6 +25,7 @@ private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.g
 
 /////
 
+fun RichContent.getItem() = richItemRenderer?.content
 fun Section.getItems() = itemSectionRenderer?.contents?.getOrNull(0)?.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items }
 fun Section.getContinuationToken() = continuationItemRenderer?.continuationEndpoint?.continuationCommand?.token
 

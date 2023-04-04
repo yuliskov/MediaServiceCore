@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+
 /**
  * Based on:
  *
@@ -21,10 +23,14 @@ data class BrowseResult(
                     val content: Content?
                 ) {
                    data class Content(
-                       val sectionListRenderer: SectionListRenderer?
+                       val sectionListRenderer: SectionListRenderer?,
+                       val richGridRenderer: RichGridRenderer?
                    ) {
                        data class SectionListRenderer(
                            val contents: List<Section?>?
+                       )
+                       data class RichGridRenderer(
+                           val contents: List<RichContent?>?
                        )
                    }
                 }

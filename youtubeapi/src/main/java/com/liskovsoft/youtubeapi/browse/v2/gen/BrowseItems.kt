@@ -42,3 +42,11 @@ data class Section(
         }
     }
 }
+
+data class RichContent(
+    val richItemRenderer: RichItemRenderer?
+) {
+    data class RichItemRenderer(
+        val content: ItemWrapper?
+    )
+}

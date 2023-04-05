@@ -7,6 +7,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import com.liskovsoft.sharedutils.GlobalConstants;
 import com.liskovsoft.sharedutils.configparser.AssetPropertyParser2;
 import com.liskovsoft.sharedutils.configparser.ConfigParser;
@@ -69,7 +70,14 @@ public class AppUtil {
         //stackBuilder.addParentStack(DetailsActivity.class);
         stackBuilder.addNextIntent(detailsIntent);
 
-        PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            // IllegalArgumentException fix: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE
+            flags |= PendingIntent.FLAG_IMMUTABLE;
+        }
+
+        PendingIntent intent = stackBuilder.getPendingIntent(0, flags);
         return intent;
     }
 }

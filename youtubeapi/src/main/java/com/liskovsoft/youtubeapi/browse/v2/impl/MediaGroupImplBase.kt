@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.gen.isShorts
@@ -30,7 +31,7 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     private val mediaItemList by lazy { getItemWrappersInt()
         ?.mapIndexedNotNull { index, it -> it
             ?.let { if (filter.invoke(it)) null else it }
-            ?.let { MediaItemImpl(it).apply { playlistIndex = index } }
+            ?.let { MediaItemImpl(it).let { if (YouTubeHelper.isEmpty(it)) null else it }?.apply { playlistIndex = index } }
         }
     }
     private val nextPageKeyVal by lazy { getNextPageKeyInt() }

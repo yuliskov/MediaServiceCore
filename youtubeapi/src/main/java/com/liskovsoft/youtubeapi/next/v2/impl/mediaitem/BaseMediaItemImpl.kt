@@ -244,10 +244,6 @@ open class BaseMediaItemImpl : MediaItem {
 
     // End Fake params
 
-    open fun isEmpty(): Boolean {
-        return title == null && cardImageUrl == null
-    }
-
     override fun sync(metadata: MediaItemMetadata?) {
         if (metadata == null) {
             return

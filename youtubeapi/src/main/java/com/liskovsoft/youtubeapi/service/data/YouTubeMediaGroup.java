@@ -265,7 +265,7 @@ public class YouTubeMediaGroup implements MediaGroup {
 
                 YouTubeMediaItem item = YouTubeMediaItem.from(tab, baseGroup.getType());
 
-                if (!item.isEmpty()) {
+                if (!YouTubeHelper.isEmpty(item)) {
                     mediaItems.add(item);
                 }
             }
@@ -284,7 +284,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             for (int i = 0; i < items.size(); i++) {
                 ItemWrapper item = items.get(i);
                 YouTubeMediaItem mediaItem = YouTubeMediaItem.from(item, i);
-                if (mediaItem != null) {
+                if (!YouTubeHelper.isEmpty(mediaItem)) {
                     mediaItem.setParams(baseGroup.mParams);
                     mediaItems.add(mediaItem);
                 }

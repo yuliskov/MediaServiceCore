@@ -504,10 +504,6 @@ public class YouTubeMediaItem implements MediaItem {
         return mReloadPageKey;
     }
 
-    public boolean isEmpty() {
-        return mTitle == null && mCardImageUrl == null;
-    }
-
     @NonNull
     @Override
     public String toString() {

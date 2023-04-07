@@ -249,42 +249,42 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         return RxHelper.fromNullable(() -> getGroup(reloadPageKey, null, MediaGroup.TYPE_UNDEFINED));
     }
 
-    @Override
-    public List<MediaGroup> getHome() {
-        checkSigned();
-
-        SectionTab tab = mBrowseService.getHome();
-
-        List<MediaGroup> result = new ArrayList<>();
-
-        String nextPageKey = tab.getNextPageKey();
-        List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), MediaGroup.TYPE_HOME);
-
-        if (groups.isEmpty()) {
-            Log.e(TAG, "Home group is empty");
-        }
-
-        // Chips?
-        for (MediaGroup group : groups) {
-            if (group.isEmpty()) {
-                continueGroup(group);
-            }
-        }
-
-        while (!groups.isEmpty()) {
-            result.addAll(groups);
-            SectionTabContinuation continuation = mBrowseService.continueSectionTab(nextPageKey);
-
-            if (continuation == null) {
-                break;
-            }
-
-            nextPageKey = continuation.getNextPageKey();
-            groups = YouTubeMediaGroup.from(continuation.getSections(), MediaGroup.TYPE_HOME);
-        }
-
-        return result;
-    }
+    //@Override
+    //public List<MediaGroup> getHome() {
+    //    checkSigned();
+    //
+    //    SectionTab tab = mBrowseService.getHome();
+    //
+    //    List<MediaGroup> result = new ArrayList<>();
+    //
+    //    String nextPageKey = tab.getNextPageKey();
+    //    List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), MediaGroup.TYPE_HOME);
+    //
+    //    if (groups.isEmpty()) {
+    //        Log.e(TAG, "Home group is empty");
+    //    }
+    //
+    //    // Chips?
+    //    for (MediaGroup group : groups) {
+    //        if (group.isEmpty()) {
+    //            continueGroup(group);
+    //        }
+    //    }
+    //
+    //    while (!groups.isEmpty()) {
+    //        result.addAll(groups);
+    //        SectionTabContinuation continuation = mBrowseService.continueSectionTab(nextPageKey);
+    //
+    //        if (continuation == null) {
+    //            break;
+    //        }
+    //
+    //        nextPageKey = continuation.getNextPageKey();
+    //        groups = YouTubeMediaGroup.from(continuation.getSections(), MediaGroup.TYPE_HOME);
+    //    }
+    //
+    //    return result;
+    //}
 
     //@Override
     //public Observable<List<MediaGroup>> getHomeObserve() {
@@ -296,6 +296,30 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     //        emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
     //    });
     //}
+
+    @Override
+    public List<MediaGroup> getHome() {
+        checkSigned();
+
+        List<MediaGroup> result = new ArrayList<>();
+        List<MediaGroup> groups = BrowseService2.getHome();
+
+        if (groups == null) {
+            Log.e(TAG, "Home group is empty");
+            return null;
+        }
+
+        for (MediaGroup group : groups) {
+            // Chips?
+            if (group != null && group.isEmpty()) {
+                group = BrowseService2.continueGroup(group);
+            }
+
+            result.add(group);
+        }
+
+        return result;
+    }
 
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {

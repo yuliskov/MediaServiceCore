@@ -4,11 +4,10 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
+import com.liskovsoft.youtubeapi.browse.v2.gen.getChips
 import com.liskovsoft.youtubeapi.browse.v2.gen.getSections
-import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl
-import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl2
-import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl3
-import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupOptions
+import com.liskovsoft.youtubeapi.browse.v2.gen.getTitle
+import com.liskovsoft.youtubeapi.browse.v2.impl.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 
 object BrowseService2 {
@@ -22,8 +21,11 @@ object BrowseService2 {
         return RetrofitHelper.get(browseResult)?.let {
             val result = mutableListOf<MediaGroup?>()
 
-            result.add(MediaGroupImpl(it, createOptions()))
-            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImpl3(it, createOptions())) }
+            // First chip is always empty and corresponds to current result.
+            // Also title used as id in continuation. No good.
+            result.add(MediaGroupImpl(it, createOptions(MediaGroup.TYPE_HOME)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
+            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImpl3(it, createOptions(MediaGroup.TYPE_HOME))) }
+            it.getChips()?.forEach { if (it != null) result.add(MediaGroupImpl4(it, createOptions(MediaGroup.TYPE_HOME))) }
 
             result
         }
@@ -33,24 +35,29 @@ object BrowseService2 {
     fun getSubscriptions(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
 
-        return RetrofitHelper.get(browseResult)?.let { MediaGroupImpl(it, createOptions()) }
+        return RetrofitHelper.get(browseResult)?.let { MediaGroupImpl(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS)) }
     }
 
     @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
-        val continuationResult =
-            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group?.nextPageKey))
+        if (group?.nextPageKey == null) {
+            return null
+        }
 
-        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImpl2(it, createOptions()) }
+        val continuationResult =
+            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
+
+        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImpl2(it, createOptions(group.type)).apply { title = group.title } }
     }
 
-    private fun createOptions(): MediaGroupOptions {
+    private fun createOptions(groupType: Int?): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
 
         return MediaGroupOptions(
             prefs?.isHideShortsFromSubscriptionsEnabled ?: true,
             prefs?.isHideStreamsFromSubscriptionsEnabled ?: false,
-            prefs?.isHideUpcomingEnabled ?: false
+            prefs?.isHideUpcomingEnabled ?: false,
+            groupType ?: MediaGroup.TYPE_SUBSCRIPTIONS
         )
     }
 }

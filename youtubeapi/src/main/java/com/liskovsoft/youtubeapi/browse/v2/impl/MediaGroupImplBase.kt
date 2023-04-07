@@ -11,7 +11,8 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 
 data class MediaGroupOptions(val removeShorts: Boolean = true,
                              val removeLive: Boolean = false,
-                             val removeUpcoming: Boolean = false)
+                             val removeUpcoming: Boolean = false,
+                             val groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS)
 
 abstract class MediaGroupImplBase(private val options: MediaGroupOptions = MediaGroupOptions()): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
@@ -43,7 +44,7 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     override fun getId(): Int = title?.hashCode() ?: hashCode()
 
     override fun getType(): Int {
-        return MediaGroup.TYPE_SUBSCRIPTIONS
+        return options.groupType
     }
 
     override fun getMediaItems(): List<MediaItem?>? {

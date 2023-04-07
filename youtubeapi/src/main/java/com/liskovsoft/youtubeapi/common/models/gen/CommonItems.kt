@@ -164,6 +164,7 @@ data class ItemWrapper(
     val gridVideoRenderer: VideoItem?,
     val videoRenderer: VideoItem?,
     val pivotVideoRenderer: VideoItem?,
+    val reelItemRenderer: VideoItem?,
     val compactVideoRenderer: VideoItem?,
     val tvMusicVideoRenderer: MusicItem?,
     val gridRadioRenderer: RadioItem?,
@@ -242,6 +243,7 @@ data class TileItem(
 data class VideoItem(
     val thumbnail: ThumbnailItem?,
     val title: TextItem?,
+    val headline: TextItem?,
     val shortBylineText: TextItem?,
     val longBylineText: TextItem?,
     val shortViewCountText: TextItem?,

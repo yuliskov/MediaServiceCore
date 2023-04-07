@@ -49,5 +49,5 @@ object DefaultHeaders {
     @JvmField
     val APP_USER_AGENT = USER_AGENT_SAMSUNG_3
 
-    const val ACCEPT_ENCODING = ACCEPT_ENCODING_DEFAULT
+    const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
 }

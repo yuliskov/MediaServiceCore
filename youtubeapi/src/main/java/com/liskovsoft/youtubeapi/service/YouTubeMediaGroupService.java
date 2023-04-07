@@ -286,14 +286,25 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         return result;
     }
 
+    //@Override
+    //public Observable<List<MediaGroup>> getHomeObserve() {
+    //    return RxHelper.create(emitter -> {
+    //        checkSigned();
+    //
+    //        SectionTab tab = mBrowseService.getHome();
+    //
+    //        emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+    //    });
+    //}
+
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            SectionTab tab = mBrowseService.getHome();
+            List<MediaGroup> sections = BrowseService2.getHome();
 
-            emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+            emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
         });
     }
 
@@ -355,6 +366,35 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     @Override
     public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
         return getChannelObserve(item.getChannelId(), item.getParams());
+    }
+
+    private void emitGroups2(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups, int type) {
+        if (groups == null) {
+            String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
+            Log.e(TAG, msg);
+            RxHelper.onError(emitter, msg);
+            return;
+        }
+
+        Log.d(TAG, "emitGroups: begin emitting BrowseTab of type %s...", type);
+
+        if (groups.isEmpty()) {
+            String msg = "Media group is empty: " + type;
+            Log.e(TAG, msg);
+            RxHelper.onError(emitter, msg);
+        } else {
+            for (MediaGroup group : groups) { // Preserve positions
+                if (group.isEmpty()) { // Contains Chips (nested sections)?
+                    group = BrowseService2.continueGroup(group);
+                }
+
+                if (group != null) {
+                    emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
+                }
+            }
+
+            emitter.onComplete();
+        }
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
@@ -480,6 +520,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
         switch (mediaGroup.getType()) {
             case MediaGroup.TYPE_SUBSCRIPTIONS:
+            case MediaGroup.TYPE_HOME:
                 return BrowseService2.continueGroup(mediaGroup);
             case MediaGroup.TYPE_SEARCH:
                 return YouTubeMediaGroup.from(

@@ -75,7 +75,7 @@ fun MenuWrapper.getChannelToken() = menuRenderer?.items?.firstOrNull {
 //////////
 
 // gridVideoRenderer
-fun VideoItem.getTitle() = title?.getText()
+fun VideoItem.getTitle() = title?.getText() ?: headline?.getText()
 fun VideoItem.getVideoId() = videoId
 fun VideoItem.getThumbnails() = thumbnail
 fun VideoItem.getMovingThumbnails() = richThumbnail?.movingThumbnailRenderer?.movingThumbnailDetails
@@ -151,7 +151,7 @@ fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNul
 
 ////////////
 
-private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer
+private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer ?: reelItemRenderer
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
 private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer

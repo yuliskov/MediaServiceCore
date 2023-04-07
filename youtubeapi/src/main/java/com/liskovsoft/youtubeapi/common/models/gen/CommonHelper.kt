@@ -16,6 +16,8 @@ private const val BADGE_STYLE_SHORTS = "SHORTS"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 private const val BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
 private const val OLD_BADGE_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
+private const val ICON_TYPE_NOT_INTERESTED = "NOT_INTERESTED"
+private const val ICON_TYPE_REMOVE = "REMOVE"
 
 ///////////
 
@@ -59,10 +61,16 @@ private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
 
 ////////
 
-fun MenuItem.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId() }
-fun MenuItem.getFeedbackToken() = menuRenderer?.items?.firstNotNullOfOrNull {
-    it?.menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
-}
+fun MenuWrapper.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getBrowseId() }
+fun MenuWrapper.getFeedbackTokens(): List<String?>? = menuRenderer?.items?.mapNotNull { it?.getFeedbackToken() }
+// Filter by icon not robust. Icon item not always present.
+fun MenuWrapper.getVideoToken() = menuRenderer?.items?.firstOrNull {
+        it?.getIconType() == ICON_TYPE_NOT_INTERESTED
+    }?.getFeedbackToken()
+// Filter by icon not robust. Icon item not always present.
+fun MenuWrapper.getChannelToken() = menuRenderer?.items?.firstOrNull {
+        it?.getIconType() == ICON_TYPE_REMOVE
+    }?.getFeedbackToken()
 
 //////////
 
@@ -193,7 +201,8 @@ fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
 fun ItemWrapper.isShorts() = getVideoItem()?.isShorts() ?: getTileItem()?.isShorts()
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()
-fun ItemWrapper.getFeedbackToken() = getVideoItem()?.menu?.getFeedbackToken()
+fun ItemWrapper.getFeedbackToken() = getVideoItem()?.menu?.getFeedbackTokens()?.getOrNull(0)
+fun ItemWrapper.getFeedbackToken2() = getVideoItem()?.menu?.getFeedbackTokens()?.getOrNull(1)
 
 /////
 
@@ -214,3 +223,13 @@ fun SubscribeButtonRenderer.getParams() = serviceEndpoints?.firstNotNullOfOrNull
 //////
 
 fun VideoItem.UpcomingEvent.getStartTimeMs() = startTime?.toLong()?.let { it * 1_000 } ?: -1
+
+//////
+
+fun IconItem.getType() = iconType
+
+//////
+
+fun MenuItem.getIconType() = menuServiceItemRenderer?.icon?.getType()
+fun MenuItem.getFeedbackToken() = menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
+fun MenuItem.getBrowseId() = menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId()

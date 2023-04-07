@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class BrowseApiHelper {
     private static final String HOME = "\"browseId\":\"default\"";
+    private static final String WHAT_TO_WATCH = "\"browseId\":\"FEwhat_to_watch\"";
     private static final String GAMING = "\"browseId\":\"FEtopics_gaming\"";
     private static final String NEWS = "\"browseId\":\"FEtopics_news\"";
     private static final String SPORTS = "\"browseId\":\"FEtopics_sports\"";
@@ -26,6 +27,10 @@ public class BrowseApiHelper {
 
     public static String getHomeQuery() {
         return ServiceHelper.createQuery(HOME);
+    }
+
+    public static String getHomeQueryWeb() {
+        return ServiceHelper.createQueryWeb(WHAT_TO_WATCH);
     }
 
     public static String getSubscriptionsQuery() {

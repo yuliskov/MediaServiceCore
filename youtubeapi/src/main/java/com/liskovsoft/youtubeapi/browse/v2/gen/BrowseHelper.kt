@@ -1,17 +1,21 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.getText
 
-fun BrowseResult.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
-    getRichContents()?.map { it?.getItem() }
-fun BrowseResult.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull {
+fun BrowseResult.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
+    getGridContents()?.map { it?.getItem() }
+fun BrowseResult.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
         it?.getContinuationToken()
     } ?:
-    getRichContents()?.lastOrNull()?.getContinuationToken()
-private fun BrowseResult.getContent() = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(0)
+    getGridContents()?.lastOrNull()?.getContinuationToken()
+fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
+fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
+private fun BrowseResult.getRootContent() = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(0)
     ?.tabRenderer?.content
-private fun BrowseResult.getContents() = getContent()?.sectionListRenderer?.contents
-private fun BrowseResult.getRichContents() = getContent()?.richGridRenderer?.contents
+private fun BrowseResult.getListContents() = getRootContent()?.sectionListRenderer?.contents
+private fun BrowseResult.getGridContents() = getRootContent()?.richGridRenderer?.contents
+private fun BrowseResult.getChipContents() = getRootContent()?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
 
 
 /////
@@ -21,14 +25,30 @@ fun ContinuationResult.getContinuationToken(): String? = getContinuations()?.fir
         it?.getContinuationToken()
     } ?:
     getContinuations()?.lastOrNull()?.getContinuationToken()
-private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.getOrNull(0)?.appendContinuationItemsAction
-    ?.continuationItems
+private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.getOrNull(0)?.let {
+        it.appendContinuationItemsAction?.continuationItems ?: it.reloadContinuationItemsCommand?.continuationItems
+    }
 
+
+/////
+
+fun RichSectionRenderer.getTitle(): String? = content?.richShelfRenderer?.title?.getText()
+fun RichSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.mapNotNull { it?.richItemRenderer?.content }
+fun RichSectionRenderer.getContinuationToken(): String? = getContents()?.lastOrNull()?.continuationItemRenderer?.getContinuationToken()
+private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.contents
 
 /////
 
 fun Section.getItem() = richItemRenderer?.content
 
 fun Section.getItems() = itemSectionRenderer?.contents?.getOrNull(0)?.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items }
-fun Section.getContinuationToken() = continuationItemRenderer?.continuationEndpoint?.continuationCommand?.token
+fun Section.getContinuationToken() = continuationItemRenderer?.getContinuationToken()
+
+/////
+
+fun ContinuationItemRenderer.getContinuationToken() = continuationEndpoint?.continuationCommand?.token
+
+/////
+
+fun ChipCloudChipRenderer.getContinuationToken() = navigationEndpoint?.continuationCommand?.token
 

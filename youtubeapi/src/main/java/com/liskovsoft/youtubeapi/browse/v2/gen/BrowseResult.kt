@@ -22,11 +22,27 @@ data class BrowseResult(
                 ) {
                    data class Content(
                        val sectionListRenderer: SectionListRenderer?,
-                       val richGridRenderer: SectionListRenderer?
+                       val richGridRenderer: RichGridRenderer?
                    ) {
                        data class SectionListRenderer(
                            val contents: List<Section?>?
                        )
+                       data class RichGridRenderer(
+                           val contents: List<Section?>?,
+                           val header: Header?
+                       ) {
+                           data class Header(
+                               val feedFilterChipBarRenderer: FeedFilterChipBarRenderer?
+                           ) {
+                               data class FeedFilterChipBarRenderer(
+                                   val contents: List<Content?>?
+                               ) {
+                                   data class Content(
+                                       val chipCloudChipRenderer: ChipCloudChipRenderer?
+                                   )
+                               }
+                           }
+                       }
                    }
                 }
             }

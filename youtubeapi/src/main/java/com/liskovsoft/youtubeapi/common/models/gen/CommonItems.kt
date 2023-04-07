@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
-import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
 
 data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
@@ -130,6 +129,10 @@ data class TextItem(
     }
 }
 
+data class IconItem(
+    val iconType: String?
+)
+
 data class LiveChatEmoji(
     val emojiId: String?,
     val image: ThumbnailItem?,
@@ -178,7 +181,7 @@ data class TileItem(
     val metadata: Metadata?,
     val header: Header?,
     val onSelectCommand: NavigationEndpointItem?,
-    val menu: MenuItem?,
+    val menu: MenuWrapper?,
     val contentType: String?
 ) {
     data class Metadata(
@@ -245,7 +248,7 @@ data class VideoItem(
     val viewCountText: TextItem?,
     val publishedTimeText: TextItem?,
     val videoId: String?,
-    val menu: MenuItem?,
+    val menu: MenuWrapper?,
     val badges: List<BadgeItem?>?,
     val upcomingEventData: UpcomingEvent?,
     val richThumbnail: RichThumbnailItem?,
@@ -285,7 +288,7 @@ data class MusicItem(
     val tertiaryText: TextItem?,
     val navigationEndpoint: NavigationEndpoint?,
     val lengthText: TextItem?,
-    val menu: MenuItem?
+    val menu: MenuWrapper?
 ) {
     data class NavigationEndpoint(
         val watchEndpoint: WatchEndpointItem?
@@ -346,33 +349,35 @@ data class PlaylistItem(
 
 }
 
-data class MenuItem(
+data class MenuWrapper(
     val menuRenderer: MenuRenderer?
 ) {
     data class MenuRenderer(
-        val items: List<Item?>?
-    ) {
-        data class Item(
-            val menuServiceItemRenderer: MenuServiceItemRenderer?,
-            val menuNavigationItemRenderer: MenuNavigationItemRenderer?
-        ) {
-            data class MenuServiceItemRenderer(
-                val serviceEndpoint: ServiceEndpoint?
-            ) {
-                data class ServiceEndpoint(
-                    val feedbackEndpoint: FeedbackEndpoint?
-                ) {
-                    data class FeedbackEndpoint(
-                        val feedbackToken: String?
-                    )
-                }
-            }
+        val items: List<MenuItem?>?
+    )
+}
 
-            data class MenuNavigationItemRenderer(
-                val navigationEndpoint: NavigationEndpointItem?
+data class MenuItem(
+    val menuServiceItemRenderer: MenuServiceItemRenderer?,
+    val menuNavigationItemRenderer: MenuNavigationItemRenderer?
+) {
+    data class MenuServiceItemRenderer(
+        val text: TextItem?,
+        val icon: IconItem?,
+        val serviceEndpoint: ServiceEndpoint?
+    ) {
+        data class ServiceEndpoint(
+            val feedbackEndpoint: FeedbackEndpoint?
+        ) {
+            data class FeedbackEndpoint(
+                val feedbackToken: String?
             )
         }
     }
+
+    data class MenuNavigationItemRenderer(
+        val navigationEndpoint: NavigationEndpointItem?
+    )
 }
 
 data class RichThumbnailItem(

@@ -29,6 +29,7 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val isUpcomingItem by lazy { itemWrapper.isUpcoming() }
     override val isMovieItem by lazy { itemWrapper.isMovie() }
     override val feedbackTokenItem by lazy { itemWrapper.getFeedbackToken() }
+    override val feedbackTokenItem2 by lazy { itemWrapper.getFeedbackToken2() }
     override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
     override val percentWatchedItem by lazy { itemWrapper.getPercentWatched() }
     //override val playlistParamsItem by lazy { itemWrapper.getParams() }

@@ -4,14 +4,30 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
+import com.liskovsoft.youtubeapi.browse.v2.gen.getSections
 import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl
 import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl2
+import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImpl3
 import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupOptions
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 
 object BrowseService2 {
     private val mBrowseApi = RetrofitHelper.withGson(BrowseApi::class.java)
     private val mAppService = AppService.instance()
+
+    @JvmStatic
+    fun getHome(): List<MediaGroup?>? {
+        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getHomeQueryWeb())
+
+        return RetrofitHelper.get(browseResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+
+            result.add(MediaGroupImpl(it, createOptions()))
+            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImpl3(it, createOptions())) }
+
+            result
+        }
+    }
 
     @JvmStatic
     fun getSubscriptions(): MediaGroup? {

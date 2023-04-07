@@ -39,6 +39,10 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 /////
 
+fun ChipCloudChipRenderer.getTitle(): String? = text?.getText()
+
+/////
+
 fun Section.getItem() = richItemRenderer?.content
 
 fun Section.getItems() = itemSectionRenderer?.contents?.getOrNull(0)?.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items }

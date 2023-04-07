@@ -102,6 +102,8 @@ class BrowseApiTest {
 
         val chip = chips?.getOrNull(1) // first chip is empty
 
+        assertNotNull("Chip has title", chip?.getTitle())
+
         checkContinuation(chip?.getContinuationToken())
     }
 

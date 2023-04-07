@@ -39,7 +39,7 @@ public interface MediaItemService {
     void subscribe(String channelId);
     void unsubscribe(MediaItem item);
     void unsubscribe(String channelId);
-    void markAsNotInterested(MediaItem item);
+    void markAsNotInterested(String feedbackToken);
     List<PlaylistInfo> getPlaylistsInfo(String videoId);
     void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
@@ -67,7 +67,7 @@ public interface MediaItemService {
     Observable<Void> subscribeObserve(String channelId);
     Observable<Void> unsubscribeObserve(MediaItem item);
     Observable<Void> unsubscribeObserve(String channelId);
-    Observable<Void> markAsNotInterestedObserve(MediaItem item);
+    Observable<Void> markAsNotInterestedObserve(String feedbackToken);
     Observable<Void> setLikeObserve(MediaItem item);
     Observable<Void> removeLikeObserve(MediaItem item);
     Observable<Void> setDislikeObserve(MediaItem item);

@@ -336,15 +336,15 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public void markAsNotInterested(MediaItem item) {
+    public void markAsNotInterested(String feedbackToken) {
         checkSigned();
 
-        mFeedbackService.markAsNotInterested(item.getFeedbackToken());
+        mFeedbackService.markAsNotInterested(feedbackToken);
     }
 
     @Override
-    public Observable<Void> markAsNotInterestedObserve(MediaItem item) {
-        return RxHelper.fromVoidable(() -> markAsNotInterested(item));
+    public Observable<Void> markAsNotInterestedObserve(String feedbackToken) {
+        return RxHelper.fromVoidable(() -> markAsNotInterested(feedbackToken));
     }
 
     @Override

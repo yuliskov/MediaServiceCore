@@ -25,6 +25,7 @@ fun ContinuationResult.getContinuationToken(): String? = getContinuations()?.fir
         it?.getContinuationToken()
     } ?:
     getContinuations()?.lastOrNull()?.getContinuationToken()
+fun ContinuationResult.getSections(): List<RichSectionRenderer?>? = getContinuations()?.mapNotNull { it?.richSectionRenderer }
 private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.getOrNull(0)?.let {
         it.appendContinuationItemsAction?.continuationItems ?: it.reloadContinuationItemsCommand?.continuationItems
     }

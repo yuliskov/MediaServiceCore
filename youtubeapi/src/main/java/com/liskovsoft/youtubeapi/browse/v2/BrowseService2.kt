@@ -50,6 +50,25 @@ object BrowseService2 {
         return RetrofitHelper.get(continuationResult)?.let { MediaGroupImpl2(it, createOptions(group.type)).apply { title = group.title } }
     }
 
+    @JvmStatic
+    fun continueChip(group: MediaGroup?): List<MediaGroup?>? {
+        if (group?.nextPageKey == null) {
+            return null
+        }
+
+        val continuationResult =
+            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
+
+        return RetrofitHelper.get(continuationResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+
+            result.add(MediaGroupImpl2(it, createOptions(group.type)).apply { title = group.title })
+            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImpl3(it, createOptions(group.type))) }
+
+            result
+        }
+    }
+
     private fun createOptions(groupType: Int?): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
 

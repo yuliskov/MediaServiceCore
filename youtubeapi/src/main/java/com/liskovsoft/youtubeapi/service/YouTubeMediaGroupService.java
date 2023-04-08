@@ -413,11 +413,13 @@ public class YouTubeMediaGroupService implements MediaGroupService {
             RxHelper.onError(emitter, msg);
         } else {
             for (MediaGroup group : groups) { // Preserve positions
-                if (group.isEmpty()) { // Contains Chips (nested sections)?
-                    group = BrowseService2.continueGroup(group);
-                }
+                if (group != null && group.isEmpty()) { // Contains Chips (nested sections)?
+                    List<MediaGroup> sections = BrowseService2.continueChip(group);
 
-                if (group != null) {
+                    if (sections != null) {
+                        emitter.onNext(sections);
+                    }
+                } else if (group != null) {
                     emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
                 }
             }

@@ -310,10 +310,15 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         }
 
         for (MediaGroup group : groups) {
-            // Chips?
-            if (group != null && group.isEmpty()) {
-                group = BrowseService2.continueGroup(group);
+            // Skip chips
+            if (group == null || group.isEmpty()) {
+                continue;
             }
+
+            // Load chips
+            //if (group != null && group.isEmpty()) {
+            //    group = BrowseService2.continueGroup(group);
+            //}
 
             result.add(group);
         }

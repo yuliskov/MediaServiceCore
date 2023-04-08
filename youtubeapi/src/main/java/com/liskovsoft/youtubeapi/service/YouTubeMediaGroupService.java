@@ -14,6 +14,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuatio
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
+import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImplBase;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -182,23 +183,34 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         return RxHelper.fromNullable(this::getSubscribedChannelsLastViewed);
     }
 
+    //@Override
+    //public MediaGroup getRecommended() {
+    //    Log.d(TAG, "Getting recommended...");
+    //
+    //    checkSigned();
+    //
+    //    SectionTab homeTab = mBrowseService.getHome();
+    //
+    //    List<MediaGroup> groups = YouTubeMediaGroup.from(homeTab.getSections(), MediaGroup.TYPE_RECOMMENDED);
+    //
+    //    MediaGroup result = null;
+    //
+    //    if (!groups.isEmpty()) {
+    //        result = groups.get(0); // first one is recommended
+    //    }
+    //
+    //    return result != null && result.isEmpty() ? continueGroup(result) : result; // Maybe a Chip?
+    //}
+
     @Override
     public MediaGroup getRecommended() {
         Log.d(TAG, "Getting recommended...");
 
         checkSigned();
 
-        SectionTab homeTab = mBrowseService.getHome();
+        List<MediaGroup> groups = BrowseService2.getHome();
 
-        List<MediaGroup> groups = YouTubeMediaGroup.from(homeTab.getSections(), MediaGroup.TYPE_RECOMMENDED);
-
-        MediaGroup result = null;
-
-        if (!groups.isEmpty()) {
-            result = groups.get(0); // first one is recommended
-        }
-
-        return result != null && result.isEmpty() ? continueGroup(result) : result; // Maybe a Chip?
+        return groups != null && !groups.isEmpty() ? groups.get(0) : null;
     }
 
     @Override
@@ -310,17 +322,16 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         }
 
         for (MediaGroup group : groups) {
-            // Skip chips
-            if (group == null || group.isEmpty()) {
-                continue;
-            }
-
             // Load chips
-            //if (group != null && group.isEmpty()) {
-            //    group = BrowseService2.continueGroup(group);
-            //}
+            if (group != null && group.isEmpty()) {
+                List<MediaGroup> sections = BrowseService2.continueChip(group);
 
-            result.add(group);
+                if (sections != null) {
+                    result.addAll(sections);
+                }
+            } else if (group != null) {
+                result.add(group);
+            }
         }
 
         return result;
@@ -333,7 +344,14 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
             List<MediaGroup> sections = BrowseService2.getHome();
 
-            emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
+            if (sections != null && sections.size() > 5) {
+                emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
+            } else {
+                // Fallback to old algo if user chrome page has no chips (why?)
+                SectionTab tab = mBrowseService.getHome();
+
+                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+            }
         });
     }
 
@@ -547,18 +565,19 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
+        if (mediaGroup instanceof MediaGroupImplBase) {
+            return BrowseService2.continueGroup(mediaGroup);
+        }
+
         String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
 
         switch (mediaGroup.getType()) {
-            case MediaGroup.TYPE_SUBSCRIPTIONS:
-            case MediaGroup.TYPE_HOME:
-                return BrowseService2.continueGroup(mediaGroup);
             case MediaGroup.TYPE_SEARCH:
                 return YouTubeMediaGroup.from(
                         mSearchService.continueSearch(nextKey),
                         mediaGroup);
             case MediaGroup.TYPE_HISTORY:
-            //case MediaGroup.TYPE_SUBSCRIPTIONS:
+            case MediaGroup.TYPE_SUBSCRIPTIONS:
             case MediaGroup.TYPE_USER_PLAYLISTS:
             case MediaGroup.TYPE_CHANNEL_UPLOADS:
             case MediaGroup.TYPE_UNDEFINED:

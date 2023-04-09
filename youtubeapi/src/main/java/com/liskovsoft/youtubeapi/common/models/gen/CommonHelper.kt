@@ -198,7 +198,7 @@ fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMu
 fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
 fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
 fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
-fun ItemWrapper.isShorts() = getVideoItem()?.isShorts() ?: getTileItem()?.isShorts()
+fun ItemWrapper.isShorts() = reelItemRenderer != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()
 fun ItemWrapper.getFeedbackToken() = getVideoItem()?.menu?.getFeedbackTokens()?.getOrNull(0)

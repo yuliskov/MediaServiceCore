@@ -11,15 +11,25 @@ import retrofit2.http.POST
 interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME
+        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getBrowseResult(@Body browseQuery: String?): Call<BrowseResult?>?
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME
+        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getContinuationResult(@Body continuationQuery: String?): Call<ContinuationResult?>?
+
+    @Headers(
+        "Content-Type: application/json",
+        "User-Agent: " + DefaultHeaders.USER_AGENT_MOBILE,
+        "referer: https://m.youtube.com/"
+    )
+    @POST("https://m.youtube.com/youtubei/v1/browse")
+    fun getBrowseResultAlt(@Body browseQuery: String?): Call<BrowseResult?>?
 }

@@ -17,6 +17,8 @@ object RetrofitOkHttpHelper {
     @JvmStatic
     val client: OkHttpClient by lazy { createClient() }
 
+    var disableCompression: Boolean = false
+
     private val headers = mapOf(
         "User-Agent" to DefaultHeaders.APP_USER_AGENT,
         // Enable compression in production
@@ -25,6 +27,7 @@ object RetrofitOkHttpHelper {
     )
 
     private val apiPrefixes = arrayOf(
+        "https://m.youtube.com/youtubei/v1/",
         "https://www.youtube.com/youtubei/v1/",
         "https://www.youtube.com/api/stats/",
         "https://clients1.google.com/complete/"
@@ -60,6 +63,10 @@ object RetrofitOkHttpHelper {
 
     private fun apply(newHeaders: Map<String, String>, oldHeaders: Headers, builder: Request.Builder) {
         for (header in newHeaders) {
+            if (disableCompression && header.key == "Accept-Encoding") {
+                continue
+            }
+
             // Don't override existing headers
             oldHeaders[header.key] ?: builder.header(header.key, header.value)
         }

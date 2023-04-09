@@ -33,6 +33,10 @@ public class BrowseApiHelper {
         return ServiceHelper.createQueryWeb(WHAT_TO_WATCH);
     }
 
+    public static String getHomeQueryMWEB() {
+        return ServiceHelper.createQueryMWeb(WHAT_TO_WATCH);
+    }
+
     public static String getSubscriptionsQuery() {
         return ServiceHelper.createQuery(SUBSCRIPTIONS);
     }

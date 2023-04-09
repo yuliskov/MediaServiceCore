@@ -77,6 +77,10 @@ public class ServiceHelper {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_WEB, data);
     }
 
+    public static String createQueryMWeb(String data) {
+        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_MWEB, data);
+    }
+
     public static String createQueryAndroid(String data) {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_ANDROID, data);
     }

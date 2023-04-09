@@ -57,3 +57,8 @@ fun ContinuationItemRenderer.getContinuationToken() = continuationEndpoint?.cont
 
 fun ChipCloudChipRenderer.getContinuationToken() = navigationEndpoint?.continuationCommand?.token
 
+
+/////
+
+fun GuideResult.getItems(): List<ItemWrapper?>? = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }?.items
+

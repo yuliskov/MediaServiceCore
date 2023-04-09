@@ -4,10 +4,12 @@ import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import junit.framework.Assert.assertNotNull
+import junit.framework.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -109,12 +111,20 @@ class BrowseApiTest {
         checkContinuation(chip?.getContinuationToken())
     }
 
-    @Ignore
+    @Ignore("Doesn't contains chips")
     @Test
     fun testThatAltHomeNotEmpty() {
         val home = getAltHome()
 
         assertNotNull("Contains videos", home?.getItems()?.getOrNull(0))
+    }
+
+    @Ignore("Channel list is truncated")
+    @Test
+    fun testThatGuideNotEmpty() {
+        val guide = getGuide()
+
+        assertTrue("Guide contains channels", guide?.getItems()?.size ?: 0 > 10)
     }
 
     private fun checkContinuation(token: String?) {
@@ -143,5 +153,11 @@ class BrowseApiTest {
         val homeResult = mService?.getBrowseResultAlt(BrowseApiHelper.getHomeQueryMWEB())
 
         return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getGuide(): GuideResult? {
+        val guideResult = mService?.getGuideResult(ServiceHelper.createQueryWeb(""))
+
+        return RetrofitHelper.get(guideResult)
     }
 }

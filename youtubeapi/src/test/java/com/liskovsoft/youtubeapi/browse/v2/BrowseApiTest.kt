@@ -119,12 +119,12 @@ class BrowseApiTest {
         assertNotNull("Contains videos", home?.getItems()?.getOrNull(0))
     }
 
-    @Ignore("Channel list is truncated")
     @Test
     fun testThatGuideNotEmpty() {
         val guide = getGuide()
 
-        assertTrue("Guide contains channels", guide?.getItems()?.size ?: 0 > 10)
+        assertTrue("Guide contains channels", guide?.getFirstItems()?.isNotEmpty() == true)
+        assertTrue("Guide collapse contains channels", guide?.getCollapsibleItems()?.size ?: 0 > 20)
     }
 
     private fun checkContinuation(token: String?) {

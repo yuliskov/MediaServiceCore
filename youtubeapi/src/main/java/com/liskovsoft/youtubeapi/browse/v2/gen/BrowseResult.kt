@@ -76,7 +76,20 @@ data class GuideResult(
         val guideSubscriptionsSectionRenderer: GuideSubscriptionsSectionRenderer?
     ) {
         data class GuideSubscriptionsSectionRenderer(
-            val items: List<ItemWrapper?>?
-        )
+            val items: List<GuideItemWrapper?>?
+        ) {
+            data class GuideItemWrapper(
+                val guideEntryRenderer: GuideItem?,
+                val guideCollapsibleEntryRenderer: GuideCollapsibleEntryRenderer?
+            ) {
+                data class GuideCollapsibleEntryRenderer(
+                    val expandableItems: List<ExpandableItem?>?
+                ) {
+                    data class ExpandableItem(
+                        val guideEntryRenderer: GuideItem?
+                    )
+                }
+            }
+        }
     }
 }

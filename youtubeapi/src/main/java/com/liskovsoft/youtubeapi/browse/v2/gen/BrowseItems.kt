@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.TextItem
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
 data class Section(
     val itemSectionRenderer: ItemSectionRenderer?,
@@ -81,3 +83,16 @@ data class ChipCloudChipRenderer(
 data class NavigationEndpoint(
     val continuationCommand: ContinuationCommand?
 )
+
+/////
+
+data class GuideItem(
+    val thumbnail: ThumbnailItem?,
+    val formattedTitle: TextItem?,
+    val navigationEndpoint: NavigationEndpointItem?,
+    val badges: Badges?
+) {
+    data class Badges(
+        val liveBroadcasting: Boolean?
+    )
+}

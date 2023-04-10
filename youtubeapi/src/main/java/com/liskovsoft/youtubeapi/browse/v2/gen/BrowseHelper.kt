@@ -60,5 +60,7 @@ fun ChipCloudChipRenderer.getContinuationToken() = navigationEndpoint?.continuat
 
 /////
 
-fun GuideResult.getItems(): List<ItemWrapper?>? = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }?.items
+fun GuideResult.getFirstItems(): List<GuideItem?>? = getRootItems()?.mapNotNull { it?.guideEntryRenderer }
+fun GuideResult.getCollapsibleItems(): List<GuideItem?>? = getRootItems()?.firstNotNullOfOrNull { it?.guideCollapsibleEntryRenderer }?.expandableItems?.mapNotNull { it?.guideEntryRenderer }
+private fun GuideResult.getRootItems() = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }?.items
 

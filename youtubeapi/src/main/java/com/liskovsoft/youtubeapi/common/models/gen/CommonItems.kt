@@ -175,8 +175,7 @@ data class ItemWrapper(
     val compactChannelRenderer: ChannelItem?,
     val gridPlaylistRenderer: PlaylistItem?,
     val pivotPlaylistRenderer: PlaylistItem?,
-    val compactPlaylistRenderer: PlaylistItem?,
-    val guideEntryRenderer: GuideItem?
+    val compactPlaylistRenderer: PlaylistItem?
 )
 
 data class TileItem(
@@ -350,17 +349,6 @@ data class PlaylistItem(
         )
     }
 
-}
-
-data class GuideItem(
-    val thumbnail: ThumbnailItem?,
-    val formattedTitle: TextItem?,
-    val navigationEndpoint: NavigationEndpointItem?,
-    val badges: Badges?
-) {
-    data class Badges(
-        val liveBroadcasting: Boolean?
-    )
 }
 
 data class MenuWrapper(

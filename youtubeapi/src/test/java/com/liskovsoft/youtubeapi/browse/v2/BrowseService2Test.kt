@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
 import junit.framework.Assert.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -21,6 +22,7 @@ class BrowseService2Test {
         RetrofitOkHttpHelper.disableCompression = true
     }
 
+    @Ignore("Shorts may be removed by the user")
     @Test
     fun testThatShortsNotEmpty() {
         val sections = BrowseService2.getHome()

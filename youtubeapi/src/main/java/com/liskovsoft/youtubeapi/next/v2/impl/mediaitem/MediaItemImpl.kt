@@ -1,5 +1,9 @@
 package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
 
+import com.liskovsoft.youtubeapi.browse.v2.gen.GuideItem
+import com.liskovsoft.youtubeapi.browse.v2.gen.getChannelId
+import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
+import com.liskovsoft.youtubeapi.browse.v2.gen.getTitle
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
@@ -34,4 +38,11 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val percentWatchedItem by lazy { itemWrapper.getPercentWatched() }
     //override val playlistParamsItem by lazy { itemWrapper.getParams() }
     val descriptionText by lazy { itemWrapper.getDescriptionText() }
+}
+
+data class MediaItemImpl2(val guideItem: GuideItem): BaseMediaItemImpl() {
+    override val titleItem by lazy { guideItem.getTitle() }
+    override val channelIdItem by lazy { guideItem.getChannelId() }
+    override val cardThumbImageUrl by lazy { guideItem.getThumbnails()?.getOptimalResThumbnailUrl() }
+    override val backgroundThumbImageUrl by lazy { guideItem.getThumbnails()?.getHighResThumbnailUrl() }
 }

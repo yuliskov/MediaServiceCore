@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 fun BrowseResult.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
@@ -63,4 +64,8 @@ fun ChipCloudChipRenderer.getContinuationToken() = navigationEndpoint?.continuat
 fun GuideResult.getFirstItems(): List<GuideItem?>? = getRootItems()?.mapNotNull { it?.guideEntryRenderer }
 fun GuideResult.getCollapsibleItems(): List<GuideItem?>? = getRootItems()?.firstNotNullOfOrNull { it?.guideCollapsibleEntryRenderer }?.expandableItems?.mapNotNull { it?.guideEntryRenderer }
 private fun GuideResult.getRootItems() = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }?.items
+
+fun GuideItem.getChannelId() = navigationEndpoint?.getBrowseId()
+fun GuideItem.getThumbnails() = thumbnail
+fun GuideItem.getTitle() = formattedTitle?.getText()
 

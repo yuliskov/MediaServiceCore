@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.getSections
 import com.liskovsoft.youtubeapi.browse.v2.gen.getTitle
 import com.liskovsoft.youtubeapi.browse.v2.impl.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 
 object BrowseService2 {
     private val mBrowseApi = RetrofitHelper.withGson(BrowseApi::class.java)
@@ -36,6 +37,13 @@ object BrowseService2 {
         val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
 
         return RetrofitHelper.get(browseResult)?.let { MediaGroupImpl(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS)) }
+    }
+
+    @JvmStatic
+    fun getSubscribedChannels(): MediaGroup? {
+        val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
+
+        return RetrofitHelper.get(guideResult)?.let { MediaGroupImpl5(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
 
     @JvmStatic

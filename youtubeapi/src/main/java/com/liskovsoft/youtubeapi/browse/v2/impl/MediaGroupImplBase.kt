@@ -29,7 +29,7 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
         set(value) { field = value ?: "" }
 
     private val titleItem by lazy { getTitleInt() }
-    private val mediaItemList by lazy { getItemWrappersInt()
+    protected open val mediaItemList: List<MediaItem?>? by lazy { getItemWrappersInt()
         ?.mapIndexedNotNull { index, it -> it
             ?.let { if (filter.invoke(it)) null else it }
             ?.let { MediaItemImpl(it).let { if (YouTubeHelper.isEmpty(it)) null else it }?.apply { playlistIndex = index } }
@@ -37,9 +37,9 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     }
     private val nextPageKeyVal by lazy { getNextPageKeyInt() }
 
-    abstract fun getItemWrappersInt(): List<ItemWrapper?>?
-    abstract fun getNextPageKeyInt(): String?
-    abstract fun getTitleInt(): String?
+    protected abstract fun getItemWrappersInt(): List<ItemWrapper?>?
+    protected abstract fun getNextPageKeyInt(): String?
+    protected abstract fun getTitleInt(): String?
 
     override fun getId(): Int = title?.hashCode() ?: hashCode()
 
@@ -88,6 +88,6 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     }
 
     override fun isEmpty(): Boolean {
-        return mediaItemList.isNullOrEmpty()
+        return _mediaItemList.isNullOrEmpty()
     }
 }

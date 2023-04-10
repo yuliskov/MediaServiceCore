@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
-class BrowseServiceTest {
+class BrowseService2Test {
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -18,6 +18,7 @@ class BrowseServiceTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
+        RetrofitOkHttpHelper.disableCompression = true
     }
 
     @Test
@@ -39,5 +40,12 @@ class BrowseServiceTest {
 
         assertTrue("Home row contains token 1", mediaItem?.feedbackToken != null)
         assertTrue("Home row contains token 2", mediaItem?.feedbackToken2 != null)
+    }
+
+    @Test
+    fun testThatSubscribedChannelsNotEmpty() {
+        val channels = BrowseService2.getSubscribedChannels()
+
+        assertTrue("Channel list not empty", channels?.mediaItems?.size ?: 0 > 30)
     }
 }

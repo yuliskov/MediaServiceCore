@@ -50,6 +50,20 @@
 
         <!--    CHANNELS    -->
 
+        <!-- https://stackoverflow.com/questions/64588254/classnotfoundexception-androidx-work-impl-workmanagerinitializer -->
+        <!-- https://stackoverflow.com/questions/59710362/workmanager-should-we-remove-the-default-initializer-when-we-use-both-default -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <!-- If you are using androidx.startup to initialize other components -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
         <service
             android:name=".channels.SynchronizeDatabaseJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"

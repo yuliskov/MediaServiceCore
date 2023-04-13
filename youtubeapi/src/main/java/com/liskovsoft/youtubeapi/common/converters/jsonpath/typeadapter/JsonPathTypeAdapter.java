@@ -181,7 +181,8 @@ public class JsonPathTypeAdapter<T> {
                 Class<?> myType = ReflectionHelper.getGenericParamType(field);
 
                 if (myType == null) {
-                    throw new IllegalStateException("Please, supply generic field for the list type: " + field);
+                    Log.e(TAG, "Please, supply generic field for the list type: " + field);
+                    return false;
                 }
 
                 for (Object jsonObj : (JsonArray) jsonVal) {

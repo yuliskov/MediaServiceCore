@@ -60,9 +60,6 @@ public class GridTab {
     @JsonPath("$.presentationStyle.style")
     private String mPresentationStyle;
 
-    @JsonPath("$.content.tvSurfaceContentRenderer.header.tvSurfaceHeaderRenderer.buttons[*].toggleButtonRenderer.defaultServiceEndpoint.pauseWatchHistoryEndpoint.actions[0].clickTrackingParams")
-    private String mPauseHistoryParams;
-
     public String getTitle() {
         return mTitle;
     }
@@ -101,10 +98,6 @@ public class GridTab {
 
     public boolean hasNewContent() {
         return PRESENTATION_NEW_CONTENT.equals(mPresentationStyle);
-    }
-
-    public boolean isHistoryEnabled() {
-        return mPauseHistoryParams != null;
     }
 
     @Override

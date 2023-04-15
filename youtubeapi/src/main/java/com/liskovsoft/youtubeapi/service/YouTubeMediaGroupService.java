@@ -298,16 +298,16 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     //    return result;
     //}
 
-    //@Override
-    //public Observable<List<MediaGroup>> getHomeObserve() {
-    //    return RxHelper.create(emitter -> {
-    //        checkSigned();
-    //
-    //        SectionTab tab = mBrowseService.getHome();
-    //
-    //        emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
-    //    });
-    //}
+    @Override
+    public Observable<List<MediaGroup>> getHomeV1Observe() {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            SectionTab tab = mBrowseService.getHome();
+
+            emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+        });
+    }
 
     @Override
     public List<MediaGroup> getHome() {

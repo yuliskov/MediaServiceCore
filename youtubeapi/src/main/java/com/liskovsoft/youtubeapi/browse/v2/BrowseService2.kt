@@ -77,14 +77,20 @@ object BrowseService2 {
         }
     }
 
-    private fun createOptions(groupType: Int?): MediaGroupOptions {
+    private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
+        val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideShortsFromSubscriptionsEnabled ?: false) ||
+                (MediaGroup.TYPE_HOME == groupType && prefs?.isHideShortsFromHomeEnabled ?: false) ||
+                (MediaGroup.TYPE_HISTORY == groupType && prefs?.isHideShortsFromHistoryEnabled ?: false) ||
+                prefs?.isHideShortsEverywhereEnabled ?: false
+        val removeLive = MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideStreamsFromSubscriptionsEnabled ?: false
+        val removeUpcoming = MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideUpcomingEnabled ?: false
 
         return MediaGroupOptions(
-            prefs?.isHideShortsFromSubscriptionsEnabled ?: true,
-            prefs?.isHideStreamsFromSubscriptionsEnabled ?: false,
-            prefs?.isHideUpcomingEnabled ?: false,
-            groupType ?: MediaGroup.TYPE_SUBSCRIPTIONS
+            removeShorts,
+            removeLive,
+            removeUpcoming,
+            groupType
         )
     }
 }

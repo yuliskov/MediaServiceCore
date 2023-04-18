@@ -99,6 +99,7 @@ fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
 fun VideoItem.isLive() = OLD_BADGE_STYLE_LIVE == badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
 fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
+fun VideoItem.getFeedbackTokens() = menu?.getFeedbackTokens()
 
 ////////////
 
@@ -138,7 +139,8 @@ fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
 fun TileItem.getMovingThumbnails() = header?.tileHeaderRenderer?.let { it.movingThumbnail ?: it.onFocusThumbnail }
 fun TileItem.getBadgeStyle() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
-fun TileItem.getChannelId() = menu?.getBrowseId()
+fun TileItem.getChannelId() = getMenu()?.getBrowseId()
+fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 fun TileItem.isLive() = BADGE_STYLE_LIVE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 fun TileItem.getContentType() = contentType
 fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
@@ -148,6 +150,7 @@ fun TileItem.isMovie() = BADGE_STYLE_MOVIE == header?.getBadgeStyle() ?: metadat
 fun TileItem.isShorts() = false // TODO: not implemented
 fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
+private fun TileItem.getMenu() = menu ?: onLongPressCommand?.showMenuCommand?.menu
 
 ////////////
 
@@ -201,8 +204,9 @@ fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
 fun ItemWrapper.isShorts() = reelItemRenderer != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()
-fun ItemWrapper.getFeedbackToken() = getVideoItem()?.menu?.getFeedbackTokens()?.getOrNull(0)
-fun ItemWrapper.getFeedbackToken2() = getVideoItem()?.menu?.getFeedbackTokens()?.getOrNull(1)
+fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)
+fun ItemWrapper.getFeedbackToken2() = getFeedbackTokens()?.getOrNull(1)
+private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens()
 
 /////
 

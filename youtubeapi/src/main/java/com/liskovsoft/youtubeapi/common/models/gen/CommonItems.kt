@@ -183,7 +183,8 @@ data class TileItem(
     val header: Header?,
     val onSelectCommand: NavigationEndpointItem?,
     val menu: MenuWrapper?,
-    val contentType: String?
+    val contentType: String?,
+    val onLongPressCommand: OnLongPressCommand?
 ) {
     data class Metadata(
         val tileMetadataRenderer: TileMetadataRenderer?
@@ -236,6 +237,14 @@ data class TileItem(
          */
         data class RichTextTileHeaderRenderer(
             val textContent: List<TextItem>
+        )
+    }
+
+    data class OnLongPressCommand(
+        val showMenuCommand: ShowMenuCommand?
+    ) {
+        data class ShowMenuCommand(
+            val menu: MenuWrapper?
         )
     }
 }

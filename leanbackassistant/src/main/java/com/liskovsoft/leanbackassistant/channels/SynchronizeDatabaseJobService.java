@@ -42,8 +42,9 @@ public class SynchronizeDatabaseJobService extends JobService {
             // setup scheduled job
             scheduler.schedule(
                     new JobInfo.Builder(SYNC_JOB_ID, new ComponentName(context, SynchronizeDatabaseJobService.class))
-                            .setPeriodic(TimeUnit.MINUTES.toMillis(30))
-                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                            //.setPeriodic(TimeUnit.MINUTES.toMillis(30))
+                            .setPeriodic(20 * 60 * 1_000)
+                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE)
                             .setRequiresDeviceIdle(false)
                             .setRequiresCharging(false)
                             .build());

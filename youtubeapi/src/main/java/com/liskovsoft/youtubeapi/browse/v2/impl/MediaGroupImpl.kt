@@ -14,7 +14,7 @@ data class MediaGroupImpl(
     override fun getTitleInt(): String? = null
 }
 
-data class MediaGroupImpl2(
+data class MediaGroupImplContinuation(
     private val continuationResult: ContinuationResult,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): MediaGroupImplBase(options) {
@@ -23,7 +23,7 @@ data class MediaGroupImpl2(
     override fun getTitleInt(): String? = null
 }
 
-data class MediaGroupImpl3(
+data class MediaGroupImplSection(
     private val richSectionRenderer: RichSectionRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): MediaGroupImplBase(options) {
@@ -32,7 +32,7 @@ data class MediaGroupImpl3(
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
 }
 
-data class MediaGroupImpl4(
+data class MediaGroupImplChip(
     private val chipCloudChipRenderer: ChipCloudChipRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): MediaGroupImplBase(options) {
@@ -41,7 +41,7 @@ data class MediaGroupImpl4(
     override fun getTitleInt(): String? = chipCloudChipRenderer.getTitle()
 }
 
-data class MediaGroupImpl5(
+data class MediaGroupImplGuide(
     private val guideResult: GuideResult,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): MediaGroupImplBase(options) {

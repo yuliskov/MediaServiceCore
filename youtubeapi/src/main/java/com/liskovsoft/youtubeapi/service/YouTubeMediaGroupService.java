@@ -343,9 +343,10 @@ public class YouTubeMediaGroupService implements MediaGroupService {
             checkSigned();
 
             List<MediaGroup> sections = BrowseService2.getHome();
-            emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
 
-            if (sections == null || sections.size() < 3) {
+            if (sections != null && sections.size() > 3) {
+                emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
+            } else {
                 // Fallback to old algo if user chrome page has no chips (why?)
                 SectionTab tab = mBrowseService.getHome();
 

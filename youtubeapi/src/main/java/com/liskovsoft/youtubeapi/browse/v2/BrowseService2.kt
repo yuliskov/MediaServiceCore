@@ -25,8 +25,8 @@ object BrowseService2 {
             // First chip is always empty and corresponds to current result.
             // Also title used as id in continuation. No good.
             result.add(MediaGroupImpl(it, createOptions(MediaGroup.TYPE_HOME)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
-            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImpl3(it, createOptions(MediaGroup.TYPE_HOME))) }
-            it.getChips()?.forEach { if (it != null) result.add(MediaGroupImpl4(it, createOptions(MediaGroup.TYPE_HOME))) }
+            it.getSections()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplSection(it, createOptions(MediaGroup.TYPE_HOME))) }
+            it.getChips()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplChip(it, createOptions(MediaGroup.TYPE_HOME))) }
 
             result
         }
@@ -43,7 +43,7 @@ object BrowseService2 {
     fun getSubscribedChannels(): MediaGroup? {
         val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
 
-        return RetrofitHelper.get(guideResult)?.let { MediaGroupImpl5(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
+        return RetrofitHelper.get(guideResult)?.let { MediaGroupImplGuide(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
 
     @JvmStatic
@@ -55,7 +55,7 @@ object BrowseService2 {
         val continuationResult =
             mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
 
-        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImpl2(it, createOptions(group.type)).apply { title = group.title } }
+        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImplContinuation(it, createOptions(group.type)).apply { title = group.title } }
     }
 
     @JvmStatic
@@ -70,8 +70,8 @@ object BrowseService2 {
         return RetrofitHelper.get(continuationResult)?.let {
             val result = mutableListOf<MediaGroup?>()
 
-            result.add(MediaGroupImpl2(it, createOptions(group.type)).apply { title = group.title })
-            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImpl3(it, createOptions(group.type))) }
+            result.add(MediaGroupImplContinuation(it, createOptions(group.type)).apply { title = group.title })
+            it.getSections()?.forEach { if (it != null) result.add(MediaGroupImplSection(it, createOptions(group.type))) }
 
             result
         }

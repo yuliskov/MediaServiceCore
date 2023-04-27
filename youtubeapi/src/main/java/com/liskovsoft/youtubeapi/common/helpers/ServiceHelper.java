@@ -85,6 +85,10 @@ public class ServiceHelper {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_ANDROID, data);
     }
 
+    public static String createQueryKids(String data) {
+        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_KIDS, data);
+    }
+
     private static String createQuery(String postTemplate, String data) {
         return createQuery(postTemplate, data, null, null);
     }

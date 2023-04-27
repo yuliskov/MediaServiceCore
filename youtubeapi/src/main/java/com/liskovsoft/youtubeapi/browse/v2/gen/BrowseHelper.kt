@@ -1,8 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
-import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
-import com.liskovsoft.youtubeapi.common.models.gen.getText
+import com.liskovsoft.youtubeapi.common.models.gen.*
 
 fun BrowseResult.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
     getGridContents()?.map { it?.getItem() }
@@ -68,4 +66,13 @@ private fun GuideResult.getRootItems() = items?.firstNotNullOfOrNull { it?.guide
 fun GuideItem.getChannelId() = navigationEndpoint?.getBrowseId()
 fun GuideItem.getThumbnails() = thumbnail
 fun GuideItem.getTitle() = formattedTitle?.getText()
+
+///////
+
+fun BrowseResultKids.getSections(): List<AnchoredSectionRenderer?>? = contents?.kidsHomeScreenRenderer?.anchors?.mapNotNull { it?.anchoredSectionRenderer }
+fun BrowseResultKids.getRootSection(): AnchoredSectionRenderer? = getSections()?.getOrNull(0)
+fun AnchoredSectionRenderer.getItems(): List<ItemWrapper?>? = content?.sectionListRenderer?.contents
+fun AnchoredSectionRenderer.getTitle(): String? = title
+fun AnchoredSectionRenderer.getBrowseId(): String? = navigationEndpoint?.getBrowseId()
+fun AnchoredSectionRenderer.getBrowseParams(): String? = navigationEndpoint?.getBrowseParams()
 

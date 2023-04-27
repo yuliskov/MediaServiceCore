@@ -96,3 +96,18 @@ data class GuideItem(
         val liveBroadcasting: Boolean?
     )
 }
+
+// Kids only
+data class AnchoredSectionRenderer(
+    val title: String?,
+    val navigationEndpoint: NavigationEndpointItem?,
+    val content: ContentItem?
+) {
+    data class ContentItem(
+        val sectionListRenderer: SectionListRenderer?
+    ) {
+        data class SectionListRenderer(
+            val contents: List<ItemWrapper?>?
+        )
+    }
+}

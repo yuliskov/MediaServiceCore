@@ -46,6 +46,7 @@ public interface MediaGroupService {
     Observable<MediaGroup> getHistoryObserve();
     Observable<List<MediaGroup>> getHomeV1Observe();
     Observable<List<MediaGroup>> getHomeObserve();
+    Observable<List<MediaGroup>> getKidsHomeObserve();
     Observable<List<MediaGroup>> getMusicObserve();
     Observable<List<MediaGroup>> getNewsObserve();
     Observable<List<MediaGroup>> getGamingObserve();

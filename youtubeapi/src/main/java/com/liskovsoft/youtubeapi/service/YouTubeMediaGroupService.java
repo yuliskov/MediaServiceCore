@@ -356,6 +356,16 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     @Override
+    public Observable<List<MediaGroup>> getKidsHomeObserve() {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            List<MediaGroup> sections = BrowseService2.getKidsHome();
+            emitGroups2(emitter, sections, MediaGroup.TYPE_KIDS_HOME);
+        });
+    }
+
+    @Override
     public Observable<List<MediaGroup>> getMusicObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();

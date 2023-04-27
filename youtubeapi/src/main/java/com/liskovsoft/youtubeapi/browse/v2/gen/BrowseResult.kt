@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
+import com.liskovsoft.youtubeapi.common.models.gen.TextItem
 
 /**
  * Based on:
@@ -90,6 +92,22 @@ data class GuideResult(
                     )
                 }
             }
+        }
+    }
+}
+
+data class BrowseResultKids(
+    val contents: Contents?
+) {
+    data class Contents(
+        val kidsHomeScreenRenderer: KidsHomeScreenRenderer?
+    ) {
+        data class KidsHomeScreenRenderer(
+            val anchors: List<Anchor?>?
+        ) {
+            data class Anchor(
+                val anchoredSectionRenderer: AnchoredSectionRenderer?
+            )
         }
     }
 }

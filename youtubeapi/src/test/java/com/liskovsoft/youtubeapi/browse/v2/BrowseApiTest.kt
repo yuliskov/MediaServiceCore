@@ -120,6 +120,25 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testThatKidsHomeNotEmpty() {
+        val kidsHome = getKidsHome()
+
+        assertNotNull("Contains sections", kidsHome?.getSections())
+    }
+
+    @Test
+    fun testThatKidsHomeCanBeContinued() {
+        val kidsHome = getKidsHome()
+
+        kidsHome?.getSections()?.forEach {
+            if (it?.getItems() == null) {
+                val home = getKidsHome(it?.getBrowseParams())
+                assertNotNull("Section not empty", home?.getRootSection()?.getItems())
+            }
+        }
+    }
+
+    @Test
     fun testThatGuideNotEmpty() {
         val guide = getGuide()
 
@@ -150,7 +169,7 @@ class BrowseApiTest {
     }
 
     private fun getAltHome(): BrowseResult? {
-        val homeResult = mService?.getBrowseResultAlt(BrowseApiHelper.getHomeQueryMWEB())
+        val homeResult = mService?.getBrowseResultMobile(BrowseApiHelper.getHomeQueryMWEB())
 
         return RetrofitHelper.get(homeResult)
     }
@@ -159,5 +178,17 @@ class BrowseApiTest {
         val guideResult = mService?.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)
+    }
+
+    private fun getKidsHome(): BrowseResultKids? {
+        val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery())
+
+        return RetrofitHelper.get(kidsResult)
+    }
+
+    private fun getKidsHome(params: String?): BrowseResultKids? {
+        val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params))
+
+        return RetrofitHelper.get(kidsResult)
     }
 }

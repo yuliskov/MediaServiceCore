@@ -19,6 +19,8 @@ object AppConstants {
     // 2.20211014.05.00-canary_control
     const val CLIENT_VERSION_WEB = "2.20220119.01.00"
 
+    const val CLIENT_VERSION_KIDS = "3.20221025.01.00"
+
     // Special embed version (thanks for github thread)
     const val CLIENT_VERSION_EMBED = "2.0"
 
@@ -27,6 +29,7 @@ object AppConstants {
     const val CLIENT_NAME_TV = "TVHTML5"
     const val CLIENT_NAME_WEB = "WEB"
     const val CLIENT_NAME_MWEB = "MWEB"
+    const val CLIENT_NAME_KIDS = "TVHTML5_KIDS"
     const val CLIENT_NAME_EMBED = "TVHTML5_SIMPLY_EMBEDDED_PLAYER"
     const val CLIENT_NAME_ANDROID = "ANDROID"
     const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
@@ -49,6 +52,9 @@ object AppConstants {
 
     @JvmField
     val JSON_POST_DATA_TEMPLATE_ANDROID = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH)
+
+    @JvmField
+    val JSON_POST_DATA_TEMPLATE_KIDS = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_KIDS, CLIENT_VERSION_KIDS, CLIENT_SCREEN_WATCH)
 
     /**
      * Used when parsing video_info data

@@ -4,9 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
-import com.liskovsoft.youtubeapi.browse.v2.gen.getChips
-import com.liskovsoft.youtubeapi.browse.v2.gen.getSections
-import com.liskovsoft.youtubeapi.browse.v2.gen.getTitle
+import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.browse.v2.impl.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -27,6 +25,26 @@ object BrowseService2 {
             result.add(MediaGroupImpl(it, createOptions(MediaGroup.TYPE_HOME)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
             it.getSections()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplSection(it, createOptions(MediaGroup.TYPE_HOME))) }
             it.getChips()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplChip(it, createOptions(MediaGroup.TYPE_HOME))) }
+
+            result
+        }
+    }
+
+    @JvmStatic
+    fun getKidsHome(): List<MediaGroup?>? {
+        val kidsResult = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery())
+
+        return RetrofitHelper.get(kidsResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+            it.getRootSection()?.let { result.add(MediaGroupImplKidsSection(it, createOptions(MediaGroup.TYPE_KIDS_HOME))) }
+            it.getSections()?.forEach {
+                if (it?.getItems() == null && it?.getBrowseParams() != null) {
+                    val kidsResultNested = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(it.getBrowseParams()))
+                    RetrofitHelper.get(kidsResultNested)?.getRootSection()?.let {
+                        result.add(MediaGroupImplKidsSection(it, createOptions(MediaGroup.TYPE_KIDS_HOME)))
+                    }
+                }
+            }
 
             result
         }

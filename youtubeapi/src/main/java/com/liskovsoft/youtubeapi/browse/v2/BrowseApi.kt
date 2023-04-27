@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.BrowseResult
+import com.liskovsoft.youtubeapi.browse.v2.gen.BrowseResultKids
 import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationResult
 import com.liskovsoft.youtubeapi.browse.v2.gen.GuideResult
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
@@ -17,6 +18,14 @@ interface BrowseApi {
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getBrowseResult(@Body browseQuery: String?): Call<BrowseResult?>?
+
+    @Headers(
+        "Content-Type: application/json",
+        "User-Agent: " + DefaultHeaders.USER_AGENT_SAMSUNG_3,
+        "referer: https://www.youtube.com/tv/kids"
+    )
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    fun getBrowseResultKids(@Body browseQuery: String?): Call<BrowseResultKids?>?
 
     @Headers(
         "Content-Type: application/json",
@@ -40,5 +49,5 @@ interface BrowseApi {
         "referer: https://m.youtube.com/"
     )
     @POST("https://m.youtube.com/youtubei/v1/browse")
-    fun getBrowseResultAlt(@Body browseQuery: String?): Call<BrowseResult?>?
+    fun getBrowseResultMobile(@Body browseQuery: String?): Call<BrowseResult?>?
 }

@@ -9,7 +9,8 @@ data class NavigationEndpointItem(
     val openPopupAction: PopupActionItem?
 ) {
     data class BrowseEndpoint(
-        val browseId: String?
+        val browseId: String?,
+        val params: String?
     )
     data class PopupActionItem(
         val popup: Popup?

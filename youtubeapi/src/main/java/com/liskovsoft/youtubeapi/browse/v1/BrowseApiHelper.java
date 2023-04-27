@@ -6,6 +6,8 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class BrowseApiHelper {
     private static final String HOME = "\"browseId\":\"default\"";
+    private static final String KIDS_HOME = "\"browseId\":\"FEkids_home\"";
+    private static final String KIDS_HOME_PARAMS = "\"browseId\":\"FEkids_home\",\"params\":\"%s\"";
     private static final String WHAT_TO_WATCH = "\"browseId\":\"FEwhat_to_watch\"";
     private static final String GAMING = "\"browseId\":\"FEtopics_gaming\"";
     private static final String NEWS = "\"browseId\":\"FEtopics_news\"";
@@ -35,6 +37,14 @@ public class BrowseApiHelper {
 
     public static String getHomeQueryMWEB() {
         return ServiceHelper.createQueryMWeb(WHAT_TO_WATCH);
+    }
+
+    public static String getKidsHomeQuery() {
+        return ServiceHelper.createQueryKids(KIDS_HOME);
+    }
+
+    public static String getKidsHomeQuery(String params) {
+        return ServiceHelper.createQueryKids(String.format(KIDS_HOME_PARAMS, params));
     }
 
     public static String getSubscriptionsQuery() {

@@ -32,6 +32,15 @@ data class MediaGroupImplSection(
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
 }
 
+data class MediaGroupImplKidsSection(
+    private val anchoredSectionRenderer: AnchoredSectionRenderer,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): MediaGroupImplBase(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = anchoredSectionRenderer.getItems()
+    override fun getNextPageKeyInt(): String? = null
+    override fun getTitleInt(): String? = anchoredSectionRenderer.getTitle()
+}
+
 data class MediaGroupImplChip(
     private val chipCloudChipRenderer: ChipCloudChipRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()

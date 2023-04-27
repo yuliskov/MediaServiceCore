@@ -107,7 +107,15 @@ data class AnchoredSectionRenderer(
         val sectionListRenderer: SectionListRenderer?
     ) {
         data class SectionListRenderer(
-            val contents: List<ItemWrapper?>?
-        )
+            val contents: List<ContentItem?>?
+        ) {
+            data class ContentItem(
+                val itemSectionRenderer: ItemSectionRenderer?
+            ) {
+                data class ItemSectionRenderer(
+                    val contents: List<ItemWrapper?>?
+                )
+            }
+        }
     }
 }

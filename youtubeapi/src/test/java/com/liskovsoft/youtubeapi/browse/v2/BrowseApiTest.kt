@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
+import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImplKidsSection
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -139,6 +141,15 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testKidsMediaItemConversion() {
+        val kidsHome = getKidsHome()
+
+        val mediaGroup = MediaGroupImplKidsSection(kidsHome?.getRootSection()!!)
+
+        checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
+    }
+
+    @Test
     fun testThatGuideNotEmpty() {
         val guide = getGuide()
 
@@ -190,5 +201,11 @@ class BrowseApiTest {
         val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params))
 
         return RetrofitHelper.get(kidsResult)
+    }
+
+    private fun checkMediaItem(mediaItem: MediaItem) {
+        assertNotNull(mediaItem.title)
+        assertNotNull(mediaItem.secondTitle)
+        assertNotNull(mediaItem.videoId)
     }
 }

@@ -22,6 +22,7 @@ public class BrowseApiHelper {
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
     private static final String CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\"";
+    private static final String REELS = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\"";
     //private static final String HOME = "\"browseId\":\"FEtopics\"";
     //private static final String GAMING = "\"browseId\":\"FEtopics\",\"params\":\"-gIGZ2FtaW5n\"";
     //private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
@@ -110,6 +111,10 @@ public class BrowseApiHelper {
 
     public static String getGuideQuery() {
         return ServiceHelper.createQuery("");
+    }
+
+    public static String getReelsQuery() {
+        return ServiceHelper.createQuery(REELS);
     }
 
     public static boolean isGridChannel(String channelId) {

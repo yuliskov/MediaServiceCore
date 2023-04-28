@@ -157,6 +157,15 @@ class BrowseApiTest {
         assertTrue("Guide collapse contains channels", guide?.getCollapsibleItems()?.size ?: 0 > 20)
     }
 
+    @Test
+    fun testThatReelsNotEmpty() {
+        val reels = getReels()
+
+        assertNotNull("Contains basic info", reels?.getWatchEndpoint())
+        assertNotNull("Contains extended info", reels?.getPlayerHeader())
+        assertNotNull("Contains continuation info", reels?.sequenceContinuation)
+    }
+
     private fun checkContinuation(token: String?) {
         val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token))
 
@@ -201,6 +210,12 @@ class BrowseApiTest {
         val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params))
 
         return RetrofitHelper.get(kidsResult)
+    }
+
+    private fun getReels(): ReelResult? {
+        val reelsResult = mService?.getReelResult(BrowseApiHelper.getReelsQuery())
+
+        return RetrofitHelper.get(reelsResult)
     }
 
     private fun checkMediaItem(mediaItem: MediaItem) {

@@ -119,3 +119,19 @@ data class AnchoredSectionRenderer(
         }
     }
 }
+
+// Reel only. Basic data. No title or description.
+data class ReelWatchEndpoint(
+    val videoId: String?,
+    val playerParams: String?,
+    val params: String?,
+    val thumbnail: ThumbnailItem?
+)
+
+// Reel only. Extended data.
+data class ReelPlayerHeaderRenderer(
+    val reelTitleText: TextItem?,
+    val timestampText: TextItem?,
+    val channelNavigationEndpoint: NavigationEndpointItem?,
+    val channelThumbnail: ThumbnailItem?
+)

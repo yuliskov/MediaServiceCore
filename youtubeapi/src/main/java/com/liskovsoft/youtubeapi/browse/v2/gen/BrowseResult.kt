@@ -111,3 +111,25 @@ data class BrowseResultKids(
         }
     }
 }
+
+data class ReelResult(
+    val replacementEndpoint: ReplacementEndpoint?,
+    val overlay: Overlay?,
+    val sequenceContinuation: String?, // first continuation
+    val continuationEndpoint: NavigationEndpoint? // subsequent continuations
+) {
+    data class ReplacementEndpoint(
+        val reelWatchEndpoint: ReelWatchEndpoint?
+    )
+    data class Overlay(
+        val reelPlayerOverlayRenderer: ReelPlayerOverlayRenderer?
+    ) {
+        data class ReelPlayerOverlayRenderer(
+            val reelPlayerHeaderSupportedRenderers: ReelPlayerHeaderSupportedRenderers?
+        ) {
+            data class ReelPlayerHeaderSupportedRenderers(
+                val reelPlayerHeaderRenderer: ReelPlayerHeaderRenderer?
+            )
+        }
+    }
+}

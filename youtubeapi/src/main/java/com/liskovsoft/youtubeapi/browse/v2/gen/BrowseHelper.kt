@@ -76,3 +76,8 @@ fun AnchoredSectionRenderer.getTitle(): String? = title
 fun AnchoredSectionRenderer.getBrowseId(): String? = navigationEndpoint?.getBrowseId()
 fun AnchoredSectionRenderer.getBrowseParams(): String? = navigationEndpoint?.getBrowseParams()
 
+//////
+
+fun ReelResult.getWatchEndpoint(): ReelWatchEndpoint? = replacementEndpoint?.reelWatchEndpoint
+fun ReelResult.getPlayerHeader(): ReelPlayerHeaderRenderer? = overlay?.reelPlayerOverlayRenderer?.reelPlayerHeaderSupportedRenderers?.reelPlayerHeaderRenderer
+

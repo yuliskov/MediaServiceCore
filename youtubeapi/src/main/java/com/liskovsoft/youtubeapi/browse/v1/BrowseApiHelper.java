@@ -20,9 +20,11 @@ public class BrowseApiHelper {
     private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
     private static final String SUBSCRIBED_MUSIC_BROWSE_ID = "FEmusic_library_corpus_artists";
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
+    private static final String REEL_CONTINUATION = "\"sequenceParams\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
     private static final String CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\"";
-    private static final String REELS = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\"";
+    private static final String REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\"";
+    private static final String REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}";
     //private static final String HOME = "\"browseId\":\"FEtopics\"";
     //private static final String GAMING = "\"browseId\":\"FEtopics\",\"params\":\"-gIGZ2FtaW5n\"";
     //private static final String NEWS = "\"browseId\":\"FEtopics\",\"params\":\"-gINaGFwcGVuaW5nX25vdw%3D%3D\"";
@@ -113,8 +115,23 @@ public class BrowseApiHelper {
         return ServiceHelper.createQuery("");
     }
 
-    public static String getReelsQuery() {
-        return ServiceHelper.createQuery(REELS);
+    public static String getReelQuery() {
+        return ServiceHelper.createQuery(REEL);
+    }
+
+    public static String getReelDetailsQuery(String videoId, String params) {
+        String details = String.format(REEL_DETAILS, params, videoId);
+        return ServiceHelper.createQuery(details);
+    }
+
+    public static String getReelContinuationQuery(String sequenceParams) {
+        String continuation = String.format(REEL_CONTINUATION, sequenceParams);
+        return ServiceHelper.createQuery(continuation);
+    }
+
+    public static String getReelContinuation2Query(String nextPageKey) {
+        String continuation = String.format(CONTINUATION, nextPageKey);
+        return ServiceHelper.createQuery(continuation);
     }
 
     public static boolean isGridChannel(String channelId) {

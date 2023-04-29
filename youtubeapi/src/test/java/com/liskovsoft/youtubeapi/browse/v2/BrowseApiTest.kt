@@ -159,11 +159,27 @@ class BrowseApiTest {
 
     @Test
     fun testThatReelsNotEmpty() {
-        val reels = getReels()
+        val reel = getReel()
 
-        assertNotNull("Contains basic info", reels?.getWatchEndpoint())
-        assertNotNull("Contains extended info", reels?.getPlayerHeader())
-        assertNotNull("Contains continuation info", reels?.sequenceContinuation)
+        assertNotNull("Contains basic info", reel?.getWatchEndpoint())
+        assertNotNull("Contains extended info", reel?.getPlayerHeader())
+        assertNotNull("Contains continuation info", reel?.sequenceContinuation)
+    }
+
+    @Test
+    fun testThatReelDetailsNotEmpty() {
+        val reels = getReel()
+
+        val continuation = getReelContinuation(reels?.sequenceContinuation)
+
+        val firstEntry = continuation?.getItems()?.getOrNull(0)
+        val details = getReelDetails(firstEntry?.videoId, firstEntry?.params)
+
+        // Not present
+        //assertNotNull("Contains basic info", details?.getWatchEndpoint())
+        assertNotNull("Contains extended info", details?.getPlayerHeader())
+        // Not present
+        //assertNotNull("Contains continuation info", details?.continuationEndpoint)
     }
 
     private fun checkContinuation(token: String?) {
@@ -212,10 +228,28 @@ class BrowseApiTest {
         return RetrofitHelper.get(kidsResult)
     }
 
-    private fun getReels(): ReelResult? {
-        val reelsResult = mService?.getReelResult(BrowseApiHelper.getReelsQuery())
+    private fun getReel(): ReelResult? {
+        val reelsResult = mService?.getReelResult(BrowseApiHelper.getReelQuery())
 
         return RetrofitHelper.get(reelsResult)
+    }
+
+    private fun getReelDetails(videoId: String?, params: String?): ReelResult? {
+        val details = mService?.getReelResult(BrowseApiHelper.getReelDetailsQuery(videoId, params))
+
+        return RetrofitHelper.get(details)
+    }
+
+    private fun getReelContinuation(sequenceParams: String?): ReelContinuationResult? {
+        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(sequenceParams))
+
+        return RetrofitHelper.get(continuation)
+    }
+
+    private fun getReelContinuation2(nextPageKey: String?): ReelContinuationResult? {
+        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey))
+
+        return RetrofitHelper.get(continuation)
     }
 
     private fun checkMediaItem(mediaItem: MediaItem) {

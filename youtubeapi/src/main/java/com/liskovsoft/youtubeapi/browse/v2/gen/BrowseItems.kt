@@ -64,12 +64,8 @@ data class RichItemRenderer(
 
 // Common item (WhatToWatch, Subscriptions)
 data class ContinuationItemRenderer(
-    val continuationEndpoint: ContinuationEndpoint?
-) {
-    data class ContinuationEndpoint(
-        val continuationCommand: ContinuationCommand?
-    )
-}
+    val continuationEndpoint: NavigationEndpoint?
+)
 
 data class ContinuationCommand(
     val token: String?

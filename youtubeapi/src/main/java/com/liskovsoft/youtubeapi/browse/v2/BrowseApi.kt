@@ -55,4 +55,12 @@ interface BrowseApi {
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_item_watch")
     fun getReelResult(@Body reelQuery: String?): Call<ReelResult?>?
+
+    @Headers(
+        "Content-Type: application/json",
+        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "referer: https://www.youtube.com/"
+    )
+    @POST("https://www.youtube.com/youtubei/v1/reel/reel_watch_sequence")
+    fun getReelContinuationResult(@Body reelQuery: String?): Call<ReelContinuationResult?>?
 }

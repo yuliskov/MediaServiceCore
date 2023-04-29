@@ -1,9 +1,5 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
-import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
-import com.liskovsoft.youtubeapi.common.models.gen.TextItem
-
 /**
  * Based on:
  *
@@ -131,5 +127,18 @@ data class ReelResult(
                 val reelPlayerHeaderRenderer: ReelPlayerHeaderRenderer?
             )
         }
+    }
+}
+
+data class ReelContinuationResult(
+    val entries: List<EntryItem?>?,
+    val continuationEndpoint: NavigationEndpoint?
+) {
+    data class EntryItem(
+        val command: Command?
+    ) {
+        data class Command(
+            val reelWatchEndpoint: ReelWatchEndpoint?
+        )
     }
 }

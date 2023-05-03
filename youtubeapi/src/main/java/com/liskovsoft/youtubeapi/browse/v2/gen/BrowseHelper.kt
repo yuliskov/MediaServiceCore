@@ -10,8 +10,7 @@ fun BrowseResult.getContinuationToken(): String? = getListContents()?.firstNotNu
     getGridContents()?.lastOrNull()?.getContinuationToken()
 fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
 fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
-private fun BrowseResult.getRootContent() = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(0)
-    ?.tabRenderer?.content
+private fun BrowseResult.getRootContent() = contents?.twoColumnBrowseResultsRenderer?.tabs?.firstNotNullOfOrNull { it?.tabRenderer?.content }
 private fun BrowseResult.getListContents() = getRootContent()?.sectionListRenderer?.contents
 private fun BrowseResult.getGridContents() = getRootContent()?.richGridRenderer?.contents
 private fun BrowseResult.getChipContents() = getRootContent()?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents

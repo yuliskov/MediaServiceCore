@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.browse.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImplGuide
 
 data class MediaGroupImpl(
@@ -11,6 +12,15 @@ data class MediaGroupImpl(
 ): MediaGroupImplBase(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = browseResult.getItems()
     override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
+    override fun getTitleInt(): String? = null
+}
+
+data class MediaGroupImplLive(
+    private val browseResult: BrowseResult,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): MediaGroupImplBase(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = browseResult.getItems()?.filter { it?.isLive() == true }
+    override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null
 }
 

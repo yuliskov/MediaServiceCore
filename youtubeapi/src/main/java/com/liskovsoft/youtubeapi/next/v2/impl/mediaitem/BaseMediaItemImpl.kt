@@ -59,6 +59,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val feedbackTokenItem2: String? = null
     protected open val percentWatchedItem: Int? = null
     protected open val hasNewContentItem: Boolean? = null
+    protected open val hasUploadsItem: Boolean? = null
 
     protected companion object {
         var sId: Int = 0
@@ -182,6 +183,10 @@ open class BaseMediaItemImpl : MediaItem {
         return hasNewContentItem ?: false
     }
 
+    override fun hasUploads(): Boolean {
+        return hasUploadsItem ?: false
+    }
+
     override fun getPercentWatched(): Int {
         return percentWatchedItem ?: -1
     }
@@ -208,10 +213,6 @@ open class BaseMediaItemImpl : MediaItem {
 
     override fun getVideoPreviewUrl(): String? {
         return previewUrl
-    }
-
-    override fun hasUploads(): Boolean {
-        return false
     }
 
     override fun getClickTrackingParams(): String? {

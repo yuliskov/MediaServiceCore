@@ -97,10 +97,12 @@ fun VideoItem.getChannelId() =
     menu?.getBrowseId()
 fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
 fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
-fun VideoItem.isLive() = OLD_BADGE_STYLE_LIVE == badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
-fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
-fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
+fun VideoItem.isLive(): Boolean = OLD_BADGE_STYLE_LIVE == getOldBadgeStyle() || BADGE_STYLE_LIVE == getBadgeStyle()
+fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
+fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle()
 fun VideoItem.getFeedbackTokens() = menu?.getFeedbackTokens()
+private fun VideoItem.getOldBadgeStyle() = badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
+private fun VideoItem.getBadgeStyle() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 
 ////////////
 

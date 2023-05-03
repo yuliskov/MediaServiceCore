@@ -43,4 +43,5 @@ data class MediaItemImplGuide(val guideItem: GuideItem): BaseMediaItemImpl() {
     override val cardThumbImageUrl by lazy { guideItem.getThumbnails()?.getOptimalResThumbnailUrl() }
     override val backgroundThumbImageUrl by lazy { guideItem.getThumbnails()?.getHighResThumbnailUrl() }
     override val hasNewContentItem by lazy { guideItem.hasNewContent() }
+    override val hasUploadsItem = true
 }

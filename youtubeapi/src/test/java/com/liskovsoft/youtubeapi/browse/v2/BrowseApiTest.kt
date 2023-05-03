@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
+import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
 import org.junit.Before
@@ -182,6 +183,22 @@ class BrowseApiTest {
         //assertNotNull("Contains continuation info", details?.continuationEndpoint)
     }
 
+    @Test
+    fun testThatChannelVideosTabNotEmpty() {
+        val videos = getChannelVideos("UC1vCu8GeDC7_UfY7PKqsAzg")
+
+        assertTrue("Contains videos", videos?.getItems()?.size ?: 0 > 10)
+        assertNotNull("Has continuation", videos?.getContinuationToken())
+    }
+
+    @Test
+    fun testThatChannelLiveTabNotEmpty() {
+        val videos = getChannelLive("UCjLdcql-zKjeviGljM1RMHA")
+
+        assertTrue("Contains videos", videos?.getItems()?.filter { it?.isLive() == true }?.size ?: 0 > 1)
+        assertNotNull("Has continuation", videos?.getContinuationToken())
+    }
+
     private fun checkContinuation(token: String?) {
         val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token))
 
@@ -206,6 +223,18 @@ class BrowseApiTest {
 
     private fun getAltHome(): BrowseResult? {
         val homeResult = mService?.getBrowseResultMobile(BrowseApiHelper.getHomeQueryMWEB())
+
+        return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getChannelVideos(channelId: String?): BrowseResult? {
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
+
+        return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getChannelLive(channelId: String?): BrowseResult? {
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId))
 
         return RetrofitHelper.get(homeResult)
     }

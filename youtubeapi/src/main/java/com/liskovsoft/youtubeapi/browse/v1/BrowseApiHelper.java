@@ -23,6 +23,8 @@ public class BrowseApiHelper {
     private static final String REEL_CONTINUATION = "\"sequenceParams\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
     private static final String CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\"";
+    private static final String CHANNEL_VIDEOS = "\"browseId\":\"%s\",\"params\":\"EgZ2aWRlb3PyBgQKAjoA\"";
+    private static final String CHANNEL_LIVE = "\"browseId\":\"%s\",\"params\":\"EgdzdHJlYW1z8gYECgJ6AA%%3D%%3D\"";
     private static final String REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\"";
     private static final String REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}";
     //private static final String HOME = "\"browseId\":\"FEtopics\"";
@@ -40,6 +42,14 @@ public class BrowseApiHelper {
 
     public static String getHomeQueryMWEB() {
         return ServiceHelper.createQueryMWeb(WHAT_TO_WATCH);
+    }
+
+    public static String getChannelVideosQueryWeb(String channelId) {
+        return ServiceHelper.createQueryWeb(String.format(CHANNEL_VIDEOS, channelId));
+    }
+
+    public static String getChannelLiveQueryWeb(String channelId) {
+        return ServiceHelper.createQueryWeb(String.format(CHANNEL_LIVE, channelId));
     }
 
     public static String getKidsHomeQuery() {

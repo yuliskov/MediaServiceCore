@@ -64,7 +64,8 @@ data class MediaGroupImplChip(
 
 data class MediaGroupImplGuide(
     private val guideResult: GuideResult,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val sort: Boolean = false
 ): MediaGroupImplBase(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = null
@@ -79,6 +80,8 @@ data class MediaGroupImplGuide(
         guideResult.getCollapsibleItems()?.forEach {
             it?.let { result.add(MediaItemImplGuide(it)) }
         }
+
+        if (sort) result.sortBy { it.title }
 
         result
     }

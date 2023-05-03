@@ -142,47 +142,46 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsUpdate() {
+    public MediaGroup getSubscribedChannelsByUpdate() {
         checkSigned();
 
-        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsUpdate();
+        List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsUpdate();
+        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+    }
+
+    @Override
+    public MediaGroup getSubscribedChannelsByName() {
+        checkSigned();
+
+        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsByName();
+        //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+
+        return BrowseService2.getSubscribedChannelsByName();
+    }
+
+    @Override
+    public MediaGroup getSubscribedChannelsByViewed() {
+        checkSigned();
+
+        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsLastViewed();
         //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
 
         return BrowseService2.getSubscribedChannels();
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsSorted() {
-        checkSigned();
-
-        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsAZ();
-        //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
-
-        return BrowseService2.getSubscribedChannelsSorted();
+    public Observable<MediaGroup> getSubscribedChannelsByUpdateObserve() {
+        return RxHelper.fromNullable(this::getSubscribedChannelsByUpdate);
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsLastViewed() {
-        checkSigned();
-
-        List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsLastViewed();
-
-        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+    public Observable<MediaGroup> getSubscribedChannelsByNameObserve() {
+        return RxHelper.fromNullable(this::getSubscribedChannelsByName);
     }
 
     @Override
-    public Observable<MediaGroup> getSubscribedChannelsUpdateObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsUpdate);
-    }
-
-    @Override
-    public Observable<MediaGroup> getSubscribedChannelsSortedObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsSorted);
-    }
-
-    @Override
-    public Observable<MediaGroup> getSubscribedChannelsLastViewedObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsLastViewed);
+    public Observable<MediaGroup> getSubscribedChannelsByViewedObserve() {
+        return RxHelper.fromNullable(this::getSubscribedChannelsByViewed);
     }
 
     //@Override

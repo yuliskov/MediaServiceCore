@@ -65,7 +65,7 @@ object BrowseService2 {
     }
 
     @JvmStatic
-    fun getSubscribedChannelsSorted(): MediaGroup? {
+    fun getSubscribedChannelsByName(): MediaGroup? {
         val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let { MediaGroupImplGuide(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), true) }

@@ -54,7 +54,7 @@ public class BrowseService {
         return getGridTab(BrowseApiHelper.getSubscriptionsQuery());
     }
 
-    public List<GridTab> getSubscribedChannelsAZ() {
+    public List<GridTab> getSubscribedChannelsByName() {
         List<GridTab> gridTabs = getSubscribedChannelsSection();
 
         return getPart(gridTabs, 1);
@@ -80,16 +80,16 @@ public class BrowseService {
     }
 
     public List<GridTab> getSubscribedChannelsUpdate() {
-        List<GridTab> subscribedChannelsAZ = getSubscribedChannelsAZ();
+        List<GridTab> subscribedChannelsByName = getSubscribedChannelsByName();
 
-        if (subscribedChannelsAZ == null) {
+        if (subscribedChannelsByName == null) {
             return null;
         }
 
-        Collections.sort(subscribedChannelsAZ, (o1, o2) ->
+        Collections.sort(subscribedChannelsByName, (o1, o2) ->
                 o1.hasNewContent() && !o2.hasNewContent() ? -1 : !o1.hasNewContent() && o2.hasNewContent() ? 1 : 0);
 
-        return subscribedChannelsAZ;
+        return subscribedChannelsByName;
     }
 
     private List<GridTab> getSubscribedChannelsSection() {

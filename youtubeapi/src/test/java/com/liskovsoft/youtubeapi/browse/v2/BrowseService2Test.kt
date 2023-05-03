@@ -49,5 +49,11 @@ class BrowseService2Test {
         val channels = BrowseService2.getSubscribedChannels()
 
         assertTrue("Channel list not empty", channels?.mediaItems?.size ?: 0 > 30)
+
+        assertTrue("Contains new content",
+            channels?.mediaItems?.fold(0) { acc, mediaItem -> acc + if (mediaItem.hasNewContent()) 1 else 0 } ?: 0 > 3
+        )
+
+        BrowseTestHelper.checkGuideMediaItem(channels?.mediaItems?.getOrNull(0)!!)
     }
 }

@@ -146,7 +146,7 @@ class BrowseApiTest {
 
         val mediaGroup = MediaGroupImplKidsSection(kidsHome?.getRootSection()!!)
 
-        checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
+        BrowseTestHelper.checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
     }
 
     @Test
@@ -250,11 +250,5 @@ class BrowseApiTest {
         val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey))
 
         return RetrofitHelper.get(continuation)
-    }
-
-    private fun checkMediaItem(mediaItem: MediaItem) {
-        assertNotNull(mediaItem.title)
-        assertNotNull(mediaItem.secondTitle)
-        assertNotNull(mediaItem.videoId)
     }
 }

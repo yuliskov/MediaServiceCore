@@ -86,7 +86,8 @@ data class GuideItem(
     val thumbnail: ThumbnailItem?,
     val formattedTitle: TextItem?,
     val navigationEndpoint: NavigationEndpointItem?,
-    val badges: Badges?
+    val badges: Badges?,
+    val presentationStyle: String?
 ) {
     data class Badges(
         val liveBroadcasting: Boolean?

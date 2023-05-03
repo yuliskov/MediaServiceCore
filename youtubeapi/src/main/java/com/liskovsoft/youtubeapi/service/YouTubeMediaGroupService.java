@@ -169,6 +169,13 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     @Override
+    public MediaGroup getSubscribedChannelsV2() {
+        checkSigned();
+
+        return BrowseService2.getSubscribedChannels();
+    }
+
+    @Override
     public Observable<MediaGroup> getSubscribedChannelsUpdateObserve() {
         return RxHelper.fromNullable(this::getSubscribedChannelsUpdate);
     }
@@ -181,6 +188,11 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     @Override
     public Observable<MediaGroup> getSubscribedChannelsLastViewedObserve() {
         return RxHelper.fromNullable(this::getSubscribedChannelsLastViewed);
+    }
+
+    @Override
+    public Observable<MediaGroup> getSubscribedChannelsV2Observe() {
+        return RxHelper.fromNullable(this::getSubscribedChannelsV2);
     }
 
     //@Override

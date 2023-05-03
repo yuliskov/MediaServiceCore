@@ -58,6 +58,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val feedbackTokenItem: String? = null
     protected open val feedbackTokenItem2: String? = null
     protected open val percentWatchedItem: Int? = null
+    protected open val hasNewContentItem: Boolean? = null
 
     protected companion object {
         var sId: Int = 0
@@ -177,6 +178,10 @@ open class BaseMediaItemImpl : MediaItem {
         return isMovieItem ?: false
     }
 
+    override fun hasNewContent(): Boolean {
+        return hasNewContentItem ?: false
+    }
+
     override fun getPercentWatched(): Int {
         return percentWatchedItem ?: -1
     }
@@ -191,10 +196,6 @@ open class BaseMediaItemImpl : MediaItem {
 
     override fun getFeedbackToken2(): String? {
         return feedbackTokenItem2
-    }
-
-    override fun hasNewContent(): Boolean {
-        return false
     }
 
     override fun getContentType(): String? {

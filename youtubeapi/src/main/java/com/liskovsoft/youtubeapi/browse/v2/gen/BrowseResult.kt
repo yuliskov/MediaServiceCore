@@ -18,6 +18,7 @@ data class BrowseResult(
              val tabRenderer: TabRenderer?
             ) {
                 data class TabRenderer(
+                    val title: String?,
                     val content: Content?
                 ) {
                    data class Content(

@@ -13,7 +13,7 @@ data class MediaGroupImpl(
 ): MediaGroupImplBase(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = browseResult.getItems()
     override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
-    override fun getTitleInt(): String? = null
+    override fun getTitleInt(): String? = browseResult.getTitle()
 }
 
 data class MediaGroupImplLive(
@@ -23,7 +23,7 @@ data class MediaGroupImplLive(
     override fun getItemWrappersInt(): List<ItemWrapper?>? =
         browseResult.getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }
     override fun getNextPageKeyInt(): String? = null
-    override fun getTitleInt(): String? = null
+    override fun getTitleInt(): String? = browseResult.getTitle()
 }
 
 data class MediaGroupImplContinuation(

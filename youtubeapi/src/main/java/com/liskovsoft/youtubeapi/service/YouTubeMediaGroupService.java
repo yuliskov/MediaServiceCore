@@ -256,10 +256,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
         return mediaItem.getReloadPageKey() != null ?
                 RxHelper.fromNullable(() -> getGroup(mediaItem)) :
-                RxHelper.fromMultiNullable(
-                        () -> BrowseService2.getChannelLive(mediaItem.getChannelId()),
-                        () -> BrowseService2.getChannelVideos(mediaItem.getChannelId())
-                );
+                RxHelper.fromNullable(() -> BrowseService2.getChannelVideosFull(mediaItem.getChannelId()));
     }
 
     @Override

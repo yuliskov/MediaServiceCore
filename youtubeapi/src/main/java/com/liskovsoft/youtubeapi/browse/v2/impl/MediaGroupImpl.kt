@@ -3,15 +3,14 @@ package com.liskovsoft.youtubeapi.browse.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
-import com.liskovsoft.youtubeapi.common.models.gen.isLive
-import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImplGuide
 
 data class MediaGroupImpl(
     private val browseResult: BrowseResult,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val liveResult: BrowseResult? = null
 ): MediaGroupImplBase(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?>? = browseResult.getItems()
+    override fun getItemWrappersInt(): List<ItemWrapper?> = listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
     override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
     override fun getTitleInt(): String? = browseResult.getTitle()
 }
@@ -20,8 +19,7 @@ data class MediaGroupImplLive(
     private val browseResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): MediaGroupImplBase(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?>? =
-        browseResult.getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = browseResult.getLiveItems()
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = browseResult.getTitle()
 }

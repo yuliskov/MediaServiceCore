@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubePlaylistInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
@@ -172,6 +173,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         checkSigned();
+
+        // Continue special embedded section group
+        if (mediaGroup instanceof YouTubeMediaGroup) {
+            return YouTubeMediaGroupService.instance().continueGroup(mediaGroup);
+        }
 
         return mWatchNextService.continueGroup(mediaGroup);
     }

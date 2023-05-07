@@ -11,9 +11,10 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 
 class WatchNextService private constructor() {
-    private var mWatchNextManager = RetrofitHelper.withGson(WatchNextApi::class.java)
+    private var mWatchNextApi = RetrofitHelper.withGson(WatchNextApi::class.java)
     private val mAppService = AppService.instance();
 
     fun getMetadata(videoId: String): MediaItemMetadata? {
@@ -31,7 +32,7 @@ class WatchNextService private constructor() {
     fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         val watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
 
-        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult) else null
+        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, getDislikesResult(videoId)) else null
     }
 
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {
@@ -59,13 +60,23 @@ class WatchNextService private constructor() {
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {
-        val wrapper = mWatchNextManager.getWatchNextResult(query, mAppService.visitorId)
+        val wrapper = mWatchNextApi.getWatchNextResult(query, mAppService.visitorId)
 
         return RetrofitHelper.get(wrapper)
     }
 
     private fun continueWatchNext(query: String): WatchNextResultContinuation? {
-        val wrapper = mWatchNextManager.continueWatchNextResult(query, mAppService.visitorId)
+        val wrapper = mWatchNextApi.continueWatchNextResult(query, mAppService.visitorId)
+
+        return RetrofitHelper.get(wrapper)
+    }
+
+    private fun getDislikesResult(videoId: String?): DislikesResult? {
+        if (videoId == null) {
+            return null
+        }
+
+        val wrapper = mWatchNextApi.getDislikes(videoId)
 
         return RetrofitHelper.get(wrapper)
     }
@@ -73,8 +84,8 @@ class WatchNextService private constructor() {
     /**
      * For testing (mocking) purposes only
      */
-    fun setWatchNextManager(watchNextApi: WatchNextApi) {
-        mWatchNextManager = watchNextApi
+    fun setWatchNextApi(watchNextApi: WatchNextApi) {
+        mWatchNextApi = watchNextApi
     }
 
     companion object {

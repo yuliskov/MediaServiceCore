@@ -1,12 +1,10 @@
 package com.liskovsoft.youtubeapi.next.v2
 
+import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface WatchNextApi {
     @Headers("Content-Type: application/json")
@@ -24,4 +22,7 @@ interface WatchNextApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
     fun continueWatchNextResult(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResultContinuation?>?
+
+    @GET("https://returnyoutubedislikeapi.com/votes")
+    fun getDislikes(@Query("videoId") videoId: String?): Call<DislikesResult?>?
 }

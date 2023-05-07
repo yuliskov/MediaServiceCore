@@ -195,12 +195,12 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public String getLikesCount() {
+    public String getLikeCount() {
         return mLikesCount;
     }
 
     @Override
-    public String getDislikesCount() {
+    public String getDislikeCount() {
         return mDislikesCount;
     }
 

@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
@@ -12,7 +13,7 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
-data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaItemMetadata {
+data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val dislikesResult: DislikesResult? = null) : MediaItemMetadata {
     private val channelIdItem by lazy {
         videoDetails?.getChannelId() ?: videoOwner?.getChannelId() ?: channelOwner?.getChannelId()
     }
@@ -153,6 +154,14 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         }
     }
 
+    private val likeCountItem by lazy {
+        videoMetadata?.getLikeCount()?.let { "$it ${Helpers.THUMB_UP}" }
+    }
+
+    private val dislikeCountItem by lazy {
+        dislikesResult?.getDislikeCount()?.let { "$it ${Helpers.THUMB_DOWN}" }
+    }
+
     override fun getTitle(): String? {
         return videoTitle
     }
@@ -229,20 +238,20 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult) : MediaIt
         return likeStatusItem
     }
 
+    override fun getLikeCount(): String? {
+        return likeCountItem
+    }
+
+    override fun getDislikeCount(): String? {
+        return dislikeCountItem
+    }
+
     override fun getSuggestions(): List<MediaGroup?>? {
         return suggestionList
     }
 
     override fun getPlaylistInfo(): PlaylistInfo? {
         return playlistInfoItem
-    }
-
-    override fun getLikesCount(): String? {
-        return null
-    }
-
-    override fun getDislikesCount(): String? {
-        return null
     }
 
     override fun getChapters(): List<ChapterItem>? {

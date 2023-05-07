@@ -25,11 +25,11 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
 
     private val nestedCommentKeyItem by lazy { commentRenderer?.getContinuationKey() }
 
-    private val repliesCountItem by lazy { commentRenderer?.getContinuationLabel() }
+    private val replyCountItem by lazy { commentRenderer?.getContinuationLabel() }
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
 
-    private val likesCountItem by lazy { commentRenderer?.voteCount?.getText()?.let { "$it ${Helpers.THUMB_UP}" } }
+    private val likeCountItem by lazy { commentRenderer?.voteCount?.getText()?.let { "$it ${Helpers.THUMB_UP}" } }
 
     override fun getId(): String? = idItem
 
@@ -45,7 +45,7 @@ data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentI
 
     override fun isLiked(): Boolean = isLikedItem
 
-    override fun getLikesCount(): String? = likesCountItem
+    override fun getLikeCount(): String? = likeCountItem
 
-    override fun getRepliesCount(): String? = repliesCountItem
+    override fun getReplyCount(): String? = replyCountItem
 }

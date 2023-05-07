@@ -13,8 +13,8 @@ public interface MediaItemMetadata {
     String getAuthor();
     String getAuthorImageUrl();
     String getViewCount();
-    String getLikesCount();
-    String getDislikesCount();
+    String getLikeCount();
+    String getDislikeCount();
     String getPublishedDate();
     String getVideoId();
     MediaItem getNextVideo();

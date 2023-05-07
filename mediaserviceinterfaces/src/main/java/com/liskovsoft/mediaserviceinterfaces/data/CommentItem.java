@@ -17,7 +17,7 @@ public interface CommentItem {
     String getNestedCommentsKey();
     boolean isLiked();
     @Nullable
-    String getLikesCount();
+    String getLikeCount();
     @Nullable
-    String getRepliesCount();
+    String getReplyCount();
 }

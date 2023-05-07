@@ -142,7 +142,8 @@ data class VideoMetadataItem(
             val likeButtonRenderer: LikeButtonRenderer?
     ) {
         data class LikeButtonRenderer(
-                val likeStatus: String?
+                val likeStatus: String?,
+                val likeCountText: TextItem?
         )
     }
 

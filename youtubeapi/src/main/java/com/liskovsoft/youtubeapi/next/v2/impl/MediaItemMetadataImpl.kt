@@ -155,7 +155,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val disli
     }
 
     private val likeCountItem by lazy {
-        videoMetadata?.getLikeCount()?.let { "$it ${Helpers.THUMB_UP}" }
+        dislikesResult?.getLikeCount()?.let { "$it ${Helpers.THUMB_UP}" }
     }
 
     private val dislikeCountItem by lazy {

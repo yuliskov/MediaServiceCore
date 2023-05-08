@@ -19,6 +19,7 @@ public interface MediaGroupService {
     MediaGroup getRecommended();
     MediaGroup getHistory();
     List<MediaGroup> getHome();
+    MediaGroup getSubscribedChannels();
     MediaGroup getSubscribedChannelsByUpdate();
     MediaGroup getSubscribedChannelsByName();
     MediaGroup getSubscribedChannelsByViewed();
@@ -55,6 +56,7 @@ public interface MediaGroupService {
     Observable<List<MediaGroup>> getChannelObserve(MediaItem item);
     Observable<List<MediaGroup>> getPlaylistsObserve();
     Observable<MediaGroup> getEmptyPlaylistsObserve();
+    Observable<MediaGroup> getSubscribedChannelsObserve();
     Observable<MediaGroup> getSubscribedChannelsByUpdateObserve();
     Observable<MediaGroup> getSubscribedChannelsByNameObserve();
     Observable<MediaGroup> getSubscribedChannelsByViewedObserve();

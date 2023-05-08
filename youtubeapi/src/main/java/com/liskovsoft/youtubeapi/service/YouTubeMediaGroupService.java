@@ -150,6 +150,13 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     @Override
+    public MediaGroup getSubscribedChannels() {
+        checkSigned();
+
+        return BrowseService2.getSubscribedChannels();
+    }
+
+    @Override
     public MediaGroup getSubscribedChannelsByName() {
         checkSigned();
 
@@ -163,10 +170,13 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     public MediaGroup getSubscribedChannelsByViewed() {
         checkSigned();
 
-        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsLastViewed();
-        //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+        List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsLastViewed();
+        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+    }
 
-        return BrowseService2.getSubscribedChannels();
+    @Override
+    public Observable<MediaGroup> getSubscribedChannelsObserve() {
+        return RxHelper.fromNullable(this::getSubscribedChannels);
     }
 
     @Override

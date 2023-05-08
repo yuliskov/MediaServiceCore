@@ -327,7 +327,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         for (MediaGroup group : groups) {
             // Load chips
             if (group != null && group.isEmpty()) {
-                List<MediaGroup> sections = BrowseService2.continueChip(group);
+                List<MediaGroup> sections = BrowseService2.continueEmptyGroup(group);
 
                 if (sections != null) {
                     result.addAll(sections);
@@ -355,6 +355,17 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
                 emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
             }
+        });
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getTrendingObserve() {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            List<MediaGroup> sections = BrowseService2.getTrending();
+
+            emitGroups2(emitter, sections, MediaGroup.TYPE_TRENDING);
         });
     }
 
@@ -445,7 +456,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         } else {
             for (MediaGroup group : groups) { // Preserve positions
                 if (group != null && group.isEmpty()) { // Contains Chips (nested sections)?
-                    List<MediaGroup> sections = BrowseService2.continueChip(group);
+                    List<MediaGroup> sections = BrowseService2.continueEmptyGroup(group);
 
                     if (sections != null) {
                         emitter.onNext(sections);

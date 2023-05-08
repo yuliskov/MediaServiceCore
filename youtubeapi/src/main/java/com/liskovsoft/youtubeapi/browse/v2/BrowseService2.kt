@@ -15,19 +15,12 @@ object BrowseService2 {
 
     @JvmStatic
     fun getHome(): List<MediaGroup?>? {
-        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getHomeQueryWeb())
+        return getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
+    }
 
-        return RetrofitHelper.get(browseResult)?.let {
-            val result = mutableListOf<MediaGroup?>()
-
-            // First chip is always empty and corresponds to current result.
-            // Also title used as id in continuation. No good.
-            result.add(MediaGroupImpl(it, createOptions(MediaGroup.TYPE_HOME)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
-            it.getSections()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplSection(it, createOptions(MediaGroup.TYPE_HOME))) }
-            it.getChips()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplChip(it, createOptions(MediaGroup.TYPE_HOME))) }
-
-            result
-        }
+    @JvmStatic
+    fun getTrending(): List<MediaGroup?>? {
+        return getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING)
     }
 
     @JvmStatic
@@ -122,7 +115,28 @@ object BrowseService2 {
     }
 
     @JvmStatic
-    fun continueChip(group: MediaGroup?): List<MediaGroup?>? {
+    fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
+        if (group?.params != null && group.channelId != null) {
+            return continueTab(group)?.let { listOf(it) }
+        } else if (group?.nextPageKey != null) {
+            return continueChip(group)
+        }
+
+        return null
+    }
+
+    private fun continueTab(group: MediaGroup?): MediaGroup? {
+        if (group?.params == null || group.channelId == null) {
+            return null
+        }
+
+        val browseResult =
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(group.channelId, group.params))
+
+        return RetrofitHelper.get(browseResult)?.let { MediaGroupImpl(it, createOptions(group.type)).apply { title = group.title } }
+    }
+
+    private fun continueChip(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey == null) {
             return null
         }
@@ -155,5 +169,23 @@ object BrowseService2 {
             removeUpcoming,
             groupType
         )
+    }
+
+    private fun getBrowseRows(query: String, sectionType: Int): List<MediaGroup?>? {
+        val browseResult = mBrowseApi.getBrowseResult(query)
+
+        return RetrofitHelper.get(browseResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+
+            // First chip is always empty and corresponds to current result.
+            // Also title used as id in continuation. No good.
+            // NOTE: First tab on home page has not title.
+            result.add(MediaGroupImpl(it, createOptions(sectionType)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
+            it.getTabs()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplTab(it, createOptions(sectionType))) }
+            it.getSections()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplSection(it, createOptions(sectionType))) }
+            it.getChips()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplChip(it, createOptions(sectionType))) }
+
+            result
+        }
     }
 }

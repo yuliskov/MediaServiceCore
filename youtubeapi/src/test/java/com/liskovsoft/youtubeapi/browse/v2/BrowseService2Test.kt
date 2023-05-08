@@ -56,4 +56,11 @@ class BrowseService2Test {
 
         BrowseTestHelper.checkGuideMediaItem(channels?.mediaItems?.getOrNull(0)!!)
     }
+
+    @Test
+    fun testThatTrendingNotEmpty() {
+        val trending = BrowseService2.getTrending()
+
+        assertTrue("Trending not empty", trending?.get(0)?.mediaItems?.size ?: 0 > 10)
+    }
 }

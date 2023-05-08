@@ -3,6 +3,8 @@ package com.liskovsoft.youtubeapi.browse.v2.impl
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
+import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImplGuide
 
 data class MediaGroupImpl(
@@ -40,6 +42,17 @@ data class MediaGroupImplSection(
     override fun getItemWrappersInt(): List<ItemWrapper?>? = richSectionRenderer.getItems()
     override fun getNextPageKeyInt(): String? = richSectionRenderer.getContinuationToken()
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
+}
+
+data class MediaGroupImplTab(
+    private val tabRenderer: TabRenderer,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): MediaGroupImplBase(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = tabRenderer.getItems()
+    override fun getNextPageKeyInt(): String? = tabRenderer.getContinuationToken()
+    override fun getTitleInt(): String? = tabRenderer.getTitle()
+    override fun getChannelIdInt(): String? = tabRenderer.endpoint?.getBrowseId()
+    override fun getParamsInt(): String? = tabRenderer.endpoint?.getBrowseParams()
 }
 
 data class MediaGroupImplKidsSection(

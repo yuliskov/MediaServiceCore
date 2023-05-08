@@ -2,22 +2,27 @@ package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
-fun BrowseResult.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
-    getGridContents()?.map { it?.getItem() }
+fun BrowseResult.getItems(): List<ItemWrapper?>? = getRootTab()?.getItems()
 fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isUpcoming() }
-fun BrowseResult.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
+fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
+fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
+fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getGridContents()?.mapNotNull { it?.richSectionRenderer }
+fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
+fun BrowseResult.getTitle(): String? = getRootTab()?.title
+private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it?.content != null) it else null }
+
+/////
+
+fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
+    getGridContents()?.map { it?.getItem() }
+fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
         it?.getContinuationToken()
     } ?:
     getGridContents()?.lastOrNull()?.getContinuationToken()
-fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
-fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
-fun BrowseResult.getTitle(): String? = getRootTab()?.title
-private fun BrowseResult.getRootTab() =
-    contents?.twoColumnBrowseResultsRenderer?.tabs?.firstNotNullOfOrNull { if (it?.tabRenderer?.content != null) it.tabRenderer else null }
-private fun BrowseResult.getListContents() = getRootTab()?.content?.sectionListRenderer?.contents
-private fun BrowseResult.getGridContents() = getRootTab()?.content?.richGridRenderer?.contents
-private fun BrowseResult.getChipContents() = getRootTab()?.content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
-
+fun TabRenderer.getTitle(): String? = title
+private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents
+private fun TabRenderer.getGridContents() = content?.richGridRenderer?.contents
+private fun TabRenderer.getChipContents() = content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
 
 /////
 

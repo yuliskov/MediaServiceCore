@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImplKidsSection
@@ -8,6 +7,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
@@ -199,6 +199,23 @@ class BrowseApiTest {
         assertNotNull("Has continuation", videos?.getContinuationToken())
     }
 
+    @Test
+    fun testThatTrendingNotEmpty() {
+        val trending = getTrending()
+
+        assertNotNull("Contains videos", trending?.getItems()?.getOrNull(0))
+
+        for (tab in trending!!.getTabs()!!) {
+            if (tab!!.content != null) {
+                assertTrue("Root tab contains videos", tab.getItems()?.size ?: 0 > 10)
+            } else {
+                val tabContent = getTrendingTab(tab.endpoint?.getBrowseParams())
+
+                assertTrue("Next tab contains videos", tabContent?.getItems()?.size ?: 0 > 10)
+            }
+        }
+    }
+
     private fun checkContinuation(token: String?) {
         val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token))
 
@@ -279,5 +296,17 @@ class BrowseApiTest {
         val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey))
 
         return RetrofitHelper.get(continuation)
+    }
+
+    private fun getTrending(): BrowseResult? {
+        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getTrendingQueryWeb())
+
+        return RetrofitHelper.get(trendingResult)
+    }
+
+    private fun getTrendingTab(params: String?): BrowseResult? {
+        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb("FEtrending", params))
+
+        return RetrofitHelper.get(trendingResult)
     }
 }

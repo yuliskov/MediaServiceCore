@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
+
 /**
  * Based on:
  *
@@ -16,37 +18,7 @@ data class BrowseResult(
         ) {
             data class Tab(
              val tabRenderer: TabRenderer?
-            ) {
-                data class TabRenderer(
-                    val title: String?,
-                    val content: Content?
-                ) {
-                   data class Content(
-                       val sectionListRenderer: SectionListRenderer?,
-                       val richGridRenderer: RichGridRenderer?
-                   ) {
-                       data class SectionListRenderer(
-                           val contents: List<Section?>?
-                       )
-                       data class RichGridRenderer(
-                           val contents: List<Section?>?,
-                           val header: Header?
-                       ) {
-                           data class Header(
-                               val feedFilterChipBarRenderer: FeedFilterChipBarRenderer?
-                           ) {
-                               data class FeedFilterChipBarRenderer(
-                                   val contents: List<Content?>?
-                               ) {
-                                   data class Content(
-                                       val chipCloudChipRenderer: ChipCloudChipRenderer?
-                                   )
-                               }
-                           }
-                       }
-                   }
-                }
-            }
+            )
         }
     }
 }

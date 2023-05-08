@@ -25,7 +25,7 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     private var _mediaItemList: List<MediaItem?>? = null
         get() = field ?: mediaItemList
     private var _nextPageKeyVal: String? = null
-        get() = if (field == "") null else field ?: nextPageKeyVal
+        get() = if (field == "") null else field ?: nextPageKeyItem
         set(value) { field = value ?: "" }
 
     private val titleItem by lazy { getTitleInt() }
@@ -35,11 +35,15 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
             ?.let { MediaItemImpl(it).let { if (YouTubeHelper.isEmpty(it)) null else it }?.apply { playlistIndex = index } }
         }
     }
-    private val nextPageKeyVal by lazy { getNextPageKeyInt() }
+    private val nextPageKeyItem by lazy { getNextPageKeyInt() }
+    private val paramsItem by lazy { getParamsInt() }
+    private val channelIdItem by lazy { getChannelIdInt() }
 
     protected abstract fun getItemWrappersInt(): List<ItemWrapper?>?
     protected abstract fun getNextPageKeyInt(): String?
     protected abstract fun getTitleInt(): String?
+    protected open fun getParamsInt(): String? = null
+    protected open fun getChannelIdInt(): String? = null
 
     override fun getId(): Int = title?.hashCode() ?: hashCode()
 
@@ -64,11 +68,11 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     }
 
     override fun getChannelId(): String? {
-        return null
+        return channelIdItem
     }
 
     override fun getParams(): String? {
-        return null
+        return paramsItem
     }
 
     override fun getReloadPageKey(): String? {

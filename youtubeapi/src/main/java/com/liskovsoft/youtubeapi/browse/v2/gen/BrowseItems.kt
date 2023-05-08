@@ -12,6 +12,37 @@ data class Section(
     val continuationItemRenderer: ContinuationItemRenderer?
 )
 
+data class TabRenderer(
+    val title: String?,
+    val content: Content?,
+    val endpoint: NavigationEndpointItem?
+) {
+    data class Content(
+        val sectionListRenderer: SectionListRenderer?,
+        val richGridRenderer: RichGridRenderer?
+    ) {
+        data class SectionListRenderer(
+            val contents: List<Section?>?
+        )
+        data class RichGridRenderer(
+            val contents: List<Section?>?,
+            val header: Header?
+        ) {
+            data class Header(
+                val feedFilterChipBarRenderer: FeedFilterChipBarRenderer?
+            ) {
+                data class FeedFilterChipBarRenderer(
+                    val contents: List<Content?>?
+                ) {
+                    data class Content(
+                        val chipCloudChipRenderer: ChipCloudChipRenderer?
+                    )
+                }
+            }
+        }
+    }
+}
+
 // WhatToWatch only
 data class RichSectionRenderer(
     val content: Content?

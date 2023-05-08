@@ -85,14 +85,14 @@ data class MediaGroupImplGuide(
         val result = mutableListOf<MediaItem>()
 
         guideResult.getFirstItems()?.forEach {
-            it?.let { result.add(MediaItemImplGuide(it)) }
+            it?.let { if (it.thumbnail != null) result.add(MediaItemImplGuide(it)) } // exclude 'special' items
         }
 
         guideResult.getCollapsibleItems()?.forEach {
-            it?.let { result.add(MediaItemImplGuide(it)) }
+            it?.let { if (it.thumbnail != null) result.add(MediaItemImplGuide(it)) } // exclude 'special' items
         }
 
-        if (sort) result.sortBy { it.title }
+        if (sort) result.sortBy { it.title?.lowercase() }
 
         result
     }

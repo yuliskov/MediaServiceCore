@@ -154,8 +154,8 @@ class BrowseApiTest {
     fun testThatGuideNotEmpty() {
         val guide = getGuide()
 
-        assertTrue("Guide contains channels", guide?.getFirstItems()?.isNotEmpty() == true)
-        assertTrue("Guide collapse contains channels", guide?.getCollapsibleItems()?.size ?: 0 > 20)
+        assertTrue("Guide contains channels", guide?.getFirstSubs()?.isNotEmpty() == true)
+        assertTrue("Guide collapse contains channels", guide?.getCollapsibleSubs()?.size ?: 0 > 20)
     }
 
     @Test

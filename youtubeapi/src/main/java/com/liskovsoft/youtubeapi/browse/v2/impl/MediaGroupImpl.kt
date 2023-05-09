@@ -84,11 +84,11 @@ data class MediaGroupImplGuide(
     override val mediaItemList by lazy {
         val result = mutableListOf<MediaItem>()
 
-        guideResult.getFirstItems()?.forEach {
+        guideResult.getFirstSubs()?.forEach {
             it?.let { if (it.thumbnail != null) result.add(MediaItemImplGuide(it)) } // exclude 'special' items
         }
 
-        guideResult.getCollapsibleItems()?.forEach {
+        guideResult.getCollapsibleSubs()?.forEach {
             it?.let { if (it.thumbnail != null) result.add(MediaItemImplGuide(it)) } // exclude 'special' items
         }
 
@@ -96,4 +96,15 @@ data class MediaGroupImplGuide(
 
         result
     }
+}
+
+data class MediaGroupImplRecommended(
+    private val guideItem: GuideItem,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): MediaGroupImplBase(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = null
+    override fun getNextPageKeyInt(): String? = null
+    override fun getTitleInt(): String? = guideItem.getTitle()
+    override fun getChannelIdInt(): String? = guideItem.getBrowseId()
+    override fun getParamsInt(): String? = guideItem.getBrowseParams()
 }

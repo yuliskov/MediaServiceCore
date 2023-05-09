@@ -100,6 +100,7 @@ fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
 fun VideoItem.isLive(): Boolean = OLD_BADGE_STYLE_LIVE == getOldBadgeStyle() || BADGE_STYLE_LIVE == getBadgeStyle()
 fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle()
+fun VideoItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
 fun VideoItem.getFeedbackTokens() = menu?.getFeedbackTokens()
 private fun VideoItem.getOldBadgeStyle() = badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
 private fun VideoItem.getBadgeStyle() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
@@ -140,20 +141,20 @@ fun TileItem.getViewCountText() =
 fun TileItem.getUpcomingEventText() = null
 fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
 fun TileItem.getMovingThumbnails() = header?.tileHeaderRenderer?.let { it.movingThumbnail ?: it.onFocusThumbnail }
-fun TileItem.getBadgeStyle() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
 fun TileItem.getChannelId() = getMenu()?.getBrowseId()
 fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
-fun TileItem.isLive() = BADGE_STYLE_LIVE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
+fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 fun TileItem.getContentType() = contentType
 fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
 fun TileItem.getContinuationKey() = onSelectCommand?.getContinuation()?.getKey()
-fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
-fun TileItem.isMovie() = BADGE_STYLE_MOVIE == header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
+fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
+fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
 fun TileItem.isShorts() = false // TODO: not implemented
-fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
-fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
+private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
+private fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 private fun TileItem.getMenu() = menu ?: onLongPressCommand?.showMenuCommand?.menu
+private fun TileItem.getBadgeStyle() = header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
 
 ////////////
 
@@ -203,7 +204,7 @@ fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem(
 fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
 fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
 fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
-fun ItemWrapper.isMovie() = getTileItem()?.isMovie()
+fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie()
 fun ItemWrapper.isShorts() = reelItemRenderer != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()

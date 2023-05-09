@@ -63,6 +63,6 @@ public class ItemWrapper {
     }
 
     public boolean isMovie() {
-        return mTileItem != null ? mTileItem.isMovie() : false;
+        return  mVideoItem != null ? mVideoItem.isMovie() : mTileItem != null ? mTileItem.isMovie() : false;
     }
 }

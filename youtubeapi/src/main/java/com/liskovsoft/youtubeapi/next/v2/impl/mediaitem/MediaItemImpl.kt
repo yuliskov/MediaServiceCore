@@ -39,7 +39,7 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
 
 data class MediaItemImplGuide(val guideItem: GuideItem): BaseMediaItemImpl() {
     override val titleItem by lazy { guideItem.getTitle() }
-    override val channelIdItem by lazy { guideItem.getChannelId() }
+    override val channelIdItem by lazy { guideItem.getBrowseId() }
     override val cardThumbImageUrl by lazy { guideItem.getThumbnails()?.getOptimalResThumbnailUrl() }
     override val backgroundThumbImageUrl by lazy { guideItem.getThumbnails()?.getHighResThumbnailUrl() }
     override val hasNewContentItem by lazy { guideItem.hasNewContent() }

@@ -69,11 +69,14 @@ fun ChipCloudChipRenderer.getContinuationToken() = navigationEndpoint?.continuat
 private const val STYLE_NEW_CONTENT = "GUIDE_ENTRY_PRESENTATION_STYLE_NEW_CONTENT"
 private const val STYLE_NONE = "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
 
-fun GuideResult.getFirstItems(): List<GuideItem?>? = getRootItems()?.mapNotNull { it?.guideEntryRenderer }
-fun GuideResult.getCollapsibleItems(): List<GuideItem?>? = getRootItems()?.firstNotNullOfOrNull { it?.guideCollapsibleEntryRenderer }?.expandableItems?.mapNotNull { it?.guideEntryRenderer }
-private fun GuideResult.getRootItems() = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }?.items
+fun GuideResult.getFirstSubs(): List<GuideItem?>? = getSubsRoot()?.items?.mapNotNull { it?.guideEntryRenderer }
+fun GuideResult.getCollapsibleSubs(): List<GuideItem?>? =
+    getSubsRoot()?.items?.firstNotNullOfOrNull { it?.guideCollapsibleEntryRenderer }?.expandableItems?.mapNotNull { it?.guideEntryRenderer }
+fun GuideResult.getRecommended(): List<GuideItem?>? = items?.mapNotNull { it?.guideSectionRenderer }?.getOrNull(1)?.items?.mapNotNull { it?.guideEntryRenderer }
+private fun GuideResult.getSubsRoot() = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }
 
-fun GuideItem.getChannelId() = navigationEndpoint?.getBrowseId()
+fun GuideItem.getBrowseId() = navigationEndpoint?.getBrowseId()
+fun GuideItem.getBrowseParams() = navigationEndpoint?.getBrowseParams()
 fun GuideItem.getThumbnails() = thumbnail
 fun GuideItem.getTitle() = formattedTitle?.getText()
 fun GuideItem.hasNewContent() = presentationStyle == STYLE_NEW_CONTENT

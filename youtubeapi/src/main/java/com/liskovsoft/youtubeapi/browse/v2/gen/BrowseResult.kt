@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
-
 /**
  * Based on:
  *
@@ -44,9 +42,10 @@ data class GuideResult(
     val items: List<Item?>?
 ) {
     data class Item(
-        val guideSubscriptionsSectionRenderer: GuideSubscriptionsSectionRenderer?
+        val guideSubscriptionsSectionRenderer: GuideSectionRenderer?,
+        val guideSectionRenderer: GuideSectionRenderer?
     ) {
-        data class GuideSubscriptionsSectionRenderer(
+        data class GuideSectionRenderer(
             val items: List<GuideItemWrapper?>?
         ) {
             data class GuideItemWrapper(

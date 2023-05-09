@@ -13,6 +13,12 @@ object BrowseService2 {
     private val mBrowseApi = RetrofitHelper.withGson(BrowseApi::class.java)
     private val mAppService = AppService.instance()
 
+    //@JvmStatic
+    //fun getHome(): List<MediaGroup?>? {
+    //    val home = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
+    //    return if (home?.size ?: 0 < 5) listOfNotNull(home, getRecommended()).flatten() else home
+    //}
+
     @JvmStatic
     fun getHome(): List<MediaGroup?>? {
         return getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
@@ -116,7 +122,7 @@ object BrowseService2 {
 
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
-        if (group?.params != null && group.channelId != null) {
+        if (group?.channelId != null) {
             return continueTab(group)?.let { listOf(it) }
         } else if (group?.nextPageKey != null) {
             return continueChip(group)
@@ -126,7 +132,7 @@ object BrowseService2 {
     }
 
     private fun continueTab(group: MediaGroup?): MediaGroup? {
-        if (group?.params == null || group.channelId == null) {
+        if (group?.channelId == null) {
             return null
         }
 
@@ -184,6 +190,18 @@ object BrowseService2 {
             it.getTabs()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplTab(it, createOptions(sectionType))) }
             it.getSections()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplSection(it, createOptions(sectionType))) }
             it.getChips()?.forEach { if (it?.getTitle() != null) result.add(MediaGroupImplChip(it, createOptions(sectionType))) }
+
+            result
+        }
+    }
+
+    private fun getRecommended(): List<MediaGroup?>? {
+        val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
+
+        return RetrofitHelper.get(guideResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+
+            it.getRecommended()?.forEach { if (it != null) result.add(MediaGroupImplRecommended(it, createOptions(MediaGroup.TYPE_HOME))) }
 
             result
         }

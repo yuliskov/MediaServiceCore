@@ -1,0 +1,4685 @@
+{
+  "responseContext": {
+    "serviceTrackingParams": [
+      {
+        "service": "CSI",
+        "params": [
+          {
+            "key": "c",
+            "value": "WEB"
+          },
+          {
+            "key": "cver",
+            "value": "2.20220119.01.00"
+          },
+          {
+            "key": "yt_li",
+            "value": "1"
+          },
+          {
+            "key": "GetWebMainAppGuide_rid",
+            "value": "0x629ae81e3f4cb13f"
+          }
+        ]
+      },
+      {
+        "service": "GFEEDBACK",
+        "params": [
+          {
+            "key": "logged_in",
+            "value": "1"
+          },
+          {
+            "key": "country-type",
+            "value": "B"
+          },
+          {
+            "key": "e",
+            "value": "23804281,23918597,23946420,23966208,23983296,23986034,23998056,24004644,24007246,24034168,24036947,24077241,24080738,24120819,24135310,24140247,24166867,24181174,24187043,24187377,24211178,24219382,24219713,24241378,24255165,24255543,24255545,24260378,24262346,24288664,24290971,24291857,24390675,24404640,24406084,24407191,24409417,24415864,24416291,24428789,24429092,24433679,24439361,24439483,24440132,24440518,24440520,24449113,24451319,24453989,24455284,24457384,24458839,24459436,24460286,24465011,24466371,24468691,24468724,24470703,24471752,24472327,24481181,24483504,24485239,24485421,24486574,24487288,24488188,24494077,24494990,24495060,24495838,24495960,24495967,24495984,24498300,24499289,24499304,24499534,24499570,24499577,24511539,24515366,24515423,24516017,24516156,24518452,24519102,24519143,24530356,24532514,24532855,24533158,24534180,24535680,24537200,24538831,24539279,24550282,24550458,24551146,24552606,24553406,24554040,24555242,24555875,24557849,24557858,24559450,24690493,24690848,24691334,24693160,24695637,24696466,24697926,39323074,39323604,39323713"
+          }
+        ]
+      },
+      {
+        "service": "GUIDED_HELP",
+        "params": [
+          {
+            "key": "logged_in",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "service": "ECATCHER",
+        "params": [
+          {
+            "key": "client.version",
+            "value": "2.20221122"
+          },
+          {
+            "key": "client.name",
+            "value": "WEB"
+          },
+          {
+            "key": "client.fexp",
+            "value": "24260378,24458839,24553406,24494077,24459436,24255165,24140247,24290971,24550458,24485421,24466371,24241378,24451319,24554040,24511539,24080738,24406084,24488188,24535680,24696466,24415864,24495984,24407191,24485239,24211178,24530356,24487288,24181174,24499289,39323713,24697926,24693160,24429092,24515423,24468724,23966208,24219382,24539279,39323074,24495967,24034168,24219713,24557858,24291857,24516156,24515366,24495960,24404640,24440518,24532514,24428789,24004644,24187043,24495838,23804281,24494990,24499570,24439361,24499304,24288664,24555242,24499534,24433679,24499577,24439483,24166867,24555875,24537200,24518452,24550282,24534180,24455284,24470703,24390675,24557849,24457384,24135310,24262346,39323604,24255543,24409417,24440520,23918597,24471752,23946420,24120819,24495060,24472327,24440132,24690493,24486574,24453989,24519143,24007246,24691334,24460286,24695637,24468691,24551146,24481181,24036947,24465011,24416291,23998056,24690848,24552606,24498300,24532855,24449113,23986034,24519102,24077241,24483504,24538831,24533158,24516017,23983296,24255545,24559450,24187377"
+          }
+        ]
+      }
+    ],
+    "maxAgeSeconds": 3600,
+    "mainAppWebResponseContext": {
+      "datasyncId": "106736631984044570206||",
+      "loggedOut": false
+    },
+    "webResponseContextExtensionData": {
+      "hasDecorated": true
+    }
+  },
+  "items": [
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CHgQ8KgHGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/",
+                    "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                    "rootVe": 3854,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "FEwhat_to_watch"
+                }
+              },
+              "icon": {
+                "iconType": "WHAT_TO_WATCH"
+              },
+              "trackingParams": "CHgQ8KgHGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Home"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Home"
+                }
+              },
+              "isPrimary": true
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "icon": {
+                "iconType": "TAB_SHORTS"
+              },
+              "trackingParams": "CHYQnIEJGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Shorts"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Shorts"
+                }
+              },
+              "serviceEndpoint": {
+                "clickTrackingParams": "CHYQnIEJGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/shorts/",
+                    "webPageType": "WEB_PAGE_TYPE_SHORTS",
+                    "rootVe": 37414
+                  }
+                },
+                "reelWatchEndpoint": {
+                  "playerParams": "8AEBuAQP",
+                  "overlay": {
+                    "reelPlayerOverlayRenderer": {
+                      "style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+                      "trackingParams": "CHcQsLUEIhMIq_vNyr7n_gIVxYH0Bx1rAAWQ",
+                      "reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+                    }
+                  },
+                  "params": "CA8%3D",
+                  "sequenceProvider": "REEL_WATCH_SEQUENCE_PROVIDER_RPC",
+                  "inputType": "REEL_WATCH_INPUT_TYPE_SEEDLESS",
+                  "loggingContext": {
+                    "vssLoggingContext": {
+                      "serializedContextData": "CgIIDA%3D%3D"
+                    },
+                    "qoeLoggingContext": {
+                      "serializedContextData": "CgIIDA%3D%3D"
+                    }
+                  }
+                }
+              },
+              "isPrimary": true
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CHUQ8qgHGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/feed/subscriptions",
+                    "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                    "rootVe": 96368,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "FEsubscriptions"
+                }
+              },
+              "icon": {
+                "iconType": "SUBSCRIPTIONS"
+              },
+              "trackingParams": "CHUQ8qgHGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Subscriptions"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Subscriptions"
+                }
+              },
+              "isPrimary": true
+            }
+          },
+          {
+            "guideCollapsibleSectionEntryRenderer": {
+              "headerEntry": {
+                "guideEntryRenderer": {
+                  "navigationEndpoint": {
+                    "clickTrackingParams": "CHQQ8agHIhMIq_vNyr7n_gIVxYH0Bx1rAAWQ",
+                    "commandMetadata": {
+                      "webCommandMetadata": {
+                        "url": "/feed/library",
+                        "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                        "rootVe": 6827,
+                        "apiUrl": "/youtubei/v1/browse"
+                      }
+                    },
+                    "browseEndpoint": {
+                      "browseId": "FElibrary"
+                    }
+                  },
+                  "icon": {
+                    "iconType": "VIDEO_LIBRARY_WHITE"
+                  },
+                  "trackingParams": "CHQQ8agHIhMIq_vNyr7n_gIVxYH0Bx1rAAWQ",
+                  "formattedTitle": {
+                    "simpleText": "Library"
+                  },
+                  "accessibility": {
+                    "accessibilityData": {
+                      "label": "Library"
+                    }
+                  },
+                  "targetId": "library-guide-item",
+                  "isPrimary": true
+                }
+              },
+              "expanderIcon": {
+                "iconType": "EXPAND"
+              },
+              "collapserIcon": {
+                "iconType": "COLLAPSE"
+              },
+              "sectionItems": [
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CHMQ5KgHGAQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/feed/history",
+                          "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                          "rootVe": 6827,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "FEhistory"
+                      }
+                    },
+                    "icon": {
+                      "iconType": "WATCH_HISTORY"
+                    },
+                    "trackingParams": "CHMQ5KgHGAQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "History"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "History"
+                      }
+                    }
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CHIQ96gHGAUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "https://studio.youtube.com/channel/UClrkk-89_0Rq-ExYLBEDOUw/videos",
+                          "webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+                          "rootVe": 83769
+                        }
+                      },
+                      "urlEndpoint": {
+                        "url": "https://studio.youtube.com/channel/UClrkk-89_0Rq-ExYLBEDOUw/videos",
+                        "target": "TARGET_NEW_WINDOW"
+                      }
+                    },
+                    "icon": {
+                      "iconType": "MY_VIDEOS"
+                    },
+                    "trackingParams": "CHIQ96gHGAUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Your videos"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Your videos"
+                      }
+                    }
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CHEQ-KgHGAYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/playlist?list=WL",
+                          "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                          "rootVe": 5754,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "VLWL"
+                      }
+                    },
+                    "icon": {
+                      "iconType": "WATCH_LATER"
+                    },
+                    "trackingParams": "CHEQ-KgHGAYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Watch later"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Watch later"
+                      }
+                    }
+                  }
+                },
+                {
+                  "guideDownloadsEntryRenderer": {
+                    "alwaysShow": false,
+                    "entryRenderer": {
+                      "guideEntryRenderer": {
+                        "navigationEndpoint": {
+                          "clickTrackingParams": "CHAQtSwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                          "commandMetadata": {
+                            "webCommandMetadata": {
+                              "url": "/feed/downloads",
+                              "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                              "rootVe": 42352,
+                              "apiUrl": "/youtubei/v1/browse"
+                            }
+                          },
+                          "browseEndpoint": {
+                            "browseId": "FEdownloads"
+                          }
+                        },
+                        "icon": {
+                          "iconType": "OFFLINE_DOWNLOAD"
+                        },
+                        "trackingParams": "CHAQtSwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                        "formattedTitle": {
+                          "simpleText": "Downloads"
+                        },
+                        "accessibility": {
+                          "accessibilityData": {
+                            "label": "Downloads"
+                          }
+                        },
+                        "targetId": "downloads-guide-item",
+                        "isPrimary": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CG8QtSwYCCITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/playlist?list=LL",
+                          "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                          "rootVe": 5754,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "VLLL"
+                      }
+                    },
+                    "icon": {
+                      "iconType": "LIKES_PLAYLIST"
+                    },
+                    "trackingParams": "CG8QtSwYCCITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                    "formattedTitle": {
+                      "simpleText": "Liked videos"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Liked videos"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "LL"
+                      }
+                    }
+                  }
+                },
+                {
+                  "guideCollapsibleEntryRenderer": {
+                    "expanderItem": {
+                      "guideEntryRenderer": {
+                        "icon": {
+                          "iconType": "EXPAND"
+                        },
+                        "trackingParams": "CG4QtSwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                        "formattedTitle": {
+                          "simpleText": "Show more"
+                        },
+                        "accessibility": {
+                          "accessibilityData": {
+                            "label": "Show more"
+                          }
+                        }
+                      }
+                    },
+                    "expandableItems": [
+                      {
+                        "guideEntryRenderer": {
+                          "navigationEndpoint": {
+                            "clickTrackingParams": "CG0QtSwYCiITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                            "commandMetadata": {
+                              "webCommandMetadata": {
+                                "url": "/playlist?list=FLlrkk-89_0Rq-ExYLBEDOUw",
+                                "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                                "rootVe": 5754,
+                                "apiUrl": "/youtubei/v1/browse"
+                              }
+                            },
+                            "browseEndpoint": {
+                              "browseId": "VLFLlrkk-89_0Rq-ExYLBEDOUw"
+                            }
+                          },
+                          "icon": {
+                            "iconType": "PLAYLISTS"
+                          },
+                          "trackingParams": "CG0QtSwYCiITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                          "formattedTitle": {
+                            "simpleText": "Favorites"
+                          },
+                          "accessibility": {
+                            "accessibilityData": {
+                              "label": "Favorites"
+                            }
+                          },
+                          "entryData": {
+                            "guideEntryData": {
+                              "guideEntryId": "FLlrkk-89_0Rq-ExYLBEDOUw"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "guideEntryRenderer": {
+                          "navigationEndpoint": {
+                            "clickTrackingParams": "CGwQtSwYCyITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                            "commandMetadata": {
+                              "webCommandMetadata": {
+                                "url": "/playlist?list=PLDIxWXRU4UDphwbaDSxuJuKELTsnjYMTU",
+                                "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                                "rootVe": 5754,
+                                "apiUrl": "/youtubei/v1/browse"
+                              }
+                            },
+                            "browseEndpoint": {
+                              "browseId": "VLPLDIxWXRU4UDphwbaDSxuJuKELTsnjYMTU"
+                            }
+                          },
+                          "icon": {
+                            "iconType": "PLAYLISTS"
+                          },
+                          "trackingParams": "CGwQtSwYCyITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                          "formattedTitle": {
+                            "simpleText": "Neil Young - Le Noise"
+                          },
+                          "accessibility": {
+                            "accessibilityData": {
+                              "label": "Neil Young - Le Noise"
+                            }
+                          },
+                          "entryData": {
+                            "guideEntryData": {
+                              "guideEntryId": "PLDIxWXRU4UDphwbaDSxuJuKELTsnjYMTU"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "guideEntryRenderer": {
+                          "navigationEndpoint": {
+                            "clickTrackingParams": "CGsQtSwYDCITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                            "commandMetadata": {
+                              "webCommandMetadata": {
+                                "url": "/playlist?list=PLOVL_fPox2K83_36YgnGisn4rxNvgq1iR",
+                                "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                                "rootVe": 5754,
+                                "apiUrl": "/youtubei/v1/browse"
+                              }
+                            },
+                            "browseEndpoint": {
+                              "browseId": "VLPLOVL_fPox2K83_36YgnGisn4rxNvgq1iR"
+                            }
+                          },
+                          "icon": {
+                            "iconType": "PLAYLISTS"
+                          },
+                          "trackingParams": "CGsQtSwYDCITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                          "formattedTitle": {
+                            "simpleText": "Gravity as Spacetime Curvature"
+                          },
+                          "accessibility": {
+                            "accessibilityData": {
+                              "label": "Gravity as Spacetime Curvature"
+                            }
+                          },
+                          "entryData": {
+                            "guideEntryData": {
+                              "guideEntryId": "PLOVL_fPox2K83_36YgnGisn4rxNvgq1iR"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "guideEntryRenderer": {
+                          "navigationEndpoint": {
+                            "clickTrackingParams": "CGoQtSwYDSITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                            "commandMetadata": {
+                              "webCommandMetadata": {
+                                "url": "/playlist?list=PLOVL_fPox2K9MtRv68T_cmWwQUbg9YR4F",
+                                "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                                "rootVe": 5754,
+                                "apiUrl": "/youtubei/v1/browse"
+                              }
+                            },
+                            "browseEndpoint": {
+                              "browseId": "VLPLOVL_fPox2K9MtRv68T_cmWwQUbg9YR4F"
+                            }
+                          },
+                          "icon": {
+                            "iconType": "PLAYLISTS"
+                          },
+                          "trackingParams": "CGoQtSwYDSITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                          "formattedTitle": {
+                            "simpleText": "Electricity and Magnetism"
+                          },
+                          "accessibility": {
+                            "accessibilityData": {
+                              "label": "Electricity and Magnetism"
+                            }
+                          },
+                          "entryData": {
+                            "guideEntryData": {
+                              "guideEntryId": "PLOVL_fPox2K9MtRv68T_cmWwQUbg9YR4F"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "guideEntryRenderer": {
+                          "navigationEndpoint": {
+                            "clickTrackingParams": "CGkQtSwYDiITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                            "commandMetadata": {
+                              "webCommandMetadata": {
+                                "url": "/playlist?list=PLe6wWFNyHwHpJQY02JBo-CKwNkVGz9lv5",
+                                "webPageType": "WEB_PAGE_TYPE_PLAYLIST",
+                                "rootVe": 5754,
+                                "apiUrl": "/youtubei/v1/browse"
+                              }
+                            },
+                            "browseEndpoint": {
+                              "browseId": "VLPLe6wWFNyHwHpJQY02JBo-CKwNkVGz9lv5"
+                            }
+                          },
+                          "icon": {
+                            "iconType": "PLAYLISTS"
+                          },
+                          "trackingParams": "CGkQtSwYDiITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                          "formattedTitle": {
+                            "simpleText": "(1971) Cheech & Chong"
+                          },
+                          "accessibility": {
+                            "accessibilityData": {
+                              "label": "(1971) Cheech & Chong"
+                            }
+                          },
+                          "entryData": {
+                            "guideEntryData": {
+                              "guideEntryId": "PLe6wWFNyHwHpJQY02JBo-CKwNkVGz9lv5"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "collapserItem": {
+                      "guideEntryRenderer": {
+                        "icon": {
+                          "iconType": "COLLAPSE"
+                        },
+                        "trackingParams": "CGgQtSwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                        "formattedTitle": {
+                          "simpleText": "Show less"
+                        },
+                        "accessibility": {
+                          "accessibilityData": {
+                            "label": "Show less"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "handlerDatas": [
+                "GUIDE_ACTION_ADD_TO_PLAYLISTS",
+                "GUIDE_ACTION_REMOVE_FROM_PLAYLISTS"
+              ]
+            }
+          }
+        ],
+        "trackingParams": "CGcQ5isYACITCKv7zcq-5_4CFcWB9AcdawAFkA=="
+      }
+    },
+    {
+      "guideSubscriptionsSectionRenderer": {
+        "sort": "CHANNEL_ALPHABETICAL",
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGYQrIEJGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@NASA",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCLA_DiR1FfKNvjuUpBHmylQ",
+                  "canonicalBaseUrl": "/@NASA"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/ytc/AGIKgqPx1k80jRiCjB6iIa4U9hFGXbbShN-FwpswRd1VykE=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": true
+              },
+              "trackingParams": "CGYQrIEJGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "NASA"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "NASA. Live streaming."
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UCLA_DiR1FfKNvjuUpBHmylQ"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGUQrIEJGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@AfterSkool",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UC1KmNKYC1l0stjctkGswl6g",
+                  "canonicalBaseUrl": "/@AfterSkool"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/ytc/AGIKgqMOIFFHR42Vn4-fwmDJIwOuDme3p8-UIWvG0kgv5w=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": false
+              },
+              "trackingParams": "CGUQrIEJGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "After Skool"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "After Skool"
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UC1KmNKYC1l0stjctkGswl6g"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGQQrIEJGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@amazelab3791",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCKXEESjIEsKmGzws3fDKwFA",
+                  "canonicalBaseUrl": "/@amazelab3791"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/ytc/AGIKgqMGVNtd9fGrqMbS8l449OkkleANZWwQFyQ_xzCI=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": false
+              },
+              "trackingParams": "CGQQrIEJGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Amaze Lab"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Amaze Lab"
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UCKXEESjIEsKmGzws3fDKwFA"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGMQrIEJGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@AngryKarens",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCYLIAFrVFUpTbuqOJob5Nbg",
+                  "canonicalBaseUrl": "/@AngryKarens"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/W7uZWCpxdrEumkKS2th55jqLElO44IbnZq3pzEvAvePcUORgf-TgilOrqb9I-IPt4dkjVRWRRdc=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": false
+              },
+              "trackingParams": "CGMQrIEJGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "ANGRY KARENS"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "ANGRY KARENS"
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UCYLIAFrVFUpTbuqOJob5Nbg"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGIQrIEJGAQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@ArvinAsh",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCpMcsdZf2KkAnfmxiq2MfMQ",
+                  "canonicalBaseUrl": "/@ArvinAsh"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/DWoqloCUAGqsHrhDJZeBmLb80-_W3L5blG5L2K3vIIhcdu2_r-cRup2z2ZYuM2xgMtGZNezGxQ=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": false
+              },
+              "trackingParams": "CGIQrIEJGAQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Arvin Ash"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Arvin Ash"
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UCpMcsdZf2KkAnfmxiq2MfMQ"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGEQrIEJGAUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@AXSTV",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UC63mcQWLH1qw9Jg2ED1Y8WA",
+                  "canonicalBaseUrl": "/@AXSTV"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/1ioksPHqKD7UnapMrT_MWEKQfgolPbsVfGX7mNida9GQHbUqwFx20XhZQ8TYfwMOrvwsgEc7yF4=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": false
+              },
+              "trackingParams": "CGEQrIEJGAUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "AXS TV"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "AXS TV"
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UC63mcQWLH1qw9Jg2ED1Y8WA"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CGAQrIEJGAYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/@BecauseRacecarOfficial",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UC2NO9kgaxe-Hky1agbtoxsA",
+                  "canonicalBaseUrl": "/@BecauseRacecarOfficial"
+                }
+              },
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/ytc/AGIKgqPPgLIdzug32AATG43BQ6Wvlnpspd4dKpbMHnJ9=s88-c-k-c0x00ffffff-no-rj"
+                  }
+                ]
+              },
+              "badges": {
+                "liveBroadcasting": false
+              },
+              "trackingParams": "CGAQrIEJGAYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "#BecauseRacecar"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "#BecauseRacecar"
+                }
+              },
+              "entryData": {
+                "guideEntryData": {
+                  "guideEntryId": "UC2NO9kgaxe-Hky1agbtoxsA"
+                }
+              },
+              "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+            }
+          },
+          {
+            "guideCollapsibleEntryRenderer": {
+              "expanderItem": {
+                "guideEntryRenderer": {
+                  "icon": {
+                    "iconType": "EXPAND"
+                  },
+                  "trackingParams": "CF8QtSwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                  "formattedTitle": {
+                    "simpleText": "Show 72 more"
+                  },
+                  "accessibility": {
+                    "accessibilityData": {
+                      "label": "Show 72 more"
+                    }
+                  }
+                }
+              },
+              "expandableItems": [
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CF4QrYEJGAgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@bigbankshortsgalaxy",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCX80N4mYLFfVgw-S-F7avEw",
+                        "canonicalBaseUrl": "/@bigbankshortsgalaxy"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/-v4kB3DwLhh9XrCByKP_DNXd2FAFUPrGxYrqovUATzusgrzwuYdNvf2R0YARHmlvuO3VnSIB1g=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CF4QrYEJGAgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Big Bank Shorts Galaxy"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Big Bank Shorts Galaxy"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCX80N4mYLFfVgw-S-F7avEw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CF0QrYEJGAkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@bigbankshortsstar",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCQ8sW8AFshkjc1YhgUzJ8Aw",
+                        "canonicalBaseUrl": "/@bigbankshortsstar"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/FiJdkXeh57ytJ9vCR-rGpy1pMCHzs30i2VlIYnFohxVW2TcuyyFCZQZDx_D16hqMcnNUBHM4UQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CF0QrYEJGAkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Big Bank Shorts Star"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Big Bank Shorts Star"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCQ8sW8AFshkjc1YhgUzJ8Aw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFwQrYEJGAoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@bigthink",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCvQECJukTDE2i6aCoMnS-Vg",
+                        "canonicalBaseUrl": "/@bigthink"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNsYoKESGOqt0KdgCuY38UiXQTiY7myLZoBB89Twg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFwQrYEJGAoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Big Think"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Big Think"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCvQECJukTDE2i6aCoMnS-Vg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFsQrYEJGAsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@boobstitss",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCPr1mkBtU0m421k3fZ3thzA",
+                        "canonicalBaseUrl": "/@boobstitss"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/a0etg17c2QRyGCzHh09FuYdoFtlzahE7pHDO9oX5iQPgWioFOs0N2U9XtHu4nuKQjGuUd047mA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFsQrYEJGAsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Boobs"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Boobs"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCPr1mkBtU0m421k3fZ3thzA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFoQrYEJGAwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@Britec09",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC_M-iWYpQbgo4rK1YfewI5w",
+                        "canonicalBaseUrl": "/@Britec09"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOGgxDvO4EOPacWD86VmsWqUPHmSed6-6vC2eCGVw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFoQrYEJGAwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Britec09"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Britec09"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC_M-iWYpQbgo4rK1YfewI5w"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFkQrYEJGA0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@ClubRandomPodcast",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC8efBuMd2Tsolb5uTfpex3A",
+                        "canonicalBaseUrl": "/@ClubRandomPodcast"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/oESiHFP42380CuVjtihD1hni_t7uiJ9blzUdKAxog-CfsviX8IpsgTMtnl032nZx_y_8XhRE1g=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFkQrYEJGA0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Club Random Podcast"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Club Random Podcast"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC8efBuMd2Tsolb5uTfpex3A"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFgQrYEJGA4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@DAILYCRASHING",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC82qVxC-oEJusvaMlgmVrOw",
+                        "canonicalBaseUrl": "/@DAILYCRASHING"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/gXVzc5eWNSjuUNVUric0wapRsktCuckW3Vn3e8o-7WpaCYc_OHYrUuD6hCm0lQC0kT6xJizk=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFgQrYEJGA4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "DAILY CRASHING"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "DAILY CRASHING"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC82qVxC-oEJusvaMlgmVrOw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFcQrYEJGA8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@dailydoseofmusic1548",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCbhdXu0xKdSUpUIVpuB0ZPg",
+                        "canonicalBaseUrl": "/@dailydoseofmusic1548"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOZTgPufYseuL8ccAWsIQlshYFCfmA_oI3jcvg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFcQrYEJGA8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Daily Dose of Music"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Daily Dose of Music"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCbhdXu0xKdSUpUIVpuB0ZPg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFYQrYEJGBAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@dialectphilosophy",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC3KV2kFy2YhjYvverIy2WnA",
+                        "canonicalBaseUrl": "/@dialectphilosophy"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/Qiekx-HxQTiX332zq-LyypoWshtuDptDQYab3zqqPVwkZ2AA1FgXveeb9Vi-7-b822g_e5hxmw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFYQrYEJGBAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Dialect"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Dialect"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC3KV2kFy2YhjYvverIy2WnA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFUQrYEJGBEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@dnacreations3781",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC0TZ1yN0figcc5araBAepTg",
+                        "canonicalBaseUrl": "/@dnacreations3781"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPeZvVgwl8Eqrg_ZVSnwjae1rYFGyKZv4fnnzBDMg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFUQrYEJGBEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "DNA CREATIONS"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "DNA CREATIONS"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC0TZ1yN0figcc5araBAepTg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFQQrYEJGBIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@DoubleBlind",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCEDYpQft_uexDYYmumks62Q",
+                        "canonicalBaseUrl": "/@DoubleBlind"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqMVNEu-zJRvWs40N9cmj8BtEJMrqDcfO6kNp5Go=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFQQrYEJGBIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "DoubleBlind"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "DoubleBlind"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCEDYpQft_uexDYYmumks62Q"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFMQrYEJGBMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@easybreezygrows",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCSs3mlBvPqZ5MLrbsXeSefg",
+                        "canonicalBaseUrl": "/@easybreezygrows"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOUaRINRfdSIAf-THrQInnZhXKa2mH6Q6A4v8sW=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFMQrYEJGBMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "EasyBreezy Grows"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "EasyBreezy Grows"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCSs3mlBvPqZ5MLrbsXeSefg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFIQrYEJGBQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@easybreezymycology5626",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCnPNOKj6Z2ZeMLc6aupkWxg",
+                        "canonicalBaseUrl": "/@easybreezymycology5626"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNKcd9myjdqGoNFKJ0fUXvTY0YNr_xrwl-o2SvS=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFIQrYEJGBQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "EasyBreezy Mycology"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "EasyBreezy Mycology"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCnPNOKj6Z2ZeMLc6aupkWxg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFEQrYEJGBUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@ElectroBOOM",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCJ0-OtVpF0wOKEqT2Z1HEtA",
+                        "canonicalBaseUrl": "/@ElectroBOOM"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqMRg4sLM1OyhxtKBu8jUVJ4_mbkYOd3mfl-zPVdXw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFEQrYEJGBUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "ElectroBOOM"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "ElectroBOOM"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCJ0-OtVpF0wOKEqT2Z1HEtA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CFAQrYEJGBYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@failarmy",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCPDis9pjXuqyI7RYLJ-TTSA",
+                        "canonicalBaseUrl": "/@failarmy"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/PLsX6LIg5JbMJR9v7eTD7nQOPmZN16_X7h_uACw5qeWLAewiNfasZFsxQ48Dn8wZ_4McKUPZSA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CFAQrYEJGBYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "FailArmy"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "FailArmy"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCPDis9pjXuqyI7RYLJ-TTSA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CE8QrYEJGBciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@fermilab",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCD5B6VoXv41fJ-IW8Wrhz9A",
+                        "canonicalBaseUrl": "/@fermilab"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOUC5SWFog_jOsDF8n5UcS-xIXwG8IQePULqZLWwg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CE8QrYEJGBciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Fermilab"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Fermilab"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCD5B6VoXv41fJ-IW8Wrhz9A"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CE4QrYEJGBgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@HDPinkFloyd",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC3bLiTc7_UpKSl0dnYR-d3A",
+                        "canonicalBaseUrl": "/@HDPinkFloyd"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPC9zdUF_kHZ5wc2754cj28uHlNs1PD6LDbofNZkQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CE4QrYEJGBgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "HDPinkFloyd"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "HDPinkFloyd"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC3bLiTc7_UpKSl0dnYR-d3A"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CE0QrYEJGBkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@heliosmushroomery9264",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCxk1qY-EyAlLoG29HuQ7iYQ",
+                        "canonicalBaseUrl": "/@heliosmushroomery9264"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNx4VswRx3O4OyjkFRBYu5H-kfLJI0UA2g5YaJS=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CE0QrYEJGBkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Helios' Mushroomery"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Helios' Mushroomery"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCxk1qY-EyAlLoG29HuQ7iYQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEwQrYEJGBoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@HISTORY",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC9MAhZQQd9egwWCxrwSIsJQ",
+                        "canonicalBaseUrl": "/@HISTORY"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/IVVrue_WHD9lK-12DvplMxKoxOYOS2kjYl1tbhC_fONBK06E-YfdEdtScQNwWQUbxrHfwnxBgw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEwQrYEJGBoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "HISTORY"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "HISTORY"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC9MAhZQQd9egwWCxrwSIsJQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEsQrYEJGBsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@HistoryoftheUniverse",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCtRFmSyL4fSLQkn-wMqlmdA",
+                        "canonicalBaseUrl": "/@HistoryoftheUniverse"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/_FA1UHVWFPhWi7aEMp-PHZpFCVMQqi5e3_ZXHjia6eKYDwcholhwHio6VvGOywnB2fL6eg_ax4I=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEsQrYEJGBsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "History of the Universe"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "History of the Universe"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCtRFmSyL4fSLQkn-wMqlmdA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEoQrYEJGBwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@Iamthebest9112",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCJJ3bUF1v7TNRgSqsWVki0w",
+                        "canonicalBaseUrl": "/@Iamthebest9112"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/k5qnfiPqGC0diK0BDPpWzFM9eP3seTFdMWLCLVoaYd1WgEG5tVC9p8rEh7kq7V4uwEjjxFJugCg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEoQrYEJGBwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "I AM THE BEST"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "I AM THE BEST"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCJJ3bUF1v7TNRgSqsWVki0w"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEkQrYEJGB0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@infiniteflow8849",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC7E01VQ8pgkN-ezEa-2wdfg",
+                        "canonicalBaseUrl": "/@infiniteflow8849"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOvJVC88Db8tABL4_YNl_yhXrgb65kSgDXnuoCx=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEkQrYEJGB0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Infinite Flow"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Infinite Flow"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC7E01VQ8pgkN-ezEa-2wdfg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEgQrYEJGB4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@JimLill",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCvAovXWLq8Q6VITKAB_Rjww",
+                        "canonicalBaseUrl": "/@JimLill"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/5XPe1Ks9v4KW2tKvwZRFS12JbZVeptfbKpALA1O2gJikTDxB62ScuiTxw6g6oQRzO2Uw7YNohEQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEgQrYEJGB4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Jim Lill"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Jim Lill"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCvAovXWLq8Q6VITKAB_Rjww"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEcQrYEJGB8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@jimihendrix",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCEqrtYLjy1o4hvaUI0J530w",
+                        "canonicalBaseUrl": "/@jimihendrix"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/q9JoxRcR-WyMtBAEl8yOK_CrvbGlEr0jZIk_rz9ncZ-7xOkvBQjFMJmd9Pw4cIH6FyPHbLtO=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEcQrYEJGB8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Jimi Hendrix"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Jimi Hendrix"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCEqrtYLjy1o4hvaUI0J530w"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEYQrYEJGCAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@JimmyKimmelLive",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCa6vGFO9ty8v5KZJXQxdhaw",
+                        "canonicalBaseUrl": "/@JimmyKimmelLive"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPpWoJzsJ2qGYiPtua5ytA_Fx6Hxw2iQwxYH1TUtX0=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEYQrYEJGCAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Jimmy Kimmel Live"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Jimmy Kimmel Live"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCa6vGFO9ty8v5KZJXQxdhaw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEUQrYEJGCEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@jonathanaldridge3464",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC44KlewRbyR6UotdxtrTGkg",
+                        "canonicalBaseUrl": "/@jonathanaldridge3464"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPeiJYHR8ELcSc3qWd58d5egO07r6iSIniZaA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEUQrYEJGCEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Jonathan Aldridge"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Jonathan Aldridge"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC44KlewRbyR6UotdxtrTGkg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEQQrYEJGCIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@karentiktok3984",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCCwKsBAsHAhoVYXG_O_Etlw",
+                        "canonicalBaseUrl": "/@karentiktok3984"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/E9i3mymr8oglKbNlYe3JgF8fdMqO3n9Fzt1zQQClXQhLFEBbvUlc7v_2nySlQiUFwuzUgNztAUE=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEQQrYEJGCIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "KAREN TikTok"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "KAREN TikTok"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCCwKsBAsHAhoVYXG_O_Etlw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEMQrYEJGCMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@KathyLovesPhysics",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCYrX5FiWjiPd0JytMh6NX1Q",
+                        "canonicalBaseUrl": "/@KathyLovesPhysics"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/qvheSRAXu56ZnPGztqtUeAgZpknnG4P5OqtrgxLWEfeD37Kh7FfDvYJr5xYOw_hSLczZo_DlgA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEMQrYEJGCMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Kathy Loves Physics & History"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Kathy Loves Physics & History"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCYrX5FiWjiPd0JytMh6NX1Q"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEIQrYEJGCQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@legendbigbank",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCw-lCDWQYZHMl5r3Ew4DN2Q",
+                        "canonicalBaseUrl": "/@legendbigbank"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/xyTgN-wsNe6OZv-BC25NpI14H4xOzgTIqrQCz73Kt4COAONfLe1k7jaP4SH6ZbMMypxSQVr7wQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEIQrYEJGCQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "legend big bank"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "legend big bank"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCw-lCDWQYZHMl5r3Ew4DN2Q"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEEQrYEJGCUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@lifetowork",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCgTEOh8bXebAhnV9Nh6XlPw",
+                        "canonicalBaseUrl": "/@lifetowork"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ufOhO4f879IMjXXTpp-EkfXGScaCK13H_m7zLVxMbY_6RI7x1q7_g6Y8wLQzEmXdUO6oYDnNZw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEEQrYEJGCUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Life To Work"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Life To Work"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCgTEOh8bXebAhnV9Nh6XlPw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CEAQrYEJGCYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@DrillTrillVibez",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCI9MTheput7c9QjH-aAvBIw",
+                        "canonicalBaseUrl": "/@DrillTrillVibez"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/3XnhkHOLZSP9v5BEaIoz8t6I_rA_LoU7oB-FSNniaShKvZ4I__pPm4DXla89erBkRUxUMICT=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CEAQrYEJGCYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Lily's_bunnies Dior"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Lily's_bunnies Dior"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCI9MTheput7c9QjH-aAvBIw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CD8QrYEJGCciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@MinutePhysics",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCUHW94eEFW7hkUMVaZz4eDg",
+                        "canonicalBaseUrl": "/@MinutePhysics"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPtNcpltaPnMbFNz_3vaWqSWNLtaWC_a7ytbNB1=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CD8QrYEJGCciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "minutephysics"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "minutephysics"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCUHW94eEFW7hkUMVaZz4eDg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CD4QrYEJGCgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@morn1415",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC8w7ynzLYXpRbPrfpDbMHlw",
+                        "canonicalBaseUrl": "/@morn1415"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNhP-oAniBjl0XCtu4Xl67w_xNbbgD9Rf4SUHJc=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CD4QrYEJGCgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "morn1415"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "morn1415"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC8w7ynzLYXpRbPrfpDbMHlw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CD0QrYEJGCkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@MunicipalManMusicMedia",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCPBB-qJNm2AUqrAHwolOaEA",
+                        "canonicalBaseUrl": "/@MunicipalManMusicMedia"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/euNZJI7iKxefDQtVMZYVE0wtxz5bSUDfENlU3xLo5Bau1VdX1eOoIrzpQxedds10PJngGbbvow=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CD0QrYEJGCkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Municipal Man Music & Media"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Municipal Man Music & Media"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCPBB-qJNm2AUqrAHwolOaEA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDwQrYEJGCoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@nobrachallenge705",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC9Dq7Ep4_oI_6QKwCYeqI6w",
+                        "canonicalBaseUrl": "/@nobrachallenge705"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/SXOCkrS6Kw34m4MqXwRnd0-M6qxd93Xs7BrfzSK2oY2XCcCRlyZ1DJcBR8AxzdNUnKKuHdseEw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDwQrYEJGCoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "No Bra Challenge"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "No Bra Challenge"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC9Dq7Ep4_oI_6QKwCYeqI6w"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDsQrYEJGCsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@novapbs",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCjHz5SVHeMT0AViCYZvsGDA",
+                        "canonicalBaseUrl": "/@novapbs"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOmtTXTE-0RFWxuGZSBeCVtkQqKhKv0ZZR0TcxCvg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDsQrYEJGCsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "NOVA PBS Official"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "NOVA PBS Official"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCjHz5SVHeMT0AViCYZvsGDA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDoQrYEJGCwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@OpalEyes",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCvuahPc5KpU1DQokha82_lA",
+                        "canonicalBaseUrl": "/@OpalEyes"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/q_ftrVayLdD5tUGobNNbLl5DzXHrGdE_6RQUKxmbkQfjZ9i_z51hmUFOrz3pArly-2dgmlVIyA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDoQrYEJGCwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "OpalEyes"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "OpalEyes"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCvuahPc5KpU1DQokha82_lA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDkQrYEJGC0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@pbsspacetime",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC7_gcs09iThXybpVgjHZ_7g",
+                        "canonicalBaseUrl": "/@pbsspacetime"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPhOYNG1gTY4kZv0i5KnthZNCcD5-Uz7MUnMQALaQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDkQrYEJGC0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "PBS Space Time"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "PBS Space Time"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC7_gcs09iThXybpVgjHZ_7g"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDgQrYEJGC4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@PhillyGoldenTeacher",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCjeI_v4b7cZ1h46Nn9NiSCQ",
+                        "canonicalBaseUrl": "/@PhillyGoldenTeacher"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqMC10XNrRKlPIZZ8qpiWwNp0DN7fnlqJCdShE3h=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDgQrYEJGC4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "PhillyGoldenTeacher"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "PhillyGoldenTeacher"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCjeI_v4b7cZ1h46Nn9NiSCQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDcQrYEJGC8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@pleasureparadise8584",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCgmUD72sXjX3N-MWhPDVGkw",
+                        "canonicalBaseUrl": "/@pleasureparadise8584"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/tM0Y8v0cpjwLvJQxj-7OtEzcUVKUoeUgs_gppJYMVNUagDckVSs1z2LqMUhEP3g9j2AWrdYX-SU=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDcQrYEJGC8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Pleasure Paradise 🌴"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Pleasure Paradise 🌴"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCgmUD72sXjX3N-MWhPDVGkw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDYQrYEJGDAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@joerogan",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCzQUP1qoWDoEbmsQxvdjxgQ",
+                        "canonicalBaseUrl": "/@joerogan"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNipnHNmPaVWLtP9UYewILs0IE4lOtZim_BDKcCRQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDYQrYEJGDAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "PowerfulJRE"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "PowerfulJRE"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCzQUP1qoWDoEbmsQxvdjxgQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDUQrYEJGDEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@PracticalMyco",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC9i7mX6VXYUwUlfcZLKInjA",
+                        "canonicalBaseUrl": "/@PracticalMyco"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/v3t6jdx6UB4oMX4q-4Os2AdBrLm4RwJtFgvW-8w_o0DN8ZIm1udWgm_mrhO_VgmSOWhm_eoVIQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDUQrYEJGDEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Practical Mycology "
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Practical Mycology "
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC9i7mX6VXYUwUlfcZLKInjA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDQQrYEJGDIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@RealTime",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCy6kyFxaMqGtpE3pQTflK8A",
+                        "canonicalBaseUrl": "/@RealTime"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/as3gR577PGuNbppNc_O6RJHP4mMk6tGjjrKtkVfZMwzbvN8Rz0EyhVYEjTRYV8EA51-4qggkkQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDQQrYEJGDIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Real Time with Bill Maher"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Real Time with Bill Maher"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCy6kyFxaMqGtpE3pQTflK8A"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDMQrYEJGDMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@REALTUBEVIDEO",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC2jcuM9bT-s6lVUtR5bmnzQ",
+                        "canonicalBaseUrl": "/@REALTUBEVIDEO"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPuXhgHkdPODoYToSIdmCYZe4F_6fVW-P4_McZp=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDMQrYEJGDMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "REAL TUBE"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "REAL TUBE"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC2jcuM9bT-s6lVUtR5bmnzQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDIQrYEJGDQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@RRBDDrivingSchool",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC8FpG11hqfqr8n9a9LcxKzA",
+                        "canonicalBaseUrl": "/@RRBDDrivingSchool"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/aERrefeEe2XvyxEHl66zqI6HQiKzJKfHj6n_mRoc3W_bCLvhyfneLSudRzt9yicnniak5awD9kc=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDIQrYEJGDQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "RR&BD Driving School"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "RR&BD Driving School"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC8FpG11hqfqr8n9a9LcxKzA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDEQrYEJGDUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@SabineHossenfelder",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC1yNl2E66ZzKApQdRuTQ4tw",
+                        "canonicalBaseUrl": "/@SabineHossenfelder"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/rN0sMKGXLGcG-gWIYKnbMyKCgEaIeY62P1vaslUPO_3QObfnwBZNG2hyTmysFYRayXt0LKHJ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDEQrYEJGDUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Sabine Hossenfelder"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Sabine Hossenfelder"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC1yNl2E66ZzKApQdRuTQ4tw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CDAQrYEJGDYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@ScienceClicEN",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCWvq4kcdNI1r1jZKFw9TiUA",
+                        "canonicalBaseUrl": "/@ScienceClicEN"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqN30OJTs0Q-Q31TAmL1bdDmwXTdAE0dg1vtQ-ch=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CDAQrYEJGDYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "ScienceClic English"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "ScienceClic English"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCWvq4kcdNI1r1jZKFw9TiUA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CC8QrYEJGDciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@SciManDan",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCRtsZ5Iak9wSLsQLQ3XOAeA",
+                        "canonicalBaseUrl": "/@SciManDan"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPy8In-T6jYmkBYjBGrUjy6Hv9lBqspqA_hUg-UDQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CC8QrYEJGDciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "SciManDan"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "SciManDan"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCRtsZ5Iak9wSLsQLQ3XOAeA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CC4QrYEJGDgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@seditzzz2779",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCoDDPo3RWsPlOQj7IGXd6dA",
+                        "canonicalBaseUrl": "/@seditzzz2779"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/pVEsMHypqL5xhfs7x7OG8HUHmA_-x7Bl4VTvg1QcwVM5tHoIXNGhqS5uBBP9STPBado_PcAI=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CC4QrYEJGDgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Seditzzz"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Seditzzz"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCoDDPo3RWsPlOQj7IGXd6dA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CC0QrYEJGDkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@Seeker",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCzWQYUVCpZqtN93H8RR44Qw",
+                        "canonicalBaseUrl": "/@Seeker"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/TTgPh29emVEpiIfX3l-4TvdMr9PVULl_W4XKHjJddKoccZITJ5IAn9_j3ZtNmXkCOHWJCiLA2w=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CC0QrYEJGDkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Seeker"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Seeker"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCzWQYUVCpZqtN93H8RR44Qw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCwQrYEJGDoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@SirSicCrusader",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCswrOzUxwh7O2mV52fmh8eA",
+                        "canonicalBaseUrl": "/@SirSicCrusader"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOnXkQnbG_a0Y5Sfk_vwHw-OMNIb6kZD0EtsAFg3Q=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCwQrYEJGDoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Sir Sic"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Sir Sic"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCswrOzUxwh7O2mV52fmh8eA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCsQrYEJGDsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@SpectreSoundStudios",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC-f76NUQN5M-Z0cd0MOP5xw",
+                        "canonicalBaseUrl": "/@SpectreSoundStudios"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqMnFbM5qlorqocx71uImegPvcA7Q6eZbWaIUHoTlQ=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCsQrYEJGDsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "SpectreSoundStudios"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "SpectreSoundStudios"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC-f76NUQN5M-Z0cd0MOP5xw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCoQrYEJGDwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@sprouts",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UC-RKpEc4eE9PwJaupN91xYQ",
+                        "canonicalBaseUrl": "/@sprouts"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOv1GuoJnSSJSVDgVJGzewykAvq5X2aA2021zRY=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCoQrYEJGDwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Sprouts"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Sprouts"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UC-RKpEc4eE9PwJaupN91xYQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCkQrYEJGD0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@StarTalk",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCqoAEDirJPjEUFcF2FklnBA",
+                        "canonicalBaseUrl": "/@StarTalk"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPoVKjcB2f3lFmqxHa3E65fyffwej9FvQB50rWhWw8=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCkQrYEJGD0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "StarTalk"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "StarTalk"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCqoAEDirJPjEUFcF2FklnBA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCgQrYEJGD4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@stewmac",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCdr6rJVSSx54ByuY5U2ohTQ",
+                        "canonicalBaseUrl": "/@stewmac"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqOYUbDVVAcC3ptV5XXvKvTFUYt0IYUHlRN6-6YH=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCgQrYEJGD4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "StewMac"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "StewMac"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCdr6rJVSSx54ByuY5U2ohTQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCcQrYEJGD8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@suckmyyoutube9173",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCYpQbR_WKuBJZnBvGzMt9nw",
+                        "canonicalBaseUrl": "/@suckmyyoutube9173"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/j9G6z7iF6WXE3AfMs-M_Uv4EJkv_1ZMc85h7KrrY6f6XjghHwXhHEGVB0ZL68c4Ok11maZ2nZm0=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCcQrYEJGD8iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "SUCK MY YOUTUBE"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "SUCK MY YOUTUBE"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCYpQbR_WKuBJZnBvGzMt9nw"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCYQrYEJGEAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@TechDoctorUK",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCIyy1sSlrgUYKcEqvL4smjQ",
+                        "canonicalBaseUrl": "/@TechDoctorUK"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/mLk-jb_XqB-805em26x1p_zw8bRaaxUtnj_Yu293x4BTqUGE927eLQUQDZ8GVzRn_xcSe6i3cPY=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCYQrYEJGEAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "TechDoctorUK"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "TechDoctorUK"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCIyy1sSlrgUYKcEqvL4smjQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCUQrYEJGEEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@TechDoctorUKExtra",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCyELHBcUipxHPZEtToZrdZg",
+                        "canonicalBaseUrl": "/@TechDoctorUKExtra"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/CiSKD0y96oVN0IACO2Q5d7-pfBsczo-nbDfexP4OHVLlmUw68R1CLsBTdOj0sZPnBmQqPycT=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCUQrYEJGEEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "TechDoctorUK Extra"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "TechDoctorUK Extra"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCyELHBcUipxHPZEtToZrdZg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCQQrYEJGEIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@thebigbankbro",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCfiWk1AZJgTYjnCStfyxXXg",
+                        "canonicalBaseUrl": "/@thebigbankbro"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/uVaP-ZDfVqhnVpLXJs-3PMI_4cYC3kCSm3VKzhgWcT-PUetM73h_aMNNxz0tcVeIDn9boGeMHDo=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCQQrYEJGEIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Big Bank bro"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Big Bank bro"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCfiWk1AZJgTYjnCStfyxXXg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCMQrYEJGEMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@TheDailyShow",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCwWhs_6x42TyRM4Wstoq8HA",
+                        "canonicalBaseUrl": "/@TheDailyShow"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/vfgTwN2vtrIFe7jfON70eXNw9BH0LLujtyXs6Oc8OvvISFb9i-Bn4Bxxzkos_BwCxHjdytYa5g=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCMQrYEJGEMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Daily Show"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Daily Show"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCwWhs_6x42TyRM4Wstoq8HA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCIQrYEJGEQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@thedoors",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCYgJ2M1mq8Ae0QOm_VQU4VQ",
+                        "canonicalBaseUrl": "/@thedoors"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNiloJbFPZhC_hIeTsHZtzWeM6bqQyjOd-gyKH-Aw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCIQrYEJGEQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Doors"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Doors"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCYgJ2M1mq8Ae0QOm_VQU4VQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCEQrYEJGEUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@ColbertLateShow",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCMtFAi84ehTSYSE9XoHefig",
+                        "canonicalBaseUrl": "/@ColbertLateShow"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNyF5VrZj9O0f9YRGrRaaNyG3BCNXOOeyrEn3YDRA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCEQrYEJGEUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Late Show with Stephen Colbert"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Late Show with Stephen Colbert"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCMtFAi84ehTSYSE9XoHefig"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CCAQrYEJGEYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@ThePedalGuy",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCtcZtztFG6qjlaYtSGabUzQ",
+                        "canonicalBaseUrl": "/@ThePedalGuy"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqMBRRAfaoZHGHV0SO2vUgZuyl87oUU_STnwP9dNLg=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CCAQrYEJGEYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Pedal Guy"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Pedal Guy"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCtcZtztFG6qjlaYtSGabUzQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CB8QrYEJGEciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@ScienceAsylum",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCXgNowiGxwwnLeQ7DXTwXPg",
+                        "canonicalBaseUrl": "/@ScienceAsylum"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqP_j5-5qwoFtC8Sc9QAYNhT96y1pL3Vl7C6gPaSKA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CB8QrYEJGEciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Science Asylum"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Science Asylum"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCXgNowiGxwwnLeQ7DXTwXPg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CB4QrYEJGEgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@TheSecretsoftheUniverse",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCK-0srt5hdY5m6Zos_NlJZg",
+                        "canonicalBaseUrl": "/@TheSecretsoftheUniverse"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqNWqWdcxdYbyTPS9448yFrM6g_47yENexP0sG8x0g=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CB4QrYEJGEgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "The Secrets of the Universe"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "The Secrets of the Universe"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCK-0srt5hdY5m6Zos_NlJZg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CB0QrYEJGEkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@TheRacingVids",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCt29rkLZan55hYPB8OGHMnQ",
+                        "canonicalBaseUrl": "/@TheRacingVids"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/g2OQ6yh6Syjz7WLWKgHsEfIcOFveYnl5k6_ie6JBOPgNfrHqcWF2mdgGAY6kvCoZc3-M35Rn2w=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CB0QrYEJGEkiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "TheRacingVids"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "TheRacingVids"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCt29rkLZan55hYPB8OGHMnQ"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CBwQrYEJGEoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@Thunderf00t",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCmb8hO2ilV9vRa8cilis88A",
+                        "canonicalBaseUrl": "/@Thunderf00t"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqP6EWJ7L95qzXGmL-b8PAOgvRnpmm6aPSos6Ojz=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CBwQrYEJGEoiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Thunderf00t"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Thunderf00t"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCmb8hO2ilV9vRa8cilis88A"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CBsQrYEJGEsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@tiktokhottiesmixture5519",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCvi7zKHzmEOqydj3IsrUB0Q",
+                        "canonicalBaseUrl": "/@tiktokhottiesmixture5519"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/yAWrN3OlUeEtCcbd9HTfH8tJf1UrduNPUVstUiqUiWoa3pgYHt4XXHApV6GF09R6Qj-9OR_q1EM=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CBsQrYEJGEsiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Tiktok Hotties Mixture"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Tiktok Hotties Mixture"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCvi7zKHzmEOqydj3IsrUB0Q"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CBoQrYEJGEwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@URBANHILLBILLYVIDEOS",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCLj9FG9lupCV-sRdfGx6DWg",
+                        "canonicalBaseUrl": "/@URBANHILLBILLYVIDEOS"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPTprl0rhbDXf2hMOjneV3qo7Dvq5Use8gdQO-y=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CBoQrYEJGEwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "URBAN HILLBILLY VIDEOS"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "URBAN HILLBILLY VIDEOS"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCLj9FG9lupCV-sRdfGx6DWg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CBkQrYEJGE0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@wpahp",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCXLdDPcQD0BWjb00fGdFFYg",
+                        "canonicalBaseUrl": "/@wpahp"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqMwf_U37IxRtWQbsF7NxF8WhopUK6eWz9fjy0AGKA=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CBkQrYEJGE0iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "We Plants Are Happy Plants"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "We Plants Are Happy Plants"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCXLdDPcQD0BWjb00fGdFFYg"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CBgQrYEJGE4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/@YourWingmam",
+                          "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                          "rootVe": 3611,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "UCEfwUiuU69mS19aJ_SveqDA",
+                        "canonicalBaseUrl": "/@YourWingmam"
+                      }
+                    },
+                    "thumbnail": {
+                      "thumbnails": [
+                        {
+                          "url": "https://yt3.ggpht.com/ytc/AGIKgqPzgYMUK7op4WLeDuJwUjWCXbVzglzftaRiEtU8Tw=s88-c-k-c0x00ffffff-no-rj"
+                        }
+                      ]
+                    },
+                    "badges": {
+                      "liveBroadcasting": false
+                    },
+                    "trackingParams": "CBgQrYEJGE4iEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                    "formattedTitle": {
+                      "simpleText": "Your Wingmam"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Your Wingmam"
+                      }
+                    },
+                    "entryData": {
+                      "guideEntryData": {
+                        "guideEntryId": "UCEfwUiuU69mS19aJ_SveqDA"
+                      }
+                    },
+                    "presentationStyle": "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+                  }
+                },
+                {
+                  "guideEntryRenderer": {
+                    "navigationEndpoint": {
+                      "clickTrackingParams": "CBcQtSwYTyITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                      "commandMetadata": {
+                        "webCommandMetadata": {
+                          "url": "/feed/guide_builder",
+                          "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                          "rootVe": 6827,
+                          "apiUrl": "/youtubei/v1/browse"
+                        }
+                      },
+                      "browseEndpoint": {
+                        "browseId": "FEguide_builder"
+                      }
+                    },
+                    "icon": {
+                      "iconType": "ADD_CIRCLE"
+                    },
+                    "trackingParams": "CBcQtSwYTyITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                    "formattedTitle": {
+                      "simpleText": "Browse channels"
+                    },
+                    "accessibility": {
+                      "accessibilityData": {
+                        "label": "Browse channels"
+                      }
+                    }
+                  }
+                }
+              ],
+              "collapserItem": {
+                "guideEntryRenderer": {
+                  "icon": {
+                    "iconType": "COLLAPSE"
+                  },
+                  "trackingParams": "CBYQtSwiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                  "formattedTitle": {
+                    "simpleText": "Show less"
+                  },
+                  "accessibility": {
+                    "accessibilityData": {
+                      "label": "Show less"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "trackingParams": "CBUQ_x4YASITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+        "formattedTitle": {
+          "simpleText": "Subscriptions"
+        },
+        "handlerDatas": [
+          "GUIDE_ACTION_ADD_TO_SUBSCRIPTIONS",
+          "GUIDE_ACTION_REMOVE_FROM_SUBSCRIPTIONS"
+        ]
+      }
+    },
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CBQQv54JGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/feed/trending?bp=6gQJRkVleHBsb3Jl",
+                    "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                    "rootVe": 6827,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "FEtrending",
+                  "params": "6gQJRkVleHBsb3Jl"
+                }
+              },
+              "icon": {
+                "iconType": "TRENDING"
+              },
+              "trackingParams": "CBQQv54JGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Trending"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Trending"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CBMQp4EJGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UC-9-kyTW8ZkZNDHQJ6FgpwQ"
+                }
+              },
+              "icon": {
+                "iconType": "MUSIC"
+              },
+              "trackingParams": "CBMQp4EJGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Music"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Music"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CBIQnOQDGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/feed/storefront?bp=ogUCKAI%3D",
+                    "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                    "rootVe": 6827,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "FEstorefront",
+                  "params": "ogUCKAI%3D"
+                }
+              },
+              "icon": {
+                "iconType": "CLAPPERBOARD"
+              },
+              "trackingParams": "CBIQnOQDGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Movies"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Movies"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CBEQpoEJGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/channel/UC4R8DWoMoI7CAwX8_LjQHig",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UC4R8DWoMoI7CAwX8_LjQHig"
+                }
+              },
+              "icon": {
+                "iconType": "LIVE"
+              },
+              "trackingParams": "CBEQpoEJGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Live"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Live"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CBAQpIEJGAQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/gaming",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCOpNcN46UbXVtpKMrmU4Abg"
+                }
+              },
+              "icon": {
+                "iconType": "GAMING_LOGO"
+              },
+              "trackingParams": "CBAQpIEJGAQiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Gaming"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Gaming"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CA8QqIEJGAUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/channel/UCYfdidRxbB8Qhf0Nx7ioOYw",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCYfdidRxbB8Qhf0Nx7ioOYw"
+                }
+              },
+              "icon": {
+                "iconType": "NEWS"
+              },
+              "trackingParams": "CA8QqIEJGAUiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "News"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "News"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CA4QqoEJGAYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/channel/UCEgdi0XIXXZ-qJOFPf4JSKw",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCEgdi0XIXXZ-qJOFPf4JSKw"
+                }
+              },
+              "icon": {
+                "iconType": "TROPHY"
+              },
+              "trackingParams": "CA4QqoEJGAYiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Sports"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Sports"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CA0QpYEJGAciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/channel/UCtFRv9O2AHqOZjjynzrv-xg",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCtFRv9O2AHqOZjjynzrv-xg"
+                }
+              },
+              "icon": {
+                "iconType": "COURSE"
+              },
+              "trackingParams": "CA0QpYEJGAciEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Learning"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Learning"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAwQo4EJGAgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/channel/UCrpQ4p1Ql_hG8rKXIKM1MOQ",
+                    "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                    "rootVe": 3611,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "UCrpQ4p1Ql_hG8rKXIKM1MOQ"
+                }
+              },
+              "icon": {
+                "iconType": "FASHION_LOGO"
+              },
+              "trackingParams": "CAwQo4EJGAgiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Fashion & Beauty"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Fashion & Beauty"
+                }
+              }
+            }
+          }
+        ],
+        "trackingParams": "CAsQ5isYAiITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+        "formattedTitle": {
+          "simpleText": "Explore"
+        }
+      }
+    },
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAoQmbcBGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/premium",
+                    "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                    "rootVe": 11487,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "SPunlimited"
+                }
+              },
+              "icon": {
+                "iconType": "YOUTUBE_ROUND"
+              },
+              "trackingParams": "CAoQmbcBGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "YouTube Premium"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "YouTube Premium"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAkQ5sMDGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "https://studio.youtube.com/",
+                    "webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+                    "rootVe": 83769
+                  }
+                },
+                "urlEndpoint": {
+                  "url": "https://studio.youtube.com",
+                  "target": "TARGET_NEW_WINDOW"
+                }
+              },
+              "icon": {
+                "iconType": "CREATOR_STUDIO_RED_LOGO"
+              },
+              "trackingParams": "CAkQ5sMDGAEiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "YouTube Studio"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "YouTube Studio"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAgQn4ACGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "https://music.youtube.com/",
+                    "webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+                    "rootVe": 83769
+                  }
+                },
+                "urlEndpoint": {
+                  "url": "https://music.youtube.com",
+                  "target": "TARGET_NEW_WINDOW"
+                }
+              },
+              "icon": {
+                "iconType": "YOUTUBE_MUSIC"
+              },
+              "trackingParams": "CAgQn4ACGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "YouTube Music"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "YouTube Music"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAcQ48UCGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "https://www.youtubekids.com/?source=youtube_web",
+                    "webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+                    "rootVe": 83769
+                  }
+                },
+                "urlEndpoint": {
+                  "url": "https://www.youtubekids.com?source=youtube_web",
+                  "target": "TARGET_NEW_WINDOW"
+                }
+              },
+              "icon": {
+                "iconType": "YOUTUBE_KIDS_ROUND"
+              },
+              "trackingParams": "CAcQ48UCGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "YouTube Kids"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "YouTube Kids"
+                }
+              }
+            }
+          }
+        ],
+        "trackingParams": "CAYQ5isYAyITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+        "formattedTitle": {
+          "simpleText": "More from YouTube"
+        }
+      }
+    },
+    {
+      "guideSectionRenderer": {
+        "items": [
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAUQ6qgHGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/account",
+                    "webPageType": "WEB_PAGE_TYPE_SETTINGS",
+                    "rootVe": 23462,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "SPaccount_overview"
+                }
+              },
+              "icon": {
+                "iconType": "SETTINGS"
+              },
+              "trackingParams": "CAUQ6qgHGAAiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Settings"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Settings"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "navigationEndpoint": {
+                "clickTrackingParams": "CAQQtSwYASITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "url": "/reporthistory",
+                    "webPageType": "WEB_PAGE_TYPE_BROWSE",
+                    "rootVe": 6827,
+                    "apiUrl": "/youtubei/v1/browse"
+                  }
+                },
+                "browseEndpoint": {
+                  "browseId": "SPreport_history"
+                }
+              },
+              "icon": {
+                "iconType": "FLAG"
+              },
+              "trackingParams": "CAQQtSwYASITCKv7zcq-5_4CFcWB9AcdawAFkA==",
+              "formattedTitle": {
+                "simpleText": "Report history"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Report history"
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "icon": {
+                "iconType": "HELP"
+              },
+              "trackingParams": "CAMQ46gHGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Help"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Help"
+                }
+              },
+              "serviceEndpoint": {
+                "clickTrackingParams": "CAMQ46gHGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "sendPost": true
+                  }
+                },
+                "signalServiceEndpoint": {
+                  "signal": "CLIENT_SIGNAL",
+                  "actions": [
+                    {
+                      "clickTrackingParams": "CAMQ46gHGAIiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "signalAction": {
+                        "signal": "HELP"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "guideEntryRenderer": {
+              "icon": {
+                "iconType": "FEEDBACK"
+              },
+              "trackingParams": "CAIQ4agHGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+              "formattedTitle": {
+                "simpleText": "Send feedback"
+              },
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "Send feedback"
+                }
+              },
+              "serviceEndpoint": {
+                "clickTrackingParams": "CAIQ4agHGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                "commandMetadata": {
+                  "webCommandMetadata": {
+                    "sendPost": true
+                  }
+                },
+                "signalServiceEndpoint": {
+                  "signal": "CLIENT_SIGNAL",
+                  "actions": [
+                    {
+                      "clickTrackingParams": "CAIQ4agHGAMiEwir-83Kvuf-AhXFgfQHHWsABZA=",
+                      "sendFeedbackAction": {
+                        "bucket": "Kevlar"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "trackingParams": "CAEQ5isYBCITCKv7zcq-5_4CFcWB9AcdawAFkA=="
+      }
+    }
+  ],
+  "trackingParams": "CAAQumkiEwir-83Kvuf-AhXFgfQHHWsABZA="
+}

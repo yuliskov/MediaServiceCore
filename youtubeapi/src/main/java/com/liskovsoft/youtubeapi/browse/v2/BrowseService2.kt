@@ -110,22 +110,15 @@ object BrowseService2 {
 
     @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
-        if (group?.nextPageKey == null) {
-            return null
-        }
-
-        val continuationResult =
-            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
-
-        return RetrofitHelper.get(continuationResult)?.let { MediaGroupImplContinuation(it, createOptions(group.type)).apply { title = group.title } }
+        return continueChip(group)?.firstOrNull()
     }
 
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
-        if (group?.channelId != null) {
-            return continueTab(group)?.let { listOf(it) }
-        } else if (group?.nextPageKey != null) {
+        if (group?.nextPageKey != null) {
             return continueChip(group)
+        } else if (group?.channelId != null) {
+            return continueTab(group)?.let { listOf(it) }
         }
 
         return null

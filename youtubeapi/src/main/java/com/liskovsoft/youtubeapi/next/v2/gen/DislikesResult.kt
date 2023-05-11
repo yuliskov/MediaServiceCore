@@ -6,6 +6,6 @@ data class DislikesResult(
     val likes: Int?,
     val dislikes: Int?,
     val rating: Float?,
-    val viewCount: Int?,
+    val viewCount: Long?, // should be long
     val deleted: Boolean?
 )

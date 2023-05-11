@@ -2,11 +2,13 @@ package com.liskovsoft.youtubeapi.next.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock2
+import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock3
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -20,6 +22,7 @@ class WatchNextApiTest {
     private var mApi: WatchNextApi? = null
     private var mApiMock: WatchNextApiMock? = null
     private var mApiMock2: WatchNextApiMock2? = null
+    private var mApiMock3: WatchNextApiMock3? = null
     private var mService: WatchNextService? = null
     @Before
     fun setUp() {
@@ -32,6 +35,8 @@ class WatchNextApiTest {
 
         mApiMock = MockUtils.mockWithGson(WatchNextApiMock::class.java)
         mApiMock2 = MockUtils.mockWithGson(WatchNextApiMock2::class.java)
+        mApiMock3 = MockUtils.mockWithGson(WatchNextApiMock3::class.java)
+        RetrofitOkHttpHelper.disableCompression = true
     }
 
     @Test
@@ -70,28 +75,22 @@ class WatchNextApiTest {
 
     @Test
     fun testThatMockedWatchNextResultCanBeConverted2() {
-        mService!!.setWatchNextApi(mApiMock2 as WatchNextApi)
-
-        val metadata = getMediaItemMetadataUnsigned()
-
-        assertNotNull("Metadata isn't null", metadata)
+        testThatMockedWatchNextResultCanBeConverted(mApiMock2 as WatchNextApi)
     }
 
     @Test
     fun testThatMockedWatchNextSuggestionsNotEmpty2() {
-        // Testing groups inside a Chip
+        testThatMockedWatchNextSuggestionsNotEmpty(mApiMock2 as WatchNextApi)
+    }
 
-        mService!!.setWatchNextApi(mApiMock2 as WatchNextApi)
+    @Test
+    fun testThatMockedWatchNextResultCanBeConverted3() {
+        testThatMockedWatchNextResultCanBeConverted(mApiMock3 as WatchNextApi)
+    }
 
-        val metadata = getMediaItemMetadataUnsigned()
-
-        val firstGroup = metadata?.suggestions?.getOrNull(0)
-
-        assertNotNull("Group inside a Chip has a title", firstGroup?.title)
-
-        val anyItem = firstGroup?.mediaItems?.getOrNull(0)
-
-        assertNotNull("anyItem isn't null", anyItem)
+    @Test
+    fun testThatMockedWatchNextSuggestionsNotEmpty3() {
+        testThatMockedWatchNextSuggestionsNotEmpty(mApiMock3 as WatchNextApi)
     }
 
     @Test
@@ -149,6 +148,30 @@ class WatchNextApiTest {
         val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
         val wrapper = mApiMock!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
+    }
+
+    private fun testThatMockedWatchNextResultCanBeConverted(api: WatchNextApi) {
+        mService!!.setWatchNextApi(api)
+
+        val metadata = getMediaItemMetadataUnsigned()
+
+        assertNotNull("Metadata isn't null", metadata)
+    }
+
+    private fun testThatMockedWatchNextSuggestionsNotEmpty(api: WatchNextApi) {
+        // Testing groups inside a Chip
+
+        mService!!.setWatchNextApi(api)
+
+        val metadata = getMediaItemMetadataUnsigned()
+
+        val firstGroup = metadata?.suggestions?.getOrNull(0)
+
+        assertNotNull("Group inside a Chip has a title", firstGroup?.title)
+
+        val anyItem = firstGroup?.mediaItems?.getOrNull(0)
+
+        assertNotNull("anyItem isn't null", anyItem)
     }
 
 //    @Test

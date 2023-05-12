@@ -26,6 +26,7 @@ public class ClipService {
     private static final String SUBSCRIPTIONS_URL = "https://www.youtube.com/tv#/zylon-surface?c=FEsubscriptions&resume";
     private static final String HISTORY_URL = "https://www.youtube.com/tv#/zylon-surface?c=FEmy_youtube&resume";
     private static final String RECOMMENDED_URL = "https://www.youtube.com/tv#/zylon-surface?c=default&resume";
+    private static final int MIN_PLAYLIST_SIZE = 40;
     @SuppressLint("StaticFieldLeak")
     private static ClipService mInstance;
     private final Context mContext;
@@ -100,14 +101,16 @@ public class ClipService {
             List<Clip> clips;
 
             if (mediaItems != null && !mediaItems.isEmpty()) {
-                if (mediaItems.size() < 20) {
-                    for (int i = 0; i < 3; i++) {
-                        MediaGroup mediaGroup = mediaGroupService.continueGroup(selectedGroup);
-                        if (mediaGroup == null) {
-                            break;
-                        }
-                        mediaItems.addAll(mediaGroup.getMediaItems());
+                for (int i = 0; i < 3; i++) {
+                    if (mediaItems.size() >= MIN_PLAYLIST_SIZE) {
+                        break;
                     }
+
+                    MediaGroup mediaGroup = mediaGroupService.continueGroup(selectedGroup);
+                    if (mediaGroup == null) {
+                        break;
+                    }
+                    mediaItems.addAll(mediaGroup.getMediaItems());
                 }
 
                 clips = convertToClips(mediaItems);

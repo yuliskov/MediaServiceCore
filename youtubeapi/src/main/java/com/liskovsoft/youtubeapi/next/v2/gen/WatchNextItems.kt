@@ -32,8 +32,17 @@ data class ShelfItem(
         val chipCloudRenderer: ChipCloudRenderer?
     ) {
         data class ShelfHeaderRenderer(
-                val title: TextItem?
-        )
+                val title: TextItem?,
+                val avatarLockup: AvatarLockup?
+        ) {
+            data class AvatarLockup(
+                val avatarLockupRenderer: AvatarLockupRenderer?
+            ) {
+                data class AvatarLockupRenderer(
+                    val title: TextItem?
+                )
+            }
+        }
 
         data class ChipCloudRenderer(
                 val chips: List<ChipItem?>?

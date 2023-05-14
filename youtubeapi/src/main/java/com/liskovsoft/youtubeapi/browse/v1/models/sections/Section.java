@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import java.util.List;
 
 public class Section {
-    @JsonPath({"$.title", "$.headerRenderer.shelfHeaderRenderer.title"})
+    @JsonPath({"$.title", "$.headerRenderer.shelfHeaderRenderer.title", "$.headerRenderer.shelfHeaderRenderer.avatarLockup.avatarLockupRenderer.title"})
     private TextItem mTitle;
     @JsonPath("$.headerRenderer.chipCloudRenderer.chips[*].chipCloudChipRenderer")
     private List<Chip> mChips;

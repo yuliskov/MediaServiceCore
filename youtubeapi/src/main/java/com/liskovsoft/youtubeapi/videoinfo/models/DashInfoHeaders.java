@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class DashInfoHeaders extends DashInfoBase {
     private static final String SEQ_NUM = "X-Sequence-Num";
+    private static final String SEQ_NUM_ALT = "X-Head-Seqnum";
     private static final String STREAM_DUR_MS = "X-Head-Time-Millis";
     private static final String LAST_SEG_TIME_MS = "X-Walltime-Ms";
     private int mLastSegmentNum;
@@ -16,7 +17,8 @@ public class DashInfoHeaders extends DashInfoBase {
     public DashInfoHeaders(Call<Void> format) {
         try {
             Headers headers = format.execute().headers();
-            mLastSegmentNum = Integer.parseInt(headers.get(SEQ_NUM));
+            String seqNum = headers.get(SEQ_NUM);
+            mLastSegmentNum = Integer.parseInt(seqNum != null ? seqNum : headers.get(SEQ_NUM_ALT));
             mStreamDurationMs = Long.parseLong(headers.get(STREAM_DUR_MS));
             mLastSegmentTimeMs = Long.parseLong(headers.get(LAST_SEG_TIME_MS));
         } catch (IOException e) {

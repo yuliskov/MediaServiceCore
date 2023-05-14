@@ -521,7 +521,8 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         int segmentDurationUnits = (int)(segmentDurationUs * (long) unitsPerSecond / 1_000_000);
         // Increase count a bit to compensate previous tweak
         //long segmentCount = (long) lengthSeconds / targetDurationSec * 10000 / 9999;
-        int segmentCount = (int)(lengthSeconds * (long) unitsPerSecond / segmentDurationUnits);
+        //int segmentCount = (int)(lengthSeconds * (long) unitsPerSecond / segmentDurationUnits);
+        int segmentCount = (int) Math.ceil(lengthSeconds * (double) unitsPerSecond / segmentDurationUnits);
         // Increase offset a bit to compensate previous tweaks
         // Streams to check:
         // https://www.youtube.com/watch?v=drdemkJpgao

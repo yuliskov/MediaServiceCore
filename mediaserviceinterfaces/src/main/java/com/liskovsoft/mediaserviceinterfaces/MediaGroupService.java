@@ -22,6 +22,7 @@ public interface MediaGroupService {
     MediaGroup getSubscribedChannels();
     MediaGroup getSubscribedChannelsByUpdate();
     MediaGroup getSubscribedChannelsByName();
+    MediaGroup getSubscribedChannelsByName2();
     MediaGroup getSubscribedChannelsByViewed();
     MediaGroup getGroup(MediaItem mediaGroup);
     /**
@@ -59,6 +60,7 @@ public interface MediaGroupService {
     Observable<MediaGroup> getSubscribedChannelsObserve();
     Observable<MediaGroup> getSubscribedChannelsByUpdateObserve();
     Observable<MediaGroup> getSubscribedChannelsByNameObserve();
+    Observable<MediaGroup> getSubscribedChannelsByName2Observe();
     Observable<MediaGroup> getSubscribedChannelsByViewedObserve();
     Observable<MediaGroup> getGroupObserve(MediaItem mediaItem);
     /**

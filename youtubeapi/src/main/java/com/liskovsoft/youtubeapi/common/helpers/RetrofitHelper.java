@@ -18,6 +18,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketException;
 import java.util.List;
 
@@ -57,12 +58,17 @@ public class RetrofitHelper {
     public static <T> Response<T> getResponse(Call<T> wrapper) {
         try {
             return wrapper.execute();
+        } catch (ConnectException e) {
+            // ConnectException - server is down or address is banned
+            // Usually happen on sites like returnyoutubedislikeapi.com
+            // We could skip it safe?
+            e.printStackTrace();
         } catch (SocketException e) {
-            // ConnectException - server is down
             // SocketException - no internet
+            // ConnectException - server is down or address is banned
             //wrapper.cancel(); // fix background running when RxJava object is disposed?
             e.printStackTrace();
-            throw new IllegalStateException(e); // notify called about network condition
+            throw new IllegalStateException(e); // notify caller about network condition
         } catch (IOException e) {
             // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?

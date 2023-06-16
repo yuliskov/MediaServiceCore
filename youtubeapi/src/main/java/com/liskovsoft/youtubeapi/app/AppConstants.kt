@@ -14,12 +14,15 @@ object AppConstants {
         "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}};"
 
     // 7.20211013.10.00
-    const val CLIENT_VERSION_TV = "7.20220118.09.00"
+    // 7.20220118.09.00
+    const val CLIENT_VERSION_TV = "7.20230612.10.00"
 
     // 2.20211014.05.00-canary_control
-    const val CLIENT_VERSION_WEB = "2.20220119.01.00"
+    // 2.20220119.01.00
+    const val CLIENT_VERSION_WEB = "2.20230613.01.00"
 
-    const val CLIENT_VERSION_KIDS = "3.20221025.01.00"
+    // 3.20221025.01.00
+    const val CLIENT_VERSION_KIDS = "3.20230425.01.00"
 
     // Special embed version (thanks for github thread)
     const val CLIENT_VERSION_EMBED = "2.0"

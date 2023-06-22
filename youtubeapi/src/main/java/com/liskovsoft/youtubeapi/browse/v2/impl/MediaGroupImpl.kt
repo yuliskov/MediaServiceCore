@@ -12,18 +12,19 @@ data class MediaGroupImpl(
     private val options: MediaGroupOptions = MediaGroupOptions(),
     private val liveResult: BrowseResult? = null
 ): MediaGroupImplBase(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?> = listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
+    override fun getItemWrappersInt(): List<ItemWrapper?> =
+        listOfNotNull(liveResult?.getLiveItems(), liveResult?.getPastLiveItems(), browseResult.getItems()).flatten()
     override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
     override fun getTitleInt(): String? = browseResult.getTitle()
 }
 
 data class MediaGroupImplLive(
-    private val browseResult: BrowseResult,
+    private val liveResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): MediaGroupImplBase(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?>? = browseResult.getLiveItems()
+    override fun getItemWrappersInt(): List<ItemWrapper?> = listOfNotNull(liveResult.getLiveItems(), liveResult.getPastLiveItems()).flatten()
     override fun getNextPageKeyInt(): String? = null
-    override fun getTitleInt(): String? = browseResult.getTitle()
+    override fun getTitleInt(): String? = liveResult.getTitle()
 }
 
 data class MediaGroupImplContinuation(

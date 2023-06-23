@@ -30,9 +30,11 @@ public class VideoInfoApiHelper {
 
     private static final String VIDEO_ID = "\"videoId\":\"%s\",\"cpn\":\"%s\"";
 
-    // NOTE: completely removes storyboard (seek previews) from the result!
     // Magic val to fix throttling???
+    // NOTE: Completely removes storyboard (seek previews) from the result!
+    // NOTE: Helps to bypass geo blocking.
     // https://github.com/TeamNewPipe/NewPipe/issues/9038#issuecomment-1289756816
+    // https://github.com/revanced/revanced-patches/issues/2432#issuecomment-1601819762
     private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
 
     public static String getVideoInfoQuery(String videoId) {
@@ -76,6 +78,9 @@ public class VideoInfoApiHelper {
         return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
     }
 
+    /**
+     * NOTE: Should use protobuf to bypass geo blocking.
+     */
     public static String getVideoInfoQueryGeoBlocked(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.CLIENT_NAME_WEB, AppConstants.CLIENT_VERSION_WEB, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams, PROTOBUF_VAL);
     }

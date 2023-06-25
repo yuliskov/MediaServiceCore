@@ -41,7 +41,7 @@ class CommentsApiTest {
     fun testThatCommentCanBeContinued() {
         val commentsResult = getCommentsResult(getCommentsKey())
 
-        assertNotNull("Has continuation key", commentsResult?.getComments()?.getOrNull(0)?.getCommentItem()?.getContinuationKey())
+        assertNotNull("Has continuation key", getContinuableComment(commentsResult)?.getContinuationKey())
         assertNotNull("Has continuation key", commentsResult?.getContinuationKey())
     }
 
@@ -52,7 +52,7 @@ class CommentsApiTest {
         val commentsResultNext = getCommentsResult(commentsResult?.getContinuationKey())
         assertNotNull("Has continuations", commentsResultNext?.getComments()?.isNotEmpty())
 
-        val nestedCommentsResult = getCommentsResult(commentsResult?.getComments()?.getOrNull(0)?.getCommentItem()?.getContinuationKey())
+        val nestedCommentsResult = getCommentsResult(getContinuableComment(commentsResult)?.getContinuationKey())
         assertNotNull("Has nested comments", nestedCommentsResult?.getComments()?.isNotEmpty())
     }
 
@@ -71,5 +71,14 @@ class CommentsApiTest {
         val watchNext = watchNextResult?.execute()?.body()
         val commentsKey = watchNext?.getCommentPanel()?.getTopCommentsKey()
         return commentsKey
+    }
+
+    private fun getContinuableComment(commentsResult: CommentsResult?): CommentRenderer? {
+        commentsResult?.getComments()?.forEach {
+            val commentItem = it?.getCommentItem()
+            if (commentItem?.getContinuationKey() != null) return commentItem
+        }
+
+        return null
     }
 }

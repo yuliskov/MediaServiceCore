@@ -37,6 +37,10 @@ public class VideoInfoApiHelper {
     // https://github.com/revanced/revanced-patches/issues/2432#issuecomment-1601819762
     private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
 
+    // Workaround streaming URLs returning 403 when using Android clients
+    // https://github.com/LuanRT/YouTube.js/pull/390/commits/6511c23fe6133f4b066c558ebfa531e1ce7c0062
+    private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
+
     public static String getVideoInfoQuery(String videoId) {
         return getVideoInfoQueryLive(videoId, null);
     }
@@ -47,7 +51,7 @@ public class VideoInfoApiHelper {
      * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
      */
     public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams);
+        return createCheckedQuery(AppConstants.CLIENT_NAME_ANDROID, AppConstants.CLIENT_VERSION_ANDROID, AppConstants.CLIENT_SCREEN_WATCH, videoId, clickTrackingParams, PROTOBUF_VAL_ANDROID);
     }
 
     /**

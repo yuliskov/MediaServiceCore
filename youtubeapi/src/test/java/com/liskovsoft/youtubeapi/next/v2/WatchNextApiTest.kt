@@ -1,8 +1,10 @@
 package com.liskovsoft.youtubeapi.next.v2
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
@@ -104,8 +106,7 @@ class WatchNextApiTest {
     fun testThatSuggestedContinuationNotNull() {
         val metadata = getMediaItemMetadataUnsigned()
 
-        val firstGroup = metadata?.suggestions?.first()
-        val continuation = mService!!.continueGroup(firstGroup)
+        val continuation = mService!!.continueGroup(getContinuableRow(metadata))
 
         assertNotNull("Continuation not null", continuation)
     }
@@ -174,41 +175,11 @@ class WatchNextApiTest {
         assertNotNull("anyItem isn't null", anyItem)
     }
 
-//    @Test
-//    fun testThatWatchNextContainsAllRequiredFields() {
-//        checkWatchNextResultFields(watchNextResult)
-//    }
-//
-//    @Test
-//    fun testThatResultProperlyLocalized() {
-//        LocaleManager.instance().language = "en"
-//        var watchNextResult = watchNextResult
-//        var firstSuggesting = watchNextResult.suggestedSections[0]
-//        Assert.assertEquals("Suggestion title is localized to english", "Suggestions", firstSuggesting.title)
-//        LocaleManager.instance().language = "ru"
-//        watchNextResult = watchNextResult
-//        firstSuggesting = watchNextResult.suggestedSections[0]
-//        Assert.assertEquals("Suggestion title is localized to russian", "Рекомендации", firstSuggesting.title)
-//    }
-//
-//    @Test
-//    fun testThatWatchNextRowsCouldBeContinued() {
-//        val watchNextResult = watchNextResult
-//        val rootNextPageKey = watchNextResult.suggestedSections[0].nextPageKey
-//        Assert.assertNotNull("Root contains next key", rootNextPageKey)
-//        val continuation = continueWatchNext(rootNextPageKey)
-//        val nextPageKey = continuation.nextPageKey
-//        Assert.assertNotNull("Continuations contains next key", nextPageKey)
-//    }
-//
-//    private fun continueWatchNext(nextPageKey: String): WatchNextResultContinuation {
-//        val wrapper = mManager!!.continueWatchNextResult(BrowseManagerParams.getContinuationQuery(nextPageKey))
-//        return RetrofitHelper.get(wrapper)
-//    }
-//
-//    private val watchNextResult: WatchNextResult
-//        private get() {
-//            val wrapper = mManager!!.getWatchNextResult(WatchNextManagerParams.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS))
-//            return RetrofitHelper.get(wrapper)
-//        }
+    private fun getContinuableRow(metadata: MediaItemMetadata?): MediaGroup? {
+        metadata?.suggestions?.forEach {
+            if (YouTubeHelper.extractNextKey(it) != null) return it
+        }
+
+        return null
+    }
 }

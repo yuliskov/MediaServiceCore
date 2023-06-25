@@ -27,9 +27,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
         //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
         VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams);
+        //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no dash url
 
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
-            Log.e(TAG, "Enable seeking support on the live streams...");
+            Log.e(TAG, "Enable seeking support on live streams...");
             result.sync(getDashInfo2(result));
 
             // Add dash and hls manifests (for backward compatibility)

@@ -15,6 +15,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -208,6 +209,7 @@ public class BrowseApiSignedTest extends BrowseApiTestBase {
         assertNotNull("Guide contains suggest token", guide.getSuggestToken());
     }
 
+    @Ignore("Old api")
     @Test
     public void testThatHomeChipsNotEmpty() throws IOException {
         Call<SectionTabList> wrapper = mService.getSectionTabList(BrowseApiHelper.getHomeQuery());

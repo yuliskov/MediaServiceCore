@@ -15,7 +15,7 @@ private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it
 /////
 
 fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
-    getGridContents()?.map { it?.getItem() }
+    getGridContents()?.mapNotNull { it?.getItem() }
 fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
         it?.getContinuationToken()
     } ?:

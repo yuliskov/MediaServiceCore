@@ -50,7 +50,7 @@ object DefaultHeaders {
 
     @JvmField
     val APP_USER_AGENT = USER_AGENT_SAMSUNG_3 // no buffering
-    //val APP_USER_AGENT = USER_AGENT_ATV_COMBINED // needs protobuf val to bypass buffering (see videoinfo)
+    //val APP_USER_AGENT = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
 
     const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
 }

@@ -40,21 +40,21 @@ class BrowseApiTest {
 
     @Test
     fun testThatSubsNotEmpty() {
-        val subs = getSubs()
+        val subs = getSubscriptions()
 
         assertNotNull("Contains videos", subs?.getItems()?.getOrNull(0))
     }
 
     @Test
     fun testThatSubContainsFeedbackToken() {
-        val subs = getSubs()
+        val subs = getSubscriptions()
 
         assertNotNull("Contains feedback token", subs?.getItems()?.getOrNull(0)?.getFeedbackToken())
     }
 
     @Test
     fun testThatSubsCanBeContinued() {
-        val subs = getSubs()
+        val subs = getSubscriptions()
 
         assertNotNull("Contains continuation token", subs?.getContinuationToken())
 
@@ -92,11 +92,29 @@ class BrowseApiTest {
         val home = getHome()
 
         val sections = home?.getSections()
+        val tabs = home?.getTabs()
+        val chips = home?.getChips()
 
-        val section = sections?.get(0)
+        val section = sections?.firstOrNull()
+        val tab = tabs?.firstOrNull()
+        val chip = chips?.firstOrNull()
 
-        assertNotNull("Section contains title", section?.getTitle())
-        assertNotNull("Section contains items", section?.getItems()?.get(0))
+        assertTrue("Result contains either sections, tabs or chips", section != null || tab != null || chip != null)
+
+        if (section != null) {
+            assertNotNull("Section contains title", section.getTitle())
+            assertNotNull("Section contains items", section.getItems()?.firstOrNull())
+        }
+
+        if (tab != null) {
+            //assertNotNull("Section contains title", tab.getTitle())
+            assertNotNull("Section contains items", tab.getItems()?.firstOrNull())
+        }
+
+        if (chip != null) {
+            assertNotNull("Section contains title", chip.getTitle())
+            assertNotNull("Section contains items", chip.getContinuationToken() != null)
+        }
     }
 
     @Test
@@ -111,7 +129,7 @@ class BrowseApiTest {
 
         assertNotNull("Chip has title", chip?.getTitle())
 
-        checkContinuation(chip?.getContinuationToken())
+        checkContinuation(chip?.getContinuationToken(), false) // Chips usually don't support multiple continuation
     }
 
     @Ignore("Doesn't contains chips")
@@ -216,17 +234,19 @@ class BrowseApiTest {
         }
     }
 
-    private fun checkContinuation(token: String?) {
+    private fun checkContinuation(token: String?, checkNextToken: Boolean = true) {
         val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token))
 
         val continuation = RetrofitHelper.get(continuationResult)
 
         assertNotNull("Contains items", continuation?.getItems()?.getOrNull(0))
 
-        assertNotNull("Contains continuation token", continuation?.getContinuationToken())
+        if (checkNextToken) {
+            assertNotNull("Contains next token", continuation?.getContinuationToken())
+        }
     }
 
-    private fun getSubs(): BrowseResult? {
+    private fun getSubscriptions(): BrowseResult? {
         val subsResult = mService?.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
 
         return RetrofitHelper.get(subsResult)

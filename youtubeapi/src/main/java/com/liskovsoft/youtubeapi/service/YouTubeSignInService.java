@@ -103,8 +103,6 @@ public class YouTubeSignInService implements SignInService {
 
     public void invalidateCache() {
         mCachedAuthorizationHeader = null;
-
-        syncWithRetrofit();
     }
 
     @Override
@@ -168,7 +166,7 @@ public class YouTubeSignInService implements SignInService {
         return token;
     }
 
-    private synchronized void syncWithRetrofit() {
+    private void syncWithRetrofit() {
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
 
         if (mCachedAuthorizationHeader != null) {

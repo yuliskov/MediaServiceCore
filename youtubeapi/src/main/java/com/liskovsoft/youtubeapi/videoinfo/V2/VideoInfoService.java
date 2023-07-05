@@ -26,8 +26,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
         //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
-        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams);
         //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no dash url
+        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included
+        //VideoInfo result = getVideoInfoPremium(videoId, clickTrackingParams);
 
         if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
             Log.e(TAG, "Enable seeking support on live streams...");
@@ -87,6 +88,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoGeoBlocked(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeoBlocked(videoId, clickTrackingParams);
+        return getVideoInfo(videoInfoQuery);
+    }
+
+    private VideoInfo getVideoInfoPremium(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryPremium(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 

@@ -4,39 +4,65 @@ object AppConstants {
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
     private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
 
-    private const val JSON_POST_DATA_TEMPLATE = "{\"context\":{\"client\":{\"tvAppInfo\":{\"zylonLeftNav\":true},\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-            "\"clientScreen\":\"%s\",\"webpSupport\":false,\"animatedWebpSupport\":true,\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
-            "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}},\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
+    /**
+     * Used when parsing video_info data
+     */
+    const val VIDEO_INFO_JSON_CONTENT_PARAM = "player_response"
 
+    const val VISITOR_COOKIE_NAME = "VISITOR_INFO1_LIVE"
+    
     const val SCRIPTS_URL_BASE = "https://www.youtube.com"
     const val API_KEY = API_KEY_NEW
     const val FUNCTION_RANDOM_BYTES =
         "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}};"
 
+    private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
+            "\"clientScreen\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
+            "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
+            "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
+
+    private const val JSON_POST_DATA_IOS = "\"deviceModel\":\"%s\",\"userAgent\":\"%s\","
+    private const val JSON_POST_DATA_ANDROID = "\"androidSdkVersion\":30,\"userAgent\":\"%s\","
+    private const val JSON_POST_DATA_BROWSE = "\"tvAppInfo\":{\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
+
     // 7.20211013.10.00
     // 7.20220118.09.00
     const val CLIENT_VERSION_TV = "7.20230612.10.00"
+    private const val CLIENT_NAME_TV = "TVHTML5"
 
     // 2.20211014.05.00-canary_control
     // 2.20220119.01.00
     const val CLIENT_VERSION_WEB = "2.20230613.01.00"
+    private const val CLIENT_NAME_WEB = "WEB"
+    private const val CLIENT_NAME_MWEB = "MWEB"
 
     // 3.20221025.01.00
-    const val CLIENT_VERSION_KIDS = "3.20230425.01.00"
+    private const val CLIENT_VERSION_KIDS = "3.20230425.01.00"
+    private const val CLIENT_NAME_KIDS = "TVHTML5_KIDS"
 
     // Special embed version (thanks for github thread)
-    const val CLIENT_VERSION_EMBED = "2.0"
+    private const val CLIENT_VERSION_EMBED = "2.0"
+    private const val CLIENT_NAME_EMBED = "TVHTML5_SIMPLY_EMBEDDED_PLAYER"
 
+    // ANDROID
     // 16.20
-    const val CLIENT_VERSION_ANDROID = "16.49"
-    const val CLIENT_NAME_TV = "TVHTML5"
-    const val CLIENT_NAME_WEB = "WEB"
-    const val CLIENT_NAME_MWEB = "MWEB"
-    const val CLIENT_NAME_KIDS = "TVHTML5_KIDS"
-    const val CLIENT_NAME_EMBED = "TVHTML5_SIMPLY_EMBEDDED_PLAYER"
-    const val CLIENT_NAME_ANDROID = "ANDROID"
-    const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
-    const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
+    // 16.49
+    private const val CLIENT_VERSION_ANDROID = "17.31.35"
+    private const val CLIENT_NAME_ANDROID = "ANDROID"
+    private const val USER_AGENT_ANDROID = "com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip"
+    private const val PARAMS_ANDROID = "CgIQBg=="
+    private const val ANDROID_SDK_VERSION = "30"
+    private const val API_KEY_ANDROID = "AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w"
+
+    // IOS
+    private const val CLIENT_VERSION_IOS = "17.33.2"
+    private const val CLIENT_NAME_IOS = "IOS"
+    private const val DEVICE_MODEL_IOS = "iPhone14,3"
+    private const val USER_AGENT_IOS = "com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)"
+    private const val API_KEY_IOS = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc"
+
+    private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
+    private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
 
     /**
      * Used in browse, next, search<br></br>
@@ -45,24 +71,35 @@ object AppConstants {
      * contentCheckOk - ?
      */
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH)
+    val JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH)
+    val JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_MWEB = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH)
+    val JSON_POST_DATA_TEMPLATE_MWEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_ANDROID = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH)
+    val JSON_POST_DATA_TEMPLATE_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH,
+        String.format(JSON_POST_DATA_ANDROID, USER_AGENT_IOS) + JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_KIDS = String.format(JSON_POST_DATA_TEMPLATE, CLIENT_NAME_KIDS, CLIENT_VERSION_KIDS, CLIENT_SCREEN_WATCH)
+    val JSON_POST_DATA_TEMPLATE_KIDS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_KIDS, CLIENT_VERSION_KIDS, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
 
-    /**
-     * Used when parsing video_info data
-     */
-    const val VIDEO_INFO_JSON_CONTENT_PARAM = "player_response"
+    @JvmField
+    val JSON_POST_DATA_PLAYER_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH,
+        String.format(JSON_POST_DATA_ANDROID, USER_AGENT_IOS))
 
-    const val VISITOR_COOKIE_NAME = "VISITOR_INFO1_LIVE"
+    @JvmField
+    val JSON_POST_DATA_PLAYER_IOS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_IOS, CLIENT_VERSION_IOS, CLIENT_SCREEN_WATCH,
+        String.format(JSON_POST_DATA_IOS, DEVICE_MODEL_IOS, USER_AGENT_IOS))
+
+    @JvmField
+    val JSON_POST_DATA_PLAYER_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, "")
+
+    @JvmField
+    val JSON_POST_DATA_PLAYER_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, "")
+
+    @JvmField
+    val JSON_POST_DATA_PLAYER_EMBED = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_EMBED, CLIENT_VERSION_EMBED, CLIENT_SCREEN_EMBED, "")
 }

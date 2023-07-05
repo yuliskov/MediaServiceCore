@@ -1,0 +1,29 @@
+Premium (iOS), hlsManifestUrl
+
+URL: 
+https://www.youtube.com/youtubei/v1/player
+
+QUERY:
+{'key': 'AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc', 'prettyPrint': 'false'}
+
+DATA:
+b'{"context": {"client": {"clientName": "IOS", "clientVersion": "17.33.2", "deviceModel": "iPhone14,3", "userAgent": "com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)", "hl": "en", "timeZone": "UTC", "utcOffsetMinutes": 0}}, "videoId": "NyMd4IH3XUI", "playbackContext": {"contentPlaybackContext": {"html5Preference": "HTML5_PREF_WANTS"}}, "contentCheckOk": true, "racyCheckOk": true}'
+
+HEADERS: 
+{'X-YouTube-Client-Name': '5', 'X-YouTube-Client-Version': '17.33.2', 'Origin': 'https://www.youtube.com', 'User-Agent': 'com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)', 'content-type': 'application/json'}
+
+
+Regular (Android)
+
+URL:
+'https://www.youtube.com/youtubei/v1/player'
+
+QUERY:
+{'key': 'AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w', 'prettyPrint': 'false'}
+
+DATA:
+b'{"context": {"client": {"clientName": "ANDROID", "clientVersion": "17.31.35", "androidSdkVersion": 30, "userAgent": "com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip", "hl": "en", "timeZone": "UTC", "utcOffsetMinutes": 0}}, "videoId": "NyMd4IH3XUI", "params": "CgIQBg==", "playbackContext": {"contentPlaybackContext": {"html5Preference": "HTML5_PREF_WANTS"}}, "contentCheckOk": true, "racyCheckOk": true}'
+
+HEADERS:
+{'X-YouTube-Client-Name': '3', 'X-YouTube-Client-Version': '17.31.35', 'Origin': 'https://www.youtube.com', 'User-Agent': 'com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip', 'content-type': 'application/json'}
+

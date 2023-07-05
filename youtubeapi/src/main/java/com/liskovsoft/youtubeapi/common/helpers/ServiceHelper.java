@@ -67,7 +67,7 @@ public class ServiceHelper {
     }
 
     public static String createQueryUA(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, data, "uk", "UA");
+        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, null, data, "uk", "UA");
     }
 
     public static String createQuery(String data) {
@@ -90,11 +90,15 @@ public class ServiceHelper {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_KIDS, data);
     }
 
-    private static String createQuery(String postTemplate, String data) {
-        return createQuery(postTemplate, data, null, null);
+    public static String createQuery(String postTemplate, String data) {
+        return createQuery(postTemplate, null, data, null, null);
     }
 
-    private static String createQuery(String postTemplate, String data, String language, String country) {
+    public static String createQuery(String postTemplate, String data1, String data2) {
+        return createQuery(postTemplate, data1, data2, null, null);
+    }
+
+    private static String createQuery(String postTemplate, String data1, String data2, String language, String country) {
         LocaleManager localeManager = LocaleManager.instance();
         AppService appService = AppService.instance();
         if (language == null) {
@@ -104,7 +108,7 @@ public class ServiceHelper {
             country = localeManager.getCountry();
         }
         return String.format(postTemplate, language, country,
-                localeManager.getUtcOffsetMinutes(), appService.getVisitorId(), data);
+                localeManager.getUtcOffsetMinutes(), appService.getVisitorId(), data1 != null ? data1 : "", data2);
     }
 
     /**

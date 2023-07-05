@@ -42,6 +42,8 @@ object DefaultHeaders {
         "Mozilla/5.0 (Linux armeabi-v7a; Android 7.1.2) Cobalt/23.lts.2.309559-gold (unlike Gecko) v8/8.8.278.8-jit gles Starboard/14, Amazon_ATV_mt8695_0/NS6294 (Amazon, AFTMM) com.google.android.youtube.tv/3.02.006"
     const val USER_AGENT_ANDROID = "Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4A) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.86 Mobile Safari/537.36"
     const val USER_AGENT_MOBILE = "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36"
+    const val USER_AGENT_ANDROID_SHORT = "com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip"
+    const val USER_AGENT_IOS_SHORT = "com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)"
 
     // Throttling! Probably, because of Chrome engine checks.
     @JvmField

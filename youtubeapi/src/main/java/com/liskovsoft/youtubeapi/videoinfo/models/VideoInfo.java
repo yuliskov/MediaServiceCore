@@ -79,7 +79,7 @@ public class VideoInfo {
     private String mStartTimestamp;
 
     @JsonPath("$.playerConfig.audioConfig.loudnessDb")
-    private int mLoudnessDb;
+    private float mLoudnessDb;
 
     // Values used in tracking actions
     private String mEventId;
@@ -245,7 +245,7 @@ public class VideoInfo {
         return mSegmentDurationUs;
     }
 
-    public int getLoudnessDb() {
+    public float getLoudnessDb() {
         return mLoudnessDb;
     }
 

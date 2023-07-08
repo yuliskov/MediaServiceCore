@@ -50,6 +50,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private int mStartSegmentNum;
     private int mSegmentDurationUs;
     private boolean mHasExtendedHlsFormats;
+    private float mLoudnessDb;
 
     public YouTubeMediaItemFormatInfo() {
         mCreatedTimeMs = System.currentTimeMillis();
@@ -107,6 +108,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mStartSegmentNum = videoInfo.getStartSegmentNum();
         formatInfo.mSegmentDurationUs = videoInfo.getSegmentDurationUs();
         formatInfo.mHasExtendedHlsFormats = videoInfo.hasExtendedHlsFormats();
+        formatInfo.mLoudnessDb = videoInfo.getLoudnessDb();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -264,6 +266,16 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean hasExtendedHlsFormats() {
         return mHasExtendedHlsFormats;
+    }
+
+    @Override
+    public float getVolumeLevel() {
+        if (mLoudnessDb != 0) {
+            float normalLevel = 1.0f / (float) Math.pow(10.0f, mLoudnessDb / 20.0f);
+            return normalLevel > 1 || normalLevel <= 0 ? 1.0f : normalLevel;
+        }
+
+        return 1.0f;
     }
 
     @Override

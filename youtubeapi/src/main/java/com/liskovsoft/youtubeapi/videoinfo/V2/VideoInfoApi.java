@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoPremium;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -15,7 +15,7 @@ public interface VideoInfoApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfoPremium> getVideoInfoPremium(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
+    Call<VideoInfoHls> getVideoInfoHls(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")

@@ -68,7 +68,7 @@ public class VideoInfoApiHelper {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, PROTOBUF_VAL);
     }
 
-    public static String getVideoInfoQueryPremium(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryHls(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_IOS, videoId, clickTrackingParams);
     }
 

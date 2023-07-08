@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoPremium;
 import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
@@ -40,7 +41,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
             //}
         } else if (result != null && result.isFormatRestricted()) {
-            result = getVideoInfoPremium(videoId, clickTrackingParams);
+            result.setHlsManifestUrl(getVideoInfoPremium(videoId, clickTrackingParams).getHlsManifestUrl());
         } else if (result != null && result.isRent() && result.isUnplayable()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams);
@@ -95,9 +96,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getVideoInfo(videoInfoQuery);
     }
 
-    private VideoInfo getVideoInfoPremium(String videoId, String clickTrackingParams) {
+    private VideoInfoPremium getVideoInfoPremium(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryPremium(videoId, clickTrackingParams);
-        return getVideoInfo(videoInfoQuery);
+        return getVideoInfoPremium(videoInfoQuery);
     }
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
@@ -107,6 +108,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfo(String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private VideoInfoPremium getVideoInfoPremium(String videoInfoQuery) {
+        Call<VideoInfoPremium> wrapper = mVideoInfoApi.getVideoInfoPremium(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }

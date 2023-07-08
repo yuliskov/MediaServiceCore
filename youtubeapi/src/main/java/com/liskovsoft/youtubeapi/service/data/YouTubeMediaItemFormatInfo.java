@@ -49,6 +49,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private long mStartTimeMs;
     private int mStartSegmentNum;
     private int mSegmentDurationUs;
+    private boolean mHasExtendedHlsFormats;
 
     public YouTubeMediaItemFormatInfo() {
         mCreatedTimeMs = System.currentTimeMillis();
@@ -105,6 +106,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mStartTimeMs = videoInfo.getStartTimeMs();
         formatInfo.mStartSegmentNum = videoInfo.getStartSegmentNum();
         formatInfo.mSegmentDurationUs = videoInfo.getSegmentDurationUs();
+        formatInfo.mHasExtendedHlsFormats = videoInfo.hasExtendedHlsFormats();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -257,6 +259,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean containsUrlListInfo() {
         return mRegularFormats != null;
+    }
+
+    @Override
+    public boolean hasExtendedHlsFormats() {
+        return mHasExtendedHlsFormats;
     }
 
     @Override

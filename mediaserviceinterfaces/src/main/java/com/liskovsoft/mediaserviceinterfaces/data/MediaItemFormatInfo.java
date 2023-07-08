@@ -34,6 +34,7 @@ public interface MediaItemFormatInfo {
     boolean containsHlsUrl();
     boolean containsDashUrl();
     boolean containsUrlListInfo();
+    boolean hasExtendedHlsFormats();
     InputStream createMpdStream();
     Observable<InputStream> createMpdStreamObservable();
     List<String> createUrlList();

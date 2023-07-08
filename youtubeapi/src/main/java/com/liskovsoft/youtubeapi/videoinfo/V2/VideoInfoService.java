@@ -28,9 +28,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
         //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no dash url
         VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included
-        //VideoInfo result = getVideoInfoPremium(videoId, clickTrackingParams);
 
-        if (result != null && result.getVideoDetails() != null && result.getVideoDetails().isLive()) {
+        if (result != null && result.isLive()) {
             Log.e(TAG, "Enable seeking support on live streams...");
             result.sync(getDashInfo2(result));
 
@@ -40,6 +39,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //    result.setDashManifestUrl(result2.getDashManifestUrl());
             //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
             //}
+        } else if (result != null && result.isFormatRestricted()) {
+            result = getVideoInfoPremium(videoId, clickTrackingParams);
         } else if (result != null && result.isRent() && result.isUnplayable()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams);
@@ -76,6 +77,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getVideoInfo(videoInfoQuery);
     }
 
+    /**
+     * NOTE: Doesn't contain dash manifest url
+     */
     private VideoInfo getVideoInfoLive(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryLive(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);

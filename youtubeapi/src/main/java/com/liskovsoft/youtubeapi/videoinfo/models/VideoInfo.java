@@ -30,6 +30,9 @@ public class VideoInfo {
     @JsonPath("$.streamingData.adaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mAdaptiveFormats;
 
+    @JsonPath("$.playabilityStatus.paygatedQualitiesMetadata.restrictedAdaptiveFormats[*]")
+    private List<AdaptiveVideoFormat> mRestrictedFormats;
+
     @JsonPath("$.captions.playerCaptionsTracklistRenderer.captionTracks[*]")
     private List<CaptionTrack> mCaptionTracks;
 
@@ -75,6 +78,9 @@ public class VideoInfo {
     @JsonPath("$.microformat.playerMicroformatRenderer.liveBroadcastDetails.startTimestamp")
     private String mStartTimestamp;
 
+    @JsonPath("$.playerConfig.audioConfig.loudnessDb")
+    private int mLoudnessDb;
+
     // Values used in tracking actions
     private String mEventId;
     private String mVisitorMonitoringData;
@@ -92,6 +98,10 @@ public class VideoInfo {
 
     public List<RegularVideoFormat> getRegularFormats() {
         return mRegularFormats;
+    }
+
+    public List<AdaptiveVideoFormat> getRestrictedFormats() {
+        return mRestrictedFormats;
     }
 
     public String getHlsManifestUrl() {
@@ -195,6 +205,18 @@ public class VideoInfo {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_LOGIN_REQUIRED, STATUS_AGE_CHECK_REQUIRED, STATUS_CONTENT_CHECK_REQUIRED);
     }
 
+    public boolean isFormatRestricted() {
+        return getRestrictedFormats() != null;
+    }
+
+    public boolean hasExtendedHlsFormats() {
+        return !isLive() && getHlsManifestUrl() != null;
+    }
+
+    public boolean isLive() {
+        return getVideoDetails() != null && getVideoDetails().isLive();
+    }
+
     public String getPlayabilityStatus() {
         return ServiceHelper.itemsToInfo(mPlayabilityReason, mPlayabilityDescription);
     }
@@ -221,6 +243,10 @@ public class VideoInfo {
 
     public int getSegmentDurationUs() {
         return mSegmentDurationUs;
+    }
+
+    public int getLoudnessDb() {
+        return mLoudnessDb;
     }
 
     public boolean isStreamSeekable() {

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
+import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
@@ -30,7 +31,7 @@ public class VideoInfo {
     @JsonPath("$.streamingData.adaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mAdaptiveFormats;
 
-    @JsonPath("$.playabilityStatus.paygatedQualitiesMetadata.restrictedAdaptiveFormats[*]")
+    //@JsonPath("$.playabilityStatus.paygatedQualitiesMetadata.restrictedAdaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mRestrictedFormats;
 
     @JsonPath("$.captions.playerCaptionsTracklistRenderer.captionTracks[*]")
@@ -206,7 +207,8 @@ public class VideoInfo {
     }
 
     public boolean isFormatRestricted() {
-        return getRestrictedFormats() != null;
+        // Android 6 and below doesn't support such formats
+        return Build.VERSION.SDK_INT > 23 && getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
     }
 
     public boolean hasExtendedHlsFormats() {

@@ -30,7 +30,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no dash url
         VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included
 
-        if (result != null && result.isLive()) {
+        if (result != null && result.isLive() && !result.isUnplayable()) {
             Log.e(TAG, "Enable seeking support on live streams...");
             result.sync(getDashInfo2(result));
 

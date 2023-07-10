@@ -207,8 +207,7 @@ public class VideoInfo {
     }
 
     public boolean isFormatRestricted() {
-        // Android 6 and below doesn't support such formats
-        return Build.VERSION.SDK_INT > 23 && getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
+        return getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
     }
 
     public boolean hasExtendedHlsFormats() {

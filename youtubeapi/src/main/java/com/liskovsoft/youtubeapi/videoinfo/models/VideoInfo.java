@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import android.os.Build;
+import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
@@ -78,6 +79,9 @@ public class VideoInfo {
 
     @JsonPath("$.microformat.playerMicroformatRenderer.liveBroadcastDetails.startTimestamp")
     private String mStartTimestamp;
+
+    @JsonPath("$.microformat.playerMicroformatRenderer.uploadDate")
+    private String mUploadDate;
 
     @JsonPath("$.playerConfig.audioConfig.loudnessDb")
     private float mLoudnessDb;
@@ -211,7 +215,13 @@ public class VideoInfo {
     }
 
     public boolean hasExtendedHlsFormats() {
-        return !isLive() && getHlsManifestUrl() != null;
+        if (!isLive() && getHlsManifestUrl() != null) {
+            long uploadTimeMs = DateHelper.toUnixTimeMs(getUploadDate());
+            // Extended formats may not work during 2 days after publication
+            return uploadTimeMs > 0 && System.currentTimeMillis() - uploadTimeMs > 48*60*60*1_000;
+        }
+
+        return false;
     }
 
     public boolean isLive() {
@@ -232,6 +242,10 @@ public class VideoInfo {
 
     public String getStartTimestamp() {
         return mStartTimestamp;
+    }
+
+    public String getUploadDate() {
+        return mUploadDate;
     }
 
     public long getStartTimeMs() {

@@ -48,6 +48,7 @@ public interface MediaItemFormatInfo {
      * E.g.: <b>2021-10-06T13:36:25+00:00</b>
      */
     String getStartTimestamp();
+    String getUploadDate();
     /**
      * Stream start time in UNIX format.<br/>
      */

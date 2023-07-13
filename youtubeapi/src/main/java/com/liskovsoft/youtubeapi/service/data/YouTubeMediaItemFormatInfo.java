@@ -46,6 +46,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mPlayabilityStatus;
     private final long mCreatedTimeMs;
     private String mStartTimestamp;
+    private String mUploadDate;
     private long mStartTimeMs;
     private int mStartSegmentNum;
     private int mSegmentDurationUs;
@@ -104,6 +105,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
         formatInfo.mStartTimestamp = videoInfo.getStartTimestamp();
+        formatInfo.mUploadDate = videoInfo.getUploadDate();
         formatInfo.mStartTimeMs = videoInfo.getStartTimeMs();
         formatInfo.mStartSegmentNum = videoInfo.getStartSegmentNum();
         formatInfo.mSegmentDurationUs = videoInfo.getSegmentDurationUs();
@@ -271,7 +273,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public float getVolumeLevel() {
         if (mLoudnessDb != 0) {
-            float normalLevel = 1.0f / (float) Math.pow(10.0f, mLoudnessDb / 20.0f);
+            // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(db/20)
+            float normalLevel = 1.0f / (float) Math.pow(10.0f, mLoudnessDb / 50.0f);
             return normalLevel > 2 ? 2.0f : normalLevel;
         }
 
@@ -332,6 +335,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public String getStartTimestamp() {
         return mStartTimestamp;
+    }
+
+    @Override
+    public String getUploadDate() {
+        return mUploadDate;
     }
 
     @Override

@@ -217,8 +217,8 @@ public class VideoInfo {
     public boolean hasExtendedHlsFormats() {
         if (!isLive() && getHlsManifestUrl() != null) {
             long uploadTimeMs = DateHelper.toUnixTimeMs(getUploadDate());
-            // Extended formats may not work during 2 days after publication
-            return uploadTimeMs > 0 && System.currentTimeMillis() - uploadTimeMs > 48*60*60*1_000;
+            // Extended formats may not work during 3 days after publication
+            return uploadTimeMs > 0 && System.currentTimeMillis() - uploadTimeMs > 4*24*60*60*1_000;
         }
 
         return false;

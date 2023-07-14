@@ -41,7 +41,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
             //}
         } else if (result != null && result.isFormatRestricted()) {
-            result.setHlsManifestUrl(getVideoInfoHls(videoId, clickTrackingParams).getHlsManifestUrl());
+            VideoInfoHls videoInfoHls = getVideoInfoHls(videoId, clickTrackingParams);
+            if (videoInfoHls != null) {
+                result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
+            }
         } else if (result != null && result.isRent() && result.isUnplayable()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams);

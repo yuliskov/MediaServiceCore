@@ -272,13 +272,15 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public float getVolumeLevel() {
+        float result = 1.0f;
+
         if (mLoudnessDb != 0) {
             // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(db/20)
             float normalLevel = 1.0f / (float) Math.pow(10.0f, mLoudnessDb / 50.0f);
-            return normalLevel > 2 ? 2.0f : normalLevel;
+            result = Math.min(normalLevel, 2.5f);
         }
 
-        return 1.0f;
+        return result - 0.5f; // minimize distortions
     }
 
     @Override

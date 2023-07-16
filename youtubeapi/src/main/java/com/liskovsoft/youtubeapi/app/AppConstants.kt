@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.app
 
+import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
+
 object AppConstants {
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
     private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
@@ -17,12 +19,12 @@ object AppConstants {
         "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}};"
 
     private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-            "\"clientScreen\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
+            "\"clientScreen\":\"%s\",\"userAgent\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
             "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
             "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 
-    private const val JSON_POST_DATA_IOS = "\"deviceModel\":\"%s\",\"userAgent\":\"%s\","
-    private const val JSON_POST_DATA_ANDROID = "\"androidSdkVersion\":30,\"userAgent\":\"%s\","
+    private const val JSON_POST_DATA_IOS = "\"deviceModel\":\"%s\","
+    private const val JSON_POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
     private const val JSON_POST_DATA_BROWSE = "\"tvAppInfo\":{\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 
     // 7.20211013.10.00
@@ -49,7 +51,6 @@ object AppConstants {
     // 16.49
     private const val CLIENT_VERSION_ANDROID = "17.31.35"
     private const val CLIENT_NAME_ANDROID = "ANDROID"
-    private const val USER_AGENT_ANDROID = "com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip"
     private const val PARAMS_ANDROID = "CgIQBg=="
     private const val ANDROID_SDK_VERSION = "30"
     private const val API_KEY_ANDROID = "AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w"
@@ -58,7 +59,6 @@ object AppConstants {
     private const val CLIENT_VERSION_IOS = "17.33.2"
     private const val CLIENT_NAME_IOS = "IOS"
     private const val DEVICE_MODEL_IOS = "iPhone14,3"
-    private const val USER_AGENT_IOS = "com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)"
     private const val API_KEY_IOS = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc"
 
     private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
@@ -71,35 +71,42 @@ object AppConstants {
      * contentCheckOk - ?
      */
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
+    val JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_TV,
+        JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
+    val JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
+        JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_MWEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
+    val JSON_POST_DATA_TEMPLATE_MWEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_MOBILE_WEB,
+        JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH,
-        String.format(JSON_POST_DATA_ANDROID, USER_AGENT_IOS) + JSON_POST_DATA_BROWSE)
+    val JSON_POST_DATA_TEMPLATE_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_ANDROID,
+        String.format(JSON_POST_DATA_ANDROID, ANDROID_SDK_VERSION) + JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_TEMPLATE_KIDS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_KIDS, CLIENT_VERSION_KIDS, CLIENT_SCREEN_WATCH, JSON_POST_DATA_BROWSE)
+    val JSON_POST_DATA_TEMPLATE_KIDS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_KIDS, CLIENT_VERSION_KIDS, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_TV,
+        JSON_POST_DATA_BROWSE)
 
     @JvmField
-    val JSON_POST_DATA_PLAYER_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH,
-        String.format(JSON_POST_DATA_ANDROID, USER_AGENT_IOS))
+    val JSON_POST_DATA_PLAYER_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_ANDROID,
+        String.format(JSON_POST_DATA_ANDROID, ANDROID_SDK_VERSION))
 
     @JvmField
-    val JSON_POST_DATA_PLAYER_IOS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_IOS, CLIENT_VERSION_IOS, CLIENT_SCREEN_WATCH,
-        String.format(JSON_POST_DATA_IOS, DEVICE_MODEL_IOS, USER_AGENT_IOS))
+    val JSON_POST_DATA_PLAYER_IOS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_IOS, CLIENT_VERSION_IOS, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_IOS,
+        String.format(JSON_POST_DATA_IOS, DEVICE_MODEL_IOS))
 
     @JvmField
-    val JSON_POST_DATA_PLAYER_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, "")
+    val JSON_POST_DATA_PLAYER_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
+        "")
 
     @JvmField
-    val JSON_POST_DATA_PLAYER_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, "")
+    val JSON_POST_DATA_PLAYER_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_TV,
+        "")
 
     @JvmField
-    val JSON_POST_DATA_PLAYER_EMBED = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_EMBED, CLIENT_VERSION_EMBED, CLIENT_SCREEN_EMBED, "")
+    val JSON_POST_DATA_PLAYER_EMBED = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_EMBED, CLIENT_VERSION_EMBED, CLIENT_SCREEN_EMBED, DefaultHeaders.USER_AGENT_WEB,
+        "")
 }

@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
         "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -18,7 +18,7 @@ interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_MOBILE,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_MOBILE_WEB,
         "referer: https://m.youtube.com/"
     )
     @POST("https://m.youtube.com/youtubei/v1/browse")
@@ -26,7 +26,7 @@ interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_SAMSUNG_3,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
         "referer: https://www.youtube.com/tv/kids"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -34,7 +34,7 @@ interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
         "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -42,7 +42,7 @@ interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
         "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/guide")
@@ -50,7 +50,7 @@ interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
         "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_item_watch")
@@ -58,7 +58,7 @@ interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_CHROME,
+        "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
         "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_watch_sequence")

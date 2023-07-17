@@ -29,12 +29,12 @@ object AppConstants {
 
     // 7.20211013.10.00
     // 7.20220118.09.00
-    const val CLIENT_VERSION_TV = "7.20230612.10.00"
+    private const val CLIENT_VERSION_TV = "7.20230612.10.00"
     private const val CLIENT_NAME_TV = "TVHTML5"
 
     // 2.20211014.05.00-canary_control
     // 2.20220119.01.00
-    const val CLIENT_VERSION_WEB = "2.20230613.01.00"
+    private const val CLIENT_VERSION_WEB = "2.20230613.01.00"
     private const val CLIENT_NAME_WEB = "WEB"
     private const val CLIENT_NAME_MWEB = "MWEB"
 
@@ -63,6 +63,12 @@ object AppConstants {
 
     private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
     private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
+
+    const val GET_VIDEO_INFO_OLD =
+        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV"
+
+    const val GET_VIDEO_INFO_OLD2 =
+        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV"
 
     /**
      * Used in browse, next, search<br></br>

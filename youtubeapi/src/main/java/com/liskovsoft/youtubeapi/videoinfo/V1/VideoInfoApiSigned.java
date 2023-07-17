@@ -13,28 +13,28 @@ import retrofit2.http.Query;
  */
 public interface VideoInfoApiSigned {
     // Unused method. sts - ???
-    @GET("https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION_TV)
+    @GET(AppConstants.GET_VIDEO_INFO_OLD)
     Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("sts") String sts);
 
     // Unused method
-    @GET("https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION_TV)
+    @GET(AppConstants.GET_VIDEO_INFO_OLD)
     Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
 
     /**
      * Unlock live hls streams
      */
-    @GET("https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION_TV)
+    @GET(AppConstants.GET_VIDEO_INFO_OLD)
     Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
 
     /**
      * Unlock age restricted videos
      */
-    @GET("https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION_TV)
+    @GET(AppConstants.GET_VIDEO_INFO_OLD2)
     Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
 
     /**
      * Unlock personal videos: <code>c=TVHTML5&cver=7.20201103.00.00</code><br/>
      */
-    @GET("https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=" + AppConstants.CLIENT_VERSION_TV)
+    @GET(AppConstants.GET_VIDEO_INFO_OLD)
     Call<VideoInfo> getVideoInfoRegular(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
 }

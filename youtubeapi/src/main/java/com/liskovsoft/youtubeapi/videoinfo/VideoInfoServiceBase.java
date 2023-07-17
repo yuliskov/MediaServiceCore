@@ -41,7 +41,8 @@ public abstract class VideoInfoServiceBase {
         List<String> throttleFixed = mAppService.throttleFix(throttled);
         applyThrottleFixedStrings(throttleFixed, formats);
 
-        applyAdditionalStrings(formats);
+        // What this for? Could this fix throttling?
+        //applyAdditionalStrings(formats);
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
@@ -89,13 +90,15 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
+    /**
+     * What this for? Could this fix throttling?
+     */
     private static void applyAdditionalStrings(List<? extends VideoFormat> formats) {
         String cpn = AppService.instance().getClientPlaybackNonce();
 
         for (VideoFormat format : formats) {
             format.setCpn(cpn);
-            format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
-            //format.setParam("alr", "yes");
+            //format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
         }
     }
 

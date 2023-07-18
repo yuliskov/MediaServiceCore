@@ -4,7 +4,8 @@ import com.liskovsoft.youtubeapi.common.models.gen.*
 
 fun BrowseResult.getItems(): List<ItemWrapper?>? = getRootTab()?.getItems()
 fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isUpcoming() }
-fun BrowseResult.getPastLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == false && it.isUpcoming() == false }?.take(3)
+fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
+    getItems()?.filter { it?.isLive() == false && it.isUpcoming() == false }?.let { if (maxItems > 0) it.take(maxItems) else it }
 fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
 fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
 fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getGridContents()?.mapNotNull { it?.richSectionRenderer }

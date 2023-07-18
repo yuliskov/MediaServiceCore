@@ -13,7 +13,7 @@ data class MediaGroupImpl(
     private val liveResult: BrowseResult? = null
 ): MediaGroupImplBase(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?> =
-        listOfNotNull(liveResult?.getLiveItems(), liveResult?.getPastLiveItems(), browseResult.getItems()).flatten()
+        listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
     override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
     override fun getTitleInt(): String? = browseResult.getTitle()
 }

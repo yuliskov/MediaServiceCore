@@ -14,6 +14,7 @@ public interface MediaItem {
     // Music/Video props
     boolean isLive();
     boolean isUpcoming();
+    boolean isShorts();
     int getPercentWatched();
     String getAuthor();
     String getFeedbackToken();

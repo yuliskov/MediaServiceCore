@@ -54,6 +54,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val playlistParamsItem: String? = null
     protected open val isLiveItem: Boolean? = null
     protected open val isUpcomingItem: Boolean? = null
+    protected open val isShortsItem: Boolean? = null
     protected open val isMovieItem: Boolean? = null
     protected open val feedbackTokenItem: String? = null
     protected open val feedbackTokenItem2: String? = null
@@ -173,6 +174,10 @@ open class BaseMediaItemImpl : MediaItem {
 
     override fun isUpcoming(): Boolean {
         return isUpcomingItem ?: false
+    }
+
+    override fun isShorts(): Boolean {
+        return isShortsItem ?: false
     }
 
     override fun isMovie(): Boolean {

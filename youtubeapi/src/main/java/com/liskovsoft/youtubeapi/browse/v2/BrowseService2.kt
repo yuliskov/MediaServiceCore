@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
@@ -8,6 +9,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.browse.v2.impl.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImplShorts
 
 object BrowseService2 {
     private val mBrowseApi = RetrofitHelper.withGson(BrowseApi::class.java)
@@ -71,6 +73,42 @@ object BrowseService2 {
     }
 
     @JvmStatic
+    fun getShorts(): MediaGroup? {
+        val firstResult = mBrowseApi.getReelResult(BrowseApiHelper.getReelQuery())
+
+        return RetrofitHelper.get(firstResult)?.let { firstItem ->
+            val result = continueShorts(firstItem.getContinuationKey())
+            result?.mediaItems?.add(0, MediaItemImplShorts(null, firstItem))
+
+            return result
+        }
+    }
+
+    private fun continueShorts(continuationKey: String?): MediaGroup? {
+        if (continuationKey == null) {
+            return null
+        }
+
+        val continuation = mBrowseApi?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(continuationKey))
+
+        return RetrofitHelper.get(continuation)?.let {
+            val result = mutableListOf<MediaItem?>()
+
+            it.getItems()?.forEach {
+                it?.let {
+                    val details = mBrowseApi?.getReelResult(BrowseApiHelper.getReelDetailsQuery(it.videoId, it.params))
+
+                    RetrofitHelper.get(details)?.let {
+                            info -> result.add(MediaItemImplShorts(it, info))
+                    }
+                }
+            }
+
+            MediaGroupImplShorts(result, it.getContinuationKey(), createOptions(MediaGroup.TYPE_SHORTS))
+        }
+    }
+
+    @JvmStatic
     fun getChannelVideosFull(channelId: String?): MediaGroup? {
         if (channelId == null) {
             return null
@@ -110,7 +148,7 @@ object BrowseService2 {
 
     @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
-        return continueChip(group)?.firstOrNull()
+        return if (group is MediaGroupImplShorts) continueShorts(group.nextPageKey) else continueChip(group)?.firstOrNull()
     }
 
     @JvmStatic

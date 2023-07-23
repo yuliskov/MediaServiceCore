@@ -180,25 +180,52 @@ class BrowseApiTest {
     fun testThatReelsNotEmpty() {
         val reel = getReel()
 
-        assertNotNull("Contains basic info", reel?.getWatchEndpoint())
-        assertNotNull("Contains extended info", reel?.getPlayerHeader())
-        assertNotNull("Contains continuation info", reel?.sequenceContinuation)
+        testFirstReelResult(reel)
     }
 
     @Test
     fun testThatReelDetailsNotEmpty() {
         val reels = getReel()
 
-        val continuation = getReelContinuation(reels?.sequenceContinuation)
+        val continuation = getReelContinuation(reels?.getContinuationKey())
 
+        testReelContinuation(continuation)
+
+        val next = getReelContinuation(continuation?.getContinuationKey())
+
+        testReelContinuation(next)
+    }
+
+    private fun testReelContinuation(continuation: ReelContinuationResult?) {
         val firstEntry = continuation?.getItems()?.getOrNull(0)
         val details = getReelDetails(firstEntry?.videoId, firstEntry?.params)
 
+        assertNotNull("Contains continuation", continuation?.getContinuationKey())
+
+        testReelWatchEndpoint(firstEntry)
+        testReelResult(details)
+    }
+
+    private fun testFirstReelResult(details: ReelResult?) {
         // Not present
-        //assertNotNull("Contains basic info", details?.getWatchEndpoint())
-        assertNotNull("Contains extended info", details?.getPlayerHeader())
+        assertNotNull("Contains video id", details?.getVideoId())
+        assertNotNull("Contains thumbs", details?.getThumbnails())
+        assertNotNull("Contains title", details?.getTitle())
+        assertNotNull("Contains subtitle", details?.getSubtitle())
+        assertNotNull("Contains continuation", details?.getContinuationKey())
+        assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
+    }
+
+    private fun testReelWatchEndpoint(firstEntry: ReelWatchEndpoint?) {
+        assertNotNull("Contains video id", firstEntry?.getVideoId())
+        assertNotNull("Contains thumbs", firstEntry?.getThumbnails())
+    }
+
+    private fun testReelResult(details: ReelResult?) {
         // Not present
-        //assertNotNull("Contains continuation info", details?.continuationEndpoint)
+        assertNotNull("Contains title", details?.getTitle())
+        assertNotNull("Contains subtitle", details?.getSubtitle())
+        assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
     }
 
     @Test

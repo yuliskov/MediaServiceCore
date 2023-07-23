@@ -106,4 +106,12 @@ fun EngagementPanel.getMenu() = engagementPanelSectionListRenderer?.header?.enga
 fun EngagementPanel.getTopCommentsKey(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getKey()
 fun EngagementPanel.getNewCommentsKey(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getKey()
 fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
+fun EngagementPanel.getTitle(): String? = getVideoDescription()?.title?.getText()
+fun EngagementPanel.getChannelName(): String? = getVideoDescription()?.channel?.getText()
+fun EngagementPanel.getViews(): String? = getVideoDescription()?.views?.getText()
+fun EngagementPanel.getPublishDate(): String? = getVideoDescription()?.publishDate?.getText()
+fun EngagementPanel.getBrowseId(): String? = getVideoDescription()?.channelNavigationEndpoint?.getBrowseId()
+private fun EngagementPanel.getVideoDescription(): VideoDescriptionHeaderRenderer? =
+    engagementPanelSectionListRenderer?.content?.structuredDescriptionContentRenderer?.items?.firstNotNullOfOrNull { it?.videoDescriptionHeaderRenderer }
 fun Menu.getSubMenuItems() = sortFilterSubMenuRenderer?.subMenuItems
+

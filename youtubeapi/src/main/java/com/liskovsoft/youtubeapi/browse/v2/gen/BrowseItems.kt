@@ -159,7 +159,9 @@ data class ReelWatchEndpoint(
 // Reel only. Extended data.
 data class ReelPlayerHeaderRenderer(
     val reelTitleText: TextItem?,
+    val channelTitleText: TextItem?,
     val timestampText: TextItem?,
     val channelNavigationEndpoint: NavigationEndpointItem?,
-    val channelThumbnail: ThumbnailItem?
+    val channelThumbnail: ThumbnailItem?,
+    val reelTitleOnClickCommand: NavigationEndpointItem?
 )

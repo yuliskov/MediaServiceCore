@@ -9,7 +9,7 @@ data class NextMediaItemImpl(var nextVideoItem: NextVideoItem): BaseMediaItemImp
     override val videoIdItem by lazy { nextVideoItem.getVideoId() }
     override val channelIdItem: String? = null
     override val titleItem by lazy { nextVideoItem.getTitle() }
-    override val infoItem by lazy { YouTubeHelper.createInfo(nextVideoItem.getAuthor()) ?: null }
+    override val secondTitleItem by lazy { YouTubeHelper.createInfo(nextVideoItem.getAuthor()) ?: null }
     override val cardThumbImageUrl by lazy { nextVideoItem.getThumbnails()?.getOptimalResThumbnailUrl() }
     override val backgroundThumbImageUrl by lazy { nextVideoItem.getThumbnails()?.getHighResThumbnailUrl() }
     override val playlistIdItem by lazy { nextVideoItem.getPlaylistId() }

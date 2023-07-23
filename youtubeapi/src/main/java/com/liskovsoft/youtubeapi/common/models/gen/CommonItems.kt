@@ -55,7 +55,8 @@ data class NavigationEndpointItem(
                                     val overlayPanelHeaderRenderer: OverlayPanelHeaderRenderer?
                                 ) {
                                     data class OverlayPanelHeaderRenderer(
-                                        val title: TextItem?
+                                        val title: TextItem?,
+                                        val subtitle: TextItem?
                                     )
                                 }
                             }

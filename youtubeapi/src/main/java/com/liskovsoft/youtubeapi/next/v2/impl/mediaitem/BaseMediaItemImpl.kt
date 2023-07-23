@@ -10,7 +10,7 @@ open class BaseMediaItemImpl : MediaItem {
     private var _titleItem: String? = null
         get() = field ?: titleItem
     private var _secondTitleItem: String? = null
-        get() = field ?: infoItem
+        get() = field ?: secondTitleItem
     private var _channelIdItem: String? = null
         get() = field ?: channelIdItem
     private var _reloadPageKeyItem: String? = null
@@ -37,7 +37,7 @@ open class BaseMediaItemImpl : MediaItem {
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String? = null
     protected open val titleItem: String? = null
-    protected open val infoItem: String? = null
+    protected open val secondTitleItem: String? = null
     protected open val descBadgeText: String? = null
     protected open val userName: String? = null
     protected open val publishedTime: String? = null

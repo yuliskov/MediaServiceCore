@@ -10,7 +10,7 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
     // Don't tag live streams. However tagging 4K videos is useful.
-    override val infoItem by lazy {
+    override val secondTitleItem by lazy {
         YouTubeHelper.createInfo(if (isLiveItem == true) null else descBadgeText, userName, viewCountText, publishedTime, upcomingEventText)
     }
     override val descBadgeText by lazy { itemWrapper.getDescBadgeText() }
@@ -45,4 +45,17 @@ data class MediaItemImplGuide(val guideItem: GuideItem): BaseMediaItemImpl() {
     override val backgroundThumbImageUrl by lazy { guideItem.getThumbnails()?.getHighResThumbnailUrl() }
     override val hasNewContentItem by lazy { guideItem.hasNewContent() }
     override val hasUploadsItem = true
+}
+
+data class MediaItemImplShorts(val reel: ReelWatchEndpoint?, val reelDetails: ReelResult): BaseMediaItemImpl() {
+    override val videoIdItem by lazy { reel?.getVideoId() ?: reelDetails.getVideoId() }
+    override val cardThumbImageUrl by lazy { getThumbnails()?.getOptimalResThumbnailUrl() }
+    override val backgroundThumbImageUrl by lazy { getThumbnails()?.getHighResThumbnailUrl() }
+    override val titleItem by lazy { reelDetails.getTitle() }
+    override val secondTitleItem by lazy { reelDetails.getSubtitle() }
+    override val channelIdItem by lazy { reelDetails.getBrowseId() }
+    override val isShortsItem by lazy { true }
+    override val feedbackTokenItem by lazy { reelDetails.getFeedbackTokens()?.getOrNull(0) }
+    override val feedbackTokenItem2 by lazy { reelDetails.getFeedbackTokens()?.getOrNull(1) }
+    private fun getThumbnails() = reel?.getThumbnails() ?: reelDetails.getThumbnails()
 }

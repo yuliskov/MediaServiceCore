@@ -55,6 +55,7 @@ fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPa
 fun NavigationEndpointItem.isSubscribed() = getOverlaySubscribeButton()?.subscribed
 fun NavigationEndpointItem.getContinuation() = getContent()?.itemSectionRenderer?.continuations?.getOrNull(0)
 fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
+fun NavigationEndpointItem.getSubtitle() = getHeader()?.overlayPanelHeaderRenderer?.subtitle?.getText()
 private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
     ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer
 private fun NavigationEndpointItem.getContent() = getOverlayPanel()?.content

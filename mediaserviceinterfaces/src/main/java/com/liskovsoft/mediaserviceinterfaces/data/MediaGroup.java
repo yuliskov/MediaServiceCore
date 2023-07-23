@@ -19,6 +19,7 @@ public interface MediaGroup {
     int TYPE_CHANNEL_UPLOADS = 12;
     int TYPE_KIDS_HOME = 13;
     int TYPE_TRENDING = 14;
+    int TYPE_SHORTS = 15;
     int getId();
     int getType();
     List<MediaItem> getMediaItems();

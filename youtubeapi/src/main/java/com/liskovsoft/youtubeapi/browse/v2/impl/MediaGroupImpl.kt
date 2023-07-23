@@ -109,3 +109,14 @@ data class MediaGroupImplRecommended(
     override fun getChannelIdInt(): String? = guideItem.getBrowseId()
     override fun getParamsInt(): String? = guideItem.getBrowseParams()
 }
+
+data class MediaGroupImplShorts(
+    private val items: List<MediaItem?>,
+    private val continuation: String? = null,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): MediaGroupImplBase(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = null
+    override fun getNextPageKeyInt(): String? = continuation
+    override fun getTitleInt(): String? = null
+    override val mediaItemList = items
+}

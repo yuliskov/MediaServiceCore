@@ -390,6 +390,11 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     @Override
+    public Observable<MediaGroup> getShortsObserve() {
+        return RxHelper.fromNullable(BrowseService2::getShorts);
+    }
+
+    @Override
     public Observable<List<MediaGroup>> getKidsHomeObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();

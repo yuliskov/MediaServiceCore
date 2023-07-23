@@ -226,7 +226,8 @@ data class EngagementPanel(
 ) {
     data class EngagementPanelSectionListRenderer(
         val panelIdentifier: String?,
-        val header: Header?
+        val header: Header?,
+        val content: Content?
     ) {
         data class Header(
             val engagementPanelTitleHeaderRenderer: EngagementPanelTitleHeaderRenderer?
@@ -235,8 +236,27 @@ data class EngagementPanel(
                 val menu: Menu?
             )
         }
+        data class Content(
+            val structuredDescriptionContentRenderer: StructuredDescriptionContentRenderer?
+        ) {
+            data class StructuredDescriptionContentRenderer(
+                 val items: List<Item?>?
+            ) {
+                data class Item(
+                    val videoDescriptionHeaderRenderer: VideoDescriptionHeaderRenderer?
+                )
+            }
+        }
     }
 }
+
+data class VideoDescriptionHeaderRenderer(
+    val title: TextItem?,
+    val channel: TextItem?,
+    val views: TextItem?,
+    val publishDate: TextItem,
+    val channelNavigationEndpoint: NavigationEndpointItem?
+)
 
 data class Menu(
     val sortFilterSubMenuRenderer: SortFilterSubMenuRenderer?

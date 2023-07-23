@@ -136,22 +136,22 @@ public class BrowseApiHelper {
     }
 
     public static String getReelQuery() {
-        return ServiceHelper.createQuery(REEL);
+        return ServiceHelper.createQueryWeb(REEL);
     }
 
     public static String getReelDetailsQuery(String videoId, String params) {
         String details = String.format(REEL_DETAILS, params, videoId);
-        return ServiceHelper.createQuery(details);
+        return ServiceHelper.createQueryWeb(details);
     }
 
     public static String getReelContinuationQuery(String sequenceParams) {
         String continuation = String.format(REEL_CONTINUATION, sequenceParams);
-        return ServiceHelper.createQuery(continuation);
+        return ServiceHelper.createQueryWeb(continuation);
     }
 
     public static String getReelContinuation2Query(String nextPageKey) {
         String continuation = String.format(CONTINUATION, nextPageKey);
-        return ServiceHelper.createQuery(continuation);
+        return ServiceHelper.createQueryWeb(continuation);
     }
 
     public static boolean isGridChannel(String channelId) {

@@ -1,5 +1,8 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
+import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
+import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+
 /**
  * Based on:
  *
@@ -84,7 +87,8 @@ data class ReelResult(
     val replacementEndpoint: ReplacementEndpoint?,
     val overlay: Overlay?,
     val sequenceContinuation: String?, // first continuation
-    val continuationEndpoint: NavigationEndpoint? // subsequent continuations
+    val continuationEndpoint: NavigationEndpoint?, // subsequent continuations
+    val engagementPanels: List<EngagementPanel?>?
 ) {
     data class ReplacementEndpoint(
         val reelWatchEndpoint: ReelWatchEndpoint?
@@ -93,7 +97,8 @@ data class ReelResult(
         val reelPlayerOverlayRenderer: ReelPlayerOverlayRenderer?
     ) {
         data class ReelPlayerOverlayRenderer(
-            val reelPlayerHeaderSupportedRenderers: ReelPlayerHeaderSupportedRenderers?
+            val reelPlayerHeaderSupportedRenderers: ReelPlayerHeaderSupportedRenderers?,
+            val menu: MenuWrapper?
         ) {
             data class ReelPlayerHeaderSupportedRenderers(
                 val reelPlayerHeaderRenderer: ReelPlayerHeaderRenderer?
@@ -104,7 +109,8 @@ data class ReelResult(
 
 data class ReelContinuationResult(
     val entries: List<EntryItem?>?,
-    val continuationEndpoint: NavigationEndpoint?
+    val continuationEndpoint: NavigationEndpoint?,
+    val continuation: String?
 ) {
     data class EntryItem(
         val command: Command?

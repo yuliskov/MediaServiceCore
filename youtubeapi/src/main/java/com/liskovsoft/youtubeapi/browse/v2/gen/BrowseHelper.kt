@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
+import com.liskovsoft.youtubeapi.next.v2.gen.*
 
 fun BrowseResult.getItems(): List<ItemWrapper?>? = getRootTab()?.getItems()
 fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isUpcoming() }
@@ -95,7 +97,23 @@ fun AnchoredSectionRenderer.getBrowseParams(): String? = navigationEndpoint?.get
 
 //////
 
-fun ReelResult.getWatchEndpoint(): ReelWatchEndpoint? = replacementEndpoint?.reelWatchEndpoint
-fun ReelResult.getPlayerHeader(): ReelPlayerHeaderRenderer? = overlay?.reelPlayerOverlayRenderer?.reelPlayerHeaderSupportedRenderers?.reelPlayerHeaderRenderer
+private fun ReelResult.getWatchEndpoint(): ReelWatchEndpoint? = replacementEndpoint?.reelWatchEndpoint
+private fun ReelResult.getPlayerHeader(): ReelPlayerHeaderRenderer? = overlay?.reelPlayerOverlayRenderer?.reelPlayerHeaderSupportedRenderers?.reelPlayerHeaderRenderer
+fun ReelResult.getVideoId(): String? = getWatchEndpoint()?.videoId
+fun ReelResult.getTitle(): String? = getPlayerHeader()?.reelTitleOnClickCommand?.getTitle() ?: getVideoInfo()?.getTitle()
+fun ReelResult.getSubtitle(): String? = getPlayerHeader()?.reelTitleOnClickCommand?.getSubtitle() ?:
+    YouTubeHelper.createInfo(getVideoInfo()?.getChannelName(), getVideoInfo()?.getViews(), getVideoInfo()?.getPublishDate())
+private fun ReelResult.getVideoInfo(): EngagementPanel? = engagementPanels?.firstNotNullOfOrNull { if (it?.getTitle() != null) it else null }
+private fun ReelResult.getChannelName(): String? = getPlayerHeader()?.channelTitleText?.getText()
+private fun ReelResult.getUploadDate(): String? = getPlayerHeader()?.timestampText?.getText()
+fun ReelResult.getThumbnails(): ThumbnailItem? = getWatchEndpoint()?.thumbnail
+fun ReelResult.getBrowseId(): String? = getPlayerHeader()?.channelNavigationEndpoint?.getBrowseId()
+fun ReelResult.getFeedbackTokens(): List<String?>? = overlay?.reelPlayerOverlayRenderer?.menu?.getFeedbackTokens()
+fun ReelResult.getContinuationKey(): String? = sequenceContinuation ?: continuationEndpoint?.continuationCommand?.token
+
 fun ReelContinuationResult.getItems(): List<ReelWatchEndpoint?>? = entries?.mapNotNull { it?.command?.reelWatchEndpoint }
+fun ReelContinuationResult.getContinuationKey(): String? = continuation ?: continuationEndpoint?.continuationCommand?.token
+
+fun ReelWatchEndpoint.getVideoId(): String? = videoId
+fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 

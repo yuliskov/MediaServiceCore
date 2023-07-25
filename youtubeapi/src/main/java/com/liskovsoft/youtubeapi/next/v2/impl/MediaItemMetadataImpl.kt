@@ -8,7 +8,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
-import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl
+import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.SuggestionsGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
@@ -101,14 +101,14 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val disli
     private val videoAuthor by lazy { videoDetails?.getUserName() }
     private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
-        val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) MediaGroupImpl(it) else null }
+        val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) SuggestionsGroupImpl(it) else null }
         if (list?.size ?: 0 > 0)
             list
         else
             // In rare cases first chip item contains all shelfs
             suggestedSections?.firstOrNull()?.getChipItems()?.firstOrNull()?.run {
                 val chipTitle = getTitle() // shelfs inside a chip aren't have a titles
-                getShelfItems()?.map { it?.let { MediaGroupImpl(it).apply { title = title ?: chipTitle } } }
+                getShelfItems()?.map { it?.let { SuggestionsGroupImpl(it).apply { title = title ?: chipTitle } } }
             }
     }
 

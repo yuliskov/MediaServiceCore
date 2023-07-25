@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem;
-import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.MediaGroupImpl;
+import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.SuggestionsGroupImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
 import java.util.Collections;
@@ -62,13 +62,13 @@ public final class YouTubeHelper {
         return ServiceHelper.itemsToInfo(items);
     }
 
-    public static String extractNextKey(MediaGroup mediaTab) {
+    public static String extractNextKey(MediaGroup mediaGroup) {
         String result = null;
 
-        if (mediaTab instanceof YouTubeMediaGroup) {
-            result = ((YouTubeMediaGroup) mediaTab).mNextPageKey;
-        } else if (mediaTab instanceof MediaGroupImpl) {
-            result = ((MediaGroupImpl) mediaTab).getNextPageKey();
+        if (mediaGroup instanceof YouTubeMediaGroup) {
+            result = ((YouTubeMediaGroup) mediaGroup).mNextPageKey;
+        } else if (mediaGroup instanceof SuggestionsGroupImpl) {
+            result = ((SuggestionsGroupImpl) mediaGroup).getNextPageKey();
         }
 
         return result;

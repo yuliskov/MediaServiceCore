@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
 import java.util.*
 
-data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
+data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
     private var _titleItem: String? = null
                     get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
@@ -66,14 +66,20 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
     }
 
     override fun isEmpty(): Boolean {
-        return mediaItemList.isNullOrEmpty()
+        return mediaItems.isNullOrEmpty()
     }
 
     companion object {
         fun from(continuation: WatchNextResultContinuation?, baseGroup: MediaGroup?): MediaGroup? {
+            if (continuation == null || baseGroup == null) {
+                return null
+            }
+
+            val newGroup = SuggestionsGroupImpl(ShelfItem(null, null, null))
+
             val mediaItems = ArrayList<MediaItem>()
 
-            val items = continuation?.continuationContents?.horizontalListContinuation?.items
+            val items = continuation.continuationContents?.horizontalListContinuation?.items
 
             if (items != null) {
                 for (i in items.indices) {
@@ -87,19 +93,20 @@ data class MediaGroupImpl(val shelf: ShelfItem): MediaGroup {
                             mediaItem.playlistIndex = i
                         }
 
-                        mediaItem.params = baseGroup?.params
+                        mediaItem.params = baseGroup.params
                         mediaItems.add(mediaItem)
                     }
                 }
             }
 
             // Fix duplicated items after previous group reuse
-            baseGroup as MediaGroupImpl
-            baseGroup.mediaItems = if (mediaItems.isNotEmpty()) mediaItems else null
-            val nextKey = continuation?.continuationContents?.horizontalListContinuation?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
-            baseGroup._nextPageKeyVal = nextKey
+            newGroup.mediaItems = if (mediaItems.isNotEmpty()) mediaItems else null
+            val nextKey = continuation.continuationContents?.horizontalListContinuation?.continuations
+                ?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
+            newGroup.nextPageKey = nextKey
+            newGroup.title = baseGroup.title
 
-            return baseGroup
+            return newGroup
         }
     }
 }

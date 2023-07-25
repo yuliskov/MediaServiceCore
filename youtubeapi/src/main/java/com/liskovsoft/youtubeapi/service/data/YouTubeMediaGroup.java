@@ -61,18 +61,21 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
+        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
+        newGroup.mTitle = baseGroup.getTitle();
+
         // Subscribed channel view. Add details.
         if (continuation.getBrowseId() != null) {
-            ((YouTubeMediaGroup) baseGroup).mChannelId = continuation.getBrowseId();
+            newGroup.mChannelId = continuation.getBrowseId();
         }
         if (continuation.getParams() != null) {
-            ((YouTubeMediaGroup) baseGroup).mParams = continuation.getParams();
+            newGroup.mParams = continuation.getParams();
         }
         if (continuation.getCanonicalBaseUrl() != null) {
-            ((YouTubeMediaGroup) baseGroup).mChannelUrl = continuation.getCanonicalBaseUrl();
+            newGroup.mChannelUrl = continuation.getCanonicalBaseUrl();
         }
 
-        return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(WatchNextResultContinuation continuation, MediaGroup baseGroup) {
@@ -80,7 +83,10 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
+        newGroup.mTitle = baseGroup.getTitle();
+
+        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(Section section, int type) {
@@ -112,7 +118,10 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
+        newGroup.mTitle = baseGroup.getTitle();
+
+        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static List<MediaGroup> from(SearchResult searchResult, int type) {

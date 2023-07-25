@@ -68,5 +68,5 @@ public interface MediaGroupService {
      * NOTE: returns unnamed group
      */
     Observable<MediaGroup> getGroupObserve(String reloadPageKey);
-    Observable<MediaGroup> continueGroupObserve(MediaGroup mediaTab);
+    Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup);
 }

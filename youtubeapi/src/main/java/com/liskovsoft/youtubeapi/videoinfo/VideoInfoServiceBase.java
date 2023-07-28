@@ -98,7 +98,7 @@ public abstract class VideoInfoServiceBase {
 
         for (VideoFormat format : formats) {
             format.setCpn(cpn);
-            //format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
+            format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
         }
     }
 

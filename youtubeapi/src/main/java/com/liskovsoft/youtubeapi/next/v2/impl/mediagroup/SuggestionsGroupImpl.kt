@@ -19,8 +19,6 @@ data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
     private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
     private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 
-    override fun getId(): Int = title?.hashCode() ?: hashCode()
-
     override fun getType(): Int {
         return MediaGroup.TYPE_SUGGESTIONS;
     }
@@ -37,7 +35,7 @@ data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
         return _titleItem
     }
 
-    override fun setTitle(title: String?) {
+    fun setTitle(title: String?) {
         _titleItem = title
     }
 

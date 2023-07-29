@@ -129,7 +129,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val disli
     }
 
     private val isLiveStream by lazy {
-        videoMetadata?.isLive() ?: false
+        videoMetadata?.isLive() ?: liveChatKeyItem != null
     }
 
     private val playlistInfoItem by lazy {

@@ -20,11 +20,9 @@ public interface MediaGroup {
     int TYPE_KIDS_HOME = 13;
     int TYPE_TRENDING = 14;
     int TYPE_SHORTS = 15;
-    int getId();
     int getType();
     List<MediaItem> getMediaItems();
     String getTitle();
-    void setTitle(String title);
     // Below settings for Channel section group
     String getChannelId();
     String getParams();

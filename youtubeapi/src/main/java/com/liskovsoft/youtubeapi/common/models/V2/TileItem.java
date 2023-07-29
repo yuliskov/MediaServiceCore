@@ -24,7 +24,8 @@ public class TileItem {
     })
     private Header mHeader;
 
-    @JsonPath("$.metadata.tileMetadataRenderer")
+    @JsonPath({"$.metadata.tileMetadataRenderer",
+            "$.header.tileHeaderRenderer.thumbnailOverlays[0].tileMetadataRenderer"}) // V4 search metadata
     private Metadata mMetadata;
 
     @JsonPath({

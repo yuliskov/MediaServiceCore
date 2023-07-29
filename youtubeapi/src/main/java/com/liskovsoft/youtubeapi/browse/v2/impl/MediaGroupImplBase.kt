@@ -45,8 +45,6 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
     protected open fun getParamsInt(): String? = null
     protected open fun getChannelIdInt(): String? = null
 
-    override fun getId(): Int = title?.hashCode() ?: hashCode()
-
     override fun getType(): Int {
         return options.groupType
     }
@@ -63,7 +61,7 @@ abstract class MediaGroupImplBase(private val options: MediaGroupOptions = Media
         return _titleItem
     }
 
-    override fun setTitle(title: String?) {
+    fun setTitle(title: String?) {
         _titleItem = title
     }
 

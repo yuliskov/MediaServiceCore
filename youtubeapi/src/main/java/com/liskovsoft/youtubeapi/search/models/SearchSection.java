@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SearchSection {
     @JsonPath({
+            "$.shelfRenderer.headerRenderer.shelfHeaderRenderer.avatarLockup.avatarLockupRenderer.title", // V4
             "$.shelfRenderer.headerRenderer.shelfHeaderRenderer.title", // V3
             "$.itemSectionRenderer.header.itemSectionHeaderRenderer.title",
             "$.itemSectionRenderer.contents[0].shelfRenderer.headerRenderer.shelfHeaderRenderer.title"

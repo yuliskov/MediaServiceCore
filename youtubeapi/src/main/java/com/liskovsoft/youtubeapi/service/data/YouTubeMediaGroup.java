@@ -50,8 +50,8 @@ public class YouTubeMediaGroup implements MediaGroup {
         YouTubeMediaGroup baseGroup = new YouTubeMediaGroup(groupType);
         baseGroup.mReloadPageKey = reloadPageKey;
         MediaGroup mediaGroup = from(continuation, baseGroup);
-        if (mediaGroup != null) {
-            mediaGroup.setTitle(groupTitle);
+        if (mediaGroup instanceof YouTubeMediaGroup) {
+            ((YouTubeMediaGroup) mediaGroup).setTitle(groupTitle);
         }
         return mediaGroup;
     }
@@ -215,7 +215,6 @@ public class YouTubeMediaGroup implements MediaGroup {
         return mTitle;
     }
 
-    @Override
     public void setTitle(String title) {
         mTitle = title;
     }
@@ -223,14 +222,6 @@ public class YouTubeMediaGroup implements MediaGroup {
     @Override
     public int getType() {
         return mType;
-    }
-
-    /**
-     * TODO: create unique id by reload page key
-     */
-    @Override
-    public int getId() {
-        return mTitle != null ? mTitle.hashCode() : hashCode();
     }
 
     @Override

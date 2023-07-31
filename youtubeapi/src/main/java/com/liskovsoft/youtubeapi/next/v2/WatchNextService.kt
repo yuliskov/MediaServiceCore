@@ -6,12 +6,14 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.SuggestionsGroupImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
+import com.liskovsoft.youtubeapi.next.v2.gen.isEmpty
 
 class WatchNextService private constructor() {
     private var mWatchNextApi = RetrofitHelper.withGson(WatchNextApi::class.java)
@@ -30,7 +32,12 @@ class WatchNextService private constructor() {
     }
 
     fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
-        val watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+        var watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+
+        if (watchNextResult == null || watchNextResult.isEmpty()) {
+            RetrofitOkHttpHelper.disableAuth = true
+            watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+        }
 
         return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, getDislikesResult(videoId)) else null
     }
@@ -42,7 +49,12 @@ class WatchNextService private constructor() {
             return null;
         }
 
-        val continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
+        var continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
+
+        if (continuation == null || continuation.isEmpty()) {
+            RetrofitOkHttpHelper.disableAuth = true
+            continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
+        }
 
         return SuggestionsGroupImpl.from(continuation, mediaGroup)
     }

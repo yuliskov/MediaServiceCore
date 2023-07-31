@@ -18,6 +18,7 @@ object RetrofitOkHttpHelper {
     val client: OkHttpClient by lazy { createClient() }
 
     var disableCompression: Boolean = false
+    var disableAuth: Boolean = false
 
     private val headers = mapOf(
         "User-Agent" to DefaultHeaders.APP_USER_AGENT,
@@ -50,7 +51,8 @@ object RetrofitOkHttpHelper {
             apply(this.headers, headers, requestBuilder)
 
             if (Helpers.startsWithAny(request.url().toString(), *apiPrefixes)) {
-                if (authHeaders.isEmpty()) {
+                if (authHeaders.isEmpty() || disableAuth) {
+                    disableAuth = false
                     applyApiKey(request, requestBuilder)
                 } else {
                     apply(authHeaders, headers, requestBuilder)

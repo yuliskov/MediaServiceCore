@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
@@ -12,6 +11,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoHeaders;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
+import okhttp3.Headers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +110,14 @@ public abstract class VideoInfoServiceBase {
         return RetrofitHelper.get(mDashInfoApi.getDashInfoUrl(url + SMALL_RANGE));
     }
 
+    private Headers getDashInfoHeaders(String url) {
+        if (url == null) {
+            return null;
+        }
+
+        return RetrofitHelper.getHeaders(mDashInfoApi.getDashInfoHeaders(url + SMALL_RANGE));
+    }
+
     protected DashInfo getDashInfo2(VideoInfo videoInfo) {
         if (videoInfo == null || videoInfo.getAdaptiveFormats() == null || videoInfo.getAdaptiveFormats().isEmpty()) {
             return null;
@@ -130,8 +138,8 @@ public abstract class VideoInfoServiceBase {
 
         try {
             AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-            dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
-        } catch (ArithmeticException | NumberFormatException ex) {
+            dashInfo = new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
+        } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
             // Segment isn't available
             //AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
             //dashInfo = new DashInfoHeaders(mDashInfoApi.getDashInfoHeaders(format.getUrl() + SMALL_RANGE));

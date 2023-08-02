@@ -12,6 +12,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -53,6 +54,12 @@ public class RetrofitHelper {
         Response<T> response = getResponse(wrapper);
 
         return response != null ? response.body() : null;
+    }
+
+    public static <T> Headers getHeaders(Call<T> wrapper) {
+        Response<T> response = getResponse(wrapper);
+
+        return response != null ? response.headers() : null;
     }
 
     public static <T> Response<T> getResponse(Call<T> wrapper) {

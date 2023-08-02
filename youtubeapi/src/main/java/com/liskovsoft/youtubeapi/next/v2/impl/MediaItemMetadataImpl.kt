@@ -65,7 +65,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val disli
         watchNextResult.getButtonStateItem()
     }
     private val videoTitle by lazy {
-        videoMetadata?.getTitle()
+        videoDetails?.getTitle() ?: videoMetadata?.getTitle()
     }
     private val isUpcomingItem by lazy {
         videoMetadata?.isUpcoming() ?: false

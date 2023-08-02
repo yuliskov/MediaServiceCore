@@ -29,7 +29,7 @@ fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlis
 fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
     playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters
 fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
-fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.firstOrNull()?.let { it.getNextPageKey() == null || it.getItemWrappers()?.size ?: 0 <= 3 } ?: false
+fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.firstOrNull()?.let { it.getNextPageKey() == null || it.getItemWrappers()?.size ?: 0 <= 3 } ?: true
 
 fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
 

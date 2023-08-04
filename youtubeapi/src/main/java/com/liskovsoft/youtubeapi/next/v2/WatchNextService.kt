@@ -32,14 +32,15 @@ class WatchNextService private constructor() {
     }
 
     fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
-        var watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+        val watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+        var suggestionsResult: WatchNextResult? = null
 
-        if (watchNextResult == null || watchNextResult.isEmpty()) {
+        if (watchNextResult?.isEmpty() == true) { // 3 items in a row temporal fix
             RetrofitOkHttpHelper.disableAuth = true
-            watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+            suggestionsResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
         }
 
-        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, getDislikesResult(videoId)) else null
+        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, getDislikesResult(videoId), suggestionsResult) else null
     }
 
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {

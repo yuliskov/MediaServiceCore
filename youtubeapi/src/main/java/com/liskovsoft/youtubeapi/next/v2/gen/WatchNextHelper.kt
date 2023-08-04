@@ -29,7 +29,8 @@ fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlis
 fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
     playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters
 fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
-fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.lastOrNull()?.let { it.getItemWrappers()?.size ?: 0 <= 3 } ?: true
+// One of the suggested rows is too short or empty
+fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.getOrNull(1)?.let { it.getItemWrappers()?.size ?: 0 <= 3 } ?: false
 
 fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
 

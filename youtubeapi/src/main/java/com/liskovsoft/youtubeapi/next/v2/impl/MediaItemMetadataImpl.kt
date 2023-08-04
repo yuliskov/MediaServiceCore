@@ -13,7 +13,9 @@ import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.NextMediaItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
-data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val dislikesResult: DislikesResult? = null) : MediaItemMetadata {
+data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
+                                 val dislikesResult: DislikesResult? = null,
+                                 val suggestionsResult: WatchNextResult? = null) : MediaItemMetadata {
     private val channelIdItem by lazy {
         videoDetails?.getChannelId() ?: videoOwner?.getChannelId() ?: channelOwner?.getChannelId()
     }
@@ -21,7 +23,7 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult, val disli
         videoMetadata?.getPercentWatched() ?: 0
     }
     private val suggestedSections by lazy {
-        watchNextResult.getSuggestedSections()
+        (suggestionsResult ?: watchNextResult).getSuggestedSections()
     }
     private val videoMetadata by lazy {
         watchNextResult.getVideoMetadata()

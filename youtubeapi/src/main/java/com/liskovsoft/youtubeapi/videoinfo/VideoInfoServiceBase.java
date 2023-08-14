@@ -41,8 +41,8 @@ public abstract class VideoInfoServiceBase {
         List<String> throttleFixed = mAppService.throttleFix(throttled);
         applyThrottleFixedStrings(throttleFixed, formats);
 
-        // What this for? Could this fix throttling?
-        //applyAdditionalStrings(formats);
+        // What this for? Could this fix throttling or maybe the source error?
+        applyAdditionalStrings(formats);
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {

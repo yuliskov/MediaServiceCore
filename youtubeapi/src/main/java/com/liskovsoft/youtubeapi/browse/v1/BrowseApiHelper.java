@@ -19,6 +19,7 @@ public class BrowseApiHelper {
     private static final String HISTORY = "\"browseId\":\"FEhistory\"";
     private static final String LIKED_MUSIC_BROWSE_ID = "FEmusic_liked_videos";
     private static final String SUBSCRIBED_MUSIC_BROWSE_ID = "FEmusic_library_corpus_artists";
+    private static final String PLAYED_MUSIC_BROWSE_ID = "FEmusic_last_played";
     private static final String CONTINUATION = "\"continuation\":\"%s\"";
     private static final String REEL_CONTINUATION = "\"sequenceParams\":\"%s\"";
     private static final String CHANNEL = "\"browseId\":\"%s\"";
@@ -155,6 +156,8 @@ public class BrowseApiHelper {
     }
 
     public static boolean isGridChannel(String channelId) {
-        return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID, SUBSCRIBED_MUSIC_BROWSE_ID);
+        //return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID, SUBSCRIBED_MUSIC_BROWSE_ID, PLAYED_MUSIC_BROWSE_ID);
+        // NOTE: user channel starts with 'UC'
+        return channelId != null && channelId.startsWith("FE");
     }
 }

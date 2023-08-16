@@ -150,11 +150,14 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {
-        if (nextSearchResult == null) {
+        if (nextSearchResult == null || baseGroup == null) {
             return null;
         }
 
-        return create((YouTubeMediaGroup) baseGroup, nextSearchResult.getTileItems(), nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
+        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
+        newGroup.mTitle = baseGroup.getTitle();
+
+        return create(newGroup, nextSearchResult.getTileItems(), nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
                 nextSearchResult.getChannelItems(), nextSearchResult.getRadioItems(), nextSearchResult.getPlaylistItems(), nextSearchResult.getNextPageKey());
     }
 

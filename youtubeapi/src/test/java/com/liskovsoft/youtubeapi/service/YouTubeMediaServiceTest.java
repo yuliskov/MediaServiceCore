@@ -47,6 +47,8 @@ public class YouTubeMediaServiceTest {
     public void testThatRecommendedNotEmpty() throws InterruptedException {
         MediaGroup mediaGroup = mService.getMediaGroupService().getRecommended();
 
+        assertTrue("Has media items", !mediaGroup.isEmpty());
+
         List<MediaItem> list = new ArrayList<>();
 
         MediaItem mediaItem = mediaGroup.getMediaItems().get(0);
@@ -54,12 +56,5 @@ public class YouTubeMediaServiceTest {
         assertNotNull(mediaItem);
 
         assertTrue("Has media items", list.size() > 0);
-    }
-
-    @Test
-    public void testThatRecommendedNotEmpty2() {
-        MediaGroup result = mService.getMediaGroupService().getRecommended();
-
-        assertTrue("Has media items", !result.isEmpty());
     }
 }

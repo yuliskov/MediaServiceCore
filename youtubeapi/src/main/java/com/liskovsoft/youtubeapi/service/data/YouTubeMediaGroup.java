@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.Chip;
@@ -114,14 +115,21 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     public static MediaGroup from(SectionContinuation continuation, MediaGroup baseGroup) {
-        if (continuation == null) {
+        if (continuation == null || baseGroup == null) {
             return null;
         }
 
         YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
         newGroup.mTitle = baseGroup.getTitle();
 
-        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+        MediaGroup result = create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+
+        // Fix duplicated items in Recommendation row? The bug is very rare.
+        if (baseGroup.getType() == MediaGroup.TYPE_HOME && !result.isEmpty() && !baseGroup.isEmpty()) {
+            Helpers.removeIf(result.getMediaItems(), item -> baseGroup.getMediaItems().contains(item));
+        }
+
+        return result;
     }
 
     public static List<MediaGroup> from(SearchResult searchResult, int type) {

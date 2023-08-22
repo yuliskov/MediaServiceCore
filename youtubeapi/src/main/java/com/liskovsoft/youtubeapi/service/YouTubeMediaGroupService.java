@@ -284,52 +284,9 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         return RxHelper.fromNullable(() -> getGroup(reloadPageKey, null, MediaGroup.TYPE_UNDEFINED));
     }
 
-    //@Override
-    //public List<MediaGroup> getHome() {
-    //    checkSigned();
-    //
-    //    SectionTab tab = mBrowseService.getHome();
-    //
-    //    List<MediaGroup> result = new ArrayList<>();
-    //
-    //    String nextPageKey = tab.getNextPageKey();
-    //    List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), MediaGroup.TYPE_HOME);
-    //
-    //    if (groups.isEmpty()) {
-    //        Log.e(TAG, "Home group is empty");
-    //    }
-    //
-    //    // Chips?
-    //    for (MediaGroup group : groups) {
-    //        if (group.isEmpty()) {
-    //            continueGroup(group);
-    //        }
-    //    }
-    //
-    //    while (!groups.isEmpty()) {
-    //        result.addAll(groups);
-    //        SectionTabContinuation continuation = mBrowseService.continueSectionTab(nextPageKey);
-    //
-    //        if (continuation == null) {
-    //            break;
-    //        }
-    //
-    //        nextPageKey = continuation.getNextPageKey();
-    //        groups = YouTubeMediaGroup.from(continuation.getSections(), MediaGroup.TYPE_HOME);
-    //    }
-    //
-    //    return result;
-    //}
-
     @Override
     public Observable<List<MediaGroup>> getHomeV1Observe() {
-        return RxHelper.create(emitter -> {
-            checkSigned();
-
-            SectionTab tab = mBrowseService.getHome();
-
-            emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
-        });
+        return emitHome(false);
     }
 
     @Override
@@ -362,20 +319,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {
-        return RxHelper.create(emitter -> {
-            checkSigned();
-
-            List<MediaGroup> sections = BrowseService2.getHome();
-
-            if (sections != null && sections.size() > 5) {
-                emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
-            } else {
-                // Fallback to old algo if user chrome page has no chips (why?)
-                SectionTab tab = mBrowseService.getHome();
-
-                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
-            }
-        });
+        return emitHome(true);
     }
 
     @Override
@@ -464,34 +408,62 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         return getChannelObserve(item.getChannelId(), item.getParams());
     }
 
+    private Observable<List<MediaGroup>> emitHome(boolean newLook) {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            List<MediaGroup> sections = BrowseService2.getHome();
+
+            if (sections != null && sections.size() > 5 && newLook) {
+                emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
+            } else {
+                if (sections != null && !sections.isEmpty()) {
+                    List<MediaGroup> subGroup = sections.size() > 2 ? sections.subList(0, 2) : sections;
+                    emitGroups2Partial(emitter, subGroup, MediaGroup.TYPE_HOME); // get Recommended only
+                }
+
+                // Fallback to old algo if user chrome page has no chips (why?)
+                SectionTab tab = mBrowseService.getHome();
+
+                if (tab != null && tab.getSections() != null && !tab.getSections().isEmpty()) {
+                    tab.getSections().remove(0); // replace Recommended
+                }
+
+                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+            }
+        });
+    }
+
     private void emitGroups2(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups, int type) {
-        if (groups == null) {
-            String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
+        if (groups == null || groups.isEmpty()) {
+            String msg = String.format("emitGroups2: group of type %s is null or empty", type);
             Log.e(TAG, msg);
             RxHelper.onError(emitter, msg);
             return;
         }
 
-        Log.d(TAG, "emitGroups: begin emitting BrowseTab of type %s...", type);
+        emitGroups2Partial(emitter, groups, type);
 
-        if (groups.isEmpty()) {
-            String msg = "Media group is empty: " + type;
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-        } else {
-            for (MediaGroup group : groups) { // Preserve positions
-                if (group != null && group.isEmpty()) { // Contains Chips (nested sections)?
-                    List<MediaGroup> sections = BrowseService2.continueEmptyGroup(group);
+        emitter.onComplete();
+    }
 
-                    if (sections != null) {
-                        emitter.onNext(sections);
-                    }
-                } else if (group != null) {
-                    emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
+    private void emitGroups2Partial(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups, int type) {
+        if (groups == null || groups.isEmpty()) {
+            return;
+        }
+
+        Log.d(TAG, "emitGroups: begin emitting group of type %s...", type);
+
+        for (MediaGroup group : groups) { // Preserve positions
+            if (group != null && group.isEmpty()) { // Contains Chips (nested sections)?
+                List<MediaGroup> sections = BrowseService2.continueEmptyGroup(group);
+
+                if (sections != null) {
+                    emitter.onNext(sections);
                 }
+            } else if (group != null) {
+                emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
             }
-
-            emitter.onComplete();
         }
     }
 

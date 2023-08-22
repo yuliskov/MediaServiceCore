@@ -122,14 +122,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
         newGroup.mTitle = baseGroup.getTitle();
 
-        MediaGroup result = create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
-
-        // Fix duplicated items in Recommendation row? The bug is very rare.
-        if (baseGroup.getType() == MediaGroup.TYPE_HOME && !result.isEmpty() && !baseGroup.isEmpty()) {
-            Helpers.removeIf(result.getMediaItems(), item -> baseGroup.getMediaItems().contains(item));
-        }
-
-        return result;
+        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static List<MediaGroup> from(SearchResult searchResult, int type) {

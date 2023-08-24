@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
 fun BrowseResult.getItems(): List<ItemWrapper?>? = getRootTab()?.getItems()
-fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isUpcoming() }
+fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isLive() }
 fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
     getItems()?.filter { it?.isLive() == false && it.isUpcoming() == false }?.let { if (maxItems > 0) it.take(maxItems) else it }
 fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()

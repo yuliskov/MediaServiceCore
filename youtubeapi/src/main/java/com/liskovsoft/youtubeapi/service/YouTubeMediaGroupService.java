@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
@@ -231,6 +232,11 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
         List<MediaGroup> groups = BrowseService2.getHome();
 
+        // Remove duplicated recommendations (source of the bug is unknown)
+        if (groups != null && !groups.isEmpty()) {
+            Helpers.removeDuplicates(groups.get(0).getMediaItems());
+        }
+
         return groups != null && !groups.isEmpty() ? groups.get(0) : null;
     }
 
@@ -413,6 +419,11 @@ public class YouTubeMediaGroupService implements MediaGroupService {
             checkSigned();
 
             List<MediaGroup> sections = BrowseService2.getHome();
+
+            // Remove duplicated recommendations (source of the bug is unknown)
+            if (sections != null && !sections.isEmpty()) {
+                Helpers.removeDuplicates(sections.get(0).getMediaItems());
+            }
 
             if (sections != null && sections.size() > 5 && newLook) {
                 emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);

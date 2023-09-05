@@ -81,4 +81,5 @@ data class NotificationMediaItem(private val item: NotificationItem): BaseMediaI
     override val backgroundThumbImageUrl by lazy { item.getThumbnails()?.getHighResThumbnailUrl() }
     override val titleItem by lazy { item.getTitle() }
     override val secondTitleItem by lazy { item.getSecondTitle() }
+    val hideNotificationToken: String? by lazy { item.getNotificationToken() }
 }

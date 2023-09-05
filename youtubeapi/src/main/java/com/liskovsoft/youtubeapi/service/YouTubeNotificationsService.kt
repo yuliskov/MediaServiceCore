@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service
 
 import com.liskovsoft.mediaserviceinterfaces.NotificationsService
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.notifications.NotificationsServiceInt
 import io.reactivex.Observable
@@ -11,7 +12,15 @@ object YouTubeNotificationsService: NotificationsService {
         return NotificationsServiceInt.getItems()
     }
 
+    override fun hideNotification(item: MediaItem?) {
+        NotificationsServiceInt.hideNotification(item)
+    }
+
     override fun getNotificationItemsObserve(): Observable<MediaGroup> {
         return RxHelper.fromNullable { notificationItems }
+    }
+
+    override fun hideNotificationObserve(item: MediaItem?): Observable<Void> {
+        return RxHelper.fromVoidable { hideNotification(item) }
     }
 }

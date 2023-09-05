@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.notifications.gen
 
+import com.liskovsoft.youtubeapi.common.models.gen.getNotificationToken
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 fun NotificationsResult.getItems(): List<NotificationItem?>? =
@@ -9,3 +10,4 @@ fun NotificationItem.getVideoId() = notificationRenderer?.navigationEndpoint?.wa
 fun NotificationItem.getThumbnails() = notificationRenderer?.videoThumbnail
 fun NotificationItem.getTitle() = notificationRenderer?.shortMessage?.getText()
 fun NotificationItem.getSecondTitle() = notificationRenderer?.sentTimeText?.getText()
+fun NotificationItem.getNotificationToken() = notificationRenderer?.contextualMenu?.getNotificationToken()

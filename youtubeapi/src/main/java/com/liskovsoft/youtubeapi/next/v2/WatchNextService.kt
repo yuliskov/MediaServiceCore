@@ -7,17 +7,17 @@ import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
+import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.isEmpty
+import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 
 class WatchNextService private constructor() {
     private var mWatchNextApi = RetrofitHelper.withGson(WatchNextApi::class.java)
-    private val mAppService = AppService.instance();
+    private val mAppService = AppService.instance()
 
     fun getMetadata(videoId: String): MediaItemMetadata? {
         return getMetadata(videoId, null, 0)

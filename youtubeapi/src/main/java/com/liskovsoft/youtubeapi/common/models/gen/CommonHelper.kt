@@ -64,6 +64,7 @@ private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
 ////////
 
 fun MenuWrapper.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getBrowseId() }
+fun MenuWrapper.getNotificationToken() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getNotificationToken() }
 fun MenuWrapper.getFeedbackTokens(): List<String?>? = menuRenderer?.items?.mapNotNull { it?.getFeedbackToken() }
 // Filter by icon not robust. Icon item not always present.
 fun MenuWrapper.getVideoToken() = menuRenderer?.items?.firstOrNull {
@@ -241,4 +242,5 @@ fun IconItem.getType() = iconType
 
 fun MenuItem.getIconType() = menuServiceItemRenderer?.icon?.getType()
 fun MenuItem.getFeedbackToken() = menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
+fun MenuItem.getNotificationToken() = menuServiceItemRenderer?.serviceEndpoint?.recordNotificationInteractionsEndpoint?.serializedInteractionsRequest
 fun MenuItem.getBrowseId() = menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId()

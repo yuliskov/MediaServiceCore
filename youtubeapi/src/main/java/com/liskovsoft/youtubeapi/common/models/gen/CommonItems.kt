@@ -380,10 +380,14 @@ data class MenuItem(
         val serviceEndpoint: ServiceEndpoint?
     ) {
         data class ServiceEndpoint(
-            val feedbackEndpoint: FeedbackEndpoint?
+            val feedbackEndpoint: FeedbackEndpoint?,
+            val recordNotificationInteractionsEndpoint: RecordNotificationInteractionsEndpoint?
         ) {
             data class FeedbackEndpoint(
                 val feedbackToken: String?
+            )
+            data class RecordNotificationInteractionsEndpoint(
+                val serializedInteractionsRequest: String?
             )
         }
     }

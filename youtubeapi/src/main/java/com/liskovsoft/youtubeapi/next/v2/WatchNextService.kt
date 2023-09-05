@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
-import com.liskovsoft.youtubeapi.next.v2.impl.mediagroup.SuggestionsGroupImpl
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
@@ -57,7 +57,7 @@ class WatchNextService private constructor() {
             continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
         }
 
-        return SuggestionsGroupImpl.from(continuation, mediaGroup)
+        return SuggestionsGroup.from(continuation, mediaGroup)
     }
 
     private fun getWatchNextResult(videoId: String?): WatchNextResult? {

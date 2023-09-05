@@ -7,6 +7,6 @@ public class FeedbackApiHelper {
 
     public static String getNotInterestedQuery(String feedbackToken) {
         String channelTemplate = String.format(NOT_INTERESTED_QUERY, feedbackToken);
-        return ServiceHelper.createQuery(channelTemplate);
+        return ServiceHelper.createQueryTV(channelTemplate);
     }
 }

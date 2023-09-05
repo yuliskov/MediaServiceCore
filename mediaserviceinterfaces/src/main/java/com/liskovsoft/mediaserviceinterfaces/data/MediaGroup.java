@@ -20,6 +20,7 @@ public interface MediaGroup {
     int TYPE_KIDS_HOME = 13;
     int TYPE_TRENDING = 14;
     int TYPE_SHORTS = 15;
+    int TYPE_NOTIFICATIONS = 16;
     int getType();
     List<MediaItem> getMediaItems();
     String getTitle();

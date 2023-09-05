@@ -7,6 +7,7 @@ public interface MediaService {
     MediaItemService getMediaItemService();
     LiveChatService getLiveChatService();
     CommentsService getCommentsService();
+    NotificationsService getNotificationsService();
     void invalidateCache();
     void refreshCacheIfNeeded();
 }

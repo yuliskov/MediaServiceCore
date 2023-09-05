@@ -1333,3 +1333,12 @@ POST https://vot.toil-dump.workers.dev/video-translation/translate
 content-type: Content-Type: application/json
 
 {"headers":{"Accept":"application/x-protobuf","Accept-Language":"en","Content-Type":"application/x-protobuf","User-Agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1","Pragma":"no-cache","Cache-Control":"no-cache","Sec-Fetch-Mode":"no-cors","Vtrans-Signature":"a5dd4d47c59d890b152bdfb9da430b216db17803edb72dd68dbc4103dee308b6","Sec-Vtrans-Token":"6F58DB1D57D94A479367E68468D12AF4"},"body":"\u001a\u001chttps://youtu.be/V9Kc8025H7U\" 3bc96669b37c4c02b974a2dae2abe35f(\u00011\u0000\u0000\u0000\u0000\u0000Pu@8\u0001B\u0002enH\u0000P\u0000r\u0002ru"}
+
+
+### Notifications
+
+POST https://www.youtube.com/youtubei/v1/notification/get_notification_menu
+content-type: Content-Type: application/json
+Authorization: Bearer ya29.a0AfB_byBU51AIi3o7_vcSVLs7VF6cA5b8RE0fMLskKDcRbzCa5FZRFMNUfMqdg0b_Qtsoemq8x5HhimpCIjYIRNu_B4pY-OUiSTQAbdrSCmqpajdsgT38Z6UOAxbylDsosETDXhggLu6E7BQd5m3LEJJMfxyahVms_FoLxo_9uEISB9Mme6BWbQaCgYKAbISARASFQHsvYlshXXM6QEEZVk9yI6AvLktVg0189
+
+{"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"WEB","clientVersion":"2.20220728.09.00","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"GB","acceptLanguage":"uk-GB","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"notificationsMenuRequestType":"NOTIFICATIONS_MENU_REQUEST_TYPE_INBOX"}

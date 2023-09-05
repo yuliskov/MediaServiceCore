@@ -1,11 +1,13 @@
-package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
+package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.next.v2.gen.*
+import com.liskovsoft.youtubeapi.notifications.gen.*
 
-data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
+data class WrapperMediaItem(var itemWrapper: ItemWrapper): BaseMediaItem() {
     override val typeItem by lazy { itemWrapper.getType() }
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
@@ -38,7 +40,20 @@ data class MediaItemImpl(var itemWrapper: ItemWrapper): BaseMediaItemImpl() {
     val descriptionText by lazy { itemWrapper.getDescriptionText() }
 }
 
-data class MediaItemImplGuide(val guideItem: GuideItem): BaseMediaItemImpl() {
+data class NextMediaItem(var nextVideoItem: NextVideoItem): BaseMediaItem() {
+    override val videoIdItem by lazy { nextVideoItem.getVideoId() }
+    override val channelIdItem: String? = null
+    override val titleItem by lazy { nextVideoItem.getTitle() }
+    override val secondTitleItem by lazy { YouTubeHelper.createInfo(nextVideoItem.getAuthor()) ?: null }
+    override val cardThumbImageUrl by lazy { nextVideoItem.getThumbnails()?.getOptimalResThumbnailUrl() }
+    override val backgroundThumbImageUrl by lazy { nextVideoItem.getThumbnails()?.getHighResThumbnailUrl() }
+    override val playlistIdItem by lazy { nextVideoItem.getPlaylistId() }
+    override val playlistIndexItem by lazy { nextVideoItem.getPlaylistIndex() }
+    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
+    override val playlistParamsItem by lazy { nextVideoItem.getParams() }
+}
+
+data class GuideMediaItem(val guideItem: GuideItem): BaseMediaItem() {
     override val titleItem by lazy { guideItem.getTitle() }
     override val channelIdItem by lazy { guideItem.getBrowseId() }
     override val cardThumbImageUrl by lazy { guideItem.getThumbnails()?.getOptimalResThumbnailUrl() }
@@ -47,7 +62,7 @@ data class MediaItemImplGuide(val guideItem: GuideItem): BaseMediaItemImpl() {
     override val hasUploadsItem = true
 }
 
-data class MediaItemImplShorts(val reel: ReelWatchEndpoint?, val reelDetails: ReelResult): BaseMediaItemImpl() {
+data class ShortsMediaItem(val reel: ReelWatchEndpoint?, val reelDetails: ReelResult): BaseMediaItem() {
     override val videoIdItem by lazy { reel?.getVideoId() ?: reelDetails.getVideoId() }
     override val cardThumbImageUrl by lazy { getThumbnails()?.getOptimalResThumbnailUrl() }
     override val backgroundThumbImageUrl by lazy { getThumbnails()?.getHighResThumbnailUrl() }
@@ -58,4 +73,12 @@ data class MediaItemImplShorts(val reel: ReelWatchEndpoint?, val reelDetails: Re
     override val feedbackTokenItem by lazy { reelDetails.getFeedbackTokens()?.getOrNull(0) }
     override val feedbackTokenItem2 by lazy { reelDetails.getFeedbackTokens()?.getOrNull(1) }
     private fun getThumbnails() = reel?.getThumbnails() ?: reelDetails.getThumbnails()
+}
+
+data class NotificationMediaItem(private val item: NotificationItem): BaseMediaItem() {
+    override val videoIdItem by lazy { item.getVideoId() }
+    override val cardThumbImageUrl by lazy { item.getThumbnails()?.getOptimalResThumbnailUrl() }
+    override val backgroundThumbImageUrl by lazy { item.getThumbnails()?.getHighResThumbnailUrl() }
+    override val titleItem by lazy { item.getTitle() }
+    override val secondTitleItem by lazy { item.getSecondTitle() }
 }

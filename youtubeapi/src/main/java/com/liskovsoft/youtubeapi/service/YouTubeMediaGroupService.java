@@ -15,7 +15,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuatio
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
-import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImplBase;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BaseMediaGroup;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
@@ -595,7 +595,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
-        if (mediaGroup instanceof MediaGroupImplBase) {
+        if (mediaGroup instanceof BaseMediaGroup) {
             return BrowseService2.continueGroup(mediaGroup);
         }
 

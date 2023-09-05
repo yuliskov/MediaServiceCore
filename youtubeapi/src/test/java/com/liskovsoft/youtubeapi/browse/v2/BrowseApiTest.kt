@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
-import com.liskovsoft.youtubeapi.browse.v2.impl.MediaGroupImplKidsSection
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -163,7 +163,7 @@ class BrowseApiTest {
     fun testKidsMediaItemConversion() {
         val kidsHome = getKidsHome()
 
-        val mediaGroup = MediaGroupImplKidsSection(kidsHome?.getRootSection()!!)
+        val mediaGroup = KidsSectionMediaGroup(kidsHome?.getRootSection()!!)
 
         BrowseTestHelper.checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
     }

@@ -13,6 +13,6 @@ public class VideoInfoApiTestHelper {
     public static String getVideoInfoQuery(String videoId) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId);
         String checkParamsTemplate = String.format(CHECK_PARAMS, "18795");
-        return ServiceHelper.createQuery(checkParamsTemplate + "," + videoIdTemplate);
+        return ServiceHelper.createQueryTV(checkParamsTemplate + "," + videoIdTemplate);
     }
 }

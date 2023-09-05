@@ -1,12 +1,12 @@
-package com.liskovsoft.youtubeapi.next.v2.impl.mediagroup
+package com.liskovsoft.youtubeapi.common.models.impl.mediagroup
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.*
-import com.liskovsoft.youtubeapi.next.v2.impl.mediaitem.MediaItemImpl
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 import java.util.*
 
-data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
+data class SuggestionsGroup(val shelf: ShelfItem): MediaGroup {
     private var _titleItem: String? = null
                     get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
@@ -16,7 +16,7 @@ data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
                     set(value) { field = value ?: "" }
 
     private val titleItem by lazy { shelf.getTitle() }
-    private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { MediaItemImpl(it).apply { playlistIndex = index } } } }
+    private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { WrapperMediaItem(it).apply { playlistIndex = index } } } }
     private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 
     override fun getType(): Int {
@@ -73,7 +73,7 @@ data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
                 return null
             }
 
-            val newGroup = SuggestionsGroupImpl(ShelfItem(null, null, null))
+            val newGroup = SuggestionsGroup(ShelfItem(null, null, null))
 
             val mediaItems = ArrayList<MediaItem>()
 
@@ -84,7 +84,7 @@ data class SuggestionsGroupImpl(val shelf: ShelfItem): MediaGroup {
                     val itemWrapper = items[i]
 
                     if (itemWrapper != null) {
-                        val mediaItem = MediaItemImpl(itemWrapper)
+                        val mediaItem = WrapperMediaItem(itemWrapper)
 
                         // In case can't find a position of item inside browse playlist query. So using position inside group instead.
                         if (mediaItem.playlistIndex == -1 && mediaItem.playlistId != null) {

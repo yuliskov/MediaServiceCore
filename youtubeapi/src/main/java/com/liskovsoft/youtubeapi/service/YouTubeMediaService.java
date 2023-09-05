@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
 import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
@@ -74,6 +75,11 @@ public class YouTubeMediaService implements MediaService {
     @Override
     public MediaItemService getMediaItemService() {
         return mMediaItemManager;
+    }
+
+    @Override
+    public NotificationsService getNotificationsService() {
+        return YouTubeNotificationsService.INSTANCE;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.next.v2.impl.mediaitem
+package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
@@ -6,7 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import kotlin.math.abs
 
-open class BaseMediaItemImpl : MediaItem {
+open class BaseMediaItem : MediaItem {
     private var _titleItem: String? = null
         get() = field ?: titleItem
     private var _secondTitleItem: String? = null
@@ -72,7 +72,7 @@ open class BaseMediaItemImpl : MediaItem {
             if (split.size != 7) {
                 return null
             }
-            val mediaItem = BaseMediaItemImpl()
+            val mediaItem = BaseMediaItem()
             mediaItem._reloadPageKeyItem = Helpers.parseStr(split[0])
             mediaItem._titleItem = Helpers.parseStr(split[1])
             mediaItem._secondTitleItem = Helpers.parseStr(split[2])
@@ -270,7 +270,7 @@ open class BaseMediaItemImpl : MediaItem {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is BaseMediaItemImpl) {
+        if (other is BaseMediaItem) {
             if (videoId != null) {
                 return videoId == other.videoId
             }

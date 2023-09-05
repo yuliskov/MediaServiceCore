@@ -66,11 +66,11 @@ public class ServiceHelper {
                 String.format(Locale.US, "%d%s%02d", minutes, TIME_TEXT_DELIM, seconds);
     }
 
-    public static String createQueryUA(String data) {
+    public static String createQueryTV_UA(String data) {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, null, data, "uk", "UA");
     }
 
-    public static String createQuery(String data) {
+    public static String createQueryTV(String data) {
         return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, data);
     }
 

@@ -13,7 +13,7 @@ public class AuthApiHelper {
     private static final String MODEL_NAME = "ytlr::";
 
     public static String getAccountsListQuery() {
-        return ServiceHelper.createQuery("\"accountReadMask\":{\"returnOwner\":true,\"returnBrandAccounts\":true,\"returnPersonaAccounts\":false}");
+        return ServiceHelper.createQueryTV("\"accountReadMask\":{\"returnOwner\":true,\"returnBrandAccounts\":true,\"returnPersonaAccounts\":false}");
     }
 
     public static String getUserCodeQuery(String clientId) {

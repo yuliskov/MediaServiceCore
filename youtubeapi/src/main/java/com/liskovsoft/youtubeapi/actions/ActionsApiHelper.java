@@ -11,15 +11,15 @@ public class ActionsApiHelper {
 
     public static String getLikeActionQuery(String videoId) {
         String likeTemplate = String.format(VIDEO_ID_TEMPLATE, videoId);
-        return ServiceHelper.createQuery(likeTemplate);
+        return ServiceHelper.createQueryTV(likeTemplate);
     }
 
     public static String getSubscribeActionQuery(String channelId, String params) {
         String channelTemplate = String.format(CHANNEL_ID_TEMPLATE, channelId, params != null ? params : "");
-        return ServiceHelper.createQuery(channelTemplate);
+        return ServiceHelper.createQueryTV(channelTemplate);
     }
 
     public static String getEmptyQuery() {
-        return ServiceHelper.createQuery("\"nop\":\"false\"");
+        return ServiceHelper.createQueryTV("\"nop\":\"false\"");
     }
 }

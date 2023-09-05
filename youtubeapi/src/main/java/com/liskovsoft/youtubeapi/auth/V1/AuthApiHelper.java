@@ -20,6 +20,6 @@ public class AuthApiHelper {
     }
 
     public static String getAccountsListQuery() {
-        return ServiceHelper.createQuery("\"accountReadMask\":{\"returnOwner\":true}");
+        return ServiceHelper.createQueryTV("\"accountReadMask\":{\"returnOwner\":true}");
     }
 }

@@ -32,6 +32,6 @@ public class WatchNextApiHelper {
             videoData += String.format(",\"params\":\"%s\"", playlistParams);
         }
 
-        return ServiceHelper.createQuery(videoData);
+        return ServiceHelper.createQueryTV(videoData);
     }
 }

@@ -13,5 +13,9 @@ interface NotificationsApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/notification/record_interactions")
-    fun getHideNotification(@Body notificationsTokenQuery: String?): Call<Void>
+    fun getHideNotification(@Body hideNotificationQuery: String?): Call<Void>
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/notification/modify_channel_preference")
+    fun getModifyNotification(@Body modifyNotificationQuery: String?): Call<Void>
 }

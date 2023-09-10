@@ -1,9 +1,8 @@
 package com.liskovsoft.youtubeapi.next.v2.impl
 
+import com.liskovsoft.mediaserviceinterfaces.data.*
 import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.models.gen.*
@@ -11,6 +10,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NextMediaItem
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
 data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
@@ -47,6 +47,9 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val channelOwner by lazy {
         watchNextResult.transportControls?.transportControlsRenderer?.getChannelOwner()
+    }
+    private val notificationPreference by lazy {
+        videoOwner?.getNotificationPreference()
     }
     private val videoDetails by lazy {
         watchNextResult.getVideoDetails()
@@ -148,11 +151,18 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     private val chapterList by lazy {
         watchNextResult.getChapters()?.map {
-            object : ChapterItem {
+            object: ChapterItem {
                 override fun getTitle() = it?.getTitle()
                 override fun getStartTimeMs() = it?.getStartTimeMs() ?: -1
                 override fun getCardImageUrl() = it?.getThumbnailUrl()
             }
+        }
+    }
+
+    private val notificationStateList by lazy {
+        val currentId = notificationPreference?.getCurrentStateId()
+        notificationPreference?.getItems()?.mapNotNull {
+            it?.let { NotificationStateImpl(it, currentId) }
         }
     }
 
@@ -258,5 +268,9 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     override fun getChapters(): List<ChapterItem>? {
         return chapterList
+    }
+
+    override fun getNotificationStates(): List<NotificationState?>? {
+        return notificationStateList
     }
 }

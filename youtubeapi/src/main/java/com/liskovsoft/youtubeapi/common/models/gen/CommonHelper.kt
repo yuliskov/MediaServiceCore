@@ -244,3 +244,11 @@ fun MenuItem.getIconType() = menuServiceItemRenderer?.icon?.getType()
 fun MenuItem.getFeedbackToken() = menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
 fun MenuItem.getNotificationToken() = menuServiceItemRenderer?.serviceEndpoint?.recordNotificationInteractionsEndpoint?.serializedInteractionsRequest
 fun MenuItem.getBrowseId() = menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId()
+
+//////
+
+fun NotificationPreferenceButton.getItems() = subscriptionNotificationToggleButtonRenderer?.states
+fun NotificationPreferenceButton.getCurrentStateId() = subscriptionNotificationToggleButtonRenderer?.currentStateId ?: -1
+fun NotificationStateItem.getTitle() = inlineMenuButton?.buttonRenderer?.text?.getText()
+fun NotificationStateItem.getStateId() = stateId
+fun NotificationStateItem.getStateParams() = inlineMenuButton?.buttonRenderer?.serviceEndpoint?.modifyChannelNotificationPreferenceEndpoint?.params

@@ -30,4 +30,5 @@ public interface MediaItemMetadata {
     List<MediaGroup> getSuggestions();
     PlaylistInfo getPlaylistInfo();
     List<ChapterItem> getChapters();
+    List<NotificationState> getNotificationStates();
 }

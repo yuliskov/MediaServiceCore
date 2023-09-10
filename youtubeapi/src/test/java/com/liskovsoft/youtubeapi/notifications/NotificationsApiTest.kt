@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 class NotificationsApiTest {
@@ -39,7 +38,7 @@ class NotificationsApiTest {
     }
 
     private fun getNotifications(): NotificationsResult? {
-        val result = mService?.getNotifications(NotificationsParams.getNotificationsQuery())
+        val result = mService?.getNotifications(NotificationsApiHelper.getNotificationsQuery())
 
         return RetrofitHelper.get(result)
     }

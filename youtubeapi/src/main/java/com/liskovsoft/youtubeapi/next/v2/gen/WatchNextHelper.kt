@@ -9,6 +9,7 @@ fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed
 fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 fun VideoOwnerItem.getThumbnails() = thumbnail
 fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlayToggleButton()?.getSubscribeParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams()
+fun VideoOwnerItem.getNotificationPreference() = subscribeButton?.subscribeButtonRenderer?.notificationPreferenceButton
 
 /////
 

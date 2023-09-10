@@ -111,7 +111,8 @@ data class ToggleButtonRenderer(
 data class SubscribeButtonRenderer(
     val subscribed: Boolean?,
     val channelId: String?,
-    val serviceEndpoints: List<DefaultServiceEndpoint?>?
+    val serviceEndpoints: List<DefaultServiceEndpoint?>?,
+    val notificationPreferenceButton: NotificationPreferenceButton?
 )
 
 data class TextItem(
@@ -417,4 +418,36 @@ data class ThumbnailOverlayItem(
     data class ThumbnailOverlayResumePlaybackRenderer(
         val percentDurationWatched: Int?
     )
+}
+
+data class NotificationPreferenceButton(
+    val subscriptionNotificationToggleButtonRenderer: SubscriptionNotificationToggleButtonRenderer?
+) {
+    data class SubscriptionNotificationToggleButtonRenderer(
+        val states: List<NotificationStateItem?>?,
+        val currentStateId: Int?
+    )
+}
+
+data class NotificationStateItem(
+    val stateId: Int?,
+    val nextStateId: Int?,
+    val inlineMenuButton: InlineMenuButton?
+) {
+    data class InlineMenuButton(
+        val buttonRenderer: NotificationButtonRenderer?
+    ) {
+        data class NotificationButtonRenderer(
+            val text: TextItem?,
+            val serviceEndpoint: NotificationServiceEndpoint?
+        ) {
+            data class NotificationServiceEndpoint(
+                val modifyChannelNotificationPreferenceEndpoint: ModifyChannelNotificationPreferenceEndpoint?
+            ) {
+                data class ModifyChannelNotificationPreferenceEndpoint(
+                    val params: String?
+                )
+            }
+        }
+    }
 }

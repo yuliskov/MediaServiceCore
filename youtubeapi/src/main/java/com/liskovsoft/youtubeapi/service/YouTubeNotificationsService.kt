@@ -25,11 +25,11 @@ object YouTubeNotificationsService: NotificationsService {
         return RxHelper.fromVoidable { hideNotification(item) }
     }
 
-    override fun applyNotificationState(state: NotificationState?) {
+    override fun setNotificationState(state: NotificationState?) {
         NotificationsServiceInt.modifyNotification(state)
     }
 
-    override fun applyNotificationStateObserve(state: NotificationState?): Observable<Void> {
-        return RxHelper.fromVoidable { applyNotificationState(state) }
+    override fun setNotificationStateObserve(state: NotificationState?): Observable<Void> {
+        return RxHelper.fromVoidable { setNotificationState(state) }
     }
 }

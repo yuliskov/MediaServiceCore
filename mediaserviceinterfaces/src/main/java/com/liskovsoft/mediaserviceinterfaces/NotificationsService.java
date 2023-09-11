@@ -8,9 +8,9 @@ import io.reactivex.Observable;
 public interface NotificationsService {
     MediaGroup getNotificationItems();
     void hideNotification(MediaItem item);
-    void applyNotificationState(NotificationState state);
+    void setNotificationState(NotificationState state);
 
     Observable<MediaGroup> getNotificationItemsObserve();
     Observable<Void> hideNotificationObserve(MediaItem item);
-    Observable<Void> applyNotificationStateObserve(NotificationState state);
+    Observable<Void> setNotificationStateObserve(NotificationState state);
 }

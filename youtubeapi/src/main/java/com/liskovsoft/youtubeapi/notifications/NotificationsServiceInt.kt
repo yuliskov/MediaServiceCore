@@ -25,6 +25,7 @@ object NotificationsServiceInt {
 
     fun modifyNotification(notificationState: NotificationState?) {
         if (notificationState is NotificationStateImpl) {
+            notificationState.setSelected()
             modifyNotification(notificationState.stateParams)
         }
     }

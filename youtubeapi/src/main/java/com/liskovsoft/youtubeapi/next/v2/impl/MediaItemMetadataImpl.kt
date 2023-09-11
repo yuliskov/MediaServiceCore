@@ -161,9 +161,13 @@ data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     private val notificationStateList by lazy {
         val currentId = notificationPreference?.getCurrentStateId()
-        notificationPreference?.getItems()?.mapNotNull {
+        val result = notificationPreference?.getItems()?.mapNotNull {
             it?.let { NotificationStateImpl(it, currentId) }
         }
+
+        result?.forEach { it.allStates = result }
+
+        result
     }
 
     private val likeCountItem by lazy {

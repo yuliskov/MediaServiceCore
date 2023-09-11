@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.comments.gen.getContinuationLabel
 import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
-data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentItem {
+internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentItem {
     private val commentRenderer by lazy {
         commentItemWrapper.commentThreadRenderer?.comment?.commentRenderer
     }

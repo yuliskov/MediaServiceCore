@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2
 
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 
-object WatchNextApiHelper {
+internal object WatchNextApiHelper {
     fun getWatchNextQuery(videoId: String): String {
         return getWatchNextQuery(videoId, null, 0)
     }

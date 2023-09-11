@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
-data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
+internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
                                  val dislikesResult: DislikesResult? = null,
                                  val suggestionsResult: WatchNextResult? = null) : MediaItemMetadata {
     private val channelIdItem by lazy {

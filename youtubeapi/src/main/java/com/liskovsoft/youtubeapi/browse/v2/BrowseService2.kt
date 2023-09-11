@@ -11,7 +11,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 
-object BrowseService2 {
+internal object BrowseService2 {
     private val mBrowseApi = RetrofitHelper.withGson(BrowseApi::class.java)
     private val mAppService = AppService.instance()
 

@@ -5,14 +5,14 @@ import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.TextItem
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
-data class Section(
+internal data class Section(
     val itemSectionRenderer: ItemSectionRenderer?,
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
     val continuationItemRenderer: ContinuationItemRenderer?
 )
 
-data class TabRenderer(
+internal data class TabRenderer(
     val title: String?,
     val content: Content?,
     val endpoint: NavigationEndpointItem?
@@ -44,7 +44,7 @@ data class TabRenderer(
 }
 
 // WhatToWatch only
-data class RichSectionRenderer(
+internal data class RichSectionRenderer(
     val content: Content?
 ) {
     data class Content(
@@ -63,7 +63,7 @@ data class RichSectionRenderer(
 }
 
 // Subscriptions only
-data class ItemSectionRenderer(
+internal data class ItemSectionRenderer(
     val contents: List<Shelf?>?
 ) {
     data class Shelf(
@@ -89,31 +89,31 @@ data class ItemSectionRenderer(
 }
 
 // Common item (WhatToWatch, Subscriptions)
-data class RichItemRenderer(
+internal data class RichItemRenderer(
     val content: ItemWrapper?
 )
 
 // Common item (WhatToWatch, Subscriptions)
-data class ContinuationItemRenderer(
+internal data class ContinuationItemRenderer(
     val continuationEndpoint: NavigationEndpoint?
 )
 
-data class ContinuationCommand(
+internal data class ContinuationCommand(
     val token: String?
 )
 
-data class ChipCloudChipRenderer(
+internal data class ChipCloudChipRenderer(
     val text: TextItem?,
     val navigationEndpoint: NavigationEndpoint? // possible duplicate?
 )
 
-data class NavigationEndpoint(
+internal data class NavigationEndpoint(
     val continuationCommand: ContinuationCommand?
 )
 
 /////
 
-data class GuideItem(
+internal data class GuideItem(
     val thumbnail: ThumbnailItem?,
     val formattedTitle: TextItem?,
     val navigationEndpoint: NavigationEndpointItem?,
@@ -126,7 +126,7 @@ data class GuideItem(
 }
 
 // Kids only
-data class AnchoredSectionRenderer(
+internal data class AnchoredSectionRenderer(
     val title: String?,
     val navigationEndpoint: NavigationEndpointItem?,
     val content: ContentItem?
@@ -149,7 +149,7 @@ data class AnchoredSectionRenderer(
 }
 
 // Reel only. Basic data. No title or description.
-data class ReelWatchEndpoint(
+internal data class ReelWatchEndpoint(
     val videoId: String?,
     val playerParams: String?,
     val params: String?,
@@ -157,7 +157,7 @@ data class ReelWatchEndpoint(
 )
 
 // Reel only. Extended data.
-data class ReelPlayerHeaderRenderer(
+internal data class ReelPlayerHeaderRenderer(
     val reelTitleText: TextItem?,
     val channelTitleText: TextItem?,
     val timestampText: TextItem?,

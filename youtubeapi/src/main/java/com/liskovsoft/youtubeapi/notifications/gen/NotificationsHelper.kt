@@ -3,11 +3,11 @@ package com.liskovsoft.youtubeapi.notifications.gen
 import com.liskovsoft.youtubeapi.common.models.gen.getNotificationToken
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
-fun NotificationsResult.getItems(): List<NotificationItem?>? =
+internal fun NotificationsResult.getItems(): List<NotificationItem?>? =
     actions?.firstOrNull()?.openPopupAction?.popup?.multiPageMenuRenderer?.sections?.firstOrNull()?.multiPageMenuNotificationSectionRenderer?.items
 
-fun NotificationItem.getVideoId() = notificationRenderer?.navigationEndpoint?.watchEndpoint?.videoId
-fun NotificationItem.getThumbnails() = notificationRenderer?.videoThumbnail
-fun NotificationItem.getTitle() = notificationRenderer?.shortMessage?.getText()
-fun NotificationItem.getSecondTitle() = notificationRenderer?.sentTimeText?.getText()
-fun NotificationItem.getNotificationToken() = notificationRenderer?.contextualMenu?.getNotificationToken()
+internal fun NotificationItem.getVideoId() = notificationRenderer?.navigationEndpoint?.watchEndpoint?.videoId
+internal fun NotificationItem.getThumbnails() = notificationRenderer?.videoThumbnail
+internal fun NotificationItem.getTitle() = notificationRenderer?.shortMessage?.getText()
+internal fun NotificationItem.getSecondTitle() = notificationRenderer?.sentTimeText?.getText()
+internal fun NotificationItem.getNotificationToken() = notificationRenderer?.contextualMenu?.getNotificationToken()

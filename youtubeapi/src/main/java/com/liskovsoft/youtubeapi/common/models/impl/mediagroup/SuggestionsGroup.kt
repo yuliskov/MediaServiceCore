@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 import java.util.*
 
-data class SuggestionsGroup(val shelf: ShelfItem): MediaGroup {
+internal data class SuggestionsGroup(val shelf: ShelfItem): MediaGroup {
     private var _titleItem: String? = null
                     get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null

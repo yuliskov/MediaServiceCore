@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app
 
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
 
-object AppConstants {
+internal object AppConstants {
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
     private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
 

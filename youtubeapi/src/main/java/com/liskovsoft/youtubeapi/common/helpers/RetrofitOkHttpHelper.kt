@@ -11,7 +11,7 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-object RetrofitOkHttpHelper {
+internal object RetrofitOkHttpHelper {
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()
 

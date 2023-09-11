@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.TextItem
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
-data class CommentItemWrapper(
+internal data class CommentItemWrapper(
     val commentThreadRenderer: CommentThreadRenderer?
 ) {
     data class CommentThreadRenderer(
@@ -16,7 +16,7 @@ data class CommentItemWrapper(
     }
 }
 
-data class CommentRenderer(
+internal data class CommentRenderer(
     val commentId: String?,
     val authorText: TextItem?,
     val authorThumbnail: ThumbnailItem?,

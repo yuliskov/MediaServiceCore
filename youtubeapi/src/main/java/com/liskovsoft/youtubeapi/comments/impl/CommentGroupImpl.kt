@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
 import com.liskovsoft.youtubeapi.comments.gen.CommentsResult
 import com.liskovsoft.youtubeapi.next.v2.gen.getKey
 
-data class CommentGroupImpl(val commentsResult: CommentsResult): CommentGroup {
+internal data class CommentGroupImpl(val commentsResult: CommentsResult): CommentGroup {
     private val itemSectionContinuation by lazy {
         commentsResult.continuationContents?.itemSectionContinuation
     }

@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.chat.gen.LiveChatAction
 import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
-data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
+internal data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
     private val messageRenderer by lazy {
         liveChatAction.addChatItemAction?.item?.liveChatTextMessageRenderer ?:
         liveChatAction.addBannerToLiveChatCommand?.bannerRenderer?.liveChatBannerRenderer?.contents?.liveChatTextMessageRenderer

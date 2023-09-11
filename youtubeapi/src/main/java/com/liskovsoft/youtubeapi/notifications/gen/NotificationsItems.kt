@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.TextItem
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
-data class NotificationAction(
+internal data class NotificationAction(
     val openPopupAction: OpenPopupAction?
 ) {
     data class OpenPopupAction(
@@ -29,7 +29,7 @@ data class NotificationAction(
     }
 }
 
-data class NotificationItem(
+internal data class NotificationItem(
     val notificationRenderer: NotificationRenderer?
 ) {
     data class NotificationRenderer(

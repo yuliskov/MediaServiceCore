@@ -11,7 +11,7 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaI
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import com.liskovsoft.youtubeapi.notifications.gen.getItems
 
-data class BrowseMediaGroup(
+internal data class BrowseMediaGroup(
     private val browseResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions(),
     private val liveResult: BrowseResult? = null
@@ -22,7 +22,7 @@ data class BrowseMediaGroup(
     override fun getTitleInt(): String? = browseResult.getTitle()
 }
 
-data class LiveMediaGroup(
+internal data class LiveMediaGroup(
     private val liveResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -31,7 +31,7 @@ data class LiveMediaGroup(
     override fun getTitleInt(): String? = liveResult.getTitle()
 }
 
-data class ContinuationMediaGroup(
+internal data class ContinuationMediaGroup(
     private val continuationResult: ContinuationResult,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -40,7 +40,7 @@ data class ContinuationMediaGroup(
     override fun getTitleInt(): String? = null
 }
 
-data class SectionMediaGroup(
+internal data class SectionMediaGroup(
     private val richSectionRenderer: RichSectionRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -49,7 +49,7 @@ data class SectionMediaGroup(
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
 }
 
-data class TabMediaGroup(
+internal data class TabMediaGroup(
     private val tabRenderer: TabRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -60,7 +60,7 @@ data class TabMediaGroup(
     override fun getParamsInt(): String? = tabRenderer.endpoint?.getBrowseParams()
 }
 
-data class KidsSectionMediaGroup(
+internal data class KidsSectionMediaGroup(
     private val anchoredSectionRenderer: AnchoredSectionRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -69,7 +69,7 @@ data class KidsSectionMediaGroup(
     override fun getTitleInt(): String? = anchoredSectionRenderer.getTitle()
 }
 
-data class ChipMediaGroup(
+internal data class ChipMediaGroup(
     private val chipCloudChipRenderer: ChipCloudChipRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -78,7 +78,7 @@ data class ChipMediaGroup(
     override fun getTitleInt(): String? = chipCloudChipRenderer.getTitle()
 }
 
-data class GuideMediaGroup(
+internal data class GuideMediaGroup(
     private val guideResult: GuideResult,
     private val options: MediaGroupOptions = MediaGroupOptions(),
     private val sort: Boolean = false
@@ -103,7 +103,7 @@ data class GuideMediaGroup(
     }
 }
 
-data class RecommendedMediaGroup(
+internal data class RecommendedMediaGroup(
     private val guideItem: GuideItem,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
@@ -114,7 +114,7 @@ data class RecommendedMediaGroup(
     override fun getParamsInt(): String? = guideItem.getBrowseParams()
 }
 
-data class ShortsMediaGroup(
+internal data class ShortsMediaGroup(
     private val items: List<MediaItem?>,
     private val continuation: String? = null,
     private val options: MediaGroupOptions = MediaGroupOptions()
@@ -125,7 +125,7 @@ data class ShortsMediaGroup(
     override val mediaItemList = items
 }
 
-data class NotificationsMediaGroup(
+internal data class NotificationsMediaGroup(
     private val result: NotificationsResult
 ): BaseMediaGroup(MediaGroupOptions(groupType = MediaGroup.TYPE_NOTIFICATIONS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null

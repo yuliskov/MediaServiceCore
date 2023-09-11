@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
-data class DislikesResult(
+internal data class DislikesResult(
     val id: String?,
     val dateCreated: String?,
     val likes: Int?,

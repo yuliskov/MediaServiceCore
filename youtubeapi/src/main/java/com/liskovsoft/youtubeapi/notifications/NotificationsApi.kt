@@ -6,7 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface NotificationsApi {
+internal interface NotificationsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/notification/get_notification_menu")
     fun getNotifications(@Body notificationsQuery: String?): Call<NotificationsResult?>?

@@ -9,12 +9,12 @@ import com.liskovsoft.youtubeapi.common.models.gen.isShorts
 import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 
-data class MediaGroupOptions(val removeShorts: Boolean = true,
+internal data class MediaGroupOptions(val removeShorts: Boolean = true,
                              val removeLive: Boolean = false,
                              val removeUpcoming: Boolean = false,
                              val groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS)
 
-abstract class BaseMediaGroup(private val options: MediaGroupOptions = MediaGroupOptions()): MediaGroup {
+internal abstract class BaseMediaGroup(private val options: MediaGroupOptions = MediaGroupOptions()): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
         (options.removeShorts && it.isShorts() == true) ||
         (options.removeLive && it.isLive() == true) ||

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.comments.gen
 
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 
-data class CommentsResult(
+internal data class CommentsResult(
     val continuationContents: ContinuationContents?
 ) {
     data class ContinuationContents(

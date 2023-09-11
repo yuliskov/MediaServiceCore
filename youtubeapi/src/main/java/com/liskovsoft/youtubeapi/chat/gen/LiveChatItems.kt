@@ -3,24 +3,24 @@ package com.liskovsoft.youtubeapi.chat.gen
 import com.liskovsoft.youtubeapi.common.models.gen.TextItem
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
-data class LiveChatAction(
+internal data class LiveChatAction(
     val addBannerToLiveChatCommand: AddBannerToLiveChatCommand?,
     val addChatItemAction: AddChatItemAction?
 )
 
-data class AddBannerToLiveChatCommand(
+internal data class AddBannerToLiveChatCommand(
     val bannerRenderer: BannerRenderer?
 )
 
-data class AddChatItemAction(
+internal data class AddChatItemAction(
     val item: LiveChatTextMessageRendererItem?
 )
 
-data class LiveChatTextMessageRendererItem(
+internal data class LiveChatTextMessageRendererItem(
     val liveChatTextMessageRenderer: LiveChatTextMessageRenderer?
 )
 
-data class LiveChatTextMessageRenderer(
+internal data class LiveChatTextMessageRenderer(
     val message: TextItem?,
     val authorName: TextItem?,
     val authorPhoto: ThumbnailItem?,
@@ -28,19 +28,19 @@ data class LiveChatTextMessageRenderer(
     val authorExternalChannelId: String?
 )
 
-data class LiveChatBannerHeaderRendererItem(
+internal data class LiveChatBannerHeaderRendererItem(
     val liveChatBannerHeaderRenderer: LiveChatBannerHeaderRenderer?
 )
 
-data class LiveChatBannerHeaderRenderer(
+internal data class LiveChatBannerHeaderRenderer(
     val text: TextItem?
 )
 
-data class BannerRenderer(
+internal data class BannerRenderer(
     val liveChatBannerRenderer: LiveChatBannerRenderer?
 )
 
-data class LiveChatBannerRenderer(
+internal data class LiveChatBannerRenderer(
     val header: LiveChatBannerHeaderRendererItem?,
     val contents: LiveChatTextMessageRendererItem?
 )

@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import retrofit2.Call
 import retrofit2.http.*
 
-interface WatchNextApi {
+internal interface WatchNextApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
     fun getWatchNextResult(@Body watchNextQuery: String?): Call<WatchNextResult?>?

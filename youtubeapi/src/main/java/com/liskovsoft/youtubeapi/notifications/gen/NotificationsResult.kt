@@ -1,5 +1,5 @@
 package com.liskovsoft.youtubeapi.notifications.gen
 
-data class NotificationsResult(
+internal data class NotificationsResult(
     val actions: List<NotificationAction?>?
 )

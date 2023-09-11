@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
-data class WatchNextResult(
+internal data class WatchNextResult(
     val contents: Contents?,
     val transportControls: TransportControls?,
     val playerOverlays: PlayerOverlays?,

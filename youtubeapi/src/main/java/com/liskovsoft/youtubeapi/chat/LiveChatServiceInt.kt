@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 
-class LiveChatServiceInt private constructor() {
+internal class LiveChatServiceInt private constructor() {
     private val mApi = RetrofitHelper.withGson(LiveChatApi::class.java)
 
     fun openLiveChat(chatKey: String, onChatItem: OnChatItem) {

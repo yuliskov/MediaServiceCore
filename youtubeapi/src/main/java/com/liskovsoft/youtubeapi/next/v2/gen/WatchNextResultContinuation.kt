@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
-data class WatchNextResultContinuation(
+internal data class WatchNextResultContinuation(
     val continuationContents: ContinuationContents?,
     val contents: Contents?
 ) {

@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
  *
  * browse_subs_chrome_12.02.2023.json
  */
-data class BrowseResult(
+internal data class BrowseResult(
     val contents: Contents?
 ) {
     data class Contents(
@@ -24,7 +24,7 @@ data class BrowseResult(
     }
 }
 
-data class ContinuationResult(
+internal data class ContinuationResult(
     val onResponseReceivedActions: List<OnResponseReceivedAction?>?
 ) {
     data class OnResponseReceivedAction(
@@ -41,7 +41,7 @@ data class ContinuationResult(
     }
 }
 
-data class GuideResult(
+internal data class GuideResult(
     val items: List<Item?>?
 ) {
     data class Item(
@@ -67,7 +67,7 @@ data class GuideResult(
     }
 }
 
-data class BrowseResultKids(
+internal data class BrowseResultKids(
     val contents: Contents?
 ) {
     data class Contents(
@@ -83,7 +83,7 @@ data class BrowseResultKids(
     }
 }
 
-data class ReelResult(
+internal data class ReelResult(
     val replacementEndpoint: ReplacementEndpoint?,
     val overlay: Overlay?,
     val sequenceContinuation: String?, // first continuation
@@ -107,7 +107,7 @@ data class ReelResult(
     }
 }
 
-data class ReelContinuationResult(
+internal data class ReelContinuationResult(
     val entries: List<EntryItem?>?,
     val continuationEndpoint: NavigationEndpoint?,
     val continuation: String?

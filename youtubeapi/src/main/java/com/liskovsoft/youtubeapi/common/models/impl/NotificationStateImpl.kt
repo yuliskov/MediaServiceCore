@@ -14,7 +14,7 @@ data class NotificationStateImpl(
     lateinit var allStates: List<NotificationStateImpl>
 
     override fun isSelected(): Boolean {
-        return _selected ?: notificationStateItem.getStateId() == selectedSateId
+        return _selected ?: (notificationStateItem.getStateId() == selectedSateId)
     }
 
     override fun getTitle(): String? {
@@ -24,7 +24,6 @@ data class NotificationStateImpl(
     val stateParams = notificationStateItem.getStateParams()
 
     fun setSelected() {
-        allStates.forEach { it._selected = false }
-        _selected = true
+        allStates.forEach { it._selected = it == this }
     }
 }

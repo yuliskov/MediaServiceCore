@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
@@ -98,7 +99,7 @@ public abstract class VideoInfoServiceBase {
 
         for (VideoFormat format : formats) {
             format.setCpn(cpn);
-            //format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
+            format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
         }
     }
 

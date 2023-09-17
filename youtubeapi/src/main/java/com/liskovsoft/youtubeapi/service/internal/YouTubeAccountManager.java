@@ -28,13 +28,13 @@ public class YouTubeAccountManager {
     private final List<Account> mAccounts = new CopyOnWriteArrayList<Account>() {
         @Override
         public boolean add(Account account) {
-            if (account == null) {
+            if (account == null || contains(account)) {
                 return false;
             }
 
-            while (contains(account)) {
-                remove(account);
-            }
+            //while (contains(account)) {
+            //    remove(account);
+            //}
 
             return super.add(account);
         }

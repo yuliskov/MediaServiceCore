@@ -17,15 +17,19 @@ public class VideoInfoApiHelper {
     private static final String VIDEO_ID = "\"videoId\":\"%s\",\"cpn\":\"%s\"";
 
     // Magic val to fix throttling???
+    // Workaround streaming URLs returning 403 when using Android clients
     // NOTE: Completely removes storyboard (seek previews) from the result!
     // NOTE: Helps to bypass geo blocking.
     // https://github.com/TeamNewPipe/NewPipe/issues/9038#issuecomment-1289756816
     // https://github.com/revanced/revanced-patches/issues/2432#issuecomment-1601819762
-    private static final String PROTOBUF_VAL = "\"params\":\"CgIQBg%3D%3D\"";
+    // https://github.com/yt-dlp/yt-dlp/issues/7811
+    // https://github.com/yt-dlp/yt-dlp/commit/81ca451480051d7ce1a31c017e005358345a9149
+    private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg%3D%3D\"";
+    private static final String REGULAR_QUERY = "\"params\":\"YAHIAQE%3D\""; // taken from the web browser
 
     // Workaround streaming URLs returning 403 when using Android clients
     // https://github.com/LuanRT/YouTube.js/pull/390/commits/6511c23fe6133f4b066c558ebfa531e1ce7c0062
-    private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
+    //private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
 
     public static String getVideoInfoQuery(String videoId) {
         return getVideoInfoQueryLive(videoId, null);
@@ -37,7 +41,7 @@ public class VideoInfoApiHelper {
      * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
      */
     public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_ANDROID, videoId, clickTrackingParams, PROTOBUF_VAL_ANDROID);
+        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_ANDROID, videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 
     /**
@@ -65,7 +69,7 @@ public class VideoInfoApiHelper {
      * NOTE: Should use protobuf to bypass geo blocking.
      */
     public static String getVideoInfoQueryGeoBlocked(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, PROTOBUF_VAL);
+        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 
     public static String getVideoInfoQueryHls(String videoId, String clickTrackingParams) {
@@ -93,10 +97,10 @@ public class VideoInfoApiHelper {
         return createCheckedQuery(template, videoId, clickTrackingParams, null);
     }
 
-    private static String createCheckedQuery(String template, String videoId, String clickTrackingParams, String params) {
+    private static String createCheckedQuery(String template, String videoId, String clickTrackingParams, String query) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
         clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
-        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate, params));
+        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate, query));
     }
 }

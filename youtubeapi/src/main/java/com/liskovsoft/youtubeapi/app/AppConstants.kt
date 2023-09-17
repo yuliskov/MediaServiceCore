@@ -34,7 +34,7 @@ internal object AppConstants {
 
     // 2.20211014.05.00-canary_control
     // 2.20220119.01.00
-    const val CLIENT_VERSION_WEB = "2.20230613.01.00"
+    private const val CLIENT_VERSION_WEB = "2.20230613.01.00"
     private const val CLIENT_NAME_WEB = "WEB"
     private const val CLIENT_NAME_MWEB = "MWEB"
 

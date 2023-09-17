@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
@@ -52,9 +51,6 @@ public class VideoInfo {
 
     @JsonPath("$.videoDetails")
     private VideoDetails mVideoDetails;
-
-    @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
-    private String mPlayerStoryboardSpec;
 
     @JsonPath("$.playbackTracking.videostatsPlaybackUrl.baseUrl")
     private String mPlaybackUrl;
@@ -133,8 +129,8 @@ public class VideoInfo {
         mHlsManifestUrl = hlsManifestUrl;
     }
 
-    public String getPlayerStoryboardSpec() {
-        return mPlayerStoryboardSpec;
+    public void setStoryboardSpec(String storyboardSpec) {
+        mStoryboardSpec = storyboardSpec;
     }
 
     public VideoDetails getVideoDetails() {
@@ -210,18 +206,22 @@ public class VideoInfo {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_LOGIN_REQUIRED, STATUS_AGE_CHECK_REQUIRED, STATUS_CONTENT_CHECK_REQUIRED);
     }
 
-    public boolean isFormatRestricted() {
-        return getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
+    public boolean isExtendedHlsFormatsBroken() {
+        return !isLive() && getHlsManifestUrl() == null && isAdaptiveFullHD();
     }
 
     public boolean hasExtendedHlsFormats() {
-        if (!isLive() && getHlsManifestUrl() != null) {
+        if (!isLive() && getHlsManifestUrl() != null && isAdaptiveFullHD()) {
             long uploadTimeMs = DateHelper.toUnixTimeMs(getUploadDate());
             // Extended formats may not work during 3 days after publication
             return uploadTimeMs > 0 && System.currentTimeMillis() - uploadTimeMs > 4*24*60*60*1_000;
         }
 
         return false;
+    }
+
+    public boolean isStoryboardBroken() {
+        return !isLive() && getStoryboardSpec() == null;
     }
 
     public boolean isLive() {
@@ -333,5 +333,9 @@ public class VideoInfo {
         }
 
         return result != null ? result : captionTracks.get(0);
+    }
+
+    private boolean isAdaptiveFullHD() {
+        return getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
     }
 }

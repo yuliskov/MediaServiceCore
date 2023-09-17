@@ -43,7 +43,7 @@ public abstract class VideoInfoServiceBase {
         applyThrottleFixedStrings(throttleFixed, formats);
 
         // What this for? Could this fix throttling or maybe the source error?
-        applyAdditionalStrings(formats);
+        //applyAdditionalStrings(formats);
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
@@ -99,7 +99,7 @@ public abstract class VideoInfoServiceBase {
 
         for (VideoFormat format : formats) {
             format.setCpn(cpn);
-            format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
+            //format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
         }
     }
 

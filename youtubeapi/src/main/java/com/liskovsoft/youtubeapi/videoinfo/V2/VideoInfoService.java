@@ -27,41 +27,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
         //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
-        //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no dash url
-        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included
+        //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no dash url, fix 403 error?
+        VideoInfo result = getVideoInfoGeoBlocked(videoId, clickTrackingParams); // no seek preview, fix 403 error?
+        //VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included, the best
 
-        if (result != null && result.isLive() && !result.isUnplayable()) {
-            Log.e(TAG, "Enable seeking support on live streams...");
-            result.sync(getDashInfo2(result));
-
-            // Add dash and hls manifests (for backward compatibility)
-            //if (YouTubeMediaService.instance().isOldStreamsEnabled()) {
-            //    VideoInfo result2 = getVideoInfoLive(videoId, clickTrackingParams);
-            //    result.setDashManifestUrl(result2.getDashManifestUrl());
-            //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
-            //}
-        } else if (result != null && result.isFormatRestricted()) {
-            VideoInfoHls videoInfoHls = getVideoInfoHls(videoId, clickTrackingParams);
-            if (videoInfoHls != null) {
-                result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
-            }
-        } else if (result != null && result.isRent() && result.isUnplayable()) {
-            Log.e(TAG, "Found rent content. Show trailer instead...");
-            result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams);
-        } else if (result != null && result.isUnplayable()) {
-            Log.e(TAG, "Found restricted video. Retrying with embed query method...");
-            result = getVideoInfoEmbed(videoId, clickTrackingParams);
-
-            if (result != null && result.isUnplayable()) {
-                Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
-                result = getVideoInfoRestricted(videoId, clickTrackingParams);
-
-                if (result != null && result.isUnplayable()) {
-                    Log.e(TAG, "Found video clip blocked in current location...");
-                    result = getVideoInfoGeoBlocked(videoId, clickTrackingParams);
-                }
-            }
-        }
+        applyFixesIfNeeded(result, videoId, clickTrackingParams);
+        result = retryIfNeeded(result, videoId, clickTrackingParams);
 
         if (result != null) {
             decipherFormats(result.getAdaptiveFormats());
@@ -129,5 +100,57 @@ public class VideoInfoService extends VideoInfoServiceBase {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
+    }
+
+    private void applyFixesIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
+        if (result == null || result.isUnplayable()) {
+            return;
+        }
+
+        if (result.isLive()) {
+            Log.e(TAG, "Enable seeking support on live streams...");
+            result.sync(getDashInfo2(result));
+
+            // Add dash and hls manifests (for backward compatibility)
+            //if (YouTubeMediaService.instance().isOldStreamsEnabled()) {
+            //    VideoInfo result2 = getVideoInfoLive(videoId, clickTrackingParams);
+            //    result.setDashManifestUrl(result2.getDashManifestUrl());
+            //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
+            //}
+        } else if (result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
+            VideoInfoHls videoInfoHls = getVideoInfoHls(videoId, clickTrackingParams);
+            if (videoInfoHls != null && result.getHlsManifestUrl() == null) {
+                result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
+            }
+            if (videoInfoHls != null && result.getStoryboardSpec() == null) {
+                result.setStoryboardSpec(videoInfoHls.getStoryboardSpec());
+            }
+        }
+    }
+
+    private VideoInfo retryIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
+        if (result == null) {
+            return null;
+        }
+
+        if (result.isUnplayable() && result.isRent()) {
+            Log.e(TAG, "Found rent content. Show trailer instead...");
+            result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams);
+        } else if (result.isUnplayable()) {
+            Log.e(TAG, "Found restricted video. Retrying with embed query method...");
+            result = getVideoInfoEmbed(videoId, clickTrackingParams);
+
+            if (result != null && result.isUnplayable()) {
+                Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
+                result = getVideoInfoRestricted(videoId, clickTrackingParams);
+
+                if (result != null && result.isUnplayable()) {
+                    Log.e(TAG, "Found video clip blocked in current location...");
+                    result = getVideoInfoGeoBlocked(videoId, clickTrackingParams);
+                }
+            }
+        }
+
+        return result;
     }
 }

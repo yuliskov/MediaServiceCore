@@ -413,22 +413,24 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> sections = BrowseService2.getHome();
+            if (newLook) {
+                List<MediaGroup> sections = BrowseService2.getHome();
 
-            if (sections != null && sections.size() > 5 && newLook) {
-                emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
-            } else if (newLook) {
-                // Fallback to old algo if user chrome page has no chips (why?)
-                SectionTab tab = mBrowseService.getHome();
+                if (sections != null && sections.size() > 5) {
+                    emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
+                } else {
+                    // Fallback to old algo if user chrome page has no chips (why?)
+                    SectionTab tab = mBrowseService.getHome();
 
-                if (tab != null && tab.getSections() != null && !tab.getSections().isEmpty()) {
-                    tab.getSections().remove(0); // replace Recommended
+                    if (tab != null && tab.getSections() != null && !tab.getSections().isEmpty()) {
+                        tab.getSections().remove(0); // replace Recommended
+                    }
+
+                    List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
+
+                    emitGroups2Partial(emitter, subGroup, MediaGroup.TYPE_HOME); // get Recommended only
+                    emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
                 }
-
-                List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
-
-                emitGroups2Partial(emitter, subGroup, MediaGroup.TYPE_HOME); // get Recommended only
-                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
             } else {
                 // Fallback to old algo if user chrome page has no chips (why?)
                 SectionTab tab = mBrowseService.getHome();

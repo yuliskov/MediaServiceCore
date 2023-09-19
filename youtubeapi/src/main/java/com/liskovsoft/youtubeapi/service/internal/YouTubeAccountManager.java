@@ -32,6 +32,7 @@ public class YouTubeAccountManager {
                 return false;
             }
 
+            // Don't remove these lines or you won't be able to enter to the account.
             while (contains(account)) {
                 remove(account);
             }

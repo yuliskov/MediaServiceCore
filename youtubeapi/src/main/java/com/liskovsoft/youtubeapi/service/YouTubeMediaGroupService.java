@@ -417,7 +417,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
             if (sections != null && sections.size() > 5 && newLook) {
                 emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
-            } else {
+            } else if (newLook) {
                 // Fallback to old algo if user chrome page has no chips (why?)
                 SectionTab tab = mBrowseService.getHome();
 
@@ -428,6 +428,11 @@ public class YouTubeMediaGroupService implements MediaGroupService {
                 List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
 
                 emitGroups2Partial(emitter, subGroup, MediaGroup.TYPE_HOME); // get Recommended only
+                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+            } else {
+                // Fallback to old algo if user chrome page has no chips (why?)
+                SectionTab tab = mBrowseService.getHome();
+
                 emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
             }
         });

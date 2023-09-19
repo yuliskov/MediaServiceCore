@@ -10,7 +10,7 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface WatchNextApiMock: WatchNextApi {
+internal interface WatchNextApiMock: WatchNextApi {
     @Mock
     @MockResponse(body = "next/v2/no_suggestions3.json")
     @Headers("Content-Type: application/json")
@@ -24,7 +24,7 @@ interface WatchNextApiMock: WatchNextApi {
     override fun getWatchNextResult(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>?
 }
 
-interface WatchNextApiMock2: WatchNextApi {
+internal interface WatchNextApiMock2: WatchNextApi {
     @Mock
     @MockResponse(body = "next/v2/no_suggestions5.json")
     @Headers("Content-Type: application/json")
@@ -38,7 +38,7 @@ interface WatchNextApiMock2: WatchNextApi {
     override fun getWatchNextResult(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>?
 }
 
-interface WatchNextApiMock3: WatchNextApi {
+internal interface WatchNextApiMock3: WatchNextApi {
     @Mock
     @MockResponse(body = "next/v2/no_suggestions6.json")
     @Headers("Content-Type: application/json")

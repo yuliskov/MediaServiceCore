@@ -1,15 +1,13 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
-import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
-import com.liskovsoft.youtubeapi.common.models.gen.TextItem
-import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
+import com.liskovsoft.youtubeapi.common.models.gen.*
 
 internal data class Section(
     val itemSectionRenderer: ItemSectionRenderer?,
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
-    val continuationItemRenderer: ContinuationItemRenderer?
+    val continuationItemRenderer: ContinuationItemRenderer?,
+    val playlistVideoRenderer: VideoItem? // ChannelPlaylist
 )
 
 internal data class TabRenderer(
@@ -67,7 +65,8 @@ internal data class ItemSectionRenderer(
     val contents: List<Shelf?>?
 ) {
     data class Shelf(
-        val shelfRenderer: ShelfRenderer?
+        val shelfRenderer: ShelfRenderer?,
+        val playlistVideoListRenderer: PlaylistVideoListRenderer?
     ) {
         data class ShelfRenderer(
             val content: Content?
@@ -85,6 +84,9 @@ internal data class ItemSectionRenderer(
                 )
             }
         }
+        data class PlaylistVideoListRenderer(
+            val contents: List<ItemWrapper?>?
+        )
     }
 }
 

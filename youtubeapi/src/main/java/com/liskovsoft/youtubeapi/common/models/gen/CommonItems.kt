@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
+import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationItemRenderer
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 
 internal data class NavigationEndpointItem(
@@ -163,22 +164,24 @@ internal data class AccessibilityItem(
 }
 
 internal data class ItemWrapper(
-    val tileRenderer: TileItem?,
-    val gridVideoRenderer: VideoItem?,
-    val videoRenderer: VideoItem?,
-    val pivotVideoRenderer: VideoItem?,
-    val reelItemRenderer: VideoItem?,
-    val compactVideoRenderer: VideoItem?,
-    val tvMusicVideoRenderer: MusicItem?,
-    val gridRadioRenderer: RadioItem?,
-    val pivotRadioRenderer: RadioItem?,
-    val compactRadioRenderer: RadioItem?,
-    val gridChannelRenderer: ChannelItem?,
-    val pivotChannelRenderer: ChannelItem?,
-    val compactChannelRenderer: ChannelItem?,
-    val gridPlaylistRenderer: PlaylistItem?,
-    val pivotPlaylistRenderer: PlaylistItem?,
-    val compactPlaylistRenderer: PlaylistItem?
+    val tileRenderer: TileItem? = null,
+    val gridVideoRenderer: VideoItem? = null,
+    val videoRenderer: VideoItem? = null,
+    val pivotVideoRenderer: VideoItem? = null,
+    val reelItemRenderer: VideoItem? = null,
+    val compactVideoRenderer: VideoItem? = null,
+    val playlistVideoRenderer: VideoItem? = null,
+    val tvMusicVideoRenderer: MusicItem? = null,
+    val gridRadioRenderer: RadioItem? = null,
+    val pivotRadioRenderer: RadioItem? = null,
+    val compactRadioRenderer: RadioItem? = null,
+    val gridChannelRenderer: ChannelItem? = null,
+    val pivotChannelRenderer: ChannelItem? = null,
+    val compactChannelRenderer: ChannelItem? = null,
+    val gridPlaylistRenderer: PlaylistItem? = null,
+    val pivotPlaylistRenderer: PlaylistItem? = null,
+    val compactPlaylistRenderer: PlaylistItem? = null,
+    val continuationItemRenderer: ContinuationItemRenderer? = null // ChannelPlaylist
 )
 
 internal data class TileItem(
@@ -260,6 +263,7 @@ internal data class VideoItem(
     val longBylineText: TextItem?,
     val shortViewCountText: TextItem?,
     val viewCountText: TextItem?,
+    val videoInfo: TextItem?,
     val publishedTimeText: TextItem?,
     val videoId: String?,
     val menu: MenuWrapper?,
@@ -343,6 +347,7 @@ internal data class ChannelItem(
     val subscriberCountText: TextItem?
 )
 
+// Fully replace with VideoItem?
 internal data class PlaylistItem(
     val thumbnail: ThumbnailItem?,
     val thumbnailRenderer: ThumbnailRenderer?,

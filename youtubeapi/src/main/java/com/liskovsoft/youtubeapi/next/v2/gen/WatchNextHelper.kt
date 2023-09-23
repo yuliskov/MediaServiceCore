@@ -25,7 +25,7 @@ internal fun WatchNextResult.getNextVideoItem() = getWatchNextResults()?.autopla
 internal fun WatchNextResult.getVideoDetails() = getReplayItemWrapper()?.pivotVideoRenderer
 internal fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer
 internal fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsRenderer
-internal fun WatchNextResult.getLiveChatKey() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
+internal fun WatchNextResult.getLiveChatToken() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
 internal fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlist
 internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
     playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters
@@ -103,14 +103,14 @@ internal fun ChapterItem.getThumbnailUrl() = chapterRenderer?.thumbnail?.getOpti
 
 ///////
 
-internal fun ContinuationItem.getKey(): String? = nextContinuationData?.continuation ?: reloadContinuationData?.continuation
+internal fun ContinuationItem.getToken(): String? = nextContinuationData?.continuation ?: reloadContinuationData?.continuation
 internal fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()
 
 ///////
 
 internal fun EngagementPanel.getMenu() = engagementPanelSectionListRenderer?.header?.engagementPanelTitleHeaderRenderer?.menu
-internal fun EngagementPanel.getTopCommentsKey(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getKey()
-internal fun EngagementPanel.getNewCommentsKey(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getKey()
+internal fun EngagementPanel.getTopCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getToken()
+internal fun EngagementPanel.getNewCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getToken()
 internal fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
 internal fun EngagementPanel.getTitle(): String? = getVideoDescription()?.title?.getText()
 internal fun EngagementPanel.getChannelName(): String? = getVideoDescription()?.channel?.getText()

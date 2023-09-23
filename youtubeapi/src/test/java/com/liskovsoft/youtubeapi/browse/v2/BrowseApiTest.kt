@@ -196,38 +196,6 @@ class BrowseApiTest {
         testReelContinuation(next)
     }
 
-    private fun testReelContinuation(continuation: ReelContinuationResult?) {
-        val firstEntry = continuation?.getItems()?.getOrNull(0)
-        val details = getReelDetails(firstEntry?.videoId, firstEntry?.params)
-
-        assertNotNull("Contains continuation", continuation?.getContinuationKey())
-
-        testReelWatchEndpoint(firstEntry)
-        testReelResult(details)
-    }
-
-    private fun testFirstReelResult(details: ReelResult?) {
-        // Not present
-        assertNotNull("Contains video id", details?.getVideoId())
-        assertNotNull("Contains thumbs", details?.getThumbnails())
-        assertNotNull("Contains title", details?.getTitle())
-        assertNotNull("Contains subtitle", details?.getSubtitle())
-        assertNotNull("Contains continuation", details?.getContinuationKey())
-        assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
-    }
-
-    private fun testReelWatchEndpoint(firstEntry: ReelWatchEndpoint?) {
-        assertNotNull("Contains video id", firstEntry?.getVideoId())
-        assertNotNull("Contains thumbs", firstEntry?.getThumbnails())
-    }
-
-    private fun testReelResult(details: ReelResult?) {
-        // Not present
-        assertNotNull("Contains title", details?.getTitle())
-        assertNotNull("Contains subtitle", details?.getSubtitle())
-        assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
-    }
-
     @Test
     fun testThatChannelVideosTabNotEmpty() {
         val videos = getChannelVideos("UC1vCu8GeDC7_UfY7PKqsAzg")
@@ -259,6 +227,58 @@ class BrowseApiTest {
                 assertTrue("Next tab contains videos", tabContent?.getItems()?.size ?: 0 > 10)
             }
         }
+    }
+
+    @Test
+    fun testThatChannelPlaylistNotEmpty() {
+        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
+
+        val videos = getChannelVideos(channelId)
+
+        assertTrue("Playlist not empty", videos?.getItems()?.size ?: 0 > 0)
+    }
+
+    @Test
+    fun testThatChannelPlaylistHasContinuation() {
+        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
+
+        val videos = getChannelVideos(channelId)
+
+        assertNotNull("Playlist has continuation", videos?.getContinuationToken())
+
+        checkContinuation(videos?.getContinuationToken())
+    }
+
+    private fun testReelContinuation(continuation: ReelContinuationResult?) {
+        val firstEntry = continuation?.getItems()?.getOrNull(0)
+        val details = getReelDetails(firstEntry?.videoId, firstEntry?.params)
+
+        assertNotNull("Contains continuation", continuation?.getContinuationKey())
+
+        testReelWatchEndpoint(firstEntry)
+        testReelResult(details)
+    }
+
+    private fun testFirstReelResult(details: ReelResult?) {
+        // Not present
+        assertNotNull("Contains video id", details?.getVideoId())
+        assertNotNull("Contains thumbs", details?.getThumbnails())
+        assertNotNull("Contains title", details?.getTitle())
+        assertNotNull("Contains subtitle", details?.getSubtitle())
+        assertNotNull("Contains continuation", details?.getContinuationKey())
+        assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
+    }
+
+    private fun testReelWatchEndpoint(firstEntry: ReelWatchEndpoint?) {
+        assertNotNull("Contains video id", firstEntry?.getVideoId())
+        assertNotNull("Contains thumbs", firstEntry?.getThumbnails())
+    }
+
+    private fun testReelResult(details: ReelResult?) {
+        // Not present
+        assertNotNull("Contains title", details?.getTitle())
+        assertNotNull("Contains subtitle", details?.getSubtitle())
+        assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
     }
 
     private fun checkContinuation(token: String?, checkNextToken: Boolean = true) {

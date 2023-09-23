@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApiHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getCommentPanel
-import com.liskovsoft.youtubeapi.next.v2.gen.getTopCommentsKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getTopCommentsToken
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -69,7 +69,7 @@ class CommentsApiTest {
     private fun getCommentsKey(): String? {
         val watchNextResult = mApi2?.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_CAPTIONS))
         val watchNext = watchNextResult?.execute()?.body()
-        val commentsKey = watchNext?.getCommentPanel()?.getTopCommentsKey()
+        val commentsKey = watchNext?.getCommentPanel()?.getTopCommentsToken()
         return commentsKey
     }
 

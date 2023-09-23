@@ -54,10 +54,14 @@ internal fun ChipCloudChipRenderer.getTitle(): String? = text?.getText()
 
 /////
 
-internal fun Section.getItem() = richItemRenderer?.content
+internal fun Section.getItem() = richItemRenderer?.content ?: playlistVideoRenderer?.let { ItemWrapper(playlistVideoRenderer = it) }
 
-internal fun Section.getItems() = itemSectionRenderer?.contents?.getOrNull(0)?.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items }
-internal fun Section.getContinuationToken() = continuationItemRenderer?.getContinuationToken()
+internal fun Section.getItems() = getContents()?.let {
+    it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items } ?:
+    it.playlistVideoListRenderer?.contents
+}
+internal fun Section.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: getContents()?.playlistVideoListRenderer?.contents?.lastOrNull()?.getContinuationToken()
+private fun Section.getContents() = itemSectionRenderer?.contents?.getOrNull(0)
 
 /////
 

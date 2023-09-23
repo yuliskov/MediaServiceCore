@@ -35,10 +35,10 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         watchNextResult.getCommentPanel()
     }
     private val liveChatKeyItem by lazy {
-        watchNextResult.getLiveChatKey()
+        watchNextResult.getLiveChatToken()
     }
     private val commentsKeyItem: String? by lazy {
-        commentsPanel?.getTopCommentsKey()
+        commentsPanel?.getTopCommentsToken()
         // Old val
         //suggestedSections?.lastOrNull()?.getItemWrappers()?.getOrNull(1)?.getContinuationKey()
     }

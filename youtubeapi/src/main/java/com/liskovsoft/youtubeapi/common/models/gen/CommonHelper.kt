@@ -3,8 +3,9 @@ package com.liskovsoft.youtubeapi.common.models.gen
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.getKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getToken
 
 private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
 private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
@@ -89,7 +90,7 @@ internal fun VideoItem.getBadgeText() = thumbnailOverlays?.firstNotNullOfOrNull 
     badges?.firstNotNullOfOrNull { it?.liveBadge?.label?.getText() ?: it?.upcomingEventBadge?.label?.getText() }
 internal fun VideoItem.getUserName() = shortBylineText?.getText() ?: longBylineText?.getText()
 internal fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
-internal fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText()
+internal fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText() ?: videoInfo?.getText()
 // No real date, just placeholder. We should do this themselves.
 internal fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.getText()
     ?.replace("DATE_PLACEHOLDER", Helpers.toShortDate(upcomingEventData.getStartTimeMs()))
@@ -149,7 +150,7 @@ internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
-internal fun TileItem.getContinuationKey() = onSelectCommand?.getContinuation()?.getKey()
+internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuation()?.getToken()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
 internal fun TileItem.isShorts() = false // TODO: not implemented
@@ -160,12 +161,13 @@ private fun TileItem.getBadgeStyle() = header?.getBadgeStyle() ?: metadata?.getB
 
 ////////////
 
-private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer ?: reelItemRenderer
+private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer ?: reelItemRenderer ?: playlistVideoRenderer
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
 private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer
 private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer ?: compactRadioRenderer
 private fun ItemWrapper.getTileItem() = tileRenderer
+private fun ItemWrapper.getContinuationItem() = continuationItemRenderer
 
 internal fun ItemWrapper.getType(): Int {
     if (getChannelItem() != null)
@@ -209,7 +211,7 @@ internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusic
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie()
 internal fun ItemWrapper.isShorts() = reelItemRenderer != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
-internal fun ItemWrapper.getContinuationKey() = getTileItem()?.getContinuationKey()
+internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)
 internal fun ItemWrapper.getFeedbackToken2() = getFeedbackTokens()?.getOrNull(1)
 private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens()

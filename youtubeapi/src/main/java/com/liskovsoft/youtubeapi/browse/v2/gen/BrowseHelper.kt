@@ -18,7 +18,7 @@ private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it
 /////
 
 internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
-    getGridContents()?.mapNotNull { it?.getItem() }
+    getGridContents()?.flatMap { it?.getItem()?.let { listOf(it) } ?: it?.getItems() ?: emptyList() }
 internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
         it?.getContinuationToken()
     } ?:
@@ -50,18 +50,23 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 /////
 
+internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.let {
+    it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items } ?:
+    it.playlistVideoListRenderer?.contents
+}
+internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.playlistVideoListRenderer?.contents?.lastOrNull()?.getContinuationToken()
+private fun ItemSectionRenderer.getContents() = contents?.getOrNull(0)
+
+/////
+
 internal fun ChipCloudChipRenderer.getTitle(): String? = text?.getText()
 
 /////
 
 internal fun Section.getItem() = richItemRenderer?.content ?: playlistVideoRenderer?.let { ItemWrapper(playlistVideoRenderer = it) }
 
-internal fun Section.getItems() = getContents()?.let {
-    it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items } ?:
-    it.playlistVideoListRenderer?.contents
-}
-internal fun Section.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: getContents()?.playlistVideoListRenderer?.contents?.lastOrNull()?.getContinuationToken()
-private fun Section.getContents() = itemSectionRenderer?.contents?.getOrNull(0)
+internal fun Section.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems()
+internal fun Section.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: itemSectionRenderer?.getContinuationToken()
 
 /////
 

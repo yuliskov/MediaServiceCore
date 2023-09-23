@@ -170,7 +170,6 @@ internal data class ItemWrapper(
     val pivotVideoRenderer: VideoItem? = null,
     val reelItemRenderer: VideoItem? = null,
     val compactVideoRenderer: VideoItem? = null,
-    val playlistVideoRenderer: VideoItem? = null,
     val tvMusicVideoRenderer: MusicItem? = null,
     val gridRadioRenderer: RadioItem? = null,
     val pivotRadioRenderer: RadioItem? = null,
@@ -181,6 +180,7 @@ internal data class ItemWrapper(
     val gridPlaylistRenderer: PlaylistItem? = null,
     val pivotPlaylistRenderer: PlaylistItem? = null,
     val compactPlaylistRenderer: PlaylistItem? = null,
+    val playlistVideoRenderer: VideoItem? = null, // ChannelPlaylist
     val continuationItemRenderer: ContinuationItemRenderer? = null // ChannelPlaylist
 )
 

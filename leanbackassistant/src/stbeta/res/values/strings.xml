@@ -1,5 +1,0 @@
-<resources>
-    <string name="search_label">SmartTube Next</string>
-    <string name="settings_description">SmartTube Next Videos</string>
-    <string translatable="false" name="search_authority">com.liskovsoft.leanbackassistant.stbeta</string>
-</resources>

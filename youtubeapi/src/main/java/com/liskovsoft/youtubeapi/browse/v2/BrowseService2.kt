@@ -80,6 +80,8 @@ internal object BrowseService2 {
             val result = continueShorts(firstItem.getContinuationKey())
             result?.mediaItems?.add(0, ShortsMediaItem(null, firstItem))
 
+            getSubscribedShorts()?.let { result?.mediaItems?.addAll(0, it) }
+
             return result
         }
     }
@@ -236,5 +238,11 @@ internal object BrowseService2 {
 
             result
         }
+    }
+
+    private fun getSubscribedShorts(): List<MediaItem?>? {
+        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
+
+        return RetrofitHelper.get(browseResult)?.let { it.getShortItems()?.let { WrapperMediaGroup(it) } }?.mediaItems
     }
 }

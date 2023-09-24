@@ -133,3 +133,11 @@ internal data class NotificationsMediaGroup(
     override fun getTitleInt(): String? = null
     override val mediaItemList by lazy { result.getItems()?.mapNotNull { it?.let { NotificationMediaItem(it) } } }
 }
+
+internal data class WrapperMediaGroup(
+    private val items: List<ItemWrapper?>
+): BaseMediaGroup(MediaGroupOptions(false)) {
+    override fun getItemWrappersInt(): List<ItemWrapper?> = items
+    override fun getNextPageKeyInt(): String? = null
+    override fun getTitleInt(): String? = null
+}

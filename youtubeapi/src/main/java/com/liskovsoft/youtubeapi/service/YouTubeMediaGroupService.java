@@ -334,9 +334,15 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         });
     }
 
+    private MediaGroup getShorts() {
+        checkSigned();
+
+        return BrowseService2.getShorts();
+    }
+
     @Override
     public Observable<MediaGroup> getShortsObserve() {
-        return RxHelper.fromNullable(BrowseService2::getShorts);
+        return RxHelper.fromNullable(this::getShorts);
     }
 
     @Override

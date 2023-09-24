@@ -32,7 +32,7 @@ internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlaye
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 // One of the suggested rows is too short or empty
 //internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.getOrNull(1)?.let { it.getItemWrappers()?.size ?: 0 <= 3 } ?: false
-internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.filter { it.getItemWrappers()?.size ?: 0 > 3 }?.size ?: 0 < 3
+internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.filter { it.getItemWrappers()?.size ?: 0 > 3 }?.size ?: 0 < 1
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
 

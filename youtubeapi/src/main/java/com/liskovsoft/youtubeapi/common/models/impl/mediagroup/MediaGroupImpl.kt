@@ -14,10 +14,10 @@ import com.liskovsoft.youtubeapi.notifications.gen.getItems
 internal data class BrowseMediaGroup(
     private val browseResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions(),
-    private val additionalItems: List<ItemWrapper?>? = null
+    private val liveResult: BrowseResult? = null
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?> =
-        listOfNotNull(additionalItems, browseResult.getItems()).flatten()
+        listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
     override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
     override fun getTitleInt(): String? = browseResult.getTitle()
 }

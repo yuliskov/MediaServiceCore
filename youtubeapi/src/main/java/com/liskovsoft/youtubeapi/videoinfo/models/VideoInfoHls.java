@@ -9,11 +9,18 @@ public class VideoInfoHls {
     @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
     private String mStoryboardSpec;
 
+    @JsonPath("$.streamingData.dashManifestUrl")
+    private String mDashManifestUrl;
+
     public String getHlsManifestUrl() {
         return mHlsManifestUrl;
     }
 
     public String getStoryboardSpec() {
         return mStoryboardSpec;
+    }
+
+    public String getDashManifestUrl() {
+        return mDashManifestUrl;
     }
 }

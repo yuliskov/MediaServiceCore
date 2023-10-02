@@ -33,8 +33,8 @@ public class TestHelpersBase {
     // Lofi Girl
     public static final String VIDEO_ID_LIVE = "jfKfPfyJRdk";
 
-    // Mathematik
-    public static final String VIDEO_ID_MUSIC_2 = "0YEZiDtnbdA";
+    // American Pie
+    public static final String VIDEO_ID_MUSIC_2 = "X4RDB-mMDJg";
 
     // GECID.com
     public static final String CHANNEL_ID = "UC3PyIqYQ7lw7YKHRLqIvXlw";

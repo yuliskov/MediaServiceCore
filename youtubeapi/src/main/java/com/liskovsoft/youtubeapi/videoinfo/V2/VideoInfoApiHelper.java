@@ -26,7 +26,7 @@ public class VideoInfoApiHelper {
     // https://github.com/yt-dlp/yt-dlp/commit/81ca451480051d7ce1a31c017e005358345a9149
     //private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg==\"";
     private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg%3D%3D\"";
-    private static final String REGULAR_QUERY = "\"params\":\"YAHIAQE%3D\""; // taken from the web browser
+    private static final String REGULAR_QUERY = "\"params\":\"YAHIAQE%3D\""; // taken from the web browser (used sometimes)
 
     // Workaround streaming URLs returning 403 when using Android clients
     // https://github.com/LuanRT/YouTube.js/pull/390/commits/6511c23fe6133f4b066c558ebfa531e1ce7c0062
@@ -63,7 +63,7 @@ public class VideoInfoApiHelper {
      * Support live streams seeking!<br/>
      */
     public static String getVideoInfoQueryRegular(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, REGULAR_QUERY);
+        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams);
     }
 
     /**

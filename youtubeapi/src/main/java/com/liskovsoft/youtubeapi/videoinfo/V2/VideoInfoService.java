@@ -77,7 +77,16 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
-        return getVideoInfo(videoInfoQuery);
+        return getVideoInfoRegular(videoInfoQuery);
+    }
+
+    /**
+     * NOTE: user history won't work with this method
+     */
+    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+
+        return getVideoInfoRestricted(videoInfoQuery);
     }
 
     private VideoInfo getVideoInfo(String videoInfoQuery) {
@@ -86,18 +95,20 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfoHls getVideoInfoHls(String videoInfoQuery) {
-        Call<VideoInfoHls> wrapper = mVideoInfoApi.getVideoInfoHls(videoInfoQuery, mAppService.getVisitorId());
+    private VideoInfo getVideoInfoRegular(String videoInfoQuery) {
+        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRegular(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
 
-    /**
-     * NOTE: user history won't work with this method
-     */
-    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+    private VideoInfo getVideoInfoRestricted(String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId());
+
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private VideoInfoHls getVideoInfoHls(String videoInfoQuery) {
+        Call<VideoInfoHls> wrapper = mVideoInfoApi.getVideoInfoHls(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }

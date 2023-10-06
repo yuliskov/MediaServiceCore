@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -45,6 +46,11 @@ public class SearchService {
     }
 
     public SearchResult getSearch(String searchText, int options) {
+        if (mBrowseService.getSuggestToken() == null) {
+            // Empty start suggestions fix: use anonymous search
+            RetrofitOkHttpHelper.setDisableAuth(true);
+        }
+
         Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
@@ -76,20 +82,40 @@ public class SearchService {
         return searchResult;
     }
 
-    public List<String> getSearchTags(String searchText) {
+    public List<String> getSearchTags(String searchText, boolean popular) {
+        if (mBrowseService.getSuggestToken() == null) {
+            // Empty start suggestions fix: use anonymous search
+            RetrofitOkHttpHelper.setDisableAuth(true);
+        }
+
+        String country = null;
+        String language = null;
+
+        if (popular) {
+            LocaleManager localeManager = LocaleManager.instance();
+            country = localeManager.getCountry();
+            // fix empty popular searches (country and language should match or use only country)
+            //language = localeManager.getLanguage();
+        } else {
+            country = "US";
+            language = "ru";
+        }
+
+        return getSearchTags(searchText, mBrowseService.getSuggestToken(), country, language, mAppService.getVisitorId());
+    }
+
+    private List<String> getSearchTags(String searchText, String suggestToken, String country, String language, String visitorId) {
         if (searchText == null) {
             searchText = "";
         }
 
-        LocaleManager localeManager = LocaleManager.instance();
-
         Call<SearchTags> wrapper =
                 mSearchApi.getSearchTags(
                         searchText,
-                        mBrowseService.getSuggestToken(),
-                        localeManager.getCountry(),
-                        localeManager.getLanguage(),
-                        mAppService.getVisitorId()
+                        suggestToken,
+                        country,
+                        language,
+                        visitorId
                 );
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 

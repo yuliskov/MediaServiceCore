@@ -1342,3 +1342,63 @@ content-type: Content-Type: application/json
 Authorization: Bearer ya29.a0AfB_byBU51AIi3o7_vcSVLs7VF6cA5b8RE0fMLskKDcRbzCa5FZRFMNUfMqdg0b_Qtsoemq8x5HhimpCIjYIRNu_B4pY-OUiSTQAbdrSCmqpajdsgT38Z6UOAxbylDsosETDXhggLu6E7BQd5m3LEJJMfxyahVms_FoLxo_9uEISB9Mme6BWbQaCgYKAbISARASFQHsvYlshXXM6QEEZVk9yI6AvLktVg0189
 
 {"context":{"client":{"tvAppInfo":{"zylonLeftNav":true},"clientName":"WEB","clientVersion":"2.20220728.09.00","clientScreen":"WATCH","webpSupport":false,"animatedWebpSupport":true,"acceptRegion":"GB","acceptLanguage":"uk-GB","utcOffsetMinutes":"180"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"notificationsMenuRequestType":"NOTIFICATIONS_MENU_REQUEST_TYPE_INBOX"}
+
+
+#### Search completion
+
+GET https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8&q&gl=US&hl=en-US&prettyPrint=false
+Cookie: VISITOR_INFO1_LIVE=SAVVCdEH9I0; LOGIN_INFO=AFmmF2swRQIhAPfQH9WSTew_yAIzXBS2MQyyLvUtB3RPvpc7zYFrRfLOAiB3HGX7CWXuFfdzQNxxmlrR5HBILeKKTBDUqAnkT-qCKw:QUQ3MjNmekwwdEZUSTYtbzkwd2lOLXUxeDJMRVJUZlAtQzJwTUtJakRKd3k1NGVhVF9ISnBPUkZMX1pfUm5oREQ3RGw1Tlp5RWJoRFJfdGs4RmpXS0hrV2k2dGllQWs4TVNCZ1B4aGZfUFhmUmdTeHdwekc1Z0FYYnlPWHJsMmlYa2E5bXluVGEtVndmUXBXT0ZZRTdOM2c1SW0wQ0VqamNyWi1VYzdweVdrMzJ1STNBLXU3cDcyZzQ1bDY3Q0xNMnRmbE9BYXJFYzdSY1JIQlFuNThXV3Jna25ROTJTNlZTQQ==; APISID=xhUv57TTI2Cdfcip/ADbvw-nSQg6GA4Bbt; HSID=ATBzBtw0Flmro6MtR; SAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; SSID=AH2mRS6OXaCxADNT4; __Secure-1PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; __Secure-3PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; PREF=hl=ru&gl=RO&tz=Europe.Kiev&al=en&f3=18&f5=20030; DEVICE_INFO=ChxOekkyTURjNU9EZ3lOekk0TVRBek5UY3hPUT09EJCUjqYGGJCUjqYG; VISITOR_PRIVACY_METADATA=CgJVQRICGgA%3D; SID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3o8MDWgLYBXZuFpe11Cbq8w.; __Secure-1PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3M0jDiVAV2_SMGx-2TU3JmA.; __Secure-3PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3HyXHOT6-EFl_3Kvdg5IJnQ.; YSC=0BvCaew_Ci8; __Secure-1PSIDTS=sidts-CjIB3e41hajs9Zk4i4q-Z4d1fogq86Gt8KCKBeYd3hu9rA5898_iyWkx-3GCz_iSje48bRAA; __Secure-3PSIDTS=sidts-CjIB3e41hajs9Zk4i4q-Z4d1fogq86Gt8KCKBeYd3hu9rA5898_iyWkx-3GCz_iSje48bRAA; SIDCC=ACA-OxPzSHqwwdaNCJ0mCb6MJ1fDF9-q-pdxg_s-dWbXQuU7fa7JHTcYfX9MAzP_Sl4UULKEl6w; __Secure-1PSIDCC=ACA-OxNaCjBPy7WqdouUuRUvDzboomJkGa8CJo-0idWj-LBSm6Ktcas6u2CWHnW0sicSf1vdYYI; __Secure-3PSIDCC=ACA-OxOodZpBtrDh42foj1jXyPTVGjvfC-GrMpH8rm2qMq7XRHZUnc2t0wiETSYd3PuMa8_4OQg
+Authorization: Bearer ya29.a0AfB_byD1-wpD6R49hwXTRsC5FuxFsjkbMzM-dyRimCXlxT_udDgkHaPAoGyztu-zBa4LE3lpgbXzH8pZViBwfp4zbdCNj5dEs7VpK1jmzmw0wZaxuuNNL_cFJ72pHSWoAoiesT1--5FNYssFojhNZAb1FLNmoG1Fo1BYqofMTKJ-k_BegQaCgYKAUYSARASFQGOcNnCtYuICwmZpMzpDcsXAn_4rw0185
+User-Agent: Mozilla/5.0 (Linux; Android 9; SHIELD Android TV Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko)
+
+#### Search completion 2
+
+GET https://clients1.google.com/complete/search?q&client=youtube-lr&ds=yt&xhr=t&oe=utf-8&prettyPrint=false
+Cookie: VISITOR_INFO1_LIVE=SAVVCdEH9I0; LOGIN_INFO=AFmmF2swRQIhAPfQH9WSTew_yAIzXBS2MQyyLvUtB3RPvpc7zYFrRfLOAiB3HGX7CWXuFfdzQNxxmlrR5HBILeKKTBDUqAnkT-qCKw:QUQ3MjNmekwwdEZUSTYtbzkwd2lOLXUxeDJMRVJUZlAtQzJwTUtJakRKd3k1NGVhVF9ISnBPUkZMX1pfUm5oREQ3RGw1Tlp5RWJoRFJfdGs4RmpXS0hrV2k2dGllQWs4TVNCZ1B4aGZfUFhmUmdTeHdwekc1Z0FYYnlPWHJsMmlYa2E5bXluVGEtVndmUXBXT0ZZRTdOM2c1SW0wQ0VqamNyWi1VYzdweVdrMzJ1STNBLXU3cDcyZzQ1bDY3Q0xNMnRmbE9BYXJFYzdSY1JIQlFuNThXV3Jna25ROTJTNlZTQQ==; APISID=xhUv57TTI2Cdfcip/ADbvw-nSQg6GA4Bbt; HSID=ATBzBtw0Flmro6MtR; SAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; SSID=AH2mRS6OXaCxADNT4; __Secure-1PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; __Secure-3PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; PREF=hl=ru&gl=RO&tz=Europe.Kiev&al=en&f3=18&f5=20030; DEVICE_INFO=ChxOekkyTURjNU9EZ3lOekk0TVRBek5UY3hPUT09EJCUjqYGGJCUjqYG; VISITOR_PRIVACY_METADATA=CgJVQRICGgA%3D; SID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3o8MDWgLYBXZuFpe11Cbq8w.; __Secure-1PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3M0jDiVAV2_SMGx-2TU3JmA.; __Secure-3PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3HyXHOT6-EFl_3Kvdg5IJnQ.; YSC=0BvCaew_Ci8; __Secure-1PSIDTS=sidts-CjIB3e41hajs9Zk4i4q-Z4d1fogq86Gt8KCKBeYd3hu9rA5898_iyWkx-3GCz_iSje48bRAA; __Secure-3PSIDTS=sidts-CjIB3e41hajs9Zk4i4q-Z4d1fogq86Gt8KCKBeYd3hu9rA5898_iyWkx-3GCz_iSje48bRAA; SIDCC=ACA-OxPzSHqwwdaNCJ0mCb6MJ1fDF9-q-pdxg_s-dWbXQuU7fa7JHTcYfX9MAzP_Sl4UULKEl6w; __Secure-1PSIDCC=ACA-OxNaCjBPy7WqdouUuRUvDzboomJkGa8CJo-0idWj-LBSm6Ktcas6u2CWHnW0sicSf1vdYYI; __Secure-3PSIDCC=ACA-OxOodZpBtrDh42foj1jXyPTVGjvfC-GrMpH8rm2qMq7XRHZUnc2t0wiETSYd3PuMa8_4OQg
+User-Agent: Mozilla/5.0 (Linux; Android 9; SHIELD Android TV Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko)
+X-Goog-Visitor-Id: CgtMaDRoNXhWMVdtNCjnofeoBjIICgJVQRICGgA%3D
+
+#### Search completion Chrome
+
+GET https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=ru&gl=ro&sugexp=yttsrf66e%2Crankembed.ytb%3D2%2Crankembed.uts%3D1%2Crankembed.rodt%3D0.66%2Ccfro%3D1%2Crankembed.ytb%3D1%2Crankembed.uts%3D1%2Crankembed.rodt%3D0.68&gs_rn=64&gs_ri=youtube&tok=tlQwtSSLJ37v4DNZ4OSBig&ds=yt&cp=11&gs_id=2o&q=red%20pandass&callback=google.sbox.p50&gs_gbg=LYHDMAh6
+Authorization: Bearer ya29.a0AfB_byD1-wpD6R49hwXTRsC5FuxFsjkbMzM-dyRimCXlxT_udDgkHaPAoGyztu-zBa4LE3lpgbXzH8pZViBwfp4zbdCNj5dEs7VpK1jmzmw0wZaxuuNNL_cFJ72pHSWoAoiesT1--5FNYssFojhNZAb1FLNmoG1Fo1BYqofMTKJ-k_BegQaCgYKAUYSARASFQGOcNnCtYuICwmZpMzpDcsXAn_4rw0185
+User-Agent: Mozilla/5.0 (Linux; Android 9; SHIELD Android TV Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko)
+X-Goog-Visitor-Id: CgtMaDRoNXhWMVdtNCjnofeoBjIICgJVQRICGgA%3D
+
+#### My Activity page (https://myactivity.google.com/myactivity)
+
+POST https://myactivity.google.com/_/FootprintsMyactivityUi/data/batchexecute?rpcids=zd4nnf%2Cy3VFHd%2CcV56Z&source-path=%2Fproduct%2Fyoutube%2F&f.sid=-3028697193813093004&bl=boq_footprintsmyactivityuiserver_20231003.06_p0&hl=en&soc-app=712&soc-platform=1&soc-device=1&_reqid=582555&rt=c
+Authorization: Bearer ya29.a0AfB_byD1-wpD6R49hwXTRsC5FuxFsjkbMzM-dyRimCXlxT_udDgkHaPAoGyztu-zBa4LE3lpgbXzH8pZViBwfp4zbdCNj5dEs7VpK1jmzmw0wZaxuuNNL_cFJ72pHSWoAoiesT1--5FNYssFojhNZAb1FLNmoG1Fo1BYqofMTKJ-k_BegQaCgYKAUYSARASFQGOcNnCtYuICwmZpMzpDcsXAn_4rw0185
+User-Agent: Mozilla/5.0 (Linux; Android 9; SHIELD Android TV Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko)
+Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+
+f.req=%5B%5B%5B%22zd4nnf%22%2C%22%5B%5B16%2C%5C%22youtube%5C%22%5D%5D%22%2Cnull%2C%224%22%5D%2C%5B%22y3VFHd%22%2C%22%5B%5Bnull%2C%5B%5C%22youtube%5C%22%5D%5D%2Cnull%2C100%5D%22%2Cnull%2C%226%22%5D%2C%5B%22cV56Z%22%2C%22%5B%5Bnull%2C%5B%5C%22youtube%5C%22%5D%5D%5D%22%2Cnull%2C%228%22%5D%5D%5D&at=AJOi4lGcmpQZotgsnz24dVQllpNb%3A1696449346210&
+
+
+#### Search Chrome 2
+
+GET https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=ru&gl=ro&sugexp=yttsrf66e%2Crankembed.ytb%3D2%2Crankembed.uts%3D1%2Crankembed.rodt%3D0.66%2Ccfro%3D1%2Crankembed.ytb%3D1%2Crankembed.uts%3D1%2Crankembed.rodt%3D0.68&gs_rn=64&gs_ri=youtube&tok=cnl1rZ41boCdfjcpv19w5g&ds=yt&cp=0&gs_id=5&q=&callback=google.sbox.p50&gs_gbg=xC6c197PQVnkyO3ZnJ7f6LiqdLY
+Cookie: VISITOR_INFO1_LIVE=SAVVCdEH9I0; LOGIN_INFO=AFmmF2swRQIhAPfQH9WSTew_yAIzXBS2MQyyLvUtB3RPvpc7zYFrRfLOAiB3HGX7CWXuFfdzQNxxmlrR5HBILeKKTBDUqAnkT-qCKw:QUQ3MjNmekwwdEZUSTYtbzkwd2lOLXUxeDJMRVJUZlAtQzJwTUtJakRKd3k1NGVhVF9ISnBPUkZMX1pfUm5oREQ3RGw1Tlp5RWJoRFJfdGs4RmpXS0hrV2k2dGllQWs4TVNCZ1B4aGZfUFhmUmdTeHdwekc1Z0FYYnlPWHJsMmlYa2E5bXluVGEtVndmUXBXT0ZZRTdOM2c1SW0wQ0VqamNyWi1VYzdweVdrMzJ1STNBLXU3cDcyZzQ1bDY3Q0xNMnRmbE9BYXJFYzdSY1JIQlFuNThXV3Jna25ROTJTNlZTQQ==; APISID=xhUv57TTI2Cdfcip/ADbvw-nSQg6GA4Bbt; HSID=ATBzBtw0Flmro6MtR; SAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; SSID=AH2mRS6OXaCxADNT4; __Secure-1PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; __Secure-3PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; PREF=hl=ru&gl=RO&tz=Europe.Kiev&al=en&f3=18&f5=20030; DEVICE_INFO=ChxOekkyTURjNU9EZ3lOekk0TVRBek5UY3hPUT09EJCUjqYGGJCUjqYG; VISITOR_PRIVACY_METADATA=CgJVQRICGgA%3D; SID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3o8MDWgLYBXZuFpe11Cbq8w.; __Secure-1PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3M0jDiVAV2_SMGx-2TU3JmA.; __Secure-3PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3HyXHOT6-EFl_3Kvdg5IJnQ.; YSC=0BvCaew_Ci8; __Secure-1PSIDTS=sidts-CjIB3e41hajs9Zk4i4q-Z4d1fogq86Gt8KCKBeYd3hu9rA5898_iyWkx-3GCz_iSje48bRAA; __Secure-3PSIDTS=sidts-CjIB3e41hajs9Zk4i4q-Z4d1fogq86Gt8KCKBeYd3hu9rA5898_iyWkx-3GCz_iSje48bRAA; SIDCC=ACA-OxPzSHqwwdaNCJ0mCb6MJ1fDF9-q-pdxg_s-dWbXQuU7fa7JHTcYfX9MAzP_Sl4UULKEl6w; __Secure-1PSIDCC=ACA-OxNaCjBPy7WqdouUuRUvDzboomJkGa8CJo-0idWj-LBSm6Ktcas6u2CWHnW0sicSf1vdYYI; __Secure-3PSIDCC=ACA-OxOodZpBtrDh42foj1jXyPTVGjvfC-GrMpH8rm2qMq7XRHZUnc2t0wiETSYd3PuMa8_4OQg
+Authorization: Bearer ya29.a0AfB_byD1-wpD6R49hwXTRsC5FuxFsjkbMzM-dyRimCXlxT_udDgkHaPAoGyztu-zBa4LE3lpgbXzH8pZViBwfp4zbdCNj5dEs7VpK1jmzmw0wZaxuuNNL_cFJ72pHSWoAoiesT1--5FNYssFojhNZAb1FLNmoG1Fo1BYqofMTKJ-k_BegQaCgYKAUYSARASFQGOcNnCtYuICwmZpMzpDcsXAn_4rw0185
+User-Agent: Mozilla/5.0 (Linux; Android 9; SHIELD Android TV Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko)
+
+
+#### Guide (search tags)
+
+POST https://www.youtube.com/youtubei/v1/guide
+Content-Type: application/json
+Authorization: Bearer ya29.a0AfB_byCwevKCgMLJQIRZgXXBCFG5KmDXBe5QUCB77juTMvi4qhZs2h2YwjOfTOCa3-6BfNFLwUMfCyHKmVyleV4AlyIvMZQAUBz7Z4DQnIBUBini9xyxQYdWtgsJMoJDumpQPtmus-WztQBMAn4iJ-bHET2vIwpyIUbwbNEyM__CfMGo5AaCgYKAZcSARMSFQGOcNnClezHfeigP6mXYnFTisAwyw0185
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20230613.01.00","clientScreen":"WATCH","userAgent":"Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15","tvAppInfo":{"zylonLeftNav":true},"webpSupport":false,"animatedWebpSupport":true,"acceptLanguage":"en-US","acceptRegion":"US","utcOffsetMinutes":"180","visitorData":"CgtpcHFzeWxzajJ6QSi70v2oBjIICgJVQRICGgA%3D"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true}
+
+#### Search (disable common suggestions)
+
+GET https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8&q=&gl=US&hl=ru&key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8&prettyPrint=false
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+X-Goog-Visitor-Id: CgtMaDRoNXhWMVdtNCiT8v2oBjIICgJVQRICGgA%3D
+
+
+

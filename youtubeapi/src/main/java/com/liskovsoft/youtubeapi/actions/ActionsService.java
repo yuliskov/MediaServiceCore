@@ -2,16 +2,20 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
+import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import retrofit2.Call;
 
 public class ActionsService {
     private static final String TAG = ActionsService.class.getSimpleName();
     private static ActionsService sInstance;
     private final ActionsApi mActionsManager;
+    private final BrowseService mBrowseService;
 
     private ActionsService() {
         mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
+        mBrowseService = BrowseService.instance();
     }
 
     public static ActionsService instance() {
@@ -93,6 +97,11 @@ public class ActionsService {
     }
 
     public void clearSearchHistory() {
+        if (mBrowseService.getSuggestToken() == null) {
+            // Empty start suggestions fix: use anonymous search
+            RetrofitOkHttpHelper.setDisableAuth(true);
+        }
+
         Call<Void> wrapper = mActionsManager.clearSearchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper);
     }

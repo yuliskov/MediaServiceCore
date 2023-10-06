@@ -22,6 +22,7 @@ public class YouTubeAccountManager {
     private static YouTubeAccountManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
+    private Runnable mOnChange;
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
@@ -160,6 +161,10 @@ public class YouTubeAccountManager {
         setAccountManagerData(Helpers.mergeArray(nonEmptyAccounts.toArray()));
 
         mSignInService.invalidateCache();
+
+        if (mOnChange != null) {
+            mOnChange.run();
+        }
     }
 
     private void restoreAccounts() {
@@ -172,6 +177,10 @@ public class YouTubeAccountManager {
             for (String spec : split) {
                 mAccounts.add(YouTubeAccount.from(spec));
             }
+        }
+
+        if (mOnChange != null) {
+            mOnChange.run();
         }
     }
 
@@ -216,5 +225,9 @@ public class YouTubeAccountManager {
             persistRefreshToken(token);
             GlobalPreferences.sInstance.setMediaServiceRefreshToken(null);
         }
+    }
+
+    public void setOnChange(Runnable onChange) {
+        mOnChange = onChange;
     }
 }

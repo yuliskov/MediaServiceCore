@@ -91,6 +91,11 @@ public class YouTubeSignInService implements SignInService {
         return RxHelper.fromCallable(this::getAccounts);
     }
 
+    @Override
+    public Account getSelectedAccount() {
+        return mAccountManager.getSelectedAccount();
+    }
+
     /**
      * For testing purposes
      */
@@ -174,5 +179,9 @@ public class YouTubeSignInService implements SignInService {
         } else {
             headers.remove("Authorization");
         }
+    }
+
+    public void setOnChange(Runnable onChange) {
+        mAccountManager.setOnChange(onChange);
     }
 }

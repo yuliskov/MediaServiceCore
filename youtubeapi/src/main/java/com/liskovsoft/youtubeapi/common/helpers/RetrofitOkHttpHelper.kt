@@ -18,7 +18,9 @@ internal object RetrofitOkHttpHelper {
     @JvmStatic
     val client: OkHttpClient by lazy { createClient() }
 
+    @JvmStatic
     var disableCompression: Boolean = false
+    @JvmStatic
     var disableAuth: Boolean = false
 
     private val headers = mapOf(

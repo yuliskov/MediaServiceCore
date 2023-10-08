@@ -24,8 +24,8 @@ public class VideoInfoApiHelper {
     // https://github.com/revanced/revanced-patches/issues/2432#issuecomment-1601819762
     // https://github.com/yt-dlp/yt-dlp/issues/7811
     // https://github.com/yt-dlp/yt-dlp/commit/81ca451480051d7ce1a31c017e005358345a9149
-    //private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg==\"";
-    private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg%3D%3D\"";
+    private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg==\"";
+    //private static final String THROTTLE_QUERY = "\"params\":\"CgIQBg%3D%3D\"";
     private static final String REGULAR_QUERY = "\"params\":\"YAHIAQE%3D\""; // taken from the web browser (used sometimes)
 
     // Workaround streaming URLs returning 403 when using Android clients

@@ -36,7 +36,7 @@ internal class WatchNextService private constructor() {
         var suggestionsResult: WatchNextResult? = null
 
         if (watchNextResult?.isEmpty() == true) { // 3 items in a row temporal fix
-            RetrofitOkHttpHelper.disableAuth = true
+            RetrofitOkHttpHelper.skipAuth()
             suggestionsResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
         }
 
@@ -53,7 +53,7 @@ internal class WatchNextService private constructor() {
         var continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
 
         if (continuation == null || continuation.isEmpty()) {
-            RetrofitOkHttpHelper.disableAuth = true
+            RetrofitOkHttpHelper.skipAuth()
             continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
         }
 

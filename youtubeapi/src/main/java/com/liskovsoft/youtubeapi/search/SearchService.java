@@ -48,7 +48,7 @@ public class SearchService {
     public SearchResult getSearch(String searchText, int options) {
         if (mBrowseService.getSuggestToken() == null) {
             // Empty start suggestions fix: use anonymous search
-            RetrofitOkHttpHelper.setDisableAuth(true);
+            RetrofitOkHttpHelper.skipAuth();
         }
 
         Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
@@ -85,7 +85,7 @@ public class SearchService {
     public List<String> getSearchTags(String searchText, boolean popular) {
         if (mBrowseService.getSuggestToken() == null) {
             // Empty start suggestions fix: use anonymous search
-            RetrofitOkHttpHelper.setDisableAuth(true);
+            RetrofitOkHttpHelper.skipAuth();
         }
 
         String country = null;

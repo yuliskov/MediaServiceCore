@@ -66,13 +66,19 @@ public class PlayerData {
     }
 
     public String getClientPlaybackNonceFunction() {
+        String cpn = getRawClientPlaybackNonceFunction();
+
+        return cpn != null ? FUNCTION_RANDOM_BYTES + cpn + "getClientPlaybackNonce();" : null;
+    }
+
+    public String getRawClientPlaybackNonceFunction() {
         String cpn = getClientPlaybackNonceFunctionV2();
 
         if (cpn == null) {
             cpn = getClientPlaybackNonceFunctionV1();
         }
 
-        return cpn != null ? FUNCTION_RANDOM_BYTES + cpn + "getClientPlaybackNonce();" : null;
+        return cpn;
     }
 
     private String getClientPlaybackNonceFunctionV1() {

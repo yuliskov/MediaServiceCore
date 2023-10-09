@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import android.Manifest;
+import android.text.TextUtils;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -68,8 +69,10 @@ public class AppServiceInstrumentedTest {
         throttled.add(throttleSignature);
         List<String> normalized = mAppService.throttleFix(throttled);
 
-        assertNotNull("Throttled not null", normalized);
-        assertFalse("Throttled not empty", normalized.isEmpty());
+        assertNotNull("Normalized not null", normalized);
+        assertFalse("Normalized not empty", normalized.isEmpty());
+        assertFalse("Normalized not empty", TextUtils.isEmpty(normalized.get(0)));
+        assertNotEquals("Throttled not equals", throttled.get(0), normalized.get(0));
 
         //for (String throttle : throttled) {
         //    assertNotEquals("Throttled not the same", throttle, throttleSignature);

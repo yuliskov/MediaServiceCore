@@ -61,7 +61,7 @@ public class AppApiTest {
 
         assertNotNull("Playback nonce result not null", clientPlaybackNonceFunction);
 
-        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getClientPlaybackNonceFunction();
+        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getRawClientPlaybackNonceFunction();
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
         assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith("function ") &&

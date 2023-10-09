@@ -104,13 +104,13 @@ public class AppService {
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
     public String getClientPlaybackNonce() {
-        String code = createClientPlaybackNonceCode();
+        String function = getClientPlaybackNonceFunction();
 
-        if (code == null) {
+        if (function == null) {
             return null;
         }
 
-        return V8Runtime.instance().evaluate(code);
+        return V8Runtime.instance().evaluate(function);
     }
 
     /**
@@ -232,16 +232,6 @@ public class AppService {
     //
     //    return Arrays.asList(values);
     //}
-
-    private String createClientPlaybackNonceCode() {
-        String playbackNonceFunction = getClientPlaybackNonceFunction();
-
-        if (playbackNonceFunction == null) {
-            return null;
-        }
-
-        return AppConstants.FUNCTION_RANDOM_BYTES + playbackNonceFunction + "getClientPlaybackNonce();";
-    }
 
     private String getDecipherFunction() {
         updatePlayerData();

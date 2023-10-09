@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
  * Parser for https://www.youtube.com/s/player/11aba956/tv-player-ias.vflset/tv-player-ias.js
  */
 public class PlayerData {
+    private static final String FUNCTION_RANDOM_BYTES =
+            "var window={};window.crypto={getRandomValues:function(arr){for(var i=0;i<arr.length;i++){arr[i]=Math.floor(Math.random()*Math.floor(Math.pow(2,8*arr.BYTES_PER_ELEMENT)))}}};";
+
     private static final Pattern SIGNATURE_DECIPHER = Pattern.compile("function [$\\w]+\\(a\\)");
     private static final Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE_V1 = Pattern.compile("function [$\\w]+\\(\\)");
     private static final Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE_V2 =
@@ -69,7 +72,7 @@ public class PlayerData {
             cpn = getClientPlaybackNonceFunctionV1();
         }
 
-        return cpn;
+        return cpn != null ? FUNCTION_RANDOM_BYTES + cpn + "getClientPlaybackNonce();" : null;
     }
 
     private String getClientPlaybackNonceFunctionV1() {

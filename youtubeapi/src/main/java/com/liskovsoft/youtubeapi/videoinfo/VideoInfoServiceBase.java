@@ -43,7 +43,7 @@ public abstract class VideoInfoServiceBase {
         applyThrottleFixedStrings(throttleFixed, formats);
 
         // What this for? Could this fix throttling or maybe the source error?
-        applyAdditionalStrings(formats);
+        //applyAdditionalStrings(formats);
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {

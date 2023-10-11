@@ -12,6 +12,7 @@ public interface SignInService {
     Account getSelectedAccount();
     void selectAccount(Account account);
     void removeAccount(Account account);
+    void setOnChange(Runnable onChange);
 
     // RxJava interfaces
     /**

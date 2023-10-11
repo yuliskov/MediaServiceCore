@@ -181,6 +181,7 @@ public class YouTubeSignInService implements SignInService {
         }
     }
 
+    @Override
     public void setOnChange(Runnable onChange) {
         mAccountManager.setOnChange(onChange);
     }

@@ -163,7 +163,8 @@ public class YouTubeAccountManager {
         mSignInService.invalidateCache();
 
         if (mOnChange != null) {
-            mOnChange.run();
+            // Fix sign in bug
+            RxHelper.runUser(mOnChange);
         }
     }
 

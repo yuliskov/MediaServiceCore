@@ -26,7 +26,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
-        //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams, authorization); // no dash url and hls link
+        //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams); // no dash url and hls link
         //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
         VideoInfo result = getVideoInfoGeoBlocked(videoId, clickTrackingParams); // no seek preview, fix 403 error?
         //VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included, the best

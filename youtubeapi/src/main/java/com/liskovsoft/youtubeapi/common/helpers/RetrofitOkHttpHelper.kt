@@ -60,7 +60,7 @@ internal object RetrofitOkHttpHelper {
 
             if (Helpers.startsWithAny(request.url().toString(), *apiPrefixes)) {
                 if (authHeaders.isEmpty() || skipAuthNums > 0) {
-                    skipAuthNums--
+                    if (skipAuthNums > 0) skipAuthNums--
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false"), request, requestBuilder)
                 } else {
                     applyQueryKeys(mapOf("prettyPrint" to "false"), request, requestBuilder)

@@ -123,6 +123,10 @@ public class YouTubeAccountManager {
     }
 
     public void selectAccount(Account newAccount) {
+        if (Helpers.equals(newAccount, getSelectedAccount())) {
+            return;
+        }
+
         for (Account account : mAccounts) {
             ((YouTubeAccount) account).setSelected(newAccount != null && newAccount.equals(account));
         }
@@ -131,7 +135,7 @@ public class YouTubeAccountManager {
     }
 
     public void removeAccount(Account account) {
-        if (account != null) {
+        if (account != null && mAccounts.contains(account)) {
             mAccounts.remove(account);
             persistAccounts();
         }

@@ -221,10 +221,21 @@ internal object BrowseService2 {
             // NOTE: First tab on home page has not title.
             result.add(BrowseMediaGroup(it, createOptions(sectionType)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
             it.getTabs()?.forEach { if (it?.getTitle() != null) result.add(TabMediaGroup(it, createOptions(sectionType))) }
-            it.getSections()?.forEach { if (it?.getTitle() != null) result.add(SectionMediaGroup(it, createOptions(sectionType))) }
+            it.getSections()?.forEach { if (it?.getTitle() != null) addOrMerge(result, SectionMediaGroup(it, createOptions(sectionType))) }
             it.getChips()?.forEach { if (it?.getTitle() != null) result.add(ChipMediaGroup(it, createOptions(sectionType))) }
 
             result
+        }
+    }
+
+    private fun addOrMerge(result: MutableList<MediaGroup?>, group: MediaGroup) {
+        val filter = result.filter { it?.title == group.title }
+
+        // Home section parsing downside: one row (e.g. Shorts) could be divided amount other videos
+        if (filter.size == 1) {
+            filter.first()?.mediaItems?.addAll(group.mediaItems)
+        } else {
+            result.add(group)
         }
     }
 

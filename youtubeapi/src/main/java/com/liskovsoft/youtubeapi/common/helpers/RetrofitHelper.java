@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -12,6 +14,7 @@ import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPath
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import com.liskovsoft.youtubeapi.common.models.gen.ErrorResponse;
 import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Converter;
@@ -52,6 +55,8 @@ public class RetrofitHelper {
 
     public static <T> T get(Call<T> wrapper) {
         Response<T> response = getResponse(wrapper);
+
+        handleErrors(response);
 
         return response != null ? response.body() : null;
     }
@@ -131,5 +136,21 @@ public class RetrofitHelper {
         }
 
         return null;
+    }
+
+    private static <T> void handleErrors(Response<T> response) {
+        if (response == null || response.body() != null) {
+            return;
+        }
+
+        if (response.code() == 400) {
+            Gson gson = new GsonBuilder().create();
+            try {
+                ErrorResponse error = response.errorBody() != null ? gson.fromJson(response.errorBody().string(), ErrorResponse.class) : null;
+                throw new IllegalStateException(error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error");
+            } catch (IOException e) {
+                // handle failure to read error
+            }
+        }
     }
 }

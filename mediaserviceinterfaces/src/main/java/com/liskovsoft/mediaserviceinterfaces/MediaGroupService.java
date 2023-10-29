@@ -11,7 +11,7 @@ public interface MediaGroupService {
     MediaGroup getSearch(String searchText, int options);
     List<MediaGroup> getSearchAlt(String searchText);
     List<MediaGroup> getSearchAlt(String searchText, int options);
-    List<String> getSearchTags(String searchText, boolean popular);
+    List<String> getSearchTags(String searchText);
     MediaGroup getSubscriptions();
     /**
      * NOTE: recommended is a part of Home
@@ -39,7 +39,7 @@ public interface MediaGroupService {
     Observable<MediaGroup> getSearchObserve(String searchText, int options);
     Observable<List<MediaGroup>> getSearchAltObserve(String searchText);
     Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options);
-    Observable<List<String>> getSearchTagsObserve(String searchText, boolean popular);
+    Observable<List<String>> getSearchTagsObserve(String searchText);
     Observable<MediaGroup> getSubscriptionsObserve();
     /**
      * NOTE: recommended is a part of Home

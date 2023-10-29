@@ -107,15 +107,15 @@ public class YouTubeMediaGroupService implements MediaGroupService {
     }
 
     @Override
-    public List<String> getSearchTags(String searchText, boolean popular) {
+    public List<String> getSearchTags(String searchText) {
         checkSigned();
 
-        return mSearchService.getSearchTags(searchText, popular);
+        return mSearchService.getSearchTags(searchText);
     }
 
     @Override
-    public Observable<List<String>> getSearchTagsObserve(String searchText, boolean popular) {
-        return RxHelper.fromNullable(() -> getSearchTags(searchText, popular));
+    public Observable<List<String>> getSearchTagsObserve(String searchText) {
+        return RxHelper.fromNullable(() -> getSearchTags(searchText));
     }
 
     @Override

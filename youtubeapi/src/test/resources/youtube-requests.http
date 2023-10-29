@@ -1418,3 +1418,9 @@ Authorization: Bearer ya29.a0AfB_byBP54qpAxOueDpBktf1Dwg-q-kmVlFU5T8x3u5NDqfCMVM
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 
 {"context":{"client":{"clientName":"TVHTML5","clientVersion":"7.20230612.10.00","clientScreen":"WATCH","userAgent":"Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15","acceptLanguage":"en-US","acceptRegion":"US","utcOffsetMinutes":"180","visitorData":"CgtMaDRoNXhWMVdtNCjEy6SpBjIICgJVQRICGgA%3D"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19641}},"videoId":"3qQLzDYrDPA","cpn":"AhR09MBCLfm3p-j4",}
+
+
+##### Search suggestions (origin)
+
+GET https://clients1.google.com/complete/search?nonce=1698567473960&q&client=youtube-lr&ds=yt&xhr=t&oe=utf-8&hl=ru&gl=ro&w=320&h=180&ytvs=1&xssi=t
+Authorization: Bearer ya29.a0AfB_byCKspvsMi89poHUGcveLjsiczlX55aNfDFbGgm77_h-mbEbCpi7RzMcx294A8TLcZziQf1PRHRM7Ni-zwSM-7lnvIcmYfyXK-Zw0epXCY5c3KsEmqm4Qncfq-KnvkHro4rJ2jSkSZClwqFX-DPUAkZM1z3q5RRsz0Gwzrln0NOVaCgYKAQ8SARISFQGOcNnCePRZdw7N7ISAJqwzpcy1pw0183

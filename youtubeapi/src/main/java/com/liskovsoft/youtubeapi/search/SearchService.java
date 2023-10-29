@@ -46,11 +46,6 @@ public class SearchService {
     }
 
     public SearchResult getSearch(String searchText, int options) {
-        if (mBrowseService.getSuggestToken() == null) {
-            // Empty start suggestions fix: use anonymous search
-            RetrofitOkHttpHelper.skipAuth();
-        }
-
         Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
@@ -82,24 +77,14 @@ public class SearchService {
         return searchResult;
     }
 
-    public List<String> getSearchTags(String searchText, boolean popular) {
-        if (mBrowseService.getSuggestToken() == null) {
-            // Empty start suggestions fix: use anonymous search
-            RetrofitOkHttpHelper.skipAuth();
-        }
-
+    public List<String> getSearchTags(String searchText) {
         String country = null;
         String language = null;
 
-        if (popular) {
-            LocaleManager localeManager = LocaleManager.instance();
-            country = localeManager.getCountry();
-            // fix empty popular searches (country and language should match or use only country)
-            //language = localeManager.getLanguage();
-        } else {
-            country = "US";
-            language = "ru";
-        }
+        LocaleManager localeManager = LocaleManager.instance();
+        country = localeManager.getCountry();
+        // fix empty popular searches (country and language should match or use only country)
+        //language = localeManager.getLanguage();
 
         return getSearchTags(searchText, mBrowseService.getSuggestToken(), country, language, mAppService.getVisitorId());
     }

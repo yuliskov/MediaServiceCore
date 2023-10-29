@@ -42,7 +42,7 @@ public class SearchServiceSignedTest {
 
     @Test
     public void testThatSearchTagsNotEmpty() {
-        List<String> searchTags = mService.getSearchTags("", true);
+        List<String> searchTags = mService.getSearchTags("");
 
         assertTrue("search tags not empty?", searchTags != null && !searchTags.isEmpty());
     }

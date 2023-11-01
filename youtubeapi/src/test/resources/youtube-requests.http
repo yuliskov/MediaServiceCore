@@ -1433,3 +1433,13 @@ Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 
 {"client_id":"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com","device_id":"52c29c09-8ed5-4d50-a2b1-93e36a6fe010","model_name":"ytlr::","scope":"http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content"}
+
+
+###### Auth fix 2
+
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/json
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"code":"AH-1Ng1xFW6gpVA6LgkV6MJVJVHYzDeem3vROfd9zKqOwedzr_ErCtRZ8QN7CdsNiGahA1JhzRRnv2bdZZzJK6VEahXJmm4S5A","client_id":"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com","client_secret":"ju2WuMJMOjilz_h_1dPgFdeU","grant_type":"http://oauth.net/grant_type/device/1.0"}

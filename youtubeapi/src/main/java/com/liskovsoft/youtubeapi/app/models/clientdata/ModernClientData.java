@@ -13,7 +13,7 @@ public class ModernClientData implements ClientData {
      *  Move newest patterns to the top to improve memory usage.
      */
     @RegExp({
-            "clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\w+:\"\\w+\"",
+            "clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\n?\\w+:\"\\w+\"",
             "var [$\\w]+=\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\n?[$\\w]+=\"\\w+\"",
             "\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",[$\\w]+=\"\\w+\""
     })

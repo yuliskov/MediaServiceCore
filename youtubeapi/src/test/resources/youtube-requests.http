@@ -1424,3 +1424,12 @@ User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KH
 
 GET https://clients1.google.com/complete/search?nonce=1698567473960&q&client=youtube-lr&ds=yt&xhr=t&oe=utf-8&hl=ru&gl=ro&w=320&h=180&ytvs=1&xssi=t
 Authorization: Bearer ya29.a0AfB_byCKspvsMi89poHUGcveLjsiczlX55aNfDFbGgm77_h-mbEbCpi7RzMcx294A8TLcZziQf1PRHRM7Ni-zwSM-7lnvIcmYfyXK-Zw0epXCY5c3KsEmqm4Qncfq-KnvkHro4rJ2jSkSZClwqFX-DPUAkZM1z3q5RRsz0Gwzrln0NOVaCgYKAQ8SARISFQGOcNnCePRZdw7N7ISAJqwzpcy1pw0183
+
+##### Auth fix
+
+POST https://www.youtube.com/o/oauth2/device/code
+Content-Type: application/json
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"client_id":"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com","device_id":"52c29c09-8ed5-4d50-a2b1-93e36a6fe010","model_name":"ytlr::","scope":"http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content"}

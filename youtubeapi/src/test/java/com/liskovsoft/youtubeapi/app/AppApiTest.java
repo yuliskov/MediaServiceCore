@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

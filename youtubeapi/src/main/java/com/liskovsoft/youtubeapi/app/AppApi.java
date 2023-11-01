@@ -1,8 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.clientdata.LegacyClientData;
-import com.liskovsoft.youtubeapi.app.models.clientdata.ModernClientData;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -38,16 +37,8 @@ public interface AppApi {
     /**
      * Contains constants used in Auth<br/>
      * Such as client_secret and client_id<br/>
-     * Located inside main.js
+     * Located inside base.js (modern clients) or main.js (Cobalt/Legacy)
      */
     @GET
-    Call<LegacyClientData> getLegacyClientData(@Url String mainUrl);
-
-    /**
-     * Contains constants used in Auth<br/>
-     * Such as client_secret and client_id<br/>
-     * Located inside base.js
-     */
-    @GET
-    Call<ModernClientData> getModernClientData(@Url String baseUrl);
+    Call<ClientData> getClientData(@Url String baseUrl);
 }

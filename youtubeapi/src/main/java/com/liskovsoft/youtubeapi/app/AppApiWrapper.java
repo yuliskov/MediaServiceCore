@@ -2,8 +2,7 @@ package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
-import com.liskovsoft.youtubeapi.app.models.clientdata.ModernClientData;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import retrofit2.Call;
@@ -51,13 +50,13 @@ public class AppApiWrapper {
             return null;
         }
 
-        Call<ModernClientData> wrapper = mAppApi.getModernClientData(baseUrl);
+        Call<ClientData> wrapper = mAppApi.getClientData(baseUrl);
         ClientData baseData = RetrofitHelper.get(wrapper);
 
         // Seems that legacy script encountered.
         // Needed values is stored in main script, not in base.
         if (baseData == null) {
-            baseData = RetrofitHelper.get(mAppApi.getLegacyClientData(getMainUrl(baseUrl)));
+            baseData = RetrofitHelper.get(mAppApi.getClientData(getMainUrl(baseUrl)));
         }
 
         return baseData;

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SponsorBlockManagerTest {
-    private static final String VIDEO_ID = "eVwFiINVZU8";
+    private static final String VIDEO_ID = "0e3GPea1Tyg"; // Mr. Beast
     private SponsorBlockManager mService;
 
     @Before

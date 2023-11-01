@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.app.models.clientdata.ClientData;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 

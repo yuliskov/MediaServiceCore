@@ -3,22 +3,21 @@ package com.liskovsoft.youtubeapi.common.models.impl.mediagroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
-import com.liskovsoft.youtubeapi.common.models.gen.isLive
-import com.liskovsoft.youtubeapi.common.models.gen.isShorts
-import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
+import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 
 internal data class MediaGroupOptions(val removeShorts: Boolean = true,
                              val removeLive: Boolean = false,
                              val removeUpcoming: Boolean = false,
+                             val removeWatched: Boolean = false,
                              val groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS)
 
 internal abstract class BaseMediaGroup(private val options: MediaGroupOptions = MediaGroupOptions()): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
         (options.removeShorts && it.isShorts() == true) ||
         (options.removeLive && it.isLive() == true) ||
-        (options.removeUpcoming && it.isUpcoming() == true)
+        (options.removeUpcoming && it.isUpcoming() == true) ||
+        (options.removeWatched && it.getPercentWatched() ?: 0 > 80)
     }
     private var _titleItem: String? = null
         get() = field ?: titleItem

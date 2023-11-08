@@ -151,11 +151,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
             Log.e(TAG, "Found restricted video. Retrying with embed query method...");
             result = getVideoInfoEmbed(videoId, clickTrackingParams);
 
-            if (result != null && result.isUnplayable()) {
+            if (result == null || result.isUnplayable()) {
                 Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
                 result = getVideoInfoRestricted(videoId, clickTrackingParams);
 
-                if (result != null && result.isUnplayable()) {
+                if (result == null || result.isUnplayable()) {
                     Log.e(TAG, "Found video clip blocked in current location...");
                     result = getVideoInfoGeoBlocked(videoId, clickTrackingParams);
                 }

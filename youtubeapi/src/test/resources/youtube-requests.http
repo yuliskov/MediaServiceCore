@@ -1443,3 +1443,34 @@ Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 
 {"code":"AH-1Ng1xFW6gpVA6LgkV6MJVJVHYzDeem3vROfd9zKqOwedzr_ErCtRZ8QN7CdsNiGahA1JhzRRnv2bdZZzJK6VEahXJmm4S5A","client_id":"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com","client_secret":"ju2WuMJMOjilz_h_1dPgFdeU","grant_type":"http://oauth.net/grant_type/device/1.0"}
+
+####### Auth 2.0 (temp token)
+
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/json
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"client_id":"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com","client_secret":"SboVhoG9s0rNafixCSGGKXAT","refresh_token":"1//0cbaDh43LtVFvCgYIARAAGAwSNwF-L9IrtsXn0qG4E5zhMo4CLGnTF98cIfiUlHCB46PPM8yHp8HsnvJuVcxnKOey8zusnF1RrGc","grant_type":"refresh_token"}
+
+######## Auth 2.0 (restricted video)
+
+POST https://www.youtube.com/youtubei/v1/player
+Content-Type: application/json
+Referer: https://www.youtube.com/tv
+Authorization: Bearer ya29.a0AfB_byDiIIUqPiDTsrTx1zHxmWyifx-yvyE3LLIGxqLyXMXyFyUYMYS3aEpmOEbPyodOdrsXbiOt0HU17SGMgS-YLGpd8NH_5nVEahLxjHSwBeftWr4aa8l_eMhrMoqYBDE-60JJOIQAwcZPdGlp7mTswiD2B87xhVlJSo_VU8w9G41W9QaCgYKAXYSARASFQHGX2MivIDIsMBntyWpGqeU7rlLrg0185
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"clientName":"WEB","clientVersion":"2.20230613.01.00","clientScreen":"WATCH","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36","acceptLanguage":"en-US","acceptRegion":"US","utcOffsetMinutes":"120","visitorData":"CgtMaDRoNXhWMVdtNCjGscyqBjIICgJVQRICGgA%3D"},"user":{"enableSafetyMode":false,"lockedSafetyMode":false,"onBehalfOfUser":"102307470137119736718"}},"racyCheckOk":true,"contentCheckOk":true,"playbackContext":{"contentPlaybackContext":{"html5Preference":"HTML5_PREF_WANTS","lactMilliseconds":"60000","signatureTimestamp":19669}},"videoId":"83_ekgZ13AY","cpn":"S22w1TsQR5Ucy8BA","params":"CgIQBg%3D%3D"}
+
+
+######## Auth 2.0 (get user id withing branded group to use along with the refresh token (18+ videos), e.g. "obfuscatedGaiaId": "102307470137119736718")
+
+POST https://www.youtube.com/youtubei/v1/account/accounts_list?t=PRJ0Et50DEIxi8uD
+Content-Type: application/json
+Referer: https://www.youtube.com/
+Authorization: Bearer ya29.a0AfB_byDiIIUqPiDTsrTx1zHxmWyifx-yvyE3LLIGxqLyXMXyFyUYMYS3aEpmOEbPyodOdrsXbiOt0HU17SGMgS-YLGpd8NH_5nVEahLxjHSwBeftWr4aa8l_eMhrMoqYBDE-60JJOIQAwcZPdGlp7mTswiD2B87xhVlJSo_VU8w9G41W9QaCgYKAXYSARASFQHGX2MivIDIsMBntyWpGqeU7rlLrg0185
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"context":{"client":{"screenWidthPoints":1600,"screenHeightPoints":900,"screenPixelDensity":1,"utcOffsetMinutes":120,"hl":"en","gl":"UA","remoteHost":"46.98.157.172","deviceMake":"Samsung","deviceModel":"SmartTV","visitorData":"Cgt6cW5IVVZSc3c2VSin7cqqBjIICgJVQRICGgA%3D","userAgent":"Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15,gzip(gfe)","clientName":"TVHTML5","clientVersion":"7.20231108.10.00","osName":"Tizen","osVersion":"4.0.0.2","originalUrl":"https://www.youtube.com/tv","theme":"CLASSIC","platform":"TV","clientFormFactor":"UNKNOWN_FORM_FACTOR","webpSupport":false,"configInfo":{"appInstallData":"CKftyqoGEKn3rwUQqIGwBRCrgrAFELiLrgUQiOOvBRC0ya8FENXlrwUQlf7-EhCf9_4SELfvrwUQlPr-EhDQ4q8FEIj7tyIQo5KwBRDr6P4SENWSsAUQ4I-wBRCmgbAFEKf3rwUQpcL-EhC9irAFEMeDsAUQt-r-EhC--a8FEL22rgUQzK7-EhDZya8FENPhrwUQ9fmvBRDM364FEOe6rwUQyfevBRCzkrAFEIiHsAUQ6ej-EhDd6P4SEOSz_hIQrtT-EhCh168FEODyrwUQ_IWwBRCigbAFEJrwrwUQvPmvBRDViLAFEOb9_hIQv_evBRCst68FEOrDrwUQ-4uwBRDb-P4SEKKKsAU%3D"},"tvAppInfo":{"appQuality":"TV_APP_QUALITY_LIMITED_ANIMATION","voiceCapability":{"hasSoftMicSupport":false,"hasHardMicSupport":false}},"browserName":"SamsungBrowser","browserVersion":"9.2","acceptHeader":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","deviceExperimentId":"ChxOek13TVRBNU9EYzNORGsyTWpjME1UYzVOdz09EKftyqoGGKftyqoG"},"user":{"enableSafetyMode":false},"request":{"internalExperimentFlags":[],"consistencyTokenJars":[]}},"accountReadMask":{"returnOwner":true,"returnBrandAccounts":true,"returnPersonaAccounts":true}}
+

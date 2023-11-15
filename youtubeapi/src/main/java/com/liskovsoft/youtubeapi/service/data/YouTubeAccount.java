@@ -13,6 +13,8 @@ public class YouTubeAccount implements Account {
     private String mImageUrl;
     private boolean mIsSelected;
     private String mRefreshToken;
+    private boolean mHasChannel;
+    private String mPageIdToken;
 
     public static YouTubeAccount from(AccountInt accountInt) {
         YouTubeAccount account = new YouTubeAccount();
@@ -21,6 +23,8 @@ public class YouTubeAccount implements Account {
         account.mEmail = accountInt.getEmail();
         account.mImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(accountInt.getThumbnails());
         account.mIsSelected = accountInt.isSelected();
+        account.mHasChannel = accountInt.hasChannel();
+        account.mPageIdToken = accountInt.getPageIdToken();
 
         return account;
     }
@@ -40,6 +44,8 @@ public class YouTubeAccount implements Account {
         account.mIsSelected = Helpers.parseBoolean(split, 3);
         account.mRefreshToken = Helpers.parseStr(split, 4);
         account.mEmail = Helpers.parseStr(split, 5);
+        account.mHasChannel = Helpers.parseBoolean(split, 6, true);
+        account.mPageIdToken = Helpers.parseStr(split, 7);
 
         account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
@@ -58,7 +64,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail);
+        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken);
     }
 
     @Override
@@ -96,12 +102,14 @@ public class YouTubeAccount implements Account {
         if (obj instanceof YouTubeAccount) {
             YouTubeAccount account = (YouTubeAccount) obj;
             String token = account.getRefreshToken();
+            String pageId = account.getPageIdToken();
             String name = account.getName();
             String email = account.getEmail();
             boolean tokenEquals = token != null && token.equals(getRefreshToken());
+            boolean pageIdEquals = Helpers.equals(pageId, getPageIdToken());
             boolean nameEquals = name != null && name.equals(getName());
             boolean emailEquals = email == null || getEmail() == null || email.equals(getEmail());
-            return tokenEquals || (nameEquals && emailEquals);
+            return (tokenEquals && pageIdEquals) || (nameEquals && emailEquals);
         }
 
         return super.equals(obj);
@@ -117,5 +125,21 @@ public class YouTubeAccount implements Account {
 
     public void setSelected(boolean selected) {
         mIsSelected = selected;
+    }
+
+    /**
+     * Every YouTube account has a channel<br/>
+     * This method could be served as a simple testing<br/>
+     * whether the account is belongs to YouTube
+     */
+    public boolean hasChannel() {
+        return mHasChannel;
+    }
+
+    /**
+     * This token token used along with the access token to support restricted videos
+     */
+    public String getPageIdToken() {
+        return mPageIdToken;
     }
 }

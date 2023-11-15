@@ -99,12 +99,18 @@ public class YouTubeAccountManager {
 
         if (accountsInt != null) {
             for (AccountInt accountInt : accountsInt) {
-                // Refresh token should be unique per account but we only have one.
-                if (accountInt.isSelected()) {
+                //// Refresh token should be unique per account but we only have one.
+                //if (accountInt.isSelected()) {
+                //    YouTubeAccount account = YouTubeAccount.from(accountInt);
+                //    account.setRefreshToken(refreshToken);
+                //    addAccount(account);
+                //    break;
+                //}
+
+                if (accountInt.hasChannel()) {
                     YouTubeAccount account = YouTubeAccount.from(accountInt);
                     account.setRefreshToken(refreshToken);
                     addAccount(account);
-                    break;
                 }
             }
         }
@@ -113,8 +119,10 @@ public class YouTubeAccountManager {
     }
 
     private void addAccount(Account newAccount) {
-        for (Account account : mAccounts) {
-            ((YouTubeAccount) account).setSelected(false);
+        if (newAccount.isSelected()) {
+            for (Account account : mAccounts) {
+                ((YouTubeAccount) account).setSelected(false);
+            }
         }
 
         mAccounts.add(newAccount);

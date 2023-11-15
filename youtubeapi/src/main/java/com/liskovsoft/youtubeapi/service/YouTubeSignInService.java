@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -91,6 +92,7 @@ public class YouTubeSignInService implements SignInService {
         return RxHelper.fromCallable(this::getAccounts);
     }
 
+    @Nullable
     @Override
     public Account getSelectedAccount() {
         return mAccountManager.getSelectedAccount();
@@ -174,10 +176,13 @@ public class YouTubeSignInService implements SignInService {
     private void syncWithRetrofit() {
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
 
-        if (mCachedAuthorizationHeader != null) {
+        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);
+            // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
+            headers.put("X-Goog-Pageid", ((YouTubeAccount) getSelectedAccount()).getPageIdToken());
         } else {
             headers.remove("Authorization");
+            headers.remove("X-Goog-Pageid");
         }
     }
 

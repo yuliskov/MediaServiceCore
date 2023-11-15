@@ -21,6 +21,12 @@ public class AccountInt {
     @JsonPath("$.isDisabled")
     private boolean mIsDisabled;
 
+    @JsonPath("$.hasChannel")
+    private boolean mHasChannel;
+
+    @JsonPath("$.serviceEndpoint.selectActiveIdentityEndpoint.supportedTokens[0].pageIdToken.pageId")
+    private String mPageIdToken;
+
     public String getName() {
         return mName;
     }
@@ -39,5 +45,21 @@ public class AccountInt {
 
     public boolean isDisabled() {
         return mIsDisabled;
+    }
+
+    /**
+     * Every YouTube account has a channel<br/>
+     * This method could be served as a simple testing<br/>
+     * whether the account is belongs to YouTube
+     */
+    public boolean hasChannel() {
+        return mHasChannel;
+    }
+
+    /**
+     * This token token used along with the access token to support restricted videos
+     */
+    public String getPageIdToken() {
+        return mPageIdToken;
     }
 }

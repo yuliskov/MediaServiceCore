@@ -78,6 +78,10 @@ internal object RetrofitOkHttpHelper {
                 continue
             }
 
+            if (header.value == null) { // don't remove
+                continue
+            }
+
             // Don't override existing headers
             oldHeaders[header.key] ?: builder.header(header.key, header.value)
         }

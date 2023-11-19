@@ -1,16 +1,20 @@
 package com.liskovsoft.youtubeapi.auth.models.info;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 
 public class AccountInt {
-    @JsonPath("$.accountName.simpleText")
-    private String mName;
+    @JsonPath("$.accountName")
+    private TextItem mName;
 
-    @JsonPath("$.accountByline.simpleText")
-    private String mEmail;
+    @JsonPath("$.accountByline")
+    private TextItem mEmail;
+
+    @JsonPath("$.channelHandle")
+    private TextItem mChannelName;
 
     @JsonPath("$.accountPhoto.thumbnails[*]")
     private List<Thumbnail> mAccountThumbnails;
@@ -24,15 +28,19 @@ public class AccountInt {
     @JsonPath("$.hasChannel")
     private boolean mHasChannel;
 
-    @JsonPath("$.serviceEndpoint.selectActiveIdentityEndpoint.supportedTokens[0].pageIdToken.pageId")
-    private String mPageIdToken;
+    @JsonPath("$.serviceEndpoint.selectActiveIdentityEndpoint.supportedTokens[*].pageIdToken.pageId")
+    private List<String> mPageIdTokens;
 
     public String getName() {
-        return mName;
+        return mName != null ? mName.getText() : null;
     }
 
     public String getEmail() {
-        return mEmail;
+        return mEmail != null ? mEmail.getText() : null;
+    }
+
+    public String getChannelName() {
+        return mChannelName != null ? mChannelName.getText() : null;
     }
 
     public List<Thumbnail> getThumbnails() {
@@ -60,6 +68,6 @@ public class AccountInt {
      * This token token used along with the access token to support restricted videos
      */
     public String getPageIdToken() {
-        return mPageIdToken;
+        return mPageIdTokens != null ? mPageIdTokens.get(0) : null;
     }
 }

@@ -15,6 +15,7 @@ public class YouTubeAccount implements Account {
     private String mRefreshToken;
     private boolean mHasChannel;
     private String mPageIdToken;
+    private String mChannelName;
 
     public static YouTubeAccount from(AccountInt accountInt) {
         YouTubeAccount account = new YouTubeAccount();
@@ -25,6 +26,7 @@ public class YouTubeAccount implements Account {
         account.mIsSelected = accountInt.isSelected();
         account.mHasChannel = accountInt.hasChannel();
         account.mPageIdToken = accountInt.getPageIdToken();
+        account.mChannelName = accountInt.getChannelName();
 
         return account;
     }
@@ -46,6 +48,7 @@ public class YouTubeAccount implements Account {
         account.mEmail = Helpers.parseStr(split, 5);
         account.mHasChannel = Helpers.parseBoolean(split, 6, true);
         account.mPageIdToken = Helpers.parseStr(split, 7);
+        account.mChannelName = Helpers.parseStr(split, 8);
 
         account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
@@ -64,7 +67,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken);
+        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName);
     }
 
     @Override
@@ -79,7 +82,7 @@ public class YouTubeAccount implements Account {
 
     @Override
     public String getEmail() {
-        return mEmail;
+        return mEmail != null ? mEmail : mChannelName;
     }
 
     @Override
@@ -94,7 +97,7 @@ public class YouTubeAccount implements Account {
 
     @Override
     public boolean isEmpty() {
-        return mName == null && mEmail == null;
+        return mName == null && mEmail == null && mChannelName == null;
     }
 
     @Override
@@ -105,11 +108,13 @@ public class YouTubeAccount implements Account {
             String pageId = account.getPageIdToken();
             String name = account.getName();
             String email = account.getEmail();
-            boolean tokenEquals = token != null && token.equals(getRefreshToken());
+            String channelName = account.mChannelName;
+            boolean tokenEquals = Helpers.equals(token, getRefreshToken());
             boolean pageIdEquals = Helpers.equals(pageId, getPageIdToken());
-            boolean nameEquals = name != null && name.equals(getName());
-            boolean emailEquals = email == null || getEmail() == null || email.equals(getEmail());
-            return (tokenEquals && pageIdEquals) || (nameEquals && emailEquals);
+            boolean nameEquals = Helpers.equals(name, getName());
+            boolean emailEquals = Helpers.equals(email, getEmail());
+            boolean channelsEquals = Helpers.equals(channelName, mChannelName);
+            return (tokenEquals && pageIdEquals) || (nameEquals && emailEquals && channelsEquals);
         }
 
         return super.equals(obj);

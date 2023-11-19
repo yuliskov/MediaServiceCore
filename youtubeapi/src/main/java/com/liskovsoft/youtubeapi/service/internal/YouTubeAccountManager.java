@@ -107,11 +107,9 @@ public class YouTubeAccountManager {
                 //    break;
                 //}
 
-                if (accountInt.hasChannel()) {
-                    YouTubeAccount account = YouTubeAccount.from(accountInt);
-                    account.setRefreshToken(refreshToken);
-                    addAccount(account);
-                }
+                YouTubeAccount account = YouTubeAccount.from(accountInt);
+                account.setRefreshToken(refreshToken);
+                addAccount(account);
             }
         }
 

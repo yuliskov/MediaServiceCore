@@ -150,17 +150,7 @@ public class YouTubeAccountManager {
     }
 
     private void persistAccounts() {
-        List<Account> nonEmptyAccounts = new ArrayList<>();
-
-        for (Account account : mAccounts) {
-            if (account.isEmpty()) {
-                continue;
-            }
-
-            nonEmptyAccounts.add(account);
-        }
-
-        setAccountManagerData(Helpers.mergeArray(nonEmptyAccounts.toArray()));
+        setAccountManagerData(Helpers.mergeArray(mAccounts.toArray()));
 
         mSignInService.invalidateCache();
 

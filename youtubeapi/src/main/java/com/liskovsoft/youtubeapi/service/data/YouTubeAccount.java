@@ -97,7 +97,7 @@ public class YouTubeAccount implements Account {
 
     @Override
     public boolean isEmpty() {
-        return mName == null && mEmail == null && mChannelName == null;
+        return getName() == null && getEmail() == null;
     }
 
     @Override
@@ -108,13 +108,11 @@ public class YouTubeAccount implements Account {
             String pageId = account.getPageIdToken();
             String name = account.getName();
             String email = account.getEmail();
-            String channelName = account.mChannelName;
             boolean tokenEquals = Helpers.equals(token, getRefreshToken());
             boolean pageIdEquals = Helpers.equals(pageId, getPageIdToken());
             boolean nameEquals = Helpers.equals(name, getName());
             boolean emailEquals = Helpers.equals(email, getEmail());
-            boolean channelsEquals = Helpers.equals(channelName, mChannelName);
-            return (tokenEquals && pageIdEquals) || (nameEquals && emailEquals && channelsEquals);
+            return (tokenEquals && pageIdEquals) || (nameEquals && emailEquals);
         }
 
         return super.equals(obj);

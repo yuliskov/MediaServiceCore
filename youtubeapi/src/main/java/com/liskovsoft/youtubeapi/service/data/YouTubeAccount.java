@@ -97,7 +97,7 @@ public class YouTubeAccount implements Account {
 
     @Override
     public boolean isEmpty() {
-        return getName() == null && getEmail() == null && getChannelName() == null;
+        return getName() == null && getEmail() == null;
     }
 
     @Override

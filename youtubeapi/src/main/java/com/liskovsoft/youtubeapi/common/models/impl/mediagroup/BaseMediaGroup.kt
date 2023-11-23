@@ -17,7 +17,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions = 
         (options.removeShorts && it.isShorts() == true) ||
         (options.removeLive && it.isLive() == true) ||
         (options.removeUpcoming && it.isUpcoming() == true) ||
-        (options.removeWatched && it.getPercentWatched() ?: 0 > 80)
+        (options.removeWatched && it.getPercentWatched() ?: 0 > 80 && it.isLive() == false)
     }
     private var _titleItem: String? = null
         get() = field ?: titleItem

@@ -25,21 +25,31 @@ internal object AppConstants {
     private const val JSON_POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
     private const val JSON_POST_DATA_BROWSE = "\"tvAppInfo\":{\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 
+    // ATV
     // 7.20211013.10.00
     // 7.20220118.09.00
-    private const val CLIENT_VERSION_TV = "7.20230612.10.00"
+    // 7.20230612.10.00
+    // 7.20231119.10.02
+    private const val CLIENT_VERSION_TV = "7.20231119.10.02"
     private const val CLIENT_NAME_TV = "TVHTML5"
 
+    // BROWSER
     // 2.20211014.05.00-canary_control
     // 2.20220119.01.00
-    private const val CLIENT_VERSION_WEB = "2.20230613.01.00"
+    // 2.20230613.01.00
+    // 2.20231121.08.00
+    private const val CLIENT_VERSION_WEB = "2.20231121.08.00"
     private const val CLIENT_NAME_WEB = "WEB"
     private const val CLIENT_NAME_MWEB = "MWEB"
 
+    // ATV KIDS
     // 3.20221025.01.00
-    private const val CLIENT_VERSION_KIDS = "3.20230425.01.00"
+    // 3.20230425.01.00
+    // 3.20231113.03.00
+    private const val CLIENT_VERSION_KIDS = "3.20231113.03.00"
     private const val CLIENT_NAME_KIDS = "TVHTML5_KIDS"
 
+    // EMBED
     // Special embed version (thanks for github thread)
     private const val CLIENT_VERSION_EMBED = "2.0"
     private const val CLIENT_NAME_EMBED = "TVHTML5_SIMPLY_EMBEDDED_PLAYER"

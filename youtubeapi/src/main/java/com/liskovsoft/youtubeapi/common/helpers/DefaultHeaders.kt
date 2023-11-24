@@ -57,8 +57,8 @@ object DefaultHeaders {
         "Mozilla/5.0 (Linux ${Build.CPU_ABI}; Android ${Build.VERSION.RELEASE}) Cobalt/$COBALT_VER (unlike Gecko) v8/$V8_VER gles Starboard/$STARBOARD_VER, ${Build.BRAND}_ATV_${Build.HARDWARE}_0/${Build.ID} (${Build.BRAND}, ${Build.MODEL}) com.google.android.youtube.tv/$APK_VER"
 
     @JvmField
-    //val APP_USER_AGENT = USER_AGENT_TV // no buffering
-    val APP_USER_AGENT = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
+    val APP_USER_AGENT = USER_AGENT_TV // no buffering
+    //val APP_USER_AGENT = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
 
     const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
 }

@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.common.helpers;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.converters.FieldNullable;
 
@@ -84,7 +85,14 @@ public class ReflectionHelper {
 
         String fileName = String.format("%s_%s", type.getSimpleName(), AppInfoHelpers.getAppVersionName(context));
 
-        File filesDir = FileHelpers.getExternalFilesDir(context);
+        File filesDir;
+
+        if (PermissionHelpers.hasStoragePermissions(context)) {
+            filesDir = FileHelpers.getBackupDir(context);
+        } else {
+            filesDir = FileHelpers.getExternalFilesDir(context);
+        }
+
         FileHelpers.deleteByPrefix(filesDir, type.getSimpleName());
         File destination = new File(filesDir, fileName);
         FileHelpers.streamToFile(content, destination);

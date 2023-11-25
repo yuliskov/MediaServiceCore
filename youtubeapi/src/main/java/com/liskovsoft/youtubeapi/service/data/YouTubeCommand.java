@@ -114,6 +114,11 @@ public class YouTubeCommand implements Command {
                 VoiceParams voiceParams = info.getVoiceParams();
                 command.mIsVoiceStarted = VoiceParams.STATUS_START.equals(voiceParams.getStatus());
                 break;
+            case CommandItem.TYPE_SUBTITLES:
+                command.mType = Command.TYPE_SUBTITLES;
+                PlaylistParams params = info.getPlaylistParams();
+                command.mVideoId = params.getVideoId();
+                break;
         }
 
         return command;

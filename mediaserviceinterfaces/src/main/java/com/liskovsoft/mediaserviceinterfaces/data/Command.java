@@ -17,6 +17,7 @@ public interface Command {
     int TYPE_STOP = 12;
     int TYPE_DPAD = 13;
     int TYPE_VOICE = 14;
+    int TYPE_SUBTITLES = 15;
     int KEY_UNDEFINED = -1;
     int KEY_UP = 0;
     int KEY_DOWN = 1;

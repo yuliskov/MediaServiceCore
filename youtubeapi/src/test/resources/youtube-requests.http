@@ -1482,3 +1482,14 @@ Referer: https://www.youtube.com/tv
 User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
 X-Goog-Pageid: 102307470137119736718
 X-Goog-Visitor-Id: CgtMaDRoNXhWMVdtNCi5vPaqBjIICgJVQRICGgA%3D
+
+
+############ Token test
+
+POST https://www.youtube.com/o/oauth2/token
+Content-Type: application/json
+Accept-Encoding: gzip, deflate, br
+Referer: https://www.youtube.com/tv
+User-Agent: Mozilla/5.0(SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko) SamsungBrowser/9.2 TV Safari/605.1.15
+
+{"refresh_token":"1//09a4ZZdvu0v5cCgYIARAAGAkSNwF-L9IrwumPvg6MmyVCpFGT5aSlSlFUHWyc_5BaCmrqYnHK9C4hRH8kxQ5Z1WQDNVei2MMPhsw","client_id":"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com","client_secret":"SboVhoG9s0rNafixCSGGKXAT","grant_type":"refresh_token"}

@@ -22,6 +22,7 @@ public class CommandItem {
     public static final String TYPE_STOP_VIDEO = "stopVideo";
     public static final String TYPE_DPAD = "dpadCommand";
     public static final String TYPE_VOICE = "voiceCommand";
+    public static final String TYPE_SUBTITLES = "setSubtitlesTrack";
     // Special commands
     public static final String TYPE_SESSION_ID = "c";
     public static final String TYPE_G_SESSION_ID = "S";

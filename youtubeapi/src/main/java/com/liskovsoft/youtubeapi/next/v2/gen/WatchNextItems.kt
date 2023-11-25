@@ -209,16 +209,6 @@ internal data class PlaylistInfo(
     val isEditable: Boolean?
 )
 
-internal data class ChapterItem(
-   val chapterRenderer: ChapterRenderer?
-) {
-    data class ChapterRenderer(
-        val title: TextItem?,
-        val timeRangeStartMillis: Long?,
-        val thumbnail: ThumbnailItem?
-    )
-}
-
 //////////
 
 internal data class EngagementPanel(
@@ -237,7 +227,8 @@ internal data class EngagementPanel(
             )
         }
         data class Content(
-            val structuredDescriptionContentRenderer: StructuredDescriptionContentRenderer?
+            val structuredDescriptionContentRenderer: StructuredDescriptionContentRenderer?,
+            val macroMarkersListRenderer: MacroMarkersListRenderer?
         ) {
             data class StructuredDescriptionContentRenderer(
                  val items: List<Item?>?
@@ -246,6 +237,9 @@ internal data class EngagementPanel(
                     val videoDescriptionHeaderRenderer: VideoDescriptionHeaderRenderer?
                 )
             }
+            data class MacroMarkersListRenderer(
+                val contents: List<ChapterItemWrapper?>
+            )
         }
     }
 }
@@ -269,5 +263,41 @@ internal data class Menu(
 internal data class SubMenuItem(
     val continuation: ContinuationItem?
 )
+
+///////// Chapters V1
+
+internal data class ChapterItem(
+    val chapterRenderer: ChapterRenderer?
+)
+
+internal data class ChapterRenderer(
+    val title: TextItem?,
+    val timeRangeStartMillis: Long?,
+    val thumbnail: ThumbnailItem?
+)
+
+///////// Chapters V2
+
+internal data class ChapterItemWrapper(
+    val chapterRenderer: ChapterRenderer?,
+    val macroMarkersListItemRenderer: MacroMarkersListItemRenderer?
+)
+
+internal data class MacroMarkersListItemRenderer(
+    val title: TextItem?,
+    val timeDescription: TextItem?,
+    val thumbnail: ThumbnailItem?,
+    val onTap: TapItem?
+)
+
+internal data class TapItem(
+    val watchEndpoint: WatchEndpoint?
+) {
+    data class WatchEndpoint(
+        val videoId: String?,
+        val playlistId: String?,
+        val startTimeSeconds: Int?
+    )
+}
 
 //////////

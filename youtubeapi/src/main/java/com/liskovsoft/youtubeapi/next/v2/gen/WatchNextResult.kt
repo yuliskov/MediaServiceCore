@@ -120,7 +120,7 @@ internal data class WatchNextResult(
                                 val value: Value?
                             ) {
                                 data class Value(
-                                    val chapters: List<ChapterItem?>?
+                                    val chapters: List<ChapterItemWrapper?>?
                                 )
                             }
                         }

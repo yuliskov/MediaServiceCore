@@ -35,6 +35,7 @@ public abstract class DashInfoBase implements DashInfo {
 
     @Override
     public long getStartTimeMs() {
+        // stream ahead of time fix (in case system time incorrect)
         return System.currentTimeMillis() - getStreamDurationMs();
     }
 

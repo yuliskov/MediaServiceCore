@@ -54,7 +54,8 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.let {
     it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items } ?:
-    it.playlistVideoListRenderer?.contents
+    it.playlistVideoListRenderer?.contents ?:
+    it.gridRenderer?.items
 }
 internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.playlistVideoListRenderer?.contents?.lastOrNull()?.getContinuationToken()
 private fun ItemSectionRenderer.getContents() = contents?.getOrNull(0)

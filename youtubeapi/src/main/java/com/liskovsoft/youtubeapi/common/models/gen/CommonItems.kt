@@ -351,7 +351,10 @@ internal data class ChannelItem(
 internal data class PlaylistItem(
     val thumbnail: ThumbnailItem?,
     val thumbnailRenderer: ThumbnailRenderer?,
-    val title: TextItem?
+    val title: TextItem?,
+    val videoCountText: TextItem?,
+    val videoCountShortText: TextItem?,
+    val playlistId: String?
 ) {
     data class ThumbnailRenderer(
         val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?,

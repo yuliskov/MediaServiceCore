@@ -149,6 +149,26 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
+    fun getChannel(channelId: String?, params: String?): List<MediaGroup?>? {
+        if (channelId == null) {
+            return null
+        }
+
+        val tabs = listOf(
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId)),
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelShortsQueryWeb(channelId)),
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId)),
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelPlaylistsQueryWeb(channelId))
+        )
+
+        val result = mutableListOf<MediaGroup>()
+
+        tabs.forEach { RetrofitHelper.get(it)?.let { result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS))) } }
+
+        return result
+    }
+
+    @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
         return if (group is ShortsMediaGroup) continueShorts(group.nextPageKey) else continueChip(group)?.firstOrNull()
     }

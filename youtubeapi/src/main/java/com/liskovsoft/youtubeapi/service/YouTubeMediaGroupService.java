@@ -403,9 +403,12 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
             } else {
-                SectionList channel = mBrowseService.getChannel(channelId, params);
+                //SectionList channel = mBrowseService.getChannel(channelId, params);
+                //
+                //emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
 
-                emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
+                List<MediaGroup> channel = BrowseService2.getChannel(channelId, params);
+                emitGroups2(emitter, channel, MediaGroup.TYPE_CHANNEL);
             }
         });
     }

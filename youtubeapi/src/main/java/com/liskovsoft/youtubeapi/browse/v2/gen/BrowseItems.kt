@@ -66,7 +66,8 @@ internal data class ItemSectionRenderer(
 ) {
     data class Shelf(
         val shelfRenderer: ShelfRenderer?,
-        val playlistVideoListRenderer: PlaylistVideoListRenderer?
+        val playlistVideoListRenderer: PlaylistVideoListRenderer?,
+        val gridRenderer: GridRenderer?
     ) {
         data class ShelfRenderer(
             val content: Content?
@@ -86,6 +87,9 @@ internal data class ItemSectionRenderer(
         }
         data class PlaylistVideoListRenderer(
             val contents: List<ItemWrapper?>?
+        )
+        data class GridRenderer(
+            val items: List<ItemWrapper?>?
         )
     }
 }

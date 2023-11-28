@@ -4,7 +4,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
-import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
@@ -40,7 +39,7 @@ internal object BrowseService2 {
             it.getRootSection()?.let { result.add(KidsSectionMediaGroup(it, createOptions(MediaGroup.TYPE_KIDS_HOME))) }
             it.getSections()?.forEach {
                 if (it?.getItems() == null && it?.getBrowseParams() != null) {
-                    val kidsResultNested = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(it.getBrowseParams()))
+                    val kidsResultNested = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(it.getBrowseParams()!!))
                     RetrofitHelper.get(kidsResultNested)?.getRootSection()?.let {
                         result.add(KidsSectionMediaGroup(it, createOptions(MediaGroup.TYPE_KIDS_HOME)))
                     }
@@ -97,7 +96,7 @@ internal object BrowseService2 {
             val result = mutableListOf<MediaItem?>()
 
             it.getItems()?.forEach {
-                it?.let {
+                if (it?.videoId != null && it.params != null) {
                     val details = mBrowseApi?.getReelResult(BrowseApiHelper.getReelDetailsQuery(it.videoId, it.params))
 
                     RetrofitHelper.get(details)?.let {

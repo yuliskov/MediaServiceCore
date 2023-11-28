@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
-import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
@@ -282,7 +281,7 @@ class BrowseApiTest {
     }
 
     private fun checkContinuation(token: String?, checkNextToken: Boolean = true) {
-        val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token))
+        val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
 
@@ -312,13 +311,13 @@ class BrowseApiTest {
     }
 
     private fun getChannelVideos(channelId: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelLive(channelId: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId))
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId!!))
 
         return RetrofitHelper.get(homeResult)
     }
@@ -336,7 +335,7 @@ class BrowseApiTest {
     }
 
     private fun getKidsHome(params: String?): BrowseResultKids? {
-        val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params))
+        val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params!!))
 
         return RetrofitHelper.get(kidsResult)
     }
@@ -348,19 +347,19 @@ class BrowseApiTest {
     }
 
     private fun getReelDetails(videoId: String?, params: String?): ReelResult? {
-        val details = mService?.getReelResult(BrowseApiHelper.getReelDetailsQuery(videoId, params))
+        val details = mService?.getReelResult(BrowseApiHelper.getReelDetailsQuery(videoId!!, params!!))
 
         return RetrofitHelper.get(details)
     }
 
     private fun getReelContinuation(sequenceParams: String?): ReelContinuationResult? {
-        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(sequenceParams))
+        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(sequenceParams!!))
 
         return RetrofitHelper.get(continuation)
     }
 
     private fun getReelContinuation2(nextPageKey: String?): ReelContinuationResult? {
-        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey))
+        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey!!))
 
         return RetrofitHelper.get(continuation)
     }

@@ -13,6 +13,7 @@ public class YouTubeAccount implements Account {
     private String mImageUrl;
     private boolean mIsSelected;
     private String mRefreshToken;
+    private String mRefreshToken2;
     private boolean mHasChannel;
     private String mPageIdToken;
     private String mChannelName;
@@ -49,6 +50,7 @@ public class YouTubeAccount implements Account {
         account.mHasChannel = Helpers.parseBoolean(split, 6, true);
         account.mPageIdToken = Helpers.parseStr(split, 7);
         account.mChannelName = Helpers.parseStr(split, 8);
+        account.mRefreshToken2 = Helpers.parseStr(split, 9);
 
         account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
@@ -67,7 +69,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName);
+        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName, mRefreshToken2);
     }
 
     @Override
@@ -150,5 +152,26 @@ public class YouTubeAccount implements Account {
      */
     public String getPageIdToken() {
         return mPageIdToken;
+    }
+
+    public String getRefreshToken2() {
+        return mRefreshToken2;
+    }
+
+    public void merge(Account account) {
+        YouTubeAccount youTubeAccount = (YouTubeAccount) account;
+
+        if (Helpers.equals(getPageIdToken(), youTubeAccount.getPageIdToken()) && Helpers.equals(getRefreshToken2(), youTubeAccount.getRefreshToken2())) {
+            return;
+        }
+
+        if (getPageIdToken() != null) {
+            mRefreshToken2 = Helpers.firstNonNull(youTubeAccount.getRefreshToken2(), youTubeAccount.getRefreshToken());
+            mEmail = youTubeAccount.getEmail();
+        } else {
+            mRefreshToken2 = mRefreshToken;
+            mRefreshToken = youTubeAccount.getRefreshToken();
+            mPageIdToken = youTubeAccount.getPageIdToken();
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppConstants
+import com.liskovsoft.youtubeapi.search.SearchApi
 import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -16,6 +17,9 @@ internal object RetrofitOkHttpHelper {
 
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()
+
+    @JvmStatic
+    val authHeaders2 = mutableMapOf<String, String>()
 
     @JvmStatic
     val client: OkHttpClient by lazy { createClient() }
@@ -58,13 +62,20 @@ internal object RetrofitOkHttpHelper {
 
             applyHeaders(this.headers, headers, requestBuilder)
 
-            if (Helpers.startsWithAny(request.url().toString(), *apiPrefixes)) {
+            val url = request.url().toString()
+
+            if (Helpers.startsWithAny(url, *apiPrefixes)) {
                 if (authHeaders.isEmpty() || skipAuthNums > 0) {
                     if (skipAuthNums > 0) skipAuthNums--
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false"), request, requestBuilder)
                 } else {
                     applyQueryKeys(mapOf("prettyPrint" to "false"), request, requestBuilder)
-                    applyHeaders(authHeaders, headers, requestBuilder)
+                    // Fix suggestions on non branded accounts
+                    if (url.startsWith(SearchApi.TAGS_URL) && authHeaders2.isNotEmpty()) {
+                        applyHeaders(authHeaders2, headers, requestBuilder)
+                    } else {
+                        applyHeaders(authHeaders, headers, requestBuilder)
+                    }
                 }
             }
 

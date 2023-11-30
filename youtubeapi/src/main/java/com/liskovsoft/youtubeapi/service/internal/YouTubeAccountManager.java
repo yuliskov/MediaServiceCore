@@ -33,12 +33,24 @@ public class YouTubeAccountManager {
                 return false;
             }
 
+            merge(account);
+
             // Don't remove these lines or you won't be able to enter to the account.
             while (contains(account)) {
                 remove(account);
             }
 
             return super.add(account);
+        }
+
+        private void merge(Account account) {
+            int index = indexOf(account);
+
+            if (index != -1) {
+                Account matched = get(index);
+                ((YouTubeAccount) account).merge(matched);
+                remove(matched);
+            }
         }
     };
 
@@ -79,6 +91,9 @@ public class YouTubeAccountManager {
     }
 
     public List<Account> getAccounts() {
+        // Remove initial account (with only refresh key)
+        Helpers.removeIf(mAccounts, Account::isEmpty);
+
         return mAccounts;
     }
 
@@ -93,9 +108,10 @@ public class YouTubeAccountManager {
 
         addAccount(YouTubeAccount.fromToken(refreshToken));
 
+        // Create Auth header
         mSignInService.checkAuth();
 
-        List<AccountInt> accountsInt = mAuthService.getAccounts();
+        List<AccountInt> accountsInt = mAuthService.getAccounts(); // runs under auth header from above
 
         if (accountsInt != null) {
             for (AccountInt accountInt : accountsInt) {
@@ -104,6 +120,9 @@ public class YouTubeAccountManager {
                 addAccount(account);
             }
         }
+
+        // Apply merged tokens
+        mSignInService.checkAuth();
 
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }

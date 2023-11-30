@@ -162,7 +162,7 @@ internal object BrowseService2 {
 
         val result = mutableListOf<MediaGroup>()
 
-        tabs.forEach { RetrofitHelper.get(it)?.let { result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS))) } }
+        tabs.forEach { RetrofitHelper.get(it)?.let { result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
         return result
     }

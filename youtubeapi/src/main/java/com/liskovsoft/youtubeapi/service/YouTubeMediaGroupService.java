@@ -330,7 +330,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
             List<MediaGroup> sections = BrowseService2.getTrending();
 
-            emitGroups2(emitter, sections, MediaGroup.TYPE_TRENDING);
+            emitGroups2(emitter, sections);
         });
     }
 
@@ -351,7 +351,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
             checkSigned();
 
             List<MediaGroup> sections = BrowseService2.getKidsHome();
-            emitGroups2(emitter, sections, MediaGroup.TYPE_KIDS_HOME);
+            emitGroups2(emitter, sections);
         });
     }
 
@@ -408,7 +408,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
                 //emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
 
                 List<MediaGroup> channel = BrowseService2.getChannel(channelId, params);
-                emitGroups2(emitter, channel, MediaGroup.TYPE_CHANNEL);
+                emitGroups2(emitter, channel);
             }
         });
     }
@@ -426,7 +426,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
                 List<MediaGroup> sections = BrowseService2.getHome();
 
                 if (sections != null && sections.size() > 5) {
-                    emitGroups2(emitter, sections, MediaGroup.TYPE_HOME);
+                    emitGroups2(emitter, sections);
                 } else {
                     // Fallback to old algo if user chrome page has no chips (why?)
                     SectionTab tab = mBrowseService.getHome();
@@ -437,7 +437,7 @@ public class YouTubeMediaGroupService implements MediaGroupService {
 
                     List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
 
-                    emitGroups2Partial(emitter, subGroup, MediaGroup.TYPE_HOME); // get Recommended only
+                    emitGroups2Partial(emitter, subGroup); // get Recommended only
                     emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
                 }
             } else {
@@ -449,25 +449,25 @@ public class YouTubeMediaGroupService implements MediaGroupService {
         });
     }
 
-    private void emitGroups2(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups, int type) {
+    private void emitGroups2(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
-            String msg = String.format("emitGroups2: group of type %s is null or empty", type);
+            String msg = "emitGroups2: groups are null or empty";
             Log.e(TAG, msg);
             RxHelper.onError(emitter, msg);
             return;
         }
 
-        emitGroups2Partial(emitter, groups, type);
+        emitGroups2Partial(emitter, groups);
 
         emitter.onComplete();
     }
 
-    private void emitGroups2Partial(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups, int type) {
+    private void emitGroups2Partial(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
             return;
         }
 
-        Log.d(TAG, "emitGroups: begin emitting group of type %s...", type);
+        Log.d(TAG, "emitGroups: begin emitting group of type %s...", groups.get(0).getType());
 
         for (MediaGroup group : groups) { // Preserve positions
             if (group != null && group.isEmpty()) { // Contains Chips (nested sections)?

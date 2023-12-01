@@ -163,7 +163,7 @@ private fun TileItem.getBadgeStyle() = header?.getBadgeStyle() ?: metadata?.getB
 
 internal fun PlaylistItem.getTitle() = title?.getText()
 internal fun PlaylistItem.getPlaylistId() = playlistId
-internal fun PlaylistItem.getThumbnails() = thumbnail
+internal fun PlaylistItem.getThumbnails() = thumbnail ?: thumbnails?.getOrNull(0)
 internal fun PlaylistItem.getBadgeText() = videoCountText?.getText()
 
 ////////////
@@ -171,7 +171,7 @@ internal fun PlaylistItem.getBadgeText() = videoCountText?.getText()
 private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer ?: reelItemRenderer ?: playlistVideoRenderer
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
-private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer
+private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer ?: playlistRenderer
 private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer ?: compactRadioRenderer
 private fun ItemWrapper.getTileItem() = tileRenderer
 private fun ItemWrapper.getContinuationItem() = continuationItemRenderer

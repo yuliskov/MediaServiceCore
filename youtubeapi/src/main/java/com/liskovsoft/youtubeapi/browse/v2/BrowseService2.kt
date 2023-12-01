@@ -156,6 +156,7 @@ internal object BrowseService2 {
         val tabs = listOf(
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId)),
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId)),
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId)),
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelPlaylistsQueryWeb(channelId)),
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelShortsQueryWeb(channelId))
         )

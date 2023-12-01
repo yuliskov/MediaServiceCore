@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
+import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
@@ -212,12 +213,29 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testThatChannelLiveTabEmpty() {
+        val videos = getChannelLive(TestHelpersV2.CHANNEL_ID_3)
+
+        assertTrue("Contains videos", videos?.getItems()?.filter { it?.isLive() == true }?.size ?: 0 == 0)
+    }
+
+    @Test
     fun testThatChannelHomeTabNotEmpty() {
         val result = getChannelHome(TestHelpersV2.CHANNEL_ID_2)
 
         val firstShelve = result?.getShelves()?.get(0)
         assertNotNull("Contains title", firstShelve?.getTitle())
         assertNotNull("Contains nested items", firstShelve?.getItems())
+    }
+
+    @Test
+    fun testThatChannelReleasesTabNotEmpty() {
+        val result = getChannelReleases(TestHelpersV2.CHANNEL_ID_3)
+
+        val first = result?.getItems()?.getOrNull(0)
+
+        assertNotNull("Contains title", result?.getTitle())
+        assertNotNull("Contains items", first?.getTitle())
     }
 
     @Test
@@ -333,6 +351,12 @@ class BrowseApiTest {
 
     private fun getChannelHome(channelId: String?): BrowseResult? {
         val result = mService?.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(channelId!!))
+
+        return RetrofitHelper.get(result)
+    }
+
+    private fun getChannelReleases(channelId: String?): BrowseResult? {
+        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId!!))
 
         return RetrofitHelper.get(result)
     }

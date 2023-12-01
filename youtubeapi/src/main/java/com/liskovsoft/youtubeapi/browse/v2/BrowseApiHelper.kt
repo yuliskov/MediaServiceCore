@@ -11,6 +11,7 @@ internal object BrowseApiHelper {
     private const val CHANNEL_SHORTS = "\"browseId\":\"%s\",\"params\":\"EgZzaG9ydHPyBgUKA5oBAA%%3D%%3D\""
     private const val CHANNEL_LIVE = "\"browseId\":\"%s\",\"params\":\"EgdzdHJlYW1z8gYECgJ6AA%%3D%%3D\""
     private const val CHANNEL_PLAYLISTS = "\"browseId\":\"%s\",\"params\":\"EglwbGF5bGlzdHPyBgQKAkIA\""
+    private const val CHANNEL_RELEASES = "\"browseId\":\"%s\",\"params\":\"EghyZWxlYXNlc_IGBQoDsgEA\""
     private const val CHANNEL_COMMUNITY = "\"browseId\":\"%s\",\"params\":\"Egljb21tdW5pdHnyBgQKAkoA\""
     private const val CHANNEL_SEARCH = "\"browseId\":\"%s\",\"params\":\"EgZzZWFyY2jyBgQKAloA\",\"query\":\"%s\""
     private const val KIDS_HOME = "\"browseId\":\"FEkids_home\""
@@ -59,6 +60,10 @@ internal object BrowseApiHelper {
 
     fun getChannelPlaylistsQueryWeb(channelId: String): String {
         return ServiceHelper.createQueryWeb(String.format(CHANNEL_PLAYLISTS, channelId))
+    }
+
+    fun getChannelReleasesQueryWeb(channelId: String): String {
+        return ServiceHelper.createQueryWeb(String.format(CHANNEL_RELEASES, channelId))
     }
 
     fun getChannelCommunityQueryWeb(channelId: String): String {

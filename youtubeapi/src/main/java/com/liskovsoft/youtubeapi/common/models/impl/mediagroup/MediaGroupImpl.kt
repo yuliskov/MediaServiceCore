@@ -40,13 +40,22 @@ internal data class ContinuationMediaGroup(
     override fun getTitleInt(): String? = null
 }
 
-internal data class SectionMediaGroup(
+internal data class RichSectionMediaGroup(
     private val richSectionRenderer: RichSectionRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = richSectionRenderer.getItems()
     override fun getNextPageKeyInt(): String? = richSectionRenderer.getContinuationToken()
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
+}
+
+internal data class ItemSectionMediaGroup(
+    private val itemSectionRenderer: ItemSectionRenderer,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): BaseMediaGroup(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = itemSectionRenderer.getItems()
+    override fun getNextPageKeyInt(): String? = itemSectionRenderer.getContinuationToken()
+    override fun getTitleInt(): String? = itemSectionRenderer.getTitle()
 }
 
 internal data class TabMediaGroup(

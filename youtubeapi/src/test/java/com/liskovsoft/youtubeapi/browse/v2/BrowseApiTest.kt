@@ -212,6 +212,15 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testThatChannelHomeTabNotEmpty() {
+        val result = getChannelHome(TestHelpersV2.CHANNEL_ID_2)
+
+        val firstShelve = result?.getShelves()?.get(0)
+        assertNotNull("Contains title", firstShelve?.getTitle())
+        assertNotNull("Contains nested items", firstShelve?.getItems())
+    }
+
+    @Test
     fun testThatTrendingNotEmpty() {
         val trending = getTrending()
 
@@ -320,6 +329,12 @@ class BrowseApiTest {
         val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId!!))
 
         return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getChannelHome(channelId: String?): BrowseResult? {
+        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(channelId!!))
+
+        return RetrofitHelper.get(result)
     }
 
     private fun getGuide(): GuideResult? {

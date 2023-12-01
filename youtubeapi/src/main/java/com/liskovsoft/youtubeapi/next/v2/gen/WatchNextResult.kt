@@ -26,7 +26,7 @@ internal data class WatchNextResult(
                     val contents: List<Content?>?
                 ) {
                     data class Content(
-                        val shelfRenderer: ShelfItem?
+                        val shelfRenderer: ShelfRenderer?
                     )
                 }
             }

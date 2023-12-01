@@ -160,9 +160,13 @@ internal object BrowseService2 {
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelShortsQueryWeb(channelId))
         )
 
+        val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(channelId))
+
         val result = mutableListOf<MediaGroup>()
 
         tabs.forEach { RetrofitHelper.get(it)?.let { result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
+
+        RetrofitHelper.get(home)?.let { it.getShelves()?.forEach { if (it?.getTitle() != null) result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
         return result
     }
@@ -206,7 +210,7 @@ internal object BrowseService2 {
             val result = mutableListOf<MediaGroup?>()
 
             result.add(ContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title })
-            it.getSections()?.forEach { if (it != null) result.add(SectionMediaGroup(it, createOptions(group.type))) }
+            it.getSections()?.forEach { if (it != null) result.add(RichSectionMediaGroup(it, createOptions(group.type))) }
 
             result
         }
@@ -243,7 +247,7 @@ internal object BrowseService2 {
             // NOTE: First tab on home page has not title.
             result.add(BrowseMediaGroup(it, createOptions(sectionType)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
             it.getTabs()?.forEach { if (it?.getTitle() != null) result.add(TabMediaGroup(it, createOptions(sectionType))) }
-            it.getSections()?.forEach { if (it?.getTitle() != null) addOrMerge(result, SectionMediaGroup(it, createOptions(sectionType))) }
+            it.getSections()?.forEach { if (it?.getTitle() != null) addOrMerge(result, RichSectionMediaGroup(it, createOptions(sectionType))) }
             it.getChips()?.forEach { if (it?.getTitle() != null) result.add(ChipMediaGroup(it, createOptions(sectionType))) }
 
             result

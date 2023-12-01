@@ -70,11 +70,11 @@ private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?
 
 ///////
 
-internal fun ShelfItem.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
-internal fun ShelfItem.getItemWrappers() = content?.horizontalListRenderer?.items
-internal fun ShelfItem.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
-internal fun ShelfItem.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
-private fun ShelfItem.getShelf() = headerRenderer?.shelfHeaderRenderer
+internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
+internal fun ShelfRenderer.getItemWrappers() = content?.horizontalListRenderer?.items
+internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
+internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
+private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
 
 ////////
 

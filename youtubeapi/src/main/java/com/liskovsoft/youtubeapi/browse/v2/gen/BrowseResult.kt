@@ -32,11 +32,11 @@ internal data class ContinuationResult(
         val reloadContinuationItemsCommand: ReloadContinuationItemsCommand?
     ) {
         data class AppendContinuationItemsAction(
-            val continuationItems: List<Section?>?
+            val continuationItems: List<SectionWrapper?>?
         )
 
         data class ReloadContinuationItemsCommand(
-            val continuationItems: List<Section?>?
+            val continuationItems: List<SectionWrapper?>?
         )
     }
 }

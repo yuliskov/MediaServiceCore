@@ -13,13 +13,13 @@ internal data class NextVideoItem(
     data class Endpoint(val watchEndpoint: WatchEndpointItem?)
 }
 
-internal data class ShelfItem(
+internal data class ShelfRenderer(
     val title: TextItem?,
     val content: Content?,
     val headerRenderer: HeaderRenderer?
 ) {
     data class Content(
-            val horizontalListRenderer: HorizontalListRenderer?
+        val horizontalListRenderer: HorizontalListRenderer?
     ) {
         data class HorizontalListRenderer(
                 val items: List<ItemWrapper?>?,
@@ -67,10 +67,10 @@ internal data class ChipItem(
             )
 
             data class SectionListRenderer(
-                    val contents: List<Content?>?
+                    val contents: List<Shelf?>?
             ) {
-                data class Content(
-                        val shelfRenderer: ShelfItem?
+                data class Shelf(
+                        val shelfRenderer: ShelfRenderer?
                 )
             }
         }

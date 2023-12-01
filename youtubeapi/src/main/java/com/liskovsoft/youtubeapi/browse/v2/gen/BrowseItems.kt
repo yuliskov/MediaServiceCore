@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
-internal data class Section(
+internal data class SectionWrapper(
     val itemSectionRenderer: ItemSectionRenderer?,
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
@@ -20,10 +20,10 @@ internal data class TabRenderer(
         val richGridRenderer: RichGridRenderer?
     ) {
         data class SectionListRenderer(
-            val contents: List<Section?>?
+            val contents: List<SectionWrapper?>?
         )
         data class RichGridRenderer(
-            val contents: List<Section?>?,
+            val contents: List<SectionWrapper?>?,
             val header: Header?
         ) {
             data class Header(
@@ -70,17 +70,23 @@ internal data class ItemSectionRenderer(
         val gridRenderer: GridRenderer?
     ) {
         data class ShelfRenderer(
+            val title: TextItem?,
             val content: Content?
         ) {
             data class Content(
                 val gridRenderer: GridRenderer?,
-                val expandedShelfContentsRenderer: ExpandedShelfContentsRenderer?
+                val expandedShelfContentsRenderer: ExpandedShelfContentsRenderer?,
+                val horizontalListRenderer: HorizontalListRenderer?
             ) {
                 data class GridRenderer(
                     val items: List<ItemWrapper?>?
                 )
 
                 data class ExpandedShelfContentsRenderer(
+                    val items: List<ItemWrapper?>?
+                )
+
+                data class HorizontalListRenderer(
                     val items: List<ItemWrapper?>?
                 )
             }

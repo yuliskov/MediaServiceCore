@@ -9,6 +9,7 @@ internal fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filt
 internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
     getItems()?.filter { it?.isLive() == false && it.isUpcoming() == false }?.let { if (maxItems > 0) it.take(maxItems) else it }
 internal fun BrowseResult.getShortItems(): List<ItemWrapper?>? = getRootTab()?.getShortItems()
+internal fun BrowseResult.getShelves(): List<ItemSectionRenderer?>? = getRootTab()?.getListContents()?.mapNotNull { it?.itemSectionRenderer }
 internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
 internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
 internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getGridContents()?.mapNotNull { it?.richSectionRenderer }
@@ -52,8 +53,9 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 /////
 
+internal fun ItemSectionRenderer.getTitle(): String? = contents?.firstOrNull()?.shelfRenderer?.title?.getText()
 internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.let {
-    it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items } ?:
+    it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.horizontalListRenderer?.items } ?:
     it.playlistVideoListRenderer?.contents ?:
     it.gridRenderer?.items
 }
@@ -66,10 +68,10 @@ internal fun ChipCloudChipRenderer.getTitle(): String? = text?.getText()
 
 /////
 
-internal fun Section.getItem() = richItemRenderer?.content ?: playlistVideoRenderer?.let { ItemWrapper(playlistVideoRenderer = it) }
+internal fun SectionWrapper.getItem() = richItemRenderer?.content ?: playlistVideoRenderer?.let { ItemWrapper(playlistVideoRenderer = it) }
 
-internal fun Section.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems()
-internal fun Section.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: itemSectionRenderer?.getContinuationToken()
+internal fun SectionWrapper.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems()
+internal fun SectionWrapper.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: itemSectionRenderer?.getContinuationToken()
 
 /////
 

@@ -164,9 +164,15 @@ internal object BrowseService2 {
 
         val result = mutableListOf<MediaGroup>()
 
-        tabs.forEach { RetrofitHelper.get(it)?.let { result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
+        tabs.forEach { RetrofitHelper.get(it)?.let {
+            val title = it.getTitle()
+            if (title != null && result.firstOrNull { it.title == title } == null) // unique rows only
+                result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
-        RetrofitHelper.get(home)?.let { it.getShelves()?.forEach { if (it?.getTitle() != null) result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
+        RetrofitHelper.get(home)?.let { it.getShelves()?.forEach {
+            val title = it?.getTitle()
+            if (title != null && result.firstOrNull { it.title == title } == null) // unique rows only
+                result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
         return result
     }

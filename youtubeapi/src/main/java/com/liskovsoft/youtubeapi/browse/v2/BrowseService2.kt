@@ -167,12 +167,12 @@ internal object BrowseService2 {
 
         tabs.forEach { RetrofitHelper.get(it)?.let {
             val title = it.getTitle()
-            if (title != null && result.firstOrNull { it.title == title } == null) // unique rows only
+            if (title != null && !it.isHome()) // skip home tab
                 result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
         RetrofitHelper.get(home)?.let { it.getShelves()?.forEach {
             val title = it?.getTitle()
-            if (title != null && result.firstOrNull { it.title == title } == null) // unique rows only
+            if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
         return result

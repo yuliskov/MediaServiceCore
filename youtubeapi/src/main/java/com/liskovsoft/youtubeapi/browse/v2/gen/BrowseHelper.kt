@@ -9,12 +9,13 @@ internal fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filt
 internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
     getItems()?.filter { it?.isLive() == false && it.isUpcoming() == false }?.let { if (maxItems > 0) it.take(maxItems) else it }
 internal fun BrowseResult.getShortItems(): List<ItemWrapper?>? = getRootTab()?.getShortItems()
-internal fun BrowseResult.getShelves(): List<ItemSectionRenderer?>? = getRootTab()?.getListContents()?.mapNotNull { it?.itemSectionRenderer }
+internal fun BrowseResult.getShelves(): List<ItemSectionRenderer?>? = getRootTab()?.getShelves()
 internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
 internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
-internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getGridContents()?.mapNotNull { it?.richSectionRenderer }
-internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
+internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getSections()
+internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChips()
 internal fun BrowseResult.getTitle(): String? = getRootTab()?.title
+internal fun BrowseResult.isHome(): Boolean = getTabs()?.getOrNull(0)?.getItems() != null
 private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it?.content != null) it else null }
 
 /////
@@ -27,9 +28,14 @@ internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.fi
     } ?:
     getGridContents()?.lastOrNull()?.getContinuationToken()
 internal fun TabRenderer.getTitle(): String? = title
+internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
+internal fun TabRenderer.getBrowseParams(): String? = endpoint?.getBrowseParams()
 private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents
 private fun TabRenderer.getGridContents() = content?.richGridRenderer?.contents
 private fun TabRenderer.getChipContents() = content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
+internal fun TabRenderer.getShelves(): List<ItemSectionRenderer?>? = getListContents()?.mapNotNull { it?.itemSectionRenderer }
+internal fun TabRenderer.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
+internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
 
 /////
 

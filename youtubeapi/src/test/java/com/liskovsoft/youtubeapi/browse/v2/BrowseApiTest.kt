@@ -197,6 +197,15 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testThatChannelTabsNotEmpty() {
+        val home = getChannelHome(TestHelpersV2.CHANNEL_ID_3)
+
+        val firstTab = home?.getTabs()?.get(0)
+
+        assertNotNull("Tab has param", firstTab?.getBrowseParams())
+    }
+
+    @Test
     fun testThatChannelVideosTabNotEmpty() {
         val videos = getChannelVideos("UC1vCu8GeDC7_UfY7PKqsAzg")
 

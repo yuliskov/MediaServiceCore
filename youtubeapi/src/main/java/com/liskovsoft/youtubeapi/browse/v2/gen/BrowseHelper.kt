@@ -14,7 +14,8 @@ internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getCon
 internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
 internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getSections()
 internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChips()
-internal fun BrowseResult.getTitle(): String? = getRootTab()?.title
+internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: header?.playlistHeaderRenderer?.getTitle()
+internal fun BrowseResult.isPlaylist(): Boolean = header?.playlistHeaderRenderer != null
 internal fun BrowseResult.isHome(): Boolean = getTabs()?.getOrNull(0)?.getItems() != null
 private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it?.content != null) it else null }
 

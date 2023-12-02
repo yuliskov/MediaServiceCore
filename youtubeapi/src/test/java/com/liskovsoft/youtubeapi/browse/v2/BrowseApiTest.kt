@@ -248,6 +248,37 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testThatChannelVideosNotEmpty() {
+        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
+
+        val videos = getChannelVideos(channelId)
+
+        assertTrue("Playlist not empty", videos?.getItems()?.size ?: 0 > 0)
+    }
+
+    @Test
+    fun testThatChannelVideosHasContinuation() {
+        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
+
+        val videos = getChannelVideos(channelId)
+
+        assertNotNull("Playlist has continuation", videos?.getContinuationToken())
+
+        checkContinuation(videos?.getContinuationToken())
+    }
+
+    @Test
+    fun testThatPlaylistNotEmpty() {
+        // Starfield songs
+        val channelId = "VLPL3irMzbdU-v1liRStfWBD9i9i3AvmLpY5"
+
+        val videos = getChannelPlaylist(channelId)
+
+        assertNotNull("Not empty", videos?.getItems())
+        assertNotNull("Has title", videos?.getTitle())
+    }
+
+    @Test
     fun testThatTrendingNotEmpty() {
         val trending = getTrending()
 
@@ -262,26 +293,6 @@ class BrowseApiTest {
                 assertTrue("Next tab contains videos", tabContent?.getItems()?.size ?: 0 > 10)
             }
         }
-    }
-
-    @Test
-    fun testThatChannelPlaylistNotEmpty() {
-        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
-
-        val videos = getChannelVideos(channelId)
-
-        assertTrue("Playlist not empty", videos?.getItems()?.size ?: 0 > 0)
-    }
-
-    @Test
-    fun testThatChannelPlaylistHasContinuation() {
-        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
-
-        val videos = getChannelVideos(channelId)
-
-        assertNotNull("Playlist has continuation", videos?.getContinuationToken())
-
-        checkContinuation(videos?.getContinuationToken())
     }
 
     private fun testReelContinuation(continuation: ReelContinuationResult?) {
@@ -366,6 +377,12 @@ class BrowseApiTest {
 
     private fun getChannelReleases(channelId: String?): BrowseResult? {
         val result = mService?.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId!!))
+
+        return RetrofitHelper.get(result)
+    }
+
+    private fun getChannelPlaylist(channelId: String?): BrowseResult? {
+        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId!!))
 
         return RetrofitHelper.get(result)
     }

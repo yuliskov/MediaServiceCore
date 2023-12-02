@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.PlaylistItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
 
 /**
@@ -9,7 +10,8 @@ import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
  * browse_subs_chrome_12.02.2023.json
  */
 internal data class BrowseResult(
-    val contents: Contents?
+    val contents: Contents?,
+    val header: Header?
 ) {
     data class Contents(
         val twoColumnBrowseResultsRenderer: TwoColumnBrowseResultsRenderer?
@@ -22,6 +24,9 @@ internal data class BrowseResult(
             )
         }
     }
+    data class Header(
+        val playlistHeaderRenderer: PlaylistItem?
+    )
 }
 
 internal data class ContinuationResult(

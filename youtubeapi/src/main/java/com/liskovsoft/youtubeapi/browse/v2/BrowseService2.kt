@@ -175,6 +175,13 @@ internal object BrowseService2 {
             if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
+        if (result.isEmpty()) {
+            val playlist = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId))
+            RetrofitHelper.get(playlist)?.let {
+                if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)))
+            }
+        }
+
         return result
     }
 

@@ -36,7 +36,7 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQueryWeb(TRENDING)
     }
 
-    fun getChannelQueryWeb(channelId: String, params: String?): String {
+    fun getChannelQueryWeb(channelId: String, params: String? = null): String {
         val channelTemplate =
             if (params != null) String.format(CHANNEL_FULL, channelId, params) else String.format(CHANNEL, channelId)
         return ServiceHelper.createQueryWeb(channelTemplate)

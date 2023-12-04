@@ -261,9 +261,9 @@ internal object BrowseService2 {
 
             // First chip is always empty and corresponds to current result.
             // Also title used as id in continuation. No good.
-            // NOTE: First tab on home page has not title.
-            //result.add(BrowseMediaGroup(it, createOptions(sectionType)).apply { title = it.getChips()?.getOrNull(0)?.getTitle() })
-            it.getTabs()?.forEach { if (it?.getTitle() != null) result.add(TabMediaGroup(it, createOptions(sectionType))) }
+            // NOTE: First tab on home page has no title.
+            result.add(BrowseMediaGroup(it, createOptions(sectionType))) // always renders first tab
+            it.getTabs()?.drop(1)?.forEach { if (it?.getTitle() != null) result.add(TabMediaGroup(it, createOptions(sectionType))) }
             it.getSections()?.forEach { if (it?.getTitle() != null) addOrMerge(result, RichSectionMediaGroup(it, createOptions(sectionType))) }
             it.getChips()?.forEach { if (it?.getTitle() != null) result.add(ChipMediaGroup(it, createOptions(sectionType))) }
 

@@ -11,6 +11,9 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaI
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import com.liskovsoft.youtubeapi.notifications.gen.getItems
 
+/**
+ *  Always renders first tab
+ */
 internal data class BrowseMediaGroup(
     private val browseResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions(),

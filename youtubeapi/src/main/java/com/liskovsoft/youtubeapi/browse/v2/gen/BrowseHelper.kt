@@ -4,6 +4,9 @@ import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
+/**
+ *  Always renders first tab
+ */
 internal fun BrowseResult.getItems(): List<ItemWrapper?>? = getRootTab()?.getItems()
 internal fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isLive() }
 internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
@@ -14,7 +17,12 @@ internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getCon
 internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
 internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getSections()
 internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChips()
-internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: header?.playlistHeaderRenderer?.getTitle()
+/**
+ *  Always renders first tab
+ *  
+ *  First tab on HOME page has no title. Use first chip instead.
+ */
+internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: header?.playlistHeaderRenderer?.getTitle() ?: getChips()?.getOrNull(0)?.getTitle()
 internal fun BrowseResult.isPlaylist(): Boolean = header?.playlistHeaderRenderer != null
 internal fun BrowseResult.isHome(): Boolean = getTabs()?.getOrNull(0)?.getItems() != null
 private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it?.content != null) it else null }
@@ -28,8 +36,7 @@ internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.fi
         it?.getContinuationToken()
     } ?:
     getGridContents()?.lastOrNull()?.getContinuationToken()
-// First tab on home page has not title
-internal fun TabRenderer.getTitle(): String? = title ?: getChips()?.getOrNull(0)?.getTitle()
+internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getBrowseParams(): String? = endpoint?.getBrowseParams()
 private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents

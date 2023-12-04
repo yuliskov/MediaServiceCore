@@ -28,7 +28,8 @@ internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.fi
         it?.getContinuationToken()
     } ?:
     getGridContents()?.lastOrNull()?.getContinuationToken()
-internal fun TabRenderer.getTitle(): String? = title
+// First tab on home page has not title
+internal fun TabRenderer.getTitle(): String? = title ?: getChips()?.getOrNull(0)?.getTitle()
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getBrowseParams(): String? = endpoint?.getBrowseParams()
 private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents

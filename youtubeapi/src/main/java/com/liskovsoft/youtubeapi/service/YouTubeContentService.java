@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.HomeService;
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -26,15 +26,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class YouTubeMediaGroupService implements HomeService {
-    private static final String TAG = YouTubeMediaGroupService.class.getSimpleName();
-    private static YouTubeMediaGroupService sInstance;
+public class YouTubeContentService implements ContentService {
+    private static final String TAG = YouTubeContentService.class.getSimpleName();
+    private static YouTubeContentService sInstance;
     private final YouTubeSignInService mSignInService;
     private final ActionsService mActionsService;
     private final SearchService mSearchService;
     private final BrowseService mBrowseService;
 
-    private YouTubeMediaGroupService() {
+    private YouTubeContentService() {
         Log.d(TAG, "Starting...");
 
         mSignInService = YouTubeSignInService.instance();
@@ -43,9 +43,9 @@ public class YouTubeMediaGroupService implements HomeService {
         mBrowseService = BrowseService.instance();
     }
 
-    public static HomeService instance() {
+    public static ContentService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaGroupService();
+            sInstance = new YouTubeContentService();
         }
 
         return sInstance;

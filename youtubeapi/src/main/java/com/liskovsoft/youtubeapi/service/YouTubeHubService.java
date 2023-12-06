@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.CommentsService;
 import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
-import com.liskovsoft.mediaserviceinterfaces.HomeService;
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.HubService;
 import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
 import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
@@ -17,31 +17,31 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class YouTubeMediaService implements MediaService {
-    private static final String TAG = YouTubeMediaService.class.getSimpleName();
-    private static YouTubeMediaService sInstance;
+public class YouTubeHubService implements HubService {
+    private static final String TAG = YouTubeHubService.class.getSimpleName();
+    private static YouTubeHubService sInstance;
     private final YouTubeSignInService mSignInManager;
     private final YouTubeRemoteControlService mDeviceLinkManager;
-    private final HomeService mMediaGroupManager;
+    private final ContentService mMediaGroupManager;
     private final MediaItemService mMediaItemManager;
     private final YouTubeLiveChatService mLiveChatService;
     private final YouTubeCommentsService mCommentsService;
     private Disposable mRefreshCacheAction;
 
-    private YouTubeMediaService() {
+    private YouTubeHubService() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInService.instance();
         mDeviceLinkManager = YouTubeRemoteControlService.instance();
-        mMediaGroupManager = YouTubeMediaGroupService.instance();
+        mMediaGroupManager = YouTubeContentService.instance();
         mMediaItemManager = YouTubeMediaItemService.instance();
         mLiveChatService = YouTubeLiveChatService.instance();
         mCommentsService = YouTubeCommentsService.instance();
     }
 
-    public static MediaService instance() {
+    public static HubService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMediaService();
+            sInstance = new YouTubeHubService();
         }
 
         return sInstance;
@@ -68,7 +68,7 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public HomeService getHomeService() {
+    public ContentService getContentService() {
         return mMediaGroupManager;
     }
 

@@ -179,7 +179,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         }
 
         // Continue special embedded section group
-        return YouTubeMediaGroupService.instance().continueGroup(mediaGroup);
+        return YouTubeContentService.instance().continueGroup(mediaGroup);
     }
 
     @Override

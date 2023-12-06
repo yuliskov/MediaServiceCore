@@ -1,13 +1,13 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.HubService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaService;
+import com.liskovsoft.youtubeapi.service.YouTubeHubService;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import org.junit.After;
 import org.junit.Before;
@@ -22,11 +22,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class YouTubeMPDBuilderInstrumentedTest {
-    private MediaService mService;
+    private HubService mService;
 
     @Before
     public void setUp() {
-        mService = YouTubeMediaService.instance();
+        mService = YouTubeHubService.instance();
     }
 
     @After
@@ -65,7 +65,7 @@ public class YouTubeMPDBuilderInstrumentedTest {
     }
 
     private MediaItemFormatInfo getMediaItemDetails() {
-        List<MediaGroup> homeGroups = mService.getHomeService().getHome();
+        List<MediaGroup> homeGroups = mService.getContentService().getHome();
 
         List<MediaItem> mediaItems = homeGroups.get(0).getMediaItems();
 

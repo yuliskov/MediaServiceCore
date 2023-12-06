@@ -1,9 +1,9 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
-public interface MediaService {
+public interface HubService {
     SignInService getSignInService();
     RemoteControlService getRemoteControlService();
-    HomeService getHomeService();
+    ContentService getContentService();
     MediaItemService getMediaItemService();
     LiveChatService getLiveChatService();
     CommentsService getCommentsService();

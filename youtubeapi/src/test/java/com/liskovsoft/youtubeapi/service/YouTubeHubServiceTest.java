@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaService;
+import com.liskovsoft.mediaserviceinterfaces.HubService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import org.junit.Before;
@@ -15,8 +15,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeMediaServiceTest {
-    private MediaService mService;
+public class YouTubeHubServiceTest {
+    private HubService mService;
 
     @Before
     public void setUp() {
@@ -24,7 +24,7 @@ public class YouTubeMediaServiceTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
-        mService = YouTubeMediaService.instance();
+        mService = YouTubeHubService.instance();
     }
 
     /**
@@ -32,7 +32,7 @@ public class YouTubeMediaServiceTest {
      */
     @Test
     public void testThatSearchNotEmpty() {
-        MediaGroup mediaGroup = mService.getHomeService().getSearch("hello world");
+        MediaGroup mediaGroup = mService.getContentService().getSearch("hello world");
 
         List<MediaItem> list = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class YouTubeMediaServiceTest {
     
     @Test
     public void testThatRecommendedNotEmpty() {
-        MediaGroup mediaGroup = mService.getHomeService().getRecommended();
+        MediaGroup mediaGroup = mService.getContentService().getRecommended();
 
         assertTrue("Has media items", !mediaGroup.isEmpty());
 

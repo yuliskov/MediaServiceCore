@@ -268,6 +268,15 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testThatChannelSearchNotEmpty() {
+        val channelId = TestHelpersV2.CHANNEL_ID_3
+
+        val videos = getChannelSearch(channelId, "in the army now")
+
+        assertTrue("Has content", (videos?.getItems()?.size ?: 0) > 5)
+    }
+
+    @Test
     fun testThatPlaylistNotEmpty() {
         // Starfield songs
         val channelId = "VLPL3irMzbdU-v1liRStfWBD9i9i3AvmLpY5"
@@ -353,6 +362,12 @@ class BrowseApiTest {
 
     private fun getAltHome(): BrowseResult? {
         val homeResult = mService?.getBrowseResultMobile(BrowseApiHelper.getHomeQueryMWEB())
+
+        return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getChannelSearch(channelId: String?, query: String?): BrowseResult? {
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelSearchQueryWeb(channelId!!, query!!))
 
         return RetrofitHelper.get(homeResult)
     }

@@ -64,10 +64,11 @@ internal data class RichSectionRenderer(
 internal data class ItemSectionRenderer(
     val contents: List<Shelf?>?
 ) {
-    data class Shelf(
+    data class Shelf (
         val shelfRenderer: ShelfRenderer?,
         val playlistVideoListRenderer: PlaylistVideoListRenderer?,
-        val gridRenderer: GridRenderer?
+        val gridRenderer: GridRenderer?,
+        val videoRenderer: VideoItem?
     ) {
         data class ShelfRenderer(
             val title: TextItem?,

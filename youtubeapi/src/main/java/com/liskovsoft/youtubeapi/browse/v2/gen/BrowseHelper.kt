@@ -14,7 +14,7 @@ internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper
 internal fun BrowseResult.getShortItems(): List<ItemWrapper?>? = getRootTab()?.getShortItems()
 internal fun BrowseResult.getShelves(): List<ItemSectionRenderer?>? = getRootTab()?.getShelves()
 internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
-internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer }
+internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer ?: it?.expandableTabRenderer }
 internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getSections()
 internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChips()
 /**
@@ -72,7 +72,8 @@ internal fun ItemSectionRenderer.getTitle(): String? = contents?.firstOrNull()?.
 internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.let {
     it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.horizontalListRenderer?.items } ?:
     it.playlistVideoListRenderer?.contents ?:
-    it.gridRenderer?.items
+    it.gridRenderer?.items ?:
+    it.videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
 }
 internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.playlistVideoListRenderer?.contents?.lastOrNull()?.getContinuationToken()
 private fun ItemSectionRenderer.getContents() = contents?.getOrNull(0)

@@ -20,7 +20,8 @@ internal data class BrowseResult(
             val tabs: List<Tab?>?
         ) {
             data class Tab(
-             val tabRenderer: TabRenderer?
+                val tabRenderer: TabRenderer?,
+                val expandableTabRenderer: TabRenderer?
             )
         }
     }

@@ -148,6 +148,17 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
+    fun getChannelSearch(channelId: String?, query: String?): MediaGroup? {
+        if (channelId == null || query == null) {
+            return null
+        }
+
+        val search = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelSearchQueryWeb(channelId, query))
+
+        return RetrofitHelper.get(search)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
+    }
+
+    @JvmStatic
     fun getChannel(channelId: String?, params: String?): List<MediaGroup?>? {
         if (channelId == null) {
             return null

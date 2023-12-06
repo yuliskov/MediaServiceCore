@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.CommentsService;
 import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
-import com.liskovsoft.mediaserviceinterfaces.MediaGroupService;
+import com.liskovsoft.mediaserviceinterfaces.HomeService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.MediaService;
 import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
@@ -22,7 +22,7 @@ public class YouTubeMediaService implements MediaService {
     private static YouTubeMediaService sInstance;
     private final YouTubeSignInService mSignInManager;
     private final YouTubeRemoteControlService mDeviceLinkManager;
-    private final MediaGroupService mMediaGroupManager;
+    private final HomeService mMediaGroupManager;
     private final MediaItemService mMediaItemManager;
     private final YouTubeLiveChatService mLiveChatService;
     private final YouTubeCommentsService mCommentsService;
@@ -68,7 +68,7 @@ public class YouTubeMediaService implements MediaService {
     }
 
     @Override
-    public MediaGroupService getMediaGroupService() {
+    public HomeService getHomeService() {
         return mMediaGroupManager;
     }
 

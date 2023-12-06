@@ -32,7 +32,7 @@ public class YouTubeMediaServiceTest {
      */
     @Test
     public void testThatSearchNotEmpty() {
-        MediaGroup mediaGroup = mService.getMediaGroupService().getSearch("hello world");
+        MediaGroup mediaGroup = mService.getHomeService().getSearch("hello world");
 
         List<MediaItem> list = new ArrayList<>();
 
@@ -44,8 +44,8 @@ public class YouTubeMediaServiceTest {
     }
     
     @Test
-    public void testThatRecommendedNotEmpty() throws InterruptedException {
-        MediaGroup mediaGroup = mService.getMediaGroupService().getRecommended();
+    public void testThatRecommendedNotEmpty() {
+        MediaGroup mediaGroup = mService.getHomeService().getRecommended();
 
         assertTrue("Has media items", !mediaGroup.isEmpty());
 

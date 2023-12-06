@@ -65,7 +65,7 @@ public class YouTubeMPDBuilderInstrumentedTest {
     }
 
     private MediaItemFormatInfo getMediaItemDetails() {
-        List<MediaGroup> homeGroups = mService.getMediaGroupService().getHome();
+        List<MediaGroup> homeGroups = mService.getHomeService().getHome();
 
         List<MediaItem> mediaItems = homeGroups.get(0).getMediaItems();
 

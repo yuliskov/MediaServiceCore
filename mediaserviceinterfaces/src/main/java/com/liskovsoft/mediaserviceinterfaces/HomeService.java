@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 
 import java.util.List;
 
-public interface MediaGroupService {
+public interface HomeService {
     MediaGroup getSearch(String searchText);
     MediaGroup getSearch(String searchText, int options);
     List<MediaGroup> getSearchAlt(String searchText);

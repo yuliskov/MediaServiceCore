@@ -63,4 +63,19 @@ class BrowseService2Test {
 
         assertTrue("Trending not empty", trending?.get(0)?.mediaItems?.size ?: 0 > 10)
     }
+
+    @Test
+    fun testThatChannelSortingNotEmpty() {
+        val sorting = BrowseService2.getChannelSorting(TestHelpersV2.CHANNEL_ID_3)
+
+        assertTrue("Has sorting entries", (sorting?.size ?: 0) == 3)
+        assertTrue("Has continuations", sorting?.mapNotNull { it?.nextPageKey }?.size == 3)
+    }
+
+    @Test
+    fun testThatChannelSearchNotEmpty() {
+        val search = BrowseService2.getChannelSearch(TestHelpersV2.CHANNEL_ID_3, "army now")
+
+        assertTrue("Has items", (search?.mediaItems?.size ?: 0) > 3)
+    }
 }

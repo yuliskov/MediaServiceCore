@@ -392,6 +392,11 @@ public class YouTubeContentService implements ContentService {
         return getChannelObserve(channelId, null);
     }
 
+    @Override
+    public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
+        return getChannelObserve(item.getChannelId(), item.getParams());
+    }
+
     private Observable<List<MediaGroup>> getChannelObserve(String channelId, String params) {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -413,8 +418,30 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
-        return getChannelObserve(item.getChannelId(), item.getParams());
+    public Observable<List<MediaGroup>> getChannelSortingObserve(String channelId) {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            List<MediaGroup> channel = BrowseService2.getChannelSorting(channelId);
+            emitGroups2(emitter, channel);
+        });
+    }
+
+    @Override
+    public Observable<List<MediaGroup>> getChannelSortingObserve(MediaItem item) {
+        return item != null && item.getChannelId() != null ? getChannelSortingObserve(item.getChannelId()) : null;
+    }
+
+    @Override
+    public MediaGroup getChannelSearch(String channelId, String query) {
+        checkSigned();
+
+        return BrowseService2.getChannelSearch(channelId, query);
+    }
+
+    @Override
+    public Observable<MediaGroup> getChannelSearchObserve(String channelId, String query) {
+        return RxHelper.fromNullable(() -> getChannelSearch(channelId, query));
     }
 
     private Observable<List<MediaGroup>> emitHome(boolean newLook) {

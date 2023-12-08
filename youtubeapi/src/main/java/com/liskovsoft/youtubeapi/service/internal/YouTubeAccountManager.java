@@ -91,9 +91,6 @@ public class YouTubeAccountManager {
     }
 
     public List<Account> getAccounts() {
-        // Remove initial account (with only refresh key)
-        Helpers.removeIf(mAccounts, Account::isEmpty);
-
         return mAccounts;
     }
 
@@ -106,10 +103,15 @@ public class YouTubeAccountManager {
             return;
         }
 
-        addAccount(YouTubeAccount.fromToken(refreshToken));
+        // Create initial account (with only refresh key)
+        YouTubeAccount tempAccount = YouTubeAccount.fromToken(refreshToken);
+        addAccount(tempAccount);
 
-        // Create Auth header
+        // Use initial account to create auth header
         mSignInService.checkAuth();
+
+        // Remove initial account (with only refresh key)
+        removeAccount(tempAccount);
 
         List<AccountInt> accountsInt = mAuthService.getAccounts(); // runs under auth header from above
 
@@ -120,6 +122,8 @@ public class YouTubeAccountManager {
                 addAccount(account);
             }
         }
+
+        fixSelectedAccount();
 
         // Apply merged tokens
         mSignInService.checkAuth();
@@ -241,5 +245,19 @@ public class YouTubeAccountManager {
 
     public void setOnChange(Runnable onChange) {
         mOnChange = onChange;
+    }
+
+    /**
+     * Fix situations when there is no selected account<br/>
+     * Mark first one as selected.
+     */
+    private void fixSelectedAccount() {
+        if (mAccounts.isEmpty()) {
+            return;
+        }
+
+        if (getSelectedAccount() == null) {
+            ((YouTubeAccount) mAccounts.get(0)).setSelected(true);
+        }
     }
 }

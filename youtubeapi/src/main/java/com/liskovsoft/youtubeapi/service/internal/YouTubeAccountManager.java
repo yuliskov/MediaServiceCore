@@ -257,7 +257,7 @@ public class YouTubeAccountManager {
         }
 
         if (getSelectedAccount() == null) {
-            ((YouTubeAccount) mAccounts.get(0)).setSelected(true);
+            selectAccount(mAccounts.get(0));
         }
     }
 }

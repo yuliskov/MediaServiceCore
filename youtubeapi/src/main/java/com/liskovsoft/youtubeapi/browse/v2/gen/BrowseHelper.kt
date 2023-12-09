@@ -48,14 +48,16 @@ internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipCont
 
 /////
 
+private const val CONTINUATION_HEADER = "RELOAD_CONTINUATION_SLOT_HEADER" // channel sorting continuation header
+
 internal fun ContinuationResult.getItems(): List<ItemWrapper?>? = getContinuations()?.flatMap { it?.getItems() ?: listOfNotNull(it?.getItem()) }
 internal fun ContinuationResult.getContinuationToken(): String? = getContinuations()?.firstNotNullOfOrNull {
         it?.getContinuationToken()
     } ?:
     getContinuations()?.lastOrNull()?.getContinuationToken()
 internal fun ContinuationResult.getSections(): List<RichSectionRenderer?>? = getContinuations()?.mapNotNull { it?.richSectionRenderer }
-private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.getOrNull(0)?.let {
-        it.appendContinuationItemsAction?.continuationItems ?: it.reloadContinuationItemsCommand?.continuationItems
+private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.firstNotNullOfOrNull {
+        it?.appendContinuationItemsAction?.continuationItems ?: it?.reloadContinuationItemsCommand?.let { if (it.slot != CONTINUATION_HEADER) it.continuationItems else null }
     }
 
 

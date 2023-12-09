@@ -70,6 +70,9 @@ class BrowseService2Test {
 
         assertTrue("Has sorting entries", (sorting?.size ?: 0) == 3)
         assertTrue("Has continuations", sorting?.mapNotNull { it?.nextPageKey }?.size == 3)
+
+        val continueGroup = BrowseService2.continueGroup(sorting?.firstOrNull())
+        assertTrue("Can continue", (continueGroup?.mediaItems?.size ?: 0) > 3)
     }
 
     @Test

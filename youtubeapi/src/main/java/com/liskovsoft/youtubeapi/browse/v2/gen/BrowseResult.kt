@@ -42,7 +42,8 @@ internal data class ContinuationResult(
         )
 
         data class ReloadContinuationItemsCommand(
-            val continuationItems: List<SectionWrapper?>?
+            val continuationItems: List<SectionWrapper?>?,
+            val slot: String?
         )
     }
 }

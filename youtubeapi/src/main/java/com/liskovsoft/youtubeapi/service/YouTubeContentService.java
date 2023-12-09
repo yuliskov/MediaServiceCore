@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
@@ -417,14 +419,16 @@ public class YouTubeContentService implements ContentService {
         });
     }
 
+    @Nullable
+    private List<MediaGroup> getChannelSorting(String channelId) {
+        checkSigned();
+
+        return BrowseService2.getChannelSorting(channelId);
+    }
+
     @Override
     public Observable<List<MediaGroup>> getChannelSortingObserve(String channelId) {
-        return RxHelper.create(emitter -> {
-            checkSigned();
-
-            List<MediaGroup> channel = BrowseService2.getChannelSorting(channelId);
-            emitGroups2(emitter, channel);
-        });
+        return RxHelper.fromNullable(() -> getChannelSorting(channelId));
     }
 
     @Override
@@ -495,16 +499,31 @@ public class YouTubeContentService implements ContentService {
 
         Log.d(TAG, "emitGroups: begin emitting group of type %s...", groups.get(0).getType());
 
+        List<MediaGroup> collector = new ArrayList<>();
+
         for (MediaGroup group : groups) { // Preserve positions
-            if (group != null && group.isEmpty()) { // Contains Chips (nested sections)?
+            if (group == null) {
+                continue;
+            }
+
+            if (group.isEmpty()) { // Contains Chips (nested sections)?
+                if (!collector.isEmpty()) {
+                    emitter.onNext(collector);
+                    collector = new ArrayList<>();
+                }
+
                 List<MediaGroup> sections = BrowseService2.continueEmptyGroup(group);
 
                 if (sections != null) {
                     emitter.onNext(sections);
                 }
-            } else if (group != null) {
-                emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
+            } else {
+                collector.add(group);
             }
+        }
+
+        if (!collector.isEmpty()) {
+            emitter.onNext(collector);
         }
     }
 

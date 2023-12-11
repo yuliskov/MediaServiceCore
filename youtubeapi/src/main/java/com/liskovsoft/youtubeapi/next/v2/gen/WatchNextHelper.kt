@@ -110,7 +110,7 @@ internal fun ChapterRenderer.getThumbnailUrl() = thumbnail?.getOptimalResThumbna
 /////// Chapters V2
 
 internal fun MacroMarkersListItemRenderer.getTitle() = title?.toString()
-internal fun MacroMarkersListItemRenderer.getStartTimeMs(): Long? = onTap?.watchEndpoint?.startTimeSeconds?.let { it * 1_000L }
+internal fun MacroMarkersListItemRenderer.getStartTimeMs(): Long? = onTap?.watchEndpoint?.startTimeSeconds?.let { it.toLong() * 1_000 }
 internal fun MacroMarkersListItemRenderer.getThumbnailUrl() = thumbnail?.getOptimalResThumbnailUrl()
 
 ///////

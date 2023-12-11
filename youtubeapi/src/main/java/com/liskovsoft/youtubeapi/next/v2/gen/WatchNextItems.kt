@@ -296,7 +296,7 @@ internal data class TapItem(
     data class WatchEndpoint(
         val videoId: String?,
         val playlistId: String?,
-        val startTimeSeconds: Int?
+        val startTimeSeconds: Float?
     )
 }
 

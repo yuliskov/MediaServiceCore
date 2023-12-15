@@ -43,4 +43,8 @@ public class SectionTab {
     public String getReloadPageKey() {
         return mReloadPageKey;
     }
+
+    public boolean isEmpty() {
+        return mSections == null;
+    }
 }

@@ -471,10 +471,13 @@ public class YouTubeContentService implements ContentService {
                     emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
                 }
             } else {
-                // Fallback to old algo if user chrome page has no chips (why?)
                 SectionTab tab = mBrowseService.getHome();
 
-                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+                if (tab == null || tab.isEmpty()) {
+                    emitGroups2(emitter, BrowseService2.getHome());
+                } else {
+                    emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+                }
             }
         });
     }

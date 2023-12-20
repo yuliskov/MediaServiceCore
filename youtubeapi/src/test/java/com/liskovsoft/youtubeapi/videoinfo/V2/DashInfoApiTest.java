@@ -31,6 +31,9 @@ public class DashInfoApiTest {
 
     @Before
     public void setUp() throws Exception {
+        // Fix temp video url ban
+        Thread.sleep(3_000);
+
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");

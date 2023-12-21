@@ -7,7 +7,8 @@ internal data class SectionWrapper(
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
     val continuationItemRenderer: ContinuationItemRenderer?,
-    val playlistVideoRenderer: VideoItem? // ChannelPlaylist
+    val playlistVideoRenderer: VideoItem?, // ChannelPlaylist
+    val gridPlaylistRenderer: PlaylistItem? // ChannelPlaylist continuation
 )
 
 internal data class TabRenderer(

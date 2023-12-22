@@ -69,6 +69,9 @@ public class JsonPathTypeAdapter<T> {
         //
         //Log.d(TAG, "Parse time is %s ms", endTimeMs - startTimeMs);
 
+        // Dumping all data for debug purposes
+        //ReflectionHelper.dumpDebugInfo(getGenericType(), jsonContent);
+
         return result;
     }
 

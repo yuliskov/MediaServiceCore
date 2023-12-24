@@ -8,6 +8,8 @@ internal fun NotificationsResult.getItems(): List<NotificationItem?>? =
 
 internal fun NotificationItem.getVideoId() = notificationRenderer?.navigationEndpoint?.watchEndpoint?.videoId
 internal fun NotificationItem.getThumbnails() = notificationRenderer?.videoThumbnail
-internal fun NotificationItem.getTitle() = notificationRenderer?.shortMessage?.getText()
-internal fun NotificationItem.getSecondTitle() = notificationRenderer?.sentTimeText?.getText()
+internal fun NotificationItem.getMessage() = notificationRenderer?.shortMessage?.getText()
+internal fun NotificationItem.getPublishedTime() = notificationRenderer?.sentTimeText?.getText()
 internal fun NotificationItem.getNotificationToken() = notificationRenderer?.contextualMenu?.getNotificationToken()
+internal fun NotificationItem.getTitle() = getMessage()?.split(":")?.getOrNull(1)?.trim() ?: getMessage()
+internal fun NotificationItem.getUserName() = getMessage()?.split(":")?.getOrNull(0)

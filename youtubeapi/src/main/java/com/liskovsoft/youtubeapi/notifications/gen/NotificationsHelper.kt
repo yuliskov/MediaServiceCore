@@ -11,5 +11,5 @@ internal fun NotificationItem.getThumbnails() = notificationRenderer?.videoThumb
 internal fun NotificationItem.getMessage() = notificationRenderer?.shortMessage?.getText()
 internal fun NotificationItem.getPublishedTime() = notificationRenderer?.sentTimeText?.getText()
 internal fun NotificationItem.getNotificationToken() = notificationRenderer?.contextualMenu?.getNotificationToken()
-internal fun NotificationItem.getTitle() = getMessage()?.split(":")?.getOrNull(1)?.trim() ?: getMessage()
-internal fun NotificationItem.getUserName() = getMessage()?.split(":")?.getOrNull(0)
+internal fun NotificationItem.getTitle() = getMessage()?.split(":", limit = 2)?.getOrNull(1)?.trim() ?: getMessage()
+internal fun NotificationItem.getUserName() = getMessage()?.split(":", limit = 2)?.getOrNull(0)

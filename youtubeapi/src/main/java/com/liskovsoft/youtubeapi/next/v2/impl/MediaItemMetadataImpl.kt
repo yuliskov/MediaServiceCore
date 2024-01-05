@@ -171,11 +171,11 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     private val likeCountItem by lazy {
-        dislikesResult?.getLikeCount()?.let { "$it ${Helpers.THUMB_UP}" }
+        dislikesResult?.getLikeCount()
     }
 
     private val dislikeCountItem by lazy {
-        dislikesResult?.getDislikeCount()?.let { "$it ${Helpers.THUMB_DOWN}" }
+        dislikesResult?.getDislikeCount()
     }
 
     override fun getTitle(): String? {

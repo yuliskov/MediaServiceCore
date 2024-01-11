@@ -37,7 +37,7 @@ public class YouTubeAccount implements Account {
             return null;
         }
 
-        String[] split = Helpers.splitObjectLegacy(spec);
+        String[] split = Helpers.splitObject(spec);
 
         YouTubeAccount account = new YouTubeAccount();
 

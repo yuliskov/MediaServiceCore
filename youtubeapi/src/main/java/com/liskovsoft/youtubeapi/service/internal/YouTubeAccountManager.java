@@ -187,7 +187,7 @@ public class YouTubeAccountManager {
         String data = getAccountManagerData();
 
         if (data != null) {
-            String[] split = Helpers.splitArray(data);
+            String[] split = Helpers.splitArrayLegacy(data);
             mAccounts.clear();
 
             for (String spec : split) {

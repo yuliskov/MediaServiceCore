@@ -18,7 +18,7 @@ public final class YouTubeHelper {
      * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
      */
     public static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
-    private static final int SHORTS_LEN_MS = 60 * 1_000;
+    private static final int SHORTS_LEN_MS = 60_000;
 
     /**
      * Find optimal thumbnail for tv screen<br/>
@@ -122,7 +122,7 @@ public final class YouTubeHelper {
         String title = mediaItem.getTitle().toLowerCase();
 
         int lengthMs = mediaItem.getDurationMs();
-        boolean isShortLength = lengthMs > 0 && lengthMs < SHORTS_LEN_MS;
+        boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
         return isShortLength || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
     }
 

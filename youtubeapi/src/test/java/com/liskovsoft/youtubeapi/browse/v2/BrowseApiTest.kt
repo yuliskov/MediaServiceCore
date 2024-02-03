@@ -11,6 +11,8 @@ import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
+import com.liskovsoft.youtubeapi.next.v2.gen.getItems
+import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
 import org.junit.Before
@@ -58,7 +60,7 @@ class BrowseApiTest {
 
         assertNotNull("Contains continuation token", subs?.getContinuationToken())
 
-        checkContinuation(subs?.getContinuationToken())
+        checkContinuationWeb(subs?.getContinuationToken())
     }
 
     @Test
@@ -74,7 +76,7 @@ class BrowseApiTest {
 
         assertNotNull("Contains continuation token", home?.getContinuationToken())
 
-        checkContinuation(home?.getContinuationToken())
+        checkContinuationWeb(home?.getContinuationToken())
     }
 
     @Test
@@ -129,7 +131,7 @@ class BrowseApiTest {
 
         assertNotNull("Chip has title", chip?.getTitle())
 
-        checkContinuation(chip?.getContinuationToken(), false) // Chips usually don't support multiple continuation
+        checkContinuationWeb(chip?.getContinuationToken(), false) // Chips usually don't support multiple continuation
     }
 
     @Ignore("Doesn't contains chips")
@@ -166,6 +168,25 @@ class BrowseApiTest {
         val mediaGroup = KidsSectionMediaGroup(kidsHome?.getRootSection()!!)
 
         BrowseTestHelper.checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
+    }
+
+    @Test
+    fun testThatSportsNotEmpty() {
+        val sports = getSports()
+
+        assertNotNull("Contains sections", sports?.getShelves())
+        assertNotNull("Contains title", sports?.getShelves()?.firstOrNull()?.getTitle())
+        assertNotNull("Contains content", sports?.getShelves()?.firstOrNull()?.getItems())
+    }
+
+    @Test
+    fun testThatSportsCanBeContinued() {
+        val sports = getSports()
+
+        // recommended
+        val nextPageKey = sports?.getShelves()?.getOrNull(1)?.getNextPageKey()
+
+        checkContinuationTV(nextPageKey, true)
     }
 
     @Test
@@ -264,7 +285,7 @@ class BrowseApiTest {
 
         assertNotNull("Playlist has continuation", videos?.getContinuationToken())
 
-        checkContinuation(videos?.getContinuationToken())
+        checkContinuationWeb(videos?.getContinuationToken())
     }
 
     @Test
@@ -336,7 +357,7 @@ class BrowseApiTest {
         assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
     }
 
-    private fun checkContinuation(token: String?, checkNextToken: Boolean = true) {
+    private fun checkContinuationWeb(token: String?, checkNextToken: Boolean = true) {
         val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
@@ -345,6 +366,18 @@ class BrowseApiTest {
 
         if (checkNextToken) {
             assertNotNull("Contains next token", continuation?.getContinuationToken())
+        }
+    }
+
+    private fun checkContinuationTV(token: String?, checkNextToken: Boolean = true) {
+        val continuationResult = mService?.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(token!!))
+
+        val continuation = RetrofitHelper.get(continuationResult)
+
+        assertNotNull("Contains items", continuation?.getItems()?.getOrNull(0))
+
+        if (checkNextToken) {
+            assertNotNull("Contains next token", continuation?.getNextPageKey())
         }
     }
 
@@ -416,6 +449,12 @@ class BrowseApiTest {
 
     private fun getKidsHome(params: String?): BrowseResultKids? {
         val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params!!))
+
+        return RetrofitHelper.get(kidsResult)
+    }
+
+    private fun getSports(): BrowseResultTV? {
+        val kidsResult = mService?.getBrowseResultTV(BrowseApiHelper.getSportsQueryTV())
 
         return RetrofitHelper.get(kidsResult)
     }

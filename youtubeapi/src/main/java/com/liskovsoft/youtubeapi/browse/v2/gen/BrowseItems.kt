@@ -1,6 +1,9 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.*
+import com.liskovsoft.youtubeapi.next.v2.gen.ChipItem
+import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
+import com.liskovsoft.youtubeapi.next.v2.gen.ShelfRenderer
 
 internal data class SectionWrapper(
     val itemSectionRenderer: ItemSectionRenderer?,
@@ -61,46 +64,10 @@ internal data class RichSectionRenderer(
     }
 }
 
-// Subscriptions only
+// Subscriptions, Sports
 internal data class ItemSectionRenderer(
     val contents: List<Shelf?>?
-) {
-    data class Shelf (
-        val shelfRenderer: ShelfRenderer?,
-        val playlistVideoListRenderer: PlaylistVideoListRenderer?,
-        val gridRenderer: GridRenderer?,
-        val videoRenderer: VideoItem?
-    ) {
-        data class ShelfRenderer(
-            val title: TextItem?,
-            val content: Content?
-        ) {
-            data class Content(
-                val gridRenderer: GridRenderer?,
-                val expandedShelfContentsRenderer: ExpandedShelfContentsRenderer?,
-                val horizontalListRenderer: HorizontalListRenderer?
-            ) {
-                data class GridRenderer(
-                    val items: List<ItemWrapper?>?
-                )
-
-                data class ExpandedShelfContentsRenderer(
-                    val items: List<ItemWrapper?>?
-                )
-
-                data class HorizontalListRenderer(
-                    val items: List<ItemWrapper?>?
-                )
-            }
-        }
-        data class PlaylistVideoListRenderer(
-            val contents: List<ItemWrapper?>?
-        )
-        data class GridRenderer(
-            val items: List<ItemWrapper?>?
-        )
-    }
-}
+)
 
 // Common item (WhatToWatch, Subscriptions)
 internal data class RichItemRenderer(
@@ -179,3 +146,18 @@ internal data class ReelPlayerHeaderRenderer(
     val channelThumbnail: ThumbnailItem?,
     val reelTitleOnClickCommand: NavigationEndpointItem?
 )
+
+// Corresponds to the row
+internal data class Shelf(
+    val shelfRenderer: ShelfRenderer?,
+    val playlistVideoListRenderer: PlaylistVideoListRenderer?,
+    val gridRenderer: GridRenderer?,
+    val videoRenderer: VideoItem?
+) {
+    data class PlaylistVideoListRenderer(
+        val contents: List<ItemWrapper?>?
+    )
+    data class GridRenderer(
+        val items: List<ItemWrapper?>?
+    )
+}

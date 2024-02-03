@@ -31,6 +31,16 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
+    fun getSports(): List<MediaGroup?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getSportsQueryTV(), MediaGroup.TYPE_SPORTS)
+    }
+
+    @JvmStatic
+    fun getMovies(): List<MediaGroup?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getMoviesQueryTV(), MediaGroup.TYPE_MOVIES)
+    }
+
+    @JvmStatic
     fun getKidsHome(): List<MediaGroup?>? {
         val kidsResult = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery())
 
@@ -209,7 +219,12 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
-        return if (group is ShortsMediaGroup) continueShorts(group.nextPageKey) else continueChip(group)?.firstOrNull()
+        return when (group) {
+            is ShortsMediaGroup -> continueShorts(group.nextPageKey)
+            is ShelfSectionMediaGroup -> continueTVGroup(group)
+            is WatchNexContinuationMediaGroup -> continueTVGroup(group)
+            else -> continueChip(group)?.firstOrNull()
+        }
     }
 
     @JvmStatic
@@ -252,6 +267,19 @@ internal object BrowseService2 {
         }
     }
 
+    private fun continueTVGroup(group: MediaGroup?): MediaGroup? {
+        if (group?.nextPageKey == null) {
+            return null
+        }
+
+        val continuationResult =
+            mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(group.nextPageKey))
+
+        return RetrofitHelper.get(continuationResult)?.let {
+            WatchNexContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title }
+        }
+    }
+
     private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
         val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideShortsFromSubscriptionsEnabled ?: false) ||
@@ -289,6 +317,16 @@ internal object BrowseService2 {
             it.getSections()?.forEach { if (it?.getTitle() != null) addOrMerge(result, RichSectionMediaGroup(it, createOptions(sectionType))) }
             it.getChips()?.forEach { if (it?.getTitle() != null) result.add(ChipMediaGroup(it, createOptions(sectionType))) }
 
+            result
+        }
+    }
+
+    private fun getBrowseRowsTV(query: String, sectionType: Int): List<MediaGroup?>? {
+        val browseResult = mBrowseApi.getBrowseResultTV(query)
+
+        return RetrofitHelper.get(browseResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+            it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, createOptions(sectionType))) }
             result
         }
     }

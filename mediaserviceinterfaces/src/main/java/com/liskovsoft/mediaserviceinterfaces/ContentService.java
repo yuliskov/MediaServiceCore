@@ -52,6 +52,7 @@ public interface ContentService {
     Observable<List<MediaGroup>> getTrendingObserve();
     Observable<MediaGroup> getShortsObserve();
     Observable<List<MediaGroup>> getKidsHomeObserve();
+    Observable<List<MediaGroup>> getSportsObserve();
     Observable<List<MediaGroup>> getMusicObserve();
     Observable<List<MediaGroup>> getNewsObserve();
     Observable<List<MediaGroup>> getGamingObserve();

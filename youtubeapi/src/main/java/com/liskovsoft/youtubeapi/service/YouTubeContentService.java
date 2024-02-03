@@ -357,6 +357,16 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
+    public Observable<List<MediaGroup>> getSportsObserve() {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            List<MediaGroup> sections = BrowseService2.getSports();
+            emitGroups2(emitter, sections);
+        });
+    }
+
+    @Override
     public Observable<List<MediaGroup>> getMusicObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();

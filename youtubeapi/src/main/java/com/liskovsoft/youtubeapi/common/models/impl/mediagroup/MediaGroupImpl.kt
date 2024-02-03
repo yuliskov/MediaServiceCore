@@ -8,6 +8,9 @@ import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.GuideMediaItem
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaItem
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
+import com.liskovsoft.youtubeapi.next.v2.gen.getItems
+import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import com.liskovsoft.youtubeapi.notifications.gen.getItems
 
@@ -43,6 +46,15 @@ internal data class ContinuationMediaGroup(
     override fun getTitleInt(): String? = null
 }
 
+internal data class WatchNexContinuationMediaGroup(
+    private val continuation: WatchNextResultContinuation,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): BaseMediaGroup(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = continuation.getItems()
+    override fun getNextPageKeyInt(): String? = continuation.getNextPageKey()
+    override fun getTitleInt(): String? = null
+}
+
 internal data class RichSectionMediaGroup(
     private val richSectionRenderer: RichSectionRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
@@ -50,6 +62,15 @@ internal data class RichSectionMediaGroup(
     override fun getItemWrappersInt(): List<ItemWrapper?>? = richSectionRenderer.getItems()
     override fun getNextPageKeyInt(): String? = richSectionRenderer.getContinuationToken()
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
+}
+
+internal data class ShelfSectionMediaGroup(
+    private val shelf: Shelf,
+    private val options: MediaGroupOptions = MediaGroupOptions()
+): BaseMediaGroup(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = shelf.getItems()
+    override fun getNextPageKeyInt(): String? = shelf.getNextPageKey()
+    override fun getTitleInt(): String? = shelf.getTitle()
 }
 
 internal data class ItemSectionMediaGroup(

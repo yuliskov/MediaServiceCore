@@ -21,6 +21,8 @@ public interface MediaGroup {
     int TYPE_TRENDING = 14;
     int TYPE_SHORTS = 15;
     int TYPE_NOTIFICATIONS = 16;
+    int TYPE_SPORTS = 17;
+    int TYPE_MOVIES = 18;
     int getType();
     List<MediaItem> getMediaItems();
     String getTitle();

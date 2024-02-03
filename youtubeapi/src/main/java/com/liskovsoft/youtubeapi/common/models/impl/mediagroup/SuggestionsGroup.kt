@@ -77,7 +77,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
 
             val mediaItems = ArrayList<MediaItem>()
 
-            val items = continuation.continuationContents?.horizontalListContinuation?.items
+            val items = continuation.getItems()
 
             if (items != null) {
                 for (i in items.indices) {
@@ -99,8 +99,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
 
             // Fix duplicated items after previous group reuse
             newGroup.mediaItems = if (mediaItems.isNotEmpty()) mediaItems else null
-            val nextKey = continuation.continuationContents?.horizontalListContinuation?.continuations
-                ?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
+            val nextKey = continuation.getNextPageKey()
             newGroup.nextPageKey = nextKey
             newGroup.title = baseGroup.title
 

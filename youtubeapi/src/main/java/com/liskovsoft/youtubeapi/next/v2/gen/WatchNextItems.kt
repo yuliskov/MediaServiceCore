@@ -19,8 +19,18 @@ internal data class ShelfRenderer(
     val headerRenderer: HeaderRenderer?
 ) {
     data class Content(
+        val gridRenderer: GridRenderer?,
+        val expandedShelfContentsRenderer: ExpandedShelfContentsRenderer?,
         val horizontalListRenderer: HorizontalListRenderer?
     ) {
+        data class GridRenderer(
+            val items: List<ItemWrapper?>?
+        )
+
+        data class ExpandedShelfContentsRenderer(
+            val items: List<ItemWrapper?>?
+        )
+
         data class HorizontalListRenderer(
                 val items: List<ItemWrapper?>?,
                 val continuations: List<ContinuationItem?>?

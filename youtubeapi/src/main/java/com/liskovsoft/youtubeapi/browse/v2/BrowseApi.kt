@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -34,11 +35,27 @@ internal interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
+        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
+        "referer: https://www.youtube.com/tv"
+    )
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    fun getBrowseResultTV(@Body browseQuery: String?): Call<BrowseResultTV?>?
+
+    @Headers(
+        "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
         "referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getContinuationResult(@Body continuationQuery: String?): Call<ContinuationResult?>?
+
+    @Headers(
+        "Content-Type: application/json",
+        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
+        "referer: https://www.youtube.com/tv"
+    )
+    @POST("https://www.youtube.com/youtubei/v1/browse")
+    fun getContinuationResultTV(@Body continuationQuery: String?): Call<WatchNextResultContinuation?>?
 
     @Headers(
         "Content-Type: application/json",

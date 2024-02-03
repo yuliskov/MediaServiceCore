@@ -1,8 +1,24 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.common.models.gen.*
-import com.liskovsoft.youtubeapi.next.v2.gen.*
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
+import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
+import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
+import com.liskovsoft.youtubeapi.common.models.gen.getContinuationToken
+import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackTokens
+import com.liskovsoft.youtubeapi.common.models.gen.getSubtitle
+import com.liskovsoft.youtubeapi.common.models.gen.getText
+import com.liskovsoft.youtubeapi.common.models.gen.getTitle
+import com.liskovsoft.youtubeapi.common.models.gen.isLive
+import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
+import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+import com.liskovsoft.youtubeapi.next.v2.gen.getChannelName
+import com.liskovsoft.youtubeapi.next.v2.gen.getItemWrappers
+import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getPublishDate
+import com.liskovsoft.youtubeapi.next.v2.gen.getTitle
+import com.liskovsoft.youtubeapi.next.v2.gen.getViews
 
 /**
  *  Always renders first tab
@@ -149,4 +165,11 @@ internal fun ReelContinuationResult.getContinuationKey(): String? = continuation
 
 internal fun ReelWatchEndpoint.getVideoId(): String? = videoId
 internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
+
+///////
+
+internal fun BrowseResultTV.getShelves(): List<Shelf?>? = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content?.sectionListRenderer?.contents
+internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
+internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers()
+internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()
 

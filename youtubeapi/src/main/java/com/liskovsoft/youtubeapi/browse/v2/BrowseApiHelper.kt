@@ -19,6 +19,8 @@ internal object BrowseApiHelper {
     private const val WHAT_TO_WATCH = "\"browseId\":\"FEwhat_to_watch\""
     private const val TRENDING = "\"browseId\":\"FEtrending\",\"params\":\"6gQJRkVleHBsb3Jl\""
     private const val SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\""
+    private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
+    private const val MOVIES = "\"browseId\":\"FEtopics_movies\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
     private const val REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}"
     private const val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
@@ -105,6 +107,14 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQueryWeb(SUBSCRIPTIONS)
     }
 
+    fun getSportsQueryTV(): String {
+        return ServiceHelper.createQueryTV(SPORTS)
+    }
+
+    fun getMoviesQueryTV(): String {
+        return ServiceHelper.createQueryTV(MOVIES)
+    }
+
     /**
      * Get data param for the next search/grid etc
      * @param nextPageKey [GridTab.getNextPageKey]
@@ -113,5 +123,10 @@ internal object BrowseApiHelper {
     fun getContinuationQueryWeb(nextPageKey: String): String {
         val continuation = String.format(CONTINUATION, nextPageKey)
         return ServiceHelper.createQueryWeb(continuation)
+    }
+
+    fun getContinuationQueryTV(nextPageKey: String): String {
+        val continuation = String.format(CONTINUATION, nextPageKey)
+        return ServiceHelper.createQueryTV(continuation)
     }
 }

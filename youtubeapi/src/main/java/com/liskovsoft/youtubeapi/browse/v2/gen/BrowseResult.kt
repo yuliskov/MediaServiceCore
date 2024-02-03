@@ -1,8 +1,11 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.PlaylistItem
+import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 
 /**
  * Based on:
@@ -125,5 +128,29 @@ internal data class ReelContinuationResult(
         data class Command(
             val reelWatchEndpoint: ReelWatchEndpoint?
         )
+    }
+}
+
+internal data class BrowseResultTV(
+    val contents: Contents?
+) {
+    data class Contents(
+        val tvBrowseRenderer: TvBrowseRenderer?
+    ) {
+        data class TvBrowseRenderer(
+            val content: Content?
+        ) {
+            data class Content(
+                val tvSurfaceContentRenderer: TvSurfaceContentRenderer?
+            ) {
+                data class TvSurfaceContentRenderer(
+                    val content: Content?
+                ) {
+                    data class Content(
+                        val sectionListRenderer: ItemSectionRenderer?
+                    )
+                }
+            }
+        }
     }
 }

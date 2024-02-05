@@ -18,9 +18,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SponsorBlockManagerTest {
+public class SponsorBlockApiTest {
     private static final String VIDEO_ID = "0e3GPea1Tyg"; // Mr. Beast
-    private SponsorBlockManager mService;
+    private SponsorBlockApi mService;
 
     @Before
     public void setUp() {
@@ -30,7 +30,7 @@ public class SponsorBlockManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(SponsorBlockManager.class);
+        mService = RetrofitHelper.withJsonPath(SponsorBlockApi.class);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
+import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -13,6 +14,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
+import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
@@ -473,6 +475,15 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
         return RxHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
+    }
+
+    @Override
+    public Observable<DeArrowData> getDeArrowDataObserve(String videoId) {
+        return RxHelper.fromNullable(() -> getDeArrowData(videoId));
+    }
+
+    private DeArrowData getDeArrowData(String videoId) {
+        return DeArrowService.getData(videoId);
     }
 
     public void invalidateCache() {

@@ -10,10 +10,10 @@ import java.util.Set;
 
 public class SponsorBlockService {
     private static SponsorBlockService sInstance;
-    private final SponsorBlockManager mSponsorBlockManager;
+    private final SponsorBlockApi mSponsorBlockApi;
 
     private SponsorBlockService() {
-        mSponsorBlockManager = RetrofitHelper.withJsonPath(SponsorBlockManager.class);
+        mSponsorBlockApi = RetrofitHelper.withJsonPath(SponsorBlockApi.class);
     }
 
     public static SponsorBlockService instance() {
@@ -26,7 +26,7 @@ public class SponsorBlockService {
 
     public SegmentList getSegmentList(String videoId) {
         Call<SegmentList> wrapper =
-                isAltServerEnabled() ? mSponsorBlockManager.getSegments2(videoId) : mSponsorBlockManager.getSegments(videoId);
+                isAltServerEnabled() ? mSponsorBlockApi.getSegments2(videoId) : mSponsorBlockApi.getSegments(videoId);
 
         return RetrofitHelper.get(wrapper);
     }
@@ -37,8 +37,8 @@ public class SponsorBlockService {
 
     private SegmentList getSegmentListInt(String videoId, Set<String> categories) {
         Call<SegmentList> wrapper = isAltServerEnabled() ?
-                mSponsorBlockManager.getSegments2(videoId, ServiceHelper.toJsonArrayString(categories)) :
-                mSponsorBlockManager.getSegments(videoId, ServiceHelper.toJsonArrayString(categories));
+                mSponsorBlockApi.getSegments2(videoId, ServiceHelper.toJsonArrayString(categories)) :
+                mSponsorBlockApi.getSegments(videoId, ServiceHelper.toJsonArrayString(categories));
 
         return RetrofitHelper.get(wrapper);
     }

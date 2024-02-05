@@ -16,6 +16,10 @@ internal object DeArrowService {
 
         return RetrofitHelper.get(branding)?.let {
             object : DeArrowData {
+                override fun getVideoId(): String {
+                    return videoId
+                }
+
                 override fun getTitle(): String? {
                     return it.titles?.firstOrNull()?.title
                 }

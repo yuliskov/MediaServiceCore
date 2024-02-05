@@ -84,4 +84,5 @@ public interface MediaItemService {
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories);
     Observable<DeArrowData> getDeArrowDataObserve(String videoId);
+    Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds);
 }

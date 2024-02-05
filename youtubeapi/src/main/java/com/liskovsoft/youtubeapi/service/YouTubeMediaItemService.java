@@ -482,6 +482,19 @@ public class YouTubeMediaItemService implements MediaItemService {
         return RxHelper.fromNullable(() -> getDeArrowData(videoId));
     }
 
+    @Override
+    public Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds) {
+        return RxHelper.create(emitter -> {
+            for (String videoId : videoIds) {
+                DeArrowData result = getDeArrowData(videoId);
+                if (result != null) {
+                    emitter.onNext(result);
+                }
+            }
+            emitter.onComplete();
+        });
+    }
+
     private DeArrowData getDeArrowData(String videoId) {
         return DeArrowService.getData(videoId);
     }

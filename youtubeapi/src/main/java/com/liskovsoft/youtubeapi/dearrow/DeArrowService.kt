@@ -21,7 +21,7 @@ internal object DeArrowService {
                 }
 
                 override fun getTitle(): String? {
-                    return it.titles?.firstOrNull()?.title
+                    return it.titles?.firstOrNull { !(it?.original ?: false) }?.title
                 }
 
                 override fun getThumbnailUrl(): String? {

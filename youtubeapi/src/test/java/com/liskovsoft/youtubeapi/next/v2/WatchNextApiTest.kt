@@ -124,7 +124,7 @@ class WatchNextApiTest {
         val dislikesResult = RetrofitHelper.get(dislikes)
 
         assertNotNull("Contains dislikes", dislikesResult?.dislikes)
-        assertTrue("Dislikes count bigger than zero", dislikesResult?.dislikes ?: 0 > 0)
+        assertTrue("Dislikes count bigger than zero", (dislikesResult?.dislikes ?: 0) > 0)
     }
 
     private fun testBaseFields(metadata: MediaItemMetadata?) {
@@ -135,6 +135,7 @@ class WatchNextApiTest {
         assertNotNull("Contains video id", metadata?.videoId)
         assertNotNull("Contains view count", metadata?.viewCount)
         assertNotNull("Contains date", metadata?.publishedDate)
+        //assertNotNull("Contains subs count", metadata?.subscriberCount)
     }
 
     private fun getMediaItemMetadataUnsigned() = mService!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)

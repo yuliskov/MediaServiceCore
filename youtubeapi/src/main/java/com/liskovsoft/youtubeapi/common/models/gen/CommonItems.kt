@@ -112,6 +112,8 @@ internal data class ToggleButtonRenderer(
 internal data class SubscribeButtonRenderer(
     val subscribed: Boolean?,
     val channelId: String?,
+    val subscriberCountText: TextItem?,
+    val shortSubscriberCountText: TextItem?,
     val serviceEndpoints: List<DefaultServiceEndpoint?>?,
     val notificationPreferenceButton: NotificationPreferenceButton?
 )

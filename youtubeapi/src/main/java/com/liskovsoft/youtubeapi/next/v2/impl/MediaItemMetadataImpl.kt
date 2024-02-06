@@ -95,19 +95,20 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val videoSecondTitle by lazy {
         YouTubeHelper.createInfo(
-                videoAuthor, viewCountText, publishedTime
+                subscriberCountItem?.let { "$videoAuthor $subscriberCountItem" } ?: videoAuthor, viewCountText, publishedTime
         )
     }
     private val videoSecondTitleAlt by lazy {
         YouTubeHelper.createInfo(
-                videoAuthor, viewCountText, publishedDate
+            subscriberCountItem?.let { "$videoAuthor $subscriberCountItem" } ?: videoAuthor, viewCountText, publishedDate
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
+    private val subscriberCountItem by lazy { videoOwner?.getSubscriberCount() }
     private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
-        val list = suggestedSections?.mapNotNull { if (it?.getItemWrappers() != null) SuggestionsGroup(it) else null }
-        if (list?.size ?: 0 > 0)
+        val list = suggestedSections?.mapNotNull { if (it.getItemWrappers() != null) SuggestionsGroup(it) else null }
+        if ((list?.size ?: 0) > 0)
             list
         else
             // In rare cases first chip item contains all shelfs
@@ -134,7 +135,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     private val isLiveStream by lazy {
-        videoMetadata?.isLive() ?: liveChatKeyItem != null
+        videoMetadata?.isLive() ?: (liveChatKeyItem != null)
     }
 
     private val playlistInfoItem by lazy {

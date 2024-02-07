@@ -135,7 +135,7 @@ class WatchNextApiTest {
         assertNotNull("Contains video id", metadata?.videoId)
         assertNotNull("Contains view count", metadata?.viewCount)
         assertNotNull("Contains date", metadata?.publishedDate)
-        //assertNotNull("Contains subs count", metadata?.subscriberCount)
+        assertNotNull("Contains subs count", metadata?.subscriberCount)
     }
 
     private fun getMediaItemMetadataUnsigned() = mService!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)

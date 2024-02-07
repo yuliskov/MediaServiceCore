@@ -263,6 +263,10 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         return dislikeCountItem
     }
 
+    override fun getSubscriberCount(): String? {
+        return subscriberCountItem
+    }
+
     override fun getSuggestions(): List<MediaGroup?>? {
         return suggestionList
     }

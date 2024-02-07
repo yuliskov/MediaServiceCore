@@ -15,6 +15,7 @@ public interface MediaItemMetadata {
     String getViewCount();
     String getLikeCount();
     String getDislikeCount();
+    String getSubscriberCount();
     String getPublishedDate();
     String getVideoId();
     MediaItem getNextVideo();

@@ -33,7 +33,7 @@ internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlaye
     engagementPanels?.firstNotNullOfOrNull { it?.engagementPanelSectionListRenderer?.content?.macroMarkersListRenderer?.contents }
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 // One of the suggested rows is too short or empty
-internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true || getSuggestedSections()?.filter { it.getItemWrappers()?.size ?: 0 <= 3 }?.size ?: 0 >= 3
+internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true || (getSuggestedSections()?.filter { (it.getItemWrappers()?.size ?: 0) <= 3 }?.size ?: 0) >= 3
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = continuationContents?.horizontalListContinuation?.items

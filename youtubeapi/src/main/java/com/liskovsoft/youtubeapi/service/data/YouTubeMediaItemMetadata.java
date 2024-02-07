@@ -206,6 +206,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
+    public String getSubscriberCount() {
+        return null;
+    }
+
+    @Override
     public String getPublishedDate() {
         return mPublishedDate;
     }

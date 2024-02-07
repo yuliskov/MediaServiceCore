@@ -11,5 +11,5 @@ internal interface DeArrowApi {
     fun getBranding(@Query("videoID") videoId: String?): Call<BrandingList?>?
 
     @GET(DeArrowApiHelper.THUMBNAIL_URL)
-    fun getThumbnail(@Query("videoID") videoId: String?): Call<ResponseBody?>?
+    fun getThumbnail(@Query("videoID") videoId: String?, @Query("time") timestamp: Float?): Call<ResponseBody?>?
 }

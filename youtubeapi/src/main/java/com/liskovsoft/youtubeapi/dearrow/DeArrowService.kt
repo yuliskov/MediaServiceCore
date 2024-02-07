@@ -24,8 +24,8 @@ internal object DeArrowService {
                     return it.titles?.firstOrNull { !(it?.original ?: false) }?.title
                 }
 
-                override fun getThumbnailUrl(): String {
-                    return "${DeArrowApiHelper.THUMBNAIL_URL}?videoID=$videoId"
+                override fun getThumbnailUrl(): String? {
+                    return it.thumbnails?.firstOrNull { !(it?.original ?: false) }?.let { "${DeArrowApiHelper.THUMBNAIL_URL}?videoID=$videoId&time=${it.timestamp}" }
                 }
             }
         }

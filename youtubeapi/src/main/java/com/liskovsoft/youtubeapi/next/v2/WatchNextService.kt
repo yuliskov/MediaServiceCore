@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2
 
+import com.liskovsoft.mediaserviceinterfaces.data.DislikeData
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
@@ -12,25 +13,31 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
+import com.liskovsoft.youtubeapi.next.v2.gen.getDislikeCount
+import com.liskovsoft.youtubeapi.next.v2.gen.getLikeCount
 import com.liskovsoft.youtubeapi.next.v2.gen.isEmpty
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 
-internal class WatchNextService private constructor() {
+internal object WatchNextService {
     private var mWatchNextApi = RetrofitHelper.withGson(WatchNextApi::class.java)
     private val mAppService = AppService.instance()
 
+    @JvmStatic
     fun getMetadata(videoId: String): MediaItemMetadata? {
         return getMetadata(videoId, null, 0)
     }
 
+    @JvmStatic
     fun getMetadata(item: MediaItem): MediaItemMetadata? {
         return getMetadata(item.videoId, item.playlistId, item.playlistIndex)
     }
 
+    @JvmStatic
     fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int): MediaItemMetadata? {
         return getMetadata(videoId, playlistId, playlistIndex, null)
     }
 
+    @JvmStatic
     fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         val watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
         var suggestionsResult: WatchNextResult? = null
@@ -40,9 +47,10 @@ internal class WatchNextService private constructor() {
             suggestionsResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
         }
 
-        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, getDislikesResult(videoId), suggestionsResult) else null
+        return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, suggestionsResult) else null
     }
 
+    @JvmStatic
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {
         val nextKey = YouTubeHelper.extractNextKey(mediaGroup)
 
@@ -58,6 +66,29 @@ internal class WatchNextService private constructor() {
         }
 
         return SuggestionsGroup.from(continuation, mediaGroup)
+    }
+
+    @JvmStatic
+    fun getDislikeData(videoId: String?): DislikeData? {
+        return getDislikesResult(videoId)?.let {
+             object : DislikeData {
+                 override fun getVideoId(): String? {
+                     return it.id
+                 }
+
+                 override fun getLikeCount(): String? {
+                     return it.getLikeCount()
+                 }
+
+                 override fun getDislikeCount(): String? {
+                     return it.getDislikeCount()
+                 }
+
+                 override fun getViewCount(): Long {
+                     return it.viewCount ?: 0
+                 }
+             }
+        }
     }
 
     private fun getWatchNextResult(videoId: String?): WatchNextResult? {
@@ -99,21 +130,5 @@ internal class WatchNextService private constructor() {
      */
     fun setWatchNextApi(watchNextApi: WatchNextApi) {
         mWatchNextApi = watchNextApi
-    }
-
-    companion object {
-        private var sInstance: WatchNextService? = null
-        @JvmStatic
-        fun instance(): WatchNextService? {
-            if (sInstance == null) {
-                sInstance = WatchNextService()
-            }
-            return sInstance
-        }
-
-        @JvmStatic
-        fun unhold() {
-            sInstance = null
-        }
     }
 }

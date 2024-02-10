@@ -1,6 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
 import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
+import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -85,4 +86,5 @@ public interface MediaItemService {
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories);
     Observable<DeArrowData> getDeArrowDataObserve(String videoId);
     Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds);
+    Observable<DislikeData> getDislikeDataObserve(String videoId);
 }

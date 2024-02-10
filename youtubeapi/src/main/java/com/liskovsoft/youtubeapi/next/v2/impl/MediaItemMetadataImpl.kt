@@ -4,7 +4,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.*
 import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem
 import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
-import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
@@ -14,7 +13,6 @@ import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 
 internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
-                                 val dislikesResult: DislikesResult? = null,
                                  val suggestionsResult: WatchNextResult? = null) : MediaItemMetadata {
     private val channelIdItem by lazy {
         videoDetails?.getChannelId() ?: videoOwner?.getChannelId() ?: channelOwner?.getChannelId()
@@ -95,12 +93,12 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val videoSecondTitle by lazy {
         YouTubeHelper.createInfo(
-                subscriberCountItem?.let { "$videoAuthor $subscriberCountItem" } ?: videoAuthor, viewCountText, publishedTime
+                videoAuthor, subscriberCountItem, viewCountText, publishedTime
         )
     }
     private val videoSecondTitleAlt by lazy {
         YouTubeHelper.createInfo(
-            subscriberCountItem?.let { "$videoAuthor $subscriberCountItem" } ?: videoAuthor, viewCountText, publishedDate
+            videoAuthor, subscriberCountItem, viewCountText, publishedDate
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
@@ -172,11 +170,11 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     private val likeCountItem by lazy {
-        dislikesResult?.getLikeCount()
+        null
     }
 
     private val dislikeCountItem by lazy {
-        dislikesResult?.getDislikeCount()
+        null
     }
 
     override fun getTitle(): String? {

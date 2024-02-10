@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
+import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -36,8 +37,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     private static YouTubeMediaItemService sInstance;
     private final YouTubeSignInService mSignInManager;
     private final SponsorBlockService mSponsorBlockService;
-    private final WatchNextService mWatchNextService;
-    //private final WatchNextServiceOld mWatchNextServiceOld;
     private final TrackingService mTrackingService;
     private final VideoInfoService mVideoInfoService;
     private final ActionsService mActionsService;
@@ -48,8 +47,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     private YouTubeMediaItemService() {
         mSignInManager = YouTubeSignInService.instance();
         mSponsorBlockService = SponsorBlockService.instance();
-        mWatchNextService = WatchNextService.instance();
-        //mWatchNextServiceOld = WatchNextServiceOld.instance();
         mTrackingService = TrackingService.instance();
         mVideoInfoService = VideoInfoService.instance();
         mActionsService = ActionsService.instance();
@@ -142,7 +139,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private MediaItemMetadata getMetadataV2(String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        return mWatchNextService.getMetadata(videoId, playlistId, playlistIndex, playlistParams);
+        return WatchNextService.getMetadata(videoId, playlistId, playlistIndex, playlistParams);
     }
 
     @Override
@@ -151,7 +148,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private MediaItemMetadata getMetadataIntV2(String videoId) {
-        return mWatchNextService.getMetadata(videoId);
+        return WatchNextService.getMetadata(videoId);
     }
 
     //@Override
@@ -177,7 +174,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         checkSigned();
 
         if (mediaGroup instanceof SuggestionsGroup) {
-            return mWatchNextService.continueGroup(mediaGroup);
+            return WatchNextService.continueGroup(mediaGroup);
         }
 
         // Continue special embedded section group
@@ -497,6 +494,11 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     private DeArrowData getDeArrowData(String videoId) {
         return DeArrowService.getData(videoId);
+    }
+
+    @Override
+    public Observable<DislikeData> getDislikeDataObserve(String videoId) {
+        return RxHelper.fromNullable(() -> WatchNextService.getDislikeData(videoId));
     }
 
     public void invalidateCache() {

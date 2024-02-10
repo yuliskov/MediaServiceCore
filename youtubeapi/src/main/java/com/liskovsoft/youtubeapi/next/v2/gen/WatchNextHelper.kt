@@ -10,7 +10,8 @@ internal fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?
 internal fun VideoOwnerItem.getThumbnails() = thumbnail
 internal fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlayToggleButton()?.getSubscribeParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams()
 internal fun VideoOwnerItem.getNotificationPreference() = subscribeButton?.subscribeButtonRenderer?.notificationPreferenceButton
-internal fun VideoOwnerItem.getSubscriberCount() = subscribeButton?.subscribeButtonRenderer?.shortSubscriberCountText?.getText()
+internal fun VideoOwnerItem.getSubscriberCount() = subscribeButton?.subscribeButtonRenderer?.longSubscriberCountText?.getText()
+internal fun VideoOwnerItem.getShortSubscriberCount() = subscribeButton?.subscribeButtonRenderer?.shortSubscriberCountText?.getText()
 
 /////
 
@@ -47,7 +48,8 @@ const val LIKE_STATUS_DISLIKE = "DISLIKE"
 const val LIKE_STATUS_INDIFFERENT = "INDIFFERENT"
 internal fun VideoMetadataItem.getVideoOwner() = owner?.videoOwnerRenderer
 internal fun VideoMetadataItem.getTitle() = title?.getText()
-internal fun VideoMetadataItem.getViewCountText() = viewCount?.videoViewCountRenderer?.viewCount?.getText() ?: viewCountText?.getText()
+internal fun VideoMetadataItem.getLongViewCountText() = viewCount?.videoViewCountRenderer?.viewCount?.getText() ?: viewCountText?.getText()
+internal fun VideoMetadataItem.getViewCountText() = viewCount?.videoViewCountRenderer?.shortViewCount?.getText() ?: shortViewCountText?.getText()
 internal fun VideoMetadataItem.isLive() = viewCount?.videoViewCountRenderer?.isLive
 internal fun VideoMetadataItem.getDateText() = dateText?.getText()
 internal fun VideoMetadataItem.getPublishedTime() = publishedTimeText?.getText() ?: publishedTime?.getText() ?: albumName?.getText()

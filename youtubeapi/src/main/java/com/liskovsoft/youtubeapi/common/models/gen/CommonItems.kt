@@ -114,6 +114,7 @@ internal data class SubscribeButtonRenderer(
     val channelId: String?,
     val subscriberCountText: TextItem?,
     val shortSubscriberCountText: TextItem?,
+    val longSubscriberCountText: TextItem?,
     val serviceEndpoints: List<DefaultServiceEndpoint?>?,
     val notificationPreferenceButton: NotificationPreferenceButton?
 )

@@ -86,7 +86,7 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 /////
 
-internal fun ItemSectionRenderer.getTitle(): String? = contents?.firstOrNull()?.shelfRenderer?.title?.getText()
+internal fun ItemSectionRenderer.getTitle(): String? = getShelfRenderer()?.title?.getText()
 internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.let {
     it.shelfRenderer?.content?.let { it.gridRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.horizontalListRenderer?.items } ?:
     it.playlistVideoListRenderer?.contents ?:
@@ -94,7 +94,10 @@ internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()
     it.videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
 }
 internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let { it.playlistVideoListRenderer?.contents ?: it.gridRenderer?.items }?.lastOrNull()?.getContinuationToken()
+internal fun ItemSectionRenderer.getBrowseId() = getShelfRenderer()?.endpoint?.getBrowseId()
+internal fun ItemSectionRenderer.getBrowseParams() = getShelfRenderer()?.endpoint?.getBrowseParams()
 private fun ItemSectionRenderer.getContents() = contents?.getOrNull(0)
+private fun ItemSectionRenderer.getShelfRenderer() = contents?.firstOrNull()?.shelfRenderer
 
 /////
 

@@ -107,6 +107,10 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQueryWeb(SUBSCRIPTIONS)
     }
 
+    fun getBrowseQueryWeb(browseId: String, browseParams: String?): String {
+        return ServiceHelper.createQueryWeb(browseParams?.let { String.format(CHANNEL_FULL, browseId, browseParams) } ?: String.format(CHANNEL, browseId))
+    }
+
     fun getSportsQueryTV(): String {
         return ServiceHelper.createQueryTV(SPORTS)
     }

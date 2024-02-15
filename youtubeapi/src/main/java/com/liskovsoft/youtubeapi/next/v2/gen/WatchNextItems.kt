@@ -16,7 +16,8 @@ internal data class NextVideoItem(
 internal data class ShelfRenderer(
     val title: TextItem?,
     val content: Content?,
-    val headerRenderer: HeaderRenderer?
+    val headerRenderer: HeaderRenderer?,
+    val endpoint: NavigationEndpointItem?
 ) {
     data class Content(
         val gridRenderer: GridRenderer?,

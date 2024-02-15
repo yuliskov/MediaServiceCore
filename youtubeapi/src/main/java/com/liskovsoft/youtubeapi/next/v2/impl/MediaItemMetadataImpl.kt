@@ -93,16 +93,16 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val videoSecondTitle by lazy {
         YouTubeHelper.createInfo(
-                videoAuthor, subscriberCountItem, viewCountText, publishedTime
+            subscriberCountItem, videoAuthor, viewCountText, publishedTime
         )
     }
     private val videoSecondTitleAlt by lazy {
         YouTubeHelper.createInfo(
-            videoAuthor, subscriberCountItem, viewCountText, publishedDate
+            subscriberCountItem, videoAuthor, viewCountText, publishedDate
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
-    private val subscriberCountItem by lazy { videoOwner?.getSubscriberCount() }
+    private val subscriberCountItem by lazy { videoOwner?.getShortSubscriberCount() }
     private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
         val list = suggestedSections?.mapNotNull { if (it.getItemWrappers() != null) SuggestionsGroup(it) else null }

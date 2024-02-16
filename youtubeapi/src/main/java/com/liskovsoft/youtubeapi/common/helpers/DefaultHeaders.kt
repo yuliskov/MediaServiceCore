@@ -8,10 +8,10 @@ object DefaultHeaders {
     private const val STARBOARD_VER = "14"
     private const val APK_VER = "3.02.006"
 
-    // NOTE: Possible OOM exception!!! Uses more RAM because of decompression.
+    // NOTE: Possible OOM exception!!! Uses more RAM because of decompression. Fast!
     private const val ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br" // NOTE: HttpUrlConnection won't work with compression
 
-    // No compression. Optimal RAM usage!
+    // No compression. Optimal RAM usage! Slow.
     private const val ACCEPT_ENCODING_DEFAULT = "identity"
 
     private const val USER_AGENT_SAMSUNG =
@@ -60,5 +60,5 @@ object DefaultHeaders {
     val APP_USER_AGENT = USER_AGENT_TV // no buffering
     //val APP_USER_AGENT = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
 
-    const val ACCEPT_ENCODING = ACCEPT_ENCODING_DEFAULT
+    const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
 }

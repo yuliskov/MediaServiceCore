@@ -113,6 +113,7 @@ internal data class VideoOwnerItem(
     val thumbnail: ThumbnailItem?,
     val title: TextItem?,
     val subscribed: Boolean?,
+    val subscriberCountText: TextItem?,
     val subscriptionButton: SubscriptionButton?,
     val subscribeButton: SubscribeButton?,
     val navigationEndpoint: NavigationEndpointItem?

@@ -409,6 +409,11 @@ public class YouTubeContentService implements ContentService {
         return getChannelObserve(item.getChannelId(), item.getParams());
     }
 
+    @Override
+    public Observable<List<MediaGroup>> getChannelV1Observe(String channelId) {
+        return getChannelV1Observe(channelId, null);
+    }
+
     private Observable<List<MediaGroup>> getChannelObserve(String channelId, String params) {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -419,12 +424,25 @@ public class YouTubeContentService implements ContentService {
 
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
             } else {
-                //SectionList channel = mBrowseService.getChannel(channelId, params);
-                //
-                //emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
-
                 List<MediaGroup> channel = BrowseService2.getChannel(channelId, params);
                 emitGroups2(emitter, channel);
+            }
+        });
+    }
+
+    private Observable<List<MediaGroup>> getChannelV1Observe(String channelId, String params) {
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            // Special type of channel that could be found inside Music section (see Liked row More button)
+            if (BrowseApiHelper.isGridChannel(channelId)) {
+                GridTab gridChannel = mBrowseService.getGridChannel(channelId);
+
+                emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
+            } else {
+                SectionList channel = mBrowseService.getChannel(channelId, params);
+
+                emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
             }
         });
     }

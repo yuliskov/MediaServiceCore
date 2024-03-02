@@ -202,7 +202,14 @@ internal object BrowseService2 {
             if (title != null && !it.isHome()) // skip home tab
                 result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
-        RetrofitHelper.get(home)?.let { it.getShelves()?.forEach {
+        val homePage = RetrofitHelper.get(home)
+
+        homePage?.let { it.getTabs()?.forEach {
+            val title = it?.getTitle()
+            if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
+                result.add(TabMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
+
+        homePage?.let { it.getShelves()?.forEach {
             val title = it?.getTitle()
             if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }

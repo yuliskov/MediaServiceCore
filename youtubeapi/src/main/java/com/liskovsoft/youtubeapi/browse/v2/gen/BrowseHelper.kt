@@ -93,7 +93,7 @@ internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()
     it.gridRenderer?.items ?:
     it.videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
 }
-internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let { it.playlistVideoListRenderer?.contents ?: it.gridRenderer?.items }?.lastOrNull()?.getContinuationToken()
+internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let { it.playlistVideoListRenderer?.contents ?: it.gridRenderer?.items ?: it.shelfRenderer?.content?.gridRenderer?.items }?.lastOrNull()?.getContinuationToken()
 internal fun ItemSectionRenderer.getBrowseId() = getShelfRenderer()?.endpoint?.getBrowseId()
 internal fun ItemSectionRenderer.getBrowseParams() = getShelfRenderer()?.endpoint?.getBrowseParams()
 private fun ItemSectionRenderer.getContents() = contents?.getOrNull(0)
@@ -106,7 +106,7 @@ internal fun ChipCloudChipRenderer.getTitle(): String? = text?.getText()
 /////
 
 internal fun SectionWrapper.getItem() = richItemRenderer?.content ?: playlistVideoRenderer?.let { ItemWrapper(playlistVideoRenderer = it) }
-    ?: gridPlaylistRenderer?.let { ItemWrapper(gridPlaylistRenderer = it) }
+    ?: gridPlaylistRenderer?.let { ItemWrapper(gridPlaylistRenderer = it) } ?: gridVideoRenderer?.let { ItemWrapper(gridVideoRenderer = it) }
 
 internal fun SectionWrapper.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems()
 internal fun SectionWrapper.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: itemSectionRenderer?.getContinuationToken()

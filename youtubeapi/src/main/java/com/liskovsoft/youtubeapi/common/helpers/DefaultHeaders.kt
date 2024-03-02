@@ -60,5 +60,5 @@ object DefaultHeaders {
     val APP_USER_AGENT = USER_AGENT_TV // no buffering
     //val APP_USER_AGENT = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
 
-    const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
+    const val ACCEPT_ENCODING = ACCEPT_ENCODING_DEFAULT
 }

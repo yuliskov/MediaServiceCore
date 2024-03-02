@@ -10,6 +10,7 @@ internal data class SectionWrapper(
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
     val continuationItemRenderer: ContinuationItemRenderer?,
+    val gridVideoRenderer: VideoItem?, // Topic channel e.g. 'tanki - topic'
     val playlistVideoRenderer: VideoItem?, // ChannelPlaylist
     val gridPlaylistRenderer: PlaylistItem? // ChannelPlaylist continuation
 )

@@ -77,15 +77,13 @@ internal data class ItemSectionMediaGroup(
     private val itemSectionRenderer: ItemSectionRenderer,
     private val options: MediaGroupOptions = MediaGroupOptions()
 ): BaseMediaGroup(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?>? = itemSectionRenderer.getItems()
-    override fun getNextPageKeyInt(): String? = itemSectionRenderer.getContinuationToken()
+    // Fix row continuation (no next key but has channel) by reporting empty content (will be continued as a chip). Example https://www.youtube.com/@hdtvtest
+    private val fixContinuation = nextPageKey == null && channelId != null
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = if (fixContinuation) null else itemSectionRenderer.getItems()
+    override fun getNextPageKeyInt(): String? = if (fixContinuation) null else itemSectionRenderer.getContinuationToken()
     override fun getTitleInt(): String? = itemSectionRenderer.getTitle()
     override fun getChannelIdInt(): String? = itemSectionRenderer.getBrowseId()
     override fun getParamsInt(): String? = itemSectionRenderer.getBrowseParams()
-    override fun isEmpty(): Boolean {
-        // Fix row continuation (no next key but has channel) by reporting empty content (will be continued as a chip). Example https://www.youtube.com/@hdtvtest
-        return (nextPageKey == null && channelId != null) || super.isEmpty()
-    }
 }
 
 internal data class TabMediaGroup(

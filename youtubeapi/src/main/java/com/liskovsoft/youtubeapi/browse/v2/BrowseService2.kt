@@ -185,31 +185,31 @@ internal object BrowseService2 {
             return null
         }
 
-        val tabs = listOf(
-            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId)),
-            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId)),
-            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId)),
-            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelPlaylistsQueryWeb(channelId)),
-            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelShortsQueryWeb(channelId))
-        )
+        val result = mutableListOf<MediaGroup>()
+
+        //val tabs = listOf(
+        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId)),
+        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId)),
+        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId)),
+        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelPlaylistsQueryWeb(channelId)),
+        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelShortsQueryWeb(channelId))
+        //)
+
+        //tabs.forEach { RetrofitHelper.get(it)?.let {
+        //    val title = it.getTitle()
+        //    if (title != null && !it.isHome()) // skip home tab
+        //        result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
         val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(channelId))
 
-        val result = mutableListOf<MediaGroup>()
+        val homeResult = RetrofitHelper.get(home)
 
-        tabs.forEach { RetrofitHelper.get(it)?.let {
-            val title = it.getTitle()
-            if (title != null && !it.isHome()) // skip home tab
-                result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
-
-        val homePage = RetrofitHelper.get(home)
-
-        homePage?.let { it.getTabs()?.forEach {
+        homeResult?.let { it.getTabs()?.drop(1)?.forEach { // skip first tab - Home (repeats Videos)
             val title = it?.getTitle()
             if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(TabMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
 
-        homePage?.let { it.getShelves()?.forEach {
+        homeResult?.let { it.getShelves()?.forEach {
             val title = it?.getTitle()
             if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }

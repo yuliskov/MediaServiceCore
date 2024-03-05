@@ -127,7 +127,7 @@ internal data class VideoOwnerItem(
     )
 }
 
-internal data class VideoMetadataItem(
+internal data class VideoMetadataRenderer(
     val owner: Owner?,
     val title: TextItem?,
     val byline: TextItem?,

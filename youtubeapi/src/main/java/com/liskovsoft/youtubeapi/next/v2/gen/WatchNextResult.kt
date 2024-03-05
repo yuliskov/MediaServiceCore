@@ -44,8 +44,8 @@ internal data class WatchNextResult(
                             val contents: List<Content?>?
                         ) {
                             data class Content(
-                                val videoMetadataRenderer: VideoMetadataItem?,
-                                val musicWatchMetadataRenderer: VideoMetadataItem?
+                                val videoMetadataRenderer: VideoMetadataRenderer?,
+                                val musicWatchMetadataRenderer: VideoMetadataRenderer?
                             )
                         }
                     }

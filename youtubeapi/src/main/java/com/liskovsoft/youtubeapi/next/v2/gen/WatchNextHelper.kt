@@ -46,17 +46,17 @@ internal fun WatchNextResultContinuation.getNextPageKey(): String? = continuatio
 const val LIKE_STATUS_LIKE = "LIKE"
 const val LIKE_STATUS_DISLIKE = "DISLIKE"
 const val LIKE_STATUS_INDIFFERENT = "INDIFFERENT"
-internal fun VideoMetadataItem.getVideoOwner() = owner?.videoOwnerRenderer
-internal fun VideoMetadataItem.getTitle() = title?.getText()
-internal fun VideoMetadataItem.getLongViewCountText() = viewCount?.videoViewCountRenderer?.viewCount?.getText() ?: viewCountText?.getText()
-internal fun VideoMetadataItem.getViewCountText() = viewCount?.videoViewCountRenderer?.shortViewCount?.getText() ?: shortViewCountText?.getText()
-internal fun VideoMetadataItem.isLive() = viewCount?.videoViewCountRenderer?.isLive
-internal fun VideoMetadataItem.getDateText() = dateText?.getText()
-internal fun VideoMetadataItem.getPublishedTime() = publishedTimeText?.getText() ?: publishedTime?.getText() ?: albumName?.getText()
-internal fun VideoMetadataItem.getLikeStatus() = likeStatus ?: likeButton?.likeButtonRenderer?.likeStatus
-internal fun VideoMetadataItem.getLikeCount() = likeStatus ?: likeButton?.likeButtonRenderer?.likeCountText?.getText()
-internal fun VideoMetadataItem.isUpcoming() = badges?.firstNotNullOfOrNull { it?.upcomingEventBadge?.label?.getText() }?.let { true } ?: false
-internal fun VideoMetadataItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
+internal fun VideoMetadataRenderer.getVideoOwner() = owner?.videoOwnerRenderer
+internal fun VideoMetadataRenderer.getTitle() = title?.getText()
+internal fun VideoMetadataRenderer.getLongViewCountText() = viewCount?.videoViewCountRenderer?.viewCount?.getText() ?: viewCountText?.getText()
+internal fun VideoMetadataRenderer.getViewCountText() = viewCount?.videoViewCountRenderer?.shortViewCount?.getText() ?: shortViewCountText?.getText()
+internal fun VideoMetadataRenderer.isLive() = viewCount?.videoViewCountRenderer?.isLive
+internal fun VideoMetadataRenderer.getDateText() = dateText?.getAccessibilityLabel() // contains relative published date (e.g. 1 hour ago)
+internal fun VideoMetadataRenderer.getPublishedTime() = publishedTimeText?.getText() ?: publishedTime?.getText() ?: albumName?.getText()
+internal fun VideoMetadataRenderer.getLikeStatus() = likeStatus ?: likeButton?.likeButtonRenderer?.likeStatus
+internal fun VideoMetadataRenderer.getLikeCount() = likeStatus ?: likeButton?.likeButtonRenderer?.likeCountText?.getText()
+internal fun VideoMetadataRenderer.isUpcoming() = badges?.firstNotNullOfOrNull { it?.upcomingEventBadge?.label?.getText() }?.let { true } ?: false
+internal fun VideoMetadataRenderer.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
 
 ////////
 

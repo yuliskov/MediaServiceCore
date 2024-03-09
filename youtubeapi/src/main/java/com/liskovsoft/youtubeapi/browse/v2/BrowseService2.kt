@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.common.models.gen.isShorts
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 
 internal object BrowseService2 {
@@ -204,10 +205,18 @@ internal object BrowseService2 {
 
         val homeResult = RetrofitHelper.get(home)
 
+        var shortTab: MediaGroup? = null
+
         homeResult?.let { it.getTabs()?.drop(1)?.forEach { // skip first tab - Home (repeats Videos)
+            if (it?.title?.contains("Shorts") == true) { // move Shorts tab lower
+                shortTab = TabMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))
+                return@forEach
+            }
             val title = it?.getTitle()
             if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(TabMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
+
+        shortTab?.let { result.add(it) } // move Shorts tab lower
 
         homeResult?.let { it.getShelves()?.forEach {
             val title = it?.getTitle()

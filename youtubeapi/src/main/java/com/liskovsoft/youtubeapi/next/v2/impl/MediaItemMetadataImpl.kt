@@ -117,7 +117,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     private val viewCountText by lazy {
-        videoMetadata?.getViewCountText()
+        videoMetadata?.getViewCountText() ?: videoMetadata?.getLongViewCountText()
     }
 
     private val publishedTime by lazy {

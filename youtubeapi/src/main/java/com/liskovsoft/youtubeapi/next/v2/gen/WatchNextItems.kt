@@ -164,6 +164,7 @@ internal data class VideoMetadataRenderer(
     ) {
         data class LikeButtonRenderer(
                 val likeStatus: String?,
+                val likeCount: Int?,
                 val likeCountText: TextItem?
         )
     }

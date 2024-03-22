@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.*
 import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem
 import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
@@ -170,11 +171,12 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     private val likeCountItem by lazy {
-        null
+        videoMetadata?.getLikeCountInt()?.let { ServiceHelper.prettyCount(it) }
     }
 
     private val dislikeCountItem by lazy {
-        null
+        // Fake count based on 'returnyoutubedislike' plugin algorithm
+        videoMetadata?.getLikeCountInt()?.let { if (it > 0) ServiceHelper.prettyCount(it * 0.032) else null }
     }
 
     override fun getTitle(): String? {

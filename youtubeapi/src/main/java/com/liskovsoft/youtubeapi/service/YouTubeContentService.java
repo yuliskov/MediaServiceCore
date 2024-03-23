@@ -678,7 +678,18 @@ public class YouTubeContentService implements ContentService {
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
         if (mediaGroup instanceof BaseMediaGroup) {
-            return BrowseService2.continueGroup(mediaGroup);
+            MediaGroup group = null;
+
+            // Fix channels with multiple empty groups (e.g. https://www.youtube.com/@RuhiCenetMedya/videos)
+            for (int i = 0; i < 3; i++) {
+                group = BrowseService2.continueGroup(group == null ? mediaGroup : group);
+
+                if (group == null || !group.isEmpty()) {
+                    break;
+                }
+            }
+
+            return group;
         }
 
         String nextKey = YouTubeHelper.extractNextKey(mediaGroup);

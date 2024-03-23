@@ -41,6 +41,7 @@ internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab
 internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: header?.playlistHeaderRenderer?.getTitle() ?: getChips()?.getOrNull(0)?.getTitle()
 internal fun BrowseResult.isPlaylist(): Boolean = header?.playlistHeaderRenderer != null
 internal fun BrowseResult.isHome(): Boolean = getTabs()?.getOrNull(0)?.getItems() != null
+internal fun BrowseResult.getRedirectBrowseId(): String? = onResponseReceivedActions?.firstNotNullOfOrNull { it?.navigateAction?.endpoint?.getBrowseId() }
 private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it?.content != null) it else null }
 
 /////

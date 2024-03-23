@@ -12,7 +12,7 @@ object DefaultHeaders {
     private const val ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br" // NOTE: HttpUrlConnection won't work with compression
 
     // No compression. Optimal RAM usage! Slow.
-    private const val ACCEPT_ENCODING_DEFAULT = "identity"
+    private const val ACCEPT_ENCODING_NONE = "identity"
 
     private const val USER_AGENT_SAMSUNG =
         "Mozilla/5.0 (Linux; Tizen 2.3; SmartHub; SMART-TV; SmartTV; U; Maple2012) AppleWebKit/538.1+ (KHTML, like Gecko) TV Safari/538.1+"

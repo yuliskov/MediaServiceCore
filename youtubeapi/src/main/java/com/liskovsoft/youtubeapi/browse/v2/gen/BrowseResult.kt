@@ -1,11 +1,9 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
-import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.PlaylistItem
-import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
-import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 
 /**
  * Based on:
@@ -14,7 +12,8 @@ import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
  */
 internal data class BrowseResult(
     val contents: Contents?,
-    val header: Header?
+    val header: Header?,
+    val onResponseReceivedActions: List<OnResponseReceivedAction?>?
 ) {
     data class Contents(
         val twoColumnBrowseResultsRenderer: TwoColumnBrowseResultsRenderer?
@@ -35,20 +34,25 @@ internal data class BrowseResult(
 
 internal data class ContinuationResult(
     val onResponseReceivedActions: List<OnResponseReceivedAction?>?
-) {
-    data class OnResponseReceivedAction(
-        val appendContinuationItemsAction: AppendContinuationItemsAction?,
-        val reloadContinuationItemsCommand: ReloadContinuationItemsCommand?
-    ) {
-        data class AppendContinuationItemsAction(
-            val continuationItems: List<SectionWrapper?>?
-        )
+)
 
-        data class ReloadContinuationItemsCommand(
-            val continuationItems: List<SectionWrapper?>?,
-            val slot: String?
-        )
-    }
+internal data class OnResponseReceivedAction(
+    val appendContinuationItemsAction: AppendContinuationItemsAction?,
+    val reloadContinuationItemsCommand: ReloadContinuationItemsCommand?,
+    val navigateAction: NavigateAction?
+) {
+    data class AppendContinuationItemsAction(
+        val continuationItems: List<SectionWrapper?>?
+    )
+
+    data class ReloadContinuationItemsCommand(
+        val continuationItems: List<SectionWrapper?>?,
+        val slot: String?
+    )
+
+    data class NavigateAction(
+        val endpoint: NavigationEndpointItem?
+    )
 }
 
 internal data class GuideResult(

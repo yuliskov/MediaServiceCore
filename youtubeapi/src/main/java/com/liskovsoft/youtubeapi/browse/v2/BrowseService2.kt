@@ -8,7 +8,6 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.common.models.gen.isShorts
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 
 internal object BrowseService2 {
@@ -188,22 +187,10 @@ internal object BrowseService2 {
 
         val result = mutableListOf<MediaGroup>()
 
-        //val tabs = listOf(
-        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId)),
-        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId)),
-        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId)),
-        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelPlaylistsQueryWeb(channelId)),
-        //    mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelShortsQueryWeb(channelId))
-        //)
-
-        //tabs.forEach { RetrofitHelper.get(it)?.let {
-        //    val title = it.getTitle()
-        //    if (title != null && !it.isHome()) // skip home tab
-        //        result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
-
-        val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(channelId))
-
-        val homeResult = RetrofitHelper.get(home)
+        val homeResult = getBrowseRedirect(channelId) {
+            val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(it))
+            RetrofitHelper.get(home)
+        }
 
         var shortTab: MediaGroup? = null
 
@@ -374,5 +361,10 @@ internal object BrowseService2 {
         val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
 
         return RetrofitHelper.get(browseResult)?.let { it.getShortItems()?.let { WrapperMediaGroup(it) } }?.mediaItems
+    }
+
+    private fun getBrowseRedirect(browseId: String, browseExpression: (String) -> BrowseResult?): BrowseResult? {
+        val result = browseExpression(browseId)
+        return if (result?.getRedirectBrowseId() != null) browseExpression(result.getRedirectBrowseId()!!) else result
     }
 }

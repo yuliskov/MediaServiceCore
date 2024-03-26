@@ -67,7 +67,8 @@ internal data class RichSectionRenderer(
 
 // Subscriptions, Sports
 internal data class ItemSectionRenderer(
-    val contents: List<Shelf?>?
+    val contents: List<Shelf?>?,
+    val continuations: List<ContinuationItem?>?
 )
 
 // Common item (WhatToWatch, Subscriptions)

@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.comments.gen
 
+import com.liskovsoft.youtubeapi.common.models.gen.getAccessibilityLabel
 import com.liskovsoft.youtubeapi.common.models.gen.getContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getToken
-import com.liskovsoft.youtubeapi.next.v2.gen.getLabel
 
 internal fun CommentsResult.getComments(): List<CommentItemWrapper?>? = continuationContents?.itemSectionContinuation?.contents
 internal fun CommentsResult.getContinuationKey(): String? = continuationContents?.itemSectionContinuation?.continuations
@@ -11,4 +11,4 @@ internal fun CommentsResult.getContinuationKey(): String? = continuationContents
 internal fun CommentItemWrapper.getCommentItem() = commentThreadRenderer?.comment?.commentRenderer
 
 internal fun CommentRenderer.getContinuationKey() = detailViewEndpoint?.getContinuation()?.getToken()
-internal fun CommentRenderer.getContinuationLabel() = detailViewEndpoint?.getContinuation()?.getLabel()
+internal fun CommentRenderer.getContinuationLabel() = repliesCount?.getAccessibilityLabel()

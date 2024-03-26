@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
+import com.liskovsoft.youtubeapi.browse.v2.gen.SectionWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
 internal data class NextVideoItem(
@@ -236,12 +237,14 @@ internal data class EngagementPanel(
             val engagementPanelTitleHeaderRenderer: EngagementPanelTitleHeaderRenderer?
         ) {
             data class EngagementPanelTitleHeaderRenderer(
-                val menu: Menu?
+                val menu: Menu?,
+                val title: TextItem?
             )
         }
         data class Content(
             val structuredDescriptionContentRenderer: StructuredDescriptionContentRenderer?,
-            val macroMarkersListRenderer: MacroMarkersListRenderer?
+            val macroMarkersListRenderer: MacroMarkersListRenderer?,
+            val sectionListRenderer: SectionListRenderer?
         ) {
             data class StructuredDescriptionContentRenderer(
                  val items: List<Item?>?
@@ -252,6 +255,9 @@ internal data class EngagementPanel(
             }
             data class MacroMarkersListRenderer(
                 val contents: List<ChapterItemWrapper?>
+            )
+            data class SectionListRenderer(
+                val contents: List<SectionWrapper?>?
             )
         }
     }

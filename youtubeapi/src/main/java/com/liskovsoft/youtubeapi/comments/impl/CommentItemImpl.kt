@@ -25,7 +25,7 @@ internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper):
 
     private val nestedCommentKeyItem by lazy { commentRenderer?.getContinuationKey() }
 
-    private val replyCountItem by lazy { commentRenderer?.getContinuationLabel() }
+    private val replyCountItem by lazy { commentRenderer?.getContinuationLabel()?.replace(" ", Helpers.NON_BREAKING_SPACE) }
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
 

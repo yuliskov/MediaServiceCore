@@ -24,5 +24,6 @@ internal data class CommentRenderer(
     val contentText: TextItem?,
     val detailViewEndpoint: NavigationEndpointItem?,
     val isLiked: Boolean?,
-    val voteCount: TextItem?
+    val voteCount: TextItem?,
+    val repliesCount: TextItem?
 )

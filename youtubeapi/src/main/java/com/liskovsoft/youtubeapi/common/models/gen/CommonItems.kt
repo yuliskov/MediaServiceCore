@@ -2,12 +2,14 @@ package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationItemRenderer
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
+import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
 
 internal data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
     val watchEndpoint: WatchEndpointItem?,
     val watchPlaylistEndpoint: WatchEndpointItem?,
-    val openPopupAction: PopupActionItem?
+    val openPopupAction: PopupActionItem?,
+    val showEngagementPanelEndpoint: ShowEngagementPanelEndpoint?
 ) {
     data class BrowseEndpoint(
         val browseId: String?,
@@ -95,6 +97,10 @@ internal data class DefaultServiceEndpoint(
 
 internal data class ToggledServiceEndpoint(
     val unsubscribeEndpoint: ChannelsEndpoint?
+)
+
+internal data class ShowEngagementPanelEndpoint(
+    val engagementPanel: EngagementPanel?
 )
 
 internal data class ButtonRenderer(

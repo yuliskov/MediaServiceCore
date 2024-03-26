@@ -18,7 +18,7 @@ public final class YouTubeHelper {
      * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
      */
     public static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
-    private static final int SHORTS_LEN_MS = 60_000;
+    private static final int SHORTS_LEN_MS = 61_000;
 
     /**
      * Find optimal thumbnail for tv screen<br/>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="dump_debug_info">Произошла ошибка. Пожалуйста, отошлите этот файл в службу поддержки: %s</string>
+    <string name="section_trending">В тренде</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="dump_debug_info">Виникла помилка. Будь ласка, відішліть цей файл у службу підтримки: %s</string>
+    <string name="section_trending">Популярне</string>
+</resources>

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.chat
 
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ChatItem
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
 import com.liskovsoft.youtubeapi.chat.gen.getActions

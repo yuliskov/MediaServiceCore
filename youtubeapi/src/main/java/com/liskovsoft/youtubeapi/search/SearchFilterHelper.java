@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.mediaserviceinterfaces.data.SearchOptions;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.SearchOptions;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 final class SearchFilterHelper {

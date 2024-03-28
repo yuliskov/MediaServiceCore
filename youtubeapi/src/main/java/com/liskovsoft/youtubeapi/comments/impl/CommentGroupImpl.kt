@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.comments.impl
 
-import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup
-import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.CommentGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.CommentItem
 import com.liskovsoft.youtubeapi.comments.gen.CommentsResult
 import com.liskovsoft.youtubeapi.next.v2.gen.getToken
 

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service.data;
 
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.PlaylistInfo;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfoItem;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 

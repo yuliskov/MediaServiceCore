@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import junit.framework.Assert.assertNotNull
 
 object BrowseTestHelper {

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service.data;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaSubtitle;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 
 public class YouTubeMediaSubtitle implements MediaSubtitle {

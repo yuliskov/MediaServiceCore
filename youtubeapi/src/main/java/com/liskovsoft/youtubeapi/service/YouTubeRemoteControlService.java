@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
-import com.liskovsoft.mediaserviceinterfaces.data.Command;
+import com.liskovsoft.mediaserviceinterfaces.yt.RemoteControlService;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.lounge.LoungeService;

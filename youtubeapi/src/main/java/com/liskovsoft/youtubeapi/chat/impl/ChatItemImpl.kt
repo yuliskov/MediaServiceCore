@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.chat.impl
 
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ChatItem
 import com.liskovsoft.youtubeapi.chat.gen.LiveChatAction
 import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
 import com.liskovsoft.youtubeapi.common.models.gen.getText

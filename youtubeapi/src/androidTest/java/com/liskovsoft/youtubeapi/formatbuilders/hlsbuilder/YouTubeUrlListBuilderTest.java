@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.HubService;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.yt.MotherService;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
-import com.liskovsoft.youtubeapi.service.YouTubeHubService;
+import com.liskovsoft.youtubeapi.service.YouTubeMotherService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,11 +13,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class YouTubeUrlListBuilderTest {
-    private HubService mService;
+    private MotherService mService;
 
     @Before
     public void setUp() {
-        mService = YouTubeHubService.instance();
+        mService = YouTubeMotherService.instance();
     }
 
     @Test

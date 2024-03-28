@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.next.v2.impl
 
-import com.liskovsoft.mediaserviceinterfaces.data.*
-import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem
-import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
+import com.liskovsoft.mediaserviceinterfaces.yt.data.*
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ChapterItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
+import com.liskovsoft.mediaserviceinterfaces.yt.data.PlaylistInfo
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult

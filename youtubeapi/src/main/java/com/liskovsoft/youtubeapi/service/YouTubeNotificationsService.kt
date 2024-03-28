@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.service
 
-import com.liskovsoft.mediaserviceinterfaces.NotificationsService
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
+import com.liskovsoft.mediaserviceinterfaces.yt.NotificationsService
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.notifications.NotificationsServiceInt
 import io.reactivex.Observable

@@ -10,7 +10,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.googleapi.oauth2.OAuth2Service;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.googleapi.oauth2.AccountManager;
+import com.liskovsoft.googleapi.oauth2.OAuth2AccountManager;
 
 import java.util.List;
 import java.util.Map;
@@ -22,14 +22,14 @@ public class SignInServiceImpl implements SignInService {
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static SignInServiceImpl sInstance;
     private final OAuth2Service mOAuth2Service;
-    private final AccountManager mAccountManager;
+    private final OAuth2AccountManager mAccountManager;
     private String mCachedAuthorizationHeader;
     private String mCachedAuthorizationHeader2;
     private long mLastUpdateTime;
 
     private SignInServiceImpl() {
         mOAuth2Service = OAuth2Service.instance();
-        mAccountManager = AccountManager.instance(this);
+        mAccountManager = OAuth2AccountManager.instance(this);
 
         GlobalPreferences.setOnInit(() -> {
             mAccountManager.init();

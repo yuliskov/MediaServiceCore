@@ -2,13 +2,10 @@ package com.liskovsoft.googleapi.oauth2;
 
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
-import com.liskovsoft.googleapi.oauth2.models.info.AccountsList;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
@@ -31,8 +28,4 @@ public interface OAuth2Api {
     @POST("https://oauth2.googleapis.com/token")
     Call<AccessToken> updateAccessToken(@Field("client_id") String clientId, @Field("client_secret") String clientSecret,
                                         @Field("grant_type") String grantType, @Field("refresh_token") String refreshToken);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/account/accounts_list")
-    Call<AccountsList> getAccountsList(@Body String authQuery);
 }

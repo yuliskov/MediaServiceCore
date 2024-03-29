@@ -9,16 +9,15 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
-import com.liskovsoft.googleapi.oauth2.models.info.AccountInt;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.reactivex.Observable;
 
-public class AccountManager {
-    private static final String TAG = AccountManager.class.getSimpleName();
-    private static AccountManager sInstance;
+public class OAuth2AccountManager {
+    private static final String TAG = OAuth2AccountManager.class.getSimpleName();
+    private static OAuth2AccountManager sInstance;
     private final OAuth2Service mOAuth2Service;
     private final SignInServiceImpl mSignInService;
     private Runnable mOnChange;
@@ -53,14 +52,14 @@ public class AccountManager {
         }
     };
 
-    private AccountManager(SignInServiceImpl signInService) {
+    private OAuth2AccountManager(SignInServiceImpl signInService) {
         mOAuth2Service = OAuth2Service.instance();
         mSignInService = signInService;
     }
 
-    public static AccountManager instance(SignInServiceImpl signInManager) {
+    public static OAuth2AccountManager instance(SignInServiceImpl signInManager) {
         if (sInstance == null) {
-            sInstance = new AccountManager(signInManager);
+            sInstance = new OAuth2AccountManager(signInManager);
         }
 
         return sInstance;
@@ -106,26 +105,26 @@ public class AccountManager {
         AccountImpl tempAccount = AccountImpl.fromToken(refreshToken);
         addAccount(tempAccount);
 
-        // Use initial account to create auth header
-        mSignInService.checkAuth();
-
-        // Remove initial account (with only refresh key)
-        removeAccount(tempAccount);
-
-        List<AccountInt> accountsInt = mOAuth2Service.getAccounts(); // runs under auth header from above
-
-        if (accountsInt != null) {
-            for (AccountInt accountInt : accountsInt) {
-                AccountImpl account = AccountImpl.from(accountInt);
-                account.setRefreshToken(refreshToken);
-                addAccount(account);
-            }
-        }
-
-        fixSelectedAccount();
-
-        // Apply merged tokens
-        mSignInService.checkAuth();
+        //// Use initial account to create auth header
+        //mSignInService.checkAuth();
+        //
+        //// Remove initial account (with only refresh key)
+        //removeAccount(tempAccount);
+        //
+        //List<AccountInt> accountsInt = mOAuth2Service.getAccounts(); // runs under auth header from above
+        //
+        //if (accountsInt != null) {
+        //    for (AccountInt accountInt : accountsInt) {
+        //        AccountImpl account = AccountImpl.from(accountInt);
+        //        account.setRefreshToken(refreshToken);
+        //        addAccount(account);
+        //    }
+        //}
+        //
+        //fixSelectedAccount();
+        //
+        //// Apply merged tokens
+        //mSignInService.checkAuth();
 
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
@@ -207,7 +206,7 @@ public class AccountManager {
             return;
         }
 
-        GlobalPreferences.sInstance.setMediaServiceAccountData(data);
+        GlobalPreferences.sInstance.setOAuth2AccountData(data);
     }
 
     private String getAccountManagerData() {
@@ -218,28 +217,11 @@ public class AccountManager {
             return null;
         }
 
-        return GlobalPreferences.sInstance.getMediaServiceAccountData();
+        return GlobalPreferences.sInstance.getOAuth2AccountData();
     }
 
     public void init() {
         restoreAccounts();
-        applyLegacyAccounts();
-    }
-
-    private void applyLegacyAccounts() {
-        // We don't have context, so can't create instance here.
-        // Let's hope someone already created one for us.
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "GlobalPreferences is null!");
-            return;
-        }
-
-        String token = GlobalPreferences.sInstance.getMediaServiceRefreshToken();
-
-        if (token != null) {
-            persistRefreshToken(token);
-            GlobalPreferences.sInstance.setMediaServiceRefreshToken(null);
-        }
     }
 
     public void setOnChange(Runnable onChange) {

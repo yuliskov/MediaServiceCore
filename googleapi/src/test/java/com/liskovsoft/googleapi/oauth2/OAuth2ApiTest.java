@@ -68,18 +68,18 @@ public class OAuth2ApiTest {
         assertEquals("authorization_pending", token.getError());
     }
 
-    @Test
-    public void testThatAccountsListNotEmpty() {
-        Call<AccountsList> wrapper = mService.getAccountsList(OAuth2ApiHelper.getAccountsListQuery());
-
-        AccountsList accountsList = RetrofitHelper.get(wrapper);
-
-        AccountInt firstAccount = accountsList.getAccounts().get(0);
-
-        assertNotNull("Contains Name", firstAccount.getName());
-        assertNotNull("Contains Thumbnails", firstAccount.getThumbnails());
-        assertTrue("Is selected", firstAccount.isSelected());
-    }
+    //@Test
+    //public void testThatAccountsListNotEmpty() {
+    //    Call<AccountsList> wrapper = mService.getAccountsList(OAuth2ApiHelper.getAccountsListQuery());
+    //
+    //    AccountsList accountsList = RetrofitHelper.get(wrapper);
+    //
+    //    AccountInt firstAccount = accountsList.getAccounts().get(0);
+    //
+    //    assertNotNull("Contains Name", firstAccount.getName());
+    //    assertNotNull("Contains Thumbnails", firstAccount.getThumbnails());
+    //    assertTrue("Is selected", firstAccount.isSelected());
+    //}
 
     private boolean notEmpty(String userCode) {
         System.out.println("Important code is: " + userCode);

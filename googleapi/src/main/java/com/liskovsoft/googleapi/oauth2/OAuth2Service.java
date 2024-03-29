@@ -91,11 +91,11 @@ public class OAuth2Service {
         }
     }
 
-    public List<AccountInt> getAccounts() {
-        Call<AccountsList> wrapper = mOAuth2Api.getAccountsList(OAuth2ApiHelper.getAccountsListQuery());
-
-        AccountsList accountsList = RetrofitHelper.get(wrapper);
-
-        return accountsList != null ? accountsList.getAccounts() : null;
-    }
+    //public List<AccountInt> getAccounts() {
+    //    Call<AccountsList> wrapper = mOAuth2Api.getAccountsList(OAuth2ApiHelper.getAccountsListQuery());
+    //
+    //    AccountsList accountsList = RetrofitHelper.get(wrapper);
+    //
+    //    return accountsList != null ? accountsList.getAccounts() : null;
+    //}
 }

@@ -1,4 +1,4 @@
-package com.liskovsoft.driveapi.auth.models.auth;
+package com.liskovsoft.driveapi.oauth2.models.auth;
 
 import com.liskovsoft.driveapi.common.converters.jsonpath.JsonPath;
 

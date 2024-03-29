@@ -1,6 +1,6 @@
 package com.liskovsoft.driveapi.app;
 
-import com.liskovsoft.driveapi.auth.V2.AuthApi;
+import com.liskovsoft.driveapi.oauth2.OAuth2Api;
 
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
@@ -19,14 +19,14 @@ public class AppService {
     }
 
     /**
-     * Constant used in {@link AuthApi}
+     * Constant used in {@link OAuth2Api}
      */
     public String getClientId() {
         return null;
     }
 
     /**
-     * Constant used in {@link AuthApi}
+     * Constant used in {@link OAuth2Api}
      */
     public String getClientSecret() {
         return null;

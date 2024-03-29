@@ -1,18 +1,16 @@
-package com.liskovsoft.driveapi.auth.V2;
+package com.liskovsoft.driveapi.oauth2;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.liskovsoft.driveapi.app.AppService;
-import com.liskovsoft.driveapi.auth.models.auth.AccessToken;
-import com.liskovsoft.driveapi.auth.models.auth.RefreshToken;
-import com.liskovsoft.driveapi.auth.models.auth.UserCode;
-import com.liskovsoft.driveapi.auth.models.info.AccountInt;
-import com.liskovsoft.driveapi.auth.models.info.AccountsList;
 import com.liskovsoft.driveapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.driveapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.driveapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.driveapi.oauth2.models.auth.AccessToken;
+import com.liskovsoft.driveapi.oauth2.models.auth.UserCode;
+import com.liskovsoft.driveapi.oauth2.models.info.AccountInt;
+import com.liskovsoft.driveapi.oauth2.models.info.AccountsList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,16 +24,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 @RunWith(RobolectricTestRunner.class)
-public class AuthApiTest {
-    private static final String RAW_JSON_AUTH_DATA = "{\"client_id\":\"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com\"," +
-            "\"client_secret\":\"SboVhoG9s0rNafixCSGGKXAT\"," +
-            "\"refresh_token\":\"1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU\"," +
-            "\"grant_type\":\"refresh_token\"}";
-    private static final String CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
-    private static final String REFRESH_TOKEN = "1//0cXvGwadlFQ4ZCgYIARAAGAwSNwF-L9IrTZKtg_17mTcwUBMsJiSHXTnjWiW6A9Fddq9sHGfKZRIbKSh-7KgJ22ChDOTDtkbsmvU";
-    private AuthApi mService;
-    private AppService mAppService;
+public class OAuth2ApiTest {
+    private OAuth2Api mService;
 
     @Before
     public void setUp() {
@@ -45,29 +35,14 @@ public class AuthApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(AuthApi.class);
-        mAppService = AppService.instance();
+        mService = RetrofitHelper.withJsonPath(OAuth2Api.class);
 
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
     
     @Test
-    public void testThatUserIsAuthenticated() throws IOException {
-        Call<AccessToken> wrapper = mService.getAccessToken(RAW_JSON_AUTH_DATA);
-
-        Response<AccessToken> execute = wrapper.execute();
-
-        AccessToken token = execute.body();
-
-        assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
-        assertTrue("Token not null", token.getAccessToken().length() > 50);
-    }
-    
-    @Test
-    public void testThatUserCanRefreshToken() throws IOException {
-        Call<AccessToken> wrapper = mService.getAccessToken(
-                AuthApiHelper.getAccessTokenQuery(REFRESH_TOKEN, CLIENT_ID, CLIENT_SECRET)
-        );
+    public void testThatUserCanUpdateAccessToken() throws IOException {
+        Call<AccessToken> wrapper = mService.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE, TestHelpersV2.REFRESH_TOKEN);
 
         Response<AccessToken> execute = wrapper.execute();
 
@@ -82,17 +57,20 @@ public class AuthApiTest {
         UserCode code = getUserCode();
         assertTrue(notEmpty(code.getUserCode()));
         assertTrue(notEmpty(code.getDeviceCode()));
+        assertTrue(notEmpty(code.getVerificationUrl()));
+        assertTrue(code.getInterval() > 0);
+        assertTrue(code.getExpiresIn() > 0);
     }
 
     @Test
     public void testThatUserStillNotSignedIn() throws IOException {
-        RefreshToken token = getAccessToken();
+        AccessToken token = getAccessToken();
         assertEquals("authorization_pending", token.getError());
     }
 
     @Test
     public void testThatAccountsListNotEmpty() {
-        Call<AccountsList> wrapper = mService.getAccountsList(AuthApiHelper.getAccountsListQuery());
+        Call<AccountsList> wrapper = mService.getAccountsList(OAuth2ApiHelper.getAccountsListQuery());
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 
@@ -109,17 +87,17 @@ public class AuthApiTest {
     }
 
     private UserCode getUserCode() throws IOException {
-        Call<UserCode> userCode = mService.getUserCode(AuthApiHelper.getUserCodeQuery(mAppService.getClientId()));
+        Call<UserCode> userCode = mService.getUserCode(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.DRIVE_SCOPE);
         Response<UserCode> response = userCode.execute();
         return response.body();
     }
 
-    private RefreshToken getAccessToken() throws IOException {
+    private AccessToken getAccessToken() throws IOException {
         UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<RefreshToken> token = mService.getRefreshToken(AuthApiHelper.getRefreshTokenQuery(userCode.getDeviceCode(), mAppService.getClientId(), mAppService.getClientSecret()));
-        Response<RefreshToken> response = token.execute();
+        Call<AccessToken> token = mService.getAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, userCode.getDeviceCode(), OAuth2ApiHelper.GRANT_TYPE);
+        Response<AccessToken> response = token.execute();
         return response.body();
     }
 }

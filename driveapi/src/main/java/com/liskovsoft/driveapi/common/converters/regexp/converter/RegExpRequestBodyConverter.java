@@ -1,7 +1,7 @@
 package com.liskovsoft.driveapi.common.converters.regexp.converter;
 
 import android.util.Log;
-import com.liskovsoft.youtubeapi.common.converters.regexp.typeadapter.RegExpTypeAdapter;
+import com.liskovsoft.driveapi.common.converters.regexp.typeadapter.RegExpTypeAdapter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;

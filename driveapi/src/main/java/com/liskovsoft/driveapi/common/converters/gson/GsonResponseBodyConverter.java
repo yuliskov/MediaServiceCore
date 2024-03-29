@@ -21,7 +21,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
+import com.liskovsoft.driveapi.common.helpers.ReflectionHelper;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

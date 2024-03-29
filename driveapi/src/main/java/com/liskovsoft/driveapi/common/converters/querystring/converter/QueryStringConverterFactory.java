@@ -5,9 +5,9 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringRequestBodyConverter;
-import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringResponseBodyConverter;
+import com.liskovsoft.driveapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.driveapi.common.converters.querystring.converter.QueryStringRequestBodyConverter;
+import com.liskovsoft.driveapi.common.converters.querystring.converter.QueryStringResponseBodyConverter;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

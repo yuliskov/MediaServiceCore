@@ -1,8 +1,8 @@
-package com.liskovsoft.driveapi.auth.models.info;
+package com.liskovsoft.driveapi.oauth2.models.info;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
-import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+import com.liskovsoft.driveapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.driveapi.common.models.V2.TextItem;
+import com.liskovsoft.driveapi.common.models.items.Thumbnail;
 
 import java.util.List;
 

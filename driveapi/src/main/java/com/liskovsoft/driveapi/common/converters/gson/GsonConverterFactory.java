@@ -18,8 +18,8 @@ package com.liskovsoft.driveapi.common.converters.gson;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
-import com.liskovsoft.youtubeapi.common.converters.gson.GsonRequestBodyConverter;
-import com.liskovsoft.youtubeapi.common.converters.gson.GsonResponseBodyConverter;
+import com.liskovsoft.driveapi.common.converters.gson.GsonRequestBodyConverter;
+import com.liskovsoft.driveapi.common.converters.gson.GsonResponseBodyConverter;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

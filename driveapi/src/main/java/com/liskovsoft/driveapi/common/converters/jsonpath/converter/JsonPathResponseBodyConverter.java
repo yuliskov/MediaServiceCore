@@ -1,6 +1,6 @@
 package com.liskovsoft.driveapi.common.converters.jsonpath.converter;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.driveapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 

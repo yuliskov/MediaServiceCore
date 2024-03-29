@@ -1,6 +1,6 @@
-package com.liskovsoft.driveapi.auth.models.info;
+package com.liskovsoft.driveapi.oauth2.models.info;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.driveapi.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 

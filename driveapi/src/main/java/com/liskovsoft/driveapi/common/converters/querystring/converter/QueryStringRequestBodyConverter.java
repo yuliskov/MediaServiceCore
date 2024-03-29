@@ -1,7 +1,7 @@
 package com.liskovsoft.driveapi.common.converters.querystring.converter;
 
 import android.util.Log;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.driveapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;

@@ -7,8 +7,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
-import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
+import com.liskovsoft.driveapi.common.converters.regexp.RegExp;
+import com.liskovsoft.driveapi.common.helpers.ReflectionHelper;
 
 import java.io.File;
 import java.io.InputStream;

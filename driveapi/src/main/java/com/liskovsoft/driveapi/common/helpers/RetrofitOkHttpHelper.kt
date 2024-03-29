@@ -47,7 +47,7 @@ internal object RetrofitOkHttpHelper {
 
     private fun createClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
-        addCommonHeaders(builder)
+        //addCommonHeaders(builder)
         OkHttpCommons.setupBuilder(builder)
         //addCronetInterceptor(builder)
         return builder.build()

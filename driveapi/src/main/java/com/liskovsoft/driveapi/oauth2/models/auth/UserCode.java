@@ -1,7 +1,10 @@
-package com.liskovsoft.driveapi.auth.models.auth;
+package com.liskovsoft.driveapi.oauth2.models.auth;
 
 import com.liskovsoft.driveapi.common.converters.jsonpath.JsonPath;
 
+/**
+ * Manual: https://developers.google.com/identity/protocols/oauth2/limited-input-device#success-response
+ */
 public class UserCode {
     /**
      * Example: AH-1Ng1K8lBZcrMezwnEzpZ23VwfE8Hn7HEuNL-GbQIMYrSZhBF1j3KZ-h47-bqBB4rC6-W9xG2WHM67ZGttecz_ALOZ-JoxDQ
@@ -10,24 +13,25 @@ public class UserCode {
     private String mDeviceCode;
 
     /**
-     * Code to enter into the browser page at https://youtube.com/activate<br/>
+     * Code to enter into the browser page at mVerificationUrl<br/>
      * Example: XWY-QRL-MNH
      */
     @JsonPath("$.user_code")
     private String mUserCode;
-    private String mUserCodeAlt;
 
     @JsonPath("$.expires_in")
     private int mExpiresIn;
 
+    /**
+     * In seconds to poll the server
+     */
     @JsonPath("$.interval")
     private int mInterval;
-
-    /**
-     * Please use https://youtube.com/activate instead
-     */
+    
     @JsonPath("$.verification_url")
     private String mVerificationUrl;
+
+    private String mUserCodePretty;
 
     public String getDeviceCode() {
         return mDeviceCode;
@@ -39,10 +43,22 @@ public class UserCode {
         }
 
         // Make code more readable by removing unused characters
-        if (mUserCodeAlt == null) {
-            mUserCodeAlt = mUserCode.replace("-", " ");
+        if (mUserCodePretty == null) {
+            mUserCodePretty = mUserCode.replace("-", " ");
         }
 
-        return mUserCodeAlt;
+        return mUserCodePretty;
+    }
+
+    public String getVerificationUrl() {
+        return mVerificationUrl;
+    }
+
+    public int getInterval() {
+        return mInterval;
+    }
+
+    public int getExpiresIn() {
+        return mExpiresIn;
     }
 }

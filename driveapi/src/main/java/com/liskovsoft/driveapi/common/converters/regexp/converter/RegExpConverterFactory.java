@@ -1,8 +1,8 @@
 package com.liskovsoft.driveapi.common.converters.regexp.converter;
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpRequestBodyConverter;
-import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpResponseBodyConverter;
-import com.liskovsoft.youtubeapi.common.converters.regexp.typeadapter.RegExpTypeAdapter;
+import com.liskovsoft.driveapi.common.converters.regexp.converter.RegExpRequestBodyConverter;
+import com.liskovsoft.driveapi.common.converters.regexp.converter.RegExpResponseBodyConverter;
+import com.liskovsoft.driveapi.common.converters.regexp.typeadapter.RegExpTypeAdapter;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

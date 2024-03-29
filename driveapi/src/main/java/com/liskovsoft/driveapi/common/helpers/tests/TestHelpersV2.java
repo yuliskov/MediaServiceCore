@@ -1,11 +1,11 @@
 package com.liskovsoft.driveapi.common.helpers.tests;
 
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
-import com.liskovsoft.driveapi.auth.V2.AuthService;
-import com.liskovsoft.driveapi.auth.models.auth.AccessToken;
-import com.liskovsoft.driveapi.common.helpers.tests.TestHelpersBase;
+import com.liskovsoft.driveapi.oauth2.OAuth2Service;
+import com.liskovsoft.driveapi.oauth2.models.auth.AccessToken;
 
 public class TestHelpersV2 extends TestHelpersBase {
+    public static final String REFRESH_TOKEN = "";
     private static String mAuthorization; // type: Bearer
     private static final String RAW_JSON_AUTH_DATA = "{\"client_id\":\"861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com\"," +
             "\"client_secret\":\"SboVhoG9s0rNafixCSGGKXAT\"," +
@@ -17,7 +17,7 @@ public class TestHelpersV2 extends TestHelpersBase {
             return mAuthorization;
         }
 
-        AccessToken token = AuthService.instance().getAccessTokenRaw(RAW_JSON_AUTH_DATA);
+        AccessToken token = OAuth2Service.instance().getAccessTokenRaw(RAW_JSON_AUTH_DATA);
 
         if (token == null) {
             throw new IllegalStateException("Token is null");

@@ -8,8 +8,8 @@ import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper;
+import com.liskovsoft.driveapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.driveapi.common.helpers.ReflectionHelper;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;

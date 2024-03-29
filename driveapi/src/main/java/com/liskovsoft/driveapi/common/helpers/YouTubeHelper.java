@@ -1,14 +1,12 @@
 package com.liskovsoft.driveapi.common.helpers;
 
 import androidx.annotation.Nullable;
+
+import com.liskovsoft.driveapi.common.models.items.Thumbnail;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
-import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem;
-import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +20,7 @@ public final class YouTubeHelper {
 
     /**
      * Find optimal thumbnail for tv screen<br/>
-     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.common.models.gen.CommonHelperKt#getOptimalResThumbnailUrl(ThumbnailItem)}
+     * For Kotlin counterpart see: {@link com.liskovsoft.driveapi.common.models.gen.CommonHelperKt#getOptimalResThumbnailUrl(ThumbnailItem)}
      */
     public static String findOptimalResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null) {
@@ -60,18 +58,6 @@ public final class YouTubeHelper {
      */
     public static @Nullable String createInfo(Object... items) {
         return ServiceHelper.itemsToInfo(items);
-    }
-
-    public static String extractNextKey(MediaGroup mediaGroup) {
-        String result = null;
-
-        if (mediaGroup instanceof YouTubeMediaGroup) {
-            result = ((YouTubeMediaGroup) mediaGroup).mNextPageKey;
-        } else if (mediaGroup instanceof SuggestionsGroup) {
-            result = ((SuggestionsGroup) mediaGroup).getNextPageKey();
-        }
-
-        return result;
     }
 
     public static void filterIfNeeded(MediaGroup mediaGroup) {

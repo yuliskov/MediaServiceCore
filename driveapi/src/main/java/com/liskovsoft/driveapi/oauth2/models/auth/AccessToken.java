@@ -1,13 +1,19 @@
-package com.liskovsoft.driveapi.auth.models.auth;
+package com.liskovsoft.driveapi.oauth2.models.auth;
 
 import com.liskovsoft.driveapi.common.converters.jsonpath.JsonPath;
 
+/**
+ * https://developers.google.com/identity/protocols/oauth2/limited-input-device#access-granted
+ */
 public class AccessToken extends ErrorResponse {
     @JsonPath("$.access_token")
     private String mAccessToken;
 
     @JsonPath("$.expires_in")
     private int mExpiresIn;
+
+    @JsonPath("$.refresh_token")
+    private String mRefreshToken;
 
     @JsonPath("$.scope")
     private String mScope;
@@ -21,6 +27,10 @@ public class AccessToken extends ErrorResponse {
 
     public int getExpiresIn() {
         return mExpiresIn;
+    }
+
+    public String getRefreshToken() {
+        return mRefreshToken;
     }
 
     public String getScope() {

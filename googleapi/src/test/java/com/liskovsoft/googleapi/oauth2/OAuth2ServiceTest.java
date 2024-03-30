@@ -2,6 +2,7 @@ package com.liskovsoft.googleapi.oauth2;
 
 import static org.junit.Assert.assertTrue;
 
+import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 
 import org.junit.Before;
@@ -23,6 +24,7 @@ public class OAuth2ServiceTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mService = OAuth2Service.instance();
+        RetrofitOkHttpHelper.setDisableCompression(true);
     }
 
     @Test

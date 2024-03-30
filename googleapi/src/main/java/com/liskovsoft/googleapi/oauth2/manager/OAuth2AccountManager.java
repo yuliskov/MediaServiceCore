@@ -5,6 +5,7 @@ import com.liskovsoft.googleapi.oauth2.impl.AccountImpl;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.google.data.SignInCode;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -98,10 +99,19 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
     /**
      * The code is working limited amount of time. Need to be confirmed instantly.
      */
-    public String getUserCode() {
+    public SignInCode getSignInCode() {
         mUserCodeResult = mOAuth2Service.getUserCode();
+        return mUserCodeResult != null ? new SignInCode() {
+            @Override
+            public String getSignInCode() {
+                return mUserCodeResult.getUserCode();
+            }
 
-        return mUserCodeResult != null ? mUserCodeResult.getUserCode() : null;
+            @Override
+            public String getSignInUrl() {
+                return mUserCodeResult.getVerificationUrl();
+            }
+        } : null;
     }
 
     public void waitUserCodeConfirmation() {

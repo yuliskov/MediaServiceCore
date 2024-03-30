@@ -3,10 +3,9 @@ package com.liskovsoft.googleapi.oauth2.impl;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
-import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
-import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 import com.liskovsoft.mediaserviceinterfaces.google.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.google.data.SignInCode;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import java.util.List;
@@ -31,16 +30,16 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public Observable<String> signInObserve() {
+    public Observable<SignInCode> signInObserve() {
         return RxHelper.createLong(emitter -> {
-            String userCode = mAccountManager.getUserCode();
+            SignInCode signInCode = mAccountManager.getSignInCode();
 
-            if (userCode == null) {
+            if (signInCode == null) {
                 RxHelper.onError(emitter, "User code result is empty");
                 return;
             }
 
-            emitter.onNext(userCode);
+            emitter.onNext(signInCode);
 
             mAccountManager.waitUserCodeConfirmation();
 

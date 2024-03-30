@@ -37,7 +37,8 @@ public class OAuth2ApiTest {
 
         mService = RetrofitHelper.withJsonPath(OAuth2Api.class);
 
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.setDisableCompression(true);
+        //RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
     
     @Test

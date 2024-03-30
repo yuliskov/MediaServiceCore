@@ -2,44 +2,24 @@ package com.liskovsoft.googleapi.oauth2.impl;
 
 import androidx.annotation.Nullable;
 
+import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
+import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
+import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 import com.liskovsoft.mediaserviceinterfaces.google.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.googleapi.oauth2.OAuth2Service;
-import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
-import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.googleapi.oauth2.OAuth2AccountManager;
 
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 
 public class SignInServiceImpl implements SignInService {
     private static final String TAG = SignInServiceImpl.class.getSimpleName();
-    private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static SignInServiceImpl sInstance;
-    private final OAuth2Service mOAuth2Service;
     private final OAuth2AccountManager mAccountManager;
-    private String mCachedAuthorizationHeader;
-    private String mCachedAuthorizationHeader2;
-    private long mLastUpdateTime;
 
     private SignInServiceImpl() {
-        mOAuth2Service = OAuth2Service.instance();
-        mAccountManager = OAuth2AccountManager.instance(this);
-
-        GlobalPreferences.setOnInit(() -> {
-            mAccountManager.init();
-            try {
-                updateAuthHeaders();
-            } catch (Exception e) {
-                // Host not found
-                e.printStackTrace();
-            }
-        });
+        mAccountManager = OAuth2AccountManager.instance();
     }
 
     public static SignInServiceImpl instance() {
@@ -52,7 +32,20 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public Observable<String> signInObserve() {
-        return mAccountManager.signInObserve();
+        return RxHelper.createLong(emitter -> {
+            String userCode = mAccountManager.getUserCode();
+
+            if (userCode == null) {
+                RxHelper.onError(emitter, "User code result is empty");
+                return;
+            }
+
+            emitter.onNext(userCode);
+
+            mAccountManager.waitUserCodeConfirmation();
+
+            emitter.onComplete();
+        });
     }
 
     @Override
@@ -66,26 +59,6 @@ public class SignInServiceImpl implements SignInService {
             signOut();
             emitter.onComplete();
         });
-    }
-
-    public void checkAuth() {
-        updateAuthHeaders();
-    }
-
-    private void updateAuthHeaders() {
-        if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mLastUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
-            return;
-        }
-
-        Account account = mAccountManager.getSelectedAccount();
-        String refreshToken = account != null ? ((AccountImpl) account).getRefreshToken() : null;
-        String refreshToken2 = account != null ? ((AccountImpl) account).getRefreshToken2() : null;
-        // get or create authorization on fly
-        mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
-        mCachedAuthorizationHeader2 = createAuthorizationHeader(refreshToken2);
-        syncWithRetrofit();
-
-        mLastUpdateTime = System.currentTimeMillis();
     }
 
     @Override
@@ -115,21 +88,6 @@ public class SignInServiceImpl implements SignInService {
         return mAccountManager.getSelectedAccount();
     }
 
-    /**
-     * For testing purposes
-     */
-    public void setAuthorizationHeader(String authorizationHeader) {
-        mCachedAuthorizationHeader = authorizationHeader;
-        mCachedAuthorizationHeader2 = null;
-        mLastUpdateTime = System.currentTimeMillis();
-
-        syncWithRetrofit();
-    }
-
-    public void invalidateCache() {
-        mCachedAuthorizationHeader = null;
-    }
-
     @Override
     public void selectAccount(Account account) {
         mAccountManager.selectAccount(account);
@@ -138,59 +96,6 @@ public class SignInServiceImpl implements SignInService {
     @Override
     public void removeAccount(Account account) {
         mAccountManager.removeAccount(account);
-    }
-
-    /**
-     * Authorization should be updated periodically (see expire_in field in response)
-     */
-    private synchronized String createAuthorizationHeader(String refreshToken) {
-        Log.d(TAG, "Updating authorization header...");
-
-        String authorizationHeader = null;
-
-        AccessToken token = obtainAccessToken(refreshToken);
-
-        if (token != null) {
-            authorizationHeader = String.format("%s %s", token.getTokenType(), token.getAccessToken());
-        } else {
-            Log.e(TAG, "Access token is null!");
-        }
-
-        return authorizationHeader;
-    }
-
-    private AccessToken obtainAccessToken(String refreshToken) {
-        // We don't have context, so can't create instance here.
-        // Let's hope someone already created one for us.
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "GlobalPreferences is null!");
-            return null;
-        }
-
-        AccessToken token = null;
-
-        if (refreshToken != null) {
-            token = mOAuth2Service.updateAccessToken(refreshToken);
-        }
-
-        return token;
-    }
-
-    private void syncWithRetrofit() {
-        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        Map<String, String> headers2 = RetrofitOkHttpHelper.getAuthHeaders2();
-        headers.clear();
-        headers2.clear();
-
-        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
-            headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((AccountImpl) getSelectedAccount()).getPageIdToken();
-            if (pageIdToken != null) {
-                headers2.put("Authorization", mCachedAuthorizationHeader2);
-                // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
-                headers.put("X-Goog-Pageid", pageIdToken);
-            }
-        }
     }
 
     @Override

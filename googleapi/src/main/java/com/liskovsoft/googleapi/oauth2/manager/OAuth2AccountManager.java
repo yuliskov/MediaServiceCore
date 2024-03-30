@@ -1,25 +1,23 @@
-package com.liskovsoft.googleapi.oauth2;
+package com.liskovsoft.googleapi.oauth2.manager;
 
+import com.liskovsoft.googleapi.oauth2.OAuth2Service;
 import com.liskovsoft.googleapi.oauth2.impl.AccountImpl;
-import com.liskovsoft.googleapi.oauth2.impl.SignInServiceImpl;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
+import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import io.reactivex.Observable;
-
-public class OAuth2AccountManager {
+public class OAuth2AccountManager extends OAuth2AccountManagerBase {
     private static final String TAG = OAuth2AccountManager.class.getSimpleName();
     private static OAuth2AccountManager sInstance;
     private final OAuth2Service mOAuth2Service;
-    private final SignInServiceImpl mSignInService;
+    private UserCode mUserCodeResult;
     private Runnable mOnChange;
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
@@ -52,40 +50,74 @@ public class OAuth2AccountManager {
         }
     };
 
-    private OAuth2AccountManager(SignInServiceImpl signInService) {
+    private OAuth2AccountManager() {
         mOAuth2Service = OAuth2Service.instance();
-        mSignInService = signInService;
+
+        GlobalPreferences.setOnInit(() -> {
+            init();
+            try {
+                updateAuthHeaders();
+            } catch (Exception e) {
+                // Host not found
+                e.printStackTrace();
+            }
+        });
     }
 
-    public static OAuth2AccountManager instance(SignInServiceImpl signInManager) {
+    public static OAuth2AccountManager instance() {
         if (sInstance == null) {
-            sInstance = new OAuth2AccountManager(signInManager);
+            sInstance = new OAuth2AccountManager();
         }
 
         return sInstance;
     }
 
-    public Observable<String> signInObserve() {
-        return RxHelper.createLong(emitter -> {
-            UserCode userCodeResult = mOAuth2Service.getUserCode();
+    //public Observable<String> signInObserve() {
+    //    return RxHelper.createLong(emitter -> {
+    //        UserCode userCodeResult = mOAuth2Service.getUserCode();
+    //
+    //        if (userCodeResult == null) {
+    //            RxHelper.onError(emitter, "User code result is empty");
+    //            return;
+    //        }
+    //
+    //        emitter.onNext(userCodeResult.getUserCode());
+    //
+    //        try {
+    //            AccessToken token = mOAuth2Service.getAccessTokenWait(userCodeResult.getDeviceCode());
+    //
+    //            persistRefreshToken(token.getRefreshToken());
+    //
+    //            emitter.onComplete();
+    //        } catch (InterruptedException e) {
+    //            // NOP
+    //        }
+    //    });
+    //}
 
-            if (userCodeResult == null) {
-                RxHelper.onError(emitter, "User code result is empty");
-                return;
-            }
+    /**
+     * The code is working limited amount of time. Need to be confirmed instantly.
+     */
+    public String getUserCode() {
+        mUserCodeResult = mOAuth2Service.getUserCode();
 
-            emitter.onNext(userCodeResult.getUserCode());
+        return mUserCodeResult != null ? mUserCodeResult.getUserCode() : null;
+    }
 
-            try {
-                AccessToken token = mOAuth2Service.getAccessTokenWait(userCodeResult.getDeviceCode());
+    public void waitUserCodeConfirmation() {
+        if (mUserCodeResult == null) {
+            return;
+        }
 
-                persistRefreshToken(token.getRefreshToken());
+        try {
+            AccessToken token = mOAuth2Service.getAccessTokenWait(mUserCodeResult.getDeviceCode());
 
-                emitter.onComplete();
-            } catch (InterruptedException e) {
-                // NOP
-            }
-        });
+            persistRefreshToken(token.getRefreshToken());
+        } catch (InterruptedException e) {
+            // NOP
+        } finally {
+            mUserCodeResult = null;
+        }
     }
 
     public List<Account> getAccounts() {
@@ -106,7 +138,7 @@ public class OAuth2AccountManager {
         addAccount(tempAccount);
 
         //// Use initial account to create auth header
-        //mSignInService.checkAuth();
+        //checkAuth();
         //
         //// Remove initial account (with only refresh key)
         //removeAccount(tempAccount);
@@ -124,7 +156,7 @@ public class OAuth2AccountManager {
         //fixSelectedAccount();
         //
         //// Apply merged tokens
-        //mSignInService.checkAuth();
+        //checkAuth();
 
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
@@ -160,6 +192,7 @@ public class OAuth2AccountManager {
         }
     }
 
+    @Override
     public Account getSelectedAccount() {
         for (Account account : mAccounts) {
             if (account != null && account.isSelected()) {
@@ -173,7 +206,7 @@ public class OAuth2AccountManager {
     private void persistAccounts() {
         setAccountManagerData(Helpers.mergeArray(mAccounts.toArray()));
 
-        mSignInService.invalidateCache();
+        invalidateCache();
 
         if (mOnChange != null) {
             // Fix sign in bug
@@ -240,5 +273,23 @@ public class OAuth2AccountManager {
         if (getSelectedAccount() == null) {
             selectAccount(mAccounts.get(0));
         }
+    }
+
+    @Override
+    protected AccessToken obtainAccessToken(String refreshToken) {
+        // We don't have context, so can't create instance here.
+        // Let's hope someone already created one for us.
+        if (GlobalPreferences.sInstance == null) {
+            Log.e(TAG, "GlobalPreferences is null!");
+            return null;
+        }
+
+        AccessToken token = null;
+
+        if (refreshToken != null) {
+            token = mOAuth2Service.updateAccessToken(refreshToken);
+        }
+
+        return token;
     }
 }

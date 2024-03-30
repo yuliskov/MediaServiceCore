@@ -10,6 +10,7 @@ import com.liskovsoft.googleapi.service.internal.MediaServiceData;
  */
 public class OAuth2ApiHelper {
     public static final String GRANT_TYPE = "urn:ietf:params:oauth:grant-type:device_code";
+    public static final String GRANT_TYPE_REFRESH = "refresh_token";
 
     public static final String CLIENT_ID = ApiKeys.CLIENT_ID;
     public static final String CLIENT_SECRET = ApiKeys.CLIENT_SECRET;
@@ -24,7 +25,6 @@ public class OAuth2ApiHelper {
     private static final String ACCESS_TOKEN = "{\"refresh_token\":\"%s\",\"client_id\":\"%s\",\"client_secret\":\"%s\",\"grant_type\":\"%s\"}";
     private static final String APP_SCOPE = "http://gdata.youtube.com https://www.googleapis.com/auth/youtube-paid-content";
     private static final String GRANT_TYPE_DEFAULT = "http://oauth.net/grant_type/device/1.0";
-    private static final String GRANT_TYPE_REFRESH = "refresh_token";
     private static final String MODEL_NAME = "ytlr::";
 
     public static String getAccountsListQuery() {

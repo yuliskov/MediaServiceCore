@@ -39,6 +39,8 @@ internal object RetrofitOkHttpHelper {
     )
 
     private val apiPrefixes = arrayOf(
+        "https://www.googleapis.com/upload/drive/v3",
+        "https://www.googleapis.com/drive/v3",
         "https://m.youtube.com/youtubei/v1/",
         "https://www.youtube.com/youtubei/v1/",
         "https://www.youtube.com/api/stats/",

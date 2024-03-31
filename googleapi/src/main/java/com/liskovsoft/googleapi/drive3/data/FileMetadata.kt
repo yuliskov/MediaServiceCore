@@ -1,6 +1,6 @@
 package com.liskovsoft.googleapi.drive3.data
 
-data class FileMetadata(
+internal data class FileMetadata(
     val id: String? = null,
     val name: String? = null,
     val parents: List<String?>? = null,

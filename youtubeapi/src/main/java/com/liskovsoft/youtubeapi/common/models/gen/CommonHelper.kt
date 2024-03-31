@@ -265,7 +265,7 @@ internal fun MenuItem.getBrowseId() = menuNavigationItemRenderer?.navigationEndp
 
 //////
 
-internal fun NotificationPreferenceButton.getItems() = subscriptionNotificationToggleButtonRenderer?.states
+internal fun NotificationPreferenceButton.getItems() = subscriptionNotificationToggleButtonRenderer?.states?.filter { it?.getStateParams() != null }
 internal fun NotificationPreferenceButton.getCurrentStateId() = subscriptionNotificationToggleButtonRenderer?.currentStateId ?: -1
 internal fun NotificationStateItem.getTitle() = inlineMenuButton?.buttonRenderer?.text?.getText()
 internal fun NotificationStateItem.getStateId() = stateId

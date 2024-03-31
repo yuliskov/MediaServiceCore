@@ -40,12 +40,12 @@ internal object NotificationsServiceInt {
         RetrofitHelper.get(result)
     }
 
-    private fun modifyNotification(modifyNotificationToken: String?) {
-        if (modifyNotificationToken == null) {
+    private fun modifyNotification(modifyNotificationParams: String?) {
+        if (modifyNotificationParams == null) {
             return
         }
 
-        val result = mService.getModifyNotification(NotificationsApiHelper.getModifyNotificationQuery(modifyNotificationToken))
+        val result = mService.getModifyNotification(NotificationsApiHelper.getModifyNotificationQuery(modifyNotificationParams))
 
         RetrofitHelper.get(result)
     }

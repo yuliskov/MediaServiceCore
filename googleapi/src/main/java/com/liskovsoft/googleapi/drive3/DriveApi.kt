@@ -10,6 +10,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -29,12 +30,8 @@ internal interface DriveApi {
     @POST("https://www.googleapis.com/upload/drive/v3/files?uploadType=media")
     fun uploadFile(@Body file: RequestBody): Call<FileMetadata?>?
 
-    @GET("https://www.googleapis.com/drive/v3/files/generateIds")
-    fun generateIds(): Call<GeneratedIds?>?
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.googleapis.com/drive/v3/files")
-    fun createFolder(@Body metadata: FileMetadata): Call<FileMetadata?>?
+    @PATCH("https://www.googleapis.com/upload/drive/v3/files/{fileId}?uploadType=media")
+    fun updateFile(@Path("fileId") fileId: String, @Body file: RequestBody): Call<FileMetadata?>?
 
     @DELETE("https://www.googleapis.com/drive/v3/files/{fileId}")
     fun deleteFile(@Path("fileId") fileId: String): Call<Unit?>?
@@ -44,4 +41,11 @@ internal interface DriveApi {
      */
     @GET("https://www.googleapis.com/drive/v3/files/{fileId}?alt=media")
     fun getFile(@Path("fileId") fileId: String): Call<ResponseBody?>?
+
+    @GET("https://www.googleapis.com/drive/v3/files/generateIds")
+    fun generateIds(): Call<GeneratedIds?>?
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.googleapis.com/drive/v3/files")
+    fun createFolder(@Body metadata: FileMetadata): Call<FileMetadata?>?
 }

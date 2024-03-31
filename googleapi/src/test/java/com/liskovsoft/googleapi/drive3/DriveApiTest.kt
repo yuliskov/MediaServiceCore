@@ -18,11 +18,14 @@ import org.robolectric.shadows.ShadowLog
 @RunWith(RobolectricTestRunner::class)
 class DriveApiTest {
     private lateinit var mService: DriveApi
+    private val mTestRequestBody = RequestBody.create(MediaType.parse("text/plain"), TEST_FILE_CONTENTS)
+    private val mTestRequestBody2 = RequestBody.create(MediaType.parse("text/plain"), TEST_FILE_CONTENTS2)
 
     companion object {
         private const val TEST_FOLDER_NAME = "testFolder"
         private const val TEST_FILE_NAME = "testFile"
         private const val TEST_FILE_CONTENTS = "Sample file contents"
+        private const val TEST_FILE_CONTENTS2 = "Updated sample file contents"
     }
 
     @Before
@@ -49,8 +52,7 @@ class DriveApiTest {
     fun testCreateFolder() {
         val folderMetadata = createSampleFolder()
 
-        assertNotNull("Has kind", folderMetadata?.kind)
-        assertNotNull("Has id", folderMetadata?.id)
+        assertMetadata(folderMetadata)
 
         cleanup(folderMetadata)
     }
@@ -59,11 +61,11 @@ class DriveApiTest {
     fun testUploadFile() {
         val folderMetadata = createSampleFolder()
 
-        val requestBody = RequestBody.create(MediaType.parse("text/plain"), TEST_FILE_CONTENTS)
+        val requestBody = mTestRequestBody
         val metadata = FileMetadata(name = TEST_FILE_NAME, mimeType = "text/plain", parents = listOf(folderMetadata?.id))
         val fileMetadata = RetrofitHelper.get(mService.uploadFile(metadata, requestBody))
 
-        assertNotNull("File has id", fileMetadata?.id)
+        assertMetadata(fileMetadata)
 
         cleanup(folderMetadata, fileMetadata)
     }
@@ -79,11 +81,22 @@ class DriveApiTest {
         cleanup(fileMetadata)
     }
 
+    @Test
+    fun testUpdateFile() {
+        val fileMetadata = createSampleFile()
+
+        val metadata = RetrofitHelper.get(mService.updateFile(fileMetadata?.id!!, mTestRequestBody2))
+
+        assertMetadata(metadata)
+
+        cleanup(fileMetadata)
+    }
+
     private fun createSampleFolder() =
         RetrofitHelper.get(mService.createFolder(FileMetadata(name = TEST_FOLDER_NAME, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE)))
 
     private fun createSampleFile(): FileMetadata? {
-        val requestBody = RequestBody.create(MediaType.parse("text/plain"), TEST_FILE_CONTENTS)
+        val requestBody = mTestRequestBody
         val fileMetadata = FileMetadata(name = TEST_FILE_NAME, mimeType = "text/plain")
         return RetrofitHelper.get(mService.uploadFile(fileMetadata, requestBody))
     }
@@ -92,5 +105,10 @@ class DriveApiTest {
         for (metadata in items) {
             RetrofitHelper.get(mService.deleteFile(metadata?.id!!))
         }
+    }
+
+    private fun assertMetadata(folderMetadata: FileMetadata?) {
+        assertNotNull("File has kind", folderMetadata?.kind)
+        assertNotNull("File has id", folderMetadata?.id)
     }
 }

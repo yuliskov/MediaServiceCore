@@ -42,6 +42,7 @@ final class GsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
   }
 
   @Override public RequestBody convert(T value) throws IOException {
+    // Original code
     //Buffer buffer = new Buffer();
     //Writer writer = new OutputStreamWriter(buffer.outputStream(), UTF_8);
     //JsonWriter jsonWriter = gson.newJsonWriter(writer);
@@ -50,6 +51,9 @@ final class GsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
     //return RequestBody.create(MEDIA_TYPE, buffer.readByteString());
 
     // Accept raw json body
-    return RequestBody.create(MEDIA_TYPE, value.toString());
+    //return RequestBody.create(MEDIA_TYPE, value.toString());
+
+    // Accept raw json body as a String
+    return RequestBody.create(MEDIA_TYPE, value instanceof String ? (String) value : gson.toJson(value));
   }
 }

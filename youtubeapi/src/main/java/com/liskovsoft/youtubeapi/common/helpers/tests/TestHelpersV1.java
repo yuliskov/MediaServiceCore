@@ -6,14 +6,13 @@ import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 
 public class TestHelpersV1 extends TestHelpersBase {
     private static String mAuthorization; // type: Bearer
-    private static final String RAW_AUTH_DATA = "client_id=861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com&client_secret=SboVhoG9s0rNafixCSGGKXAT&refresh_token=1//0cP_RZyC7ratPCgYIARAAGAwSNwF-L9IrlOZa8kjE0SWrL8vIwSg_QqkxdHjq5EyiDitGclVNBtGovxijwz2R2VWGDHywf_IHlVM&grant_type=refresh_token";
 
     public static String getAuthorization() {
         if (mAuthorization != null) {
             return mAuthorization;
         }
 
-        AccessToken token = AuthService.instance().getAccessTokenRaw(RAW_AUTH_DATA);
+        AccessToken token = AuthService.instance().getAccessTokenRaw(ApiKeys.RAW_AUTH_DATA_V1);
 
         if (token == null) {
             throw new IllegalStateException("Token is null");

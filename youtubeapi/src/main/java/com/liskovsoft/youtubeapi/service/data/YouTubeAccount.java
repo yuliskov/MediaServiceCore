@@ -37,7 +37,7 @@ public class YouTubeAccount implements Account {
             return null;
         }
 
-        String[] split = Helpers.splitObjectLegacy(spec);
+        String[] split = Helpers.splitPrefsLegacy(spec);
 
         YouTubeAccount account = new YouTubeAccount();
 
@@ -69,7 +69,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return Helpers.mergeObject(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName, mRefreshToken2);
+        return Helpers.mergePrefs(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName, mRefreshToken2);
     }
 
     @Override

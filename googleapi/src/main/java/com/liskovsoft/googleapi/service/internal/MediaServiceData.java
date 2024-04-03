@@ -53,7 +53,7 @@ public class MediaServiceData {
 
         String data = GlobalPreferences.sInstance.getMediaServiceData();
 
-        String[] split = Helpers.splitObject(data);
+        String[] split = Helpers.splitPrefs(data);
 
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
@@ -64,6 +64,6 @@ public class MediaServiceData {
             return;
         }
 
-        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergeObject(null, mScreenId, mDeviceId)); // null for ScreenItem
+        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergePrefs(null, mScreenId, mDeviceId)); // null for ScreenItem
     }
 }

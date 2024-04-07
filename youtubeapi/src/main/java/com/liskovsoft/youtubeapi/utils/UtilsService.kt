@@ -7,9 +7,9 @@ internal object UtilsService {
 
     @JvmStatic
     fun canonicalChannelId(channelId: String?): String? {
-        if (channelId == null || !channelId.contains("@")) return channelId
+        if (channelId == null || !channelId.startsWith("@")) return channelId
 
-        val canonicalChannelId = mUtilsApi.canonicalChannelId(channelId)
+        val canonicalChannelId = mUtilsApi.canonicalChannelId(channelId.substring(1))
 
         return RetrofitHelper.get(canonicalChannelId)?.channelId
     }

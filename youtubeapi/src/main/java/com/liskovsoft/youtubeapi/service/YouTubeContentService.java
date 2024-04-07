@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
+import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
@@ -418,13 +419,15 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
+            String canonicalId = UtilsService.canonicalChannelId(channelId);
+
             // Special type of channel that could be found inside Music section (see Liked row More button)
-            if (BrowseApiHelper.isGridChannel(channelId)) {
-                GridTab gridChannel = mBrowseService.getGridChannel(channelId);
+            if (BrowseApiHelper.isGridChannel(canonicalId)) {
+                GridTab gridChannel = mBrowseService.getGridChannel(canonicalId);
 
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
             } else {
-                List<MediaGroup> channel = BrowseService2.getChannel(channelId, params);
+                List<MediaGroup> channel = BrowseService2.getChannel(canonicalId, params);
                 emitGroups2(emitter, channel);
             }
         });
@@ -434,13 +437,15 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
+            String canonicalId = UtilsService.canonicalChannelId(channelId);
+
             // Special type of channel that could be found inside Music section (see Liked row More button)
-            if (BrowseApiHelper.isGridChannel(channelId)) {
-                GridTab gridChannel = mBrowseService.getGridChannel(channelId);
+            if (BrowseApiHelper.isGridChannel(canonicalId)) {
+                GridTab gridChannel = mBrowseService.getGridChannel(canonicalId);
 
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
             } else {
-                SectionList channel = mBrowseService.getChannel(channelId, params);
+                SectionList channel = mBrowseService.getChannel(canonicalId, params);
 
                 emitGroups(emitter, channel, MediaGroup.TYPE_CHANNEL);
             }

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
@@ -27,12 +28,15 @@ import static org.junit.Assert.assertTrue;
 public class VideoInfoApiSignedTest {
     private VideoInfoApi mService;
     private LocaleManager mLocaleManager;
+    private AppService mAppService;
 
     @Before
     public void setUp() {
         mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+        mAppService = AppService.instance();
         mLocaleManager = LocaleManager.instance();
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.setDisableCompression(true);
     }
 
     @Test
@@ -103,12 +107,12 @@ public class VideoInfoApiSignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(videoId), "en");
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, null), mAppService.getVisitorId());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(videoId), "en");
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, null), mAppService.getVisitorId());
         return wrapper.execute().body();
     }
 }

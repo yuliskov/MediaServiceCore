@@ -32,7 +32,10 @@ public class VideoInfoApiHelper {
     // https://github.com/LuanRT/YouTube.js/pull/390/commits/6511c23fe6133f4b066c558ebfa531e1ce7c0062
     //private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
 
-    public static String getVideoInfoQuery(String videoId) {
+    /**
+     * Doesn't work
+     */
+    private static String getVideoInfoQuery(String videoId) {
         return getVideoInfoQueryLive(videoId, null);
     }
 

@@ -30,7 +30,7 @@ internal object AppConstants {
     // 7.20220118.09.00
     // 7.20230612.10.00
     // 7.20231119.10.02
-    private const val CLIENT_VERSION_TV = "7.20231119.10.02"
+    private const val CLIENT_VERSION_TV = "7.20240424.00.00"
     private const val CLIENT_NAME_TV = "TVHTML5"
 
     // BROWSER
@@ -38,14 +38,13 @@ internal object AppConstants {
     // 2.20220119.01.00
     // 2.20230613.01.00
     // 2.20231121.08.00
-    private const val CLIENT_VERSION_WEB = "2.20231121.08.00"
+    private const val CLIENT_VERSION_WEB = "2.20240425.07.00"
     private const val CLIENT_NAME_WEB = "WEB"
     private const val CLIENT_NAME_MWEB = "MWEB"
 
     // ATV KIDS
     // 3.20221025.01.00
     // 3.20230425.01.00
-    // 3.20231113.03.00
     private const val CLIENT_VERSION_KIDS = "3.20231113.03.00"
     private const val CLIENT_NAME_KIDS = "TVHTML5_KIDS"
 

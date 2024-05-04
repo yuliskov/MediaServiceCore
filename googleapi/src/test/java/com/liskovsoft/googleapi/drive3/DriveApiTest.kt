@@ -23,6 +23,7 @@ class DriveApiTest {
 
     companion object {
         private const val TEST_FOLDER_NAME = "testFolder"
+        private const val NESTED_FOLDER_NAME = "nestedFolder"
         private const val TEST_FILE_NAME = "testFile"
         private const val TEST_FILE_CONTENTS = "Sample file contents"
         private const val TEST_FILE_CONTENTS2 = "Updated sample file contents"
@@ -58,12 +59,22 @@ class DriveApiTest {
     }
 
     @Test
+    fun testCreateNestedFolder() {
+        val rootFolderMetadata = createRootFolder(TEST_FOLDER_NAME)
+
+        val folderMetadata = createFolder(NESTED_FOLDER_NAME, rootFolderMetadata?.id!!)
+
+        assertMetadata(folderMetadata)
+
+        //cleanup(folderMetadata)
+        cleanup(rootFolderMetadata) // just need to deleted root
+    }
+
+    @Test
     fun testUploadFile() {
         val folderMetadata = createSampleFolder()
 
-        val requestBody = mTestRequestBody
-        val metadata = FileMetadata(name = TEST_FILE_NAME, mimeType = "text/plain", parents = listOf(folderMetadata?.id))
-        val fileMetadata = RetrofitHelper.get(mService.uploadFile(metadata, requestBody))
+        val fileMetadata = createFile(TEST_FILE_NAME, folderMetadata?.id!!)
 
         assertMetadata(fileMetadata)
 
@@ -93,12 +104,29 @@ class DriveApiTest {
     }
 
     private fun createSampleFolder() =
-        RetrofitHelper.get(mService.createFolder(FileMetadata(name = TEST_FOLDER_NAME, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE)))
+        createRootFolder(TEST_FOLDER_NAME)
+        //RetrofitHelper.get(mService.createFolder(FileMetadata(name = TEST_FOLDER_NAME, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE)))
+
+    private fun createRootFolder(folderName: String) =
+        RetrofitHelper.get(mService.createFolder(FileMetadata(name = folderName, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE)))
+
+    private fun createFolder(folderName: String, parentFolderId: String) =
+        RetrofitHelper.get(mService.createFolder(FileMetadata(name = folderName, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE, parents = listOf(parentFolderId))))
+
+    private fun createRootFile(fileName: String): FileMetadata? {
+        val requestBody = mTestRequestBody
+        val fileMetadata = FileMetadata(name = fileName, mimeType = "text/plain")
+        return RetrofitHelper.get(mService.uploadFile(fileMetadata, requestBody))
+    }
+
+    private fun createFile(fileName: String, parentFolderId: String): FileMetadata? {
+        val requestBody = mTestRequestBody
+        val fileMetadata = FileMetadata(name = fileName, mimeType = "text/plain", parents = listOf(parentFolderId))
+        return RetrofitHelper.get(mService.uploadFile(fileMetadata, requestBody))
+    }
 
     private fun createSampleFile(): FileMetadata? {
-        val requestBody = mTestRequestBody
-        val fileMetadata = FileMetadata(name = TEST_FILE_NAME, mimeType = "text/plain")
-        return RetrofitHelper.get(mService.uploadFile(fileMetadata, requestBody))
+        return createRootFile(TEST_FILE_NAME)
     }
 
     private fun cleanup(vararg items: FileMetadata?) {

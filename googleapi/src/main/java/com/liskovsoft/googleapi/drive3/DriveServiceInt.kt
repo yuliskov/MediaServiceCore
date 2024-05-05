@@ -3,43 +3,71 @@ package com.liskovsoft.googleapi.drive3
 import android.net.Uri
 import com.liskovsoft.googleapi.common.helpers.RetrofitHelper
 import com.liskovsoft.googleapi.drive3.data.FileMetadata
+import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
+import java.io.InputStream
 
 internal object DriveServiceInt {
-    private val mDriveApi = RetrofitHelper.withGson(DriveApi::class.java)
     private const val FILE_MIME_TYPE = "text/plain"
+    private val mDriveApi = RetrofitHelper.withGson(DriveApi::class.java)
+    private val mPathMapping = restoreMapping()
 
     @JvmStatic
     fun uploadFile(file: File, path: Uri) {
         val segments = path.pathSegments
         var metadata: FileMetadata? = null
+        var folder = ""
 
         segments.forEachIndexed { idx, name ->
-            if (idx == segments.lastIndex) {
+            metadata = if (idx == segments.lastIndex) {
                 createFile(name, file, metadata?.id)
             } else {
-                metadata = createFolder(name, metadata?.id)
+                createFolder(name, metadata?.id)
             }
+            folder = "$folder/$name"
+            metadata?.id?.let { mPathMapping[folder] = it }
         }
+
+        persistMapping()
     }
 
     @JvmStatic
-    fun getFile(path: Uri): File? {
-        // get id form path to id mapping
-        // get the file by id or null
-        return null
+    fun getFile(path: Uri): InputStream? {
+        // Fix missing slash at the beginning
+        var properPath = path.toString()
+        if (!properPath.startsWith("/")) {
+            properPath = "/$properPath"
+        }
+
+        val fileId = mPathMapping[properPath] ?: return null
+
+        val file = RetrofitHelper.get(mDriveApi.getFile(fileId))
+
+        //Files.copy(inputStream, outputPath, StandardCopyOption.REPLACE_EXISTING);
+
+        return file?.byteStream()
     }
 
     private fun createFolder(folderName: String, parentFolderId: String?): FileMetadata? {
-        val metadata = FileMetadata(name = folderName, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
+        val metadata = FileMetadata(id = mPathMapping[folderName], name = folderName,
+            mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.createFolder(metadata))
     }
 
     private fun createFile(fileName: String, contents: File, parentFolderId: String?): FileMetadata? {
         val requestBody = RequestBody.create(MediaType.parse(FILE_MIME_TYPE), contents)
-        val metadata = FileMetadata(name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
+        val metadata = FileMetadata(id = mPathMapping[fileName], name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.uploadFile(metadata, requestBody))
+    }
+
+    private fun persistMapping() {
+        GlobalPreferences.sInstance?.driveMappingData = Helpers.mergeMap(mPathMapping)
+    }
+
+    private fun restoreMapping(): MutableMap<String, String> {
+        return GlobalPreferences.sInstance?.driveMappingData?.let { Helpers.parseMap(it, String::toString, String::toString) } ?: mutableMapOf()
     }
 }

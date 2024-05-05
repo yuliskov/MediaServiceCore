@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.google.DriveService;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import java.io.File;
+import java.io.InputStream;
 
 import io.reactivex.Observable;
 
@@ -30,7 +31,7 @@ public class GDriveService implements DriveService {
     }
 
     @Override
-    public Observable<File> getFile(Uri path) {
+    public Observable<InputStream> getFile(Uri path) {
         return RxHelper.fromCallable(() -> DriveServiceInt.getFile(path));
     }
 }

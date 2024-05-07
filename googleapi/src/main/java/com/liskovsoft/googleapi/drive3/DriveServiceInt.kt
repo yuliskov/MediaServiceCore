@@ -19,16 +19,17 @@ internal object DriveServiceInt {
     fun uploadFile(file: File, path: Uri) {
         val segments = path.pathSegments
         var metadata: FileMetadata? = null
-        var folder = ""
+        var lastPath = ""
 
         segments.forEachIndexed { idx, name ->
+            val currentPath = "$lastPath/$name"
             metadata = if (idx == segments.lastIndex) {
-                createFile(name, file, metadata?.id)
+                createFile(name, file, mPathMapping[currentPath], mPathMapping[lastPath] ?: metadata?.id)
             } else {
-                createFolder(name, metadata?.id)
+                createFolder(name, mPathMapping[currentPath], mPathMapping[lastPath] ?: metadata?.id)
             }
-            folder = "$folder/$name"
-            metadata?.id?.let { mPathMapping[folder] = it }
+            lastPath = currentPath
+            metadata?.id?.let { mPathMapping[lastPath] = it }
         }
 
         persistMapping()
@@ -51,15 +52,15 @@ internal object DriveServiceInt {
         return file?.byteStream()
     }
 
-    private fun createFolder(folderName: String, parentFolderId: String?): FileMetadata? {
-        val metadata = FileMetadata(id = mPathMapping[folderName], name = folderName,
+    private fun createFolder(folderName: String, folderId: String?, parentFolderId: String?): FileMetadata? {
+        val metadata = FileMetadata(id = folderId, name = folderName,
             mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.createFolder(metadata))
     }
 
-    private fun createFile(fileName: String, contents: File, parentFolderId: String?): FileMetadata? {
+    private fun createFile(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {
         val requestBody = RequestBody.create(MediaType.parse(FILE_MIME_TYPE), contents)
-        val metadata = FileMetadata(id = mPathMapping[fileName], name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
+        val metadata = FileMetadata(id = fileId, name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.uploadFile(metadata, requestBody))
     }
 

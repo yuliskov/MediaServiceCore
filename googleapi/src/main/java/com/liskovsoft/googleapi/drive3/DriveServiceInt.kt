@@ -24,9 +24,9 @@ internal object DriveServiceInt {
         segments.forEachIndexed { idx, name ->
             val currentPath = "$lastPath/$name"
             metadata = if (idx == segments.lastIndex) {
-                createFile(name, file, mPathMapping[currentPath], mPathMapping[lastPath] ?: metadata?.id)
+                createFileCatch(name, file, mPathMapping[currentPath], mPathMapping[lastPath] ?: metadata?.id)
             } else {
-                createFolder(name, mPathMapping[currentPath], mPathMapping[lastPath] ?: metadata?.id)
+                createFolderCatch(name, mPathMapping[currentPath], mPathMapping[lastPath] ?: metadata?.id)
             }
             lastPath = currentPath
             metadata?.id?.let { mPathMapping[lastPath] = it }
@@ -52,10 +52,26 @@ internal object DriveServiceInt {
         return file?.byteStream()
     }
 
+    private fun createFolderCatch(folderName: String, folderId: String?, parentFolderId: String?): FileMetadata? {
+        return try {
+            createFolder(folderName, folderId, parentFolderId)
+        } catch (e: IllegalStateException) { // id not exist
+            createFolder(folderName, null, parentFolderId)
+        }
+    }
+
     private fun createFolder(folderName: String, folderId: String?, parentFolderId: String?): FileMetadata? {
         val metadata = FileMetadata(id = folderId, name = folderName,
             mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.createFolder(metadata))
+    }
+
+    private fun createFileCatch(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {
+        return try {
+            createFile(fileName, contents, fileId, parentFolderId)
+        } catch (e: IllegalStateException) { // id not exist
+            createFile(fileName, contents, null, parentFolderId)
+        }
     }
 
     private fun createFile(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {

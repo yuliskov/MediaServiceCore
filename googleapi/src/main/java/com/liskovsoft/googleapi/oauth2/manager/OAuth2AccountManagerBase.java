@@ -18,7 +18,7 @@ public abstract class OAuth2AccountManagerBase {
     protected abstract Account getSelectedAccount();
     protected abstract AccessToken obtainAccessToken(String refreshToken);
 
-    protected void checkAuth() {
+    public void checkAuth() {
         updateAuthHeaders();
     }
 

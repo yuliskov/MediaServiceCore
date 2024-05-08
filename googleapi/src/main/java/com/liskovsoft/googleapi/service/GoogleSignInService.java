@@ -83,4 +83,8 @@ public class GoogleSignInService implements SignInService {
     public void setOnChange(Runnable onChange) {
         mSignInService.setOnChange(onChange);
     }
+
+    public void checkAuth() {
+        mSignInService.checkAuth();
+    }
 }

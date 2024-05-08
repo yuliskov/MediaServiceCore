@@ -101,4 +101,8 @@ public class SignInServiceImpl implements SignInService {
     public void setOnChange(Runnable onChange) {
         mAccountManager.setOnChange(onChange);
     }
+
+    public void checkAuth() {
+        mAccountManager.checkAuth();
+    }
 }

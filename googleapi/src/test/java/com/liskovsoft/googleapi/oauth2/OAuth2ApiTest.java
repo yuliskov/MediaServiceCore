@@ -1,7 +1,6 @@
 package com.liskovsoft.googleapi.oauth2;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.liskovsoft.googleapi.common.helpers.RetrofitHelper;
@@ -9,8 +8,6 @@ import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googleapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
-import com.liskovsoft.googleapi.oauth2.models.info.AccountInt;
-import com.liskovsoft.googleapi.oauth2.models.info.AccountsList;
 
 import org.junit.Before;
 import org.junit.Test;

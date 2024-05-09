@@ -2,6 +2,7 @@ package com.liskovsoft.googleapi.drive3
 
 import com.liskovsoft.googleapi.drive3.data.FileMetadata
 import com.liskovsoft.googleapi.drive3.data.GeneratedIds
+import com.liskovsoft.googleapi.drive3.data.ListResult
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -14,6 +15,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * https://developers.google.com/drive/api/reference/rest/v3
@@ -48,4 +50,22 @@ internal interface DriveApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.googleapis.com/drive/v3/files")
     fun createFolder(@Body metadata: FileMetadata): Call<FileMetadata?>?
+
+    /**
+     * Query example: mimeType='text/plain' and parents in '1JfVoj74d1TBf-pAe8GxGVo0LTSWi6sNP'
+     *
+     * https://stackoverflow.com/questions/45432906/how-to-search-file-inside-a-specific-folder-in-google-api-v3
+     *
+     * https://developers.google.com/drive/api/guides/ref-search-terms
+     *
+     * https://developers.google.com/drive/api/reference/rest/v3/drives/list
+     *
+     * https://developers.google.com/drive/api/guides/mime-types
+     *
+     * https://developers.google.com/drive/api/guides/search-files
+     *
+     * https://developers.google.com/drive/api/reference/rest/v3/files/list
+     */
+    @GET("https://www.googleapis.com/drive/v3/files")
+    fun getList(@Query("q") query: String): Call<ListResult?>?
 }

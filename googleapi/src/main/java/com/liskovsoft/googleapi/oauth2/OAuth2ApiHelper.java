@@ -2,13 +2,12 @@ package com.liskovsoft.googleapi.oauth2;
 
 import com.liskovsoft.googleapi.common.helpers.ServiceHelper;
 import com.liskovsoft.googleapi.common.helpers.tests.ApiKeys;
-import com.liskovsoft.googleapi.service.internal.MediaServiceData;
 
 /**
  * https://developers.google.com/identity/protocols/oauth2/limited-input-device#allowedscopes<br/>
  * https://developers.google.com/identity/protocols/oauth2/limited-input-device#step-4:-poll-googles-authorization-server
  */
-public class OAuth2ApiHelper {
+class OAuth2ApiHelper {
     public static final String GRANT_TYPE = "urn:ietf:params:oauth:grant-type:device_code";
     public static final String GRANT_TYPE_REFRESH = "refresh_token";
 

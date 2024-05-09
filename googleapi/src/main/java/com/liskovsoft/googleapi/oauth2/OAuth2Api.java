@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 /**
  * https://developers.google.com/identity/protocols/oauth2/limited-input-device
  */
-public interface OAuth2Api {
+interface OAuth2Api {
     @FormUrlEncoded
     @POST("https://oauth2.googleapis.com/device/code")
     Call<UserCode> getUserCode(@Field("client_id") String clientId, @Field("scope") String scope);

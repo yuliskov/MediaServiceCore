@@ -1,7 +1,5 @@
 package com.liskovsoft.googleapi.app;
 
-import com.liskovsoft.googleapi.oauth2.OAuth2Api;
-
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
     private static AppService sInstance;
@@ -19,14 +17,14 @@ public class AppService {
     }
 
     /**
-     * Constant used in {@link OAuth2Api}
+     * Constant used in com.liskovsoft.googleapi.oauth2.OAuth2Api
      */
     public String getClientId() {
         return null;
     }
 
     /**
-     * Constant used in {@link OAuth2Api}
+     * Constant used in com.liskovsoft.googleapi.oauth2.OAuth2Api
      */
     public String getClientSecret() {
         return null;

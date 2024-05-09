@@ -1,7 +1,7 @@
 package com.liskovsoft.googleapi.oauth2.manager;
 
 import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.googleapi.oauth2.impl.AccountImpl;
+import com.liskovsoft.googleapi.oauth2.impl.GoogleAccount;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -28,8 +28,8 @@ public abstract class OAuth2AccountManagerBase {
         }
 
         Account account = getSelectedAccount();
-        String refreshToken = account != null ? ((AccountImpl) account).getRefreshToken() : null;
-        String refreshToken2 = account != null ? ((AccountImpl) account).getRefreshToken2() : null;
+        String refreshToken = account != null ? ((GoogleAccount) account).getRefreshToken() : null;
+        String refreshToken2 = account != null ? ((GoogleAccount) account).getRefreshToken2() : null;
         // get or create authorization on fly
         mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
         mCachedAuthorizationHeader2 = createAuthorizationHeader(refreshToken2);
@@ -80,7 +80,7 @@ public abstract class OAuth2AccountManagerBase {
 
         if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((AccountImpl) getSelectedAccount()).getPageIdToken();
+            String pageIdToken = ((GoogleAccount) getSelectedAccount()).getPageIdToken();
             if (pageIdToken != null) {
                 headers2.put("Authorization", mCachedAuthorizationHeader2);
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.

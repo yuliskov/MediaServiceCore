@@ -1,11 +1,12 @@
-package com.liskovsoft.googleapi.service;
+package com.liskovsoft.googleapi.oauth2.impl;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.googleapi.oauth2.impl.SignInServiceImpl;
+import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.mediaserviceinterfaces.google.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
 import com.liskovsoft.mediaserviceinterfaces.google.data.SignInCode;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import java.util.List;
 
@@ -14,10 +15,10 @@ import io.reactivex.Observable;
 public class GoogleSignInService implements SignInService {
     private static final String TAG = GoogleSignInService.class.getSimpleName();
     private static GoogleSignInService sInstance;
-    private final SignInServiceImpl mSignInService;
+    private final OAuth2AccountManager mAccountManager;
 
     private GoogleSignInService() {
-        mSignInService = SignInServiceImpl.instance();
+        mAccountManager = OAuth2AccountManager.instance();
     }
 
     public static GoogleSignInService instance() {
@@ -30,61 +31,78 @@ public class GoogleSignInService implements SignInService {
 
     @Override
     public Observable<SignInCode> signInObserve() {
-        return mSignInService.signInObserve();
+        return RxHelper.createLong(emitter -> {
+            SignInCode signInCode = mAccountManager.getSignInCode();
+
+            if (signInCode == null) {
+                RxHelper.onError(emitter, "User code result is empty");
+                return;
+            }
+
+            emitter.onNext(signInCode);
+
+            mAccountManager.waitUserCodeConfirmation();
+
+            emitter.onComplete();
+        });
     }
 
     @Override
     public void signOut() {
-        mSignInService.signOut();
+        // TODO: not implemented
     }
 
     @Override
     public Observable<Void> signOutObserve() {
-        return mSignInService.signOutObserve();
+        return RxHelper.create(emitter -> {
+            signOut();
+            emitter.onComplete();
+        });
     }
 
     @Override
     public boolean isSigned() {
-        return mSignInService.isSigned();
+        // Condition created for the case when a device in offline mode.
+        return mAccountManager.getSelectedAccount() != null;
     }
 
     @Override
     public Observable<Boolean> isSignedObserve() {
-        return mSignInService.isSignedObserve();
+        return RxHelper.fromCallable(this::isSigned);
     }
 
     @Override
     public List<Account> getAccounts() {
-        return mSignInService.getAccounts();
+        return mAccountManager.getAccounts();
     }
 
     @Override
     public Observable<List<Account>> getAccountsObserve() {
-        return mSignInService.getAccountsObserve();
+        return RxHelper.fromCallable(this::getAccounts);
     }
 
     @Nullable
     @Override
     public Account getSelectedAccount() {
-        return mSignInService.getSelectedAccount();
+        return mAccountManager.getSelectedAccount();
     }
 
     @Override
     public void selectAccount(Account account) {
-        mSignInService.selectAccount(account);
+        mAccountManager.selectAccount(account);
     }
 
     @Override
     public void removeAccount(Account account) {
-        mSignInService.removeAccount(account);
+        mAccountManager.removeAccount(account);
     }
 
     @Override
     public void setOnChange(Runnable onChange) {
-        mSignInService.setOnChange(onChange);
+        mAccountManager.setOnChange(onChange);
     }
 
     public void checkAuth() {
-        mSignInService.checkAuth();
+        mAccountManager.checkAuth();
     }
 }

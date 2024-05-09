@@ -1,4 +1,4 @@
-package com.liskovsoft.googleapi.service.internal;
+package com.liskovsoft.googleapi.oauth2;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -6,7 +6,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
 import java.util.UUID;
 
-public class MediaServiceData {
+class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
     private static MediaServiceData sInstance;
     private String mScreenId;

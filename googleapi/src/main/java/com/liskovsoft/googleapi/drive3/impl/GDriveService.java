@@ -1,4 +1,4 @@
-package com.liskovsoft.googleapi.service;
+package com.liskovsoft.googleapi.drive3.impl;
 
 import android.net.Uri;
 
@@ -8,15 +8,15 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import io.reactivex.Observable;
 
 public class GDriveService implements DriveService {
     private static GDriveService sInstance;
-    private final GoogleSignInService mSignInService;
 
     private GDriveService() {
-        mSignInService = GoogleSignInService.instance();
+        
     }
 
     public static GDriveService instance() {
@@ -29,13 +29,16 @@ public class GDriveService implements DriveService {
 
     @Override
     public Observable<Void> uploadFile(File file, Uri path) {
-        mSignInService.checkAuth();
         return RxHelper.fromVoidable(() -> DriveServiceInt.uploadFile(file, path));
     }
 
     @Override
     public Observable<InputStream> getFile(Uri path) {
-        mSignInService.checkAuth();
         return RxHelper.fromCallable(() -> DriveServiceInt.getFile(path));
+    }
+
+    @Override
+    public Observable<List<String>> getList(Uri path) {
+        return RxHelper.fromCallable(() -> DriveServiceInt.getList(path));
     }
 }

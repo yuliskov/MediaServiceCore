@@ -17,6 +17,7 @@ import com.liskovsoft.googleapi.common.converters.regexp.converter.RegExpConvert
 import com.liskovsoft.googleapi.common.models.gen.ErrorResponse;
 
 import okhttp3.Headers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -144,14 +145,21 @@ public class RetrofitHelper {
             return;
         }
 
-        if (response.code() == 400) {
-            Gson gson = new GsonBuilder().create();
-            try {
-                ErrorResponse error = response.errorBody() != null ? gson.fromJson(response.errorBody().string(), ErrorResponse.class) : null;
-                throw new IllegalStateException(error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error");
+        if (response.code() == 400 || response.code() == 409) {
+            try (ResponseBody body = response.errorBody()) {
+                Throwable cause = response.code() == 400 ? new ErrorNotExists() : new ErrorAlreadyExists();
+                Gson gson = new GsonBuilder().create();
+                ErrorResponse error = body != null ? gson.fromJson(body.string(), ErrorResponse.class) : null;
+                throw new IllegalStateException(error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error", cause);
             } catch (IOException e) {
                 // handle failure to read error
             }
         }
+    }
+
+    public static class ErrorNotExists extends Throwable {
+    }
+
+    public static class ErrorAlreadyExists extends Throwable {
     }
 }

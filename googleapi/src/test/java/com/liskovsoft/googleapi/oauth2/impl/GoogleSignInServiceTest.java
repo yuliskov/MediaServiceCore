@@ -2,7 +2,6 @@ package com.liskovsoft.googleapi.oauth2.impl;
 
 import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.mediaserviceinterfaces.google.SignInService;
-import com.liskovsoft.sharedutils.mylogger.Log;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -15,16 +14,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
-import java.util.concurrent.CountDownLatch;
-
-import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.TestObserver;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
 
 @RunWith(RobolectricTestRunner.class)
-public class SignInServiceImplTest {
+public class GoogleSignInServiceTest {
     private SignInService mService;
 
     @Before
@@ -35,7 +28,7 @@ public class SignInServiceImplTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = SignInServiceImpl.instance();
+        mService = GoogleSignInService.instance();
         RetrofitOkHttpHelper.setDisableCompression(true);
     }
 

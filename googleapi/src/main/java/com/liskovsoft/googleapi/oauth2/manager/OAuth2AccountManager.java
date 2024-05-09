@@ -1,7 +1,7 @@
 package com.liskovsoft.googleapi.oauth2.manager;
 
 import com.liskovsoft.googleapi.oauth2.OAuth2Service;
-import com.liskovsoft.googleapi.oauth2.impl.AccountImpl;
+import com.liskovsoft.googleapi.oauth2.impl.GoogleAccount;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
 import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
@@ -45,7 +45,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
 
             if (index != -1) {
                 Account matched = get(index);
-                ((AccountImpl) account).merge(matched);
+                ((GoogleAccount) account).merge(matched);
                 remove(matched);
             }
         }
@@ -144,7 +144,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         }
 
         // Create initial account (with only refresh key)
-        AccountImpl tempAccount = AccountImpl.fromToken(refreshToken);
+        GoogleAccount tempAccount = GoogleAccount.fromToken(refreshToken);
         addAccount(tempAccount);
 
         //// Use initial account to create auth header
@@ -174,7 +174,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
     private void addAccount(Account newAccount) {
         if (newAccount.isSelected()) {
             for (Account account : mAccounts) {
-                ((AccountImpl) account).setSelected(false);
+                ((GoogleAccount) account).setSelected(false);
             }
         }
 
@@ -189,7 +189,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         }
 
         for (Account account : mAccounts) {
-            ((AccountImpl) account).setSelected(newAccount != null && newAccount.equals(account));
+            ((GoogleAccount) account).setSelected(newAccount != null && newAccount.equals(account));
         }
 
         persistAccounts();
@@ -232,7 +232,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
             mAccounts.clear();
 
             for (String spec : split) {
-                mAccounts.add(AccountImpl.from(spec));
+                mAccounts.add(GoogleAccount.from(spec));
             }
         }
 

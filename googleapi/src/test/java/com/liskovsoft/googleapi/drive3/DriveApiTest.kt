@@ -103,6 +103,13 @@ class DriveApiTest {
         cleanup(fileMetadata)
     }
 
+    @Test
+    fun testGetList() {
+        val listResult = RetrofitHelper.get(mService.getList("mimeType='text/plain' and parents in '1JfVoj74d1TBf-pAe8GxGVo0LTSWi6sNP'"))
+
+        assertTrue("Has files", (listResult?.files?.size ?: 0) > 0)
+    }
+
     private fun createSampleFolder() =
         createRootFolder(TEST_FOLDER_NAME)
         //RetrofitHelper.get(mService.createFolder(FileMetadata(name = TEST_FOLDER_NAME, mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE)))

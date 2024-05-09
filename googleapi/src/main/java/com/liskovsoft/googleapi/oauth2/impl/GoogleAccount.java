@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.googleapi.oauth2.models.info.AccountInt;
 import com.liskovsoft.googleapi.common.helpers.YouTubeHelper;
 
-public class AccountImpl implements Account {
+public class GoogleAccount implements Account {
     private int mId;
     private String mName;
     private String mEmail;
@@ -19,8 +19,8 @@ public class AccountImpl implements Account {
     private String mPageIdToken;
     private String mChannelName;
 
-    public static AccountImpl from(AccountInt accountInt) {
-        AccountImpl account = new AccountImpl();
+    public static GoogleAccount from(AccountInt accountInt) {
+        GoogleAccount account = new GoogleAccount();
         
         account.mName = accountInt.getName();
         account.mEmail = accountInt.getEmail();
@@ -33,14 +33,14 @@ public class AccountImpl implements Account {
         return account;
     }
 
-    public static AccountImpl from(String spec) {
+    public static GoogleAccount from(String spec) {
         if (spec == null) {
             return null;
         }
 
         String[] split = Helpers.splitDataLegacy(spec);
 
-        AccountImpl account = new AccountImpl();
+        GoogleAccount account = new GoogleAccount();
 
         account.mId = Helpers.parseInt(split, 0);
         account.mName = Helpers.parseStr(split, 1);
@@ -58,8 +58,8 @@ public class AccountImpl implements Account {
         return account;
     }
 
-    public static AccountImpl fromToken(String token) {
-        AccountImpl account = new AccountImpl();
+    public static GoogleAccount fromToken(String token) {
+        GoogleAccount account = new GoogleAccount();
 
         account.mRefreshToken = token;
         account.mIsSelected = true;
@@ -105,8 +105,8 @@ public class AccountImpl implements Account {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof AccountImpl) {
-            AccountImpl account = (AccountImpl) obj;
+        if (obj instanceof GoogleAccount) {
+            GoogleAccount account = (GoogleAccount) obj;
             String token = account.getRefreshToken();
             String pageId = account.getPageIdToken();
             String name = account.getName();
@@ -160,7 +160,7 @@ public class AccountImpl implements Account {
     }
 
     public void merge(Account account) {
-        AccountImpl youTubeAccount = (AccountImpl) account;
+        GoogleAccount youTubeAccount = (GoogleAccount) account;
 
         if (Helpers.equals(getPageIdToken(), youTubeAccount.getPageIdToken()) && Helpers.equals(getRefreshToken2(), youTubeAccount.getRefreshToken2())) {
             return;

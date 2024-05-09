@@ -145,21 +145,15 @@ public class RetrofitHelper {
             return;
         }
 
-        if (response.code() == 400 || response.code() == 409) {
+        if (response.code() == 400 || response.code() == 409) { // not exists or already exists
             try (ResponseBody body = response.errorBody()) {
-                Throwable cause = response.code() == 400 ? new ErrorNotExists() : new ErrorAlreadyExists();
                 Gson gson = new GsonBuilder().create();
                 ErrorResponse error = body != null ? gson.fromJson(body.string(), ErrorResponse.class) : null;
-                throw new IllegalStateException(error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error", cause);
+                String message = error != null && error.getError() != null ? error.getError().getMessage() : String.format("Unknown %s error", response.code());
+                throw new IllegalStateException(message);
             } catch (IOException e) {
                 // handle failure to read error
             }
         }
-    }
-
-    public static class ErrorNotExists extends Throwable {
-    }
-
-    public static class ErrorAlreadyExists extends Throwable {
     }
 }

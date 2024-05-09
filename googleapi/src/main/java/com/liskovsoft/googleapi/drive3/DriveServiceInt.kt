@@ -2,8 +2,6 @@ package com.liskovsoft.googleapi.drive3
 
 import android.net.Uri
 import com.liskovsoft.googleapi.common.helpers.RetrofitHelper
-import com.liskovsoft.googleapi.common.helpers.RetrofitHelper.ErrorAlreadyExists
-import com.liskovsoft.googleapi.common.helpers.RetrofitHelper.ErrorNotExists
 import com.liskovsoft.googleapi.drive3.data.FileMetadata
 import com.liskovsoft.googleapi.oauth2.impl.GoogleSignInService
 import okhttp3.MediaType
@@ -24,13 +22,12 @@ internal object DriveServiceInt {
         var metadata: FileMetadata? = null
 
         segments.forEachIndexed { idx, name ->
-            val fileQuery = if (metadata?.id == null) "name = '${name}'" else "name = '${name}' and parents in '${metadata?.id}'"
-            val thisMetadata = RetrofitHelper.get(mDriveApi.getList(fileQuery))?.files?.first()
+            val thisMetadata = findMetadata(name, metadata?.id)
 
             metadata = if (idx == segments.lastIndex) {
-                createFileCatch(name, file, thisMetadata?.id, metadata?.id)
+                createOrUpdateFile(name, file, thisMetadata?.id, metadata?.id)
             } else {
-                createFolderCatch(name, thisMetadata?.id, metadata?.id)
+                createOrUpdateFolder(name, thisMetadata?.id, metadata?.id)
             }
 
             if (metadata == null) {
@@ -62,38 +59,29 @@ internal object DriveServiceInt {
         return RetrofitHelper.get(mDriveApi.getList(folderContentsQuery))?.files?.mapNotNull { it?.name }
     }
 
-    private fun createFolderCatch(folderName: String, folderId: String?, parentFolderId: String?): FileMetadata? {
-        return try {
-            createFolder(folderName, folderId, parentFolderId)
-        } catch (e: IllegalStateException) { // id not exist
-            when (e.cause) {
-                is ErrorNotExists -> createFolder(folderName, null, parentFolderId)
-                else -> null
-            }
-        }
+    private fun createOrUpdateFolder(folderName: String, folderId: String?, parentFolderId: String?): FileMetadata? {
+        return if (folderId == null) {
+            createFolder(folderName, parentFolderId)
+        } else null // already exists
     }
 
-    private fun createFolder(folderName: String, folderId: String?, parentFolderId: String?): FileMetadata? {
-        val metadata = FileMetadata(id = folderId, name = folderName,
+    private fun createFolder(folderName: String, parentFolderId: String?): FileMetadata? {
+        val metadata = FileMetadata(name = folderName,
             mimeType = DriveApiHelper.GOOGLE_FOLDER_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.createFolder(metadata))
     }
 
-    private fun createFileCatch(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {
-        return try {
-            createFile(fileName, contents, fileId, parentFolderId)
-        } catch (e: IllegalStateException) { // id not exist
-            when (e.cause) {
-                is ErrorNotExists -> createFile(fileName, contents, null, parentFolderId)
-                is ErrorAlreadyExists -> updateFile(contents, fileId)
-                else -> null
-            }
+    private fun createOrUpdateFile(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {
+        return if (fileId == null) {
+            createFile(fileName, contents, parentFolderId)
+        } else {
+            updateFile(contents, fileId)
         }
     }
 
-    private fun createFile(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {
+    private fun createFile(fileName: String, contents: File, parentFolderId: String?): FileMetadata? {
         val requestBody = RequestBody.create(MediaType.parse(FILE_MIME_TYPE), contents)
-        val metadata = FileMetadata(id = fileId, name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
+        val metadata = FileMetadata(name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
         return RetrofitHelper.get(mDriveApi.uploadFile(metadata, requestBody))
     }
 
@@ -107,8 +95,7 @@ internal object DriveServiceInt {
         var metadata: FileMetadata? = null
 
         segments.forEachIndexed { idx, name ->
-            val fileQuery = if (metadata?.id == null) "name = '${name}'" else "name = '${name}' and parents in '${metadata?.id}'"
-            metadata = RetrofitHelper.get(mDriveApi.getList(fileQuery))?.files?.first()
+            metadata = findMetadata(name, metadata?.id)
 
             if (idx == segments.lastIndex) {
                 return metadata?.id
@@ -116,5 +103,10 @@ internal object DriveServiceInt {
         }
 
         return null
+    }
+
+    private fun findMetadata(name: String, parentId: String?): FileMetadata? {
+        val fileQuery = if (parentId == null) "name = '${name}'" else "name = '${name}' and parents in '${parentId}'"
+        return RetrofitHelper.get(mDriveApi.getList(fileQuery))?.files?.first()
     }
 }

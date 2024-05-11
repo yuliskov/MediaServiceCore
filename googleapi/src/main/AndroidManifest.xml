@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.liskovsoft.youtubeapi">
+          package="com.liskovsoft.googleapi">
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- NOTE: use older api -->

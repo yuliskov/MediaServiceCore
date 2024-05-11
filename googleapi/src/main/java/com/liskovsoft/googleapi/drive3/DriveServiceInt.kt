@@ -107,6 +107,7 @@ internal object DriveServiceInt {
 
     private fun findMetadata(name: String, parentId: String?): FileMetadata? {
         val fileQuery = if (parentId == null) "name = '${name}'" else "name = '${name}' and parents in '${parentId}'"
-        return RetrofitHelper.get(mDriveApi.getList(fileQuery))?.files?.first()
+        val result = RetrofitHelper.get(mDriveApi.getList(fileQuery))
+        return result?.files?.firstOrNull()
     }
 }

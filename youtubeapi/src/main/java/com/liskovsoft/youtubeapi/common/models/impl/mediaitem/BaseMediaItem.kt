@@ -59,6 +59,7 @@ open class BaseMediaItem : MediaItem {
     protected open val feedbackTokenItem: String? = null
     protected open val feedbackTokenItem2: String? = null
     protected open val percentWatchedItem: Int? = null
+    protected open val startTimeSecondsItem: Int? = null
     protected open val hasNewContentItem: Boolean? = null
     protected open val hasUploadsItem: Boolean? = null
 
@@ -194,6 +195,10 @@ open class BaseMediaItem : MediaItem {
 
     override fun getPercentWatched(): Int {
         return percentWatchedItem ?: -1
+    }
+
+    override fun getStartTimeSeconds(): Int {
+        return startTimeSecondsItem ?: -1
     }
 
     override fun getAuthor(): String? {

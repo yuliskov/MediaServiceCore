@@ -63,6 +63,8 @@ public class VideoItem {
     private String mTrackingParams;
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched = -1;
+    @JsonPath("$.navigationEndpoint.watchEndpoint.startTimeSeconds")
+    private int mStartTimeSeconds;
     @JsonPath("$.upcomingEventData.upcomingEventText")
     private TextItem mUpcomingEventText;
     @JsonPath("$.upcomingEventData.startTime")
@@ -144,6 +146,10 @@ public class VideoItem {
 
     public int getPercentWatched() {
         return mPercentWatched;
+    }
+
+    public int getStartTimeSeconds() {
+        return mStartTimeSeconds;
     }
 
     public String getTrackingParams() {

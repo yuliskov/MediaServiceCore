@@ -44,6 +44,7 @@ public class YouTubeMediaItem implements MediaItem {
     private double mRatingScore;
     private int mMediaItemType;
     private int mPercentWatched;
+    private int mStartTimeSeconds;
     private String mAuthor;
     private String mVideoPreviewUrl;
     private int mPlaylistIndex;
@@ -122,6 +123,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mLengthText = item.getBadgeText();
         video.mBadgeText = item.getBadgeText();
         video.mPercentWatched = item.getPercentWatched();
+        video.mStartTimeSeconds = item.getStartTimeSeconds();
         video.mAuthor = item.getUserName();
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
         video.mIsLive = item.isLive();
@@ -159,6 +161,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mLengthText = item.getLengthText() != null ? item.getLengthText() : item.getBadgeText();
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
+        video.mStartTimeSeconds = item.getStartTimeSeconds();
         video.mAuthor = item.getUserName();
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
         video.mIsLive = item.isLive();
@@ -450,6 +453,11 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public int getPercentWatched() {
         return mPercentWatched;
+    }
+
+    @Override
+    public int getStartTimeSeconds() {
+        return mStartTimeSeconds;
     }
 
     @Override

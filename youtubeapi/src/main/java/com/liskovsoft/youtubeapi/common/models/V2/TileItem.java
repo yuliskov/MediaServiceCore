@@ -34,6 +34,9 @@ public class TileItem {
     })
     private String mVideoId;
 
+    @JsonPath("$.onSelectCommand.watchEndpoint.startTimeSeconds")
+    private int mStartTimeSeconds;
+
     @JsonPath({
             "$.onSelectCommand.watchEndpoint.playlistId",
             "$.onSelectCommand.watchPlaylistEndpoint.playlistId"
@@ -113,6 +116,10 @@ public class TileItem {
 
     public int getPercentWatched() {
         return mHeader != null ? mHeader.getPercentWatched() : -1;
+    }
+
+    public int getStartTimeSeconds() {
+        return mStartTimeSeconds;
     }
 
     public String getRichThumbnailUrl() {

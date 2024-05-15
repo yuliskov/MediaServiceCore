@@ -16,6 +16,7 @@ public interface MediaItem {
     boolean isUpcoming();
     boolean isShorts();
     int getPercentWatched();
+    int getStartTimeSeconds();
     String getAuthor();
     String getFeedbackToken();
     String getFeedbackToken2();

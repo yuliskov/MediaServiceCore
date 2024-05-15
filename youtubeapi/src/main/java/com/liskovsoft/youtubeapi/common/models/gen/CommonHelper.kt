@@ -57,6 +57,10 @@ internal fun NavigationEndpointItem.isSubscribed() = getOverlaySubscribeButton()
 internal fun NavigationEndpointItem.getContinuation() = getContent()?.itemSectionRenderer?.continuations?.firstOrNull() ?: getEngagementPanel()?.content?.sectionListRenderer?.contents?.firstOrNull()?.itemSectionRenderer?.continuations?.firstOrNull()
 internal fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
 internal fun NavigationEndpointItem.getSubtitle() = getHeader()?.overlayPanelHeaderRenderer?.subtitle?.getText()
+internal fun NavigationEndpointItem.getStartTimeSeconds() = watchEndpoint?.startTimeSeconds
+internal fun NavigationEndpointItem.getVideoId() = watchEndpoint?.videoId
+internal fun NavigationEndpointItem.getPlaylistId() = watchEndpoint?.playlistId ?: watchPlaylistEndpoint?.playlistId
+internal fun NavigationEndpointItem.getIndex() = watchEndpoint?.index
 private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
     ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer
 private fun NavigationEndpointItem.getEngagementPanel() = showEngagementPanelEndpoint?.engagementPanel?.engagementPanelSectionListRenderer
@@ -99,8 +103,8 @@ internal fun VideoItem.getChannelId() =
     shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     menu?.getBrowseId()
-internal fun VideoItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
-internal fun VideoItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
+internal fun VideoItem.getPlaylistId() = navigationEndpoint?.getPlaylistId()
+internal fun VideoItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
 internal fun VideoItem.isLive(): Boolean = OLD_BADGE_STYLE_LIVE == getOldBadgeStyle() || BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle()
@@ -114,13 +118,13 @@ private fun VideoItem.getBadgeStyle() = thumbnailOverlays?.firstNotNullOfOrNull 
 internal fun MusicItem.getTitle() = primaryText?.getText()
 internal fun MusicItem.getUserName() = secondaryText?.getText()
 internal fun MusicItem.getThumbnails() = thumbnail
-internal fun MusicItem.getVideoId() = navigationEndpoint?.watchEndpoint?.videoId
-internal fun MusicItem.getPlaylistId() = navigationEndpoint?.watchEndpoint?.playlistId
+internal fun MusicItem.getVideoId() = navigationEndpoint?.getVideoId()
+internal fun MusicItem.getPlaylistId() = navigationEndpoint?.getPlaylistId()
 internal fun MusicItem.getBadgeText() = lengthText?.getText()
 internal fun MusicItem.getLengthText() = lengthText?.getText()
 internal fun MusicItem.getViewsAndPublished() = tertiaryText?.getText()
 internal fun MusicItem.getChannelId() = menu?.getBrowseId()
-internal fun MusicItem.getPlaylistIndex() = navigationEndpoint?.watchEndpoint?.index
+internal fun MusicItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
 internal fun MusicItem.getDescBadgeText() = null
 internal fun MusicItem.getViewsCountText() = null
 internal fun MusicItem.getUpcomingEventText() = null
@@ -130,8 +134,8 @@ internal fun MusicItem.isUpcoming() = false
 ///////////
 
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
-internal fun TileItem.getVideoId() = onSelectCommand?.watchEndpoint?.videoId
-internal fun TileItem.getPlaylistId() = onSelectCommand?.watchEndpoint?.playlistId ?: onSelectCommand?.watchPlaylistEndpoint?.playlistId
+internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
+internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
 internal fun TileItem.getDescBadgeText() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 internal fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }

@@ -76,6 +76,7 @@ internal data class WatchEndpointItem(
     val playlistId: String?,
     val index: Int,
     val params: String?,
+    val startTimeSeconds: Int?
 )
 
 internal data class ChannelsEndpoint(
@@ -314,14 +315,10 @@ internal data class MusicItem(
     val primaryText: TextItem?,
     val secondaryText: TextItem?,
     val tertiaryText: TextItem?,
-    val navigationEndpoint: NavigationEndpoint?,
+    val navigationEndpoint: NavigationEndpointItem?,
     val lengthText: TextItem?,
     val menu: MenuWrapper?
-) {
-    data class NavigationEndpoint(
-        val watchEndpoint: WatchEndpointItem?
-    )
-}
+)
 
 internal data class RadioItem(
     val thumbnail: ThumbnailItem?,

@@ -35,13 +35,13 @@ public interface VideoInfoApi {
             //"Authorization: SAPISIDHASH 1696275539_755156c48283f6c558adbc9426b6239faae35786",
             //"Cookie: __Secure-3PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; __Secure-3PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3HyXHOT6-EFl_3Kvdg5IJnQ."
     })
-    @POST("https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8")
+    @POST("https://www.youtube.com/youtubei/v1/player")
     Call<VideoInfo> getVideoInfoRestricted(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
 
     @Headers({
             "Content-Type: application/json",
             "User-Agent: " + DefaultHeaders.USER_AGENT_WEB
     })
-    @POST("https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8")
+    @POST("https://www.youtube.com/youtubei/v1/player")
     Call<VideoInfo> getVideoInfoRegular(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
 }

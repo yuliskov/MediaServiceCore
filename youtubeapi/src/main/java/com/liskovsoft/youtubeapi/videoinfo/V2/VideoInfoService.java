@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -28,8 +29,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         // NOTE: Request below doesn't contain dashManifestUrl!!!
         //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams); // no dash url and hls link
         //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
-        VideoInfo result = getVideoInfoGeoBlocked(videoId, clickTrackingParams); // no seek preview, fix 403 error?
-        //VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included, the best
+        //VideoInfo result = getVideoInfoGeoBlocked(videoId, clickTrackingParams); // no seek preview, fix 403 error?
+        VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included, the best
 
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
         result = retryIfNeeded(result, videoId, clickTrackingParams);
@@ -128,7 +129,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //    result.setDashManifestUrl(result2.getDashManifestUrl());
             //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
             //}
-        } else if (result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
+        } else if (isExtendedHlsFormatsEnabled() && result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
             VideoInfoHls videoInfoHls = getVideoInfoHls(videoId, clickTrackingParams);
             if (videoInfoHls != null && result.getHlsManifestUrl() == null) {
                 result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
@@ -163,5 +164,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         return result;
+    }
+
+    private static boolean isExtendedHlsFormatsEnabled() {
+        return GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isExtendedHlsFormatsEnabled();
     }
 }

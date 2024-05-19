@@ -98,8 +98,13 @@ public abstract class VideoInfoServiceBase {
         String cpn = AppService.instance().getClientPlaybackNonce();
 
         for (VideoFormat format : formats) {
-            format.setCpn(cpn);
+            //format.setCpn(cpn);
             //format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
+
+            // Buffering fix? ptk=youtube_host&ptchn=youtube_host&pltype=adhost
+            //format.setParam("ptk", "youtube_host");
+            //format.setParam("ptchn", "youtube_host");
+            //format.setParam("pltype", "adhost");
         }
     }
 

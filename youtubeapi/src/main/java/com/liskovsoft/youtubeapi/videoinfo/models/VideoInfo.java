@@ -292,6 +292,16 @@ public class VideoInfo {
         mIsStreamSeekable = dashInfo.isSeekable();
     }
 
+    public void sync(VideoInfo videoInfo) {
+        if (videoInfo == null) {
+            return;
+        }
+
+        setEventId(videoInfo.getEventId());
+        setVisitorMonitoringData(videoInfo.getVisitorMonitoringData());
+        setOfParam(videoInfo.getOfParam());
+    }
+
     private void parseTrackingParams() {
         boolean parseDone = mEventId != null || mVisitorMonitoringData != null;
 

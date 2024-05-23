@@ -41,7 +41,7 @@ internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper):
 
     override fun getPublishedDate(): String? = publishedDateItem
 
-    override fun getNestedCommentsKey(): String? = nestedCommentKeyItem
+    override fun getNestedCommentsKey(): String? = replyCountItem?.let { nestedCommentKeyItem } // empty replies fix
 
     override fun isLiked(): Boolean = isLikedItem
 

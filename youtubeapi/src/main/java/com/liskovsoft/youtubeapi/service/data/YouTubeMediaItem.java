@@ -525,7 +525,7 @@ public class YouTubeMediaItem implements MediaItem {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", mReloadPageKey, mTitle, mSecondTitle, mCardImageUrl, mVideoId, mPlaylistId, mChannelId);
+        return String.format("%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s&mi;%s", mReloadPageKey, mTitle, mSecondTitle, mCardImageUrl, mVideoId, mPlaylistId, mChannelId, mMediaItemType);
     }
 
     public static MediaItem fromString(String spec) {
@@ -535,7 +535,12 @@ public class YouTubeMediaItem implements MediaItem {
 
         String[] split = spec.split("&mi;");
 
-        if (split.length != 7) {
+        // 'mMediaItemType' backward compatibility
+        if (split.length == 7) {
+            split = Helpers.appendArray(split, new String[]{"-1"});
+        }
+
+        if (split.length != 8) {
             return null;
         }
 
@@ -548,6 +553,7 @@ public class YouTubeMediaItem implements MediaItem {
         mediaItem.mVideoId = Helpers.parseStr(split[4]);
         mediaItem.mPlaylistId = Helpers.parseStr(split[5]);
         mediaItem.mChannelId = Helpers.parseStr(split[6]);
+        mediaItem.mMediaItemType = Helpers.parseInt(split[7]);
 
         return mediaItem;
     }

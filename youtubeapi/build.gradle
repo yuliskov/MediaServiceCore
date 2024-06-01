@@ -79,6 +79,6 @@ dependencies {
     //implementation(name: 'j2v8-6.2.1', ext: 'aar')
 
     // Add kotlin support libs
-    implementation 'androidx.core:core-ktx:' + kotlinCoreVersion
+    implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
 }

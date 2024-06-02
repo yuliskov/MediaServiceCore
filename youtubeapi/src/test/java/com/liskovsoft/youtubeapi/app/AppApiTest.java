@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class AppApiTest {
+    private static final String POTOKEN_INPUT = "102307470137119736718||104417232878503778010";
     private AppApiWrapper mAppApiWrapper;
 
     @Before
@@ -55,13 +56,9 @@ public class AppApiTest {
 
     @Test
     public void testThatPlaybackNonceFunctionIsValid() {
-        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_TV);
+        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
 
-        PlayerData clientPlaybackNonceFunction = mAppApiWrapper.getPlayerData(playerUrl);
-
-        assertNotNull("Playback nonce result not null", clientPlaybackNonceFunction);
-
-        String playbackNonceFunctionContent = clientPlaybackNonceFunction.getRawClientPlaybackNonceFunction();
+        String playbackNonceFunctionContent = playerData.getRawClientPlaybackNonceFunction();
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
         assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith("function ") &&
@@ -70,11 +67,7 @@ public class AppApiTest {
 
     @Test
     public void testThrottleFunctionIsValid() {
-        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_TV);
-
-        PlayerData playerData = mAppApiWrapper.getPlayerData(playerUrl);
-
-        assertNotNull("PlayerData not null", playerData);
+        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
 
         String throttleFunction = playerData.getThrottleFunction();
         assertNotNull("Throttle function not null", throttleFunction);
@@ -85,18 +78,30 @@ public class AppApiTest {
 
     @Test
     public void testThatClientIdAndSecretNotEmpty() {
-        testThatClientIdAndSecretNotEmpty(DefaultHeaders.USER_AGENT_TV);
+        ClientData clientData = getClientData(DefaultHeaders.USER_AGENT_TV);
+
+        assertNotNull("Client id not empty", clientData.getClientId());
+        assertNotNull("Client secret not empty", clientData.getClientSecret());
     }
 
-    public void testThatClientIdAndSecretNotEmpty(String userAgent) {
-        String baseUrl = getBaseUrl(userAgent);
+    @Test
+    public void testPoTokenFunctionIsValid() {
+        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
 
-        ClientData baseData = mAppApiWrapper.getBaseData(baseUrl);
+        String poTokenFunction = playerData.getPoTokenFunction();
+        assertNotNull("Player data contains poToken function", poTokenFunction);
+        assertTrue("poToken function is valid", poTokenFunction.contains("encodePoToken"));
+        assertTrue("poToken function len is valid", poTokenFunction.length() < 700);
+    }
 
-        assertNotNull("Base data not null", baseData);
+    @Test
+    public void testPoTokenConcatFunctionIsValid() {
+        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
 
-        assertNotNull("Client id not empty", baseData.getClientId());
-        assertNotNull("Client secret not empty", baseData.getClientSecret());
+        String poTokenConcatFunction = playerData.getPoTokenConcatFunction();
+        assertNotNull("Player data contains poToken function", poTokenConcatFunction);
+        assertTrue("poToken function is valid", poTokenConcatFunction.contains("poTokenConcat"));
+        assertTrue("poToken function len is valid", poTokenConcatFunction.length() < 700);
     }
 
     private String getPlayerUrl(String userAgent) {
@@ -116,10 +121,29 @@ public class AppApiTest {
 
         assertNotNull("AppInfo not null", appInfo);
 
-        String baseUrl = appInfo.getBaseUrl();
+        String baseUrl = appInfo.getClientUrl();
 
         assertNotNull("Base url not null", baseUrl);
 
         return baseUrl;
+    }
+
+    private PlayerData getPlayerData(String userAgent) {
+        String playerUrl = getPlayerUrl(userAgent);
+
+        PlayerData playerData = mAppApiWrapper.getPlayerData(playerUrl);
+
+        assertNotNull("PlayerData not null", playerData);
+
+        return playerData;
+    }
+
+    private ClientData getClientData(String userAgent) {
+        String baseUrl = getBaseUrl(userAgent);
+
+        ClientData clientData = mAppApiWrapper.getClientData(baseUrl);
+
+        assertNotNull("Base data not null", clientData);
+        return clientData;
     }
 }

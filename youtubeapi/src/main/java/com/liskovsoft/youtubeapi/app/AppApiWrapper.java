@@ -45,32 +45,28 @@ public class AppApiWrapper {
         return RetrofitHelper.get(wrapper);
     }
     
-    public ClientData getBaseData(String baseUrl) {
-        if (baseUrl == null) {
+    public ClientData getClientData(String clientUrl) {
+        if (clientUrl == null) {
             return null;
         }
 
-        Call<ClientData> wrapper = mAppApi.getClientData(baseUrl);
-        ClientData baseData = RetrofitHelper.get(wrapper);
+        Call<ClientData> wrapper = mAppApi.getClientData(clientUrl);
+        ClientData clientData = RetrofitHelper.get(wrapper);
 
         // Seems that legacy script encountered.
-        // Needed values is stored in main script, not in base.
-        if (baseData == null) {
-            baseData = RetrofitHelper.get(mAppApi.getClientData(getMainUrl(baseUrl)));
+        if (clientData == null) {
+            clientData = RetrofitHelper.get(mAppApi.getClientData(getLegacyClientUrl(clientUrl)));
         }
 
-        return baseData;
+        return clientData;
     }
-
-    /**
-     * Converts base script url to main script url
-     */
-    private static String getMainUrl(String baseUrl) {
-        if (baseUrl == null) {
+    
+    private static String getLegacyClientUrl(String clientUrl) {
+        if (clientUrl == null) {
             return null;
         }
 
-        return baseUrl
+        return clientUrl
                 .replace("/dg=0/", "/exm=base/ed=1/")
                 .replace("/m=base", "/m=main");
     }

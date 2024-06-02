@@ -20,10 +20,10 @@ public class AppService {
     //private Duktape mDuktape;
     private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
-    private ClientData mCachedBaseData;
+    private ClientData mCachedClientData;
     private long mAppInfoUpdateTimeMs;
     private long mPlayerDataUpdateTimeMs;
-    private long mBaseDataUpdateTimeMs;
+    private long mClientDataUpdateTimeMs;
 
     private AppService() {
         mAppApiWrapper = new AppApiWrapper();
@@ -130,19 +130,19 @@ public class AppService {
      * Constant used in {@link AuthApi}
      */
     public String getClientId() {
-        updateBaseData();
+        updateClientData();
 
         // TODO: NPE 1.6K!!!
-        return mCachedBaseData != null ? mCachedBaseData.getClientId() : null;
+        return mCachedClientData != null ? mCachedClientData.getClientId() : null;
     }
 
     /**
      * Constant used in {@link AuthApi}
      */
     public String getClientSecret() {
-        updateBaseData();
+        updateClientData();
 
-        return mCachedBaseData != null ? mCachedBaseData.getClientSecret() : null;
+        return mCachedClientData != null ? mCachedClientData.getClientSecret() : null;
     }
 
     /**
@@ -260,11 +260,11 @@ public class AppService {
         return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
     }
 
-    private String getBaseUrl() {
+    private String getClientUrl() {
         updateAppInfoData();
 
         // TODO: NPE 143K!!!
-        return mCachedAppInfo != null ? mCachedAppInfo.getBaseUrl() : null;
+        return mCachedAppInfo != null ? mCachedAppInfo.getClientUrl() : null;
     }
 
     private synchronized void updateAppInfoData() {
@@ -295,30 +295,30 @@ public class AppService {
         }
     }
 
-    private synchronized void updateBaseData() {
-        if (mCachedBaseData != null && System.currentTimeMillis() - mBaseDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
+    private synchronized void updateClientData() {
+        if (mCachedClientData != null && System.currentTimeMillis() - mClientDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return;
         }
 
-        Log.d(TAG, "updateBaseData");
+        Log.d(TAG, "updateClientData");
 
-        mCachedBaseData = mAppApiWrapper.getBaseData(getBaseUrl());
+        mCachedClientData = mAppApiWrapper.getClientData(getClientUrl());
 
-        if (mCachedBaseData != null) {
-            mBaseDataUpdateTimeMs = System.currentTimeMillis();
+        if (mCachedClientData != null) {
+            mClientDataUpdateTimeMs = System.currentTimeMillis();
         }
     }
 
     public void invalidateCache() {
         mCachedAppInfo = null;
         mCachedPlayerData = null;
-        mCachedBaseData = null;
+        mCachedClientData = null;
     }
 
     public void refreshCacheIfNeeded() {
         updateAppInfoData();
         updatePlayerData();
-        updateBaseData();
+        updateClientData();
     }
 
     public boolean isCacheActual() {

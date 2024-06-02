@@ -40,5 +40,5 @@ public interface AppApi {
      * Located inside base.js (modern clients) or main.js (Cobalt/Legacy)
      */
     @GET
-    Call<ClientData> getClientData(@Url String baseUrl);
+    Call<ClientData> getClientData(@Url String clientUrl);
 }

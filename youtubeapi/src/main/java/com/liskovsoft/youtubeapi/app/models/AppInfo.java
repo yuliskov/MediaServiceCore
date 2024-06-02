@@ -23,7 +23,7 @@ public class AppInfo {
             "id=\"base-js\" src=\"(.*?)\"",
             "\\.src = '(.*?m=base)'", // Cobalt path
             "\\.src = '(.*?)'; .\\.id = 'base-js'"}) // New Cobalt path
-    private String mBaseUrl;
+    private String mClientUrl;
 
     /**
      * E.g. Cgs5azZUVjRoazRuNCiY8s6GBg%3D%3D
@@ -35,8 +35,8 @@ public class AppInfo {
         return ServiceHelper.tidyUrl(mPlayerUrl);
     }
 
-    public String getBaseUrl() {
-        return ServiceHelper.tidyUrl(mBaseUrl);
+    public String getClientUrl() {
+        return ServiceHelper.tidyUrl(mClientUrl);
     }
 
     public String getVisitorData() {

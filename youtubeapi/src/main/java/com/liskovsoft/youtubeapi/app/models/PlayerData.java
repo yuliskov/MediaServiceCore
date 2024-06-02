@@ -120,34 +120,54 @@ public class PlayerData {
 
     // mPoTokenFunction1: Replace Mq(a, this.logger) with encodePoToken(a)
     private static final String POTOKEN_ENCODE_FUNCTION = "function encodePoToken(a){return Array.from(new TextEncoder().encode(a))}";
+    private static final Pattern POTOKEN_ENCODE_FUNCTION_NAME = Pattern.compile("var b=[^;]+");
+    private static final Pattern POTOKEN_LOGGER_NAME = Pattern.compile("this.logger[^;]+;");
 
     // function getPoToken(a)
-    @RegExp("=function\\(a\\)\\{[^\\{\\}]*DFO:Invalid[^\\{\\}]*\\}")
+    @RegExp("=function\\(a\\)(\\{[^\\{\\}]*DFO:Invalid[^\\{\\}]*\\})")
     private String mPoTokenFunction1;
 
     // function poTokenConcat(a, b)
     @RegExp({
-            "=function\\(a,b\\)\\{void 0===b&&\\(b=0\\);[\\S\\s]*b\\[a>>2\\]\\+b\\[\\(a&3\\)<<4[\\S\\s]*?return c\\.join\\(\"\"\\)\\}" // web
+            "=function\\(a,b\\)(\\{void 0===b&&\\(b=0\\);[\\S\\s]*b\\[a>>2\\]\\+b\\[\\(a&3\\)<<4[\\S\\s]*?return c\\.join\\(\"\"\\)\\})", // web
+            ";function [$\\w]+\\(a,b\\)(\\{void 0===b&&\\(b=0\\);[\\S\\s]*b\\[a>>2\\]\\+b\\[\\(a&3\\)<<4[\\S\\s]*?return c\\.join\\(\"\"\\)\\})", // tv
     })
-    private String mPoTokenFunction2a;
+    private String mPoTokenFunction2;
 
-    // function poTokenConcat(a, b)
+    // function initPoTokenDataArr()
     @RegExp({
-            ";function [$\\w]+\\(a,b\\)\\{void 0===b&&\\(b=0\\);[\\S\\s]*b\\[a>>2\\]\\+b\\[\\(a&3\\)<<4[\\S\\s]*?return c\\.join\\(\"\"\\)\\}", // tv
+            "\\.([$\\w]+=function\\(\\)\\{if\\(\\![\\S\\s]*\\[\"\\+/=\",\"\\+/\",\"-_=\",\"-_\\.\",\"-_\"\\][\\S\\s]*?\\}\\}\\}\\})", // web
+            "function [$\\w]+\\(\\)\\{if\\(\\![\\S\\s]*\\[\"\\+/=\",\"\\+/\",\"-_=\",\"-_\\.\",\"-_\"\\][\\S\\s]*?\\}\\}\\}\\}", // tv
     })
-    private String mPoTokenFunction2b;
-
-    @RegExp({
-            "=function\\(\\)\\{if\\(\\![\\S\\s]*\\[\"\\+/=\",\"\\+/\",\"-_=\",\"-_\\.\",\"-_\"\\][\\S\\s]*?$", // web
-    })
-    private String mPoTokenFunction2a_1;
-
-    @RegExp({
-            "function [$\\w]+\\(\\)\\{if\\(\\![\\S\\s]*\\[\"\\+/=\",\"\\+/\",\"-_=\",\"-_\\.\",\"-_\"\\][\\S\\s]*?$", // tv
-    })
-    private String mPoTokenFunction2a_2;
+    private String mPoTokenFunction2_1;
 
     // poTokenConcat(genPoToken(a), 2)
+
+    public String getPoTokenFunction() {
+        if (mPoTokenFunction1 == null) {
+            return null;
+        }
+
+        String poTokenFunction1 = Helpers.replace(mPoTokenFunction1, POTOKEN_ENCODE_FUNCTION_NAME, "var b = encodePoToken(a)");
+        poTokenFunction1 = Helpers.replace(poTokenFunction1, POTOKEN_LOGGER_NAME, "");
+
+        return POTOKEN_ENCODE_FUNCTION + ";function getPoToken(a)" + poTokenFunction1;
+    }
+
+    public String getPoTokenConcatFunction() {
+        if (mPoTokenFunction2 == null || mPoTokenFunction2_1 == null) {
+            return null;
+        }
+
+        String poTokenFunction2 = mPoTokenFunction2;
+        String poTokenFunction2_1 = mPoTokenFunction2_1;
+
+        if (!poTokenFunction2_1.startsWith("function")) {
+            poTokenFunction2_1 = "var " + poTokenFunction2_1;
+        }
+
+        return "this.sg = null;this.rg = [];this.Kg = null;this.Rca = [];" + poTokenFunction2_1 + ";function poTokenConcat(a, b)" + poTokenFunction2;
+    }
 
     // End PoTokenFunction
 }

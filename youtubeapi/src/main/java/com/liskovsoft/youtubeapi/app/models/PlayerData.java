@@ -119,9 +119,11 @@ public class PlayerData {
     // Begin PoTokenFunction
 
     // mPoTokenFunction1: Replace Mq(a, this.logger) with encodePoToken(a)
-    private static final String POTOKEN_ENCODE_FUNCTION = "function encodePoToken(a){return Array.from(new TextEncoder().encode(a))}";
+    //private static final String POTOKEN_ENCODE_FUNCTION = "function encodePoToken(a){return Array.from(new TextEncoder().encode(a))}"; // TextEncoder not supported by V8
+    private static final String POTOKEN_ENCODE_FUNCTION = "function encodePoToken(a){return Array.from(Uint8Array.from(a.split('').map(letter => letter.charCodeAt(0))))}";
     private static final Pattern POTOKEN_ENCODE_FUNCTION_NAME = Pattern.compile("var b=[^;]+");
     private static final Pattern POTOKEN_LOGGER_NAME = Pattern.compile("this.logger[^;]+;");
+    private static final String POTOKEN_EXPERIMENTS = "102307470137119736718||104417232878503778010";
 
     // function getPoToken(a)
     @RegExp("=function\\(a\\)(\\{[^\\{\\}]*DFO:Invalid[^\\{\\}]*\\})")
@@ -167,6 +169,18 @@ public class PlayerData {
         }
 
         return "this.sg = null;this.rg = [];this.Kg = null;this.Rca = [];" + poTokenFunction2_1 + ";function poTokenConcat(a, b)" + poTokenFunction2;
+    }
+
+    public String getPoTokenResultFunction() {
+        String poTokenFunction = getPoTokenFunction();
+        String poTokenConcatFunction = getPoTokenConcatFunction();
+
+        if (poTokenFunction == null || poTokenConcatFunction == null) {
+            return null;
+        }
+
+        return poTokenFunction + ";" + poTokenConcatFunction + ";" +
+                "function getPoTokenResult(){return poTokenConcat(getPoToken('" + POTOKEN_EXPERIMENTS + "'), 2);};getPoTokenResult();";
     }
 
     // End PoTokenFunction

@@ -113,6 +113,16 @@ public class AppService {
         return V8Runtime.instance().evaluate(function);
     }
 
+    public String getPoTokenResult() {
+        String function = getPoTokenResultFunction();
+
+        if (function == null) {
+            return null;
+        }
+
+        return V8Runtime.instance().evaluate(function);
+    }
+
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
@@ -242,28 +252,35 @@ public class AppService {
     private String getThrottleFunction() {
         updatePlayerData();
 
-        // TODO: NPE 24 events
+        // NOTE: NPE 24 events
         return mCachedPlayerData != null ? mCachedPlayerData.getThrottleFunction() : null;
     }
 
     private String getClientPlaybackNonceFunction() {
         updatePlayerData();
 
-        // TODO: NPE 10K!!!
+        // NOTE: NPE 10K!!!
         return mCachedPlayerData != null ? mCachedPlayerData.getClientPlaybackNonceFunction() : null;
+    }
+
+    private String getPoTokenResultFunction() {
+        updatePlayerData();
+
+        // NOTE: NPE
+        return mCachedPlayerData != null ? mCachedPlayerData.getPoTokenResultFunction() : null;
     }
 
     private String getPlayerUrl() {
         updateAppInfoData();
 
-        // TODO: NPE 2.5K
+        // NOTE: NPE 2.5K
         return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
     }
 
     private String getClientUrl() {
         updateAppInfoData();
 
-        // TODO: NPE 143K!!!
+        // NOTE: NPE 143K!!!
         return mCachedAppInfo != null ? mCachedAppInfo.getClientUrl() : null;
     }
 

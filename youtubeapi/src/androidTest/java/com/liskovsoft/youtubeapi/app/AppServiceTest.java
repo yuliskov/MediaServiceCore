@@ -4,6 +4,8 @@ import android.Manifest;
 import android.text.TextUtils;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
+
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Note: Robolectric doesn't support loading native libraries (*.so)
  */
-public class AppServiceInstrumentedTest {
+public class AppServiceTest {
     private AppService mAppService;
 
     @Rule
@@ -61,6 +63,16 @@ public class AppServiceInstrumentedTest {
     }
 
     @Test
+    public void testPoTokenResult() {
+        String poToken1 = mAppService.getPoTokenResult();
+        String poToken2 = mAppService.getPoTokenResult();
+        String poToken3 = mAppService.getPoTokenResult();
+
+        assertTrue("PoToken result not empty", poToken1 != null && !poToken1.isEmpty());
+        assertFalse("PoToken result is unique", Helpers.equalsAny(poToken1, poToken2, poToken3));
+    }
+
+    @Test
     public void testThrottleFunction() {
         List<String> throttled = new ArrayList<>();
         String throttleSignature = "ADBVCGD2934FBBBBBDDDFFF";
@@ -77,5 +89,10 @@ public class AppServiceInstrumentedTest {
         //for (String throttle : throttled) {
         //    assertNotEquals("Throttled not the same", throttle, throttleSignature);
         //}
+    }
+
+    @Test
+    public void testPoTokenFunction() {
+        
     }
 }

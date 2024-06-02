@@ -21,7 +21,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class YouTubeMPDBuilderInstrumentedTest {
+public class YouTubeMPDBuilderTest {
     private MotherService mService;
 
     @Before

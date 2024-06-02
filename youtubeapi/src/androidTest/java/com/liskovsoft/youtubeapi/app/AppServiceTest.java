@@ -90,9 +90,4 @@ public class AppServiceTest {
         //    assertNotEquals("Throttled not the same", throttle, throttleSignature);
         //}
     }
-
-    @Test
-    public void testPoTokenFunction() {
-        
-    }
 }

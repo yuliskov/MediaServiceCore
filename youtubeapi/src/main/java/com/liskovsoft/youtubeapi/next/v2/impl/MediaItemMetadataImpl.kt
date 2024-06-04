@@ -106,7 +106,12 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val subscriberCountItem by lazy { videoOwner?.getSubscriberCount() }
     private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
-        val list = suggestedSections?.mapNotNull { if (it.getItemWrappers() != null) SuggestionsGroup(it) else null }
+        val list = suggestedSections?.mapIndexedNotNull { idx, it -> if (it.getItemWrappers() != null) SuggestionsGroup(it).apply {
+            // Replace "Up Next" with real playlist name
+            if (idx == 0 && playlistInfo?.title != null) {
+                title = playlistInfo?.title
+            }
+        } else null }
         if ((list?.size ?: 0) > 0)
             list
         else

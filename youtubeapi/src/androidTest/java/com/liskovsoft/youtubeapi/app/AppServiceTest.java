@@ -63,16 +63,6 @@ public class AppServiceTest {
     }
 
     @Test
-    public void testPoTokenResult() {
-        String poToken1 = mAppService.getPoTokenResult();
-        String poToken2 = mAppService.getPoTokenResult();
-        String poToken3 = mAppService.getPoTokenResult();
-
-        assertTrue("PoToken result not empty", poToken1 != null && !poToken1.isEmpty());
-        assertFalse("PoToken result is unique", Helpers.equalsAny(poToken1, poToken2, poToken3));
-    }
-
-    @Test
     public void testThrottleFunction() {
         List<String> throttled = new ArrayList<>();
         String throttleSignature = "ADBVCGD2934FBBBBBDDDFFF";
@@ -89,5 +79,15 @@ public class AppServiceTest {
         //for (String throttle : throttled) {
         //    assertNotEquals("Throttled not the same", throttle, throttleSignature);
         //}
+    }
+
+    @Test
+    public void testPoTokenResult() {
+        String poToken1 = mAppService.getPoTokenResult();
+        String poToken2 = mAppService.getPoTokenResult();
+        String poToken3 = mAppService.getPoTokenResult();
+
+        assertTrue("PoToken result not empty", poToken1 != null && !poToken1.isEmpty());
+        assertFalse("PoToken result is unique", Helpers.equalsAny(poToken1, poToken2, poToken3));
     }
 }

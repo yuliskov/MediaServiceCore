@@ -124,6 +124,8 @@ public class PlayerData {
     private static final Pattern POTOKEN_ENCODE_FUNCTION_NAME = Pattern.compile("var b=[^;]+");
     private static final Pattern POTOKEN_LOGGER_NAME = Pattern.compile("this.logger[^;]+;");
     private static final String POTOKEN_EXPERIMENTS = "102307470137119736718||104417232878503778010";
+    private static final Pattern POTOKEN_ARR_VAR1 = Pattern.compile("!(\\w+)");
+    private static final Pattern POTOKEN_ARR_VAR2 = Pattern.compile(";(\\w+)\\[\\w\\]");
 
     // function getPoToken(a)
     @RegExp("=function\\(a\\)(\\{[^\\{\\}]*DFO:Invalid[^\\{\\}]*\\})")
@@ -168,7 +170,10 @@ public class PlayerData {
             poTokenFunction2_1 = "var " + poTokenFunction2_1;
         }
 
-        return "this.sg = null;this.rg = [];this.Kg = null;this.Rca = [];" + poTokenFunction2_1 + ";function poTokenConcat(a, b)" + poTokenFunction2;
+        String var1 = Helpers.findFirst(mPoTokenFunction2_1, POTOKEN_ARR_VAR1);
+        String var2 = Helpers.findFirst(mPoTokenFunction2_1, POTOKEN_ARR_VAR2);
+
+        return "this." + var1 + " = null;this." + var2 + " = [];" + poTokenFunction2_1 + ";function poTokenConcat(a, b)" + poTokenFunction2;
     }
 
     public String getPoTokenResultFunction() {

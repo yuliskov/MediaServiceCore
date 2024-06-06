@@ -1,8 +1,11 @@
 package com.liskovsoft.youtubeapi.common.js;
 
 import com.eclipsesource.v8.V8;
+import com.eclipsesource.v8.V8ScriptExecutionException;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 public final class V8Runtime {
+    private static final String TAG = V8Runtime.class.getSimpleName();
     private static V8Runtime sInstance;
     private V8 mRuntime;
 
@@ -48,14 +51,20 @@ public final class V8Runtime {
 
     public String evaluate(final String source) {
         V8 runtime = null;
+        String result = null;
 
         try {
             runtime = V8.createV8Runtime();
-            return runtime.executeStringScript(source);
+            result = runtime.executeStringScript(source);
+        } catch (V8ScriptExecutionException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         } finally {
             if (runtime != null) {
                 runtime.release(false);
             }
         }
+
+        return result;
     }
 }

@@ -536,7 +536,8 @@ public class YouTubeContentService implements ContentService {
             return;
         }
 
-        Log.d(TAG, "emitGroups: begin emitting group of type %s...", groups.get(0).getType());
+        MediaGroup firstGroup = groups.get(0);
+        Log.d(TAG, "emitGroups: begin emitting group of type %s...", firstGroup != null ? firstGroup.getType() : null);
 
         List<MediaGroup> collector = new ArrayList<>();
 

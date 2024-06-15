@@ -95,6 +95,13 @@ internal object BrowseService2 {
         }
     }
 
+    @JvmStatic
+    fun getLikedMusic(): MediaGroup? {
+        val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getLikedMusicQuery())
+
+        return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+    }
+
     private fun continueShorts(continuationKey: String?): MediaGroup? {
         if (continuationKey == null) {
             return null

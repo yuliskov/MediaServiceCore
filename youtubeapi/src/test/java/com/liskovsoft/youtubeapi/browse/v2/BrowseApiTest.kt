@@ -218,6 +218,14 @@ class BrowseApiTest {
     }
 
     @Test
+    fun testLikedMusicNotEmpty() {
+        val likedMusic = getLikedMusic()
+
+        assertNotNull("List not empty", likedMusic?.getItems())
+        assertNotNull("List has title", likedMusic?.getTitle())
+    }
+
+    @Test
     fun testThatChannelTabsNotEmpty() {
         val home = getChannelHome(TestHelpersV2.CHANNEL_ID_3)
 
@@ -492,6 +500,12 @@ class BrowseApiTest {
         val reelsResult = mService?.getReelResult(BrowseApiHelper.getReelQuery())
 
         return RetrofitHelper.get(reelsResult)
+    }
+
+    private fun getLikedMusic(): BrowseResult? {
+        val result = mService?.getBrowseResult(BrowseApiHelper.getLikedMusicQuery())
+
+        return RetrofitHelper.get(result)
     }
 
     private fun getReelDetails(videoId: String?, params: String?): ReelResult? {

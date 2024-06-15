@@ -21,6 +21,7 @@ internal object BrowseApiHelper {
     private const val SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\""
     private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
     private const val MOVIES = "\"browseId\":\"FEtopics_movies\""
+    private const val LIKED_MUSIC = "\"browseId\":\"VLLM\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
     private const val REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}"
     private const val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
@@ -86,6 +87,10 @@ internal object BrowseApiHelper {
 
     fun getReelQuery(): String {
         return ServiceHelper.createQueryWeb(REEL)
+    }
+
+    fun getLikedMusicQuery(): String {
+        return ServiceHelper.createQueryWeb(LIKED_MUSIC)
     }
 
     fun getReelDetailsQuery(videoId: String, params: String): String {

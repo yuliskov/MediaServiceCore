@@ -332,7 +332,7 @@ public class YouTubeContentService implements ContentService {
 
             List<MediaGroup> sections = BrowseService2.getTrending();
 
-            emitGroups2(emitter, sections);
+            emitGroups(emitter, sections);
         });
     }
 
@@ -353,7 +353,7 @@ public class YouTubeContentService implements ContentService {
             checkSigned();
 
             List<MediaGroup> sections = BrowseService2.getKidsHome();
-            emitGroups2(emitter, sections);
+            emitGroups(emitter, sections);
         });
     }
 
@@ -363,7 +363,7 @@ public class YouTubeContentService implements ContentService {
             checkSigned();
 
             List<MediaGroup> sections = BrowseService2.getSports();
-            emitGroups2(emitter, sections);
+            emitGroups(emitter, sections);
         });
     }
 
@@ -371,6 +371,9 @@ public class YouTubeContentService implements ContentService {
     public Observable<List<MediaGroup>> getMusicObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
+
+            MediaGroup firstRow = BrowseService2.getLikedMusic();
+            emitGroupsPartial(emitter, Collections.singletonList(firstRow));
 
             SectionTab tab = mBrowseService.getMusic();
 
@@ -428,7 +431,7 @@ public class YouTubeContentService implements ContentService {
                 emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
             } else {
                 List<MediaGroup> channel = BrowseService2.getChannel(canonicalId, params);
-                emitGroups2(emitter, channel);
+                emitGroups(emitter, channel);
             }
         });
     }
@@ -489,7 +492,7 @@ public class YouTubeContentService implements ContentService {
                 List<MediaGroup> sections = BrowseService2.getHome();
 
                 if (sections != null && sections.size() > 5) {
-                    emitGroups2(emitter, sections);
+                    emitGroups(emitter, sections);
                 } else {
                     // Fallback to old algo if user chrome page has no chips (why?)
                     SectionTab tab = mBrowseService.getHome();
@@ -500,14 +503,14 @@ public class YouTubeContentService implements ContentService {
 
                     List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
 
-                    emitGroups2Partial(emitter, subGroup); // get Recommended only
+                    emitGroupsPartial(emitter, subGroup); // get Recommended only
                     emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
                 }
             } else {
                 SectionTab tab = mBrowseService.getHome();
 
                 if (tab == null || tab.isEmpty()) {
-                    emitGroups2(emitter, BrowseService2.getHome());
+                    emitGroups(emitter, BrowseService2.getHome());
                 } else {
                     emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
                 }
@@ -515,7 +518,7 @@ public class YouTubeContentService implements ContentService {
         });
     }
 
-    private void emitGroups2(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
             String msg = "emitGroups2: groups are null or empty";
             Log.e(TAG, msg);
@@ -523,12 +526,12 @@ public class YouTubeContentService implements ContentService {
             return;
         }
 
-        emitGroups2Partial(emitter, groups);
+        emitGroupsPartial(emitter, groups);
 
         emitter.onComplete();
     }
 
-    private void emitGroups2Partial(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
+    private void emitGroupsPartial(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
             return;
         }

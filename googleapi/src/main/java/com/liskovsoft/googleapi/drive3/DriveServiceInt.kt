@@ -16,6 +16,15 @@ internal object DriveServiceInt {
 
     @JvmStatic
     fun uploadFile(file: File, path: Uri) {
+        uploadFile(RequestBody.create(MediaType.parse(FILE_MIME_TYPE), file), path)
+    }
+
+    @JvmStatic
+    fun uploadFile(content: String, path: Uri) {
+        uploadFile(RequestBody.create(MediaType.parse(FILE_MIME_TYPE), content), path)
+    }
+
+    private fun uploadFile(file: RequestBody, path: Uri) {
         mSignInService.checkAuth()
 
         val segments = path.pathSegments
@@ -71,23 +80,21 @@ internal object DriveServiceInt {
         return RetrofitHelper.get(mDriveApi.createFolder(metadata))
     }
 
-    private fun createOrUpdateFile(fileName: String, contents: File, fileId: String?, parentFolderId: String?): FileMetadata? {
+    private fun createOrUpdateFile(fileName: String, file: RequestBody, fileId: String?, parentFolderId: String?): FileMetadata? {
         return if (fileId == null) {
-            createFile(fileName, contents, parentFolderId)
+            createFile(fileName, file, parentFolderId)
         } else {
-            updateFile(contents, fileId)
+            updateFile(file, fileId)
         }
     }
 
-    private fun createFile(fileName: String, contents: File, parentFolderId: String?): FileMetadata? {
-        val requestBody = RequestBody.create(MediaType.parse(FILE_MIME_TYPE), contents)
+    private fun createFile(fileName: String, file: RequestBody, parentFolderId: String?): FileMetadata? {
         val metadata = FileMetadata(name = fileName, mimeType = FILE_MIME_TYPE, parents = parentFolderId?.let { listOf(parentFolderId) })
-        return RetrofitHelper.get(mDriveApi.uploadFile(metadata, requestBody))
+        return RetrofitHelper.get(mDriveApi.uploadFile(metadata, file))
     }
 
-    private fun updateFile(contents: File, fileId: String?): FileMetadata? {
-        val requestBody = RequestBody.create(MediaType.parse(FILE_MIME_TYPE), contents)
-        return fileId?.let { RetrofitHelper.get(mDriveApi.updateFile(fileId, requestBody)) }
+    private fun updateFile(file: RequestBody, fileId: String?): FileMetadata? {
+        return fileId?.let { RetrofitHelper.get(mDriveApi.updateFile(fileId, file)) }
     }
 
     private fun findFileId(path: Uri): String? {

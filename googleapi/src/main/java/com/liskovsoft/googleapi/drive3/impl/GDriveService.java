@@ -33,6 +33,11 @@ public class GDriveService implements DriveService {
     }
 
     @Override
+    public Observable<Void> uploadFile(String content, Uri path) {
+        return RxHelper.fromVoidable(() -> DriveServiceInt.uploadFile(content, path));
+    }
+
+    @Override
     public Observable<InputStream> getFile(Uri path) {
         return RxHelper.fromCallable(() -> DriveServiceInt.getFile(path));
     }

@@ -4,7 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.CommentsService;
 import com.liskovsoft.mediaserviceinterfaces.yt.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.yt.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.yt.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.yt.MotherService;
+import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.NotificationsService;
 import com.liskovsoft.mediaserviceinterfaces.yt.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.yt.SignInService;
@@ -17,9 +17,9 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class YouTubeMotherService implements MotherService {
-    private static final String TAG = YouTubeMotherService.class.getSimpleName();
-    private static YouTubeMotherService sInstance;
+public class YouTubeServiceManager implements ServiceManager {
+    private static final String TAG = YouTubeServiceManager.class.getSimpleName();
+    private static YouTubeServiceManager sInstance;
     private final YouTubeSignInService mSignInManager;
     private final YouTubeRemoteControlService mDeviceLinkManager;
     private final ContentService mMediaGroupManager;
@@ -28,7 +28,7 @@ public class YouTubeMotherService implements MotherService {
     private final YouTubeCommentsService mCommentsService;
     private Disposable mRefreshCacheAction;
 
-    private YouTubeMotherService() {
+    private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
 
         mSignInManager = YouTubeSignInService.instance();
@@ -39,9 +39,9 @@ public class YouTubeMotherService implements MotherService {
         mCommentsService = YouTubeCommentsService.instance();
     }
 
-    public static MotherService instance() {
+    public static ServiceManager instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeMotherService();
+            sInstance = new YouTubeServiceManager();
         }
 
         return sInstance;

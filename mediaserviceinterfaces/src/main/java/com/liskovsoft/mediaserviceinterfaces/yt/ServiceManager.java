@@ -1,6 +1,6 @@
 package com.liskovsoft.mediaserviceinterfaces.yt;
 
-public interface MotherService {
+public interface ServiceManager {
     SignInService getSignInService();
     RemoteControlService getRemoteControlService();
     ContentService getContentService();

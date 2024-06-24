@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
-import com.liskovsoft.mediaserviceinterfaces.yt.MotherService;
+import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import org.junit.Before;
@@ -15,8 +15,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class YouTubeMotherServiceTest {
-    private MotherService mService;
+public class YouTubeServiceManagerTest {
+    private ServiceManager mService;
 
     @Before
     public void setUp() {
@@ -24,7 +24,7 @@ public class YouTubeMotherServiceTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
-        mService = YouTubeMotherService.instance();
+        mService = YouTubeServiceManager.instance();
     }
 
     /**

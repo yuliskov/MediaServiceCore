@@ -1,13 +1,13 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
-import com.liskovsoft.mediaserviceinterfaces.yt.MotherService;
+import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
-import com.liskovsoft.youtubeapi.service.YouTubeMotherService;
+import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import org.junit.After;
 import org.junit.Before;
@@ -22,11 +22,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class YouTubeMPDBuilderTest {
-    private MotherService mService;
+    private ServiceManager mService;
 
     @Before
     public void setUp() {
-        mService = YouTubeMotherService.instance();
+        mService = YouTubeServiceManager.instance();
     }
 
     @After

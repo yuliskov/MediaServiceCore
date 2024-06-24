@@ -1,19 +1,18 @@
 package com.liskovsoft.youtubeapi.service;
 
 import com.liskovsoft.mediaserviceinterfaces.yt.CommentsService;
-import com.liskovsoft.mediaserviceinterfaces.yt.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.yt.ContentService;
+import com.liskovsoft.mediaserviceinterfaces.yt.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.yt.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.NotificationsService;
 import com.liskovsoft.mediaserviceinterfaces.yt.RemoteControlService;
+import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.SignInService;
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -101,21 +100,5 @@ public class YouTubeServiceManager implements ServiceManager {
 
     private Observable<Void> refreshCacheIfNeededObserve() {
         return RxHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
-    }
-
-    public static String serialize(MediaItem mediaItem) {
-        if (mediaItem == null) {
-            return null;
-        }
-
-        return mediaItem.toString();
-    }
-
-    public static MediaItem deserializeMediaItem(String itemSpec) {
-        if (itemSpec == null) {
-            return null;
-        }
-
-        return YouTubeMediaItem.fromString(itemSpec);
     }
 }

@@ -585,4 +585,20 @@ public class YouTubeMediaItem implements MediaItem {
     public int hashCode() {
         return Helpers.hashCode(mVideoId, mPlaylistId, mChannelId, mReloadPageKey);
     }
+
+    public static String serializeMediaItem(MediaItem mediaItem) {
+        if (mediaItem == null) {
+            return null;
+        }
+
+        return mediaItem.toString();
+    }
+
+    public static MediaItem deserializeMediaItem(String itemSpec) {
+        if (itemSpec == null) {
+            return null;
+        }
+
+        return fromString(itemSpec);
+    }
 }

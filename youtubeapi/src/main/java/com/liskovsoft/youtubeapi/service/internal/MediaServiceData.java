@@ -45,6 +45,12 @@ public class MediaServiceData {
         return mDeviceId;
     }
 
+    public void reset() {
+        mDeviceId = null;
+        mScreenId = null;
+        persistData();
+    }
+
     private void restoreData() {
         if (GlobalPreferences.sInstance == null) {
             Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");

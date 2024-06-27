@@ -189,9 +189,11 @@ public class YouTubeSignInService implements SignInService {
         headers.clear();
         headers2.clear();
 
-        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
+        Account selectedAccount = getSelectedAccount();
+
+        if (mCachedAuthorizationHeader != null && selectedAccount != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
+            String pageIdToken = ((YouTubeAccount) selectedAccount).getPageIdToken();
             if (pageIdToken != null) {
                 headers2.put("Authorization", mCachedAuthorizationHeader2);
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.

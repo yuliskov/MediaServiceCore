@@ -29,6 +29,7 @@ public class TileItem {
     private Metadata mMetadata;
 
     @JsonPath({
+            "$.onSelectCommand.reelWatchEndpoint.videoId", // short
             "$.onSelectCommand.watchEndpoint.videoId", // regular video
             "$.onSelectCommand.showMenuCommand.contentId" // rent movie
     })

@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 
 import androidx.annotation.NonNull;
+
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
@@ -311,7 +313,10 @@ public class VideoFormat {
             if (xtags != null) {
                 // Example: acont=dubbed:lang=ar
                 UrlQueryString xtagsQuery = UrlQueryStringFactory.parse(xtags.replace(":", "&"));
-                mLanguage = xtagsQuery.get("lang");
+                String lang = xtagsQuery.get("lang");
+                String acont = xtagsQuery.get("acont");
+                // original, descriptive, dubbed
+                mLanguage = lang != null && acont != null && acont.equals("descriptive") ? String.format("%s (%s)", lang, acont) : lang;
             }
         }
 

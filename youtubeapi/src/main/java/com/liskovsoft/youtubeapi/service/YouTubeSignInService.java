@@ -33,7 +33,7 @@ public class YouTubeSignInService implements SignInService {
         GlobalPreferences.setOnInit(() -> {
             mAccountManager.init();
             try {
-                updateAuthHeaders();
+                updateAuthHeadersIfNeeded();
             } catch (Exception e) {
                 // Host not found
                 e.printStackTrace();
@@ -68,14 +68,18 @@ public class YouTubeSignInService implements SignInService {
     }
 
     public void checkAuth() {
-        updateAuthHeaders();
+        updateAuthHeadersIfNeeded();
     }
 
-    private void updateAuthHeaders() {
+    private void updateAuthHeadersIfNeeded() {
         if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mLastUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
             return;
         }
 
+        updateAuthHeaders();
+    }
+
+    private synchronized void updateAuthHeaders() {
         Account account = mAccountManager.getSelectedAccount();
         String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
         String refreshToken2 = account != null ? ((YouTubeAccount) account).getRefreshToken2() : null;
@@ -142,7 +146,7 @@ public class YouTubeSignInService implements SignInService {
     /**
      * Authorization should be updated periodically (see expire_in field in response)
      */
-    private synchronized String createAuthorizationHeader(String refreshToken) {
+    private String createAuthorizationHeader(String refreshToken) {
         Log.d(TAG, "Updating authorization header...");
 
         String authorizationHeader = null;

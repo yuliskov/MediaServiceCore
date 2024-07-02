@@ -123,7 +123,7 @@ public final class YouTubeHelper {
 
         int lengthMs = mediaItem.getDurationMs();
         boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
-        return isShortLength || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
+        return isShortLength || mediaItem.isShorts() || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
     }
 
     /**

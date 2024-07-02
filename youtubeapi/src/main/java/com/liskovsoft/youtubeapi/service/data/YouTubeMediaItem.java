@@ -31,6 +31,7 @@ public class YouTubeMediaItem implements MediaItem {
     private String mBackgroundImageUrl;
     private String mContentType;
     private boolean mIsLive;
+    private boolean mIsShorts;
     private boolean mIsUpcoming;
     private String mLengthText;
     private String mBadgeText;
@@ -127,6 +128,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mAuthor = item.getUserName();
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
         video.mIsLive = item.isLive();
+        video.mIsShorts = item.isShorts();
         video.mIsUpcoming = item.isUpcoming();
         video.mFeedbackToken = item.getFeedbackToken();
         video.mClickTrackingParams = item.getClickTrackingParams();
@@ -371,7 +373,7 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public boolean isShorts() {
-        return false;
+        return mIsShorts;
     }
 
     @Override

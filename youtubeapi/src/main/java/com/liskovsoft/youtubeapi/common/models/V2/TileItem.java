@@ -14,6 +14,7 @@ public class TileItem {
     public static final String CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST";
     public static final String CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO";
     private static final String BADGE_STYLE_LIVE = "LIVE";
+    private static final String BADGE_STYLE_SHORTS = "SHORTS";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
     private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
@@ -153,6 +154,10 @@ public class TileItem {
 
     public boolean isMovie() {
         return Helpers.equalsAny(BADGE_STYLE_MOVIE, getBadgeStyles());
+    }
+
+    public boolean isShorts() {
+        return Helpers.equalsAny(BADGE_STYLE_SHORTS, getBadgeStyles());
     }
 
     public String getFeedbackToken() {

@@ -128,10 +128,12 @@ public class PlayerData {
     private static final Pattern POTOKEN_ARR_VAR2 = Pattern.compile(";(\\w+)\\[\\w\\]");
 
     // function getPoToken(a)
+    @FieldNullable
     @RegExp("=function\\(a\\)(\\{[^\\{\\}]*DFO:Invalid[^\\{\\}]*\\})")
     private String mPoTokenFunction1;
 
     // function poTokenConcat(a, b)
+    @FieldNullable
     @RegExp({
             "=function\\(a,b\\)(\\{void 0===b&&\\(b=0\\);[\\S\\s]*b\\[a>>2\\]\\+b\\[\\(a&3\\)<<4[\\S\\s]*?return c\\.join\\(\"\"\\)\\})", // web
             ";function [$\\w]+\\(a,b\\)(\\{void 0===b&&\\(b=0\\);[\\S\\s]*b\\[a>>2\\]\\+b\\[\\(a&3\\)<<4[\\S\\s]*?return c\\.join\\(\"\"\\)\\})", // tv
@@ -139,6 +141,7 @@ public class PlayerData {
     private String mPoTokenFunction2;
 
     // function initPoTokenDataArr()
+    @FieldNullable
     @RegExp({
             "\\.([$\\w]+=function\\(\\)\\{if\\(\\![\\S\\s]*\\[\"\\+/=\",\"\\+/\",\"-_=\",\"-_\\.\",\"-_\"\\][\\S\\s]*?\\}\\}\\}\\})", // web
             "function [$\\w]+\\(\\)\\{if\\(\\![\\S\\s]*\\[\"\\+/=\",\"\\+/\",\"-_=\",\"-_\\.\",\"-_\"\\][\\S\\s]*?\\}\\}\\}\\}", // tv

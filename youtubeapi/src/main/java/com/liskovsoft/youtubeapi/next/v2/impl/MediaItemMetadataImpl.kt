@@ -167,7 +167,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val notificationStateList by lazy {
         val currentId = notificationPreference?.getCurrentStateId()
         val result = notificationPreference?.getItems()?.mapNotNull {
-            it?.let { NotificationStateImpl(it, currentId) }
+            it?.let { NotificationStateImpl(it, currentId, channelId, params, isSubscribed) }
         }
 
         result?.forEach { it.allStates = result }

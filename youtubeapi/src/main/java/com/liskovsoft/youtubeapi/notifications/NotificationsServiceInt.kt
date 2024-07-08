@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.notifications
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
+import com.liskovsoft.youtubeapi.actions.ActionsService
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.NotificationsMediaGroup
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
@@ -26,6 +27,11 @@ internal object NotificationsServiceInt {
     fun modifyNotification(notificationState: NotificationState?) {
         if (notificationState is NotificationStateImpl) {
             notificationState.setSelected()
+
+            if (!notificationState.isSubscribed) {
+                ActionsService.instance().subscribe(notificationState.channelId, notificationState.params)
+            }
+
             modifyNotification(notificationState.stateParams)
         }
     }

@@ -8,7 +8,10 @@ import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 
 internal data class NotificationStateImpl(
     val notificationStateItem: NotificationStateItem,
-    val selectedSateId: Int?
+    val selectedSateId: Int?,
+    val channelId: String?,
+    val params: String?,
+    val isSubscribed: Boolean
 ): NotificationState {
     private var _selected: Boolean? = null
     lateinit var allStates: List<NotificationStateImpl>

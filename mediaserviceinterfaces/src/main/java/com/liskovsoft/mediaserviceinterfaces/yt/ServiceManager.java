@@ -10,4 +10,5 @@ public interface ServiceManager {
     NotificationsService getNotificationsService();
     void invalidateCache();
     void refreshCacheIfNeeded();
+    void invalidateVisitorData();
 }

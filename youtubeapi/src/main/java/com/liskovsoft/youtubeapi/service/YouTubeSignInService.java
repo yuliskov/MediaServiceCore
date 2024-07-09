@@ -174,14 +174,6 @@ public class YouTubeSignInService implements SignInService {
 
         if (refreshToken != null) {
             token = mAuthService.getAccessToken(refreshToken);
-        } else {
-            String rawAuthData = GlobalPreferences.sInstance.getRawAuthData();
-
-            if (rawAuthData != null) {
-                token = mAuthService.getAccessTokenRaw(rawAuthData);
-            } else {
-                Log.e(TAG, "Refresh token data doesn't stored in the app registry!");
-            }
         }
 
         return token;

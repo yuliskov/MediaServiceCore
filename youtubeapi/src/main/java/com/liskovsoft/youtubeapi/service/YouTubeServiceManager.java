@@ -10,6 +10,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.SignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.youtubeapi.app.AppApiWrapper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
@@ -100,5 +101,10 @@ public class YouTubeServiceManager implements ServiceManager {
 
     private Observable<Void> refreshCacheIfNeededObserve() {
         return RxHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
+    }
+
+    @Override
+    public void invalidateVisitorData() {
+        AppService.instance().invalidateVisitorData();
     }
 }

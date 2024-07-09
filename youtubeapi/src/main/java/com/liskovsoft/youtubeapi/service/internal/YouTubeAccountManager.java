@@ -223,23 +223,6 @@ public class YouTubeAccountManager {
 
     public void init() {
         restoreAccounts();
-        applyLegacyAccounts();
-    }
-
-    private void applyLegacyAccounts() {
-        // We don't have context, so can't create instance here.
-        // Let's hope someone already created one for us.
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "GlobalPreferences is null!");
-            return;
-        }
-
-        String token = GlobalPreferences.sInstance.getMediaServiceRefreshToken();
-
-        if (token != null) {
-            persistRefreshToken(token);
-            GlobalPreferences.sInstance.setMediaServiceRefreshToken(null);
-        }
     }
 
     public void setOnChange(Runnable onChange) {

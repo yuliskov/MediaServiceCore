@@ -341,4 +341,8 @@ public class AppService {
     public boolean isCacheActual() {
         return System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
     }
+
+    public void invalidateVisitorData() {
+        mAppApiWrapper.invalidateVisitorData();
+    }
 }

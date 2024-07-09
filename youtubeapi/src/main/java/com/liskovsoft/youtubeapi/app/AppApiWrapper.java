@@ -23,6 +23,7 @@ public class AppApiWrapper {
         Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
 
+        // visitorCookie obtained once per all app lifecycle?
         if (visitorCookie == null) {
             Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
             if (response != null) {
@@ -69,5 +70,9 @@ public class AppApiWrapper {
         return clientUrl
                 .replace("/dg=0/", "/exm=base/ed=1/")
                 .replace("/m=base", "/m=main");
+    }
+
+    public void invalidateVisitorData() {
+        GlobalPreferences.setVisitorCookie(null);
     }
 }

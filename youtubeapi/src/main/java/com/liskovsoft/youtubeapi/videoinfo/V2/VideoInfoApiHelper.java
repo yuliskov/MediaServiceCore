@@ -35,8 +35,8 @@ public class VideoInfoApiHelper {
     /**
      * Doesn't work
      */
-    private static String getVideoInfoQuery(String videoId) {
-        return getVideoInfoQueryLive(videoId, null);
+    private static String getVideoInfoQueryAndroid(String videoId) {
+        return getVideoInfoQueryAndroid(videoId, null);
     }
 
     /**
@@ -44,44 +44,54 @@ public class VideoInfoApiHelper {
      * NOTE: Don't support startTimestamp<br/>
      * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
      */
-    public static String getVideoInfoQueryLive(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryAndroid(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_ANDROID, videoId, clickTrackingParams);
+    }
+
+    /**
+     * Doesn't work!<br/>
+     * Support live streams seeking!<br/>
+     * NOTE: Don't support startTimestamp<br/>
+     * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
+     */
+    public static String getVideoInfoQueryGeoAndroid(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_ANDROID, videoId, clickTrackingParams, THROTTLE_QUERY);
+    }
+
+    public static String getVideoInfoQueryTV(String videoId) {
+        return getVideoInfoQueryTV(videoId, null);
     }
 
     /**
      * Support viewing private (user) videos
      */
-    public static String getVideoInfoQueryPrivate(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryTV(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_TV, videoId, clickTrackingParams);
     }
 
     /**
      * Support restricted (18+) videos viewing. Alt method from github
      */
-    public static String getVideoInfoQueryEmbed2(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryEmbed(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_EMBED, videoId, clickTrackingParams);
     }
 
     /**
      * Support live streams seeking!<br/>
      */
-    public static String getVideoInfoQueryRegular(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryWeb(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams);
     }
 
     /**
      * NOTE: Should use protobuf to bypass geo blocking.
      */
-    public static String getVideoInfoQueryGeoBlocked(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryGeoWeb(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 
-    public static String getVideoInfoQueryHls(String videoId, String clickTrackingParams) {
+    public static String getVideoInfoQueryIOS(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_IOS, videoId, clickTrackingParams);
-    }
-
-    public static String getVideoInfoQueryPrivate(String videoId) {
-        return getVideoInfoQueryPrivate(videoId, null);
     }
 
     /**

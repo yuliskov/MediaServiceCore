@@ -43,5 +43,5 @@ public interface VideoInfoApi {
             "User-Agent: " + DefaultHeaders.USER_AGENT_WEB
     })
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfoRegular(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
+    Call<VideoInfo> getVideoInfoWeb(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
 }

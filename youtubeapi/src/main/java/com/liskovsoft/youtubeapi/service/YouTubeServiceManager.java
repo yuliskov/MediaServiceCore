@@ -13,6 +13,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppApiWrapper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -106,5 +107,6 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void invalidateVisitorData() {
         AppService.instance().invalidateVisitorData();
+        VideoInfoService.instance().switchMethod();
     }
 }

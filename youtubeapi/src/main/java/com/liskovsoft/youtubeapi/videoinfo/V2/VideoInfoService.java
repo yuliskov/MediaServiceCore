@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.videoinfo.V2;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
@@ -13,6 +12,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
+    private final static int METHOD_ANDROID = 0;
+    private final static int METHOD_IOS = 1;
+    private int mCurrentMethod;
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.withJsonPath(VideoInfoApi.class);
@@ -27,13 +29,21 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        VideoInfo result;
+
+        if (mCurrentMethod == METHOD_ANDROID) {
+            result = getVideoInfoAndroid(videoId, clickTrackingParams);
+        } else {
+            result = getVideoInfoIOS(videoId, clickTrackingParams);
+        }
+
         //RetrofitOkHttpHelper.skipAuth();
 
         // NOTE: Request below doesn't contain dashManifestUrl!!!
-        //VideoInfo result = getVideoInfoPrivate(videoId, clickTrackingParams); // no dash url and hls link
-        //VideoInfo result = getVideoInfoLive(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
-        VideoInfo result = getVideoInfoGeoBlocked(videoId, clickTrackingParams); // no seek preview, fix 403 error!!
-        //VideoInfo result = getVideoInfoRegular(videoId, clickTrackingParams); // all included, the best but many 403 errors(
+        //VideoInfo result = getVideoInfoTV(videoId, clickTrackingParams); // no dash url and hls link
+        //VideoInfo result = getVideoInfoAndroid(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
+        //VideoInfo result = getVideoInfoGeoWeb(videoId, clickTrackingParams); // no seek preview, fix 403 error!!
+        //VideoInfo result = getVideoInfoWeb(videoId, clickTrackingParams); // all included, the best but many 403 errors(
         //VideoInfo result = getVideoInfoIOS(videoId, clickTrackingParams); // only FullHD, no 403 error?
 
         //result.sync(getVideoInfoRegular(videoId, clickTrackingParams));
@@ -51,52 +61,56 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return result;
     }
 
+    public void switchMethod() {
+        mCurrentMethod = mCurrentMethod == METHOD_ANDROID ? METHOD_IOS : METHOD_ANDROID;
+    }
+
     /**
      * NOTE: Doesn't contain dash manifest url and hls link
      */
-    private VideoInfo getVideoInfoPrivate(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryPrivate(videoId, clickTrackingParams);
+    private VideoInfo getVideoInfoTV(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryTV(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 
     /**
      * NOTE: Doesn't contain dash manifest url
      */
-    private VideoInfo getVideoInfoLive(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryLive(videoId, clickTrackingParams);
+    private VideoInfo getVideoInfoAndroid(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryAndroid(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 
     private VideoInfo getVideoInfoEmbed(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryEmbed2(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryEmbed(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 
-    private VideoInfo getVideoInfoGeoBlocked(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeoBlocked(videoId, clickTrackingParams);
+    private VideoInfo getVideoInfoGeoWeb(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeoWeb(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 
     private VideoInfo getVideoInfoIOS(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryHls(videoId, clickTrackingParams);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryIOS(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 
-    private VideoInfoHls getVideoInfoHls(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryHls(videoId, clickTrackingParams);
+    private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryIOS(videoId, clickTrackingParams);
         return getVideoInfoHls(videoInfoQuery);
     }
 
-    private VideoInfo getVideoInfoRegular(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
-        return getVideoInfoRegular(videoInfoQuery);
+    private VideoInfo getVideoInfoWeb(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryWeb(videoId, clickTrackingParams);
+        return getVideoInfo(videoInfoQuery);
     }
 
     /**
      * NOTE: user history won't work with this method
      */
-    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryRegular(videoId, clickTrackingParams);
+    private VideoInfo getVideoInfoRestrictedWeb(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryWeb(videoId, clickTrackingParams);
 
         return getVideoInfoRestricted(videoInfoQuery);
     }
@@ -107,8 +121,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfo getVideoInfoRegular(String videoInfoQuery) {
-        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRegular(videoInfoQuery, mAppService.getVisitorId());
+    private VideoInfo getVideoInfoWeb(String videoInfoQuery) {
+        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoWeb(videoInfoQuery, mAppService.getVisitorId());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -141,7 +155,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
             //}
         } else if (isExtendedHlsFormatsEnabled() && result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
-            VideoInfoHls videoInfoHls = getVideoInfoHls(videoId, clickTrackingParams);
+            VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
             if (videoInfoHls != null && result.getHlsManifestUrl() == null) {
                 result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
             }
@@ -158,18 +172,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         if (result.isUnplayable() && result.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
-            result = getVideoInfoPrivate(result.getTrailerVideoId(), clickTrackingParams);
+            result = getVideoInfoTV(result.getTrailerVideoId(), clickTrackingParams);
         } else if (result.isUnplayable()) {
             Log.e(TAG, "Found restricted video. Retrying with embed query method...");
             result = getVideoInfoEmbed(videoId, clickTrackingParams);
 
             if (result == null || result.isUnplayable()) {
                 Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
-                result = getVideoInfoRestricted(videoId, clickTrackingParams);
+                result = getVideoInfoRestrictedWeb(videoId, clickTrackingParams);
 
                 if (result == null || result.isUnplayable()) {
                     Log.e(TAG, "Found video clip blocked in current location...");
-                    result = getVideoInfoGeoBlocked(videoId, clickTrackingParams);
+                    result = getVideoInfoGeoWeb(videoId, clickTrackingParams);
                 }
             }
         }

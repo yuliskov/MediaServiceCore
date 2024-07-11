@@ -56,7 +56,7 @@ internal object AppConstants {
     // ANDROID
     // 16.20
     // 16.49
-    private const val CLIENT_VERSION_ANDROID = "17.31.35"
+    private const val CLIENT_VERSION_ANDROID = "19.26.37"
     private const val CLIENT_NAME_ANDROID = "ANDROID"
     private const val PARAMS_ANDROID = "CgIQBg=="
     private const val ANDROID_SDK_VERSION = "30"

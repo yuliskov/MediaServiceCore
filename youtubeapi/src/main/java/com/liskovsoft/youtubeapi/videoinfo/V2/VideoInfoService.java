@@ -29,6 +29,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        //RetrofitOkHttpHelper.skipAuth();
+
         VideoInfo result;
 
         if (mCurrentMethod == METHOD_ANDROID) {
@@ -37,14 +39,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfoIOS(videoId, clickTrackingParams);
         }
 
-        //RetrofitOkHttpHelper.skipAuth();
-
         // NOTE: Request below doesn't contain dashManifestUrl!!!
-        //VideoInfo result = getVideoInfoTV(videoId, clickTrackingParams); // no dash url and hls link
-        //VideoInfo result = getVideoInfoAndroid(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
-        //VideoInfo result = getVideoInfoGeoWeb(videoId, clickTrackingParams); // no seek preview, fix 403 error!!
-        //VideoInfo result = getVideoInfoWeb(videoId, clickTrackingParams); // all included, the best but many 403 errors(
-        //VideoInfo result = getVideoInfoIOS(videoId, clickTrackingParams); // only FullHD, no 403 error?
+        //result = getVideoInfoTV(videoId, clickTrackingParams); // no dash url and hls link
+        //result = getVideoInfoAndroid(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
+        //result = getVideoInfoGeoWeb(videoId, clickTrackingParams); // no seek preview, fix 403 error!!
+        //result = getVideoInfoWeb(videoId, clickTrackingParams); // all included, the best but many 403 errors(
+        //result = getVideoInfoIOS(videoId, clickTrackingParams); // only FullHD, no 403 error?
 
         //result.sync(getVideoInfoRegular(videoId, clickTrackingParams));
 

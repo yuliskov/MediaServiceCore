@@ -96,6 +96,7 @@ public class PlayerData {
 
     private static final Pattern SIGNATURE_THROTTLE = Pattern.compile("^;function [$\\w]+\\(a\\)");
 
+    @FieldNullable
     @RegExp(";function [$\\w]+\\(a\\)\\{var b=a\\.split\\(\"\"\\)[\\S\\s]*?return b\\.join\\(\"\"\\)\\}")
     private String mThrottleFunction;
 

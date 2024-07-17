@@ -333,12 +333,15 @@ public class AppService {
 
         if (mCachedAppInfo != null) {
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
-            mNSigExtractor = new NSigExtractor(mCachedAppInfo.getPlayerUrl());
         }
     }
 
     private synchronized void updatePlayerData() {
         if (mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
+            return;
+        }
+
+        if (getPlayerUrl() == null) {
             return;
         }
 
@@ -348,6 +351,7 @@ public class AppService {
 
         if (mCachedPlayerData != null) {
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
+            mNSigExtractor = new NSigExtractor(getPlayerUrl());
         }
     }
 

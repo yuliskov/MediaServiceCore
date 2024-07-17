@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
@@ -12,8 +13,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    private final static int METHOD_ANDROID = 0;
-    private final static int METHOD_IOS = 1;
+    private final static int METHOD_WEB = 0;
+    private final static int METHOD_ANDROID = 1;
+    private final static int METHOD_IOS = 2;
     private int mCurrentMethod;
 
     private VideoInfoService() {
@@ -33,10 +35,16 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         VideoInfo result;
 
-        if (mCurrentMethod == METHOD_ANDROID) {
-            result = getVideoInfoAndroid(videoId, clickTrackingParams);
-        } else {
-            result = getVideoInfoIOS(videoId, clickTrackingParams);
+        switch (mCurrentMethod) {
+            case METHOD_ANDROID:
+                result = getVideoInfoAndroid(videoId, clickTrackingParams);
+                break;
+            case METHOD_IOS:
+                result = getVideoInfoIOS(videoId, clickTrackingParams);
+                break;
+            default:
+                result = getVideoInfoWeb(videoId, clickTrackingParams);
+                break;
         }
 
         // NOTE: Request below doesn't contain dashManifestUrl!!!
@@ -62,7 +70,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchMethod() {
-        mCurrentMethod = mCurrentMethod == METHOD_ANDROID ? METHOD_IOS : METHOD_ANDROID;
+        mCurrentMethod = Helpers.getNextValue(mCurrentMethod, new int[] {METHOD_WEB, METHOD_ANDROID, METHOD_ANDROID});
     }
 
     /**

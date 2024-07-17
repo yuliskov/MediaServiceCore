@@ -106,7 +106,7 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void invalidateVisitorData() {
-        AppService.instance().invalidateVisitorData();
+        //AppService.instance().invalidateVisitorData();
         VideoInfoService.instance().switchMethod();
     }
 }

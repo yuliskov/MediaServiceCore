@@ -1,12 +1,32 @@
 package com.liskovsoft.youtubeapi.app.nsig
 
+import com.liskovsoft.youtubeapi.common.js.V8Runtime
 import java.util.regex.Pattern
 
 internal object JSInterpret {
     private val MATCHING_PARENS = mapOf('(' to ')', '[' to ']', '{' to '}')
 
-    fun extractFunctionFromCode(argNames: List<String>?, code: String?): (String?) -> String? {
-        return { s -> null }
+    //fun extractFunctionFromCode(argNames: List<String>, code: String): (String?) -> String? {
+    //    var modifiedCode = code
+    //    while (true) {
+    //        val regex = Regex("function\\(([^)]*)\\)\\s*\\{")
+    //        val matchResult = regex.find(modifiedCode) ?: break
+    //        val (args) = matchResult.destructured
+    //        val (start, bodyStart) = matchResult.range.first to matchResult.range.last + 1
+    //        val (body, remaining) = separateAtParen(modifiedCode.substring(bodyStart - 1))
+    //        val name = namedObject(extractFunctionFromCode(args.split(",").map { it.trim() }, body))
+    //        modifiedCode = modifiedCode.substring(0, start) + name + remaining
+    //    }
+    //    return buildFunction(argNames, modifiedCode)
+    //}
+
+    fun extractFunctionFromCode(argNames: List<String>, code: String): (List<String>) -> String? {
+        return { args: List<String> ->
+            val fullCode =
+                "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
+            val result = V8Runtime.instance().evaluate(fullCode)
+            result?.toString()
+        }
     }
 
     fun extractFunctionCode(jsCode: String, funcName: String): Pair<List<String>, String>? {

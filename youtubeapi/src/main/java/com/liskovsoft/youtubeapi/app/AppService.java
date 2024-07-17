@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.app;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.nsig.NSigExtractor;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
@@ -8,6 +10,7 @@ import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +27,7 @@ public class AppService {
     private long mAppInfoUpdateTimeMs;
     private long mPlayerDataUpdateTimeMs;
     private long mClientDataUpdateTimeMs;
+    private NSigExtractor mNSigExtractor;
 
     private AppService() {
         mAppApiWrapper = new AppApiWrapper();
@@ -58,14 +62,6 @@ public class AppService {
         return decipher(Collections.singletonList(ciphered)).get(0);
     }
 
-    public String throttleFix(String throttled) {
-        if (throttled == null) {
-            return null;
-        }
-
-        return throttleFix(Collections.singletonList(throttled)).get(0);
-    }
-
     /**
      * Decipher strings using js code
      */
@@ -86,18 +82,60 @@ public class AppService {
     /**
      * Throttle strings using js code
      */
-    public List<String> throttleFix(List<String> throttled) {
-        if (isAllNulls(throttled)) {
-            return throttled;
+    //public List<String> throttleFix(List<String> throttled) {
+    //    if (isAllNulls(throttled)) {
+    //        return throttled;
+    //    }
+    //
+    //    String throttleCode = createThrottleCode(throttled);
+    //
+    //    if (throttleCode == null) {
+    //        return throttled;
+    //    }
+    //
+    //    return runCode(throttleCode);
+    //}
+
+    public List<String> throttleFix(List<String> throttledList) {
+        if (isAllNulls(throttledList)) {
+            return throttledList;
         }
 
-        String throttleCode = createThrottleCode(throttled);
+        List<String> result = new ArrayList<>();
 
-        if (throttleCode == null) {
-            return throttled;
+        String previousThrottled = null;
+        String previousThrottleFixResult = null;
+
+        for (String throttled : throttledList) {
+            if (Helpers.equals(throttled, previousThrottled)) {
+                result.add(previousThrottleFixResult);
+                continue;
+            }
+
+            String throttleFixResult = throttleFix(throttled);
+            result.add(throttleFixResult);
+
+            previousThrottled = throttled;
+            previousThrottleFixResult = throttleFixResult;
         }
 
-        return runCode(throttleCode);
+        return result;
+    }
+
+    //public String throttleFix(String throttled) {
+    //    if (throttled == null) {
+    //        return null;
+    //    }
+    //
+    //    return throttleFix(Collections.singletonList(throttled)).get(0);
+    //}
+
+    public String throttleFix(String throttled) {
+        if (throttled == null || mNSigExtractor == null) {
+            return null;
+        }
+
+        return mNSigExtractor.extractNSig(throttled);
     }
 
     /**
@@ -295,6 +333,7 @@ public class AppService {
 
         if (mCachedAppInfo != null) {
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
+            mNSigExtractor = new NSigExtractor(mCachedAppInfo.getPlayerUrl());
         }
     }
 

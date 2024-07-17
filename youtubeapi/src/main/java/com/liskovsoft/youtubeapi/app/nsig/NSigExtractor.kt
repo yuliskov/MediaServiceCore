@@ -9,36 +9,29 @@ internal class NSigExtractor(private val playerUrl: String) {
     private val mNSigApi = RetrofitHelper.withRegExp(NSigApi::class.java)
     private val mNFuncNamePattern = Pattern.compile("""(?x)(?:\.get\("n"\)\)&&\(b=|b=String\.fromCharCode\(110\),c=a\.get\(b\)\)&&\(c=)
             ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
-    private var mCachedFuncCode: Pair<List<String>, String>? = null
+    private var mFuncCode: Pair<List<String>, String>? = null
 
     init {
-        getFuncCode()
+        initFuncCode()
     }
 
     fun extractNSig(s: String): String? {
-        val funcCode = getFuncCode() ?: return null
+        val funcCode = mFuncCode ?: return null
         
         val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
 
         return func(listOf(s))
     }
 
-    private fun getFuncCode(): Pair<List<String>, String>? {
-        // get funcCode from Cache if not null
-        if (mCachedFuncCode != null) {
-            return mCachedFuncCode
-        }
+    private fun initFuncCode() {
+        val jsCode = loadPlayer() ?: return
 
-        val jsCode = loadPlayer() ?: return null
+        val funcName = extractNFunctionName(jsCode) ?: return
 
-        val funcName = extractNFunctionName(jsCode) ?: return null
+        val funcCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return
 
-        val funcCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return null
-
-        // store funcCode in Cache
-        mCachedFuncCode = funcCode
-
-        return funcCode
+        // store funcCode in cache
+        mFuncCode = funcCode
     }
 
     private fun extractNFunctionName(jsCode: String): String? {

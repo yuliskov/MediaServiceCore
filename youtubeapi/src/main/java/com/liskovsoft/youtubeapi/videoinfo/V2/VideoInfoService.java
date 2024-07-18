@@ -70,7 +70,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchMethod() {
-        mCurrentMethod = Helpers.getNextValue(mCurrentMethod, new int[] {METHOD_WEB, METHOD_ANDROID, METHOD_ANDROID});
+        mCurrentMethod = Helpers.getNextValue(mCurrentMethod, new int[] {METHOD_WEB, METHOD_ANDROID, METHOD_IOS});
     }
 
     /**

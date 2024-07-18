@@ -13,10 +13,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    private final static int METHOD_WEB = 0;
-    private final static int METHOD_ANDROID = 1;
-    private final static int METHOD_IOS = 2;
-    private int mCurrentMethod;
+    private final static int VIDEO_INFO_WEB = 0;
+    private final static int VIDEO_INFO_ANDROID = 1;
+    private final static int VIDEO_INFO_IOS = 2;
+    private int mVideoInfoType;
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.withJsonPath(VideoInfoApi.class);
@@ -35,11 +35,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         VideoInfo result;
 
-        switch (mCurrentMethod) {
-            case METHOD_ANDROID:
+        switch (mVideoInfoType) {
+            case VIDEO_INFO_ANDROID:
                 result = getVideoInfoAndroid(videoId, clickTrackingParams);
                 break;
-            case METHOD_IOS:
+            case VIDEO_INFO_IOS:
                 result = getVideoInfoIOS(videoId, clickTrackingParams);
                 break;
             default:
@@ -69,8 +69,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return result;
     }
 
-    public void switchMethod() {
-        mCurrentMethod = Helpers.getNextValue(mCurrentMethod, new int[] {METHOD_WEB, METHOD_ANDROID, METHOD_IOS});
+    public void applyVideoInfoFix() {
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_WEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     /**

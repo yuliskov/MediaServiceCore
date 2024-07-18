@@ -54,7 +54,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         //result = getVideoInfoWeb(videoId, clickTrackingParams); // all included, the best but many 403 errors(
         //result = getVideoInfoIOS(videoId, clickTrackingParams); // only FullHD, no 403 error?
 
-        //result.sync(getVideoInfoRegular(videoId, clickTrackingParams));
+        //result.sync(getVideoInfoWeb(videoId, clickTrackingParams));
 
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
         result = retryIfNeeded(result, videoId, clickTrackingParams);

@@ -6,20 +6,6 @@ import java.util.regex.Pattern
 internal object JSInterpret {
     private val MATCHING_PARENS = mapOf('(' to ')', '[' to ']', '{' to '}')
 
-    //fun extractFunctionFromCode(argNames: List<String>, code: String): (String?) -> String? {
-    //    var modifiedCode = code
-    //    while (true) {
-    //        val regex = Regex("function\\(([^)]*)\\)\\s*\\{")
-    //        val matchResult = regex.find(modifiedCode) ?: break
-    //        val (args) = matchResult.destructured
-    //        val (start, bodyStart) = matchResult.range.first to matchResult.range.last + 1
-    //        val (body, remaining) = separateAtParen(modifiedCode.substring(bodyStart - 1))
-    //        val name = namedObject(extractFunctionFromCode(args.split(",").map { it.trim() }, body))
-    //        modifiedCode = modifiedCode.substring(0, start) + name + remaining
-    //    }
-    //    return buildFunction(argNames, modifiedCode)
-    //}
-
     fun extractFunctionFromCode(argNames: List<String>, code: String): (List<String>) -> String? {
         return { args: List<String> ->
             val fullCode =
@@ -29,7 +15,7 @@ internal object JSInterpret {
         }
     }
 
-    fun extractFunctionCode(jsCode: String, funcName: String): Pair<List<String>, String>? {
+    fun extractFunctionCode(jsCode: String, funcName: String): Pair<List<String>, String> {
         val pattern = Pattern.compile(
             """(?xs)
                 (?:
@@ -57,7 +43,7 @@ internal object JSInterpret {
 
         val separated = separate(expr, delimiter, 1).toList()
         if (separated.size < 2) {
-            throw IllegalStateException("No terminating paren $delimiter")
+            throw IllegalStateException("No terminating paren $delimiter in expression $expr")
         }
         return separated[0].substring(1).trim() to separated[1].trim()
     }

@@ -10,5 +10,6 @@ public interface ServiceManager {
     NotificationsService getNotificationsService();
     void invalidateCache();
     void refreshCacheIfNeeded();
-    void applyVideoInfoFix();
+    void applyNoPlaybackFix();
+    void invalidatePlaybackCache();
 }

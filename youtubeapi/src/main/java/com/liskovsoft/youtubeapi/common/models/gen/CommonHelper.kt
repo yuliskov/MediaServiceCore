@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.getToken
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 
 private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
 private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
@@ -157,7 +157,7 @@ internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
-internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuation()?.getToken()
+internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuation()?.getContinuationKey()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
 internal fun TileItem.isShorts() = false // TODO: not implemented

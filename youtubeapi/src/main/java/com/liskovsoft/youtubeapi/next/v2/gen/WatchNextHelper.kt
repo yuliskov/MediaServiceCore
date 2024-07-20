@@ -39,7 +39,7 @@ internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpt
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = continuationContents?.horizontalListContinuation?.items
 internal fun WatchNextResultContinuation.getNextPageKey(): String? = continuationContents?.horizontalListContinuation?.continuations
-    ?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
+    ?.firstNotNullOfOrNull { it?.getContinuationKey() }
 
 ///////
 
@@ -79,7 +79,7 @@ private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?
 
 internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
 internal fun ShelfRenderer.getItemWrappers() = content?.horizontalListRenderer?.items
-internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.nextContinuationData?.continuation }
+internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.getContinuationKey() }
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
 
@@ -122,14 +122,15 @@ internal fun MacroMarkersListItemRenderer.getThumbnailUrl() = thumbnail?.getOpti
 
 ///////
 
-internal fun ContinuationItem.getToken(): String? = nextContinuationData?.continuation ?: reloadContinuationData?.continuation
+internal fun ContinuationItem.getContinuationKey(): String? =
+    nextContinuationData?.continuation ?: nextRadioContinuationData?.continuation ?: reloadContinuationData?.continuation
 internal fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()
 
 ///////
 
 internal fun EngagementPanel.getMenu() = engagementPanelSectionListRenderer?.header?.engagementPanelTitleHeaderRenderer?.menu
-internal fun EngagementPanel.getTopCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getToken()
-internal fun EngagementPanel.getNewCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getToken()
+internal fun EngagementPanel.getTopCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getContinuationKey()
+internal fun EngagementPanel.getNewCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getContinuationKey()
 internal fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
 internal fun EngagementPanel.getTitle(): String? = getVideoDescription()?.title?.getText()
 internal fun EngagementPanel.getChannelName(): String? = getVideoDescription()?.channel?.getText()

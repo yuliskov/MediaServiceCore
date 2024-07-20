@@ -92,6 +92,7 @@ internal data class ChipItem(
 internal data class ContinuationItem(
     val reloadContinuationData: ReloadContinuationData?,
     val nextContinuationData: NextContinuationData?,
+    val nextRadioContinuationData: NextContinuationData?,
     val invalidationContinuationData: LiveChatContinuationData?, // live chats
     val timedContinuationData: LiveChatContinuationData? // live chats
 ) {

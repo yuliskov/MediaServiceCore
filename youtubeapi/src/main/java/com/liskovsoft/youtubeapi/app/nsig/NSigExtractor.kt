@@ -7,8 +7,6 @@ import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
     private val mNSigApi = RetrofitHelper.withRegExp(NSigApi::class.java)
-    private val mNFuncNamePattern = Pattern.compile("""(?x)(?:\.get\("n"\)\)&&\(b=|b=String\.fromCharCode\(110\),c=a\.get\(b\)\)&&\(c=)
-            ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
     private var mFuncCode: Pair<List<String>, String>? = null
 
     init {
@@ -23,6 +21,11 @@ internal class NSigExtractor(private val playerUrl: String) {
         return func(listOf(s))
     }
 
+    /**
+     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_code
+     *
+     * yt-dlp\yt_dlp\extractor\youtube.py
+     */
     private fun initFuncCode() {
         val jsCode = loadPlayer() ?: return
 
@@ -34,8 +37,15 @@ internal class NSigExtractor(private val playerUrl: String) {
         mFuncCode = funcCode
     }
 
+    /**
+     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_name
+     *
+     * yt-dlp\yt_dlp\extractor\youtube.py
+     */
     private fun extractNFunctionName(jsCode: String): String? {
-        val matcher = mNFuncNamePattern.matcher(jsCode)
+        val nFuncNamePattern = Pattern.compile("""(?x)(?:\.get\("n"\)\)&&\(b=|b=String\.fromCharCode\(110\),c=a\.get\(b\)\)&&\(c=)
+            ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
+        val matcher = nFuncNamePattern.matcher(jsCode)
 
         if (matcher.find() && matcher.groupCount() == 2) {
             val funcName = matcher.group(1)

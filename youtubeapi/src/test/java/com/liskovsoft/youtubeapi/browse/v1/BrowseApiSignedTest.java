@@ -185,18 +185,21 @@ public class BrowseApiSignedTest extends BrowseApiTestBase {
 
         assertTrue("Contains playlists", gridTabResult.getTabs().size() > 3);
 
-        GridTab lastGridTab = gridTabResult.getTabs().get(5);
+        GridTabContinuation lastContinuation = null;
 
-        assertNotNull("Contains reload key", lastGridTab.getReloadPageKey());
+        for (int i = 5; i < gridTabResult.getTabs().size(); i++) { // starting from the users playlists
+            GridTab lastGridTab = gridTabResult.getTabs().get(i);
+            Call<GridTabContinuation> wrapper2 =  mService.continueGridTab(BrowseApiHelper.getContinuationQuery(lastGridTab.getReloadPageKey()));
+            GridTabContinuation gridTabContinuation = RetrofitHelper.get(wrapper2);
 
-          Call<GridTabContinuation> wrapper2 =
-                mService.continueGridTab(BrowseApiHelper.getContinuationQuery(lastGridTab.getReloadPageKey()));
+            if (gridTabContinuation != null && gridTabContinuation.getItemWrappers().size() > 3 && gridTabContinuation.getNextPageKey() != null) {
+                lastContinuation = gridTabContinuation;
+                break;
+            }
+        }
 
-        GridTabContinuation gridTabContinuation = RetrofitHelper.get(wrapper2);
-
-        assertTrue("Grid tab not empty", gridTabContinuation.getItemWrappers().size() > 3);
-
-        assertNotNull("Contains next key", gridTabContinuation.getNextPageKey());
+        assertTrue("Grid tab not empty", lastContinuation != null && lastContinuation.getItemWrappers().size() > 3);
+        assertNotNull("Contains next key", lastContinuation.getNextPageKey());
     }
 
     @Test

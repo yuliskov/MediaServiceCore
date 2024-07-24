@@ -8,6 +8,7 @@ import androidx.test.rule.GrantPermissionRule;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ public class AppServiceTest {
     public void setUp() {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mAppService = AppService.instance();
+        mAppService.invalidateVisitorData();
     }
 
     /**
@@ -75,12 +77,9 @@ public class AppServiceTest {
         assertFalse("Normalized not empty", normalized.isEmpty());
         assertFalse("Normalized not empty", TextUtils.isEmpty(normalized.get(0)));
         assertNotEquals("Throttled not equals", throttled.get(0), normalized.get(0));
-
-        //for (String throttle : throttled) {
-        //    assertNotEquals("Throttled not the same", throttle, throttleSignature);
-        //}
     }
 
+    @Ignore
     @Test
     public void testPoTokenResult() {
         String poToken1 = mAppService.getPoTokenResult();

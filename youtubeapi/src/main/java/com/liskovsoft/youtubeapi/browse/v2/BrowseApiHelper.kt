@@ -31,6 +31,10 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQueryWeb(WHAT_TO_WATCH)
     }
 
+    fun getHomeQueryTV(): String {
+        return ServiceHelper.createQueryTV(WHAT_TO_WATCH)
+    }
+
     fun getHomeQueryMWEB(): String {
         return ServiceHelper.createQueryMWeb(WHAT_TO_WATCH)
     }

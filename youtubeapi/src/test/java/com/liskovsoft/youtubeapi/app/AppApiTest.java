@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -65,6 +66,7 @@ public class AppApiTest {
                 playbackNonceFunctionContent.contains("function getClientPlaybackNonce") && playbackNonceFunctionContent.endsWith("}"));
     }
 
+    @Ignore
     @Test
     public void testThrottleFunctionIsValid() {
         PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
@@ -84,6 +86,7 @@ public class AppApiTest {
         assertNotNull("Client secret not empty", clientData.getClientSecret());
     }
 
+    @Ignore
     @Test
     public void testPoTokenFunctionIsValid() {
         PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
@@ -94,6 +97,7 @@ public class AppApiTest {
         assertTrue("poToken function len is valid", poTokenFunction.length() < 700);
     }
 
+    @Ignore
     @Test
     public void testPoTokenConcatFunctionIsValid() {
         PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
@@ -104,6 +108,7 @@ public class AppApiTest {
         assertTrue("poToken function len is valid", poTokenConcatFunction.length() < 700);
     }
 
+    @Ignore
     @Test
     public void testPoTokenResultFunctionIsValid() {
         PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);

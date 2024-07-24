@@ -27,6 +27,7 @@ public class YouTubeServiceManager implements ServiceManager {
     private final YouTubeLiveChatService mLiveChatService;
     private final YouTubeCommentsService mCommentsService;
     private Disposable mRefreshCacheAction;
+    private boolean mVisitorDataReset;
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
@@ -89,6 +90,7 @@ public class YouTubeServiceManager implements ServiceManager {
         YouTubeSignInService.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)
         VideoInfoService.instance().invalidateCache();
         LocaleManager.unhold();
+        mVisitorDataReset = false;
     }
 
     @Override
@@ -106,8 +108,12 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void applyNoPlaybackFix() {
-        //AppService.instance().invalidateVisitorData();
-        VideoInfoService.instance().applyVideoInfoFix();
+        if (mVisitorDataReset) {
+            VideoInfoService.instance().applyVideoInfoFix();
+        } else {
+            AppService.instance().invalidateVisitorData();
+            mVisitorDataReset = true;
+        }
     }
 
     @Override

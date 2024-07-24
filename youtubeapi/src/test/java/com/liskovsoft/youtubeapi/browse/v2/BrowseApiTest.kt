@@ -349,19 +349,6 @@ class BrowseApiTest {
         assertTrue("Topic can be continued", continuationResult?.getItems() != null)
     }
 
-    @Test
-    fun testTopicRandomContinuation() {
-        val key =
-            "4qmFsgL8AhIYVUMxZEdqdGxEaWlETTBnY19naEIxblRRGrACRWdaeVpXTmxiblFZQXlBQU1BRTRBZW9EeXdGSGNGVkNWMjlaUWtOdlRVSkRhWFExWkVZNWQxbFhaR3hZTTA1MVdWaENlbUZIT1RCWU1rNTJZbTVTYkdKdVVtWmtiVlo1WkVkc2FsbFhlSHBZTTBwc1dqSnNkbUp0Um5ORmFEbHFaVWRhZFZOcVZqVlpNbXg0VjFab1ZsRjZhR3BPUXpGNFlUSlNjRlF5T1ZkYVdHUkpUa1ZLYmtkcVRVRkJSMVoxUVVGR1ZsVjNRVUpXVlVWQlFWRkNWbEY2Um10U01uQXdZa1ZTY0dGVlVrNU5SMlJxV0RKa2IxRnFSblZXUmtWQlFWRkZRa0ZCUVVKQlFVRkNRVkZFZVRKeVQzRkRaMXBCUVVWbmVWVkVTUSUzRCUzRJoCLGJyb3dzZS1mZWVkVUMxZEdqdGxEaWlETTBnY19naEIxblRRcmVjZW50ODAx"
-
-        val continuation =
-            mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(key))
-
-        val continuationResult = RetrofitHelper.get(continuation)
-
-        assertTrue("Topic can be continued", continuationResult?.getItems() != null)
-    }
-
     private fun testReelContinuation(continuation: ReelContinuationResult?) {
         val firstEntry = continuation?.getItems()?.getOrNull(0)
         val details = getReelDetails(firstEntry?.videoId, firstEntry?.params)

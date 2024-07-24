@@ -18,6 +18,7 @@ public class YouTubeUrlListBuilderTest {
     @Before
     public void setUp() {
         mService = YouTubeServiceManager.instance();
+        mService.applyNoPlaybackFix();
     }
 
     @Test

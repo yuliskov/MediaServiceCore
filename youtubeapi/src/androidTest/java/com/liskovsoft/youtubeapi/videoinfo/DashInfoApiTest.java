@@ -1,10 +1,13 @@
-package com.liskovsoft.youtubeapi.videoinfo.V2;
+package com.liskovsoft.youtubeapi.videoinfo;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
+import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -12,22 +15,19 @@ import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import okhttp3.Headers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLog;
 import retrofit2.Call;
 
 import java.io.IOException;
 
 import static org.junit.Assert.*;
 
-@RunWith(RobolectricTestRunner.class)
 public class DashInfoApiTest {
     private static final String SEQ_NUM = "X-Sequence-Num";
     private static final String STREAM_DUR_MS = "X-Head-Time-Millis";
     private static final String LAST_SEG_TIME_MS = "X-Walltime-Ms";
     private DashInfoApi mService;
     private VideoInfoApi mService2;
+    private AppService mAppService;
 
     @Before
     public void setUp() throws Exception {
@@ -38,11 +38,12 @@ public class DashInfoApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
-        ShadowLog.stream = System.out; // catch Log class output
-
         mService = RetrofitHelper.withRegExp(DashInfoApi.class);
 
         mService2 = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+
+        mAppService = AppService.instance();
+        mAppService.invalidateVisitorData();
     }
 
     @Test
@@ -90,6 +91,9 @@ public class DashInfoApiTest {
     private AdaptiveVideoFormat getSmallestAudio(VideoInfo videoInfo) {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
+
+        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
+        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
 
         return format;
     }

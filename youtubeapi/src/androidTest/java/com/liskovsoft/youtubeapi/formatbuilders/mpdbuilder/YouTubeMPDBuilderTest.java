@@ -27,6 +27,7 @@ public class YouTubeMPDBuilderTest {
     @Before
     public void setUp() {
         mService = YouTubeServiceManager.instance();
+        mService.applyNoPlaybackFix();
     }
 
     @After

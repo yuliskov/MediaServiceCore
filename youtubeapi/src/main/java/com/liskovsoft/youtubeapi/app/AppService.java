@@ -79,23 +79,6 @@ public class AppService {
         return runCode(decipherCode);
     }
 
-    /**
-     * Throttle strings using js code
-     */
-    //public List<String> throttleFix(List<String> throttled) {
-    //    if (isAllNulls(throttled)) {
-    //        return throttled;
-    //    }
-    //
-    //    String throttleCode = createThrottleCode(throttled);
-    //
-    //    if (throttleCode == null) {
-    //        return throttled;
-    //    }
-    //
-    //    return runCode(throttleCode);
-    //}
-
     public List<String> throttleFix(List<String> throttledList) {
         if (isAllNulls(throttledList)) {
             return throttledList;
@@ -113,6 +96,7 @@ public class AppService {
             }
 
             String throttleFixResult = throttleFix(throttled);
+
             result.add(throttleFixResult);
 
             previousThrottled = throttled;
@@ -122,20 +106,39 @@ public class AppService {
         return result;
     }
 
-    //public String throttleFix(String throttled) {
-    //    if (throttled == null) {
-    //        return null;
-    //    }
-    //
-    //    return throttleFix(Collections.singletonList(throttled)).get(0);
-    //}
-
     public String throttleFix(String throttled) {
+        updatePlayerData();
+
         if (throttled == null || mNSigExtractor == null) {
             return null;
         }
 
         return mNSigExtractor.extractNSig(throttled);
+    }
+
+    /**
+     * Throttle strings using js code
+     */
+    private List<String> throttleFixOld(List<String> throttled) {
+        if (isAllNulls(throttled)) {
+            return throttled;
+        }
+
+        String throttleCode = createThrottleCode(throttled);
+
+        if (throttleCode == null) {
+            return throttled;
+        }
+
+        return runCode(throttleCode);
+    }
+
+    private String throttleFixOld(String throttled) {
+        if (throttled == null) {
+            return null;
+        }
+
+        return throttleFixOld(Collections.singletonList(throttled)).get(0);
     }
 
     /**
@@ -385,6 +388,10 @@ public class AppService {
         return System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
     }
 
+    /**
+     * Visitor data is bound to specific js files versions.<br/>
+     * After reset user will get the latest js file versions.
+     */
     public void invalidateVisitorData() {
         mAppApiWrapper.invalidateVisitorData();
     }

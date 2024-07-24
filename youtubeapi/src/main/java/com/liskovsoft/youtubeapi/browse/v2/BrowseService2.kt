@@ -22,7 +22,12 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getHome(): List<MediaGroup?>? {
-        return getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
+        val rows = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
+
+        if (rows?.all { it?.isEmpty == true } != false) // in anonymous mode WEB home page is empty
+            return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
+
+        return rows
     }
 
     @JvmStatic

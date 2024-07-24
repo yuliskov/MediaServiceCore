@@ -28,8 +28,8 @@ internal object JSInterpret {
                     [{;,]\s*$funcName\s*=\s*function|
                     (?:var|const|let)\s+$funcName\s*=\s*function
                 )\s*
-                \(([^)]*)\)\s*
-                (\{.+\})
+                \((?<args>[^)]*)\)\s*
+                (?<code>\{.+\})
             """.trimIndent()
         )
         val matcher = pattern.matcher(jsCode)

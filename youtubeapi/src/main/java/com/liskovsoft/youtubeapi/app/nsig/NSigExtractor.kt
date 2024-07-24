@@ -43,28 +43,35 @@ internal class NSigExtractor(private val playerUrl: String) {
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
     private fun extractNFunctionName(jsCode: String): String? {
-        val nFuncNamePattern = Pattern.compile("""(?x)(?:\.get\("n"\)\)&&\(b=|b=String\.fromCharCode\(110\),c=a\.get\(b\)\)&&\(c=)
-            ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
-        val matcher = nFuncNamePattern.matcher(jsCode)
+        val nFuncPattern = Pattern.compile("""(?x)
+            (?:
+                \.get\("n"\)\)&&\(b=|
+                (?:
+                    b=String\.fromCharCode\(110\)|
+                    ([a-zA-Z0-9${'$'}.]+)&&\(b="nn"\[\+\1\]
+                ),c=a\.get\(b\)\)&&\(c=
+            )
+            (?<nfunc>[a-zA-Z0-9$]+)(?:\[(?<idx>\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
+        val nFuncMatcher = nFuncPattern.matcher(jsCode)
 
-        if (matcher.find() && matcher.groupCount() == 2) {
-            val funcName = matcher.group(1)
-            val idx = matcher.group(2)
+        if (nFuncMatcher.find() && nFuncMatcher.groupCount() >= 2) {
+            val funcName = nFuncMatcher.group(nFuncMatcher.groupCount() - 1)
+            val idx = nFuncMatcher.group(nFuncMatcher.groupCount())
 
             val escapedFuncName = Pattern.quote(funcName)
 
-            val nFuncArrPattern = Pattern.compile("""var $escapedFuncName\s*=\s*(\[.+?\])\s*[,;]""")
+            val nameArrPattern = Pattern.compile("""var $escapedFuncName\s*=\s*(?<namearr>\[.+?\])\s*[,;]""")
 
-            val nFuncArrMatcher = nFuncArrPattern.matcher(jsCode)
+            val nameArrMatcher = nameArrPattern.matcher(jsCode)
 
-            if (nFuncArrMatcher.find() && nFuncArrMatcher.groupCount() == 1) {
-                val nFuncArrStr = nFuncArrMatcher.group(1)
+            if (nameArrMatcher.find() && nameArrMatcher.groupCount() == 1) {
+                val nameArrStr = nameArrMatcher.group(1)
 
                 val gson = Gson()
                 val listType = object : TypeToken<List<String>>() {}.type
-                val nFuncList: List<String> = gson.fromJson(nFuncArrStr, listType)
+                val nameList: List<String> = gson.fromJson(nameArrStr, listType)
 
-                return nFuncList[idx.toInt()]
+                return nameList[idx.toInt()]
             }
         }
 

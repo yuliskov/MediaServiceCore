@@ -69,7 +69,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return result;
     }
 
-    public void applyVideoInfoFix() {
+    public void fixVideoInfo() {
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_DEFAULT, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 

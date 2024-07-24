@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
@@ -27,7 +28,7 @@ public class YouTubeMPDBuilderTest {
     @Before
     public void setUp() {
         mService = YouTubeServiceManager.instance();
-        mService.applyNoPlaybackFix();
+        AppService.instance().invalidateVisitorData();
     }
 
     @After

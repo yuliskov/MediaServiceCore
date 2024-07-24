@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import org.junit.Before;
@@ -18,7 +19,7 @@ public class YouTubeUrlListBuilderTest {
     @Before
     public void setUp() {
         mService = YouTubeServiceManager.instance();
-        mService.applyNoPlaybackFix();
+        AppService.instance().invalidateVisitorData();
     }
 
     @Test

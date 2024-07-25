@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsig
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.util.regex.Pattern
 
@@ -11,6 +12,10 @@ internal class NSigExtractor(private val playerUrl: String) {
 
     init {
         initFuncCode()
+
+        if (mFuncCode == null) {
+            ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
+        }
     }
 
     fun extractNSig(s: String): String? {

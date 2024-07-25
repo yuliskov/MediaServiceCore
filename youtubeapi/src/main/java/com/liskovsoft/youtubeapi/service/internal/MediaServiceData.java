@@ -33,6 +33,11 @@ public class MediaServiceData {
         return mScreenId;
     }
 
+    public void setDeviceId(String deviceId) {
+        mDeviceId = deviceId;
+        persistData();
+    }
+
     /**
      * Unique per app instance
      */
@@ -43,12 +48,6 @@ public class MediaServiceData {
         }
 
         return mDeviceId;
-    }
-
-    public void reset() {
-        mDeviceId = null;
-        mScreenId = null;
-        persistData();
     }
 
     private void restoreData() {

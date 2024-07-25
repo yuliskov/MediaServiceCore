@@ -252,7 +252,8 @@ public class LoungeService {
     }
 
     public void resetData() {
-        MediaServiceData.instance().reset();
+        MediaServiceData.instance().setScreenId(null);
+        MediaServiceData.instance().setDeviceId(null);
         mLoungeToken = null;
     }
 

@@ -8,47 +8,9 @@ import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
     private val mNSigApi = RetrofitHelper.withRegExp(NSigApi::class.java)
-    private var mFuncCode: Pair<List<String>, String>? = null
-
-    init {
-        initFuncCode()
-
-        if (mFuncCode == null) {
-            ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
-        }
-    }
-
-    fun extractNSig(s: String): String? {
-        val funcCode = mFuncCode ?: return null
-        
-        val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
-
-        return func(listOf(s))
-    }
-
-    /**
-     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_code
-     *
-     * yt-dlp\yt_dlp\extractor\youtube.py
-     */
-    private fun initFuncCode() {
-        val jsCode = loadPlayer() ?: return
-
-        val funcName = extractNFunctionName(jsCode) ?: return
-
-        val funcCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return
-
-        // store funcCode in cache
-        mFuncCode = funcCode
-    }
-
-    /**
-     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_name
-     *
-     * yt-dlp\yt_dlp\extractor\youtube.py
-     */
-    private fun extractNFunctionName(jsCode: String): String? {
-        val nFuncPattern = Pattern.compile("""(?x)
+    private var mNFuncCode: Pair<List<String>, String>? = null
+    private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
+    private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
                 (?:
@@ -57,6 +19,54 @@ internal class NSigExtractor(private val playerUrl: String) {
                 ),c=a\.get\(b\)\)&&\(c=
             )
             (?<nfunc>[a-zA-Z0-9$]+)(?:\[(?<idx>\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
+
+    init {
+        initNFuncCode()
+
+        if (mNFuncCode == null) {
+            val nFuncPattern = RetrofitHelper.get(mNSigApi.getFileContent(mNFuncPatternUrl))?.content
+            nFuncPattern?.let {
+                mNFuncPattern = Pattern.compile(nFuncPattern, Pattern.COMMENTS)
+                initNFuncCode()
+            }
+        }
+
+        if (mNFuncCode == null) {
+            ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
+        }
+    }
+
+    fun extractNSig(nParam: String): String? {
+        val funcCode = mNFuncCode ?: return null
+        
+        val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
+
+        return func(listOf(nParam))
+    }
+
+    /**
+     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_code
+     *
+     * yt-dlp\yt_dlp\extractor\youtube.py
+     */
+    private fun initNFuncCode() {
+        val jsCode = loadPlayer() ?: return
+
+        val funcName = extractNFunctionName(jsCode) ?: return
+
+        val funcCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return
+
+        // store funcCode in cache
+        mNFuncCode = funcCode
+    }
+
+    /**
+     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_name
+     *
+     * yt-dlp\yt_dlp\extractor\youtube.py
+     */
+    private fun extractNFunctionName(jsCode: String): String? {
+        val nFuncPattern = mNFuncPattern ?: return null
         val nFuncMatcher = nFuncPattern.matcher(jsCode)
 
         if (nFuncMatcher.find() && nFuncMatcher.groupCount() >= 2) {
@@ -84,6 +94,6 @@ internal class NSigExtractor(private val playerUrl: String) {
     }
 
     private fun loadPlayer(): String? {
-        return RetrofitHelper.get(mNSigApi.getPlayerContent(playerUrl))?.content
+        return RetrofitHelper.get(mNSigApi.getFileContent(playerUrl))?.content
     }
 }

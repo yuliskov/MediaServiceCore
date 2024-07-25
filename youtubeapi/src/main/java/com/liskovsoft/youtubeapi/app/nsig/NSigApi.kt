@@ -6,5 +6,5 @@ import retrofit2.http.Url
 
 internal interface NSigApi {
     @GET
-    fun getPlayerContent(@Url playerUrl: String?): Call<PlayerContent?>?
+    fun getFileContent(@Url fileUrl: String?): Call<FileContent?>?
 }

@@ -37,19 +37,19 @@ public class YouTubeMPDBuilderTest {
     }
 
     @Test
-    public void testThatCipheredFormatIsValid() {
+    public void testThatCipheredFormatValid() {
         testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
     }
 
     @Test
-    public void testThatSignedCipheredFormatIsValid() {
+    public void testThatSignedCipheredFormatValid() {
         YouTubeSignInService.instance().setAuthorizationHeader(TestHelpersV2.getAuthorization());
 
         testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
     }
 
     @Test
-    public void testThatSimpleFormatIsValid() throws IOException {
+    public void testThatSimpleFormatValid() throws IOException {
         testVideoFormatUrl(TestHelpersV1.VIDEO_ID_CAPTIONS);
     }
 

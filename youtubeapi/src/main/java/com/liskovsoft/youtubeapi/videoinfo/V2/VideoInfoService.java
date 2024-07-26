@@ -14,8 +14,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static int VIDEO_INFO_DEFAULT = 0;
-    private final static int VIDEO_INFO_ANDROID = 1;
-    private final static int VIDEO_INFO_IOS = 2;
+    private final static int VIDEO_INFO_TV = 1;
+    private final static int VIDEO_INFO_ANDROID = 2;
+    private final static int VIDEO_INFO_IOS = 3;
     private int mVideoInfoType;
 
     private VideoInfoService() {
@@ -41,6 +42,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 break;
             case VIDEO_INFO_IOS:
                 result = getVideoInfoIOS(videoId, clickTrackingParams);
+                break;
+            case VIDEO_INFO_TV:
+                result = getVideoInfoTV(videoId, clickTrackingParams);
                 break;
             default:
                 result = getVideoInfoWeb(videoId, clickTrackingParams);
@@ -70,7 +74,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void fixVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_DEFAULT, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_DEFAULT, VIDEO_INFO_TV, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     public void invalidateCache() {

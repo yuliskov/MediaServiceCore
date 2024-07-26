@@ -100,6 +100,10 @@ public class CaptionTrack {
             return null;
         }
 
+        if (mBaseUrl.startsWith("/")) { // Fix relative urls (mweb client)
+            mBaseUrl = "https://www.youtube.com" + mBaseUrl;
+        }
+
         if (mBaseUrlQuery == null) {
             mBaseUrlQuery = UrlQueryStringFactory.parse(mBaseUrl);
         }

@@ -26,7 +26,7 @@ public class ActionsApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
+        mActionsManager = RetrofitHelper.create(ActionsApi.class);
 
         RetrofitOkHttpHelper.setDisableCompression(true);
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());

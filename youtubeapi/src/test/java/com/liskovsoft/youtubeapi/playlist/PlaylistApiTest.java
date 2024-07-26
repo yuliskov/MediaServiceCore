@@ -29,7 +29,7 @@ public class PlaylistApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(PlaylistApi.class);
+        mService = RetrofitHelper.create(PlaylistApi.class);
 
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }

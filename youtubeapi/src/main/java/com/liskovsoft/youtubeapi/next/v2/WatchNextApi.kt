@@ -1,11 +1,13 @@
 package com.liskovsoft.youtubeapi.next.v2
 
+import com.liskovsoft.youtubeapi.common.converters.gson.GsonClass
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import retrofit2.Call
 import retrofit2.http.*
 
+@GsonClass
 internal interface WatchNextApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")

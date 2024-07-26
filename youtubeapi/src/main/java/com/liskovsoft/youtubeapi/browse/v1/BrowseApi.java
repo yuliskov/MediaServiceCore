@@ -7,6 +7,8 @@ import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTabList;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabList;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -16,6 +18,7 @@ import retrofit2.http.POST;
 /**
  * For signed users!
  */
+@JsonPathClass
 public interface BrowseApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")

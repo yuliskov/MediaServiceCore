@@ -20,7 +20,7 @@ class DeArrowApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mService = RetrofitHelper.withGson(DeArrowApi::class.java)
+        mService = RetrofitHelper.create(DeArrowApi::class.java)
     }
 
     @Test

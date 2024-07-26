@@ -19,7 +19,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private int mVideoInfoType;
 
     private VideoInfoService() {
-        mVideoInfoApi = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+        mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
     }
 
     public static VideoInfoService instance() {

@@ -24,7 +24,7 @@ public class SearchService {
     private final AppService mAppService;
 
     private SearchService() {
-        mSearchApi = RetrofitHelper.withJsonPath(SearchApi.class);
+        mSearchApi = RetrofitHelper.create(SearchApi.class);
         mBrowseService = BrowseService.instance();
         mAppService = AppService.instance();
     }

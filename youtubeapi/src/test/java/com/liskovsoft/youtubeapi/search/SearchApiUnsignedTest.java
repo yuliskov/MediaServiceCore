@@ -29,7 +29,7 @@ public class SearchApiUnsignedTest extends SearchApiTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mSearchApi = RetrofitHelper.withJsonPath(SearchApi.class);
+        mSearchApi = RetrofitHelper.create(SearchApi.class);
     }
 
     @Test

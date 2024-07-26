@@ -30,7 +30,7 @@ public class TrackingApiTest {
 
     @Before
     public void setUp() {
-        mTrackingApi = RetrofitHelper.withJsonPath(TrackingApi.class);
+        mTrackingApi = RetrofitHelper.create(TrackingApi.class);
         mAppService = AppService.instance();
         mVideoInfoService = VideoInfoService.instance();
         if (sAuthorization == null) {

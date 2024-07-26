@@ -22,7 +22,7 @@ public class AuthService {
     private final AppService mAppService;
 
     private AuthService() {
-        mAuthApi = RetrofitHelper.withJsonPath(AuthApi.class);
+        mAuthApi = RetrofitHelper.create(AuthApi.class);
         mAppService = AppService.instance();
     }
 

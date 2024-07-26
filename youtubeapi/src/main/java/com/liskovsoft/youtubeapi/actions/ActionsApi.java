@@ -1,12 +1,14 @@
 package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
+@JsonPathClass
 public interface ActionsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/like")

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
 import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import com.liskovsoft.youtubeapi.lounge.models.info.PlaylistInfo;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
@@ -10,9 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-/**
- * JsonPath
- */
+@JsonPathClass
 public interface InfoManager {
     /**
      * <a href="https://square.github.io/retrofit/2.x/retrofit/index.html?retrofit2/http/Field.html">Field</a><br/>

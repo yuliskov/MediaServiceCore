@@ -44,7 +44,7 @@ public class BrowseApiSignedTest extends BrowseApiTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(BrowseApi.class);
+        mService = RetrofitHelper.create(BrowseApi.class);
 
         RetrofitOkHttpHelper.setDisableCompression(true);
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());

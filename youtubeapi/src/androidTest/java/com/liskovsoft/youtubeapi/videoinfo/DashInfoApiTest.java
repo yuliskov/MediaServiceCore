@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.videoinfo;
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.api.FileApi;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
@@ -28,6 +29,7 @@ public class DashInfoApiTest {
     private DashInfoApi mService;
     private VideoInfoApi mService2;
     private AppService mAppService;
+    private FileApi mFileService;
 
     @Before
     public void setUp() throws Exception {
@@ -38,9 +40,11 @@ public class DashInfoApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
-        mService = RetrofitHelper.withRegExp(DashInfoApi.class);
+        mService = RetrofitHelper.create(DashInfoApi.class);
 
-        mService2 = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+        mService2 = RetrofitHelper.create(VideoInfoApi.class);
+
+        mFileService = RetrofitHelper.create(FileApi.class);
 
         mAppService = AppService.instance();
         mAppService.invalidateVisitorData();
@@ -70,9 +74,9 @@ public class DashInfoApiTest {
     @Test
     public void testDashInfoFormat2NotEmpty() throws IOException {
         VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
-        Call<Void> dashInfoWrapper = mService.getDashInfoHeaders(getSmallestAudio(videoInfo).getUrl());
+        Call<Void> headersWrapper = mFileService.getHeaders(getSmallestAudio(videoInfo).getUrl());
 
-        Headers headers = dashInfoWrapper.execute().headers();
+        Headers headers = headersWrapper.execute().headers();
         int lastSegmentNum = Integer.parseInt(headers.get(SEQ_NUM));
         long streamDurationMs = Long.parseLong(headers.get(STREAM_DUR_MS));
         long lastSegmentTimeMs = Long.parseLong(headers.get(LAST_SEG_TIME_MS));

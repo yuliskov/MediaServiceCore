@@ -35,7 +35,7 @@ class BrowseApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mService = RetrofitHelper.withGson(BrowseApi::class.java)
+        mService = RetrofitHelper.create(BrowseApi::class.java)
         RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
     }

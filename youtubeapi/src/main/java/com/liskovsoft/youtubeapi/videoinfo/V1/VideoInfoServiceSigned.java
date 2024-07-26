@@ -15,7 +15,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
     private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceSigned() {
-        mVideoInfoApiSigned = RetrofitHelper.withQueryString(VideoInfoApiSigned.class);
+        mVideoInfoApiSigned = RetrofitHelper.create(VideoInfoApiSigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 

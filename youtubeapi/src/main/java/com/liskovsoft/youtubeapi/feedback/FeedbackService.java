@@ -9,7 +9,7 @@ public class FeedbackService {
     private final FeedbackApi mFeedbackApi;
 
     private FeedbackService() {
-        mFeedbackApi = RetrofitHelper.withJsonPath(FeedbackApi.class);
+        mFeedbackApi = RetrofitHelper.create(FeedbackApi.class);
     }
 
     public static FeedbackService instance() {

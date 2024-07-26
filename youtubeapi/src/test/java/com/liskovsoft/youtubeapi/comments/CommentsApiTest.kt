@@ -25,8 +25,8 @@ class CommentsApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mApi = RetrofitHelper.withGson(CommentsApi::class.java)
-        mApi2 = RetrofitHelper.withGson(WatchNextApi::class.java)
+        mApi = RetrofitHelper.create(CommentsApi::class.java)
+        mApi2 = RetrofitHelper.create(WatchNextApi::class.java)
     }
 
     @Test

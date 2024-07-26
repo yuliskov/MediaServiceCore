@@ -14,7 +14,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     private final LocaleManager mLocaleManager;
 
     private VideoInfoServiceUnsigned() {
-        mVideoInfoApiUnsigned = RetrofitHelper.withQueryString(VideoInfoApiUnsigned.class);
+        mVideoInfoApiUnsigned = RetrofitHelper.create(VideoInfoApiUnsigned.class);
         mLocaleManager = LocaleManager.instance();
     }
 

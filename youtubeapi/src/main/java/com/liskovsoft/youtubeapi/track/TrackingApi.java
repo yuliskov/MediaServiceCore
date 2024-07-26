@@ -1,11 +1,12 @@
 package com.liskovsoft.youtubeapi.track;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Query;
 
+@JsonPathClass
 public interface TrackingApi {
     /**
      * LONG (Marks exact time)<br/>

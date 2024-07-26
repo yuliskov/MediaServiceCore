@@ -39,4 +39,11 @@ class NSigExtractorTest {
     fun testExtractNSig() {
         assertNotNull("NSig not null", mExtractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
     }
+
+    @Test
+    fun testPlayerVersions() {
+        var extractor = NSigExtractor("https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js")
+
+        assertNotNull("NSig not null", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
+    }
 }

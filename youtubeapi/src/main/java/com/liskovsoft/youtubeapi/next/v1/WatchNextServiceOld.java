@@ -11,7 +11,7 @@ public class WatchNextServiceOld {
     private final WatchNextApi mWatchNextManagerSigned;
 
     private WatchNextServiceOld() {
-        mWatchNextManagerSigned = RetrofitHelper.withJsonPath(WatchNextApi.class);
+        mWatchNextManagerSigned = RetrofitHelper.create(WatchNextApi.class);
     }
 
     public static WatchNextServiceOld instance() {

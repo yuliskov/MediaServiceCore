@@ -10,7 +10,7 @@ public class PlaylistService {
     private final PlaylistApi mPlaylistManager;
 
     private PlaylistService() {
-        mPlaylistManager = RetrofitHelper.withJsonPath(PlaylistApi.class);
+        mPlaylistManager = RetrofitHelper.create(PlaylistApi.class);
     }
 
     public static PlaylistService instance() {

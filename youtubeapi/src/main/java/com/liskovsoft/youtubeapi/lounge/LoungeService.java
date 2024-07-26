@@ -52,9 +52,9 @@ public class LoungeService {
     private String mPlaylistId;
 
     public LoungeService() {
-        mBindManager = RetrofitHelper.withRegExp(BindManager.class);
-        mInfoManager = RetrofitHelper.withJsonPath(InfoManager.class);
-        mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
+        mBindManager = RetrofitHelper.create(BindManager.class);
+        mInfoManager = RetrofitHelper.create(InfoManager.class);
+        mCommandManager = RetrofitHelper.create(CommandManager.class);
         mLineSkipAdapter = RetrofitHelper.adaptJsonPathSkip(CommandList.class);
     }
 

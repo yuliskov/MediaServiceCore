@@ -32,7 +32,7 @@ class WatchNextApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mApi = RetrofitHelper.withGson(WatchNextApi::class.java)
+        mApi = RetrofitHelper.create(WatchNextApi::class.java)
         mService = WatchNextService
 
         mApiMock = MockUtils.mockWithGson(WatchNextApiMock::class.java)

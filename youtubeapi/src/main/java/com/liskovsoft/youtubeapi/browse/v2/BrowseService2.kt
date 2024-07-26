@@ -11,8 +11,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 
 internal object BrowseService2 {
-    private val mBrowseApi = RetrofitHelper.withGson(BrowseApi::class.java)
-    private val mAppService = AppService.instance()
+    private val mBrowseApi = RetrofitHelper.create(BrowseApi::class.java)
 
     //@JvmStatic
     //fun getHome(): List<MediaGroup?>? {

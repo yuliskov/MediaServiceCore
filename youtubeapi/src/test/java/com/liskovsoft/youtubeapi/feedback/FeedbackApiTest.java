@@ -26,7 +26,7 @@ public class FeedbackApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(FeedbackApi.class);
+        mService = RetrofitHelper.create(FeedbackApi.class);
 
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }

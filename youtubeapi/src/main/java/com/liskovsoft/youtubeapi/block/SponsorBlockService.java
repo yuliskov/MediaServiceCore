@@ -13,7 +13,7 @@ public class SponsorBlockService {
     private final SponsorBlockApi mSponsorBlockApi;
 
     private SponsorBlockService() {
-        mSponsorBlockApi = RetrofitHelper.withJsonPath(SponsorBlockApi.class);
+        mSponsorBlockApi = RetrofitHelper.create(SponsorBlockApi.class);
     }
 
     public static SponsorBlockService instance() {

@@ -34,7 +34,7 @@ public class BrowseService {
     private Map<String, Guide> mGuideMap = new HashMap<>();
 
     private BrowseService() {
-        mBrowseManagerSigned = RetrofitHelper.withJsonPath(BrowseApi.class);
+        mBrowseManagerSigned = RetrofitHelper.create(BrowseApi.class);
         mAppService = AppService.instance();
     }
 

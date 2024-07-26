@@ -4,7 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.DeArrowData
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 
 internal object DeArrowService {
-    private val mDeArrowApi = RetrofitHelper.withGson(DeArrowApi::class.java)
+    private val mDeArrowApi = RetrofitHelper.create(DeArrowApi::class.java)
 
     @JvmStatic
     fun getData(videoId: String?): DeArrowData? {

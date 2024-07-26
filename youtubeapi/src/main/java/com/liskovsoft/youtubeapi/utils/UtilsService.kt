@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.utils
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 
 internal object UtilsService {
-    private val mUtilsApi = RetrofitHelper.withRegExp(UtilsApi::class.java)
+    private val mUtilsApi = RetrofitHelper.create(UtilsApi::class.java)
 
     @JvmStatic
     fun canonicalChannelId(channelId: String?): String? {

@@ -7,49 +7,56 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.youtubeapi.common.converters.gson.GsonClass;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathSkipClass;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathSkipConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.youtubeapi.common.converters.querystring.QueryStringClass;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
+import com.liskovsoft.youtubeapi.common.converters.regexp.RegExpClass;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.models.gen.ErrorResponse;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.net.ConnectException;
+import java.net.SocketException;
+import java.util.List;
+
 import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketException;
-import java.util.List;
-
 public class RetrofitHelper {
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
 
-    public static <T> T withGson(Class<T> clazz) {
+    private static <T> T withGson(Class<T> clazz) {
         return buildRetrofit(GsonConverterFactory.create()).create(clazz);
     }
 
-    public static <T> T withJsonPath(Class<T> clazz) {
+    private static <T> T withJsonPath(Class<T> clazz) {
         return buildRetrofit(JsonPathConverterFactory.create()).create(clazz);
     }
 
     /**
      * Skips first line of the response
      */
-    public static <T> T withJsonPathSkip(Class<T> clazz) {
+    private static <T> T withJsonPathSkip(Class<T> clazz) {
         return buildRetrofit(JsonPathSkipConverterFactory.create()).create(clazz);
     }
 
-    public static <T> T withQueryString(Class<T> clazz) {
+    private static <T> T withQueryString(Class<T> clazz) {
         return buildRetrofit(QueryStringConverterFactory.create()).create(clazz);
     }
 
-    public static <T> T withRegExp(Class<T> clazz) {
+    private static <T> T withRegExp(Class<T> clazz) {
         return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
     }
 
@@ -136,6 +143,26 @@ public class RetrofitHelper {
         }
 
         return null;
+    }
+
+    public static <T> T create(Class<T> clazz) {
+        Annotation[] annotations = clazz.getAnnotations();
+
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof RegExpClass) {
+                return withRegExp(clazz);
+            } else if (annotation instanceof JsonPathClass) {
+                return withJsonPath(clazz);
+            } else if (annotation instanceof JsonPathSkipClass) {
+                return withJsonPathSkip(clazz);
+            } else if (annotation instanceof QueryStringClass) {
+                return withQueryString(clazz);
+            } else if (annotation instanceof GsonClass) {
+                return withGson(clazz);
+            }
+        }
+
+        throw new IllegalStateException("RetrofitHelper: unknown class: " + clazz.getName());
     }
 
     private static <T> void handleErrors(Response<T> response) {

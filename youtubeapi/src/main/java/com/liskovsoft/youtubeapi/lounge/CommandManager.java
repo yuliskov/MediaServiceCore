@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathSkipClass;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -10,9 +11,7 @@ import retrofit2.http.Query;
 
 import java.util.Map;
 
-/**
- * JsonPathSkip
- */
+@JsonPathSkipClass
 public interface CommandManager {
     @FormUrlEncoded
     @POST(BindParams.BIND_DATA_URL)

@@ -14,7 +14,7 @@ public class ActionsService {
     private final BrowseService mBrowseService;
 
     private ActionsService() {
-        mActionsManager = RetrofitHelper.withJsonPath(ActionsApi.class);
+        mActionsManager = RetrofitHelper.create(ActionsApi.class);
         mBrowseService = BrowseService.instance();
     }
 

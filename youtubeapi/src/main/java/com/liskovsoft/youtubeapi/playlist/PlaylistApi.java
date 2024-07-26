@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,6 +11,7 @@ import retrofit2.http.POST;
 /**
  * For signed users!
  */
+@JsonPathClass
 public interface PlaylistApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/playlist/get_add_to_playlist")

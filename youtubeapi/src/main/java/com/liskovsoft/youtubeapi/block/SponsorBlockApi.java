@@ -1,10 +1,13 @@
 package com.liskovsoft.youtubeapi.block;
 
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+@JsonPathClass
 public interface SponsorBlockApi {
     @GET(SponsorBlockApiHelper.SEGMENTS_URL)
     Call<SegmentList> getSegments(@Query("videoID") String videoId);

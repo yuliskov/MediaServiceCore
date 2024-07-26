@@ -25,7 +25,7 @@ class NotificationsApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mService = RetrofitHelper.withGson(NotificationsApi::class.java)
+        mService = RetrofitHelper.create(NotificationsApi::class.java)
         RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
     }

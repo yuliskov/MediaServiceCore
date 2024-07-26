@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
+import com.liskovsoft.youtubeapi.common.converters.gson.GsonClass
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import retrofit2.Call
@@ -8,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+@GsonClass
 internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",

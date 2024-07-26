@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
@@ -9,6 +10,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
+@JsonPathClass
 public interface VideoInfoApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")

@@ -40,7 +40,7 @@ public class BrowseApiUnsignedTest extends BrowseApiTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(BrowseApi.class);
+        mService = RetrofitHelper.create(BrowseApi.class);
     }
 
     @Test

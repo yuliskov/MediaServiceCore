@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaItem
 
 internal object NotificationsServiceInt {
-    private val mService: NotificationsApi = RetrofitHelper.withGson(NotificationsApi::class.java)
+    private val mService: NotificationsApi = RetrofitHelper.create(NotificationsApi::class.java)
 
     fun getItems(): MediaGroup? {
         val result = mService.getNotifications(NotificationsApiHelper.getNotificationsQuery())

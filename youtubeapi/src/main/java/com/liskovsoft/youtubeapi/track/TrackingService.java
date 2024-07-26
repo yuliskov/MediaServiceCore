@@ -13,7 +13,7 @@ public class TrackingService {
     private final AppService mAppService;
 
     private TrackingService() {
-        mTrackingApi = RetrofitHelper.withJsonPath(TrackingApi.class);
+        mTrackingApi = RetrofitHelper.create(TrackingApi.class);
         mAppService = AppService.instance();
     }
 

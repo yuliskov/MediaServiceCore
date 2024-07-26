@@ -43,7 +43,7 @@ public class AuthApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(AuthApi.class);
+        mService = RetrofitHelper.create(AuthApi.class);
         mAppService = AppService.instance();
     }
 

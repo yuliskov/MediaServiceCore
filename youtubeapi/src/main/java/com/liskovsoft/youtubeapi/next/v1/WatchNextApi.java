@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v1;
 
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import retrofit2.Call;
@@ -11,6 +12,7 @@ import retrofit2.http.POST;
 /**
  * For signed users!
  */
+@JsonPathClass
 public interface WatchNextApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")

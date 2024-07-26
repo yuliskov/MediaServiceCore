@@ -11,7 +11,7 @@ import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 
 internal class LiveChatServiceInt private constructor() {
-    private val mApi = RetrofitHelper.withGson(LiveChatApi::class.java)
+    private val mApi = RetrofitHelper.create(LiveChatApi::class.java)
 
     fun openLiveChat(chatKey: String, onChatItem: OnChatItem) {
         // It's common to stream to be interrupted multiple times

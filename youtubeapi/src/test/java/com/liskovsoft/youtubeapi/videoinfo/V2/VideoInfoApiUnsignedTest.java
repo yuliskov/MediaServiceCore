@@ -36,7 +36,7 @@ public class VideoInfoApiUnsignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+        mService = RetrofitHelper.create(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
     }
 

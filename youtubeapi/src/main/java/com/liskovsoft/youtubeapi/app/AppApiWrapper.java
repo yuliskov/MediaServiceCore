@@ -12,7 +12,7 @@ public class AppApiWrapper {
     private final AppApi mAppApi;
 
     public AppApiWrapper() {
-        mAppApi = RetrofitHelper.withRegExp(AppApi.class);
+        mAppApi = RetrofitHelper.create(AppApi.class);
     }
 
     /**

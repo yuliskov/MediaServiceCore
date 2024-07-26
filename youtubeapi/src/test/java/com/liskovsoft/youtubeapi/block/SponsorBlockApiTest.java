@@ -30,7 +30,7 @@ public class SponsorBlockApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(SponsorBlockApi.class);
+        mService = RetrofitHelper.create(SponsorBlockApi.class);
     }
 
     @Test

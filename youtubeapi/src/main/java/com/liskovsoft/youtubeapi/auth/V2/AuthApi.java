@@ -4,11 +4,14 @@ import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
+@JsonPathClass
 public interface AuthApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/o/oauth2/device/code")

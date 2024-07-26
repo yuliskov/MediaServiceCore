@@ -38,7 +38,7 @@ public class VideoInfoApiSignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+        mService = RetrofitHelper.create(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
 
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());

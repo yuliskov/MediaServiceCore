@@ -51,9 +51,9 @@ public class BindManagerTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mBindManager = RetrofitHelper.withRegExp(BindManager.class);
-        mInfoManager = RetrofitHelper.withJsonPath(InfoManager.class);
-        mCommandManager = RetrofitHelper.withJsonPathSkip(CommandManager.class);
+        mBindManager = RetrofitHelper.create(BindManager.class);
+        mInfoManager = RetrofitHelper.create(InfoManager.class);
+        mCommandManager = RetrofitHelper.create(CommandManager.class);
         mAdapter = RetrofitHelper.adaptJsonPathSkip(CommandList.class);
     }
 

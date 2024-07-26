@@ -2,12 +2,13 @@ package com.liskovsoft.youtubeapi.app.nsig
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
-    private val mNSigApi = RetrofitHelper.withRegExp(NSigApi::class.java)
+    private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private var mNFuncCode: Pair<List<String>, String>? = null
     private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
     private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
@@ -18,13 +19,13 @@ internal class NSigExtractor(private val playerUrl: String) {
                     ([a-zA-Z0-9${'$'}.]+)&&\(b="nn"\[\+\1\]
                 ),c=a\.get\(b\)\)&&\(c=
             )
-            (?<nfunc>[a-zA-Z0-9$]+)(?:\[(?<idx>\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
+            ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
 
     init {
         initNFuncCode()
 
         if (mNFuncCode == null) {
-            val nFuncPattern = RetrofitHelper.get(mNSigApi.getFileContent(mNFuncPatternUrl))?.content
+            val nFuncPattern = RetrofitHelper.get(mFileApi.getContent(mNFuncPatternUrl))?.content
             nFuncPattern?.let {
                 mNFuncPattern = Pattern.compile(nFuncPattern, Pattern.COMMENTS)
                 initNFuncCode()
@@ -75,7 +76,7 @@ internal class NSigExtractor(private val playerUrl: String) {
 
             val escapedFuncName = Pattern.quote(funcName)
 
-            val nameArrPattern = Pattern.compile("""var $escapedFuncName\s*=\s*(?<namearr>\[.+?\])\s*[,;]""")
+            val nameArrPattern = Pattern.compile("""var $escapedFuncName\s*=\s*(\[.+?\])\s*[,;]""")
 
             val nameArrMatcher = nameArrPattern.matcher(jsCode)
 
@@ -94,6 +95,6 @@ internal class NSigExtractor(private val playerUrl: String) {
     }
 
     private fun loadPlayer(): String? {
-        return RetrofitHelper.get(mNSigApi.getFileContent(playerUrl))?.content
+        return RetrofitHelper.get(mFileApi.getContent(playerUrl))?.content
     }
 }

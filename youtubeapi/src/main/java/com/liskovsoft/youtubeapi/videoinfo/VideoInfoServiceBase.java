@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.api.FileApi;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
@@ -20,13 +21,15 @@ import java.util.List;
 public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
     private final DashInfoApi mDashInfoApi;
+    private final FileApi mFileApi;
     protected final AppService mAppService;
     // Make response smaller
     private final String SMALL_RANGE = "&range=0-200";
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
-        mDashInfoApi = RetrofitHelper.withRegExp(DashInfoApi.class);
+        mDashInfoApi = RetrofitHelper.create(DashInfoApi.class);
+        mFileApi = RetrofitHelper.create(FileApi.class);
     }
 
     protected void decipherFormats(List<? extends VideoFormat> formats) {
@@ -124,7 +127,7 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        return RetrofitHelper.getHeaders(mDashInfoApi.getDashInfoHeaders(url + SMALL_RANGE));
+        return RetrofitHelper.getHeaders(mFileApi.getHeaders(url + SMALL_RANGE));
     }
 
     protected DashInfo getDashInfo2(VideoInfo videoInfo) {

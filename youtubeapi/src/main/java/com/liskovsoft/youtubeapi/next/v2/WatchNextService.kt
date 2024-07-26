@@ -19,7 +19,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.isEmpty
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 
 internal object WatchNextService {
-    private var mWatchNextApi = RetrofitHelper.withGson(WatchNextApi::class.java)
+    private var mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
     private val mAppService = AppService.instance()
 
     @JvmStatic

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.youtubeapi.common.converters.regexp.RegExpClass;
 import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import retrofit2.Call;
@@ -8,9 +9,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-/**
- * RegEx
- */
+@RegExpClass
 public interface BindManager {
     @GET("https://www.youtube.com/api/lounge/pairing/generate_screen_id")
     Call<ScreenId> createScreenId();

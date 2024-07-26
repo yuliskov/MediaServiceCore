@@ -32,7 +32,7 @@ public class SearchApiSignedTest extends SearchApiTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mSearchManagerSigned = RetrofitHelper.withJsonPath(SearchApi.class);
+        mSearchManagerSigned = RetrofitHelper.create(SearchApi.class);
         mBrowseServiceSigned = BrowseService.instance();
 
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());

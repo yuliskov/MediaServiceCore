@@ -29,7 +29,7 @@ public class VideoInfoApiUnsignedTest {
 
     @Before
     public void setUp() {
-        mService = RetrofitHelper.withJsonPath(VideoInfoApi.class);
+        mService = RetrofitHelper.create(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
         RetrofitOkHttpHelper.setDisableCompression(true);
     }

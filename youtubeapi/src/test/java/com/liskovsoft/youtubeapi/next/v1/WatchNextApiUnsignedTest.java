@@ -31,7 +31,7 @@ public class WatchNextApiUnsignedTest extends WatchNextManagerTestBase {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mManager = RetrofitHelper.withJsonPath(WatchNextApi.class);
+        mManager = RetrofitHelper.create(WatchNextApi.class);
     }
 
     @Test

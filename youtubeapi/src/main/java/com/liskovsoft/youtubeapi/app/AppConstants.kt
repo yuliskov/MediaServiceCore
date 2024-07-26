@@ -42,6 +42,10 @@ internal object AppConstants {
     private const val CLIENT_NAME_WEB = "WEB"
     private const val CLIENT_NAME_MWEB = "MWEB"
 
+    // BROWSER CREATOR (invalid argument?)
+    const val CLIENT_VERSION_WEB_CREATOR = "1.20220726.00.00"
+    private const val CLIENT_NAME_WEB_CREATOR = "WEB_CREATOR"
+
     // ATV KIDS
     // 3.20221025.01.00
     // 3.20230425.01.00
@@ -113,6 +117,10 @@ internal object AppConstants {
 
     @JvmField
     val JSON_POST_DATA_PLAYER_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
+        "")
+
+    @JvmField
+    val JSON_POST_DATA_PLAYER_MWEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
         "")
 
     @JvmField

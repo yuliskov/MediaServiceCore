@@ -13,7 +13,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    private final static int VIDEO_INFO_DEFAULT = 0;
+    private final static int VIDEO_INFO_WEB = 0;
     private final static int VIDEO_INFO_TV = 1;
     private final static int VIDEO_INFO_ANDROID = 2;
     private final static int VIDEO_INFO_IOS = 3;
@@ -74,7 +74,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void fixVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_DEFAULT, VIDEO_INFO_TV, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_WEB, VIDEO_INFO_TV, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     public void invalidateCache() {

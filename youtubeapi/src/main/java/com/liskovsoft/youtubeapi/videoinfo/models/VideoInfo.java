@@ -117,6 +117,10 @@ public class VideoInfo {
         return mergeCaptionTracks();
     }
 
+    public void setCaptionTracks(List<CaptionTrack> tracks) {
+        mMergedCaptionTracks = tracks;
+    }
+
     public String getDashManifestUrl() {
         return mDashManifestUrl;
     }

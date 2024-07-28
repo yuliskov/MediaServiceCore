@@ -13,8 +13,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    private final static int VIDEO_INFO_WEB = 0;
-    private final static int VIDEO_INFO_TV = 1;
+    private final static int VIDEO_INFO_TV = 0;
+    private final static int VIDEO_INFO_WEB = 1;
     private final static int VIDEO_INFO_ANDROID = 2;
     private final static int VIDEO_INFO_IOS = 3;
     private int mVideoInfoType;
@@ -45,7 +45,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 break;
             case VIDEO_INFO_TV:
                 result = getVideoInfoTV(videoId, clickTrackingParams);
+                // replace short caption list full one
+                VideoInfo webInfo = getVideoInfoWeb(videoId, clickTrackingParams);
+                if (webInfo != null && result != null) {
+                    result.setCaptionTracks(webInfo.getCaptionTracks());
+                }
                 break;
+            case VIDEO_INFO_WEB:
             default:
                 result = getVideoInfoWeb(videoId, clickTrackingParams);
                 break;
@@ -74,7 +80,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void fixVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_WEB, VIDEO_INFO_TV, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_TV, VIDEO_INFO_WEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     public void invalidateCache() {

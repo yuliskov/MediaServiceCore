@@ -38,7 +38,8 @@ internal object AppConstants {
     // 2.20220119.01.00
     // 2.20230613.01.00
     // 2.20231121.08.00
-    const val CLIENT_VERSION_WEB = "2.20240425.07.00"
+    // 2.20240425.07.00
+    const val CLIENT_VERSION_WEB = "2.20240726.00.00"
     private const val CLIENT_NAME_WEB = "WEB"
     private const val CLIENT_NAME_MWEB = "MWEB"
 

@@ -9,7 +9,7 @@ import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
-    private var mNFuncCode: Pair<List<String>, String>? = null
+    private var mNFunc: ((List<String>) -> String?)? = null
     private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
     private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
             (?:
@@ -24,7 +24,7 @@ internal class NSigExtractor(private val playerUrl: String) {
     init {
         initNFuncCode()
 
-        if (mNFuncCode == null) {
+        if (mNFunc == null) {
             val nFuncPattern = RetrofitHelper.get(mFileApi.getContent(mNFuncPatternUrl))?.content
             nFuncPattern?.let {
                 mNFuncPattern = Pattern.compile(nFuncPattern, Pattern.COMMENTS)
@@ -32,15 +32,13 @@ internal class NSigExtractor(private val playerUrl: String) {
             }
         }
 
-        if (mNFuncCode == null) {
+        if (mNFunc == null) {
             ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
         }
     }
 
     fun extractNSig(nParam: String): String? {
-        val funcCode = mNFuncCode ?: return null
-        
-        val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
+        val func = mNFunc ?: return null
 
         return func(listOf(nParam))
     }
@@ -57,8 +55,8 @@ internal class NSigExtractor(private val playerUrl: String) {
 
         val funcCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return
 
-        // store funcCode in cache
-        mNFuncCode = funcCode
+        // store nFunc in cache
+        mNFunc = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
     }
 
     /**

@@ -682,6 +682,10 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
+        if (mediaGroup == null) {
+            return null;
+        }
+
         checkSigned();
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");

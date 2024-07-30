@@ -45,7 +45,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 break;
             case VIDEO_INFO_TV:
                 result = getVideoInfoTV(videoId, clickTrackingParams);
-                // replace short caption list full one
+                // TV has a limited number of subtitles
                 VideoInfo webInfo = getVideoInfoWeb(videoId, clickTrackingParams);
                 if (webInfo != null && result != null) {
                     result.setCaptionTracks(webInfo.getCaptionTracks());

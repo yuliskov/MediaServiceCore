@@ -1,10 +1,13 @@
 package com.liskovsoft.youtubeapi.common.converters.jsonpath.converter;
 
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+
+import java.io.InputStream;
+
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
-final class JsonPathResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+public final class JsonPathResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final JsonPathTypeAdapter<T> mAdapter;
 
     JsonPathResponseBodyConverter(JsonPathTypeAdapter<T> adapter) {
@@ -18,5 +21,9 @@ final class JsonPathResponseBodyConverter<T> implements Converter<ResponseBody, 
         } finally {
             value.close();
         }
+    }
+
+    public T convert(InputStream stream) {
+        return mAdapter.read(stream);
     }
 }

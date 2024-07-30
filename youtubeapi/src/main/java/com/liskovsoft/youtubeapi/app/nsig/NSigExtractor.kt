@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {

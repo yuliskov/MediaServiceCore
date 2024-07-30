@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -62,6 +63,11 @@ public class VideoInfoApiSignedTest {
     @Test
     public void testThatVideoWithCaptionsContainsRequiredFields() throws IOException {
         testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpersV1.VIDEO_ID_CAPTIONS));
+    }
+
+    @Test
+    public void initialResponseTest() {
+        testThatVideoInfoContainsRequiredFields(InitialResponse.getVideoInfo(TestHelpersV1.VIDEO_ID_MUSIC_2));
     }
 
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {

@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
@@ -14,10 +15,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static int VIDEO_INFO_TV = 0;
-    private final static int VIDEO_INFO_WEB = 1;
-    private final static int VIDEO_INFO_MWEB = 2;
-    private final static int VIDEO_INFO_ANDROID = 3;
-    private final static int VIDEO_INFO_IOS = 4;
+    private final static int VIDEO_INFO_INITIAL = 1;
+    private final static int VIDEO_INFO_WEB = 2;
+    private final static int VIDEO_INFO_MWEB = 3;
+    private final static int VIDEO_INFO_ANDROID = 4;
+    private final static int VIDEO_INFO_IOS = 5;
     private int mVideoInfoType;
 
     private VideoInfoService() {
@@ -35,15 +37,16 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         //RetrofitOkHttpHelper.skipAuth();
 
-        VideoInfo result;
+        VideoInfo result = null;
 
         switch (mVideoInfoType) {
-            case VIDEO_INFO_ANDROID:
-                result = getVideoInfoAndroid(videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_IOS:
-                result = getVideoInfoIOS(videoId, clickTrackingParams);
-                break;
+            case VIDEO_INFO_INITIAL:
+                result = InitialResponse.getVideoInfo(videoId);
+                if (result != null) {
+                    VideoInfo syncInfo = getVideoInfoWeb(videoId, clickTrackingParams);
+                    result.sync(syncInfo);
+                    break;
+                }
             case VIDEO_INFO_TV:
                 result = getVideoInfoTV(videoId, clickTrackingParams);
                 // TV has a limited number of subtitles
@@ -56,8 +59,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 result = getVideoInfoWeb(videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_MWEB:
-            default:
                 result = getVideoInfoMWeb(videoId, clickTrackingParams);
+                break;
+            case VIDEO_INFO_ANDROID:
+                result = getVideoInfoAndroid(videoId, clickTrackingParams);
+                break;
+            case VIDEO_INFO_IOS:
+                result = getVideoInfoIOS(videoId, clickTrackingParams);
                 break;
         }
 
@@ -84,7 +92,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void fixVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_TV, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
+                new int[] {VIDEO_INFO_TV, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     public void invalidateCache() {
@@ -140,8 +149,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     /**
      * NOTE: user history won't work with this method
      */
-    private VideoInfo getVideoInfoRestrictedWeb(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryWeb(videoId, clickTrackingParams);
+    private VideoInfo getVideoInfoRestrictedMWeb(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryMWeb(videoId, clickTrackingParams);
 
         return getVideoInfoRestricted(videoInfoQuery);
     }
@@ -210,7 +219,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
             if (result == null || result.isUnplayable()) {
                 Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
-                result = getVideoInfoRestrictedWeb(videoId, clickTrackingParams);
+                result = getVideoInfoRestrictedMWeb(videoId, clickTrackingParams);
 
                 if (result == null || result.isUnplayable()) {
                     Log.e(TAG, "Found video clip blocked in current location...");

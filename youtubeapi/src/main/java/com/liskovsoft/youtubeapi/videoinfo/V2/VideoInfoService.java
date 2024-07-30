@@ -15,8 +15,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     private final static int VIDEO_INFO_TV = 0;
     private final static int VIDEO_INFO_WEB = 1;
-    private final static int VIDEO_INFO_ANDROID = 2;
-    private final static int VIDEO_INFO_IOS = 3;
+    private final static int VIDEO_INFO_MWEB = 2;
+    private final static int VIDEO_INFO_ANDROID = 3;
+    private final static int VIDEO_INFO_IOS = 4;
     private int mVideoInfoType;
 
     private VideoInfoService() {
@@ -52,8 +53,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 }
                 break;
             case VIDEO_INFO_WEB:
-            default:
                 result = getVideoInfoWeb(videoId, clickTrackingParams);
+                break;
+            case VIDEO_INFO_MWEB:
+            default:
+                result = getVideoInfoMWeb(videoId, clickTrackingParams);
                 break;
         }
 
@@ -80,7 +84,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void fixVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_TV, VIDEO_INFO_WEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, new int[] {VIDEO_INFO_TV, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     public void invalidateCache() {
@@ -125,6 +129,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoWeb(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryWeb(videoId, clickTrackingParams);
+        return getVideoInfo(videoInfoQuery);
+    }
+
+    private VideoInfo getVideoInfoMWeb(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryMWeb(videoId, clickTrackingParams);
         return getVideoInfo(videoInfoQuery);
     }
 

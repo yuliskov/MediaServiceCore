@@ -80,6 +80,10 @@ public class VideoInfoApiHelper {
      * Support live streams seeking!<br/>
      */
     public static String getVideoInfoQueryWeb(String videoId, String clickTrackingParams) {
+        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams);
+    }
+
+    public static String getVideoInfoQueryMWeb(String videoId, String clickTrackingParams) {
         return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_MWEB, videoId, clickTrackingParams);
     }
 
@@ -87,7 +91,7 @@ public class VideoInfoApiHelper {
      * NOTE: Should use protobuf to bypass geo blocking.
      */
     public static String getVideoInfoQueryGeoWeb(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_MWEB, videoId, clickTrackingParams, THROTTLE_QUERY);
+        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 
     public static String getVideoInfoQueryIOS(String videoId, String clickTrackingParams) {

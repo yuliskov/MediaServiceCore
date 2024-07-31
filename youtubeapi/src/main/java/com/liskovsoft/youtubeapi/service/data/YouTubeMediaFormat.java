@@ -16,6 +16,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mSignatureCipher;
     private String mMimeType;
     private String mITag;
+    private boolean mIsDrc;
     private String mClen;
     private String mBitrate;
     private String mProjectionType;
@@ -73,6 +74,7 @@ public class YouTubeMediaFormat implements MediaFormat {
         mediaFormat.mMimeType = format.getMimeType();
         String iTag = format.getITag() == 0 ? "" : String.valueOf(format.getITag());
         mediaFormat.mITag = iTag;
+        mediaFormat.mIsDrc = format.isDrc();
         mediaFormat.mClen = format.getContentLength();
         String bitrate = format.getBitrate() == 0 ? "" : String.valueOf(format.getBitrate());
         mediaFormat.mBitrate = bitrate;
@@ -132,6 +134,16 @@ public class YouTubeMediaFormat implements MediaFormat {
     @Override
     public void setITag(String itag) {
         mITag = itag;
+    }
+
+    @Override
+    public boolean isDrc() {
+        return mIsDrc;
+    }
+
+    @Override
+    public void setIsDrc(boolean isDrc) {
+        mIsDrc = isDrc;
     }
 
     @Override

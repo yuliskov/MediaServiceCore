@@ -1,9 +1,13 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import android.content.Context;
+
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -24,6 +28,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
+        restoreVideoInfoType();
     }
 
     public static VideoInfoService instance() {
@@ -94,6 +99,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public void fixVideoInfo() {
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
                 new int[] {VIDEO_INFO_TV, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+
+        persistVideoInfoType();
     }
 
     public void invalidateCache() {
@@ -233,5 +240,29 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean isExtendedHlsFormatsEnabled() {
         return GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isExtendedHlsFormatsEnabled();
+    }
+
+    private void restoreVideoInfoType() {
+        if (!GlobalPreferences.isInitialized()) {
+            return;
+        }
+
+        MediaServiceData data = MediaServiceData.instance();
+        Context context = GlobalPreferences.sInstance.getContext();
+
+        if (Helpers.equals(data.getVideoInfoVersion(), AppInfoHelpers.getAppVersionName(context))) {
+            mVideoInfoType = data.getVideoInfoType();
+        }
+    }
+
+    private void persistVideoInfoType() {
+        if (!GlobalPreferences.isInitialized()) {
+            return;
+        }
+
+        MediaServiceData data = MediaServiceData.instance();
+        Context context = GlobalPreferences.sInstance.getContext();
+        data.setVideoInfoVersion(AppInfoHelpers.getAppVersionName(context));
+        data.setVideoInfoType(mVideoInfoType);
     }
 }

@@ -11,6 +11,8 @@ public class MediaServiceData {
     private static MediaServiceData sInstance;
     private String mScreenId;
     private String mDeviceId;
+    private String mVideoInfoVersion;
+    private int mVideoInfoType;
 
     private MediaServiceData() {
         restoreData();
@@ -50,6 +52,24 @@ public class MediaServiceData {
         return mDeviceId;
     }
 
+    public String getVideoInfoVersion() {
+        return mVideoInfoVersion;
+    }
+
+    public void setVideoInfoVersion(String videoInfoVersion) {
+        mVideoInfoVersion = videoInfoVersion;
+        persistData();
+    }
+
+    public int getVideoInfoType() {
+        return mVideoInfoType;
+    }
+
+    public void setVideoInfoType(int videoInfoType) {
+        mVideoInfoType = videoInfoType;
+        persistData();
+    }
+
     private void restoreData() {
         if (GlobalPreferences.sInstance == null) {
             Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
@@ -62,6 +82,8 @@ public class MediaServiceData {
 
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
+        mVideoInfoVersion = Helpers.parseStr(split, 3);
+        mVideoInfoType = Helpers.parseInt(split, 4);
     }
 
     private void persistData() {
@@ -69,6 +91,7 @@ public class MediaServiceData {
             return;
         }
 
-        GlobalPreferences.sInstance.setMediaServiceData(Helpers.mergeData(null, mScreenId, mDeviceId)); // null for ScreenItem
+        GlobalPreferences.sInstance.setMediaServiceData(
+                Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType)); // null for ScreenItem
     }
 }

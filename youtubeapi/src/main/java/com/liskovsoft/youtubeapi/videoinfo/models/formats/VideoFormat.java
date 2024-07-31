@@ -101,6 +101,8 @@ public class VideoFormat {
     @JsonPath("$.maxDvrDurationSec")
     private int mMaxDvrDurationSec;
     private String mExtractedCipher;
+    @JsonPath("$.isDrc")
+    private boolean mIsDrc;
 
     public String getUrl() {
         parseCipher();
@@ -165,6 +167,10 @@ public class VideoFormat {
 
     public void setITag(int itag) {
         mITag = itag;
+    }
+
+    public boolean isDrc() {
+        return mIsDrc;
     }
 
     public String getContentLength() {

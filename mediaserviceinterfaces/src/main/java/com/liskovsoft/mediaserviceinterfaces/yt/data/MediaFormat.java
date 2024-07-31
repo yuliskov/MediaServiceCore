@@ -14,6 +14,8 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     void setMimeType(String mimeType);
     String getITag();
     void setITag(String itag);
+    boolean isDrc();
+    void setIsDrc(boolean isDrc);
 
     // DASH
     String getClen();

@@ -21,7 +21,6 @@ internal object AppConstants {
             "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
             "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 
-    private const val JSON_POST_DATA_IOS = "\"deviceModel\":\"%s\","
     private const val JSON_POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
     private const val JSON_POST_DATA_BROWSE = "\"tvAppInfo\":{\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 
@@ -65,13 +64,14 @@ internal object AppConstants {
     private const val CLIENT_NAME_ANDROID = "ANDROID"
     private const val PARAMS_ANDROID = "CgIQBg=="
     private const val ANDROID_SDK_VERSION = "30"
-    private const val API_KEY_ANDROID = "AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w"
 
     // IOS
-    private const val CLIENT_VERSION_IOS = "17.33.2"
+    private const val CLIENT_VERSION_IOS = "19.29.1"
     private const val CLIENT_NAME_IOS = "IOS"
-    private const val DEVICE_MODEL_IOS = "iPhone14,3"
-    private const val API_KEY_IOS = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc"
+    private const val DEVICE_MODEL_IOS = "iPhone16,2"
+    private const val OS_VERSION_IOS = "17.5.1.21F90"
+    const val USER_AGENT_IOS = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
+    private const val JSON_POST_DATA_IOS = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
 
     private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
     private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
@@ -113,8 +113,8 @@ internal object AppConstants {
         String.format(JSON_POST_DATA_ANDROID, ANDROID_SDK_VERSION))
 
     @JvmField
-    val JSON_POST_DATA_PLAYER_IOS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_IOS, CLIENT_VERSION_IOS, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_IOS,
-        String.format(JSON_POST_DATA_IOS, DEVICE_MODEL_IOS))
+    val JSON_POST_DATA_PLAYER_IOS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_IOS, CLIENT_VERSION_IOS, CLIENT_SCREEN_WATCH, USER_AGENT_IOS,
+        String.format(JSON_POST_DATA_IOS, DEVICE_MODEL_IOS, OS_VERSION_IOS))
 
     @JvmField
     val JSON_POST_DATA_PLAYER_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,

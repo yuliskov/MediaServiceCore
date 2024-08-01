@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
@@ -18,17 +19,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    private final static int VIDEO_INFO_TV = 0;
-    private final static int VIDEO_INFO_INITIAL = 1;
-    private final static int VIDEO_INFO_WEB = 2;
-    private final static int VIDEO_INFO_MWEB = 3;
+    private final static int VIDEO_INFO_INITIAL = 0;
+    private final static int VIDEO_INFO_WEB = 1;
+    private final static int VIDEO_INFO_MWEB = 2;
+    private final static int VIDEO_INFO_TV = 3;
     private final static int VIDEO_INFO_ANDROID = 4;
     private final static int VIDEO_INFO_IOS = 5;
-    private int mVideoInfoType;
+    private int mVideoInfoType = -1;
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
-        restoreVideoInfoType();
+        invalidateCache();
     }
 
     public static VideoInfoService instance() {
@@ -97,14 +98,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void fixVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
-                new int[] {VIDEO_INFO_TV, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
-
+        nextVideoInfo();
         persistVideoInfoType();
     }
 
     public void invalidateCache() {
-        mVideoInfoType = 0;
+        mVideoInfoType = -1;
+        nextVideoInfo();
+        restoreVideoInfoType();
+    }
+
+    private void nextVideoInfo() {
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
+                new int[] {VIDEO_INFO_TV, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
     }
 
     /**
@@ -135,7 +141,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfoIOS(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryIOS(videoId, clickTrackingParams);
-        return getVideoInfo(videoInfoQuery);
+        return getVideoInfoUserAgent(videoInfoQuery, AppConstants.USER_AGENT_IOS);
     }
 
     private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
@@ -163,13 +169,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(String videoInfoQuery) {
-        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorId());
-
-        return RetrofitHelper.get(wrapper);
+        return getVideoInfoUserAgent(videoInfoQuery, null);
     }
 
-    private VideoInfo getVideoInfoWeb(String videoInfoQuery) {
-        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoWeb(videoInfoQuery, mAppService.getVisitorId());
+    private VideoInfo getVideoInfoUserAgent(String videoInfoQuery, String userAgent) {
+        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorId(), userAgent);
 
         return RetrofitHelper.get(wrapper);
     }

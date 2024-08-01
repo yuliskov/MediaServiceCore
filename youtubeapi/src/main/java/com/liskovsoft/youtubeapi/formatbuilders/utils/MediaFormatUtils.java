@@ -75,7 +75,8 @@ public class MediaFormatUtils {
             return MIME_WEBM_AUDIO;
         }
 
-        if (codecs.startsWith("vp9")) {
+        if (codecs.startsWith("vp9") ||
+                codecs.startsWith("vp09")) {
             return MIME_WEBM_VIDEO;
         }
 

@@ -12,15 +12,29 @@ internal class NSigExtractor(private val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private var mNFunc: ((List<String>) -> String?)? = null
     private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
+    //private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
+    //        (?:
+    //            \.get\("n"\)\)&&\(b=|
+    //            (?:
+    //                b=String\.fromCharCode\(110\)|
+    //                ([a-zA-Z0-9$.]+)&&\(b="nn"\[\+\1\]
+    //            ),c=a\.get\(b\)\)&&\(c=
+    //        )
+    //        ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
     private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
                 (?:
                     b=String\.fromCharCode\(110\)|
-                    ([a-zA-Z0-9${'$'}.]+)&&\(b="nn"\[\+\1\]
-                ),c=a\.get\(b\)\)&&\(c=
-            )
-            ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
+                    ([a-zA-Z0-9_$.]+)&&\(b="nn"\[\+\1\]
+                ),c=a\.get\(b\)\)&&\(c=|
+                \b([a-zA-Z0-9_$]+)=
+            )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
+            (?:,[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
+            //(?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
+    private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
+                ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
+                \s*\{(?:(?!\};).)+?["']enhanced_except_""", Pattern.COMMENTS)
 
     init {
         initNFuncCode()
@@ -52,7 +66,7 @@ internal class NSigExtractor(private val playerUrl: String) {
     private fun initNFuncCode() {
         val jsCode = loadPlayer() ?: return
 
-        val funcName = extractNFunctionName(jsCode) ?: return
+        val funcName = extractNFunctionName(jsCode) ?: extractNFunctionName2(jsCode) ?: return
 
         val funcCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return
 
@@ -88,6 +102,17 @@ internal class NSigExtractor(private val playerUrl: String) {
 
                 return nameList[idx.toInt()]
             }
+        }
+
+        return null
+    }
+
+    private fun extractNFunctionName2(jsCode: String): String? {
+        val nFuncPattern = mNFuncPattern2 ?: return null
+        val nFuncMatcher = nFuncPattern.matcher(jsCode)
+
+        if (nFuncMatcher.find() && nFuncMatcher.groupCount() == 1) {
+            return nFuncMatcher.group(1)
         }
 
         return null

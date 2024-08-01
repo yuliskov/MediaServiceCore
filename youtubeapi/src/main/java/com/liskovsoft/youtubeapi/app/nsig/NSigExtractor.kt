@@ -30,7 +30,7 @@ internal class NSigExtractor(private val playerUrl: String) {
                 ),c=a\.get\(b\)\)&&\(c=|
                 \b([a-zA-Z0-9_$]+)=
             )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
-            (?:,[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
+            ((?=\2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
             //(?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
     private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
                 ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)

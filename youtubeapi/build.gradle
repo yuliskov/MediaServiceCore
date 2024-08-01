@@ -81,4 +81,6 @@ dependencies {
     // Add kotlin support libs
     implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
+
+    implementation 'com.github.florianingerl.util:regex:1.1.11'
 }

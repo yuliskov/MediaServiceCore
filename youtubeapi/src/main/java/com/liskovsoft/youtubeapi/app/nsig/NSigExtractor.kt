@@ -1,26 +1,17 @@
 package com.liskovsoft.youtubeapi.app.nsig
 
+import com.florianingerl.util.regex.Pattern
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.js.JSInterpret
-import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private var mNFunc: ((List<String>) -> String?)? = null
     private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
-    //private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
-    //        (?:
-    //            \.get\("n"\)\)&&\(b=|
-    //            (?:
-    //                b=String\.fromCharCode\(110\)|
-    //                ([a-zA-Z0-9$.]+)&&\(b="nn"\[\+\1\]
-    //            ),c=a\.get\(b\)\)&&\(c=
-    //        )
-    //        ([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)""", Pattern.COMMENTS)
     private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
@@ -30,8 +21,7 @@ internal class NSigExtractor(private val playerUrl: String) {
                 ),c=a\.get\(b\)\)&&\(c=|
                 \b([a-zA-Z0-9_$]+)=
             )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
-            (?:,[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
-            //(?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
+            (?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
     private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
                 ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
                 \s*\{(?:(?!\};).)+?["']enhanced_except_""", Pattern.COMMENTS)

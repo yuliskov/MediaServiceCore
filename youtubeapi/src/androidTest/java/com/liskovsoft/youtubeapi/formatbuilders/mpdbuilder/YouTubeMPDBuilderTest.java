@@ -26,7 +26,10 @@ public class YouTubeMPDBuilderTest {
     private ServiceManager mService;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        // Fix temp video url ban
+        Thread.sleep(3_000);
+
         mService = YouTubeServiceManager.instance();
         AppService.instance().invalidateVisitorData();
     }

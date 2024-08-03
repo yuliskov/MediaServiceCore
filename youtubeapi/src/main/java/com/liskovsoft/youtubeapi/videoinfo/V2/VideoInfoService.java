@@ -29,7 +29,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
-        invalidateCache();
+        initVideoInfo();
     }
 
     public static VideoInfoService instance() {
@@ -97,6 +97,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return result;
     }
 
+    private void initVideoInfo() {
+        mVideoInfoType = -1;
+        nextVideoInfo();
+        restoreVideoInfoType();
+    }
+
     public void fixVideoInfo() {
         nextVideoInfo();
         persistVideoInfoType();
@@ -105,7 +111,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public void invalidateCache() {
         mVideoInfoType = -1;
         nextVideoInfo();
-        restoreVideoInfoType();
+        persistVideoInfoType();
     }
 
     private void nextVideoInfo() {

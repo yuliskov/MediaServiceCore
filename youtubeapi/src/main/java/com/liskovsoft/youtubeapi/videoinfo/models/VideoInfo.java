@@ -125,6 +125,14 @@ public class VideoInfo {
         mMergedCaptionTracks = tracks;
     }
 
+    public List<TranslationLanguage> getTranslationLanguages() {
+        return mTranslationLanguages;
+    }
+
+    public void setTranslationLanguages(List<TranslationLanguage> translationLanguages) {
+        mTranslationLanguages = translationLanguages;
+    }
+
     public String getDashManifestUrl() {
         return mDashManifestUrl;
     }

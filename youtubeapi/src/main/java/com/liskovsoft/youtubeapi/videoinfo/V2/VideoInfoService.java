@@ -203,7 +203,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         if (result.isLive()) {
             Log.e(TAG, "Enable seeking support on live streams...");
-            result.sync(getDashInfo2(result));
+            result.sync(getDashInfo(result));
 
             // Add dash and hls manifests (for backward compatibility)
             //if (YouTubeMediaService.instance().isOldStreamsEnabled()) {

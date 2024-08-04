@@ -15,7 +15,4 @@ public interface DashInfoApi {
 
     @GET
     Call<DashInfoContent> getDashInfoContent(@Url String url);
-
-    @GET
-    Call<Void> getDashInfoHeaders(@Url String url);
 }

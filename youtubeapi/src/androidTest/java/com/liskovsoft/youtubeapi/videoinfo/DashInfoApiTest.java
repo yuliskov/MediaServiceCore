@@ -61,7 +61,7 @@ public class DashInfoApiTest {
     }
 
     @Test
-    public void testDashInfoFormatNotEmpty() throws IOException {
+    public void testDashInfoContentNotEmpty() throws IOException {
         VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
         Call<DashInfoContent> dashInfoWrapper = mService.getDashInfoContent(getSmallestAudio(videoInfo).getUrl());
 
@@ -72,7 +72,7 @@ public class DashInfoApiTest {
     }
 
     @Test
-    public void testDashInfoFormat2NotEmpty() throws IOException {
+    public void testDashInfoHeadersNotEmpty() throws IOException {
         VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
         Call<Void> headersWrapper = mFileService.getHeaders(getSmallestAudio(videoInfo).getUrl());
 

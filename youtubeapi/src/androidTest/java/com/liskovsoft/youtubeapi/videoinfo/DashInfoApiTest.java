@@ -30,6 +30,8 @@ public class DashInfoApiTest {
     private VideoInfoApi mService2;
     private AppService mAppService;
     private FileApi mFileService;
+    // Make response smaller
+    private final String SMALL_RANGE = "&range=0-200";
 
     @Before
     public void setUp() throws Exception {

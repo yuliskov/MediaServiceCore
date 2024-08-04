@@ -9,7 +9,9 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoHeaders;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
@@ -114,12 +116,20 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    protected DashInfo getDashInfo(String url) {
+    private DashInfoUrl getDashInfoUrl(String url) {
         if (url == null) {
             return null;
         }
 
-        return RetrofitHelper.get(mDashInfoApi.getDashInfoUrl(url + SMALL_RANGE));
+        return RetrofitHelper.get(mDashInfoApi.getDashInfoUrl(url));
+    }
+
+    private DashInfoContent getDashInfoContent(String url) {
+        if (url == null) {
+            return null;
+        }
+
+        return RetrofitHelper.get(mDashInfoApi.getDashInfoContent(url));
     }
 
     private Headers getDashInfoHeaders(String url) {
@@ -127,7 +137,9 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        return RetrofitHelper.getHeaders(mFileApi.getHeaders(url + SMALL_RANGE));
+        // Range doesn't work???
+        //return RetrofitHelper.getHeaders(mFileApi.getHeaders(url + SMALL_RANGE));
+        return RetrofitHelper.getHeaders(mFileApi.getHeaders(url));
     }
 
     protected DashInfo getDashInfo(VideoInfo videoInfo) {
@@ -138,7 +150,7 @@ public abstract class VideoInfoServiceBase {
         DashInfo dashInfo = getAudioDashInfo(videoInfo);
 
         if (dashInfo == null) {
-            dashInfo = getAltAudioDashInfo(videoInfo);
+            dashInfo = getVideoDashInfo(videoInfo);
         }
 
         return dashInfo;
@@ -157,17 +169,17 @@ public abstract class VideoInfoServiceBase {
         AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
 
         try {
-            return RetrofitHelper.get(mDashInfoApi.getDashInfoUrl(format.getUrl()));
+            return getDashInfoUrl(format.getUrl());
         } catch (ArithmeticException | NumberFormatException ex) {
             // Empty results received. Url isn't available or something like that
-            return RetrofitHelper.get(mDashInfoApi.getDashInfoContent(format.getUrl()));
+            return getDashInfoContent(format.getUrl());
         }
     }
 
     private DashInfo getVideoDashInfo(VideoInfo videoInfo) {
         try {
             AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-            return new DashInfoHeaders(getDashInfoHeaders(format.getUrl() + SMALL_RANGE));
+            return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
         } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
             return null;
         }

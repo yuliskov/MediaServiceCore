@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
+import java.util.List;
 import java.util.UUID;
 
 public class MediaServiceData {
@@ -13,6 +14,9 @@ public class MediaServiceData {
     private String mDeviceId;
     private String mVideoInfoVersion;
     private int mVideoInfoType;
+    private String mPlayerUrl;
+    private List<String> mNFuncParams;
+    private String mNFuncCode;
 
     private MediaServiceData() {
         restoreData();
@@ -70,6 +74,33 @@ public class MediaServiceData {
         persistData();
     }
 
+    public String getPlayerUrl() {
+        return mPlayerUrl;
+    }
+
+    public void setPlayerUrl(String playerUrl) {
+        mPlayerUrl = playerUrl;
+        persistData();
+    }
+
+    public List<String> getNFuncParams() {
+        return mNFuncParams;
+    }
+
+    public void setNFuncParams(List<String> nFuncParams) {
+        mNFuncParams = nFuncParams;
+        persistData();
+    }
+    
+    public String getNFuncCode() {
+        return mNFuncCode;
+    }
+
+    public void setNFuncCode(String nFuncCode) {
+        mNFuncCode = nFuncCode;
+        persistData();
+    }
+
     private void restoreData() {
         if (GlobalPreferences.sInstance == null) {
             Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
@@ -80,10 +111,14 @@ public class MediaServiceData {
 
         String[] split = Helpers.splitData(data);
 
+        // null for ScreenItem
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
         mVideoInfoVersion = Helpers.parseStr(split, 3);
         mVideoInfoType = Helpers.parseInt(split, 4);
+        mPlayerUrl = Helpers.parseStr(split, 5);
+        mNFuncParams = Helpers.parseStrList(split, 6);
+        mNFuncCode = Helpers.parseStr(split, 7);
     }
 
     private void persistData() {
@@ -92,6 +127,7 @@ public class MediaServiceData {
         }
 
         GlobalPreferences.sInstance.setMediaServiceData(
-                Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType)); // null for ScreenItem
+                Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType,
+                        mPlayerUrl, mNFuncParams, mNFuncCode));
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
-    private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // NOTE: auth token max lifetime is unknown (between 60 min and 24 hours)
+    private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
     private static AppService sInstance;
     private final AppApiWrapper mAppApiWrapper;
     //private Duktape mDuktape;

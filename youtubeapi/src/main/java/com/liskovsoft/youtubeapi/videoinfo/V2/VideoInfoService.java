@@ -116,7 +116,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private void nextVideoInfo() {
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
-                new int[] {VIDEO_INFO_TV, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_IOS});
+                new int[] {VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB});
     }
 
     /**

@@ -10,6 +10,8 @@ import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +33,7 @@ public class YouTubeMPDBuilderTest {
         Thread.sleep(3_000);
 
         mService = YouTubeServiceManager.instance();
-        AppService.instance().invalidateVisitorData();
+        MediaServiceData.instance().resetAll();
     }
 
     @After

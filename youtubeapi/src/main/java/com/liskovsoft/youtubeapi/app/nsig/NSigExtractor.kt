@@ -19,7 +19,7 @@ internal class NSigExtractor(private val playerUrl: String) {
                 (?:
                     b=String\.fromCharCode\(110\)|
                     ([a-zA-Z0-9_$.]+)&&\(b="nn"\[\+\1\]
-                                )
+                )
                 (?:
                     ,[a-zA-Z0-9_$]+\(a\))?,c=a\.
                     (?:
@@ -50,6 +50,7 @@ internal class NSigExtractor(private val playerUrl: String) {
 
         if (mNFuncCode == null) {
             ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
+            throw IllegalStateException("NSigExtractor: Can't obtain NSig code...")
         }
     }
 
@@ -126,7 +127,7 @@ internal class NSigExtractor(private val playerUrl: String) {
 
     private fun persistNFuncCode() {
         val data = MediaServiceData.instance()
-        data.playerUrl = playerUrl
+        data.nFuncPlayerUrl = playerUrl
         data.nFuncParams = mNFuncCode?.first
         data.nFuncCode = mNFuncCode?.second
     }
@@ -134,7 +135,7 @@ internal class NSigExtractor(private val playerUrl: String) {
     private fun restoreNFuncCode() {
         val data = MediaServiceData.instance()
 
-        if (data.playerUrl == playerUrl && data.nFuncParams != null && data.nFuncCode != null) {
+        if (data.nFuncPlayerUrl == playerUrl && data.nFuncParams != null && data.nFuncCode != null) {
             mNFuncCode = Pair(data.nFuncParams, data.nFuncCode)
         }
     }

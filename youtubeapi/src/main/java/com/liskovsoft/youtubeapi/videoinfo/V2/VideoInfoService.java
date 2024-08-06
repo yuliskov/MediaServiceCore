@@ -265,11 +265,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         MediaServiceData data = MediaServiceData.instance();
-        Context context = GlobalPreferences.sInstance.getContext();
 
-        if (Helpers.equals(data.getVideoInfoVersion(), AppInfoHelpers.getAppVersionName(context))) {
-            mVideoInfoType = data.getVideoInfoType();
-        }
+        mVideoInfoType = data.getVideoInfoType() != -1 ? data.getVideoInfoType() : mVideoInfoType;
     }
 
     private void persistVideoInfoType() {
@@ -278,8 +275,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         MediaServiceData data = MediaServiceData.instance();
-        Context context = GlobalPreferences.sInstance.getContext();
-        data.setVideoInfoVersion(AppInfoHelpers.getAppVersionName(context));
         data.setVideoInfoType(mVideoInfoType);
     }
 }

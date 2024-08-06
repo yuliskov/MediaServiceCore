@@ -1,10 +1,11 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -19,7 +20,7 @@ public class AppApiWrapper {
      * Obtains info with respect of anonymous browsing data (visitor cookie)
      */
     public AppInfo getAppInfo(String userAgent) {
-        String visitorCookie = GlobalPreferences.getVisitorCookie();
+        String visitorCookie = MediaServiceData.instance().getVisitorCookie();
         Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
 
@@ -27,7 +28,7 @@ public class AppApiWrapper {
         if (visitorCookie == null) {
             Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
             if (response != null) {
-                GlobalPreferences.setVisitorCookie(RetrofitHelper.getCookie(response, AppConstants.VISITOR_COOKIE_NAME));
+                MediaServiceData.instance().setVisitorCookie(RetrofitHelper.getCookie(response, AppConstants.VISITOR_COOKIE_NAME));
                 result = response.body();
             }
         } else {
@@ -73,6 +74,6 @@ public class AppApiWrapper {
     }
 
     public void invalidateVisitorData() {
-        GlobalPreferences.setVisitorCookie(null);
+        MediaServiceData.instance().setVisitorCookie(null);
     }
 }

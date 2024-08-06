@@ -7,6 +7,8 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -33,7 +35,7 @@ public class AppServiceTest {
     public void setUp() {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mAppService = AppService.instance();
-        mAppService.invalidateVisitorData();
+        MediaServiceData.instance().resetAll();
     }
 
     /**

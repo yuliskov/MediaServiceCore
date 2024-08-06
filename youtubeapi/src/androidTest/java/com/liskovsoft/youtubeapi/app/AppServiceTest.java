@@ -71,7 +71,7 @@ public class AppServiceTest {
         throttled.add(throttleSignature);
         throttled.add(throttleSignature);
         throttled.add(throttleSignature);
-        List<String> normalized = mAppService.throttleFix(throttled);
+        List<String> normalized = mAppService.fixThrottling(throttled);
 
         assertNotNull("Normalized not null", normalized);
         assertFalse("Normalized not empty", normalized.isEmpty());

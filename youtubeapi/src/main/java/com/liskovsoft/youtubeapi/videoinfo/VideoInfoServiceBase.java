@@ -44,7 +44,7 @@ public abstract class VideoInfoServiceBase {
         applyDecipheredStrings(deciphered, formats);
 
         List<String> throttled = extractThrottledStrings(formats);
-        List<String> throttleFixed = mAppService.throttleFix(throttled);
+        List<String> throttleFixed = mAppService.fixThrottling(throttled);
         applyThrottleFixedStrings(throttleFixed, formats);
 
         // What this for? Could this fix throttling or maybe the source error?
@@ -191,7 +191,7 @@ public abstract class VideoInfoServiceBase {
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
         return format;
     }
 
@@ -201,7 +201,7 @@ public abstract class VideoInfoServiceBase {
                 item -> MediaFormatUtils.isVideo(item.getMimeType())); // smallest format
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
         return format;
     }
 
@@ -211,7 +211,7 @@ public abstract class VideoInfoServiceBase {
                 item -> MediaFormatUtils.isVideo(item.getMimeType())); // first is largest
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
         return format;
     }
 }

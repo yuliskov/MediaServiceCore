@@ -55,11 +55,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 }
             case VIDEO_INFO_TV:
                 result = getVideoInfoTV(videoId, clickTrackingParams);
-                // TV has a limited number of auto generated subtitles
-                VideoInfo webInfo = getVideoInfoWeb(videoId, clickTrackingParams);
-                if (webInfo != null && result != null) {
-                    result.setTranslationLanguages(webInfo.getTranslationLanguages());
-                }
                 break;
             case VIDEO_INFO_WEB:
                 result = getVideoInfoWeb(videoId, clickTrackingParams);
@@ -202,7 +197,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         if (result.isLive()) {
-            Log.e(TAG, "Enable seeking support on live streams...");
+            Log.d(TAG, "Enable seeking support on live streams...");
             result.sync(getDashInfo(result));
 
             // Add dash and hls manifests (for backward compatibility)
@@ -211,13 +206,25 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //    result.setDashManifestUrl(result2.getDashManifestUrl());
             //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
             //}
-        } else if (isExtendedHlsFormatsEnabled() && result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
+        }
+
+        if (isExtendedHlsFormatsEnabled() && result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
+            Log.d(TAG, "Enable high bitrate formats...");
             VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
             if (videoInfoHls != null && result.getHlsManifestUrl() == null) {
                 result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
             }
             if (videoInfoHls != null && result.getStoryboardSpec() == null) {
                 result.setStoryboardSpec(videoInfoHls.getStoryboardSpec());
+            }
+        }
+
+        // TV and others has a limited number of auto generated subtitles
+        if (result.getTranslationLanguages() != null && result.getTranslationLanguages().size() < 50) {
+            Log.d(TAG, "Enable full list of auto generated subtitles...");
+            VideoInfo webInfo = getVideoInfoWeb(videoId, clickTrackingParams);
+            if (webInfo != null) {
+                result.setTranslationLanguages(webInfo.getTranslationLanguages());
             }
         }
     }

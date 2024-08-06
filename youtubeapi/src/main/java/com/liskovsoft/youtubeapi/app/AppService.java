@@ -79,7 +79,7 @@ public class AppService {
         return runCode(decipherCode);
     }
 
-    public List<String> throttleFix(List<String> throttledList) {
+    public List<String> fixThrottling(List<String> throttledList) {
         if (isAllNulls(throttledList)) {
             return throttledList;
         }
@@ -95,7 +95,7 @@ public class AppService {
                 continue;
             }
 
-            String throttleFixResult = throttleFix(throttled);
+            String throttleFixResult = fixThrottling(throttled);
 
             result.add(throttleFixResult);
 
@@ -106,7 +106,7 @@ public class AppService {
         return result;
     }
 
-    public String throttleFix(String throttled) {
+    public String fixThrottling(String throttled) {
         updatePlayerData();
 
         if (throttled == null || mNSigExtractor == null) {
@@ -119,7 +119,7 @@ public class AppService {
     /**
      * Throttle strings using js code
      */
-    private List<String> throttleFixOld(List<String> throttled) {
+    private List<String> fixThrottlingOld(List<String> throttled) {
         if (isAllNulls(throttled)) {
             return throttled;
         }
@@ -133,12 +133,12 @@ public class AppService {
         return runCode(throttleCode);
     }
 
-    private String throttleFixOld(String throttled) {
+    private String fixThrottlingOld(String throttled) {
         if (throttled == null) {
             return null;
         }
 
-        return throttleFixOld(Collections.singletonList(throttled)).get(0);
+        return fixThrottlingOld(Collections.singletonList(throttled)).get(0);
     }
 
     /**
@@ -314,8 +314,10 @@ public class AppService {
     private String getPlayerUrl() {
         updateAppInfoData();
 
+        // TODO: temporal fix
         // NOTE: NPE 2.5K
-        return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        //return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        return "https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js";
     }
 
     private String getClientUrl() {

@@ -99,7 +99,7 @@ public class DashInfoApiTest {
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
         format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.throttleFix(format.getThrottleCipher()));
+        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
 
         return format;
     }

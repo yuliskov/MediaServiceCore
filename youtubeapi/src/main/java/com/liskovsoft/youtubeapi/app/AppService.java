@@ -358,7 +358,7 @@ public class AppService {
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
             try {
                 mNSigExtractor = new NSigExtractor(getPlayerUrl());
-            } catch (Throwable e) {
+            } catch (StackOverflowError | IllegalStateException e) {
                 mCachedPlayerData = null;
                 MediaServiceData.instance().setBackupPlayerUrl("https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js");
             }

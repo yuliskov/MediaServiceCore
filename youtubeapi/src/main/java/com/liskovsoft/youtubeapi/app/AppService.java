@@ -358,9 +358,10 @@ public class AppService {
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
             try {
                 mNSigExtractor = new NSigExtractor(getPlayerUrl());
-            } catch (StackOverflowError | IllegalStateException e) {
+            } catch (Throwable e) { // StackOverflowError | IllegalStateException
                 mCachedPlayerData = null;
-                MediaServiceData.instance().setBackupPlayerUrl("https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js");
+                MediaServiceData data = MediaServiceData.instance();
+                data.setBackupPlayerUrl(data.getNFuncPlayerUrl());
             }
         }
     }

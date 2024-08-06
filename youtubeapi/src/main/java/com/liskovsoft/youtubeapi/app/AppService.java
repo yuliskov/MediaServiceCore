@@ -316,8 +316,8 @@ public class AppService {
 
         // TODO: temporal fix
         // NOTE: NPE 2.5K
-        //return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
-        return "https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js";
+        return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        //return "https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js";
     }
 
     private String getClientUrl() {

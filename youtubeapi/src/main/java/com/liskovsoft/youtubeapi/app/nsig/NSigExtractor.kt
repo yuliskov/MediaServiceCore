@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.app.nsig
 
-import com.florianingerl.util.regex.Pattern
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.liskovsoft.youtubeapi.common.api.FileApi
@@ -8,12 +7,13 @@ import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
+import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
     private var mNFuncCode: Pair<List<String>, String>? = null
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
-    private var mNFuncPattern: Pattern? = Pattern.compile("""(?x)
+    private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
                 (?:
@@ -43,7 +43,7 @@ internal class NSigExtractor(private val playerUrl: String) {
         if (mNFuncCode == null) {
             val nFuncPattern = RetrofitHelper.get(mFileApi.getContent(mNFuncPatternUrl))?.content
             nFuncPattern?.let {
-                mNFuncPattern = Pattern.compile(nFuncPattern, Pattern.COMMENTS)
+                mNFuncPattern = com.florianingerl.util.regex.Pattern.compile(nFuncPattern, Pattern.COMMENTS)
                 initNFuncCode()
             }
         }

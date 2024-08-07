@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.app.nsig
 import android.Manifest
 import androidx.test.rule.GrantPermissionRule
 import com.liskovsoft.youtubeapi.app.AppApiWrapper
+import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.app.models.AppInfo
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
 import org.junit.Assert.assertNotNull
@@ -42,9 +43,7 @@ class NSigExtractorTest {
 
     @Test
     fun testPlayerVersions() {
-        testPlayerUrl("https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js")
-        testPlayerUrl("https://www.youtube.com/s/player/20dfca59/player_ias.vflset/en_US/base.js")
-        testPlayerUrl("https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js")
+        AppConstants.playerUrls.forEach { testPlayerUrl(it) }
     }
 
     private fun testPlayerUrl(url: String) {

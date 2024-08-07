@@ -23,7 +23,6 @@ public class YouTubeUrlListBuilderTest {
         // Fix temp video url ban
         Thread.sleep(3_000);
 
-        MediaServiceData.instance().resetAll();
         mService = YouTubeServiceManager.instance();
     }
 

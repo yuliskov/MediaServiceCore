@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 
 import java.util.List;
 import java.util.UUID;
@@ -125,18 +126,14 @@ public class MediaServiceData {
         persistData();
     }
 
-    /**
-     * Only for testing purposes
-     */
-    public void resetAll() {
-        if (GlobalPreferences.sInstance != null) {
-            GlobalPreferences.sInstance.setMediaServiceData(null);
-        }
-    }
-
     private void restoreData() {
         if (GlobalPreferences.sInstance == null) {
             Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
+            return;
+        }
+
+        if (Helpers.isJUnitTest()) {
+            Log.d(TAG, "JUnit test is running. Skipping data restore...");
             return;
         }
 
@@ -151,7 +148,8 @@ public class MediaServiceData {
         mDeviceId = Helpers.parseStr(split, 2);
         mVideoInfoVersion = Helpers.parseStr(split, 3);
         mVideoInfoType = Helpers.parseInt(split, 4);
-        mNFuncPlayerUrl = Helpers.parseStr(split, 5);
+        String lastPlayerUrl = AppConstants.playerUrls.get(AppConstants.playerUrls.size() - 1); // fallback url for nfunc extractor
+        mNFuncPlayerUrl = Helpers.parseStr(split, 5, lastPlayerUrl);
         mNFuncParams = Helpers.parseStrList(split, 6);
         mNFuncCode = Helpers.parseStr(split, 7);
         mBackupPlayerUrl = Helpers.parseStr(split, 8);

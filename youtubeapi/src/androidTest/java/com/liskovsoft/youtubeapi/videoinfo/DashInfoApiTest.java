@@ -48,8 +48,7 @@ public class DashInfoApiTest {
         mService2 = RetrofitHelper.create(VideoInfoApi.class);
 
         mFileService = RetrofitHelper.create(FileApi.class);
-
-        MediaServiceData.instance().resetAll();
+        
         mAppService = AppService.instance();
     }
 

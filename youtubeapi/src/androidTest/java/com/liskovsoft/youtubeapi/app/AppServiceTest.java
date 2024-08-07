@@ -34,7 +34,6 @@ public class AppServiceTest {
     @Before
     public void setUp() {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
-        MediaServiceData.instance().resetAll();
         mAppService = AppService.instance();
     }
 

@@ -60,6 +60,8 @@ public class DashInfoApiTest {
         DashInfoUrl dashInfo = dashInfoWrapper.execute().body();
 
         assertTrue("start segment not null", dashInfo.getStartSegmentNum() > 0);
+        assertTrue("segment duration not null", dashInfo.getSegmentDurationUs() > 0);
+        assertTrue("start time not null", dashInfo.getStartTimeMs() > 0);
     }
 
     @Test

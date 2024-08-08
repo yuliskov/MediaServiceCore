@@ -150,7 +150,7 @@ public abstract class VideoInfoServiceBase {
         DashInfo dashInfo = getAudioDashInfo(videoInfo);
 
         if (dashInfo == null) {
-            dashInfo = getVideoDashInfo(videoInfo);
+            dashInfo = getAltAudioDashInfo(videoInfo);
         }
 
         return dashInfo;

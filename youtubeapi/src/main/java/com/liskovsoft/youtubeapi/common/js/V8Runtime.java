@@ -29,27 +29,38 @@ public final class V8Runtime {
         sInstance = null;
     }
 
+    public String evaluate(final String source) {
+        return evaluateUnsafe(source);
+    }
+
     /**
      * Not a thread safe. Possible 'Invalid V8 thread access' errors.
      */
-    public String evaluateUnsafe(final String source) {
-        if (mRuntime == null) {
-            mRuntime = V8.createV8Runtime();
-        }
-
-        String result;
+    private String evaluateUnsafe(final String source) {
+        String result = null;
 
         try {
+            if (mRuntime == null) {
+                mRuntime = V8.createV8Runtime();
+            }
             mRuntime.getLocker().acquire(); // Possible 'Invalid V8 thread access' errors
             result = mRuntime.executeStringScript(source);
+        } catch (V8ScriptExecutionException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         } finally {
-            mRuntime.getLocker().release(); // Possible 'Invalid V8 thread access' errors
+            if (mRuntime != null) {
+                mRuntime.getLocker().release(); // Possible 'Invalid V8 thread access' errors
+            }
         }
 
         return result;
     }
 
-    public String evaluate(final String source) {
+    /**
+     * Thread safe solution but consumes more memory.
+     */
+    private String evaluateSafe(final String source) {
         V8 runtime = null;
         String result = null;
 

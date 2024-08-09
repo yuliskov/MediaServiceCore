@@ -1,8 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import android.content.Context;
-
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -13,6 +10,11 @@ import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
+import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
+
+import java.util.List;
+
 import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
@@ -94,13 +96,21 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        if ((result.containsAdaptiveVideoInfo() && !isRegularFormatsForced()) || result.getRegularFormats() == null) {
+        List<AdaptiveVideoFormat> adaptiveFormats = null;
+        List<RegularVideoFormat> regularFormats = null;
+
+        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_DASH) || result.getRegularFormats() == null) {
             decipherFormats(result.getAdaptiveFormats());
-            result.setRegularFormats(null);
-        } else {
-            decipherFormats(result.getRegularFormats());
-            result.setAdaptiveFormats(null);
+            adaptiveFormats = result.getAdaptiveFormats();
         }
+
+        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_URL) || result.getAdaptiveFormats() == null) {
+            decipherFormats(result.getRegularFormats());
+            regularFormats = result.getRegularFormats();
+        }
+
+        result.setAdaptiveFormats(adaptiveFormats);
+        result.setRegularFormats(regularFormats);
 
         return result;
     }
@@ -221,7 +231,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //}
         }
 
-        if (isExtendedHlsFormatsEnabled() && result.isExtendedHlsFormatsBroken() || result.isStoryboardBroken()) {
+        if ((MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED) && result.isExtendedHlsFormatsBroken()) || result.isStoryboardBroken()) {
             Log.d(TAG, "Enable high bitrate formats...");
             VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
             if (videoInfoHls != null && result.getHlsManifestUrl() == null) {
@@ -266,14 +276,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         return result;
-    }
-
-    private static boolean isExtendedHlsFormatsEnabled() {
-        return GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isExtendedHlsFormatsEnabled();
-    }
-
-    private static boolean isRegularFormatsForced() {
-        return GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isRegularFormatsForced();
     }
 
     private void restoreVideoInfoType() {

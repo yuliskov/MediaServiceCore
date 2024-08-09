@@ -23,8 +23,10 @@ public class YouTubeUrlListBuilder implements UrlListBuilder {
     public static UrlListBuilder from(MediaItemFormatInfo formatInfo) {
         UrlListBuilder builder = new YouTubeUrlListBuilder(formatInfo);
 
-        for (MediaFormat format : formatInfo.getUrlFormats()) {
-            builder.append(format);
+        if (formatInfo.containsUrlListInfo()) {
+            for (MediaFormat format : formatInfo.getUrlFormats()) {
+                builder.append(format);
+            }
         }
 
         return builder;

@@ -2,10 +2,8 @@ package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
-import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import org.junit.Before;
 import org.junit.Test;

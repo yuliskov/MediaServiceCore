@@ -11,6 +11,10 @@ import java.util.UUID;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
+    public static final int FORMATS_ALL = Integer.MAX_VALUE;
+    public static final int FORMATS_DASH = 1;
+    public static final int FORMATS_URL = 1 << 1;
+    public static final int FORMATS_EXTENDED = 1 << 2;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;
@@ -23,6 +27,7 @@ public class MediaServiceData {
     private String mBackupPlayerUrl;
     private String mBackupPlayerVersion;
     private String mVisitorCookie;
+    private int mEnabledFormats = FORMATS_ALL;
 
     private MediaServiceData() {
         restoreData();
@@ -126,6 +131,20 @@ public class MediaServiceData {
         persistData();
     }
 
+    public void enableFormat(int formats) {
+        mEnabledFormats |= formats;
+        persistData();
+    }
+
+    public void disableFormat(int formats) {
+        mEnabledFormats &= ~formats;
+        persistData();
+    }
+
+    public boolean isFormatEnabled(int formats) {
+        return (mEnabledFormats & formats) == formats;
+    }
+
     private void restoreData() {
         if (GlobalPreferences.sInstance == null) {
             Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
@@ -155,6 +174,7 @@ public class MediaServiceData {
         mBackupPlayerUrl = Helpers.parseStr(split, 8);
         mBackupPlayerVersion = Helpers.parseStr(split, 9);
         mVisitorCookie = Helpers.parseStr(split, 10);
+        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
     }
 
     private void persistData() {
@@ -164,6 +184,7 @@ public class MediaServiceData {
 
         GlobalPreferences.sInstance.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType,
-                        mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mBackupPlayerUrl, mBackupPlayerVersion, mVisitorCookie));
+                        mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mBackupPlayerUrl, mBackupPlayerVersion,
+                        mVisitorCookie, mEnabledFormats));
     }
 }

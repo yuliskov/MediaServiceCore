@@ -30,7 +30,7 @@ public final class V8Runtime {
     }
 
     public String evaluate(final String source) {
-        return evaluateUnsafe(source);
+        return evaluateSafe(source);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class V8Runtime {
     }
 
     /**
-     * Thread safe solution but consumes more memory.
+     * Thread safe solution but performance a bit slow.
      */
     private String evaluateSafe(final String source) {
         V8 runtime = null;

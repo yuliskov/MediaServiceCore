@@ -82,10 +82,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
         result = retryIfNeeded(result, videoId, clickTrackingParams);
 
-        if (result != null) {
-            decipherFormats(result.getAdaptiveFormats());
-            decipherFormats(result.getRegularFormats());
-        } else {
+        if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
         }
 

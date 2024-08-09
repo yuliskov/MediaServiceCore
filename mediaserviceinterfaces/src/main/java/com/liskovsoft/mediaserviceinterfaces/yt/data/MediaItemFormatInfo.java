@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface MediaItemFormatInfo {
-    List<MediaFormat> getAdaptiveFormats();
-    List<MediaFormat> getRegularFormats();
+    List<MediaFormat> getDashFormats();
+    List<MediaFormat> getUrlFormats();
     List<MediaSubtitle> getSubtitles();
     String getHlsManifestUrl();
     String getDashManifestUrl();

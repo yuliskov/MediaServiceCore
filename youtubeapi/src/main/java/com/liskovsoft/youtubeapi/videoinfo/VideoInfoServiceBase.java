@@ -34,7 +34,7 @@ public abstract class VideoInfoServiceBase {
         mFileApi = RetrofitHelper.create(FileApi.class);
     }
 
-    protected void decipherFormats(List<? extends VideoFormat> formats) {
+    public void decipherFormats(List<? extends VideoFormat> formats) {
         if (formats == null) {
             return;
         }

@@ -63,7 +63,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         MPDBuilder builder = new YouTubeMPDBuilder(formatInfo);
 
         if (formatInfo.containsDashInfo()) {
-            for (MediaFormat format : formatInfo.getAdaptiveFormats()) {
+            for (MediaFormat format : formatInfo.getDashFormats()) {
                 builder.append(format);
             }
 

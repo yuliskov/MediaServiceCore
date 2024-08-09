@@ -5,12 +5,10 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import org.junit.After;
 import org.junit.Before;
@@ -86,9 +84,9 @@ public class YouTubeMPDBuilderTest {
         MediaItemFormatInfo mediaItemDetails = mService.getMediaItemService().getFormatInfo(videoId);
 
         assertNotNull("Format info not empty", mediaItemDetails);
-        assertTrue("Format list not empty", mediaItemDetails.getAdaptiveFormats().size() > 0);
+        assertTrue("Format list not empty", mediaItemDetails.getDashFormats().size() > 0);
 
-        String url = mediaItemDetails.getAdaptiveFormats().get(0).getUrl();
+        String url = mediaItemDetails.getDashFormats().get(0).getUrl();
 
         assertTrue("Video url is working", TestHelpersV1.urlExists(url));
     }

@@ -35,9 +35,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsLowLatencyLiveStream;
     private boolean mIsStreamSeekable;
     private List<MediaFormat> mDashFormats;
-    private List<AdaptiveVideoFormat> mOriginDashFormats;
     private List<MediaFormat> mUrlFormats;
-    private List<RegularVideoFormat> mOriginUrlFormats;
     private List<MediaSubtitle> mSubtitles;
     private String mDashManifestUrl;
     private String mHlsManifestUrl;
@@ -72,21 +70,23 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
         if (videoInfo.getAdaptiveFormats() != null) {
             formatInfo.mContainsDashInfo = true;
+            formatInfo.mContainsDashVideoInfo = videoInfo.containsAdaptiveVideoInfo();
+
+            formatInfo.mDashFormats = new ArrayList<>();
+
             for (AdaptiveVideoFormat format : videoInfo.getAdaptiveFormats()) {
-                String mimeType = format.getMimeType();
-                if (mimeType != null && mimeType.startsWith("video/")) {
-                    formatInfo.mContainsDashVideoInfo = true;
-                    break;
-                }
+                formatInfo.mDashFormats.add(YouTubeMediaFormat.from(format));
             }
-            // lazy init
-            formatInfo.mOriginDashFormats = videoInfo.getAdaptiveFormats();
         }
 
         if (videoInfo.getRegularFormats() != null) {
             formatInfo.mContainsUrlListInfo = true;
-            // lazy init
-            formatInfo.mOriginUrlFormats = videoInfo.getRegularFormats();
+
+            formatInfo.mUrlFormats = new ArrayList<>();
+
+            for (RegularVideoFormat format : videoInfo.getRegularFormats()) {
+                formatInfo.mUrlFormats.add(YouTubeMediaFormat.from(format));
+            }
         }
 
         VideoDetails videoDetails = videoInfo.getVideoDetails();
@@ -136,35 +136,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public List<MediaFormat> getDashFormats() {
-        // lazy init nsig and ciphers
-        if (mOriginDashFormats != null) {
-            VideoInfoService.instance().decipherFormats(mOriginDashFormats);
-            mDashFormats = new ArrayList<>();
-
-            for (AdaptiveVideoFormat format : mOriginDashFormats) {
-                mDashFormats.add(YouTubeMediaFormat.from(format));
-            }
-
-            mOriginDashFormats = null; // run once
-        }
-
         return mDashFormats;
     }
 
     @Override
     public List<MediaFormat> getUrlFormats() {
-        // lazy init nsig and ciphers
-        if (mOriginUrlFormats != null) {
-            VideoInfoService.instance().decipherFormats(mOriginUrlFormats);
-            mUrlFormats = new ArrayList<>();
-
-            for (RegularVideoFormat format : mOriginUrlFormats) {
-                mUrlFormats.add(YouTubeMediaFormat.from(format));
-            }
-
-            mOriginUrlFormats = null; // run once
-        }
-
         return mUrlFormats;
     }
 

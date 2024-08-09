@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
@@ -103,6 +102,10 @@ public class VideoInfo {
 
     public List<RegularVideoFormat> getRegularFormats() {
         return mRegularFormats;
+    }
+
+    public void setRegularFormats(List<RegularVideoFormat> formats) {
+        mRegularFormats = formats;
     }
 
     public List<AdaptiveVideoFormat> getRestrictedFormats() {
@@ -240,6 +243,24 @@ public class VideoInfo {
         // Need upload date check?
         // Extended formats may not work up to 3 days after publication.
         return !isLive() && getHlsManifestUrl() != null && isAdaptiveFullHD();
+    }
+
+    public boolean containsAdaptiveVideoInfo() {
+        if (getAdaptiveFormats() == null) {
+            return false;
+        }
+
+        boolean result = false;
+
+        for (AdaptiveVideoFormat format : getAdaptiveFormats()) {
+            String mimeType = format.getMimeType();
+            if (mimeType != null && mimeType.startsWith("video/")) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 
     public boolean isStoryboardBroken() {

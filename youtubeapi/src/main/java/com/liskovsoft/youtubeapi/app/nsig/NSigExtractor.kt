@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 
 internal class NSigExtractor(private val playerUrl: String) {
     private var mNFuncCode: Pair<List<String>, String>? = null
+    private var mNSig: Pair<String, String?>? = null
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
     private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
@@ -55,6 +56,16 @@ internal class NSigExtractor(private val playerUrl: String) {
     }
 
     fun extractNSig(nParam: String): String? {
+        if (mNSig?.first == nParam) return mNSig?.second
+
+        val nSig = extractNSigReal(nParam)
+
+        mNSig = Pair(nParam, nSig)
+
+        return nSig
+    }
+
+    private fun extractNSigReal(nParam: String): String? {
         val funcCode = mNFuncCode ?: return null
 
         val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)

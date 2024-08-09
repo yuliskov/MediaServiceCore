@@ -82,8 +82,24 @@ public class VideoInfoService extends VideoInfoServiceBase {
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
         result = retryIfNeeded(result, videoId, clickTrackingParams);
 
+        //if (result != null) {
+        //    decipherFormats(result.getAdaptiveFormats());
+        //    decipherFormats(result.getRegularFormats());
+        //} else {
+        //    Log.e(TAG, "Can't get video info. videoId: %s", videoId);
+        //}
+
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
+            return null;
+        }
+
+        if ((result.containsAdaptiveVideoInfo() && !isRegularFormatsForced()) || result.getRegularFormats() == null) {
+            decipherFormats(result.getAdaptiveFormats());
+            result.setRegularFormats(null);
+        } else {
+            decipherFormats(result.getRegularFormats());
+            result.setAdaptiveFormats(null);
         }
 
         return result;
@@ -254,6 +270,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean isExtendedHlsFormatsEnabled() {
         return GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isExtendedHlsFormatsEnabled();
+    }
+
+    private static boolean isRegularFormatsForced() {
+        return GlobalPreferences.sInstance != null && GlobalPreferences.sInstance.isRegularFormatsForced();
     }
 
     private void restoreVideoInfoType() {

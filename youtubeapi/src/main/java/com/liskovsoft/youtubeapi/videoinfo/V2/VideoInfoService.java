@@ -231,7 +231,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //}
         }
 
-        if ((MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED) && result.isExtendedHlsFormatsBroken()) || result.isStoryboardBroken()) {
+        if ((MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken()) || result.isStoryboardBroken()) {
             Log.d(TAG, "Enable high bitrate formats...");
             VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
             if (videoInfoHls != null && result.getHlsManifestUrl() == null) {

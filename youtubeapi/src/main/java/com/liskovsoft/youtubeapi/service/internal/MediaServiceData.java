@@ -14,7 +14,7 @@ public class MediaServiceData {
     public static final int FORMATS_ALL = Integer.MAX_VALUE;
     public static final int FORMATS_DASH = 1;
     public static final int FORMATS_URL = 1 << 1;
-    public static final int FORMATS_EXTENDED = 1 << 2;
+    public static final int FORMATS_EXTENDED_HLS = 1 << 2;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;

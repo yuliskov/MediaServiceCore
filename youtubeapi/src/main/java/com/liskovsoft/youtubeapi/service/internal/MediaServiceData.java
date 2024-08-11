@@ -4,10 +4,13 @@ import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 
 import java.util.List;
 import java.util.UUID;
+
+import io.reactivex.disposables.Disposable;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
@@ -28,6 +31,7 @@ public class MediaServiceData {
     private String mBackupPlayerVersion;
     private String mVisitorCookie;
     private int mEnabledFormats = FORMATS_ALL;
+    private Disposable mPersistAction;
 
     private MediaServiceData() {
         restoreData();
@@ -178,6 +182,15 @@ public class MediaServiceData {
     }
 
     private void persistData() {
+        if (RxHelper.isAnyActionRunning(mPersistAction)) {
+            return;
+        }
+
+        // Improve memory usage by merging multiple persist requests
+        mPersistAction = RxHelper.runAsync(this::persistDataReal, 10_000);
+    }
+
+    private void persistDataReal() {
         if (GlobalPreferences.sInstance == null) {
             return;
         }

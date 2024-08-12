@@ -182,12 +182,10 @@ public class MediaServiceData {
     }
 
     private void persistData() {
-        if (RxHelper.isAnyActionRunning(mPersistAction)) {
-            return;
-        }
+        RxHelper.disposeActions(mPersistAction);
 
         // Improve memory usage by merging multiple persist requests
-        mPersistAction = RxHelper.runAsync(this::persistDataReal, 10_000);
+        mPersistAction = RxHelper.runAsync(this::persistDataReal, 5_000);
     }
 
     private void persistDataReal() {

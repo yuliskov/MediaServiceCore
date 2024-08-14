@@ -18,6 +18,11 @@ public class MediaServiceData {
     public static final int FORMATS_DASH = 1;
     public static final int FORMATS_URL = 1 << 1;
     public static final int FORMATS_EXTENDED_HLS = 1 << 2;
+    public static final int CONTENT_ALL = Integer.MAX_VALUE;
+    public static final int CONTENT_MIXES = 1;
+    public static final int CONTENT_WATCHED_HOME = 1 << 1;
+    public static final int CONTENT_WATCHED_SUBS = 1 << 2;
+    public static final int CONTENT_SHORTS_HOME = 1 << 3;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;
@@ -31,6 +36,7 @@ public class MediaServiceData {
     private String mBackupPlayerVersion;
     private String mVisitorCookie;
     private int mEnabledFormats = FORMATS_ALL;
+    private int mEnabledContent = CONTENT_ALL;
     private Disposable mPersistAction;
 
     private MediaServiceData() {
@@ -135,18 +141,32 @@ public class MediaServiceData {
         persistData();
     }
 
-    public void enableFormat(int formats) {
-        mEnabledFormats |= formats;
-        persistData();
-    }
+    public void enableFormat(int formats, boolean enable) {
+        if (enable) {
+            mEnabledFormats |= formats;
+        } else {
+            mEnabledFormats &= ~formats;
+        }
 
-    public void disableFormat(int formats) {
-        mEnabledFormats &= ~formats;
         persistData();
     }
 
     public boolean isFormatEnabled(int formats) {
         return (mEnabledFormats & formats) == formats;
+    }
+
+    public void enableContent(int content, boolean enable) {
+        if (enable) {
+            mEnabledContent |= content;
+        } else {
+            mEnabledContent &= ~content;
+        }
+
+        persistData();
+    }
+
+    public boolean isContentEnabled(int content) {
+        return (mEnabledContent & content) == content;
     }
 
     private void restoreData() {
@@ -179,6 +199,7 @@ public class MediaServiceData {
         mBackupPlayerVersion = Helpers.parseStr(split, 9);
         mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
+        mEnabledContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
     }
 
     private void persistData() {
@@ -196,6 +217,6 @@ public class MediaServiceData {
         GlobalPreferences.sInstance.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType,
                         mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mBackupPlayerUrl, mBackupPlayerVersion,
-                        mVisitorCookie, mEnabledFormats));
+                        mVisitorCookie, mEnabledFormats, mEnabledContent));
     }
 }

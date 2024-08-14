@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import java.util.Collections;
 import java.util.List;
@@ -88,16 +89,18 @@ public final class YouTubeHelper {
         }
 
         if (GlobalPreferences.isInitialized()) {
-            boolean isHideShortsEnabled = (GlobalPreferences.sInstance.isHideShortsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromHomeEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromHistoryEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HISTORY) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL);
-            boolean isHideUpcomingEnabled = (GlobalPreferences.sInstance.isHideUpcomingFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (GlobalPreferences.sInstance.isHideUpcomingFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
-            boolean isHideStreamsEnabled = (GlobalPreferences.sInstance.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
+            GlobalPreferences prefs = GlobalPreferences.sInstance;
+            boolean isHideShortsEnabled = (prefs.isHideShortsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
+                    (prefs.isHideShortsFromHomeEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
+                    (prefs.isHideShortsFromHistoryEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HISTORY) ||
+                    (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS) ||
+                    (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL);
+            boolean isHideUpcomingEnabled = (prefs.isHideUpcomingFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
+                    (prefs.isHideUpcomingFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
+            boolean isHideStreamsEnabled = (prefs.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
+            boolean isHideMixesEnabled = !MediaServiceData.instance().isContentEnabled(MediaServiceData.CONTENT_MIXES);
 
-            if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled) {
+            if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled || isHideMixesEnabled) {
                 // NOTE: The group could be empty after filtering! Fix for that.
 
                 // Remove Shorts and/or Upcoming
@@ -108,7 +111,7 @@ public final class YouTubeHelper {
                     }
 
                     return (isHideShortsEnabled && isShort(mediaItem)) || (isHideUpcomingEnabled && mediaItem.isUpcoming()) ||
-                            (isHideStreamsEnabled && mediaItem.isLive());
+                            (isHideStreamsEnabled && mediaItem.isLive()) || (isHideMixesEnabled && isMix(mediaItem));
                 });
             }
         }
@@ -124,6 +127,15 @@ public final class YouTubeHelper {
         int lengthMs = mediaItem.getDurationMs();
         boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
         return isShortLength || mediaItem.isShorts() || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
+    }
+
+    public static boolean isMix(MediaItem mediaItem) {
+        if (mediaItem == null || mediaItem.getTitle() == null) {
+            return false;
+        }
+
+        return !mediaItem.isLive() && mediaItem.getBadgeText() != null && mediaItem.getDurationMs() <= 0 &&
+                (mediaItem.getPlaylistId() != null || mediaItem.getChannelId() != null || mediaItem.hasUploads());
     }
 
     /**

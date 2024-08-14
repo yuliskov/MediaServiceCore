@@ -384,6 +384,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     private boolean isCreatedRecently() {
-        return System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
+        return !isLive() || System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
     }
 }

@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
@@ -342,7 +343,7 @@ public class AppService {
     }
 
     private synchronized void updatePlayerData() {
-        if (mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
+        if (isPlayerCacheActual()) {
             return;
         }
 
@@ -356,6 +357,7 @@ public class AppService {
 
         if (mCachedPlayerData != null) {
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
+            YouTubeMediaItemService.instance().invalidateCache();
             try {
                 mNSigExtractor = new NSigExtractor(getPlayerUrl());
             } catch (Throwable e) { // StackOverflowError | IllegalStateException
@@ -392,8 +394,8 @@ public class AppService {
         updateClientData();
     }
 
-    public boolean isCacheActual() {
-        return System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
+    public boolean isPlayerCacheActual() {
+        return mCachedPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
     }
 
     /**

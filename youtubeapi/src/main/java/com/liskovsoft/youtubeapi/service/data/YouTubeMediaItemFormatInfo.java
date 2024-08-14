@@ -10,7 +10,6 @@ import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser.Storyboard;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -380,7 +379,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         // Check app cipher first. It's not robust check (cipher may be updated not by us).
         // So, also check internal cache state.
         // Future translations (no media) should be polled constantly.
-        return containsMedia() && isCreatedRecently() && AppService.instance().isCacheActual();
+        //return containsMedia() && isCreatedRecently() && AppService.instance().isCacheActual();
+        return containsMedia() && AppService.instance().isPlayerCacheActual();
     }
 
     private boolean isCreatedRecently() {

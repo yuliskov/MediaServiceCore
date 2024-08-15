@@ -5,8 +5,11 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.yt.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
@@ -682,6 +685,19 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
+        MediaGroup result = continueGroupReal(mediaGroup);
+
+        if (result != null &&
+                Helpers.equals(mediaGroup.getMediaItems(), result.getMediaItems()) &&
+                Helpers.equals(mediaGroup.getNextPageKey(), result.getNextPageKey())) {
+            // Result group is duplicate of the original. Seems that we've reached the end before. Skipping...
+            return null;
+        }
+
+        return result;
+    }
+
+    private MediaGroup continueGroupReal(MediaGroup mediaGroup) {
         if (mediaGroup == null) {
             return null;
         }
@@ -689,6 +705,10 @@ public class YouTubeContentService implements ContentService {
         checkSigned();
 
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
+
+        if (mediaGroup instanceof SuggestionsGroup) {
+            return WatchNextService.continueGroup(mediaGroup);
+        }
 
         if (mediaGroup instanceof BaseMediaGroup) {
             MediaGroup group = null;

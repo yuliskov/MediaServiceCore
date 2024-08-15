@@ -169,17 +169,17 @@ public class YouTubeMediaItemService implements MediaItemService {
     //    return null;
     //}
 
-    @Override
-    public MediaGroup continueGroup(MediaGroup mediaGroup) {
-        checkSigned();
-
-        if (mediaGroup instanceof SuggestionsGroup) {
-            return WatchNextService.continueGroup(mediaGroup);
-        }
-
-        // Continue special embedded section group
-        return YouTubeContentService.instance().continueGroup(mediaGroup);
-    }
+    //@Override
+    //public MediaGroup continueGroup(MediaGroup mediaGroup) {
+    //    checkSigned();
+    //
+    //    if (mediaGroup instanceof SuggestionsGroup) {
+    //        return WatchNextService.continueGroup(mediaGroup);
+    //    }
+    //
+    //    // Continue special embedded section group
+    //    return YouTubeContentService.instance().continueGroup(mediaGroup);
+    //}
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
@@ -206,10 +206,10 @@ public class YouTubeMediaItemService implements MediaItemService {
         return RxHelper.fromNullable(() -> getMetadata(videoId, playlistId, playlistIndex, playlistParams));
     }
 
-    @Override
-    public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
-        return RxHelper.fromNullable(() -> continueGroup(mediaGroup));
-    }
+    //@Override
+    //public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
+    //    return RxHelper.fromNullable(() -> continueGroup(mediaGroup));
+    //}
 
     @Override
     public void updateHistoryPosition(MediaItem item, float positionSec) {

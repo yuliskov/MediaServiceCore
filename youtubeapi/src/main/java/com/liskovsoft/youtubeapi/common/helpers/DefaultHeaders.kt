@@ -45,12 +45,13 @@ object DefaultHeaders {
     private const val USER_AGENT_MOBILE_CHROME_2 = "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36"
     private const val USER_AGENT_ANDROID_1 = "com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip"
     private const val USER_AGENT_IOS_1 = "com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)"
+    private const val USER_AGENT_IOS_2 = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
 
     const val USER_AGENT_TV = USER_AGENT_SAMSUNG_3 // no buffering
     const val USER_AGENT_WEB = USER_AGENT_CHROME
     const val USER_AGENT_MOBILE_WEB = USER_AGENT_MOBILE_CHROME_2
     const val USER_AGENT_ANDROID = USER_AGENT_ANDROID_1
-    const val USER_AGENT_IOS = USER_AGENT_IOS_1
+    const val USER_AGENT_IOS = USER_AGENT_IOS_2
 
     // Throttling! Probably, because of Chrome engine checks.
     @JvmField

@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.app
 
-import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
-
 internal object AppConstants {
     @JvmField
     val playerUrls = listOf(
@@ -20,120 +18,12 @@ internal object AppConstants {
     
     const val SCRIPTS_URL_BASE = "https://www.youtube.com"
     const val API_KEY = API_KEY_NEW
-    
-    private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-            "\"clientScreen\":\"%s\",\"userAgent\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
-            "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
-            "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 
-    private const val JSON_POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
-    private const val JSON_POST_DATA_BROWSE = "\"tvAppInfo\":{\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
-
-    // ATV
-    // 7.20211013.10.00
-    // 7.20220118.09.00
-    // 7.20230612.10.00
-    // 7.20231119.10.02
-    const val CLIENT_VERSION_TV = "7.20240424.00.00"
-    private const val CLIENT_NAME_TV = "TVHTML5"
-
-    // BROWSER
-    // 2.20211014.05.00-canary_control
-    // 2.20220119.01.00
-    // 2.20230613.01.00
-    // 2.20231121.08.00
-    // 2.20240425.07.00
-    const val CLIENT_VERSION_WEB = "2.20240726.00.00"
-    private const val CLIENT_NAME_WEB = "WEB"
-    private const val CLIENT_NAME_MWEB = "MWEB"
-
-    // BROWSER CREATOR (invalid argument?)
-    const val CLIENT_VERSION_WEB_CREATOR = "1.20220726.00.00"
-    private const val CLIENT_NAME_WEB_CREATOR = "WEB_CREATOR"
-
-    // ATV KIDS
-    // 3.20221025.01.00
-    // 3.20230425.01.00
-    private const val CLIENT_VERSION_KIDS = "3.20231113.03.00"
-    private const val CLIENT_NAME_KIDS = "TVHTML5_KIDS"
-
-    // EMBED
-    // Special embed version (thanks for github thread)
-    private const val CLIENT_VERSION_EMBED = "2.0"
-    private const val CLIENT_NAME_EMBED = "TVHTML5_SIMPLY_EMBEDDED_PLAYER"
-
-    // ANDROID
-    // 16.20
-    // 16.49
-    private const val CLIENT_VERSION_ANDROID = "19.26.37"
-    private const val CLIENT_NAME_ANDROID = "ANDROID"
-    private const val PARAMS_ANDROID = "CgIQBg=="
-    private const val ANDROID_SDK_VERSION = "30"
-
-    // IOS
-    private const val CLIENT_VERSION_IOS = "19.29.1"
-    private const val CLIENT_NAME_IOS = "IOS"
-    private const val DEVICE_MODEL_IOS = "iPhone16,2"
-    private const val OS_VERSION_IOS = "17.5.1.21F90"
-    const val USER_AGENT_IOS = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
-    private const val JSON_POST_DATA_IOS = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
-
-    private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
-    private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
+    private const val CLIENT_VERSION_TV_OLD = "7.20240424.00.00"
 
     const val GET_VIDEO_INFO_OLD =
-        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV"
+        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV_OLD"
 
     const val GET_VIDEO_INFO_OLD2 =
-        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV"
-
-    /**
-     * Used in browse, next, search<br></br>
-     * Previous client version: 7.20190214<br></br>
-     * racyCheckOk - confirm age<br></br>
-     * contentCheckOk - ?
-     */
-    @JvmField
-    val JSON_POST_DATA_TEMPLATE_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_TV,
-        JSON_POST_DATA_BROWSE)
-
-    @JvmField
-    val JSON_POST_DATA_TEMPLATE_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
-        JSON_POST_DATA_BROWSE)
-
-    @JvmField
-    val JSON_POST_DATA_TEMPLATE_MWEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_MOBILE_WEB,
-        JSON_POST_DATA_BROWSE)
-
-    @JvmField
-    val JSON_POST_DATA_TEMPLATE_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_ANDROID,
-        String.format(JSON_POST_DATA_ANDROID, ANDROID_SDK_VERSION) + JSON_POST_DATA_BROWSE)
-
-    @JvmField
-    val JSON_POST_DATA_TEMPLATE_KIDS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_KIDS, CLIENT_VERSION_KIDS, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_TV,
-        JSON_POST_DATA_BROWSE)
-
-    @JvmField
-    val JSON_POST_DATA_PLAYER_ANDROID = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_ANDROID, CLIENT_VERSION_ANDROID, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_ANDROID,
-        String.format(JSON_POST_DATA_ANDROID, ANDROID_SDK_VERSION))
-
-    @JvmField
-    val JSON_POST_DATA_PLAYER_IOS = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_IOS, CLIENT_VERSION_IOS, CLIENT_SCREEN_WATCH, USER_AGENT_IOS,
-        String.format(JSON_POST_DATA_IOS, DEVICE_MODEL_IOS, OS_VERSION_IOS))
-
-    @JvmField
-    val JSON_POST_DATA_PLAYER_WEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_WEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
-        "")
-
-    @JvmField
-    val JSON_POST_DATA_PLAYER_MWEB = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_MWEB, CLIENT_VERSION_WEB, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_WEB,
-        "")
-
-    @JvmField
-    val JSON_POST_DATA_PLAYER_TV = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_TV, CLIENT_VERSION_TV, CLIENT_SCREEN_WATCH, DefaultHeaders.USER_AGENT_TV,
-        "")
-
-    @JvmField
-    val JSON_POST_DATA_PLAYER_EMBED = String.format(JSON_POST_DATA_BASE, CLIENT_NAME_EMBED, CLIENT_VERSION_EMBED, CLIENT_SCREEN_EMBED, DefaultHeaders.USER_AGENT_WEB,
-        "")
+        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV_OLD"
 }

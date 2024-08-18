@@ -335,7 +335,8 @@ class BrowseApiTest {
 
     @Test
     fun testChannelTopicContinuation() {
-        val browse = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb("UC1dGjtlDiiDM0gc_ghB1nTQ", "EgRsaXZl"))
+        // World of tanks recently uploaded
+        val browse = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb("UC1dGjtlDiiDM0gc_ghB1nTQ", "EgZyZWNlbnQ%3D"))
 
         val result = RetrofitHelper.get(browse)
 

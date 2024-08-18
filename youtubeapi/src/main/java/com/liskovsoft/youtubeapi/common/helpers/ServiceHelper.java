@@ -67,27 +67,27 @@ public class ServiceHelper {
     }
 
     public static String createQueryTV_UA(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, null, data, "uk", "UA");
+        return createQuery(AppClient.TV.getBrowseTemplate(), null, data, "uk", "UA");
     }
 
     public static String createQueryTV(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, data);
+        return createQuery(AppClient.TV.getBrowseTemplate(), data);
     }
 
     public static String createQueryWeb(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_WEB, data);
+        return createQuery(AppClient.WEB.getBrowseTemplate(), data);
     }
 
     public static String createQueryMWeb(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_MWEB, data);
+        return createQuery(AppClient.MWEB.getBrowseTemplate(), data);
     }
 
     public static String createQueryAndroid(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_ANDROID, data);
+        return createQuery(AppClient.ANDROID.getBrowseTemplate(), data);
     }
 
     public static String createQueryKids(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_KIDS, data);
+        return createQuery(AppClient.KIDS.getBrowseTemplate(), data);
     }
 
     public static String createQuery(String postTemplate, String data) {

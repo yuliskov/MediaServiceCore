@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
 public class VideoInfoApiHelper {
@@ -32,70 +32,15 @@ public class VideoInfoApiHelper {
     // https://github.com/LuanRT/YouTube.js/pull/390/commits/6511c23fe6133f4b066c558ebfa531e1ce7c0062
     //private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
 
-    /**
-     * Doesn't work
-     */
-    private static String getVideoInfoQueryAndroid(String videoId) {
-        return getVideoInfoQueryAndroid(videoId, null);
-    }
-
-    /**
-     * Support live streams seeking!<br/>
-     * NOTE: Don't support startTimestamp<br/>
-     * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
-     */
-    public static String getVideoInfoQueryAndroid(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_ANDROID, videoId, clickTrackingParams);
-    }
-
-    /**
-     * Doesn't work!<br/>
-     * Support live streams seeking!<br/>
-     * NOTE: Don't support startTimestamp<br/>
-     * NOTE: CLIENT_NAME_ANDROID doesn't play 18+ videos
-     */
-    public static String getVideoInfoQueryGeoAndroid(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_ANDROID, videoId, clickTrackingParams, THROTTLE_QUERY);
-    }
-
-    public static String getVideoInfoQueryTV(String videoId) {
-        return getVideoInfoQueryTV(videoId, null);
-    }
-
-    /**
-     * Support viewing private (user) videos
-     */
-    public static String getVideoInfoQueryTV(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_TV, videoId, clickTrackingParams);
-    }
-
-    /**
-     * Support restricted (18+) videos viewing. Alt method from github
-     */
-    public static String getVideoInfoQueryEmbed(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_EMBED, videoId, clickTrackingParams);
-    }
-
-    /**
-     * Support live streams seeking!<br/>
-     */
-    public static String getVideoInfoQueryWeb(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams);
-    }
-
-    public static String getVideoInfoQueryMWeb(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_MWEB, videoId, clickTrackingParams);
+    public static String getVideoInfoQuery(String videoId, String clickTrackingParams, AppClient client) {
+        return createCheckedQuery(client.getPlayerTemplate(), videoId, clickTrackingParams);
     }
 
     /**
      * NOTE: Should use protobuf to bypass geo blocking.
      */
-    public static String getVideoInfoQueryGeoWeb(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_WEB, videoId, clickTrackingParams, THROTTLE_QUERY);
-    }
-
-    public static String getVideoInfoQueryIOS(String videoId, String clickTrackingParams) {
-        return createCheckedQuery(AppConstants.JSON_POST_DATA_PLAYER_IOS, videoId, clickTrackingParams);
+    public static String getVideoInfoQueryGeo(String videoId, String clickTrackingParams, AppClient client) {
+        return createCheckedQuery(client.getPlayerTemplate(), videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 
     /**

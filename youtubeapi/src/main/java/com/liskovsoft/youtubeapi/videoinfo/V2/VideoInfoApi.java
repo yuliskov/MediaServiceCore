@@ -14,10 +14,6 @@ import retrofit2.http.POST;
 public interface VideoInfoApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/player")
     Call<VideoInfo> getVideoInfo(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId, @Header("User-Agent") String userAgent);
 
     @Headers("Content-Type: application/json")
@@ -42,7 +38,7 @@ public interface VideoInfoApi {
             //"Cookie: __Secure-3PAPISID=3WBOtCxNTBfzDHEV/AgVzT6oyUUxzZIlnF; __Secure-3PSID=bQjMe6x_XmVbeWSGHHvG1K92uzKGe7TAGLeOEerKk-tvp6_3HyXHOT6-EFl_3Kvdg5IJnQ."
     })
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfo> getVideoInfoRestricted(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId);
+    Call<VideoInfo> getVideoInfoRestricted(@Body String videoQuery, @Header("x-goog-visitor-id") String visitorId, @Header("User-Agent") String userAgent);
 
     @Headers({
             "Content-Type: application/json",

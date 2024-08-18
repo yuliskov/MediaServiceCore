@@ -5,6 +5,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.api.FileApi;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
@@ -105,7 +106,7 @@ public abstract class VideoInfoServiceBase {
 
         for (VideoFormat format : formats) {
             format.setCpn(cpn);
-            format.setClientVersion(AppConstants.CLIENT_VERSION_WEB);
+            format.setClientVersion(AppClient.WEB.getClientVersion());
 
             // Buffering fix? ptk=youtube_host&ptchn=youtube_host&pltype=adhost
             //format.setParam("ptk", "youtube_host");

@@ -19,11 +19,9 @@ internal object AppConstants {
     const val SCRIPTS_URL_BASE = "https://www.youtube.com"
     const val API_KEY = API_KEY_NEW
 
-    private const val CLIENT_VERSION_TV_OLD = "7.20240424.00.00"
-
     const val GET_VIDEO_INFO_OLD =
-        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV_OLD"
+        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=leanback&el=leanback&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv"
 
     const val GET_VIDEO_INFO_OLD2 =
-        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv&cver=$CLIENT_VERSION_TV_OLD"
+        "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv"
 }

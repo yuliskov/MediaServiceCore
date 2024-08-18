@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V1;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
@@ -49,13 +50,13 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
     }
     
     private VideoInfo getVideoInfoHls(String videoId) {
-        Call<VideoInfo> wrapper = mVideoInfoApiUnsigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiUnsigned.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), AppClient.TV.getClientVersion());
 
         return RetrofitHelper.get(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) {
-        Call<VideoInfo> wrapper = mVideoInfoApiUnsigned.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mVideoInfoApiUnsigned.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage(), AppClient.TV.getClientVersion());
 
         return RetrofitHelper.get(wrapper);
     }

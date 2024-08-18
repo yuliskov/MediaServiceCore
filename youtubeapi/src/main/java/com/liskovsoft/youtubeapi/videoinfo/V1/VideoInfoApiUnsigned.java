@@ -16,20 +16,20 @@ import retrofit2.http.Query;
 public interface VideoInfoApiUnsigned {
     // Unused method. sts - ???
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("hl") String lang, @Query("sts") String sts);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("hl") String lang, @Query("sts") String sts, @Query("cver") String clientVersion);
     
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("hl") String lang, @Query("cver") String clientVersion);
 
     /**
      * Good for live translations
      */
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("hl") String lang, @Query("cver") String clientVersion);
 
     /**
      * Good for age restricted videos
      */
     @GET(AppConstants.GET_VIDEO_INFO_OLD2)
-    Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Query("hl") String lang, @Query("cver") String clientVersion);
 }

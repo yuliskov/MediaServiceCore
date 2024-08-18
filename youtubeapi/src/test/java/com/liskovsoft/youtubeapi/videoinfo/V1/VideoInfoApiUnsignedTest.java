@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V1;
 
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
@@ -109,17 +110,17 @@ public class VideoInfoApiUnsignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mService.getVideoInfoRestricted(videoId, mLocaleManager.getLanguage(), AppClient.TV.getClientVersion());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(videoId, mLocaleManager.getLanguage(), AppClient.TV.getClientVersion());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfoHls(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfoHls(videoId, mLocaleManager.getLanguage());
+        Call<VideoInfo> wrapper = mService.getVideoInfoHls(videoId, mLocaleManager.getLanguage(), AppClient.TV.getClientVersion());
         return wrapper.execute().body();
     }
 }

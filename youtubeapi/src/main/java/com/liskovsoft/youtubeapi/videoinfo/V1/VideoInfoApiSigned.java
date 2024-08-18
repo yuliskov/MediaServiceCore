@@ -16,27 +16,27 @@ import retrofit2.http.Query;
 public interface VideoInfoApiSigned {
     // Unused method. sts - ???
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("sts") String sts);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("sts") String sts, @Query("cver") String clientVersion);
 
     // Unused method
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfo(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("cver") String clientVersion);
 
     /**
      * Unlock live hls streams
      */
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfoHls(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("cver") String clientVersion);
 
     /**
      * Unlock age restricted videos
      */
     @GET(AppConstants.GET_VIDEO_INFO_OLD2)
-    Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfoRestricted(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("cver") String clientVersion);
 
     /**
      * Unlock personal videos: <code>c=TVHTML5&cver=7.20201103.00.00</code><br/>
      */
     @GET(AppConstants.GET_VIDEO_INFO_OLD)
-    Call<VideoInfo> getVideoInfoRegular(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang);
+    Call<VideoInfo> getVideoInfoRegular(@Query("video_id") String videoId, @Query("access_token") String token, @Query("hl") String lang, @Query("cver") String clientVersion);
 }

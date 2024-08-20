@@ -33,6 +33,9 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val commentsPanel by lazy {
         watchNextResult.getCommentPanel()
     }
+    private val descriptionPanel by lazy {
+        watchNextResult.getDescriptionPanel()
+    }
     private val liveChatKeyItem by lazy {
         watchNextResult.getLiveChatToken()
     }

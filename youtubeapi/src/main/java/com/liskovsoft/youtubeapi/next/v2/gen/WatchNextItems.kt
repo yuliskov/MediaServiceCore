@@ -269,8 +269,19 @@ internal data class VideoDescriptionHeaderRenderer(
     val channel: TextItem?,
     val views: TextItem?,
     val publishDate: TextItem,
-    val channelNavigationEndpoint: NavigationEndpointItem?
+    val channelNavigationEndpoint: NavigationEndpointItem?,
+    val factoid: List<Factoid?>?
 )
+
+internal data class Factoid(
+    val factoidRenderer: FactoidRenderer?
+) {
+    data class FactoidRenderer(
+        val value: TextItem?,
+        val label: TextItem?,
+        val accessibilityText: String?
+    )
+}
 
 internal data class Menu(
     val sortFilterSubMenuRenderer: SortFilterSubMenuRenderer?

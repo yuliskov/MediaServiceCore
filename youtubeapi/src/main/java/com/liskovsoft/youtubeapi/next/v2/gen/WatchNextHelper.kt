@@ -33,6 +33,7 @@ internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlaye
     playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters ?:
     engagementPanels?.firstNotNullOfOrNull { it?.engagementPanelSectionListRenderer?.content?.macroMarkersListRenderer?.contents }
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
+internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNull { it?.isDescriptionSection() == true }
 // One of the suggested rows is too short or empty
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true || (getSuggestedSections()?.filter { (it.getItemWrappers()?.size ?: 0) <= 3 }?.size ?: 0) >= 3
 
@@ -132,12 +133,21 @@ internal fun EngagementPanel.getMenu() = engagementPanelSectionListRenderer?.hea
 internal fun EngagementPanel.getTopCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getContinuationKey()
 internal fun EngagementPanel.getNewCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getContinuationKey()
 internal fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
+internal fun EngagementPanel.isDescriptionSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "video-description-ep-identifier"
 internal fun EngagementPanel.getTitle(): String? = getVideoDescription()?.title?.getText()
 internal fun EngagementPanel.getChannelName(): String? = getVideoDescription()?.channel?.getText()
 internal fun EngagementPanel.getViews(): String? = getVideoDescription()?.views?.getText()
 internal fun EngagementPanel.getPublishDate(): String? = getVideoDescription()?.publishDate?.getText()
 internal fun EngagementPanel.getBrowseId(): String? = getVideoDescription()?.channelNavigationEndpoint?.getBrowseId()
+internal fun EngagementPanel.getLikeCount(): String? = getVideoDescription()?.factoid?.firstOrNull()?.getValue()
 private fun EngagementPanel.getVideoDescription(): VideoDescriptionHeaderRenderer? =
     engagementPanelSectionListRenderer?.content?.structuredDescriptionContentRenderer?.items?.firstNotNullOfOrNull { it?.videoDescriptionHeaderRenderer }
 internal fun Menu.getSubMenuItems() = sortFilterSubMenuRenderer?.subMenuItems
+
+///////
+
+// Presents on Album Music videos (array of: likes count, view count, published date)
+internal fun Factoid.getValue(): String? = factoidRenderer?.value?.getText()
+internal fun Factoid.getLabel(): String? = factoidRenderer?.label?.getText()
+internal fun Factoid.getAccessibilityText(): String? = factoidRenderer?.accessibilityText
 

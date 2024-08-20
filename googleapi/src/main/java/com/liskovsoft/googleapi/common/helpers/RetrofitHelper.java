@@ -88,6 +88,10 @@ public class RetrofitHelper {
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
             // Don't rethrow!!! These exceptions cannot be caught inside RxJava!!! Thread died!!!
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            // Proxy connection error?
+            // java.net.SocksSocketImpl.privilegedConnect (SocksSocketImpl.java:94)
+            e.printStackTrace();
         }
 
         return null;

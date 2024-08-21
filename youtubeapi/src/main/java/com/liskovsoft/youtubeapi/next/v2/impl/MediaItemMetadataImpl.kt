@@ -97,12 +97,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val videoSecondTitle by lazy {
         YouTubeHelper.createInfo(
-            videoAuthor, viewCountText, publishedTime
-        )
-    }
-    private val videoSecondTitleAlt by lazy {
-        YouTubeHelper.createInfo(
-            videoAuthor, viewCountText, publishedDate
+            videoAuthor, albumName, viewCountText, publishedTime
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
@@ -125,15 +120,17 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
             }
     }
 
+    private val albumName by lazy { videoMetadata?.getAlbumName() }
+
     private val viewCountText by lazy {
         videoMetadata?.getViewCountText() ?: videoMetadata?.getLongViewCountText()
     }
 
-    private val publishedTime by lazy {
-        videoMetadata?.getPublishedTime()
+    private val publishedTime by lazy {  // absolute date (e.g 1 september 2019)
+        videoMetadata?.getPublishedTime() ?: descriptionPanel?.getPublishDate()
     }
 
-    private val publishedDateText by lazy {
+    private val publishedDateText by lazy { // relative date (e.g. 1 hour ago)
         videoMetadata?.getDateText() ?: videoDetails?.getPublishedTimeText()
     }
 
@@ -179,7 +176,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     private val likeCountItem by lazy {
-        videoMetadata?.getLikeCountInt()?.let { ServiceHelper.prettyCount(it) }
+        videoMetadata?.getLikeCountInt()?.let { ServiceHelper.prettyCount(it) } ?: descriptionPanel?.getLikeCount()
     }
 
     private val dislikeCountItem by lazy {
@@ -193,10 +190,6 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     override fun getSecondTitle(): String? {
         return videoSecondTitle
-    }
-
-    override fun getSecondTitleAlt(): String? {
-        return videoSecondTitleAlt
     }
 
     override fun getDescription(): String? {
@@ -216,7 +209,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     override fun getPublishedDate(): String? {
-        return publishedDateText
+        return publishedTime
     }
 
     override fun getVideoId(): String? {

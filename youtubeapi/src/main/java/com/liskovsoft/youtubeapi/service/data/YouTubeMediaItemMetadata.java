@@ -171,11 +171,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
-    public String getSecondTitleAlt() {
-        return mSecondTitleAlt;
-    }
-
-    @Override
     public String getDescription() {
         return mDescription;
     }

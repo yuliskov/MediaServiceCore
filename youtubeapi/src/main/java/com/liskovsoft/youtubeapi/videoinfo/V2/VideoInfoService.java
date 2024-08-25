@@ -27,6 +27,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_TV = 3;
     private final static int VIDEO_INFO_ANDROID = 4;
     private final static int VIDEO_INFO_IOS = 5;
+    private final static int VIDEO_INFO_EMBED = 6;
     private int mVideoInfoType = -1;
 
     private VideoInfoService() {
@@ -72,6 +73,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 break;
             case VIDEO_INFO_IOS:
                 result = getVideoInfo(videoId, clickTrackingParams, AppClient.IOS);
+                break;
+            case VIDEO_INFO_EMBED:
+                result = getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED);
                 break;
         }
 
@@ -137,7 +141,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private void nextVideoInfo() {
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
-                new int[] {VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB});
+                new int[] {VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB});
     }
 
     private VideoInfo getVideoInfo(String videoId, String clickTrackingParams, AppClient client) {

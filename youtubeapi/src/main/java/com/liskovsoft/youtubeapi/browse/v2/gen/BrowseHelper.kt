@@ -30,7 +30,8 @@ internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper
 internal fun BrowseResult.getShortItems(): List<ItemWrapper?>? = getRootTab()?.getShortItems()
 internal fun BrowseResult.getShelves(): List<ItemSectionRenderer?>? = getRootTab()?.getShelves()
 internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
-internal fun BrowseResult.getTabs(): List<TabRenderer?>? = contents?.twoColumnBrowseResultsRenderer?.tabs?.mapNotNull { it?.tabRenderer ?: it?.expandableTabRenderer }
+internal fun BrowseResult.getTabs(): List<TabRenderer?>? = (contents?.twoColumnBrowseResultsRenderer ?: contents?.singleColumnBrowseResultsRenderer)
+    ?.tabs?.mapNotNull { it?.tabRenderer ?: it?.expandableTabRenderer }
 internal fun BrowseResult.getSections(): List<RichSectionRenderer?>? = getRootTab()?.getSections()
 internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab()?.getChips()
 /**
@@ -38,7 +39,7 @@ internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab
  *  
  *  First tab on HOME page has no title. Use first chip instead.
  */
-internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: header?.playlistHeaderRenderer?.getTitle() ?: getChips()?.getOrNull(0)?.getTitle()
+internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: (header?.playlistHeaderRenderer ?: header?.musicHeaderRenderer)?.getTitle() ?: getChips()?.getOrNull(0)?.getTitle()
 internal fun BrowseResult.isPlaylist(): Boolean = header?.playlistHeaderRenderer != null
 internal fun BrowseResult.isHome(): Boolean = getTabs()?.getOrNull(0)?.getItems() != null
 internal fun BrowseResult.getRedirectBrowseId(): String? = onResponseReceivedActions?.firstNotNullOfOrNull { it?.navigateAction?.endpoint?.getBrowseId() }
@@ -109,7 +110,7 @@ internal fun ChipCloudChipRenderer.getTitle(): String? = text?.getText()
 internal fun SectionWrapper.getItem() = richItemRenderer?.content ?: playlistVideoRenderer?.let { ItemWrapper(playlistVideoRenderer = it) }
     ?: gridPlaylistRenderer?.let { ItemWrapper(gridPlaylistRenderer = it) } ?: gridVideoRenderer?.let { ItemWrapper(gridVideoRenderer = it) }
 
-internal fun SectionWrapper.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems()
+internal fun SectionWrapper.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems() ?: gridRenderer?.items
 internal fun SectionWrapper.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: itemSectionRenderer?.getContinuationToken()
 
 /////

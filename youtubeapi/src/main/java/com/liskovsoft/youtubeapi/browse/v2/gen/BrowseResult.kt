@@ -16,7 +16,8 @@ internal data class BrowseResult(
     val onResponseReceivedActions: List<OnResponseReceivedAction?>?
 ) {
     data class Contents(
-        val twoColumnBrowseResultsRenderer: TwoColumnBrowseResultsRenderer?
+        val twoColumnBrowseResultsRenderer: TwoColumnBrowseResultsRenderer?,
+        val singleColumnBrowseResultsRenderer: TwoColumnBrowseResultsRenderer?
     ) {
         data class TwoColumnBrowseResultsRenderer(
             val tabs: List<Tab?>?
@@ -28,7 +29,8 @@ internal data class BrowseResult(
         }
     }
     data class Header(
-        val playlistHeaderRenderer: PlaylistItem?
+        val playlistHeaderRenderer: PlaylistItem?,
+        val musicHeaderRenderer: PlaylistItem?
     )
 }
 

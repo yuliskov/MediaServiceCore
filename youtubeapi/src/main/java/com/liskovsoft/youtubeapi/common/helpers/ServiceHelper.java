@@ -90,6 +90,10 @@ public class ServiceHelper {
         return createQuery(AppClient.KIDS.getBrowseTemplate(), data);
     }
 
+    public static String createQueryRemix(String data) {
+        return createQuery(AppClient.WEB_REMIX.getBrowseTemplate(), data);
+    }
+
     public static String createQuery(String postTemplate, String data) {
         return createQuery(postTemplate, null, data, null, null);
     }

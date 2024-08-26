@@ -70,6 +70,8 @@ private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
 ////////
 
 internal fun MenuWrapper.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getBrowseId() }
+internal fun MenuWrapper.getPlaylistId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getPlaylistId() }
+internal fun MenuWrapper.getVideoId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getVideoId() }
 internal fun MenuWrapper.getNotificationToken() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getNotificationToken() }
 internal fun MenuWrapper.getFeedbackTokens(): List<String?>? = menuRenderer?.items?.mapNotNull { it?.getFeedbackToken() }
 // Filter by icon not robust. Icon item not always present.
@@ -132,6 +134,25 @@ internal fun MusicItem.getUpcomingEventText() = null
 internal fun MusicItem.isLive() = false
 internal fun MusicItem.isUpcoming() = false
 
+////////////
+
+internal fun RadioItem.getTitle() = title?.getText()
+internal fun RadioItem.getUserName() = subtitle?.getText()
+internal fun RadioItem.getThumbnails() = thumbnail ?: thumbnailRenderer?.musicThumbnailRenderer?.thumbnail
+internal fun RadioItem.getVideoId() = navigationEndpoint?.getVideoId() ?: menu?.getVideoId()
+internal fun RadioItem.getPlaylistId() = navigationEndpoint?.getPlaylistId() ?: menu?.getPlaylistId()
+internal fun RadioItem.getBadgeText() = null
+internal fun RadioItem.getLengthText() = null
+internal fun RadioItem.getViewsAndPublished() = null
+//internal fun RadioItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: menu?.getBrowseId()
+internal fun RadioItem.getChannelId() = menu?.getBrowseId()
+internal fun RadioItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
+internal fun RadioItem.getDescBadgeText() = null
+internal fun RadioItem.getViewsCountText() = null
+internal fun RadioItem.getUpcomingEventText() = null
+internal fun RadioItem.isLive() = false
+internal fun RadioItem.isUpcoming() = false
+
 ///////////
 
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
@@ -187,7 +208,7 @@ private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: p
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
 private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylistRenderer ?: compactPlaylistRenderer ?: playlistRenderer
-private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer ?: compactRadioRenderer
+private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer ?: compactRadioRenderer ?: musicTwoRowItemRenderer
 private fun ItemWrapper.getTileItem() = tileRenderer
 private fun ItemWrapper.getContinuationItem() = continuationItemRenderer
 
@@ -213,21 +234,29 @@ internal fun ItemWrapper.getType(): Int {
     return MediaItem.TYPE_UNDEFINED;
 }
 
-internal fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId()
-internal fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle() ?: getPlaylistItem()?.getTitle() ?: getChannelItem()?.getTitle()
-internal fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails() ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails()
+internal fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId() ?: getRadioItem()?.getVideoId()
+internal fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle() ?: getPlaylistItem()?.getTitle()
+    ?: getChannelItem()?.getTitle() ?: getRadioItem()?.getTitle()
+internal fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails()
+    ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails() ?: getRadioItem()?.getThumbnails()
 internal fun ItemWrapper.getMovingThumbnails() = getVideoItem()?.getMovingThumbnails() ?: getTileItem()?.getMovingThumbnails()
-internal fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText() ?: getChannelItem()?.getDescBadgeText()
+internal fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
+    ?: getChannelItem()?.getDescBadgeText()
 internal fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
 internal fun ItemWrapper.getPercentWatched() = getVideoItem()?.getPercentWatched() ?: getTileItem()?.getPercentWatched()
 internal fun ItemWrapper.getStartTimeSeconds() = getVideoItem()?.getStartTimeSeconds() ?: getTileItem()?.getStartTimeSeconds()
-internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText() ?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText()
+internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
+    ?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText()
 internal fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
+    ?: getRadioItem()?.getUserName()
 internal fun ItemWrapper.getPublishedTime() = getVideoItem()?.getPublishedTimeText() ?: getMusicItem()?.getViewsAndPublished() ?: getTileItem()?.getPublishedTime()
 internal fun ItemWrapper.getViewCountText() = getVideoItem()?.getViewCount() ?: getMusicItem()?.getViewsCountText() ?: getTileItem()?.getViewCountText()
-internal fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText() ?: getTileItem()?.getUpcomingEventText()
-internal fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId() ?: getPlaylistItem()?.getPlaylistId()
-internal fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId() ?: getChannelItem()?.getChannelId()
+internal fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText()
+    ?: getTileItem()?.getUpcomingEventText()
+internal fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
+    ?: getPlaylistItem()?.getPlaylistId() ?: getRadioItem()?.getPlaylistId()
+internal fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
+    ?: getChannelItem()?.getChannelId() ?: getRadioItem()?.getChannelId()
 internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
 internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
@@ -269,6 +298,8 @@ internal fun MenuItem.getIconType() = menuServiceItemRenderer?.icon?.getType()
 internal fun MenuItem.getFeedbackToken() = menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
 internal fun MenuItem.getNotificationToken() = menuServiceItemRenderer?.serviceEndpoint?.recordNotificationInteractionsEndpoint?.serializedInteractionsRequest
 internal fun MenuItem.getBrowseId() = menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId()
+internal fun MenuItem.getPlaylistId() = menuNavigationItemRenderer?.navigationEndpoint?.getPlaylistId()
+internal fun MenuItem.getVideoId() = menuNavigationItemRenderer?.navigationEndpoint?.getVideoId()
 
 //////
 

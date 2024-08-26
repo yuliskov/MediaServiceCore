@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.common.models.gen
 import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationItemRenderer
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
 
 internal data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
@@ -104,6 +105,13 @@ internal data class ShowEngagementPanelEndpoint(
     val engagementPanel: EngagementPanel?
 )
 
+internal data class ButtonContentWrapper(
+    val videoOwnerRenderer: VideoOwnerItem?,
+    val toggleButtonRenderer: ToggleButtonRenderer?,
+    val buttonRenderer: ButtonRenderer?,
+    val musicPlayButtonRenderer: MusicPlayButtonRenderer?
+)
+
 internal data class ButtonRenderer(
     val isDisabled: Boolean?,
     val text: TextItem?
@@ -124,6 +132,10 @@ internal data class SubscribeButtonRenderer(
     val longSubscriberCountText: TextItem?,
     val serviceEndpoints: List<DefaultServiceEndpoint?>?,
     val notificationPreferenceButton: NotificationPreferenceButton?
+)
+
+internal data class MusicPlayButtonRenderer(
+    val playNavigationEndpoint: NavigationEndpointItem?
 )
 
 internal data class TextItem(
@@ -192,6 +204,7 @@ internal data class ItemWrapper(
     val compactPlaylistRenderer: PlaylistItem? = null,
     val playlistRenderer: PlaylistItem? = null,
     val playlistVideoRenderer: VideoItem? = null, // ChannelPlaylist
+    val musicTwoRowItemRenderer: RadioItem? = null, // YouTube Music
     val continuationItemRenderer: ContinuationItemRenderer? = null // ChannelPlaylist
 )
 
@@ -323,27 +336,11 @@ internal data class MusicItem(
 internal data class RadioItem(
     val thumbnail: ThumbnailItem?,
     val thumbnailRenderer: ThumbnailRenderer?,
-    val title: TextItem?
-) {
-    data class ThumbnailRenderer(
-        val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?
-    ) {
-        data class PlaylistVideoThumbnailRenderer(
-            val thumbnail: Thumbnail?
-        ) {
-            data class Thumbnail(
-                val thumbnails: List<Thumbnail?>?
-            ) {
-                data class Thumbnail(
-                    val url: String?,
-                    val width: String?,
-                    val height: String?
-                )
-            }
-        }
-    }
-
-}
+    val title: TextItem?,
+    val subtitle: TextItem?,
+    val navigationEndpoint: NavigationEndpointItem?,
+    val menu: MenuWrapper?
+)
 
 internal data class ChannelItem(
     val thumbnail: ThumbnailItem?,
@@ -363,20 +360,16 @@ internal data class PlaylistItem(
     val videoCountText: TextItem?,
     val videoCountShortText: TextItem?,
     val playlistId: String?
+)
+
+internal data class ThumbnailRenderer(
+    val playlistVideoThumbnailRenderer: ThumbnailItemWrapper?,
+    val playlistCustomThumbnailRenderer: ThumbnailItemWrapper?,
+    val musicThumbnailRenderer: ThumbnailItemWrapper?
 ) {
-    data class ThumbnailRenderer(
-        val playlistVideoThumbnailRenderer: PlaylistVideoThumbnailRenderer?,
-        val playlistCustomThumbnailRenderer: PlaylistCustomThumbnailRenderer?
-    ) {
-        data class PlaylistVideoThumbnailRenderer(
-            val thumbnail: ThumbnailItem?
-        )
-
-        data class PlaylistCustomThumbnailRenderer(
-            val thumbnail: ThumbnailItem?
-        )
-    }
-
+    data class ThumbnailItemWrapper(
+        val thumbnail: ThumbnailItem?
+    )
 }
 
 internal data class MenuWrapper(

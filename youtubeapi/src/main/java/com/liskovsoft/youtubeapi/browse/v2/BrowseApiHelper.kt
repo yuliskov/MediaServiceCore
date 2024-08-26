@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 
 internal object BrowseApiHelper {
@@ -22,6 +23,8 @@ internal object BrowseApiHelper {
     private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
     private const val MOVIES = "\"browseId\":\"FEtopics_movies\""
     private const val LIKED_MUSIC = "\"browseId\":\"VLLM\""
+    private const val NEW_MUSIC_VIDEOS = "\"browseId\":\"FEmusic_new_releases_videos\""
+    private const val NEW_MUSIC_ALBUMS = "\"browseId\":\"FEmusic_new_releases_albums\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
     private const val REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}"
     private const val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
@@ -41,6 +44,12 @@ internal object BrowseApiHelper {
 
     fun getTrendingQueryWeb(): String {
         return ServiceHelper.createQueryWeb(TRENDING)
+    }
+
+    fun getChannelQuery(client: AppClient, channelId: String, params: String? = null): String {
+        val channelTemplate =
+            if (params != null) String.format(CHANNEL_FULL, channelId, params) else String.format(CHANNEL, channelId)
+        return ServiceHelper.createQuery(client.browseTemplate, channelTemplate)
     }
 
     fun getChannelQueryWeb(channelId: String, params: String? = null): String {
@@ -95,6 +104,14 @@ internal object BrowseApiHelper {
 
     fun getLikedMusicQuery(): String {
         return ServiceHelper.createQueryWeb(LIKED_MUSIC)
+    }
+
+    fun getNewMusicAlbumsQuery(): String {
+        return ServiceHelper.createQueryRemix(NEW_MUSIC_ALBUMS)
+    }
+
+    fun getNewMusicVideosQuery(): String {
+        return ServiceHelper.createQueryRemix(NEW_MUSIC_VIDEOS)
     }
 
     fun getReelDetailsQuery(videoId: String, params: String): String {

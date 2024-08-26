@@ -3,8 +3,8 @@ package com.liskovsoft.youtubeapi.browse.v2
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
-import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -102,6 +102,20 @@ internal object BrowseService2 {
     @JvmStatic
     fun getLikedMusic(): MediaGroup? {
         val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getLikedMusicQuery())
+
+        return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+    }
+
+    @JvmStatic
+    fun getNewMusicAlbums(): MediaGroup? {
+        val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getNewMusicAlbumsQuery())
+
+        return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+    }
+
+    @JvmStatic
+    fun getNewMusicVideos(): MediaGroup? {
+        val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getNewMusicVideosQuery())
 
         return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
@@ -227,6 +241,12 @@ internal object BrowseService2 {
                 if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)))
             }
         }
+
+        //if (result.isEmpty()) {
+        //    getChannelResult(AppClient.WEB_REMIX, channelId)?.let {
+        //        if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)))
+        //    }
+        //}
 
         return result
     }
@@ -377,5 +397,11 @@ internal object BrowseService2 {
     private fun getBrowseRedirect(browseId: String, browseExpression: (String) -> BrowseResult?): BrowseResult? {
         val result = browseExpression(browseId)
         return if (result?.getRedirectBrowseId() != null) browseExpression(result.getRedirectBrowseId()!!) else result
+    }
+
+    private fun getChannelResult(client: AppClient, channelId: String, params: String? = null): BrowseResult? {
+        val wrapper = mBrowseApi.getBrowseResult(
+            BrowseApiHelper.getChannelQuery(client, channelId, params), client.userAgent, client.referer)
+        return RetrofitHelper.get(wrapper)
     }
 }

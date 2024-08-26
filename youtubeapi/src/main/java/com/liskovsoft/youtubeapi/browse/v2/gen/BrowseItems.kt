@@ -12,7 +12,9 @@ internal data class SectionWrapper(
     val continuationItemRenderer: ContinuationItemRenderer?,
     val gridVideoRenderer: VideoItem?, // Topic channel e.g. 'tanki - topic'
     val playlistVideoRenderer: VideoItem?, // ChannelPlaylist
-    val gridPlaylistRenderer: PlaylistItem? // ChannelPlaylist continuation
+    val gridPlaylistRenderer: PlaylistItem?, // ChannelPlaylist continuation
+    val gridRenderer: GridRenderer?,
+    val musicResponsiveHeaderRenderer: RadioItem?
 )
 
 internal data class TabRenderer(
@@ -159,7 +161,8 @@ internal data class Shelf(
     data class PlaylistVideoListRenderer(
         val contents: List<ItemWrapper?>?
     )
-    data class GridRenderer(
-        val items: List<ItemWrapper?>?
-    )
 }
+
+internal data class GridRenderer(
+    val items: List<ItemWrapper?>?
+)

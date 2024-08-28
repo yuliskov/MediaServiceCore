@@ -51,13 +51,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
 
-        applyFixesIfNeeded(result, videoId, clickTrackingParams);
-        result = retryIfNeeded(result, videoId, clickTrackingParams);
-
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
             return null;
         }
+
+        applyFixesIfNeeded(result, videoId, clickTrackingParams);
+        result = retryIfNeeded(result, videoId, clickTrackingParams);
 
         List<AdaptiveVideoFormat> adaptiveFormats = null;
         List<RegularVideoFormat> regularFormats = null;
@@ -224,30 +224,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
     }
 
-    private VideoInfo retryIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
-        if (result == null) {
+    private VideoInfo retryIfNeeded(VideoInfo videoInfo, String videoId, String clickTrackingParams) {
+        if (videoInfo == null) {
             return null;
         }
 
-        if (result.isUnplayable() && result.isRent()) {
-            Log.e(TAG, "Found rent content. Show trailer instead...");
-            result = getVideoInfo(result.getTrailerVideoId(), clickTrackingParams, AppClient.TV);
-        } else if (result.isUnplayable()) {
-            //Log.e(TAG, "Found restricted video. Retrying with embed query method...");
-            //// Support restricted (18+) videos viewing. Alt method from github
-            //result = getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED);
-            //
-            //if (result == null || result.isUnplayable()) {
-            //    Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
-            //    // user history won't work with this method
-            //    result = getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB);
-            //
-            //    if (result == null || result.isUnplayable()) {
-            //        Log.e(TAG, "Found video clip blocked in current location...");
-            //        result = getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB);
-            //    }
-            //}
+        VideoInfo result = null;
 
+        if (videoInfo.isUnplayable() && videoInfo.isRent()) {
+            Log.e(TAG, "Found rent content. Show trailer instead...");
+            result = getVideoInfo(videoInfo.getTrailerVideoId(), clickTrackingParams, AppClient.TV);
+        } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
                     () -> {
                         // Auth users only. The latest bug fix for "This content isn't available".
@@ -255,9 +242,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
                         VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
 
                         if (rootResult == null || rootResult.isUnplayable()) {
-                            return rootResult;
+                            return null;
                         }
 
+                        //rootResult.sync(videoInfo); // History fix
                         rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
                         return rootResult;
                     },
@@ -267,16 +255,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
             );
         }
 
-        return result;
+        return result != null ? result : videoInfo;
     }
     
     private VideoInfo getFirstPlayable(VideoInfoCallback... callbacks) {
         VideoInfo result = null;
 
         for (VideoInfoCallback callback : callbacks) {
-            result = callback.call();
+            VideoInfo videoInfo = callback.call();
 
-            if (result != null && !result.isUnplayable()) {
+            if (videoInfo != null && !videoInfo.isUnplayable()) {
+                result = videoInfo;
                 break;
             }
         }

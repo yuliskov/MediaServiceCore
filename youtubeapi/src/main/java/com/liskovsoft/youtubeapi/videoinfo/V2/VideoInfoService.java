@@ -5,6 +5,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
@@ -30,6 +31,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_EMBED = 6;
     private int mVideoInfoType = -1;
 
+    private interface VideoInfoCallback {
+        VideoInfo call();
+    }
+
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
         initVideoInfo();
@@ -46,6 +51,39 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         //RetrofitOkHttpHelper.skipAuth();
 
+        VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
+
+        if (result == null) {
+            Log.e(TAG, "Can't get video info. videoId: %s", videoId);
+            return null;
+        }
+
+        // Skip auth
+        //result.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB));
+
+        applyFixesIfNeeded(result, videoId, clickTrackingParams);
+        result = retryIfNeeded(result, videoId, clickTrackingParams);
+
+        List<AdaptiveVideoFormat> adaptiveFormats = null;
+        List<RegularVideoFormat> regularFormats = null;
+
+        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_DASH) || result.getRegularFormats() == null) {
+            decipherFormats(result.getAdaptiveFormats());
+            adaptiveFormats = result.getAdaptiveFormats();
+        }
+
+        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_URL) || result.getAdaptiveFormats() == null) {
+            decipherFormats(result.getRegularFormats());
+            regularFormats = result.getRegularFormats();
+        }
+
+        result.setAdaptiveFormats(adaptiveFormats);
+        result.setRegularFormats(regularFormats);
+
+        return result;
+    }
+
+    private VideoInfo getRootVideoInfo(String videoId, String clickTrackingParams) {
         VideoInfo result = null;
 
         switch (mVideoInfoType) {
@@ -85,39 +123,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         //result = getVideoInfoGeoWeb(videoId, clickTrackingParams); // no seek preview, fix 403 error!!
         //result = getVideoInfoWeb(videoId, clickTrackingParams); // all included, the best but many 403 errors(
         //result = getVideoInfoIOS(videoId, clickTrackingParams); // only FullHD, no 403 error?
-
-        //result.sync(getVideoInfoWeb(videoId, clickTrackingParams));
-
-        applyFixesIfNeeded(result, videoId, clickTrackingParams);
-        result = retryIfNeeded(result, videoId, clickTrackingParams);
-
-        //if (result != null) {
-        //    decipherFormats(result.getAdaptiveFormats());
-        //    decipherFormats(result.getRegularFormats());
-        //} else {
-        //    Log.e(TAG, "Can't get video info. videoId: %s", videoId);
-        //}
-
-        if (result == null) {
-            Log.e(TAG, "Can't get video info. videoId: %s", videoId);
-            return null;
-        }
-
-        List<AdaptiveVideoFormat> adaptiveFormats = null;
-        List<RegularVideoFormat> regularFormats = null;
-
-        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_DASH) || result.getRegularFormats() == null) {
-            decipherFormats(result.getAdaptiveFormats());
-            adaptiveFormats = result.getAdaptiveFormats();
-        }
-
-        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_URL) || result.getAdaptiveFormats() == null) {
-            decipherFormats(result.getRegularFormats());
-            regularFormats = result.getRegularFormats();
-        }
-
-        result.setAdaptiveFormats(adaptiveFormats);
-        result.setRegularFormats(regularFormats);
 
         return result;
     }
@@ -233,19 +238,48 @@ public class VideoInfoService extends VideoInfoServiceBase {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfo(result.getTrailerVideoId(), clickTrackingParams, AppClient.TV);
         } else if (result.isUnplayable()) {
-            Log.e(TAG, "Found restricted video. Retrying with embed query method...");
-            // Support restricted (18+) videos viewing. Alt method from github
-            result = getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED);
+            //Log.e(TAG, "Found restricted video. Retrying with embed query method...");
+            //// Support restricted (18+) videos viewing. Alt method from github
+            //result = getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED);
+            //
+            //if (result == null || result.isUnplayable()) {
+            //    Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
+            //    // user history won't work with this method
+            //    result = getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB);
+            //
+            //    if (result == null || result.isUnplayable()) {
+            //        Log.e(TAG, "Found video clip blocked in current location...");
+            //        result = getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB);
+            //    }
+            //}
 
-            if (result == null || result.isUnplayable()) {
-                Log.e(TAG, "Found restricted video. Retrying with restricted query method...");
-                // user history won't work with this method
-                result = getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB);
+            result = getFirstPlayable(
+                    () -> {
+                        // The latest bug fix for "This content isn't available". Auth users only.
+                        RetrofitOkHttpHelper.skipAuth();
+                        VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
+                        if (rootResult != null) {
+                            rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
+                        }
+                        return rootResult;
+                    },
+                    () -> getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED), // Restricted (18+) videos
+                    () -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
+                    () -> getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB) // Video clip blocked in current location
+            );
+        }
 
-                if (result == null || result.isUnplayable()) {
-                    Log.e(TAG, "Found video clip blocked in current location...");
-                    result = getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB);
-                }
+        return result;
+    }
+    
+    private VideoInfo getFirstPlayable(VideoInfoCallback... callbacks) {
+        VideoInfo result = null;
+
+        for (VideoInfoCallback callback : callbacks) {
+            result = callback.call();
+
+            if (result != null && !result.isUnplayable()) {
+                break;
             }
         }
 

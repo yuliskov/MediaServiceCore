@@ -255,12 +255,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
             result = getFirstPlayable(
                     () -> {
-                        // The latest bug fix for "This content isn't available". Auth users only.
+                        // Auth users only. The latest bug fix for "This content isn't available".
                         RetrofitOkHttpHelper.skipAuth();
                         VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
-                        if (rootResult != null) {
-                            rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
+
+                        if (rootResult == null || rootResult.isUnplayable()) {
+                            return rootResult;
                         }
+
+                        rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
                         return rootResult;
                     },
                     () -> getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED), // Restricted (18+) videos

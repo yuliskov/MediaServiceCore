@@ -49,20 +49,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
-        //RetrofitOkHttpHelper.skipAuth();
-
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
+
+        applyFixesIfNeeded(result, videoId, clickTrackingParams);
+        result = retryIfNeeded(result, videoId, clickTrackingParams);
 
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
             return null;
         }
-
-        // Skip auth
-        //result.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB));
-
-        applyFixesIfNeeded(result, videoId, clickTrackingParams);
-        result = retryIfNeeded(result, videoId, clickTrackingParams);
 
         List<AdaptiveVideoFormat> adaptiveFormats = null;
         List<RegularVideoFormat> regularFormats = null;

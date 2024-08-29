@@ -245,8 +245,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
                             return null;
                         }
 
-                        //rootResult.sync(videoInfo); // History fix
-                        rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
+                        rootResult.sync(videoInfo); // History fix
+                        //rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
                         return rootResult;
                     },
                     () -> getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED), // Restricted (18+) videos

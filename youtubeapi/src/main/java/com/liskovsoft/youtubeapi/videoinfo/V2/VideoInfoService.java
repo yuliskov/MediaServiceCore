@@ -29,6 +29,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_ANDROID = 4;
     private final static int VIDEO_INFO_IOS = 5;
     private final static int VIDEO_INFO_EMBED = 6;
+    private final static int[] VIDEO_INFO_TYPE_LIST = {
+            VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
+    };
     private int mVideoInfoType = -1;
 
     private interface VideoInfoCallback {
@@ -144,8 +147,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType,
-                new int[] {VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB});
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
     }
 
     private VideoInfo getVideoInfo(String videoId, String clickTrackingParams, AppClient client) {
@@ -257,6 +259,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
                         return rootResult;
                     }
             );
+
+            if (result == null || result.isUnplayable()) {
+                result = getFirstPlayableByType(videoId, clickTrackingParams);
+            }
         }
 
         return result != null ? result : videoInfo;
@@ -271,6 +277,22 @@ public class VideoInfoService extends VideoInfoServiceBase {
             if (videoInfo != null && !videoInfo.isUnplayable()) {
                 result = videoInfo;
                 break;
+            }
+        }
+
+        return result;
+    }
+
+    private VideoInfo getFirstPlayableByType(String videoId, String clickTrackingParams) {
+        VideoInfo result = null;
+
+        for (AppClient client : AppClient.values()) {
+            //RetrofitOkHttpHelper.skipAuth();
+            VideoInfo videoInfo = getVideoInfo(videoId, clickTrackingParams, client);
+
+            if (videoInfo != null && !videoInfo.isUnplayable()) {
+                 result = videoInfo;
+                 break;
             }
         }
 

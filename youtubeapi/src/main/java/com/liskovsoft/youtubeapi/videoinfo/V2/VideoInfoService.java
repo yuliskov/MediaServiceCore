@@ -49,12 +49,16 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        //RetrofitOkHttpHelper.skipAuth();
+
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
 
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
             return null;
         }
+
+        //result.sync(getRootVideoInfo(videoId, clickTrackingParams));
 
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
         result = retryIfNeeded(result, videoId, clickTrackingParams);
@@ -236,6 +240,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(videoInfo.getTrailerVideoId(), clickTrackingParams, AppClient.TV);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
+                    () -> getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED), // Restricted (18+) videos
+                    () -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
+                    () -> getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB), // Video clip blocked in current location
                     () -> {
                         // Auth users only. The latest bug fix for "This content isn't available".
                         RetrofitOkHttpHelper.skipAuth();
@@ -248,10 +255,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
                         rootResult.sync(videoInfo); // History fix
                         //rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
                         return rootResult;
-                    },
-                    () -> getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED), // Restricted (18+) videos
-                    () -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
-                    () -> getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB) // Video clip blocked in current location
+                    }
             );
         }
 

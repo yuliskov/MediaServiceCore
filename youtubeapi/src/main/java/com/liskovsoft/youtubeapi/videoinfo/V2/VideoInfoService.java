@@ -92,39 +92,32 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_INITIAL:
                 result = InitialResponse.getVideoInfo(videoId);
                 if (result != null) {
-                    VideoInfo syncInfo = getVideoInfo(videoId, clickTrackingParams, AppClient.WEB);
+                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                     result.sync(syncInfo);
                     break;
                 }
             case VIDEO_INFO_TV:
                 // Doesn't contain dash manifest url and hls link
                 // Support viewing private (user) videos
-                result = getVideoInfo(videoId, clickTrackingParams, AppClient.TV);
+                result = getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_WEB:
-                result = getVideoInfo(videoId, clickTrackingParams, AppClient.WEB);
+                result = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_MWEB:
-                result = getVideoInfo(videoId, clickTrackingParams, AppClient.MWEB);
+                result = getVideoInfo(AppClient.MWEB, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_ANDROID:
                 // Doesn't contain dash manifest url
-                result = getVideoInfo(videoId, clickTrackingParams, AppClient.ANDROID);
+                result = getVideoInfo(AppClient.ANDROID, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_IOS:
-                result = getVideoInfo(videoId, clickTrackingParams, AppClient.IOS);
+                result = getVideoInfo(AppClient.IOS, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_EMBED:
-                result = getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED);
+                result = getVideoInfo(AppClient.EMBED, videoId, clickTrackingParams);
                 break;
         }
-
-        // NOTE: Request below doesn't contain dashManifestUrl!!!
-        //result = getVideoInfoTV(videoId, clickTrackingParams); // no dash url and hls link
-        //result = getVideoInfoAndroid(videoId, clickTrackingParams); // no seek preview, no dash url, fix 403 error?
-        //result = getVideoInfoGeoWeb(videoId, clickTrackingParams); // no seek preview, fix 403 error!!
-        //result = getVideoInfoWeb(videoId, clickTrackingParams); // all included, the best but many 403 errors(
-        //result = getVideoInfoIOS(videoId, clickTrackingParams); // only FullHD, no 403 error?
 
         return result;
     }
@@ -150,40 +143,40 @@ public class VideoInfoService extends VideoInfoServiceBase {
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
     }
 
-    private VideoInfo getVideoInfo(String videoId, String clickTrackingParams, AppClient client) {
+    private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, client);
-        return getVideoInfo(videoInfoQuery, client);
+        return getVideoInfo(client, videoInfoQuery);
     }
 
-    private VideoInfo getVideoInfoGeo(String videoId, String clickTrackingParams, AppClient client) {
+    private VideoInfo getVideoInfoGeo(AppClient client, String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeo(videoId, clickTrackingParams, client);
-        return getVideoInfo(videoInfoQuery, client);
+        return getVideoInfo(client, videoInfoQuery);
     }
 
     /**
      * NOTE: user history won't work with this method
      */
-    private VideoInfo getVideoInfoRestricted(String videoId, String clickTrackingParams, AppClient client) {
+    private VideoInfo getVideoInfoRestricted(AppClient client, String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, client);
 
-        return getVideoInfoRestricted(videoInfoQuery, client);
+        return getVideoInfoRestricted(client, videoInfoQuery);
     }
 
-    private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, AppClient.IOS);
-        return getVideoInfoHls(videoInfoQuery);
-    }
-
-    private VideoInfo getVideoInfo(String videoInfoQuery, AppClient client) {
+    private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorId(), client != null ? client.getUserAgent() : null);
 
         return RetrofitHelper.get(wrapper);
     }
 
-    private VideoInfo getVideoInfoRestricted(String videoInfoQuery, AppClient client) {
+    private VideoInfo getVideoInfoRestricted(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId(), client != null ? client.getUserAgent() : null);
 
         return RetrofitHelper.get(wrapper);
+    }
+
+    private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, AppClient.IOS);
+        return getVideoInfoHls(videoInfoQuery);
     }
 
     private VideoInfoHls getVideoInfoHls(String videoInfoQuery) {
@@ -223,7 +216,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         // TV and others has a limited number of auto generated subtitles
         if (result.getTranslationLanguages() != null && result.getTranslationLanguages().size() < 50) {
             Log.d(TAG, "Enable full list of auto generated subtitles...");
-            VideoInfo webInfo = getVideoInfo(videoId, clickTrackingParams, AppClient.WEB);
+            VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
             if (webInfo != null) {
                 result.setTranslationLanguages(webInfo.getTranslationLanguages());
             }
@@ -239,12 +232,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         if (videoInfo.isUnplayable() && videoInfo.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
-            result = getVideoInfo(videoInfo.getTrailerVideoId(), clickTrackingParams, AppClient.TV);
+            result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    () -> getVideoInfo(videoId, clickTrackingParams, AppClient.EMBED), // Restricted (18+) videos
-                    () -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
-                    () -> getVideoInfoGeo(videoId, clickTrackingParams, AppClient.WEB), // Video clip blocked in current location
+                    () -> getVideoInfo(AppClient.EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
+                    //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
+                    () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {
                         // Auth users only. The latest bug fix for "This content isn't available".
                         RetrofitOkHttpHelper.skipAuth();
@@ -253,9 +246,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
                         if (rootResult == null || rootResult.isUnplayable()) {
                             return null;
                         }
-
-                        rootResult.sync(videoInfo); // History fix
-                        //rootResult.sync(getVideoInfo(videoId, clickTrackingParams, AppClient.WEB)); // History fix
                         return rootResult;
                     }
             );
@@ -287,8 +277,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         VideoInfo result = null;
 
         for (AppClient client : AppClient.values()) {
-            //RetrofitOkHttpHelper.skipAuth();
-            VideoInfo videoInfo = getVideoInfo(videoId, clickTrackingParams, client);
+            RetrofitOkHttpHelper.skipAuth();
+            VideoInfo videoInfo = getVideoInfo(client, videoId, clickTrackingParams);
 
             if (videoInfo != null && !videoInfo.isUnplayable()) {
                  result = videoInfo;

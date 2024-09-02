@@ -17,6 +17,7 @@ internal enum class AppClient(
     TV("TVHTML5", "7.20240424.00.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
     WEB("WEB", "2.20240726.00.00", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
     MWEB("MWEB", "2.20240726.00.00", userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com/"),
+    // Request contains an invalid argument.
     WEB_CREATOR("WEB_CREATOR", "1.20220726.00.00", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
     WEB_REMIX("WEB_REMIX", "1.20240819.01.00", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com/"),
     KIDS("TVHTML5_KIDS", "3.20231113.03.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv/kids"),

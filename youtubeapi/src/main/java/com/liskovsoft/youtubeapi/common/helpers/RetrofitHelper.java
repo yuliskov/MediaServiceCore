@@ -7,6 +7,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonClass;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
@@ -34,6 +35,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class RetrofitHelper {
+    private static final String TAG = RetrofitHelper.class.getSimpleName();
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
 
@@ -63,7 +65,7 @@ public class RetrofitHelper {
     public static <T> T get(Call<T> wrapper) {
         Response<T> response = getResponse(wrapper);
 
-        handleErrors(response);
+        //handleResponseErrors(response);
 
         return response != null ? response.body() : null;
     }
@@ -165,7 +167,7 @@ public class RetrofitHelper {
         throw new IllegalStateException("RetrofitHelper: unknown class: " + clazz.getName());
     }
 
-    private static <T> void handleErrors(Response<T> response) {
+    private static <T> void handleResponseErrors(Response<T> response) {
         if (response == null || response.body() != null) {
             return;
         }
@@ -174,7 +176,9 @@ public class RetrofitHelper {
             Gson gson = new GsonBuilder().create();
             try {
                 ErrorResponse error = response.errorBody() != null ? gson.fromJson(response.errorBody().string(), ErrorResponse.class) : null;
-                throw new IllegalStateException(error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error");
+                String errorMsg = error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error";
+                Log.e(TAG, errorMsg);
+                throw new IllegalStateException(errorMsg);
             } catch (IOException e) {
                 // handle failure to read error
             }

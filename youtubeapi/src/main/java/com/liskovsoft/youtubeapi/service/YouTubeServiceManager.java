@@ -85,7 +85,7 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void invalidateCache() {
         invalidatePlaybackCache();
-        VideoInfoService.instance().invalidateCache();
+        VideoInfoService.instance().resetInfoType();
     }
 
     @Override

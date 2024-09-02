@@ -133,7 +133,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         persistVideoInfoType();
     }
 
-    public void invalidateCache() {
+    public void resetInfoType() {
         mVideoInfoType = -1;
         nextVideoInfo();
         persistVideoInfoType();

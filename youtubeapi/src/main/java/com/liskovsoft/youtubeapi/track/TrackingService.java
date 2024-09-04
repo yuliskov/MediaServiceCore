@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.track;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
@@ -27,6 +28,10 @@ public class TrackingService {
 
     public void updateWatchTime(String videoId, float positionSec, float lengthSeconds,
                                 String eventId, String visitorMonitoringData, String ofParam) {
+        if (Helpers.anyNull(videoId, eventId, visitorMonitoringData, ofParam)) {
+            return;
+        }
+
         updateWatchTimeFull(
                 videoId,
                 lengthSeconds,

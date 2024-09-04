@@ -43,7 +43,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mOfParam; // used in tracking
     private String mStoryboardSpec;
     private boolean mIsUnplayable;
-    private boolean mIsAgeRestricted;
+    private boolean mIsEmbedRestricted;
     private String mPlayabilityStatus;
     private final long mCreatedTimeMs;
     private String mStartTimestamp;
@@ -111,7 +111,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mOfParam = videoInfo.getOfParam();
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
-        formatInfo.mIsAgeRestricted = videoInfo.isAgeRestricted();
+        formatInfo.mIsEmbedRestricted = videoInfo.isEmbedRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
         formatInfo.mStartTimestamp = videoInfo.getStartTimestamp();
@@ -326,8 +326,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public boolean isAgeRestricted() {
-        return mIsAgeRestricted;
+    public boolean isEmbedRestricted() {
+        return mIsEmbedRestricted;
     }
 
     @Override

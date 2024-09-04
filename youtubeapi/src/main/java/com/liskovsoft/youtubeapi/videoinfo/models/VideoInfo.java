@@ -208,14 +208,21 @@ public class VideoInfo {
     }
 
     public boolean isUnplayable() {
-        return isEmbedRestricted() || isAgeRestricted();
+        return isEmbedRestricted() || isVisibilityRestricted() || isAgeRestricted();
     }
 
     /**
-     * Video cannot be embedded
+     * Video cannot be embedded or we received a temporal ban
      */
     public boolean isEmbedRestricted() {
-        return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE, STATUS_ERROR);
+        return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE);
+    }
+
+    /**
+     * Removed or hidden by the user
+     */
+    public boolean isVisibilityRestricted() {
+        return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_ERROR);
     }
 
     /**

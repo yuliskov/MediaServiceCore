@@ -41,7 +41,7 @@ public interface MediaItemFormatInfo {
     List<String> createUrlList();
     MediaItemStoryboard createStoryboard();
     boolean isUnplayable();
-    boolean isAgeRestricted();
+    boolean isEmbedRestricted();
     String getPlayabilityStatus();
     boolean isStreamSeekable();
     /**

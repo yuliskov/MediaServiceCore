@@ -63,6 +63,9 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.reason")
     private String mPlayabilityReason;
 
+    @JsonPath("$.playabilityStatus.playableInEmbed")
+    private boolean mIsPlayableInEmbed;
+
     @JsonPath("$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason")
     private TextItem mPlayabilityDescription;
 
@@ -208,13 +211,20 @@ public class VideoInfo {
     }
 
     public boolean isUnplayable() {
-        return isEmbedRestricted() || isVisibilityRestricted() || isAgeRestricted();
+        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted();
     }
 
     /**
      * Video cannot be embedded or we received a temporal ban
      */
     public boolean isEmbedRestricted() {
+        return !mIsPlayableInEmbed && isUnknownRestricted();
+    }
+
+    /**
+     * Reason of unavailability unknown
+     */
+    public boolean isUnknownRestricted() {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE);
     }
 

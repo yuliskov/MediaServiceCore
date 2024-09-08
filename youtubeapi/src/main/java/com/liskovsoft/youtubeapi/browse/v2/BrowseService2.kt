@@ -232,8 +232,9 @@ internal object BrowseService2 {
 
         homeResult?.let { it.getShelves()?.forEach {
             val title = it?.getTitle()
-            if (title != null && result.firstOrNull { it.title == title } == null) // only unique rows
-                result.add(ItemSectionMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL))) } }
+            if (it != null && result.firstOrNull { it.title == title } == null) // only unique rows
+                result.add(ItemSectionMediaGroup(it,
+                    createOptions(if (title == null) MediaGroup.TYPE_CHANNEL_UPLOADS else MediaGroup.TYPE_CHANNEL))) } } // playlists don't have a title
 
         if (result.isEmpty()) {
             val playlist = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId))

@@ -56,6 +56,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mContainsDashInfo;
     private boolean mContainsDashVideoInfo;
     private boolean mContainsUrlListInfo;
+    private boolean mIsHistoryBroken;
 
     private YouTubeMediaItemFormatInfo() {
         mCreatedTimeMs = System.currentTimeMillis();
@@ -111,6 +112,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mOfParam = videoInfo.getOfParam();
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
+        formatInfo.mIsHistoryBroken = videoInfo.isHistoryBroken();
         formatInfo.mIsEmbedRestricted = videoInfo.isEmbedRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
@@ -328,6 +330,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean isEmbedRestricted() {
         return mIsEmbedRestricted;
+    }
+
+    @Override
+    public boolean isHistoryBroken() {
+        return mIsHistoryBroken;
     }
 
     @Override

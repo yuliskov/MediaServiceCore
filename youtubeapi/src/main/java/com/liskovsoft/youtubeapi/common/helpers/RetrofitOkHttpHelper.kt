@@ -13,7 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 internal object RetrofitOkHttpHelper {
-    private var skipAuthNums: Int = 0;
+    private var skipAuthNums: Int = 0
 
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()
@@ -31,6 +31,9 @@ internal object RetrofitOkHttpHelper {
     fun skipAuth() {
         skipAuthNums++
     }
+
+    @JvmStatic
+    fun isSkipAuth(): Boolean = skipAuthNums > 0
 
     private val headers = mapOf(
         "User-Agent" to DefaultHeaders.APP_USER_AGENT,

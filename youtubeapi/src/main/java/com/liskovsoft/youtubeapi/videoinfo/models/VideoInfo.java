@@ -94,6 +94,7 @@ public class VideoInfo {
     private int mSegmentDurationUs;
     private boolean mIsStreamSeekable;
     private List<CaptionTrack> mMergedCaptionTracks;
+    private boolean mIsHistoryBroken;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -353,13 +354,21 @@ public class VideoInfo {
     }
 
     public void sync(VideoInfo videoInfo) {
-        if (videoInfo == null) {
+        if (videoInfo == null || Helpers.anyNull(videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam())) {
             return;
         }
 
         setEventId(videoInfo.getEventId());
         setVisitorMonitoringData(videoInfo.getVisitorMonitoringData());
         setOfParam(videoInfo.getOfParam());
+    }
+
+    public void setHistoryBroken(boolean isBroken) {
+        mIsHistoryBroken = isBroken;
+    }
+
+    public boolean isHistoryBroken() {
+        return mIsHistoryBroken;
     }
 
     private void parseTrackingParams() {

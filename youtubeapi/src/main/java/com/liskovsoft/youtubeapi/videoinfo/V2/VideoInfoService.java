@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -165,13 +167,25 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorId(), client != null ? client.getUserAgent() : null);
 
-        return RetrofitHelper.get(wrapper);
+        return getVideoInfo(wrapper);
     }
 
     private VideoInfo getVideoInfoRestricted(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorId(), client != null ? client.getUserAgent() : null);
 
-        return RetrofitHelper.get(wrapper);
+        return getVideoInfo(wrapper);
+    }
+
+    private static @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper) {
+        boolean skipAuth = RetrofitOkHttpHelper.isSkipAuth();
+
+        VideoInfo videoInfo = RetrofitHelper.get(wrapper);
+
+        if (videoInfo != null && skipAuth) {
+            videoInfo.setHistoryBroken(true);
+        }
+
+        return videoInfo;
     }
 
     private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
@@ -281,8 +295,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             VideoInfo videoInfo = getVideoInfo(client, videoId, clickTrackingParams);
 
             if (videoInfo != null && !videoInfo.isUnplayable()) {
-                 result = videoInfo;
-                 break;
+                result = videoInfo;
+                break;
             }
         }
 

@@ -53,9 +53,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private int mSegmentDurationUs;
     private boolean mHasExtendedHlsFormats;
     private float mLoudnessDb;
-    private boolean mContainsDashInfo;
-    private boolean mContainsDashVideoInfo;
-    private boolean mContainsUrlListInfo;
+    private boolean mContainsDashVideoFormats;
     private boolean mIsHistoryBroken;
 
     private YouTubeMediaItemFormatInfo() {
@@ -70,8 +68,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         YouTubeMediaItemFormatInfo formatInfo = new YouTubeMediaItemFormatInfo();
 
         if (videoInfo.getAdaptiveFormats() != null) {
-            formatInfo.mContainsDashInfo = true;
-            formatInfo.mContainsDashVideoInfo = videoInfo.containsAdaptiveVideoInfo();
+            formatInfo.mContainsDashVideoFormats = videoInfo.containsAdaptiveVideoInfo();
 
             formatInfo.mDashFormats = new ArrayList<>();
 
@@ -81,8 +78,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         }
 
         if (videoInfo.getRegularFormats() != null) {
-            formatInfo.mContainsUrlListInfo = true;
-
             formatInfo.mUrlFormats = new ArrayList<>();
 
             for (RegularVideoFormat format : videoInfo.getRegularFormats()) {
@@ -238,17 +233,17 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean containsMedia() {
-        return containsDashUrl() || containsHlsUrl() || containsDashVideoInfo() || containsUrlListInfo();
+        return containsDashUrl() || containsHlsUrl() || containsDashVideoFormats() || containsUrlFormats();
     }
 
     @Override
-    public boolean containsDashInfo() {
-        return mContainsDashInfo;
+    public boolean containsDashFormats() {
+        return mDashFormats != null;
     }
 
     @Override
-    public boolean containsDashVideoInfo() {
-        return mContainsDashVideoInfo;
+    public boolean containsDashVideoFormats() {
+        return mContainsDashVideoFormats;
     }
 
     @Override
@@ -262,8 +257,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public boolean containsUrlListInfo() {
-        return mContainsUrlListInfo;
+    public boolean containsUrlFormats() {
+        return mUrlFormats != null;
     }
 
     @Override

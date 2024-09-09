@@ -23,7 +23,7 @@ public class YouTubeUrlListBuilder implements UrlListBuilder {
     public static UrlListBuilder from(MediaItemFormatInfo formatInfo) {
         UrlListBuilder builder = new YouTubeUrlListBuilder(formatInfo);
 
-        if (formatInfo.containsUrlListInfo()) {
+        if (formatInfo.containsUrlFormats()) {
             for (MediaFormat format : formatInfo.getUrlFormats()) {
                 builder.append(format);
             }
@@ -46,7 +46,7 @@ public class YouTubeUrlListBuilder implements UrlListBuilder {
 
     @Override
     public List<String> buildUriList() {
-        if (!mInfo.containsUrlListInfo()) {
+        if (!mInfo.containsUrlFormats()) {
             return null;
         }
 

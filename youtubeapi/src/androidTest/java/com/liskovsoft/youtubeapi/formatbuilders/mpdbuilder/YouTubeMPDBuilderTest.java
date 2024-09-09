@@ -59,7 +59,7 @@ public class YouTubeMPDBuilderTest {
     public void testThatMpdNotEmpty() {
         MediaItemFormatInfo mediaItemDetails = mService.getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_CAPTIONS);
 
-        assertTrue("Is dash", mediaItemDetails.containsDashInfo());
+        assertTrue("Is dash", mediaItemDetails.containsDashFormats());
 
         InputStream mpdStream = mediaItemDetails.createMpdStream();
 

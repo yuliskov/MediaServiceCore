@@ -65,8 +65,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         //result.sync(getRootVideoInfo(videoId, clickTrackingParams));
 
-        applyFixesIfNeeded(result, videoId, clickTrackingParams);
         result = retryIfNeeded(result, videoId, clickTrackingParams);
+        applyFixesIfNeeded(result, videoId, clickTrackingParams);
 
         List<AdaptiveVideoFormat> adaptiveFormats = null;
         List<RegularVideoFormat> regularFormats = null;
@@ -88,9 +88,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getRootVideoInfo(String videoId, String clickTrackingParams) {
+        return getVideoInfo(mVideoInfoType, videoId, clickTrackingParams);
+    }
+
+    private VideoInfo getVideoInfo(int type, String videoId, String clickTrackingParams) {
         VideoInfo result = null;
 
-        switch (mVideoInfoType) {
+        switch (type) {
             case VIDEO_INFO_INITIAL:
                 result = InitialResponse.getVideoInfo(videoId);
                 if (result != null) {
@@ -264,9 +268,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                     }
             );
 
-            if (result == null || result.isUnplayable()) {
-                result = getFirstPlayableByType(videoId, clickTrackingParams);
-            }
+            //if (result == null || result.isUnplayable()) {
+            //    result = getFirstPlayableByType(videoId, clickTrackingParams);
+            //}
         }
 
         return result != null ? result : videoInfo;
@@ -290,9 +294,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfo getFirstPlayableByType(String videoId, String clickTrackingParams) {
         VideoInfo result = null;
 
-        for (AppClient client : AppClient.values()) {
+        for (int type : VIDEO_INFO_TYPE_LIST) {
             RetrofitOkHttpHelper.skipAuth();
-            VideoInfo videoInfo = getVideoInfo(client, videoId, clickTrackingParams);
+            VideoInfo videoInfo = getVideoInfo(type, videoId, clickTrackingParams);
 
             if (videoInfo != null && !videoInfo.isUnplayable()) {
                 result = videoInfo;

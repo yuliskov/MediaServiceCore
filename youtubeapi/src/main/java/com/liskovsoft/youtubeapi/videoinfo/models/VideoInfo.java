@@ -342,6 +342,9 @@ public class VideoInfo {
         return getEventId() != null && getVisitorMonitoringData() != null;
     }
 
+    /**
+     * Sync live data
+     */
     public void sync(DashInfo dashInfo) {
         if (dashInfo == null) {
             return;
@@ -353,6 +356,9 @@ public class VideoInfo {
         mIsStreamSeekable = dashInfo.isSeekable();
     }
 
+    /**
+     * Sync history data
+     */
     public void sync(VideoInfo videoInfo) {
         if (videoInfo == null || Helpers.anyNull(videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam())) {
             return;
@@ -361,6 +367,7 @@ public class VideoInfo {
         setEventId(videoInfo.getEventId());
         setVisitorMonitoringData(videoInfo.getVisitorMonitoringData());
         setOfParam(videoInfo.getOfParam());
+        setHistoryBroken(false);
     }
 
     public void setHistoryBroken(boolean isBroken) {

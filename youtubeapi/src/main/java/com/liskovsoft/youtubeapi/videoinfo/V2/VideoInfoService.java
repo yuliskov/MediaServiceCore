@@ -58,6 +58,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
 
+        //RetrofitOkHttpHelper.skipAuth(false);
+
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
             return null;

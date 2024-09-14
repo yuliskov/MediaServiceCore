@@ -13,7 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 internal object RetrofitOkHttpHelper {
-    private var skipAuthNums: Int = 0
+    private var skipAuth: Boolean = false
 
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()
@@ -28,12 +28,12 @@ internal object RetrofitOkHttpHelper {
     var disableCompression: Boolean = false
 
     @JvmStatic
-    fun skipAuth() {
-        skipAuthNums++
+    fun skipAuth(skip: Boolean) {
+        skipAuth = skip
     }
 
     @JvmStatic
-    fun isSkipAuth(): Boolean = skipAuthNums > 0
+    fun isSkipAuth(): Boolean = skipAuth
 
     private val headers = mapOf(
         "User-Agent" to DefaultHeaders.APP_USER_AGENT,
@@ -68,8 +68,7 @@ internal object RetrofitOkHttpHelper {
             val url = request.url().toString()
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
-                if (authHeaders.isEmpty() || skipAuthNums > 0) {
-                    if (skipAuthNums > 0) skipAuthNums--
+                if (authHeaders.isEmpty() || skipAuth) {
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false"), request, requestBuilder)
                 } else {
                     applyQueryKeys(mapOf("prettyPrint" to "false"), request, requestBuilder)

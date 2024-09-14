@@ -43,8 +43,9 @@ internal object WatchNextService {
         var suggestionsResult: WatchNextResult? = null
 
         if (watchNextResult?.isEmpty() == true) { // 3 items in a row temporal fix
-            RetrofitOkHttpHelper.skipAuth()
+            RetrofitOkHttpHelper.skipAuth(true)
             suggestionsResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+            RetrofitOkHttpHelper.skipAuth(false)
         }
 
         return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, suggestionsResult) else null
@@ -61,8 +62,9 @@ internal object WatchNextService {
         var continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
 
         if (continuation == null || continuation.isEmpty()) {
-            RetrofitOkHttpHelper.skipAuth()
+            RetrofitOkHttpHelper.skipAuth(true)
             continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
+            RetrofitOkHttpHelper.skipAuth(false)
         }
 
         return SuggestionsGroup.from(continuation, mediaGroup)

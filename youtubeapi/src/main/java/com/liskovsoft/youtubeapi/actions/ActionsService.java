@@ -99,10 +99,12 @@ public class ActionsService {
     public void clearSearchHistory() {
         if (mBrowseService.getSuggestToken() == null) {
             // Empty start suggestions fix: use anonymous search
-            RetrofitOkHttpHelper.skipAuth();
+            RetrofitOkHttpHelper.skipAuth(true);
         }
 
         Call<Void> wrapper = mActionsManager.clearSearchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper);
+
+        RetrofitOkHttpHelper.skipAuth(false);
     }
 }

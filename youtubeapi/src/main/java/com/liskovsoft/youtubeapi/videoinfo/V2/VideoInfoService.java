@@ -54,18 +54,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
-        //RetrofitOkHttpHelper.skipAuth(true);
+        RetrofitOkHttpHelper.skipAuth(true);
 
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
 
-        //RetrofitOkHttpHelper.skipAuth(false);
+        RetrofitOkHttpHelper.skipAuth(false);
 
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
             return null;
         }
 
-        //result.sync(getRootVideoInfo(videoId, clickTrackingParams));
+        result.sync(getRootVideoInfo(videoId, clickTrackingParams));
         
         result = retryIfNeeded(result, videoId, clickTrackingParams);
         RetrofitOkHttpHelper.skipAuth(result.isHistoryBroken());
@@ -263,9 +263,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {
                         // Auth users only. The latest bug fix for "This content isn't available".
-                        RetrofitOkHttpHelper.skipAuth(true);
+                        //RetrofitOkHttpHelper.skipAuth(true);
                         VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
-                        RetrofitOkHttpHelper.skipAuth(false);
+                        //RetrofitOkHttpHelper.skipAuth(false);
 
                         if (rootResult == null || rootResult.isUnplayable()) {
                             return null;

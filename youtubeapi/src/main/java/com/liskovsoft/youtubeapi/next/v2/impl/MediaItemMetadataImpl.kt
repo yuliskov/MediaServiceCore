@@ -114,7 +114,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         }}
         // Merge unnamed section together
         val groups = suggestedSections?.filter { it.getTitle()?.trim() == ""  }
-        val mergedSection = groups?.let { SuggestionsGroup(it.last(), it) }
+        val mergedSection = groups?.let { SuggestionsGroup(it) }
         if ((list?.size ?: 0) > 0 || mergedSection != null)
             listOfNotNull(list, listOfNotNull(mergedSection)).flatten()
         else

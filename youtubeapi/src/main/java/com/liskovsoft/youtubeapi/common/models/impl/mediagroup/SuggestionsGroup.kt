@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 import java.util.*
 
-internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
+internal data class SuggestionsGroup(val shelf: ShelfRenderer, val shelves: List<ShelfRenderer>? = null): MediaGroup {
     private var _titleItem: String? = null
                     get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
@@ -16,7 +16,8 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
                     set(value) { field = value ?: "" }
 
     private val titleItem by lazy { shelf.getTitle() }
-    private val mediaItemList by lazy { shelf.getItemWrappers()?.mapIndexed { index, it -> it?.let { WrapperMediaItem(it).apply { playlistIndex = index } } } }
+    private val mediaItemList by lazy { (shelves?.flatMap { it.getItemWrappers() ?: emptyList() } ?: shelf.getItemWrappers())
+        ?.mapIndexed { index, it -> it?.let { WrapperMediaItem(it).apply { playlistIndex = index } } } }
     private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
 
     override fun getType(): Int {

@@ -42,11 +42,11 @@ internal object WatchNextService {
         val watchNextResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
         var suggestionsResult: WatchNextResult? = null
 
-        if (watchNextResult?.isEmpty() == true) { // 3 items in a row temporal fix
-            RetrofitOkHttpHelper.skipAuth(true)
-            suggestionsResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
-            RetrofitOkHttpHelper.skipAuth(false)
-        }
+        //if (watchNextResult?.isEmpty() == true) { // 3 items in a row temporal fix
+        //    RetrofitOkHttpHelper.skipAuth(true)
+        //    suggestionsResult = getWatchNextResult(videoId, playlistId, playlistIndex, playlistParams)
+        //    RetrofitOkHttpHelper.skipAuth(false)
+        //}
 
         return if (watchNextResult != null) MediaItemMetadataImpl(watchNextResult, suggestionsResult) else null
     }

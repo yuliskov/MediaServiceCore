@@ -104,14 +104,19 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val subscriberCountItem by lazy { videoOwner?.getSubscriberCount() }
     private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
     private val suggestionList by lazy {
-        val list = suggestedSections?.mapIndexedNotNull { idx, it -> if (it.getItemWrappers() != null) SuggestionsGroup(it).apply {
+        val list = suggestedSections
+                ?.filter { it.getTitle()?.trim() != "" && it.getItemWrappers() != null } // remove unnamed sections (new suggestions type)
+                ?.mapIndexed { idx, it -> SuggestionsGroup(it).apply {
             // Replace "Up Next" with real playlist name
             if (idx == 0 && playlistInfo?.title != null) {
                 title = playlistInfo?.title
             }
-        } else null }
-        if ((list?.size ?: 0) > 0)
-            list
+        }}
+        // Merge unnamed section together
+        val groups = suggestedSections?.filter { it.getTitle()?.trim() == ""  }
+        val mergedSection = groups?.let { SuggestionsGroup(it.last(), it) }
+        if ((list?.size ?: 0) > 0 || mergedSection != null)
+            listOfNotNull(list, listOfNotNull(mergedSection)).flatten()
         else
             // In rare cases first chip item contains all shelfs
             suggestedSections?.firstOrNull()?.getChipItems()?.firstOrNull()?.run {

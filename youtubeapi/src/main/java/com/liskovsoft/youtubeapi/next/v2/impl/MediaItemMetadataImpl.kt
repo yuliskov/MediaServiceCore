@@ -114,8 +114,11 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         }}
         // Merge unnamed section together
         val groups = suggestedSections?.filter { it.getTitle()?.trim() == ""  }
-        val mergedSection = groups?.let { SuggestionsGroup(it) }
-        if ((list?.size ?: 0) > 0 || mergedSection != null)
+        var mergedSection: SuggestionsGroup? = null
+        if (groups?.isNotEmpty() == true) {
+            mergedSection = SuggestionsGroup(groups)
+        }
+        if (list?.isNotEmpty() == true || mergedSection != null)
             listOfNotNull(list, listOfNotNull(mergedSection)).flatten()
         else
             // In rare cases first chip item contains all shelfs

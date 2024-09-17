@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import android.util.Pair;
+
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -38,6 +40,7 @@ public class MediaServiceData {
     private int mEnabledFormats = FORMATS_ALL;
     private int mEnabledContent = CONTENT_ALL;
     private Disposable mPersistAction;
+    private boolean mSkipAuth;
 
     private MediaServiceData() {
         restoreData();
@@ -77,17 +80,18 @@ public class MediaServiceData {
         return mDeviceId;
     }
 
-    public int getVideoInfoType() {
+    public Pair<Integer, Boolean> getVideoInfoType() {
         if (Helpers.equals(mVideoInfoVersion, mAppVersion)) {
-            return mVideoInfoType;
+            return new Pair<>(mVideoInfoType, mSkipAuth);
         }
 
-        return -1;
+        return null;
     }
 
-    public void setVideoInfoType(int videoInfoType) {
+    public void setVideoInfoType(int videoInfoType, boolean skipAuth) {
         mVideoInfoVersion = mAppVersion;
         mVideoInfoType = videoInfoType;
+        mSkipAuth = skipAuth;
         persistData();
     }
 
@@ -200,6 +204,7 @@ public class MediaServiceData {
         mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
         mEnabledContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
+        mSkipAuth = Helpers.parseBoolean(split, 13);
     }
 
     private void persistData() {
@@ -217,6 +222,6 @@ public class MediaServiceData {
         GlobalPreferences.sInstance.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType,
                         mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mBackupPlayerUrl, mBackupPlayerVersion,
-                        mVisitorCookie, mEnabledFormats, mEnabledContent));
+                        mVisitorCookie, mEnabledFormats, mEnabledContent, mSkipAuth));
     }
 }

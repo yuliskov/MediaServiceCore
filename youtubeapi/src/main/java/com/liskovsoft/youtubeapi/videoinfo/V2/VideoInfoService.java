@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
+import android.util.Pair;
+
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -35,6 +37,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
     };
     private int mVideoInfoType = -1;
+    private boolean mSkipAuth;
 
     private interface VideoInfoCallback {
         VideoInfo call();
@@ -54,7 +57,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
-        RetrofitOkHttpHelper.skipAuth(true);
+        RetrofitOkHttpHelper.skipAuth(mSkipAuth);
 
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
 
@@ -134,8 +137,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void initVideoInfo() {
-        mVideoInfoType = -1;
-        nextVideoInfo();
+        resetData();
         restoreVideoInfoType();
     }
 
@@ -145,13 +147,24 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void resetInfoType() {
-        mVideoInfoType = -1;
-        nextVideoInfo();
+        resetData();
         persistVideoInfoType();
     }
 
+    private void resetData() {
+        mVideoInfoType = -1;
+        mSkipAuth = false;
+        nextVideoInfo();
+    }
+
     private void nextVideoInfo() {
+        if (mVideoInfoType != -1 && mSkipAuth) {
+            mSkipAuth = false;
+            return;
+        }
+
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
+        mSkipAuth = true;
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
@@ -263,9 +276,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {
                         // Auth users only. The latest bug fix for "This content isn't available".
-                        //RetrofitOkHttpHelper.skipAuth(true);
+                        RetrofitOkHttpHelper.skipAuth(!mSkipAuth);
                         VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
-                        //RetrofitOkHttpHelper.skipAuth(false);
+                        RetrofitOkHttpHelper.skipAuth(false);
 
                         if (rootResult == null || rootResult.isUnplayable()) {
                             return null;
@@ -321,7 +334,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         MediaServiceData data = MediaServiceData.instance();
 
-        mVideoInfoType = data.getVideoInfoType() != -1 ? data.getVideoInfoType() : mVideoInfoType;
+        Pair<Integer, Boolean> videoInfoType = data.getVideoInfoType();
+        if (videoInfoType != null && videoInfoType.first != -1) {
+            mVideoInfoType = videoInfoType.first;
+            mSkipAuth = videoInfoType.second;
+        }
     }
 
     private void persistVideoInfoType() {
@@ -330,6 +347,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         MediaServiceData data = MediaServiceData.instance();
-        data.setVideoInfoType(mVideoInfoType);
+        data.setVideoInfoType(mVideoInfoType, mSkipAuth);
     }
 }

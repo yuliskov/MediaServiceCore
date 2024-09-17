@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.rss
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.rss.bak.parser.YouTubeParser
 
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
@@ -20,8 +20,7 @@ internal object RssService {
 
             val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
             rssContent?.let {
-                val parser = YouTubeParser().parse(it)
-                parser.items
+                val items = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
             }
         }
 

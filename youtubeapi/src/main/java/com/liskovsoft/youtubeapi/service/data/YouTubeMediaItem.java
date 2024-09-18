@@ -55,6 +55,9 @@ public class YouTubeMediaItem implements MediaItem {
     private String mParams;
     private String mClickTrackingParams;
     private boolean mIsMovie;
+    private String mPublished;
+    private String mUpdated;
+    private String mDescription;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -326,6 +329,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mTitle;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
     @Override
     public String getSecondTitle() {
         return mSecondTitle;
@@ -341,6 +348,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mCardImageUrl;
     }
 
+    public void setCardImageUrl(String cardImageUrl) {
+        mCardImageUrl = cardImageUrl;
+    }
+
     @Override
     public String getBackgroundImageUrl() {
         return mBackgroundImageUrl;
@@ -354,6 +365,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getVideoId() {
         return mVideoId;
+    }
+
+    public void setVideoId(String videoId) {
+        mVideoId = videoId;
     }
 
     @Override
@@ -429,6 +444,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getChannelId() {
         return mChannelId;
+    }
+
+    public void setChannelId(String channelId) {
+        mChannelId = channelId;
     }
 
     @Override
@@ -602,5 +621,29 @@ public class YouTubeMediaItem implements MediaItem {
         }
 
         return fromString(itemSpec);
+    }
+
+    public void setPublished(String published) {
+        mPublished = published;
+    }
+
+    public String getPublished() {
+        return mPublished;
+    }
+
+    public String getUpdated() {
+        return mUpdated;
+    }
+
+    public void setUpdated(String updated) {
+        mUpdated = updated;
+    }
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
     }
 }

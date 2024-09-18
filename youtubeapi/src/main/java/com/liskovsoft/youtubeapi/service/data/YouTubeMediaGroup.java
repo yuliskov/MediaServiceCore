@@ -213,6 +213,10 @@ public class YouTubeMediaGroup implements MediaGroup {
         return mMediaItems;
     }
 
+    public void setMediaItems(List<MediaItem> items) {
+        mMediaItems = items;
+    }
+
     @Override
     public String getTitle() {
         return mTitle;

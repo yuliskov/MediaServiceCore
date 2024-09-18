@@ -5,28 +5,27 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
 
-    fun getFeed(vararg channelIds: String): MediaGroup? {
+    fun getFeed(vararg channelIds: String): MediaGroup {
         val items = mutableListOf<MediaItem>()
 
         for (channelId in channelIds) {
-            // get rss for channel
-            // RssStandardParser().parse(response)
-            // convert to mediagroup
-
             val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
             rssContent?.let {
-                val items = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
+                val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
+                items.addAll(result)
             }
         }
 
         // sort items by date
-        // convert to group
 
-        return null
+        return YouTubeMediaGroup(-1).apply {
+            mediaItems = items
+        }
     }
 }

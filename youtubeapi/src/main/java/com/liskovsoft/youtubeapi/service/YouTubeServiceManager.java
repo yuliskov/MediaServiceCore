@@ -104,7 +104,7 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void applyNoPlaybackFix() {
         invalidatePlaybackCache();
-        VideoInfoService.instance().fixVideoInfo();
+        VideoInfoService.instance().fixPlaybackErrors();
     }
 
     @Override

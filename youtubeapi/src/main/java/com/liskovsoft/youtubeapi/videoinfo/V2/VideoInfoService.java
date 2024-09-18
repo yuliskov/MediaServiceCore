@@ -141,7 +141,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         restoreVideoInfoType();
     }
 
-    public void fixVideoInfo() {
+    public void fixPlaybackErrors() {
+        MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false);
         nextVideoInfo();
         persistVideoInfoType();
     }
@@ -238,13 +239,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //}
         }
 
-        if ((MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken()) || result.isStoryboardBroken()) {
+        if (obtainExtendedFormats(result) || result.isStoryboardBroken()) {
             Log.d(TAG, "Enable high bitrate formats...");
             VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
-            if (videoInfoHls != null && result.getHlsManifestUrl() == null) {
+            if (videoInfoHls != null && obtainExtendedFormats(result)) {
                 result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
             }
-            if (videoInfoHls != null && result.getStoryboardSpec() == null) {
+            if (videoInfoHls != null && result.isStoryboardBroken()) {
                 result.setStoryboardSpec(videoInfoHls.getStoryboardSpec());
             }
         }
@@ -348,5 +349,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         MediaServiceData data = MediaServiceData.instance();
         data.setVideoInfoType(mVideoInfoType, mSkipAuth);
+    }
+
+    private static boolean obtainExtendedFormats(VideoInfo result) {
+        return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
     }
 }

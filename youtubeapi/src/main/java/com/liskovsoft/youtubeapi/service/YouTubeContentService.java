@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
+import com.liskovsoft.youtubeapi.rss.RssService;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
@@ -145,6 +146,18 @@ public class YouTubeContentService implements ContentService {
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
         return RxHelper.fromNullable(this::getSubscriptions);
+    }
+
+    @Override
+    public MediaGroup getSubscriptions(String... channelIds) {
+        checkSigned();
+
+        return RssService.getFeed(channelIds);
+    }
+
+    @Override
+    public Observable<MediaGroup> getSubscriptionsObserve(String... channelIds) {
+        return RxHelper.fromNullable(() -> getSubscriptions(channelIds));
     }
 
     @Override

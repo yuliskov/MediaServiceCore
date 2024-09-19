@@ -13,6 +13,7 @@ public interface ContentService {
     List<MediaGroup> getSearchAlt(String searchText, int options);
     List<String> getSearchTags(String searchText);
     MediaGroup getSubscriptions();
+    MediaGroup getSubscriptions(String... channelIds);
     /**
      * NOTE: recommended is a part of Home
      */
@@ -42,6 +43,7 @@ public interface ContentService {
     Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options);
     Observable<List<String>> getSearchTagsObserve(String searchText);
     Observable<MediaGroup> getSubscriptionsObserve();
+    Observable<MediaGroup> getSubscriptionsObserve(String... channelIds);
     /**
      * NOTE: recommended is a part of Home
      */

@@ -11,6 +11,7 @@ internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
 
+    @JvmStatic
     fun getFeed(vararg channelIds: String): MediaGroup {
         val items = mutableListOf<MediaItem>()
 

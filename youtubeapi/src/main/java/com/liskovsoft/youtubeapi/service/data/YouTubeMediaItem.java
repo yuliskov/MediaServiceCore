@@ -55,8 +55,8 @@ public class YouTubeMediaItem implements MediaItem {
     private String mParams;
     private String mClickTrackingParams;
     private boolean mIsMovie;
-    private String mPublished;
-    private String mUpdated;
+    private long mPublished;
+    private long mUpdated;
     private String mDescription;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
@@ -486,6 +486,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mAuthor;
     }
 
+    public void setAuthor(String author) {
+        mAuthor = author;
+    }
+
     @Override
     public String getBadgeText() {
         return mBadgeText;
@@ -623,19 +627,19 @@ public class YouTubeMediaItem implements MediaItem {
         return fromString(itemSpec);
     }
 
-    public void setPublished(String published) {
-        mPublished = published;
-    }
-
-    public String getPublished() {
+    public long getPublished() {
         return mPublished;
     }
 
-    public String getUpdated() {
+    public void setPublished(long published) {
+        mPublished = published;
+    }
+
+    public long getUpdated() {
         return mUpdated;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(long updated) {
         mUpdated = updated;
     }
 

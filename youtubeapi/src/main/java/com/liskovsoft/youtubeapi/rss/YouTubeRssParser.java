@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.rss;
 import android.util.Xml;
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
+import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -25,6 +26,8 @@ public class YouTubeRssParser {
     private static final String TAG_MEDIA_GROUP = "media:group";
     private static final String TAG_THUMBNAIL = "media:thumbnail";
     private static final String TAG_DESCRIPTION = "media:description";
+    private static final String TAG_AUTHOR = "author";
+    private static final String TAG_AUTHOR_NAME = "name";
     private InputStream mContent;
     private XmlPullParser mParser;
 
@@ -121,22 +124,25 @@ public class YouTubeRssParser {
             String name = mParser.getName();
             switch (name) {
                 case TAG_VIDEO_ID:
-                    item.setVideoId(readTag(TAG_VIDEO_ID));
+                    item.setVideoId(readTagContent(TAG_VIDEO_ID));
                     break;
                 case TAG_CHANNEL_ID:
-                    item.setChannelId(readTag(TAG_CHANNEL_ID));
+                    item.setChannelId(readTagContent(TAG_CHANNEL_ID));
                     break;
                 case TAG_TITLE:
-                    item.setTitle(readTag(TAG_TITLE));
+                    item.setTitle(readTagContent(TAG_TITLE));
                     break;
                 case TAG_PUBLISHED:
-                    item.setPublished(readTag(TAG_PUBLISHED));
+                    item.setPublished(DateHelper.toUnixTimeMs(readTagContent(TAG_PUBLISHED)));
                     break;
                 case TAG_UPDATED:
-                    item.setUpdated(readTag(TAG_UPDATED));
+                    item.setUpdated(DateHelper.toUnixTimeMs(readTagContent(TAG_UPDATED)));
                     break;
                 case TAG_MEDIA_GROUP:
                     readMediaGroup(item);
+                    break;
+                case TAG_AUTHOR:
+                    readAuthor(item);
                     break;
                 default:
                     skip();
@@ -160,7 +166,7 @@ public class YouTubeRssParser {
                     mParser.next();
                     break;
                 case TAG_DESCRIPTION:
-                    item.setDescription(readTag(TAG_DESCRIPTION));
+                    item.setDescription(readTagContent(TAG_DESCRIPTION));
                     break;
                 default:
                     skip();
@@ -169,23 +175,25 @@ public class YouTubeRssParser {
         }
     }
 
-    //private void readSegmentURL(XmlPullParser parser, MediaFormat item) throws IOException, XmlPullParserException {
-    //    parser.require(XmlPullParser.START_TAG, ns, TAG_SEGMENT_URL);
-    //
-    //    String media = parser.getAttributeValue(ns, "media");
-    //
-    //    List<String> urls = item.getSegmentUrlList();
-    //    if (urls == null) {
-    //        urls = new ArrayList<>();
-    //        item.setSegmentUrlList(urls);
-    //    }
-    //
-    //    if (media != null)
-    //        urls.add(media);
-    //
-    //    parser.next();
-    //    parser.require(XmlPullParser.END_TAG, ns, TAG_SEGMENT_URL);
-    //}
+    private void readAuthor(YouTubeMediaItem item) throws IOException, XmlPullParserException {
+        mParser.require(XmlPullParser.START_TAG, ns, TAG_AUTHOR);
+
+        while (mParser.next() != XmlPullParser.END_TAG) {
+            if (mParser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = mParser.getName();
+            switch (name) {
+                case TAG_AUTHOR_NAME:
+                    item.setAuthor(readTagContent(TAG_AUTHOR_NAME));
+                    mParser.next();
+                    break;
+                default:
+                    skip();
+                    break;
+            }
+        }
+    }
 
     private String readTagAttribute(String tagName, String attributeName) throws IOException, XmlPullParserException {
         mParser.require(XmlPullParser.START_TAG, ns, tagName);
@@ -194,7 +202,7 @@ public class YouTubeRssParser {
         return value;
     }
 
-    private String readTag(String tagName) throws IOException, XmlPullParserException {
+    private String readTagContent(String tagName) throws IOException, XmlPullParserException {
         mParser.require(XmlPullParser.START_TAG, ns, tagName);
         return readText();
     }

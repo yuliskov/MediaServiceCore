@@ -11,9 +11,9 @@ import org.robolectric.RobolectricTestRunner
 class RssServiceTest {
     @Test
     fun testGetFeed() {
-        val feed = RssService.getFeed(TestHelpersV2.CHANNEL_ID_3)
+        val feed = RssService.getFeed(TestHelpersV2.CHANNEL_ID_3, TestHelpersV2.CHANNEL_ID_2)
 
         assertNotNull("Feed is empty", feed)
-        assertTrue("Feed contains items", feed?.mediaItems?.isNotEmpty() == true)
+        assertTrue("Feed contains items", feed.mediaItems?.isNotEmpty() == true)
     }
 }

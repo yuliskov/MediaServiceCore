@@ -133,10 +133,10 @@ public class YouTubeRssParser {
                     item.setTitle(readTagContent(TAG_TITLE));
                     break;
                 case TAG_PUBLISHED:
-                    item.setPublished(DateHelper.toUnixTimeMs(readTagContent(TAG_PUBLISHED)));
+                    item.setPublishedDate(DateHelper.toUnixTimeMs(readTagContent(TAG_PUBLISHED)));
                     break;
                 case TAG_UPDATED:
-                    item.setUpdated(DateHelper.toUnixTimeMs(readTagContent(TAG_UPDATED)));
+                    item.setUpdatedDate(DateHelper.toUnixTimeMs(readTagContent(TAG_UPDATED)));
                     break;
                 case TAG_MEDIA_GROUP:
                     readMediaGroup(item);

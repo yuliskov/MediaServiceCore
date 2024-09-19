@@ -6,7 +6,6 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
@@ -22,9 +21,8 @@ internal object RssService {
                 items.addAll(result)
             }
         }
-
-        // sort items by date
-        items.sortByDescending { (it as YouTubeMediaItem).published }
+        
+        items.sortByDescending { it.publishedDate }
 
         return YouTubeMediaGroup(-1).apply {
             mediaItems = items

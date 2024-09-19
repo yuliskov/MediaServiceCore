@@ -55,8 +55,8 @@ public class YouTubeMediaItem implements MediaItem {
     private String mParams;
     private String mClickTrackingParams;
     private boolean mIsMovie;
-    private long mPublished;
-    private long mUpdated;
+    private long mPublishedDate;
+    private long mUpdatedDate;
     private String mDescription;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
@@ -627,20 +627,21 @@ public class YouTubeMediaItem implements MediaItem {
         return fromString(itemSpec);
     }
 
-    public long getPublished() {
-        return mPublished;
+    @Override
+    public long getPublishedDate() {
+        return mPublishedDate;
     }
 
-    public void setPublished(long published) {
-        mPublished = published;
+    public void setPublishedDate(long publishedDate) {
+        mPublishedDate = publishedDate;
     }
 
-    public long getUpdated() {
-        return mUpdated;
+    public long getUpdatedDate() {
+        return mUpdatedDate;
     }
 
-    public void setUpdated(long updated) {
-        mUpdated = updated;
+    public void setUpdatedDate(long updatedDate) {
+        mUpdatedDate = updatedDate;
     }
 
     public String getDescription() {

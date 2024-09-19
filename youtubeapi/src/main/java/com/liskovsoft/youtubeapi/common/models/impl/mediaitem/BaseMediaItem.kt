@@ -117,6 +117,10 @@ open class BaseMediaItem : MediaItem {
         return publishedTime
     }
 
+    override fun getPublishedDate(): Long {
+        return 0
+    }
+
     override fun getCardImageUrl(): String? {
         return _cardThumbImageUrl
     }

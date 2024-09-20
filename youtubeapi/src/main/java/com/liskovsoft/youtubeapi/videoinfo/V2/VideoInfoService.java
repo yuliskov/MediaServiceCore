@@ -68,8 +68,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        result.sync(getRootVideoInfo(videoId, clickTrackingParams));
-        
+        if (mSkipAuth) {
+            result.sync(getRootVideoInfo(videoId, clickTrackingParams));
+        }
+
         result = retryIfNeeded(result, videoId, clickTrackingParams);
         RetrofitOkHttpHelper.skipAuth(result.isHistoryBroken());
         applyFixesIfNeeded(result, videoId, clickTrackingParams);

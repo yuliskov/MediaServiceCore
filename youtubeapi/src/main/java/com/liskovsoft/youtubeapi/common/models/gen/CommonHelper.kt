@@ -4,6 +4,8 @@ import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
+import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
+import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 
@@ -22,7 +24,7 @@ private const val ICON_TYPE_REMOVE = "REMOVE"
 
 ///////////
 
-internal fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText
+internal fun TextItem.getText() = runs?.joinToString("") { it?.text ?: it?.emoji?.getText() ?: "" } ?: simpleText ?: content
 internal fun TextItem.getAccessibilityLabel() = accessibility?.accessibilityData?.label
 
 /**
@@ -37,8 +39,8 @@ internal fun LiveChatEmoji.getText() = if (isCustomEmoji == true) "" else emojiI
 /**
  * Find optimal thumbnail for tv screen
  */
-internal fun ThumbnailItem.getOptimalResThumbnailUrl() = thumbnails?.getOrElse(YouTubeHelper.OPTIMAL_RES_THUMBNAIL_INDEX) { thumbnails.lastOrNull() } ?.getUrl()
-internal fun ThumbnailItem.getHighResThumbnailUrl() = thumbnails?.lastOrNull()?.getUrl()
+internal fun ThumbnailItem.getOptimalResThumbnailUrl() = (thumbnails ?: sources)?.getOrElse(YouTubeHelper.OPTIMAL_RES_THUMBNAIL_INDEX) { (thumbnails ?: sources)?.lastOrNull() } ?.getUrl()
+internal fun ThumbnailItem.getHighResThumbnailUrl() = (thumbnails ?: sources)?.lastOrNull()?.getUrl()
 internal fun ThumbnailItem.Thumbnail.getUrl(): String? {
     var newUrl = if (url?.startsWith("//") == true) "https:$url" else url
 
@@ -204,6 +206,13 @@ internal fun ChannelItem.getDescBadgeText() = subscriberCountText?.getText()
 
 ////////////
 
+internal fun ShortsItem.getTitle() = overlayMetadata?.primaryText?.getText()
+internal fun ShortsItem.getDescBadgeText() = overlayMetadata?.secondaryText?.getText()
+internal fun ShortsItem.getVideoId() = onTap?.innertubeCommand?.reelWatchEndpoint?.getVideoId()
+internal fun ShortsItem.getThumbnails() = onTap?.innertubeCommand?.reelWatchEndpoint?.getThumbnails()
+
+////////////
+
 private fun ItemWrapper.getVideoItem() = gridVideoRenderer ?: videoRenderer ?: pivotVideoRenderer ?: compactVideoRenderer ?: reelItemRenderer ?: playlistVideoRenderer
 private fun ItemWrapper.getMusicItem() = tvMusicVideoRenderer
 private fun ItemWrapper.getChannelItem() = gridChannelRenderer ?: pivotChannelRenderer ?: compactChannelRenderer
@@ -211,6 +220,7 @@ private fun ItemWrapper.getPlaylistItem() = gridPlaylistRenderer ?: pivotPlaylis
 private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer ?: compactRadioRenderer ?: musicTwoRowItemRenderer
 private fun ItemWrapper.getTileItem() = tileRenderer
 private fun ItemWrapper.getContinuationItem() = continuationItemRenderer
+private fun ItemWrapper.getShortsItem() = shortsLockupViewModel
 
 internal fun ItemWrapper.getType(): Int {
     if (getChannelItem() != null)
@@ -235,13 +245,14 @@ internal fun ItemWrapper.getType(): Int {
 }
 
 internal fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId() ?: getRadioItem()?.getVideoId()
+    ?: getShortsItem()?.getVideoId()
 internal fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle() ?: getPlaylistItem()?.getTitle()
-    ?: getChannelItem()?.getTitle() ?: getRadioItem()?.getTitle()
+    ?: getChannelItem()?.getTitle() ?: getRadioItem()?.getTitle() ?: getShortsItem()?.getTitle()
 internal fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails()
-    ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails() ?: getRadioItem()?.getThumbnails()
+    ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails() ?: getRadioItem()?.getThumbnails() ?: getShortsItem()?.getThumbnails()
 internal fun ItemWrapper.getMovingThumbnails() = getVideoItem()?.getMovingThumbnails() ?: getTileItem()?.getMovingThumbnails()
 internal fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
-    ?: getChannelItem()?.getDescBadgeText()
+    ?: getChannelItem()?.getDescBadgeText() ?: getShortsItem()?.getDescBadgeText()
 internal fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
 internal fun ItemWrapper.getPercentWatched() = getVideoItem()?.getPercentWatched() ?: getTileItem()?.getPercentWatched()
 internal fun ItemWrapper.getStartTimeSeconds() = getVideoItem()?.getStartTimeSeconds() ?: getTileItem()?.getStartTimeSeconds()
@@ -261,7 +272,7 @@ internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex()
 internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie()
-internal fun ItemWrapper.isShorts() = reelItemRenderer != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
+internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)

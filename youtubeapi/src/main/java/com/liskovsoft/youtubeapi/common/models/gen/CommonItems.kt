@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationItemRenderer
+import com.liskovsoft.youtubeapi.browse.v2.gen.ReelWatchEndpoint
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
 import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
@@ -141,6 +142,7 @@ internal data class MusicPlayButtonRenderer(
 internal data class TextItem(
     val runs: List<Run?>?,
     val simpleText: String?,
+    val content: String?,
     val accessibility: AccessibilityItem?
 ) {
     data class Run(
@@ -168,7 +170,8 @@ internal data class LiveChatEmoji(
 )
 
 internal data class ThumbnailItem(
-    val thumbnails: List<Thumbnail?>?
+    val thumbnails: List<Thumbnail?>?,
+    val sources: List<Thumbnail?>?
 ) {
     data class Thumbnail(
         val url: String?,
@@ -205,7 +208,8 @@ internal data class ItemWrapper(
     val playlistRenderer: PlaylistItem? = null,
     val playlistVideoRenderer: VideoItem? = null, // ChannelPlaylist
     val musicTwoRowItemRenderer: RadioItem? = null, // YouTube Music
-    val continuationItemRenderer: ContinuationItemRenderer? = null // ChannelPlaylist
+    val continuationItemRenderer: ContinuationItemRenderer? = null, // ChannelPlaylist
+    val shortsLockupViewModel: ShortsItem? = null // Shorts v2
 )
 
 internal data class TileItem(
@@ -361,6 +365,26 @@ internal data class PlaylistItem(
     val videoCountShortText: TextItem?,
     val playlistId: String?
 )
+
+internal data class ShortsItem(
+    val accessibilityText: String?,
+    val thumbnail: ThumbnailItem?,
+    val onTap: OnTap?,
+    val overlayMetadata: OverlayMetadata?
+) {
+    data class OnTap(
+        val innertubeCommand: InnertubeCommand?
+    ) {
+        data class InnertubeCommand(
+            val reelWatchEndpoint: ReelWatchEndpoint?
+        )
+    }
+
+    data class OverlayMetadata(
+        val primaryText: TextItem?,
+        val secondaryText: TextItem?
+    )
+}
 
 internal data class ThumbnailRenderer(
     val playlistVideoThumbnailRenderer: ThumbnailItemWrapper?,

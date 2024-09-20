@@ -31,7 +31,8 @@ internal fun WatchNextResult.getLiveChatToken() = getWatchNextResults()?.convers
 internal fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlist
 internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
     playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters ?:
-    engagementPanels?.firstNotNullOfOrNull { it?.engagementPanelSectionListRenderer?.content?.macroMarkersListRenderer?.contents }
+    engagementPanels?.firstNotNullOfOrNull { it?.engagementPanelSectionListRenderer?.content?.macroMarkersListRenderer?.contents } ?:
+    frameworkUpdates?.entityBatchUpdate?.mutations?.firstNotNullOfOrNull { it?.payload?.macroMarkersListEntity?.markersList?.markers }
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNull { it?.isDescriptionSection() == true }
 // One of the suggested rows is too short or empty
@@ -106,9 +107,9 @@ internal fun NextVideoItem.getParams() = endpoint?.watchEndpoint?.params
 
 /////// Chapters wrapper
 
-internal fun ChapterItemWrapper.getTitle() = chapterRenderer?.getTitle() ?: macroMarkersListItemRenderer?.getTitle()
-internal fun ChapterItemWrapper.getStartTimeMs() = chapterRenderer?.getStartTimeMs() ?: macroMarkersListItemRenderer?.getStartTimeMs()
-internal fun ChapterItemWrapper.getThumbnailUrl() = chapterRenderer?.getThumbnailUrl() ?: macroMarkersListItemRenderer?.getThumbnailUrl()
+internal fun ChapterItemWrapper.getTitle() = chapterRenderer?.getTitle() ?: macroMarkersListItemRenderer?.getTitle() ?: title?.toString()
+internal fun ChapterItemWrapper.getStartTimeMs() = chapterRenderer?.getStartTimeMs() ?: macroMarkersListItemRenderer?.getStartTimeMs() ?: startMillis?.toLong()
+internal fun ChapterItemWrapper.getThumbnailUrl() = chapterRenderer?.getThumbnailUrl() ?: macroMarkersListItemRenderer?.getThumbnailUrl() ?: thumbnailDetails?.getOptimalResThumbnailUrl()
 
 /////// Chapters V1
 
@@ -121,6 +122,13 @@ internal fun ChapterRenderer.getThumbnailUrl() = thumbnail?.getOptimalResThumbna
 internal fun MacroMarkersListItemRenderer.getTitle() = title?.toString()
 internal fun MacroMarkersListItemRenderer.getStartTimeMs(): Long? = onTap?.watchEndpoint?.startTimeSeconds?.let { it.toLong() * 1_000 }
 internal fun MacroMarkersListItemRenderer.getThumbnailUrl() = thumbnail?.getOptimalResThumbnailUrl()
+
+/////// Chapters V3 (replaced with ChapterItemWrapper)
+
+internal fun Marker.getTitle(): String? = title?.toString()
+internal fun Marker.getStartTimeMs(): Long? = startMillis?.toLong()
+internal fun Marker.getDurationTimeMs(): Long? = durationMillis?.toLong()
+internal fun Marker.getThumbnailUrl(): String? = thumbnailDetails?.getOptimalResThumbnailUrl()
 
 ///////
 

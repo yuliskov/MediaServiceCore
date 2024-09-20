@@ -6,7 +6,8 @@ internal data class WatchNextResult(
     val contents: Contents?,
     val transportControls: TransportControls?,
     val playerOverlays: PlayerOverlays?,
-    val engagementPanels: List<EngagementPanel?>?
+    val engagementPanels: List<EngagementPanel?>?,
+    val frameworkUpdates: FrameworkUpdates?
 ) {
     data class Contents(
         val singleColumnWatchNextResults: SingleColumnWatchNextResults?
@@ -124,6 +125,30 @@ internal data class WatchNextResult(
                                 )
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    data class FrameworkUpdates(
+        val entityBatchUpdate: EntityBatchUpdate?
+    ) {
+        data class EntityBatchUpdate(
+            val mutations: List<Mutation?>?
+        ) {
+            data class Mutation(
+                val payload: Payload?
+            ) {
+                data class Payload(
+                    val macroMarkersListEntity: MacroMarkersListEntity?
+                ) {
+                    data class MacroMarkersListEntity(
+                        val markersList: MarkersList?
+                    ) {
+                        data class MarkersList(
+                            val markers: List<ChapterItemWrapper?>?
+                        )
                     }
                 }
             }

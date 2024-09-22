@@ -9,6 +9,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.PlaylistInfo;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.SponsorSegment;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
@@ -228,7 +229,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         }
 
         mTrackingService.updateWatchTime(
-                formatInfo.getVideoId(), positionSec, Float.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
+                formatInfo.getVideoId(), positionSec, Helpers.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
                 formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam());
     }
 

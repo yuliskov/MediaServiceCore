@@ -161,13 +161,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfo() {
-        if (mVideoInfoType != -1 && mSkipAuth) {
-            mSkipAuth = false;
+        boolean defaultValue = true;
+
+        if (mVideoInfoType != -1 && mSkipAuth == defaultValue) {
+            mSkipAuth = !defaultValue;
             return;
         }
 
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
-        mSkipAuth = true;
+        mSkipAuth = defaultValue;
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {

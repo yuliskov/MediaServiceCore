@@ -4,6 +4,7 @@ import android.util.Xml;
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -149,6 +150,11 @@ public class YouTubeRssParser {
                     break;
             }
         }
+
+        if (item.getSecondTitle() == null) {
+            item.setSecondTitle(YouTubeHelper.createInfo(item.getAuthor(), DateHelper.toHumanDate(item.getPublishedDate())));
+        }
+
         return item;
     }
 

@@ -44,7 +44,7 @@ public class YouTubeMediaItem implements MediaItem {
     private int mRatingStyle;
     private double mRatingScore;
     private int mMediaItemType;
-    private int mPercentWatched;
+    private int mPercentWatched = -1;
     private int mStartTimeSeconds;
     private String mAuthor;
     private String mVideoPreviewUrl;
@@ -336,6 +336,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getSecondTitle() {
         return mSecondTitle;
+    }
+
+    public void setSecondTitle(String secondTitle) {
+        mSecondTitle = secondTitle;
     }
 
     @Override

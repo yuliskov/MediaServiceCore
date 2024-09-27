@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
-import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
 import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
@@ -103,7 +103,7 @@ internal fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
 internal fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText() ?: videoInfo?.getText()
 // No real date, just placeholder. We should do this themselves.
 internal fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.getText()
-    ?.replace("DATE_PLACEHOLDER", Helpers.toShortDate(upcomingEventData.getStartTimeMs()))
+    ?.replace("DATE_PLACEHOLDER", DateHelper.toUpcomingDate(upcomingEventData.getStartTimeMs()))
 internal fun VideoItem.getChannelId() =
     shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:

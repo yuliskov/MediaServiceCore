@@ -152,7 +152,7 @@ public class YouTubeRssParser {
         }
 
         if (item.getSecondTitle() == null) {
-            item.setSecondTitle(YouTubeHelper.createInfo(item.getAuthor(), DateHelper.toHumanDate(item.getPublishedDate())));
+            item.setSecondTitle(YouTubeHelper.createInfo(item.getAuthor(), DateHelper.toShortDate(item.getPublishedDate())));
         }
 
         return item;

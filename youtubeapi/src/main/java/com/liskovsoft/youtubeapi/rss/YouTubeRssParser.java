@@ -4,6 +4,8 @@ import android.util.Xml;
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 
@@ -27,6 +29,8 @@ public class YouTubeRssParser {
     private static final String TAG_MEDIA_GROUP = "media:group";
     private static final String TAG_THUMBNAIL = "media:thumbnail";
     private static final String TAG_DESCRIPTION = "media:description";
+    private static final String TAG_COMMUNITY = "media:community";
+    private static final String TAG_STATISTICS = "media:statistics";
     private static final String TAG_AUTHOR = "author";
     private static final String TAG_AUTHOR_NAME = "name";
     private InputStream mContent;
@@ -152,7 +156,8 @@ public class YouTubeRssParser {
         }
 
         if (item.getSecondTitle() == null) {
-            item.setSecondTitle(YouTubeHelper.createInfo(item.getAuthor(), DateHelper.toShortDate(item.getPublishedDate())));
+            item.setSecondTitle(YouTubeHelper.createInfo(
+                    item.getAuthor(), ServiceHelper.prettyCount(item.getViewCount()), DateHelper.toShortDate(item.getPublishedDate())));
         }
 
         return item;
@@ -173,6 +178,29 @@ public class YouTubeRssParser {
                     break;
                 case TAG_DESCRIPTION:
                     item.setDescription(readTagContent(TAG_DESCRIPTION));
+                    break;
+                case TAG_COMMUNITY:
+                    readCommunity(item);
+                    break;
+                default:
+                    skip();
+                    break;
+            }
+        }
+    }
+
+    private void readCommunity(YouTubeMediaItem item) throws IOException, XmlPullParserException {
+        mParser.require(XmlPullParser.START_TAG, ns, TAG_COMMUNITY);
+
+        while (mParser.next() != XmlPullParser.END_TAG) {
+            if (mParser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = mParser.getName();
+            switch (name) {
+                case TAG_STATISTICS:
+                    item.setViewCount(Helpers.parseInt(readTagAttribute(TAG_STATISTICS, "views")));
+                    mParser.next();
                     break;
                 default:
                     skip();

@@ -58,6 +58,7 @@ public class YouTubeMediaItem implements MediaItem {
     private long mPublishedDate;
     private long mUpdatedDate;
     private String mDescription;
+    private int mViewCount;
 
     public static YouTubeMediaItem from(ItemWrapper item, int position) {
         YouTubeMediaItem mediaItem = from(item);
@@ -654,5 +655,13 @@ public class YouTubeMediaItem implements MediaItem {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public int getViewCount() {
+        return mViewCount;
+    }
+
+    public void setViewCount(int views) {
+        mViewCount = views;
     }
 }

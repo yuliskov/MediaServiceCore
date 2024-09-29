@@ -288,14 +288,14 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public MediaGroup getGroup(MediaItem mediaItem) {
-        return getGroup(mediaItem.getReloadPageKey(), mediaItem.getTitle(), mediaItem.getType());
+        return mediaItem.getReloadPageKey() != null ?
+                getGroup(mediaItem.getReloadPageKey(), mediaItem.getTitle(), mediaItem.getType()) :
+                BrowseService2.getChannelVideosFull(mediaItem.getChannelId());
     }
 
     @Override
     public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
-        return mediaItem.getReloadPageKey() != null ?
-                RxHelper.fromNullable(() -> getGroup(mediaItem)) :
-                RxHelper.fromNullable(() -> BrowseService2.getChannelVideosFull(mediaItem.getChannelId()));
+        return RxHelper.fromNullable(() -> getGroup(mediaItem));
     }
 
     @Override

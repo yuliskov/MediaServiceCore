@@ -386,9 +386,17 @@ public class YouTubeMediaItem implements MediaItem {
         return mIsLive;
     }
 
+    public void setLive(boolean isLive) {
+        mIsLive = isLive;
+    }
+
     @Override
     public boolean isUpcoming() {
         return mIsUpcoming;
+    }
+
+    public void setUpcoming(boolean isUpcoming) {
+        mIsUpcoming = isUpcoming;
     }
 
     @Override
@@ -481,6 +489,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mPercentWatched;
     }
 
+    public void setPercentWatched(int percentWatched) {
+        mPercentWatched = percentWatched;
+    }
+
     @Override
     public int getStartTimeSeconds() {
         return mStartTimeSeconds;
@@ -500,6 +512,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mBadgeText;
     }
 
+    public void setBadgeText(String badgeText) {
+        mBadgeText = badgeText;
+    }
+
     @Override
     public boolean hasNewContent() {
         return mHasNewContent;
@@ -508,6 +524,10 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getVideoPreviewUrl() {
         return mVideoPreviewUrl;
+    }
+
+    public void setVideoPreviewUrl(String videoPreviewUrl) {
+        mVideoPreviewUrl = videoPreviewUrl;
     }
 
     @Override

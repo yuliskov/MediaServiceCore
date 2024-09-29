@@ -157,7 +157,7 @@ public class YouTubeRssParser {
 
         if (item.getSecondTitle() == null) {
             item.setSecondTitle(YouTubeHelper.createInfo(
-                    item.getAuthor(), ServiceHelper.prettyCount(item.getViewCount()), DateHelper.toShortDate(item.getPublishedDate())));
+                    item.getAuthor(), ServiceHelper.prettyCount(item.getViewCount()), DateHelper.toShortDate(item.getPublishedDate(), false)));
         }
 
         return item;

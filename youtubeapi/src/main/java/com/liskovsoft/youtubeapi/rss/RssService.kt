@@ -3,9 +3,11 @@ package com.liskovsoft.youtubeapi.rss
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
@@ -19,6 +21,7 @@ internal object RssService {
             val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
             rssContent?.let {
                 val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
+                syncWithChannel(channelId, result)
                 items.addAll(result)
             }
         }
@@ -27,6 +30,30 @@ internal object RssService {
 
         return YouTubeMediaGroup(-1).apply {
             mediaItems = items
+        }
+    }
+
+    /**
+     * Add missing props and remove shorts etc
+     */
+    private fun syncWithChannel(channelId: String, result: List<MediaItem>) {
+        val group = BrowseService2.getChannelVideosFull(channelId)
+        val originItems = group?.mediaItems
+
+        Helpers.removeIf(result) { item ->
+            val first = originItems?.firstOrNull { it?.videoId == item.videoId }
+            if (first != null) {
+                item as YouTubeMediaItem
+                item.badgeText = first.badgeText
+                item.isLive = first.isLive
+                item.isUpcoming = first.isUpcoming
+                item.videoPreviewUrl = first.videoPreviewUrl
+                item.percentWatched = first.percentWatched
+
+                return@removeIf false
+            }
+
+            return@removeIf true
         }
     }
 }

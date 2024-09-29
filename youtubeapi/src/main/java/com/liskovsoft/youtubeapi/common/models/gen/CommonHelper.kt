@@ -103,7 +103,7 @@ internal fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
 internal fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText() ?: videoInfo?.getText()
 // No real date, just placeholder. We should do this themselves.
 internal fun VideoItem.getUpcomingEventText() = upcomingEventData?.upcomingEventText?.getText()
-    ?.replace("DATE_PLACEHOLDER", DateHelper.toUpcomingDate(upcomingEventData.getStartTimeMs()))
+    ?.replace("DATE_PLACEHOLDER", DateHelper.toShortDate(upcomingEventData.getStartTimeMs(), true))
 internal fun VideoItem.getChannelId() =
     shortBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:
     longBylineText?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } ?:

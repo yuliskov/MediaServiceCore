@@ -38,10 +38,10 @@ internal object RssService {
      */
     private fun syncWithChannel(channelId: String, result: List<MediaItem>) {
         val group = BrowseService2.getChannelVideosFull(channelId)
-        val originItems = group?.mediaItems
+        val originItems = group?.mediaItems ?: return
 
         Helpers.removeIf(result) { item ->
-            val first = originItems?.firstOrNull { it?.videoId == item.videoId }
+            val first = originItems.firstOrNull { it?.videoId == item.videoId }
             if (first != null) {
                 item as YouTubeMediaItem
                 item.badgeText = first.badgeText

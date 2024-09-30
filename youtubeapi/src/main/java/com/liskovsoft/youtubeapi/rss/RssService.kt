@@ -8,6 +8,10 @@ import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
@@ -15,21 +19,33 @@ internal object RssService {
 
     @JvmStatic
     fun getFeed(vararg channelIds: String): MediaGroup {
-        val items = mutableListOf<MediaItem>()
+        val items = fetchFeeds(*channelIds)
 
-        for (channelId in channelIds) {
-            val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
-            rssContent?.let {
-                val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
-                syncWithChannel(channelId, result)
-                items.addAll(result)
-            }
-        }
-        
         items.sortByDescending { it.publishedDate }
 
         return YouTubeMediaGroup(-1).apply {
             mediaItems = items
+        }
+    }
+
+    private fun fetchFeeds(vararg channelIds: String): MutableList<MediaItem> = runBlocking {
+        val items = mutableListOf<MediaItem>()
+
+        for (channelId in channelIds) {
+            launch {
+                appendFeed(channelId, items)
+            }
+        }
+
+        return@runBlocking items
+    }
+
+    private suspend fun appendFeed(channelId: String, items: MutableList<MediaItem>) = withContext(Dispatchers.IO) {
+        val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
+        rssContent?.let {
+            val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
+            syncWithChannel(channelId, result)
+            items.addAll(result)
         }
     }
 

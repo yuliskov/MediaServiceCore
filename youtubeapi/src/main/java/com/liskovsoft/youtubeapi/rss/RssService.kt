@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -41,9 +42,11 @@ internal object RssService {
     private fun fetchFeeds(vararg channelIds: String): MutableList<MediaItem> = runBlocking {
         val items = mutableListOf<MediaItem>()
 
-        for (channelId in channelIds) {
-            launch {
-                appendFeed(channelId, items)
+        coroutineScope { // cancels child coroutines on exception
+            for (channelId in channelIds) {
+                launch {
+                    appendFeed(channelId, items)
+                }
             }
         }
 

@@ -18,14 +18,24 @@ internal object RssService {
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
 
     @JvmStatic
-    fun getFeed(vararg channelIds: String): MediaGroup {
-        val items = fetchFeeds(*channelIds)
+    fun getFeed(vararg channelIds: String): MediaGroup? {
+        val items = fetchFeedsSafe(*channelIds) ?: return null
 
         items.sortByDescending { it.publishedDate }
 
         return YouTubeMediaGroup(-1).apply {
             mediaItems = items
         }
+    }
+
+    private fun fetchFeedsSafe(vararg channelIds: String): MutableList<MediaItem>? {
+        try {
+            return fetchFeeds(*channelIds)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        return null
     }
 
     private fun fetchFeeds(vararg channelIds: String): MutableList<MediaItem> = runBlocking {

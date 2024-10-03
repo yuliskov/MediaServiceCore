@@ -115,37 +115,11 @@ public class ServiceHelper {
      * Additional video info such as user, published etc.
      */
     public static String itemsToInfo(Object... items) {
-        return combineItems(ITEMS_DIVIDER, items);
+        return Helpers.combineItems(ITEMS_DIVIDER, items);
     }
 
     public static String combineText(Object... items) {
-        return combineItems(null, items);
-    }
-
-    public static String combineItems(String divider, Object... items) {
-        StringBuilder result = new StringBuilder();
-
-        if (items != null) {
-            for (Object item : items) {
-                if (item == null) {
-                    continue;
-                }
-
-                String strItem = item.toString();
-
-                if (strItem == null || strItem.isEmpty()) {
-                    continue;
-                }
-
-                if (divider == null || result.length() == 0) {
-                    result.append(strItem);
-                } else {
-                    result.append(divider).append(strItem);
-                }
-            }
-        }
-
-        return result.length() != 0 ? result.toString() : null;
+        return Helpers.combineItems(null, items);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.liskovsoft.googleapi.common.models.V2;
 import com.liskovsoft.googleapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.googleapi.common.helpers.ServiceHelper;
 import com.liskovsoft.googleapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import java.util.List;
 
@@ -43,10 +44,10 @@ public class Metadata {
     }
 
     private String getViewCountText1() {
-        return mViewsAndDateText1 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText1.toArray(new Object[0])) : null;
+        return mViewsAndDateText1 != null ? Helpers.combineItems(" ", mViewsAndDateText1.toArray(new Object[0])) : null;
     }
 
     private String getViewCountText2() {
-        return mViewsAndDateText2 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText2.toArray(new Object[0])) : null;
+        return mViewsAndDateText2 != null ? Helpers.combineItems(" ", mViewsAndDateText2.toArray(new Object[0])) : null;
     }
 }

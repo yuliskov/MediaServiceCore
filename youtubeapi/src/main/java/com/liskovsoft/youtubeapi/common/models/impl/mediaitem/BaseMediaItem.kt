@@ -141,7 +141,7 @@ open class BaseMediaItem : MediaItem {
         return _reloadPageKeyItem
     }
 
-    override fun getDurationMs(): Int {
+    override fun getDurationMs(): Long {
         return durationMsItem
     }
 

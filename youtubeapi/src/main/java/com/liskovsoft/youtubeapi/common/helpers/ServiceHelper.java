@@ -41,7 +41,7 @@ public class ServiceHelper {
      * @param lengthText video length
      * @return length in milliseconds
      */
-    public static int timeTextToMillis(String lengthText) {
+    public static long timeTextToMillis(String lengthText) {
         if (lengthText == null || lengthText.contains(",")) {
             return -1;
         }
@@ -54,7 +54,7 @@ public class ServiceHelper {
         int minutes = Helpers.parseInt(timeParts, length - 2, 0);
         int seconds = Helpers.parseInt(timeParts, length - 1, 0);
 
-        return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
+        return TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds);
     }
 
     public static String millisToTimeText(long millis) {

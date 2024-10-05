@@ -48,7 +48,7 @@ public interface MediaItem {
     /**
      * Video duration in millis.<br/>
      */
-    int getDurationMs();
+    long getDurationMs();
     String getBadgeText();
     String getProductionDate();
     long getPublishedDate();

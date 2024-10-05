@@ -450,7 +450,7 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public int getDurationMs() {
+    public long getDurationMs() {
         return ServiceHelper.timeTextToMillis(mLengthText);
     }
 

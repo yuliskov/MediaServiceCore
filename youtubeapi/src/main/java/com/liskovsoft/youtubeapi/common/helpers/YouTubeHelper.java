@@ -124,7 +124,7 @@ public final class YouTubeHelper {
 
         String title = mediaItem.getTitle().toLowerCase();
 
-        int lengthMs = mediaItem.getDurationMs();
+        long lengthMs = mediaItem.getDurationMs();
         boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
         return isShortLength || mediaItem.isShorts() || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
     }

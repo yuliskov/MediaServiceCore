@@ -192,6 +192,8 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         videoMetadata?.getLikeCountInt()?.let { if (it > 0) ServiceHelper.prettyCount(it * 0.032) else null }
     }
 
+    private val durationMsItem by lazy { ServiceHelper.timeTextToMillis(videoDetails?.getLengthText()) }
+
     override fun getTitle(): String? {
         return videoTitle
     }
@@ -290,5 +292,9 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     override fun getNotificationStates(): List<NotificationState?>? {
         return notificationStateList
+    }
+
+    override fun getDurationMs(): Long {
+        return durationMsItem
     }
 }

@@ -31,4 +31,5 @@ public interface MediaItemMetadata {
     PlaylistInfo getPlaylistInfo();
     List<ChapterItem> getChapters();
     List<NotificationState> getNotificationStates();
+    long getDurationMs();
 }

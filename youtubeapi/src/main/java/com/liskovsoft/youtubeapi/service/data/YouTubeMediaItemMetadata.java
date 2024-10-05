@@ -284,4 +284,9 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     public List<NotificationState> getNotificationStates() {
         return null;
     }
+
+    @Override
+    public long getDurationMs() {
+        return -1;
+    }
 }

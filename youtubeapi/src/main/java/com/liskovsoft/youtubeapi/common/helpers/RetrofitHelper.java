@@ -62,7 +62,23 @@ public class RetrofitHelper {
         return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
     }
 
+    //public static <T> T get(Call<T> wrapper) {
+    //    Response<T> response = getResponse(wrapper);
+    //
+    //    //handleResponseErrors(response);
+    //
+    //    return response != null ? response.body() : null;
+    //}
+
     public static <T> T get(Call<T> wrapper) {
+        return get(wrapper, false);
+    }
+
+    public static <T> T get(Call<T> wrapper, boolean skipAuth) {
+        if (skipAuth) {
+            RetrofitOkHttpHelper.addAuthSkip(wrapper.request());
+        }
+
         Response<T> response = getResponse(wrapper);
 
         //handleResponseErrors(response);

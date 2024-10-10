@@ -38,6 +38,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
+    private boolean mSkipAuthBlock;
 
     private interface VideoInfoCallback {
         VideoInfo call();
@@ -57,11 +58,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
-        RetrofitOkHttpHelper.skipAuth(mSkipAuth);
+        mSkipAuthBlock = mSkipAuth;
 
         VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
 
-        RetrofitOkHttpHelper.skipAuth(false);
+        mSkipAuthBlock = false;
 
         if (result == null) {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
@@ -73,8 +74,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);
-        RetrofitOkHttpHelper.skipAuth(result.isHistoryBroken());
+
+        mSkipAuthBlock = result.isHistoryBroken();
+
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
+
+        mSkipAuthBlock = false;
 
         List<AdaptiveVideoFormat> adaptiveFormats = null;
         List<RegularVideoFormat> regularFormats = null;
@@ -92,8 +97,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         result.setAdaptiveFormats(adaptiveFormats);
         result.setRegularFormats(regularFormats);
 
-        RetrofitOkHttpHelper.skipAuth(false);
-
         return result;
     }
 
@@ -106,7 +109,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         switch (type) {
             case VIDEO_INFO_INITIAL:
-                result = InitialResponse.getVideoInfo(videoId);
+                result = InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
                 if (result != null) {
                     VideoInfo syncInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                     result.sync(syncInfo);
@@ -203,12 +206,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getVideoInfo(wrapper);
     }
 
-    private static @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper) {
-        boolean skipAuth = RetrofitOkHttpHelper.isSkipAuth();
+    private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper) {
+        VideoInfo videoInfo = RetrofitHelper.get(wrapper, mSkipAuthBlock);
 
-        VideoInfo videoInfo = RetrofitHelper.get(wrapper);
-
-        if (videoInfo != null && skipAuth) {
+        if (videoInfo != null && mSkipAuthBlock) {
             videoInfo.setHistoryBroken(true);
         }
 
@@ -223,7 +224,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfoHls getVideoInfoHls(String videoInfoQuery) {
         Call<VideoInfoHls> wrapper = mVideoInfoApi.getVideoInfoHls(videoInfoQuery, mAppService.getVisitorId());
 
-        return RetrofitHelper.get(wrapper);
+        return RetrofitHelper.get(wrapper, mSkipAuthBlock);
     }
 
     private void applyFixesIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
@@ -281,9 +282,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {
                         // Auth users only. The latest bug fix for "This content isn't available".
-                        RetrofitOkHttpHelper.skipAuth(!mSkipAuth);
+                        mSkipAuthBlock = !mSkipAuth;
                         VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
-                        RetrofitOkHttpHelper.skipAuth(false);
+                        mSkipAuthBlock = false;
 
                         if (rootResult == null || rootResult.isUnplayable()) {
                             return null;
@@ -319,9 +320,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
         VideoInfo result = null;
 
         for (int type : VIDEO_INFO_TYPE_LIST) {
-            RetrofitOkHttpHelper.skipAuth(true);
+            mSkipAuthBlock = true;
             VideoInfo videoInfo = getVideoInfo(type, videoId, clickTrackingParams);
-            RetrofitOkHttpHelper.skipAuth(false);
+            mSkipAuthBlock = false;
 
             if (videoInfo != null && !videoInfo.isUnplayable()) {
                 result = videoInfo;

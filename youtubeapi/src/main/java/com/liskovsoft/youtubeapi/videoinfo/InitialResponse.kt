@@ -13,10 +13,10 @@ internal object InitialResponse {
     private val YT_INITIAL_PLAYER_RESPONSE_RE: Pattern = Pattern.compile("""ytInitialPlayerResponse\s*=""")
 
     @JvmStatic
-    fun getVideoInfo(videoId: String): VideoInfo? {
+    fun getVideoInfo(videoId: String, skipAuth: Boolean = false): VideoInfo? {
         val fileApi = RetrofitHelper.create(FileApi::class.java)
         val resultWrapper = fileApi.getContent("https://www.youtube.com/watch?v=$videoId")
-        val result = RetrofitHelper.get(resultWrapper)
+        val result = RetrofitHelper.get(resultWrapper, skipAuth)
 
         result?.content?.let {
             val jsonStr = JSInterpret.searchJson(YT_INITIAL_PLAYER_RESPONSE_RE, it)

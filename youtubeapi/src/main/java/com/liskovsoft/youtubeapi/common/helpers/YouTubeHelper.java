@@ -160,4 +160,12 @@ public final class YouTubeHelper {
 
         return Helpers.allNulls(item.getVideoId(), item.getPlaylistId(), item.getReloadPageKey(), item.getParams(), item.getChannelId());
     }
+
+    public static int hashCodeAny(MediaItem item) {
+        if (item == null) {
+            return -1;
+        }
+
+        return Helpers.hashCodeAny(item.getVideoId(), item.getPlaylistId(), item.getReloadPageKey(), item.getParams(), item.getChannelId());
+    }
 }

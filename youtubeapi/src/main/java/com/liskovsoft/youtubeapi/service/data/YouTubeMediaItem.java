@@ -18,7 +18,7 @@ import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class YouTubeMediaItem implements MediaItem {
-    private static int sId;
+    //private static int sId;
     private int mId;
     private String mTitle;
     private String mSecondTitle;
@@ -258,7 +258,7 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     private static void addCommonProps(YouTubeMediaItem video) {
-        video.mId = createId(video);
+        //video.mId = createId(video);
         video.mContentType = "video/mp4";
         video.mWidth = 1280;
         video.mHeight = 720;
@@ -306,22 +306,26 @@ public class YouTubeMediaItem implements MediaItem {
         return item;
     }
 
-    private static int createId(YouTubeMediaItem item) {
-        int id;
-
-        if (item.mVideoId != null) {
-            id = item.mVideoId.hashCode();
-        } else if (item.mChannelId != null) {
-            id = item.mChannelId.hashCode();
-        } else {
-            id = sId++;
-        }
-
-        return id;
-    }
+    //private static int createId(YouTubeMediaItem item) {
+    //    int id;
+    //
+    //    if (item.mVideoId != null) {
+    //        id = item.mVideoId.hashCode();
+    //    } else if (item.mChannelId != null) {
+    //        id = item.mChannelId.hashCode();
+    //    } else {
+    //        id = sId++;
+    //    }
+    //
+    //    return id;
+    //}
 
     @Override
     public int getId() {
+        if (mId == 0) {
+            mId = hashCode();
+        }
+
         return mId;
     }
 
@@ -633,7 +637,9 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public int hashCode() {
-        return Helpers.hashCode(mVideoId, mPlaylistId, mChannelId, mReloadPageKey);
+        //return Helpers.hashCode(mVideoId, mPlaylistId, mChannelId, mReloadPageKey);
+        int hashCodeAny = YouTubeHelper.hashCodeAny(this);
+        return hashCodeAny != -1 ? hashCodeAny : super.hashCode();
     }
 
     public static String serializeMediaItem(MediaItem mediaItem) {

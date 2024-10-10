@@ -216,14 +216,14 @@ public class VideoInfo {
     }
 
     /**
-     * Video cannot be embedded or we received a temporal ban
+     * Video cannot be embedded
      */
     public boolean isEmbedRestricted() {
-        return !mIsPlayableInEmbed && isUnknownRestricted();
+        return !mIsPlayableInEmbed;
     }
 
     /**
-     * Reason of unavailability unknown
+     * Reason of unavailability unknown or we received a temporal ban
      */
     public boolean isUnknownRestricted() {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_UNPLAYABLE);
@@ -375,7 +375,7 @@ public class VideoInfo {
     }
 
     public boolean isHistoryBroken() {
-        return mIsHistoryBroken;
+        return mIsHistoryBroken || isUnknownRestricted();
     }
 
     private void parseTrackingParams() {

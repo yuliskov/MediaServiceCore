@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import kotlin.math.abs
 
 open class BaseMediaItem : MediaItem {
@@ -28,7 +29,8 @@ open class BaseMediaItem : MediaItem {
     private var _paramsItem: String? = null
         get() = field ?: playlistParamsItem
 
-    private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
+    //private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
+    private val _id by lazy { hashCode() }
     // TODO: time conversion doesn't take into account locale specific delimiters
     private val durationMsItem by lazy { ServiceHelper.timeTextToMillis(lengthText ?: badgeTextItem) }
 
@@ -64,7 +66,7 @@ open class BaseMediaItem : MediaItem {
     protected open val hasUploadsItem: Boolean? = null
 
     protected companion object {
-        var sId: Int = 0
+        //var sId: Int = 0
         fun fromString(spec: String?): MediaItem? {
             if (spec == null) {
                 return null
@@ -297,6 +299,8 @@ open class BaseMediaItem : MediaItem {
     }
 
     override fun hashCode(): Int {
-        return Helpers.hashCode(videoId, playlistId, channelId, reloadPageKey)
+        //return Helpers.hashCode(videoId, playlistId, channelId, reloadPageKey)
+        val hashCodeAny = YouTubeHelper.hashCodeAny(this)
+        return if (hashCodeAny != -1) hashCodeAny else super.hashCode()
     }
 }

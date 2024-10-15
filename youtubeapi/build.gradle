@@ -48,6 +48,7 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
     androidTestImplementation project(':youtubeapi')
+    androidTestImplementation project(':sharedtests')
     androidTestImplementation 'junit:junit:' + junitVersion
     androidTestImplementation 'androidx.test:runner:' + testXSupportLibraryVersion
     androidTestImplementation 'androidx.test:rules:' + testXSupportLibraryVersion

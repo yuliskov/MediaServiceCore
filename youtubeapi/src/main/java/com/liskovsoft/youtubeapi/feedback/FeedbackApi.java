@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.feedback;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 /**
  * For signed users!
  */
-@JsonPathClass
+@WithJsonPath
 public interface FeedbackApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/feedback")

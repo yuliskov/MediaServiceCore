@@ -8,17 +8,17 @@ import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.common.converters.gson.GsonClass;
+import com.liskovsoft.youtubeapi.common.converters.gson.WithGson;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathSkipClass;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPathSkip;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathSkipConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-import com.liskovsoft.youtubeapi.common.converters.querystring.QueryStringClass;
+import com.liskovsoft.youtubeapi.common.converters.querystring.WithQueryString;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExpClass;
+import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.youtubeapi.common.models.gen.ErrorResponse;
 
@@ -167,15 +167,15 @@ public class RetrofitHelper {
         Annotation[] annotations = clazz.getAnnotations();
 
         for (Annotation annotation : annotations) {
-            if (annotation instanceof RegExpClass) {
+            if (annotation instanceof WithRegExp) {
                 return withRegExp(clazz);
-            } else if (annotation instanceof JsonPathClass) {
+            } else if (annotation instanceof WithJsonPath) {
                 return withJsonPath(clazz);
-            } else if (annotation instanceof JsonPathSkipClass) {
+            } else if (annotation instanceof WithJsonPathSkip) {
                 return withJsonPathSkip(clazz);
-            } else if (annotation instanceof QueryStringClass) {
+            } else if (annotation instanceof WithQueryString) {
                 return withQueryString(clazz);
-            } else if (annotation instanceof GsonClass) {
+            } else if (annotation instanceof WithGson) {
                 return withGson(clazz);
             }
         }

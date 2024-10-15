@@ -3,14 +3,14 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExpClass;
+import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Url;
 
-@RegExpClass
+@WithRegExp
 public interface AppApi {
     /**
      * Get player version that associated with specified user agent.<br/>

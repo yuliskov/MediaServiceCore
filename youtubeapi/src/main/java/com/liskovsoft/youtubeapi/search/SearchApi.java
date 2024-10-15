@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPathClass;
+import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchTags;
@@ -12,7 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-@JsonPathClass
+@WithJsonPath
 public interface SearchApi {
     String TAGS_URL = "https://clients1.google.com/complete/search?client=youtube-lr&ds=yt&xhr=t&oe=utf-8&xssi=t";
     String SEARCH_URL = "https://www.youtube.com/youtubei/v1/search";

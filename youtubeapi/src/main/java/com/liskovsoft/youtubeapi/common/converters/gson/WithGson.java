@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.converters.querystring;
+package com.liskovsoft.youtubeapi.common.converters.gson;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface QueryStringClass {
+public @interface WithGson {
 }

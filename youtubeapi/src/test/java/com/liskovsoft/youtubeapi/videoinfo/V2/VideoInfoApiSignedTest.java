@@ -67,7 +67,7 @@ public class VideoInfoApiSignedTest {
 
     @Test
     public void initialResponseTest() {
-        testThatVideoInfoContainsRequiredFields(InitialResponse.getVideoInfo(TestHelpersV1.VIDEO_ID_MUSIC_2));
+        testThatVideoInfoContainsRequiredFields(InitialResponse.getVideoInfo(TestHelpersV1.VIDEO_ID_MUSIC_2, false));
     }
 
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {

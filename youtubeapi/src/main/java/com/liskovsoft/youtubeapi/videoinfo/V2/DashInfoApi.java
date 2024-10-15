@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExpClass;
+import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 
@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
 
-@RegExpClass
+@WithRegExp
 public interface DashInfoApi {
     @GET
     Call<DashInfoUrl> getDashInfoUrl(@Url String url);

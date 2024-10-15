@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.common.converters.regexp;
+package com.liskovsoft.youtubeapi.common.converters.querystring;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface RegExpClass {
+public @interface WithQueryString {
 }

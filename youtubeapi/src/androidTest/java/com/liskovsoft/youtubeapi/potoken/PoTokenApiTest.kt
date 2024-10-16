@@ -14,27 +14,48 @@ class PoTokenApiTest {
 
     @Before
     fun setUp() {
-        visitorData = ""
+        visitorData = "CgtXYm83Ni15aTkyWSjxrbu4BjIKCgJVQRIEGgAgHA%3D%3D"
     }
 
     @Test
     fun testOpenPrivateJSFile() {
-        evaluate(TestHelpers.readResource("potoken/privateScript.js"))
+        evaluate(TestHelpers.readResource("potoken/privateScript.js"), program)
     }
 
     @Test
     fun testGetChallenge() {
-        val api = RetrofitHelper.create(PoTokenApi::class.java)
-        val challenge = Challenge()
-
-        val result = challenge.create(api, Challenge.Config(requestKey = requestKey))
+        val result = getChallenge()
 
         assertNotNull("Private script not null", result?.interpreterJavascript?.privateDoNotAccessOrElseSafeScriptWrappedValue)
 
-        evaluate(result?.interpreterJavascript?.privateDoNotAccessOrElseSafeScriptWrappedValue)
+        evaluate(result?.interpreterJavascript?.privateDoNotAccessOrElseSafeScriptWrappedValue, result?.program)
     }
 
-    private fun evaluate(scriptContent: String?) {
+    @Test
+    fun testGetPoToken() {
+        val result = getChallenge()
+
+        val poToken = PoToken()
+
+        val poTokenResult = poToken.generate(PoToken.Arguments(
+            result?.interpreterJavascript?.privateDoNotAccessOrElseSafeScriptWrappedValue,
+            result?.program,
+            result?.globalName,
+            getConfig()))
+
+        assertNotNull("PoToken not null", poTokenResult?.poToken)
+    }
+
+    private fun getChallenge(): Challenge.Result? {
+        val challenge = Challenge()
+
+        val result = challenge.create(getConfig())
+        return result
+    }
+
+    private fun getConfig() = BotGuardConfig(RetrofitHelper.create(PoTokenApi::class.java), requestKey = requestKey, identifier = visitorData)
+
+    private fun evaluate(scriptContent: String?, program: String?) {
         val script = listOf(
             "window = {}; window.document = {};",
             scriptContent,

@@ -6,7 +6,6 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.util.Base64
 
 internal class Challenge {
-    data class Config(val identifier: String? = null, val requestKey: String)
     data class Result(val messageId: String?,
                        val interpreterJavascript: InterpreterJavascript?,
                        val interpreterHash: String?,
@@ -24,10 +23,10 @@ internal class Challenge {
                     val unknown2: String?,
                     val clientExperimentsStateBlob: String?)
 
-    fun create(api: PoTokenApi, config: Config, interpreterHash: String? = null): Result? {
-        val requestKey = config.requestKey
+    fun create(bgConfig: BotGuardConfig, interpreterHash: String? = null): Result? {
+        val requestKey = bgConfig.requestKey
         val payload = listOfNotNull(requestKey, interpreterHash)
-        val wrapper = api.createChallenge(Gson().toJson(payload))
+        val wrapper = bgConfig.api.createChallenge(Gson().toJson(payload))
 
         val result = RetrofitHelper.get(wrapper) ?: return null
 

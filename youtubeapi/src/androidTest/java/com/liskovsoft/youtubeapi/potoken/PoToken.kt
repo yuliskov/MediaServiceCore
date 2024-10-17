@@ -61,8 +61,8 @@ internal class PoToken {
     private fun invokeBotGuard(privateScript: String?, program: String?, globalName: String?, bgConfig: BotGuardConfig): BotGuardResult? {
         val script = listOf(
             DOM_WRAPPER.trimIndent(),
-            //TestHelpers.readResource("potoken/bundle.js"),
-            //"var mydom = new MyLibrary.JSDOM(); window = mydom.window; document = mydom.window.document;",
+            //TestHelpers.readResource("potoken/jsdom_browserify.js"),
+            //"var mydom = new jsdom.JSDOM(); window = mydom.window; document = mydom.window.document;",
             privateScript,
             """
                var vm = $globalName;

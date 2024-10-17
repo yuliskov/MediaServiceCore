@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.potoken
 
+import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import java.util.Base64
 
 internal class Challenge {
     data class Result(val messageId: String?,
@@ -71,7 +71,7 @@ internal class Challenge {
      * Descrambles the given challenge data.
      */
     private fun descramble(scrambledChallenge: String): String? {
-        val buffer = Base64.getDecoder().decode(scrambledChallenge)
+        val buffer = Base64.decode(scrambledChallenge, Base64.DEFAULT)
 
         if (buffer.isEmpty())
             return null

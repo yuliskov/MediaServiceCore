@@ -34,7 +34,9 @@ public class TranslatedCaptionTrack extends CaptionTrack {
 
     @Override
     public String getName() {
-        return mLanguage.getLanguageName() + (mTag != null ? " " + mTag : "") + TRANSLATE_MARKER;
+        // NOTE: tag contain weird chars: (simplified) - chinese (simplified)
+        //return mLanguage.getLanguageName() + (mTag != null ? " " + mTag : "") + TRANSLATE_MARKER;
+        return mLanguage.getLanguageName() + TRANSLATE_MARKER;
     }
 
     @Override

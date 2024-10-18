@@ -32,14 +32,14 @@ public class VideoInfoApiHelper {
     // https://github.com/LuanRT/YouTube.js/pull/390/commits/6511c23fe6133f4b066c558ebfa531e1ce7c0062
     //private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
 
-    public static String getVideoInfoQuery(String videoId, String clickTrackingParams, AppClient client) {
+    public static String getVideoInfoQuery(AppClient client, String videoId, String clickTrackingParams) {
         return createCheckedQuery(client.getPlayerTemplate(), videoId, clickTrackingParams);
     }
 
     /**
      * NOTE: Should use protobuf to bypass geo blocking.
      */
-    public static String getVideoInfoQueryGeo(String videoId, String clickTrackingParams, AppClient client) {
+    public static String getVideoInfoQueryGeo(AppClient client, String videoId, String clickTrackingParams) {
         return createCheckedQuery(client.getPlayerTemplate(), videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 

@@ -25,6 +25,7 @@ internal object BrowseApiHelper {
     private const val LIKED_MUSIC = "\"browseId\":\"VLLM\""
     private const val NEW_MUSIC_VIDEOS = "\"browseId\":\"FEmusic_new_releases_videos\""
     private const val NEW_MUSIC_ALBUMS = "\"browseId\":\"FEmusic_new_releases_albums\""
+    private const val MY_PLAYLISTS = "\"browseId\":\"FEplaylist_aggregation\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
     private const val REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}"
     private const val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
@@ -158,5 +159,9 @@ internal object BrowseApiHelper {
     fun getContinuationQueryTV(nextPageKey: String): String {
         val continuation = String.format(CONTINUATION, nextPageKey)
         return ServiceHelper.createQueryTV(continuation)
+    }
+
+    fun getMyPlaylistQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, MY_PLAYLISTS)
     }
 }

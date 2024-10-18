@@ -9,7 +9,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
@@ -176,12 +175,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, client);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
         return getVideoInfo(client, videoInfoQuery);
     }
 
     private VideoInfo getVideoInfoGeo(AppClient client, String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeo(videoId, clickTrackingParams, client);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeo(client, videoId, clickTrackingParams);
         return getVideoInfo(client, videoInfoQuery);
     }
 
@@ -189,7 +188,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
      * NOTE: user history won't work with this method
      */
     private VideoInfo getVideoInfoRestricted(AppClient client, String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, client);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
 
         return getVideoInfoRestricted(client, videoInfoQuery);
     }
@@ -217,7 +216,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(videoId, clickTrackingParams, AppClient.IOS);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(AppClient.IOS, videoId, clickTrackingParams);
         return getVideoInfoHls(videoInfoQuery);
     }
 

@@ -173,7 +173,9 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 
 ///////
 
-internal fun BrowseResultTV.getShelves(): List<Shelf?>? = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content?.sectionListRenderer?.contents
+internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
+internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
+private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
 internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers()
 internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()

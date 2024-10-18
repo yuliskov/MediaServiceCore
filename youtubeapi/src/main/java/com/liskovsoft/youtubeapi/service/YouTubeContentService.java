@@ -806,19 +806,30 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getEmptyPlaylistsObserve() {
-        return RxHelper.create(emitter -> {
-            checkSigned();
-
-            List<GridTab> tabs = mBrowseService.getPlaylists();
-
-            if (tabs != null && tabs.size() > 0) {
-                emitter.onNext(YouTubeMediaGroup.fromTabs(tabs, MediaGroup.TYPE_USER_PLAYLISTS));
-                emitter.onComplete();
-            } else {
-                RxHelper.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
-            }
-        });
+        return RxHelper.fromNullable(this::getEmptyPlaylists);
     }
+
+    private MediaGroup getEmptyPlaylists() {
+        checkSigned();
+
+        return BrowseService2.getMyPlaylists();
+    }
+
+    //@Override
+    //public Observable<MediaGroup> getEmptyPlaylistsObserve() {
+    //    return RxHelper.create(emitter -> {
+    //        checkSigned();
+    //
+    //        List<GridTab> tabs = mBrowseService.getPlaylists();
+    //
+    //        if (tabs != null && tabs.size() > 0) {
+    //            emitter.onNext(YouTubeMediaGroup.fromTabs(tabs, MediaGroup.TYPE_USER_PLAYLISTS));
+    //            emitter.onComplete();
+    //        } else {
+    //            RxHelper.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
+    //        }
+    //    });
+    //}
 
     @Override
     public void enableHistory(boolean enable) {

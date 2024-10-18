@@ -153,7 +153,8 @@ internal data class BrowseResultTV(
                     val content: Content?
                 ) {
                     data class Content(
-                        val sectionListRenderer: ItemSectionRenderer?
+                        val sectionListRenderer: ItemSectionRenderer?,
+                        val gridRenderer: GridRenderer?
                     )
                 }
             }

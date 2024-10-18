@@ -120,6 +120,13 @@ internal object BrowseService2 {
         return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
 
+    @JvmStatic
+    fun getMyPlaylists(): MediaGroup? {
+        val result = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getMyPlaylistQuery(AppClient.TV))
+
+        return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_USER_PLAYLISTS)) }
+    }
+
     private fun continueShorts(continuationKey: String?): MediaGroup? {
         if (continuationKey == null) {
             return null
@@ -400,9 +407,9 @@ internal object BrowseService2 {
         return if (result?.getRedirectBrowseId() != null) browseExpression(result.getRedirectBrowseId()!!) else result
     }
 
-    private fun getChannelResult(client: AppClient, channelId: String, params: String? = null): BrowseResult? {
-        val wrapper = mBrowseApi.getBrowseResult(
-            BrowseApiHelper.getChannelQuery(client, channelId, params), client.userAgent, client.referer)
-        return RetrofitHelper.get(wrapper)
-    }
+    //private fun getChannelResult(client: AppClient, channelId: String, params: String? = null): BrowseResult? {
+    //    val wrapper = mBrowseApi.getBrowseResult(
+    //        BrowseApiHelper.getChannelQuery(client, channelId, params), client.userAgent, client.referer)
+    //    return RetrofitHelper.get(wrapper)
+    //}
 }

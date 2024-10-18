@@ -6,32 +6,31 @@ import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
 @WithGson
 internal interface BrowseApi {
     //@Headers(
-    //    "Content-Type: application/json",
-    //    "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
-    //    "referer: https://www.youtube.com/"
+    //    "Content-Type: application/json"
     //)
     //@POST("https://www.youtube.com/youtubei/v1/browse")
-    //fun getBrowseResult(@Body browseQuery: String?): Call<BrowseResult?>?
+    //fun getBrowseResult(@Body browseQuery: String?,
+    //                    @Header("User-Agent") userAgent: String = DefaultHeaders.USER_AGENT_WEB,
+    //                    @Header("Referer") referer: String? = "https://www.youtube.com/"): Call<BrowseResult?>?
 
     @Headers(
-        "Content-Type: application/json"
+        "Content-Type: application/json",
+        "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
+        "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    fun getBrowseResult(@Body browseQuery: String?,
-                        @Header("User-Agent") userAgent: String = DefaultHeaders.USER_AGENT_WEB,
-                        @Header("Referer") referer: String? = "https://www.youtube.com/"): Call<BrowseResult?>?
+    fun getBrowseResult(@Body browseQuery: String?): Call<BrowseResult?>?
 
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_MOBILE_WEB,
-        "referer: https://m.youtube.com/"
+        "Referer: https://m.youtube.com/"
     )
     @POST("https://m.youtube.com/youtubei/v1/browse")
     fun getBrowseResultMobile(@Body browseQuery: String?): Call<BrowseResult?>?
@@ -39,7 +38,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
-        "referer: https://www.youtube.com/tv/kids"
+        "Referer: https://www.youtube.com/tv/kids"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getBrowseResultKids(@Body browseQuery: String?): Call<BrowseResultKids?>?
@@ -47,7 +46,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
-        "referer: https://www.youtube.com/tv"
+        "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getBrowseResultTV(@Body browseQuery: String?): Call<BrowseResultTV?>?
@@ -55,7 +54,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
-        "referer: https://www.youtube.com/"
+        "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getContinuationResult(@Body continuationQuery: String?): Call<ContinuationResult?>?
@@ -63,7 +62,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
-        "referer: https://www.youtube.com/tv"
+        "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
     fun getContinuationResultTV(@Body continuationQuery: String?): Call<WatchNextResultContinuation?>?
@@ -71,7 +70,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
-        "referer: https://www.youtube.com/"
+        "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/guide")
     fun getGuideResult(@Body guideQuery: String?): Call<GuideResult?>?
@@ -79,7 +78,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
-        "referer: https://www.youtube.com/"
+        "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_item_watch")
     fun getReelResult(@Body reelQuery: String?): Call<ReelResult?>?
@@ -87,7 +86,7 @@ internal interface BrowseApi {
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
-        "referer: https://www.youtube.com/"
+        "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_watch_sequence")
     fun getReelContinuationResult(@Body reelQuery: String?): Call<ReelContinuationResult?>?

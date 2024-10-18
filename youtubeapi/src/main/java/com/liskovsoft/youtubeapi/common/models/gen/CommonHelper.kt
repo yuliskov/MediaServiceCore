@@ -170,12 +170,12 @@ internal fun TileItem.getPublishedTime() = null
 internal fun TileItem.getViewCountText() =
     YouTubeHelper.createInfo(*metadata?.tileMetadataRenderer?.lines?.map {
         ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: emptyArray())
-    }?.toTypedArray() ?: emptyArray()) ?: null
+    }?.toTypedArray() ?: emptyArray())
 internal fun TileItem.getUpcomingEventText() = null
 internal fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
 internal fun TileItem.getMovingThumbnails() = header?.tileHeaderRenderer?.let { it.movingThumbnail ?: it.onFocusThumbnail }
 internal fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
-internal fun TileItem.getChannelId() = getMenu()?.getBrowseId()
+internal fun TileItem.getChannelId() = onSelectCommand?.getBrowseId() ?: getMenu()?.getBrowseId()
 internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType

@@ -61,8 +61,15 @@ internal class PoToken {
     private fun invokeBotGuard(privateScript: String?, program: String?, globalName: String?, bgConfig: BotGuardConfig): BotGuardResult? {
         val script = listOf(
             DOM_WRAPPER.trimIndent(),
+
             //TestHelpers.readResource("potoken/jsdom_browserify.js"),
             //"var mydom = new jsdom.JSDOM(); window = mydom.window; document = mydom.window.document;",
+
+            //TestHelpers.readResource("potoken/domino_browserify.js"),
+            //"var setTimeout = () => {}; var clearInterval = () => {}; var setInterval = () => {}; var clearTimeout = () => {};",
+            //"var window1 = domino.createWindow('<h1>Hello world</h1>', 'http://example.com'); var window = window1.window; var document = window1.document; var addEventListener = window.addEventListener;",
+            //"var window1 = domino.createWindow('<h1>Hello world</h1>', 'http://example.com'); Object.assign(this, window1);",
+
             privateScript,
             """
                var vm = $globalName;
@@ -70,9 +77,9 @@ internal class PoToken {
                const setAttFunctions = (fn1, fn2, fn3, fn4) => {
                    Object.assign(attFunctions, { fn1, fn2, fn3, fn4 });
                };
-               
+
                vm.a('$program', setAttFunctions, true, undefined, () => {});
-               
+
                var botguardResponse;
                const postProcessFunctions = [];
                attFunctions.fn1((response) => (botguardResponse = response), [, , postProcessFunctions]);
@@ -80,9 +87,9 @@ internal class PoToken {
                // TODO: handle multiple postProcessFunctions?
                var second = JSON.stringify(payload);
                var first = '';
-               if (postProcessFunctions.length > 0) 
+               if (postProcessFunctions.length > 0)
                     first = postProcessFunctions[0].name;
-               first + "$RESULT_DELIM" + second;   
+               first + "$RESULT_DELIM" + second;
             """.trimIndent()
         )
 

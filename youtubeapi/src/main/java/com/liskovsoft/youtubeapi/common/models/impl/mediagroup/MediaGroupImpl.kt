@@ -28,6 +28,17 @@ internal data class BrowseMediaGroup(
     override fun getTitleInt(): String? = browseResult.getTitle()
 }
 
+internal data class BrowseMediaGroupTV(
+    private val browseResult: BrowseResultTV,
+    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val liveResult: BrowseResult? = null
+): BaseMediaGroup(options) {
+    override fun getItemWrappersInt(): List<ItemWrapper?> =
+        listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
+    override fun getNextPageKeyInt(): String? = null
+    override fun getTitleInt(): String? = null
+}
+
 internal data class LiveMediaGroup(
     private val liveResult: BrowseResult,
     private val options: MediaGroupOptions = MediaGroupOptions()

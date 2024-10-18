@@ -64,8 +64,8 @@ public interface ContentService {
     Observable<List<MediaGroup>> getChannelSortingObserve(String channelId);
     Observable<List<MediaGroup>> getChannelSortingObserve(MediaItem item);
     Observable<MediaGroup> getChannelSearchObserve(String channelId, String query);
-    Observable<List<MediaGroup>> getPlaylistsObserve();
-    Observable<MediaGroup> getEmptyPlaylistsObserve();
+    Observable<List<MediaGroup>> getPlaylistRowsObserve();
+    Observable<MediaGroup> getPlaylistsObserve();
     Observable<MediaGroup> getSubscribedChannelsObserve();
     Observable<MediaGroup> getSubscribedChannelsByUpdateObserve();
     Observable<MediaGroup> getSubscribedChannelsByNameObserve();

@@ -778,7 +778,7 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<List<MediaGroup>> getPlaylistsObserve() {
+    public Observable<List<MediaGroup>> getPlaylistRowsObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
 
@@ -805,11 +805,11 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<MediaGroup> getEmptyPlaylistsObserve() {
-        return RxHelper.fromNullable(this::getEmptyPlaylists);
+    public Observable<MediaGroup> getPlaylistsObserve() {
+        return RxHelper.fromNullable(this::getPlaylists);
     }
 
-    private MediaGroup getEmptyPlaylists() {
+    private MediaGroup getPlaylists() {
         checkSigned();
 
         return BrowseService2.getMyPlaylists();

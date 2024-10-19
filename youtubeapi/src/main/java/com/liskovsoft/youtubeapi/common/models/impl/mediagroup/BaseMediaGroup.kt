@@ -30,6 +30,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions = 
     private val titleItem by lazy { getTitleInt() }
     protected open val mediaItemList: List<MediaItem?>? by lazy { getItemWrappersInt()
         ?.mapIndexedNotNull { index, it -> it
+            ?.let { if (it.isEmpty()) null else it }
             ?.let { if (filter.invoke(it)) null else it }
             ?.let { WrapperMediaItem(it).let { if (YouTubeHelper.isEmpty(it)) null else it }?.apply { playlistIndex = index } }
         }

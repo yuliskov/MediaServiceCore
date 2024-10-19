@@ -15,7 +15,7 @@ internal data class WrapperMediaItem(var itemWrapper: ItemWrapper): BaseMediaIte
     override val secondTitleItem by lazy {
         YouTubeHelper.createInfo(if (isLiveItem == true) null else descBadgeText, userName, viewCountText, publishedTime, upcomingEventText)
     }
-    override val descBadgeText by lazy { itemWrapper.getDescBadgeText() }
+    override val descBadgeText by lazy { itemWrapper.getSecondTitle() }
     override val userName by lazy { itemWrapper.getUserName() }
     override val publishedTime by lazy { itemWrapper.getPublishedTime() }
     override val viewCountText by lazy { itemWrapper.getViewCountText() }

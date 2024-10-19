@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
 import com.liskovsoft.youtubeapi.common.models.gen.*
-import com.liskovsoft.youtubeapi.next.v2.gen.ChipItem
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.ShelfRenderer
 

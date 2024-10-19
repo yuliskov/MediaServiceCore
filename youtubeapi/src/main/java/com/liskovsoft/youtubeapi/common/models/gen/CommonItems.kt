@@ -209,7 +209,8 @@ internal data class ItemWrapper(
     val playlistVideoRenderer: VideoItem? = null, // ChannelPlaylist
     val musicTwoRowItemRenderer: RadioItem? = null, // YouTube Music
     val continuationItemRenderer: ContinuationItemRenderer? = null, // ChannelPlaylist
-    val shortsLockupViewModel: ShortsItem? = null // Shorts v2
+    val shortsLockupViewModel: ShortsItem? = null, // Shorts v2
+    val lockupViewModel: LockupItem? = null, // Home video items v2
 )
 
 internal data class TileItem(
@@ -372,18 +373,94 @@ internal data class ShortsItem(
     val onTap: OnTap?,
     val overlayMetadata: OverlayMetadata?
 ) {
-    data class OnTap(
-        val innertubeCommand: InnertubeCommand?
-    ) {
-        data class InnertubeCommand(
-            val reelWatchEndpoint: ReelWatchEndpoint?
-        )
-    }
-
     data class OverlayMetadata(
         val primaryText: TextItem?,
         val secondaryText: TextItem?
     )
+}
+
+internal data class OnTap(
+    val innertubeCommand: InnertubeCommand?
+) {
+    data class InnertubeCommand(
+        val reelWatchEndpoint: ReelWatchEndpoint?,
+        val watchEndpoint: WatchEndpointItem?
+    )
+}
+
+internal data class LockupItem(
+    val contentImage: ContentImage?, // thumbnail
+    val metadata: MetadataItem?, // title, subtitle, channelId
+    val rendererContext: RendererContext? // videoId
+) {
+    data class ContentImage(
+        val thumbnailViewModel: ThumbnailViewModel?
+    ) {
+        data class ThumbnailViewModel(
+            val image: ThumbnailItem?,
+            val overlays: List<Overlay?>
+        ) {
+            data class Overlay(
+                val thumbnailOverlayBadgeViewModel: ThumbnailOverlayBadgeViewModel?,
+                val thumbnailBottomOverlayViewModel: ThumbnailBottomOverlayViewModel?
+            ) {
+                data class ThumbnailOverlayBadgeViewModel(
+                    val thumbnailBadges: List<ThumbnailBadge?>?
+                ) {
+                    data class ThumbnailBadge(
+                        val thumbnailBadgeViewModel: ThumbnailBadgeViewModel?
+                    ) {
+                        data class ThumbnailBadgeViewModel(
+                            val text: String?,
+                            val badgeStyle: String?
+                        )
+                    }
+                }
+                data class ThumbnailBottomOverlayViewModel(
+                    val progressBar: ProgressBar?
+                ) {
+                    data class ProgressBar(
+                        val thumbnailOverlayProgressBarViewModel: ThumbnailOverlayProgressBarViewModel?
+                    ) {
+                        data class ThumbnailOverlayProgressBarViewModel(
+                            val startPercent: Int?
+                        )
+                    }
+                }
+            }
+        }
+    }
+    data class MetadataItem(
+        val lockupMetadataViewModel: LockupMetadataViewModel?
+    ) {
+        data class LockupMetadataViewModel(
+            val title: TextItem?, // title
+            val metadata: NestedMetadataItem?, // subtitle, channelId
+        ) {
+            data class NestedMetadataItem(
+                val contentMetadataViewModel: ContentMetadataViewModel?
+            ) {
+                data class ContentMetadataViewModel(
+                    val metadataRows: List<MetadataRow?>?
+                ) {
+                    data class MetadataRow(
+                        val metadataParts: List<MetadataPart?>?
+                    ) {
+                        data class MetadataPart(
+                            val text: TextItem?
+                        )
+                    }
+                }
+            }
+        }
+    }
+    data class RendererContext(
+        val commandContext: CommandContext?
+    ) {
+        data class CommandContext(
+            val onTap: OnTap?
+        )
+    }
 }
 
 internal data class ThumbnailRenderer(

@@ -92,7 +92,7 @@ internal fun VideoItem.getTitle() = title?.getText() ?: headline?.getText()
 internal fun VideoItem.getVideoId() = videoId
 internal fun VideoItem.getThumbnails() = thumbnail
 internal fun VideoItem.getMovingThumbnails() = richThumbnail?.movingThumbnailRenderer?.movingThumbnailDetails
-internal fun VideoItem.getDescBadgeText() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
+internal fun VideoItem.getSecondTitle() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
 internal fun VideoItem.getLengthText() = lengthText?.getText()
 internal fun VideoItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched }
 internal fun VideoItem.getStartTimeSeconds() = navigationEndpoint?.getStartTimeSeconds()
@@ -130,7 +130,7 @@ internal fun MusicItem.getLengthText() = lengthText?.getText()
 internal fun MusicItem.getViewsAndPublished() = tertiaryText?.getText()
 internal fun MusicItem.getChannelId() = menu?.getBrowseId()
 internal fun MusicItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
-internal fun MusicItem.getDescBadgeText() = null
+internal fun MusicItem.getSecondTitle() = null
 internal fun MusicItem.getViewsCountText() = null
 internal fun MusicItem.getUpcomingEventText() = null
 internal fun MusicItem.isLive() = false
@@ -149,7 +149,7 @@ internal fun RadioItem.getViewsAndPublished() = null
 //internal fun RadioItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: menu?.getBrowseId()
 internal fun RadioItem.getChannelId() = menu?.getBrowseId()
 internal fun RadioItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
-internal fun RadioItem.getDescBadgeText() = null
+internal fun RadioItem.getSecondTitle() = null
 internal fun RadioItem.getViewsCountText() = null
 internal fun RadioItem.getUpcomingEventText() = null
 internal fun RadioItem.isLive() = false
@@ -161,7 +161,7 @@ internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getTex
 internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
 internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
-internal fun TileItem.getDescBadgeText() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
+internal fun TileItem.getSecondTitle() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 internal fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }
 internal fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched }
 internal fun TileItem.getStartTimeSeconds() = onSelectCommand?.getStartTimeSeconds()
@@ -202,14 +202,31 @@ internal fun ChannelItem.getTitle() = title?.getText()
 internal fun ChannelItem.getThumbnails() = thumbnail
 internal fun ChannelItem.getChannelId() = channelId
 internal fun ChannelItem.getBadgeText() = videoCountText?.getText()
-internal fun ChannelItem.getDescBadgeText() = subscriberCountText?.getText()
+internal fun ChannelItem.getSecondTitle() = subscriberCountText?.getText()
 
 ////////////
 
 internal fun ShortsItem.getTitle() = overlayMetadata?.primaryText?.getText()
-internal fun ShortsItem.getDescBadgeText() = overlayMetadata?.secondaryText?.getText()
+internal fun ShortsItem.getSecondTitle() = overlayMetadata?.secondaryText?.getText()
 internal fun ShortsItem.getVideoId() = onTap?.innertubeCommand?.reelWatchEndpoint?.getVideoId()
 internal fun ShortsItem.getThumbnails() = onTap?.innertubeCommand?.reelWatchEndpoint?.getThumbnails()
+
+////////////
+
+internal fun LockupItem.getTitle() = metadata?.lockupMetadataViewModel?.title?.getText()
+internal fun LockupItem.getSecondTitle() = YouTubeHelper.createInfo(
+    *metadata?.lockupMetadataViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.mapNotNull { it?.metadataParts?.mapNotNull { it?.text?.getText() } }?.flatten()?.toTypedArray() ?: emptyArray<String>()
+)
+internal fun LockupItem.getVideoId() = rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint?.videoId
+internal fun LockupItem.getThumbnails() = contentImage?.thumbnailViewModel?.image
+internal fun LockupItem.getBadgeText() = getBadge()?.text
+internal fun LockupItem.isLive() = BADGE_STYLE_LIVE == getBadge()?.badgeStyle
+// The video without a badge, probably Watch again
+internal fun LockupItem.isEmpty() = getOverlays()?.firstNotNullOfOrNull {
+    it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent } == 100
+private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
+    it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
+private fun LockupItem.getOverlays() = contentImage?.thumbnailViewModel?.overlays
 
 ////////////
 
@@ -221,6 +238,7 @@ private fun ItemWrapper.getRadioItem() = gridRadioRenderer ?: pivotRadioRenderer
 private fun ItemWrapper.getTileItem() = tileRenderer
 private fun ItemWrapper.getContinuationItem() = continuationItemRenderer
 private fun ItemWrapper.getShortsItem() = shortsLockupViewModel
+private fun ItemWrapper.getLockupItem() = lockupViewModel
 
 internal fun ItemWrapper.getType(): Int {
     if (getChannelItem() != null)
@@ -245,19 +263,19 @@ internal fun ItemWrapper.getType(): Int {
 }
 
 internal fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId() ?: getRadioItem()?.getVideoId()
-    ?: getShortsItem()?.getVideoId()
+    ?: getShortsItem()?.getVideoId() ?: getLockupItem()?.getVideoId()
 internal fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem()?.getTitle() ?: getTileItem()?.getTitle() ?: getPlaylistItem()?.getTitle()
-    ?: getChannelItem()?.getTitle() ?: getRadioItem()?.getTitle() ?: getShortsItem()?.getTitle()
+    ?: getChannelItem()?.getTitle() ?: getRadioItem()?.getTitle() ?: getShortsItem()?.getTitle() ?: getLockupItem()?.getTitle()
 internal fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails()
-    ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails() ?: getRadioItem()?.getThumbnails() ?: getShortsItem()?.getThumbnails()
+    ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails() ?: getRadioItem()?.getThumbnails() ?: getShortsItem()?.getThumbnails() ?: getLockupItem()?.getThumbnails()
 internal fun ItemWrapper.getMovingThumbnails() = getVideoItem()?.getMovingThumbnails() ?: getTileItem()?.getMovingThumbnails()
-internal fun ItemWrapper.getDescBadgeText() = getVideoItem()?.getDescBadgeText() ?: getMusicItem()?.getDescBadgeText() ?: getTileItem()?.getDescBadgeText()
-    ?: getChannelItem()?.getDescBadgeText() ?: getShortsItem()?.getDescBadgeText()
+internal fun ItemWrapper.getSecondTitle() = getVideoItem()?.getSecondTitle() ?: getMusicItem()?.getSecondTitle() ?: getTileItem()?.getSecondTitle()
+    ?: getChannelItem()?.getSecondTitle() ?: getShortsItem()?.getSecondTitle() ?: getLockupItem()?.getSecondTitle()
 internal fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
+internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
+?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText() ?: getLockupItem()?.getBadgeText()
 internal fun ItemWrapper.getPercentWatched() = getVideoItem()?.getPercentWatched() ?: getTileItem()?.getPercentWatched()
 internal fun ItemWrapper.getStartTimeSeconds() = getVideoItem()?.getStartTimeSeconds() ?: getTileItem()?.getStartTimeSeconds()
-internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
-    ?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText()
 internal fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
     ?: getRadioItem()?.getUserName()
 internal fun ItemWrapper.getPublishedTime() = getVideoItem()?.getPublishedTimeText() ?: getMusicItem()?.getViewsAndPublished() ?: getTileItem()?.getPublishedTime()
@@ -269,7 +287,7 @@ internal fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: ge
 internal fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
     ?: getChannelItem()?.getChannelId() ?: getRadioItem()?.getChannelId()
 internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
-internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive()
+internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: getLockupItem()?.isLive()
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie()
 internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
@@ -277,6 +295,7 @@ internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileTe
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)
 internal fun ItemWrapper.getFeedbackToken2() = getFeedbackTokens()?.getOrNull(1)
+internal fun ItemWrapper.isEmpty() = getLockupItem()?.isEmpty() ?: false
 private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens()
 
 /////

@@ -138,9 +138,9 @@ internal fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?
 
 ///////
 
-internal fun EngagementPanel.getMenu() = engagementPanelSectionListRenderer?.header?.engagementPanelTitleHeaderRenderer?.menu
-internal fun EngagementPanel.getTopCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(0)?.continuation?.getContinuationKey()
-internal fun EngagementPanel.getNewCommentsToken(): String? = getMenu()?.getSubMenuItems()?.getOrNull(1)?.continuation?.getContinuationKey()
+internal fun EngagementPanel.getTopCommentsToken(): String? = getSubMenuItems()?.getOrNull(0)?.continuation?.getContinuationKey() ?:
+    getSections()?.firstNotNullOfOrNull { it?.itemSectionRenderer?.continuations?.firstOrNull() }?.getContinuationKey()
+internal fun EngagementPanel.getNewCommentsToken(): String? = getSubMenuItems()?.getOrNull(1)?.continuation?.getContinuationKey()
 internal fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
 internal fun EngagementPanel.isDescriptionSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "video-description-ep-identifier"
 internal fun EngagementPanel.getTitle(): String? = getVideoDescription()?.title?.getText()
@@ -151,7 +151,9 @@ internal fun EngagementPanel.getBrowseId(): String? = getVideoDescription()?.cha
 internal fun EngagementPanel.getLikeCount(): String? = getVideoDescription()?.factoid?.firstOrNull()?.getValue()
 private fun EngagementPanel.getVideoDescription(): VideoDescriptionHeaderRenderer? =
     engagementPanelSectionListRenderer?.content?.structuredDescriptionContentRenderer?.items?.firstNotNullOfOrNull { it?.videoDescriptionHeaderRenderer }
-internal fun Menu.getSubMenuItems() = sortFilterSubMenuRenderer?.subMenuItems
+private fun EngagementPanel.getSections() = engagementPanelSectionListRenderer?.content?.sectionListRenderer?.contents
+private fun EngagementPanel.getSubMenuItems() =
+    engagementPanelSectionListRenderer?.header?.engagementPanelTitleHeaderRenderer?.menu?.sortFilterSubMenuRenderer?.subMenuItems
 
 ///////
 

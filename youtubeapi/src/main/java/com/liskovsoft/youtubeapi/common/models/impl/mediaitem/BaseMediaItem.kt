@@ -40,7 +40,7 @@ open class BaseMediaItem : MediaItem {
     protected open val videoIdItem: String? = null
     protected open val titleItem: String? = null
     protected open val secondTitleItem: String? = null
-    protected open val descBadgeText: String? = null
+    protected open val subTitle: String? = null
     protected open val userName: String? = null
     protected open val publishedTime: String? = null
     protected open val viewCountText: String? = null

@@ -92,7 +92,7 @@ internal fun VideoItem.getTitle() = title?.getText() ?: headline?.getText()
 internal fun VideoItem.getVideoId() = videoId
 internal fun VideoItem.getThumbnails() = thumbnail
 internal fun VideoItem.getMovingThumbnails() = richThumbnail?.movingThumbnailRenderer?.movingThumbnailDetails
-internal fun VideoItem.getSecondTitle() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
+internal fun VideoItem.getSubTitle() = badges?.getOrNull(0)?.metadataBadgeRenderer?.label
 internal fun VideoItem.getLengthText() = lengthText?.getText()
 internal fun VideoItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched }
 internal fun VideoItem.getStartTimeSeconds() = navigationEndpoint?.getStartTimeSeconds()
@@ -130,7 +130,7 @@ internal fun MusicItem.getLengthText() = lengthText?.getText()
 internal fun MusicItem.getViewsAndPublished() = tertiaryText?.getText()
 internal fun MusicItem.getChannelId() = menu?.getBrowseId()
 internal fun MusicItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
-internal fun MusicItem.getSecondTitle() = null
+internal fun MusicItem.getSubTitle() = null
 internal fun MusicItem.getViewsCountText() = null
 internal fun MusicItem.getUpcomingEventText() = null
 internal fun MusicItem.isLive() = false
@@ -149,7 +149,7 @@ internal fun RadioItem.getViewsAndPublished() = null
 //internal fun RadioItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: menu?.getBrowseId()
 internal fun RadioItem.getChannelId() = menu?.getBrowseId()
 internal fun RadioItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
-internal fun RadioItem.getSecondTitle() = null
+internal fun RadioItem.getSubTitle() = null
 internal fun RadioItem.getViewsCountText() = null
 internal fun RadioItem.getUpcomingEventText() = null
 internal fun RadioItem.isLive() = false
@@ -161,7 +161,7 @@ internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getTex
 internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
 internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
-internal fun TileItem.getSecondTitle() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
+internal fun TileItem.getSubTitle() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 internal fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }
 internal fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched }
 internal fun TileItem.getStartTimeSeconds() = onSelectCommand?.getStartTimeSeconds()
@@ -202,20 +202,21 @@ internal fun ChannelItem.getTitle() = title?.getText()
 internal fun ChannelItem.getThumbnails() = thumbnail
 internal fun ChannelItem.getChannelId() = channelId
 internal fun ChannelItem.getBadgeText() = videoCountText?.getText()
-internal fun ChannelItem.getSecondTitle() = subscriberCountText?.getText()
+internal fun ChannelItem.getSubTitle() = subscriberCountText?.getText()
 
 ////////////
 
 internal fun ShortsItem.getTitle() = overlayMetadata?.primaryText?.getText()
-internal fun ShortsItem.getSecondTitle() = overlayMetadata?.secondaryText?.getText()
+internal fun ShortsItem.getSubTitle() = overlayMetadata?.secondaryText?.getText()
 internal fun ShortsItem.getVideoId() = onTap?.innertubeCommand?.reelWatchEndpoint?.getVideoId()
 internal fun ShortsItem.getThumbnails() = onTap?.innertubeCommand?.reelWatchEndpoint?.getThumbnails()
 
 ////////////
 
 internal fun LockupItem.getTitle() = metadata?.lockupMetadataViewModel?.title?.getText()
-internal fun LockupItem.getSecondTitle() = YouTubeHelper.createInfo(
-    *metadata?.lockupMetadataViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.mapNotNull { it?.metadataParts?.mapNotNull { it?.text?.getText() } }?.flatten()?.toTypedArray() ?: emptyArray<String>()
+internal fun LockupItem.getSubTitle() = YouTubeHelper.createInfo(
+    *metadata?.lockupMetadataViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.mapNotNull {
+        it?.metadataParts?.mapNotNull { it?.text?.getText() } }?.flatten()?.toTypedArray() ?: emptyArray<String>()
 )
 internal fun LockupItem.getVideoId() = rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint?.videoId
 internal fun LockupItem.getThumbnails() = contentImage?.thumbnailViewModel?.image
@@ -269,8 +270,8 @@ internal fun ItemWrapper.getTitle() = getVideoItem()?.getTitle() ?: getMusicItem
 internal fun ItemWrapper.getThumbnails() = getVideoItem()?.getThumbnails() ?: getMusicItem()?.getThumbnails() ?: getTileItem()?.getThumbnails()
     ?: getPlaylistItem()?.getThumbnails() ?: getChannelItem()?.getThumbnails() ?: getRadioItem()?.getThumbnails() ?: getShortsItem()?.getThumbnails() ?: getLockupItem()?.getThumbnails()
 internal fun ItemWrapper.getMovingThumbnails() = getVideoItem()?.getMovingThumbnails() ?: getTileItem()?.getMovingThumbnails()
-internal fun ItemWrapper.getSecondTitle() = getVideoItem()?.getSecondTitle() ?: getMusicItem()?.getSecondTitle() ?: getTileItem()?.getSecondTitle()
-    ?: getChannelItem()?.getSecondTitle() ?: getShortsItem()?.getSecondTitle() ?: getLockupItem()?.getSecondTitle()
+internal fun ItemWrapper.getSubTitle() = getVideoItem()?.getSubTitle() ?: getMusicItem()?.getSubTitle() ?: getTileItem()?.getSubTitle()
+    ?: getChannelItem()?.getSubTitle() ?: getShortsItem()?.getSubTitle() ?: getLockupItem()?.getSubTitle()
 internal fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
 internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
 ?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText() ?: getLockupItem()?.getBadgeText()

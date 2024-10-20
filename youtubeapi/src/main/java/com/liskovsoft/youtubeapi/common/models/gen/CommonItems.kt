@@ -464,11 +464,11 @@ internal data class LockupItem(
 }
 
 internal data class ThumbnailRenderer(
-    val playlistVideoThumbnailRenderer: ThumbnailItemWrapper?,
-    val playlistCustomThumbnailRenderer: ThumbnailItemWrapper?,
-    val musicThumbnailRenderer: ThumbnailItemWrapper?
+    val playlistVideoThumbnailRenderer: ThumbnailRenderer?,
+    val playlistCustomThumbnailRenderer: ThumbnailRenderer?,
+    val musicThumbnailRenderer: ThumbnailRenderer?
 ) {
-    data class ThumbnailItemWrapper(
+    data class ThumbnailRenderer(
         val thumbnail: ThumbnailItem?
     )
 }

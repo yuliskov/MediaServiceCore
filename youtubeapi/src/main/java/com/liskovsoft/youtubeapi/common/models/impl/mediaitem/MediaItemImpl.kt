@@ -11,11 +11,10 @@ internal data class WrapperMediaItem(var itemWrapper: ItemWrapper): BaseMediaIte
     override val typeItem by lazy { itemWrapper.getType() }
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
-    // Don't tag live streams. However tagging 4K videos is useful.
     override val secondTitleItem by lazy {
-        YouTubeHelper.createInfo(if (isLiveItem == true) null else descBadgeText, userName, viewCountText, publishedTime, upcomingEventText)
+        YouTubeHelper.createInfo(subTitle, userName, viewCountText, publishedTime, upcomingEventText)
     }
-    override val descBadgeText by lazy { itemWrapper.getSecondTitle() }
+    override val subTitle by lazy { itemWrapper.getSubTitle() } // quality tag (e.g. 4K) or full second title
     override val userName by lazy { itemWrapper.getUserName() }
     override val publishedTime by lazy { itemWrapper.getPublishedTime() }
     override val viewCountText by lazy { itemWrapper.getViewCountText() }

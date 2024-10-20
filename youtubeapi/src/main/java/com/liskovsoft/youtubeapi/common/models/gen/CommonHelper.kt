@@ -224,7 +224,7 @@ internal fun LockupItem.getBadgeText() = getBadge()?.text
 internal fun LockupItem.isLive() = BADGE_STYLE_LIVE == getBadge()?.badgeStyle
 // The video without a badge, probably Watch again
 internal fun LockupItem.isEmpty() = getOverlays()?.firstNotNullOfOrNull {
-    it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent } == 100
+    it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent } == 100 && getBadgeText() == null
 private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = contentImage?.thumbnailViewModel?.overlays

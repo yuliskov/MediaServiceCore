@@ -222,9 +222,10 @@ internal fun LockupItem.getVideoId() = rendererContext?.commandContext?.onTap?.i
 internal fun LockupItem.getThumbnails() = contentImage?.thumbnailViewModel?.image
 internal fun LockupItem.getBadgeText() = getBadge()?.text
 internal fun LockupItem.isLive() = BADGE_STYLE_LIVE == getBadge()?.badgeStyle
+internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNull {
+    it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent }
 // The video without a badge, probably Watch again
-internal fun LockupItem.isEmpty() = getOverlays()?.firstNotNullOfOrNull {
-    it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent } == 100 && getBadgeText() == null
+internal fun LockupItem.isEmpty() = getPercentWatched() == 100 && getBadgeText() == null
 private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = contentImage?.thumbnailViewModel?.overlays
@@ -275,7 +276,7 @@ internal fun ItemWrapper.getSubTitle() = getVideoItem()?.getSubTitle() ?: getMus
 internal fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
 internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
 ?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText() ?: getLockupItem()?.getBadgeText()
-internal fun ItemWrapper.getPercentWatched() = getVideoItem()?.getPercentWatched() ?: getTileItem()?.getPercentWatched()
+internal fun ItemWrapper.getPercentWatched() = getVideoItem()?.getPercentWatched() ?: getTileItem()?.getPercentWatched() ?: getLockupItem()?.getPercentWatched()
 internal fun ItemWrapper.getStartTimeSeconds() = getVideoItem()?.getStartTimeSeconds() ?: getTileItem()?.getStartTimeSeconds()
 internal fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()
     ?: getRadioItem()?.getUserName()

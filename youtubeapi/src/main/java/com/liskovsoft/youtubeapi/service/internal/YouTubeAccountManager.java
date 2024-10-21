@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import com.liskovsoft.mediaserviceinterfaces.yt.SignInService.OnAccountChange;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -13,6 +14,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 import io.reactivex.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -21,7 +23,7 @@ public class YouTubeAccountManager {
     private static YouTubeAccountManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
-    private Runnable mOnChange;
+    private final List<OnAccountChange> mListeners = new ArrayList<>();
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
@@ -176,9 +178,9 @@ public class YouTubeAccountManager {
 
         mSignInService.invalidateCache();
 
-        if (mOnChange != null) {
-            // Fix sign in bug
-            RxHelper.runUser(mOnChange);
+        // Fix sign in bug
+        for (OnAccountChange listener : mListeners) {
+            RxHelper.runUser(() -> listener.onAccountChanged(getSelectedAccount()));
         }
     }
 
@@ -194,8 +196,8 @@ public class YouTubeAccountManager {
             }
         }
 
-        if (mOnChange != null) {
-            mOnChange.run();
+        for (OnAccountChange listener : mListeners) {
+            listener.onAccountChanged(getSelectedAccount());
         }
     }
 
@@ -225,8 +227,10 @@ public class YouTubeAccountManager {
         restoreAccounts();
     }
 
-    public void setOnChange(Runnable onChange) {
-        mOnChange = onChange;
+    public void addOnAccountChange(OnAccountChange listener) {
+        if (!mListeners.contains(listener)) {
+            mListeners.add(listener);
+        }
     }
 
     /**

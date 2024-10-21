@@ -1,11 +1,13 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import android.content.Context;
 import android.util.Pair;
 
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 
@@ -43,6 +45,23 @@ public class MediaServiceData {
     private boolean mSkipAuth;
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
+
+    private static class MediaServiceCache extends SharedPreferencesBase {
+        private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
+        private static final String MEDIA_SERVICE_CACHE = "media_service_cache";
+
+        public MediaServiceCache(Context context) {
+            super(context, PREF_NAME);
+        }
+
+        public String getMediaServiceCache() {
+            return getString(MEDIA_SERVICE_CACHE, null);
+        }
+
+        public void setMediaServiceCache(String cache) {
+            putString(MEDIA_SERVICE_CACHE, cache);
+        }
+    }
 
     private MediaServiceData() {
         if (GlobalPreferences.sInstance == null) {

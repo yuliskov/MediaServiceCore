@@ -6,13 +6,16 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public interface SignInService {
+    interface OnAccountChange {
+        void onAccountChanged(Account account);
+    }
     void signOut();
     boolean isSigned();
     List<Account> getAccounts();
     Account getSelectedAccount();
     void selectAccount(Account account);
     void removeAccount(Account account);
-    void setOnChange(Runnable onChange);
+    void addOnAccountChange(OnAccountChange listener);
 
     // RxJava interfaces
     /**

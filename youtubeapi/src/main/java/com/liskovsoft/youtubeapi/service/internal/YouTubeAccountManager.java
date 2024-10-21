@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import com.liskovsoft.mediaserviceinterfaces.yt.SignInService.OnAccountChange;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
@@ -14,7 +15,6 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 import io.reactivex.Observable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -23,7 +23,7 @@ public class YouTubeAccountManager {
     private static YouTubeAccountManager sInstance;
     private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
-    private final List<OnAccountChange> mListeners = new ArrayList<>();
+    private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
@@ -179,9 +179,7 @@ public class YouTubeAccountManager {
         mSignInService.invalidateCache();
 
         // Fix sign in bug
-        for (OnAccountChange listener : mListeners) {
-            RxHelper.runUser(() -> listener.onAccountChanged(getSelectedAccount()));
-        }
+        mListeners.forEach(listener -> RxHelper.runUser(() -> listener.onAccountChanged(getSelectedAccount())));
     }
 
     private void restoreAccounts() {
@@ -196,9 +194,7 @@ public class YouTubeAccountManager {
             }
         }
 
-        for (OnAccountChange listener : mListeners) {
-            listener.onAccountChanged(getSelectedAccount());
-        }
+        mListeners.forEach(listener -> listener.onAccountChanged(getSelectedAccount()));
     }
 
     private void setAccountManagerData(String data) {

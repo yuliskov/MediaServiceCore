@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
@@ -12,9 +13,10 @@ internal data class WrapperMediaItem(var itemWrapper: ItemWrapper): BaseMediaIte
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
     override val secondTitleItem by lazy {
-        YouTubeHelper.createInfo(subTitle, userName, viewCountText, publishedTime, upcomingEventText)
+        YouTubeHelper.createInfo(if (isLiveItem == true && !Helpers.allNulls(userName, viewCountText, publishedTime, upcomingEventText)) null else
+            subTitle, userName, viewCountText, publishedTime, upcomingEventText)
     }
-    override val subTitle by lazy { itemWrapper.getSubTitle() } // quality tag (e.g. 4K) or full second title
+    override val subTitle by lazy { itemWrapper.getSubTitle() } // quality tag (e.g. 4K, LIVE) or full second title
     override val userName by lazy { itemWrapper.getUserName() }
     override val publishedTime by lazy { itemWrapper.getPublishedTime() }
     override val viewCountText by lazy { itemWrapper.getViewCountText() }

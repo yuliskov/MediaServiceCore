@@ -318,7 +318,7 @@ public class AppService {
 
         // NOTE: NPE 2.5K
         MediaServiceData data = MediaServiceData.instance();
-        return data.getBackupPlayerUrl() != null ? data.getBackupPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        return data.getPlayerUrl() != null ? data.getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
     }
 
     private String getClientUrl() {
@@ -363,7 +363,7 @@ public class AppService {
             } catch (Throwable e) { // StackOverflowError | IllegalStateException
                 mCachedPlayerData = null;
                 MediaServiceData data = MediaServiceData.instance();
-                data.setBackupPlayerUrl(data.getNFuncPlayerUrl());
+                data.setPlayerUrl(data.getNFuncPlayerUrl());
             }
         }
     }

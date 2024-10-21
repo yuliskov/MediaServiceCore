@@ -34,16 +34,32 @@ public class MediaServiceData {
     private String mNFuncPlayerUrl;
     private List<String> mNFuncParams;
     private String mNFuncCode;
-    private String mBackupPlayerUrl;
-    private String mBackupPlayerVersion;
+    private String mPlayerUrl;
+    private String mPlayerVersion;
     private String mVisitorCookie;
     private int mEnabledFormats = FORMATS_ALL;
     private int mEnabledContent = CONTENT_ALL;
     private Disposable mPersistAction;
     private boolean mSkipAuth;
+    private MediaServiceCache mCachedPrefs;
+    private GlobalPreferences mGlobalPrefs;
 
     private MediaServiceData() {
+        if (GlobalPreferences.sInstance == null) {
+            Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
+            return;
+        }
+
+        if (Helpers.isJUnitTest()) {
+            Log.d(TAG, "JUnit test is running. Skipping data restore...");
+            return;
+        }
+
+        mGlobalPrefs = GlobalPreferences.sInstance;
+        mCachedPrefs = new MediaServiceCache(mGlobalPrefs.getContext());
+
         restoreData();
+        restoreCachedData();
     }
 
     public static MediaServiceData instance() {
@@ -95,17 +111,17 @@ public class MediaServiceData {
         persistData();
     }
 
-    public String getBackupPlayerUrl() {
-        if (Helpers.equals(mBackupPlayerVersion, mAppVersion)) {
-            return mBackupPlayerUrl;
+    public String getPlayerUrl() {
+        if (Helpers.equals(mPlayerVersion, mAppVersion)) {
+            return mPlayerUrl;
         }
 
         return null;
     }
 
-    public void setBackupPlayerUrl(String url) {
-        mBackupPlayerVersion = mAppVersion;
-        mBackupPlayerUrl = url;
+    public void setPlayerUrl(String url) {
+        mPlayerVersion = mAppVersion;
+        mPlayerUrl = url;
         persistData();
     }
 
@@ -174,54 +190,64 @@ public class MediaServiceData {
     }
 
     private void restoreData() {
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
-            return;
-        }
-
-        if (Helpers.isJUnitTest()) {
-            Log.d(TAG, "JUnit test is running. Skipping data restore...");
-            return;
-        }
-
-        String data = GlobalPreferences.sInstance.getMediaServiceData();
+        String data = mGlobalPrefs.getMediaServiceData();
 
         String[] split = Helpers.splitData(data);
 
-        mAppVersion = AppInfoHelpers.getAppVersionName(GlobalPreferences.sInstance.getContext());
+        mAppVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
 
         // null for ScreenItem
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
-        mVideoInfoVersion = Helpers.parseStr(split, 3);
-        mVideoInfoType = Helpers.parseInt(split, 4);
-        String lastPlayerUrl = AppConstants.playerUrls.get(AppConstants.playerUrls.size() - 1); // fallback url for nfunc extractor
-        mNFuncPlayerUrl = Helpers.parseStr(split, 5, lastPlayerUrl);
-        mNFuncParams = Helpers.parseStrList(split, 6);
-        mNFuncCode = Helpers.parseStr(split, 7);
-        mBackupPlayerUrl = Helpers.parseStr(split, 8);
-        mBackupPlayerVersion = Helpers.parseStr(split, 9);
+        // entries here moved to the cache
         mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
         mEnabledContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
         mSkipAuth = Helpers.parseBoolean(split, 13);
     }
 
+    private void restoreCachedData() {
+        String cache = mCachedPrefs.getMediaServiceCache();
+
+        String[] split = Helpers.splitData(cache);
+
+        mAppVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
+
+        String lastPlayerUrl = AppConstants.playerUrls.get(AppConstants.playerUrls.size() - 1); // fallback url for nfunc extractor
+        mVideoInfoVersion = Helpers.parseStr(split, 0);
+        mVideoInfoType = Helpers.parseInt(split, 1);
+        mNFuncPlayerUrl = Helpers.parseStr(split, 2, lastPlayerUrl);
+        mNFuncParams = Helpers.parseStrList(split, 3);
+        mNFuncCode = Helpers.parseStr(split, 4);
+        mPlayerUrl = Helpers.parseStr(split, 5);
+        mPlayerVersion = Helpers.parseStr(split, 6);
+    }
+
     private void persistData() {
         RxHelper.disposeActions(mPersistAction);
 
         // Improve memory usage by merging multiple persist requests
-        mPersistAction = RxHelper.runAsync(this::persistDataReal, 5_000);
+        mPersistAction = RxHelper.runAsync(() -> { persistDataReal(); persistCachedDataReal(); }, 5_000);
     }
 
     private void persistDataReal() {
-        if (GlobalPreferences.sInstance == null) {
+        if (mGlobalPrefs == null) {
             return;
         }
 
-        GlobalPreferences.sInstance.setMediaServiceData(
-                Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion, mVideoInfoType,
-                        mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mBackupPlayerUrl, mBackupPlayerVersion,
+        mGlobalPrefs.setMediaServiceData(
+                Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
+                        null, null, null, null, null,
                         mVisitorCookie, mEnabledFormats, mEnabledContent, mSkipAuth));
+    }
+
+    private void persistCachedDataReal() {
+        if (mCachedPrefs == null) {
+            return;
+        }
+
+        mCachedPrefs.setMediaServiceCache(
+                Helpers.mergeData( mVideoInfoVersion, mVideoInfoType,
+                        mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mPlayerUrl, mPlayerVersion));
     }
 }

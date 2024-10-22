@@ -23,7 +23,7 @@ public class SearchService {
     private final BrowseService mBrowseService;
     private final AppService mAppService;
 
-    private SearchService() {
+    protected SearchService() {
         mSearchApi = RetrofitHelper.create(SearchApi.class);
         mBrowseService = BrowseService.instance();
         mAppService = AppService.instance();
@@ -66,7 +66,7 @@ public class SearchService {
             Log.e(TAG, "Can't get next search page. Next search key is empty.");
             return null;
         }
-        
+
         Call<SearchResultContinuation> wrapper = mSearchApi.continueSearchResult(SearchApiHelper.getContinuationQuery(nextSearchPageKey));
         SearchResultContinuation searchResult = RetrofitHelper.get(wrapper);
 

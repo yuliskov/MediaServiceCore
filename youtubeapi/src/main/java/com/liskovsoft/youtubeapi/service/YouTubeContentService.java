@@ -11,6 +11,7 @@ import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.rss.RssService;
+import com.liskovsoft.youtubeapi.search.SearchServiceWrapper;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
@@ -46,7 +47,7 @@ public class YouTubeContentService implements ContentService {
 
         mSignInService = YouTubeSignInService.instance();
         mActionsService = ActionsService.instance();
-        mSearchService = SearchService.instance();
+        mSearchService = SearchServiceWrapper.instance();
         mBrowseService = BrowseService.instance();
     }
 

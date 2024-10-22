@@ -7,14 +7,9 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
 
 import java.util.List;
 
-public class SearchServiceWrapper {
+public class SearchServiceWrapper extends SearchService {
     private static SearchServiceWrapper sInstance;
-    private final SearchService mSearchService;
     private SearchTagStorage mSearchTagStorage;
-
-    private SearchServiceWrapper() {
-        mSearchService = SearchService.instance();
-    }
 
     public static SearchServiceWrapper instance() {
         if (sInstance == null) {
@@ -24,12 +19,13 @@ public class SearchServiceWrapper {
         return sInstance;
     }
 
+    @Override
     public List<String> getSearchTags(String searchText) {
         if (isSearchTagsBroken()) {
             return getSearchTagStorage().getTags();
         }
 
-        return mSearchService.getSearchTags(searchText);
+        return super.getSearchTags(searchText);
     }
 
     private boolean isSearchTagsBroken() {

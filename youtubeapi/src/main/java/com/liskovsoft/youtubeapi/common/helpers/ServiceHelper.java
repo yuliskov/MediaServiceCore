@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import androidx.core.text.BidiFormatter;
+
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
@@ -140,6 +142,9 @@ public class ServiceHelper {
                 if (strItem == null || strItem.isEmpty()) {
                     continue;
                 }
+
+                // Fix mixed RTL and LTR content
+                strItem = BidiFormatter.getInstance().unicodeWrap(strItem);
 
                 if (divider == null || result.length() == 0) {
                     result.append(strItem);

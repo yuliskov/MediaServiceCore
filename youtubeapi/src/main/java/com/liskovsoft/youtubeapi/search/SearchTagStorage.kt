@@ -3,10 +3,11 @@ package com.liskovsoft.youtubeapi.search
 import android.content.Context
 import com.liskovsoft.mediaserviceinterfaces.yt.SignInService.OnAccountChange
 import com.liskovsoft.mediaserviceinterfaces.yt.data.Account
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
-private val PREF_NAME = SearchTagStorage::class.simpleName
+private const val PREF_NAME = "search_tag_storage"
 private const val ANONYMOUS_PROFILE_NAME = "anonymous"
 private const val SEARCH_TAG_DATA = "search_tag_data"
 
@@ -15,12 +16,24 @@ internal class SearchTagStorage(private val context: Context, private val signIn
 
     private var mProfileName: String? = null
 
+    private val _tags: MutableList<String> = Helpers.createLRUList(50)
+    val tags: List<String>
+        get() = _tags.reversed()
+
     init {
         setProfileName(signInService.selectedAccount)
         signInService.addOnAccountChange(this)
+        restoreData()
     }
 
-    val tags: List<String> = TODO("initialize me")
+    fun saveTag(tag: String?) {
+        if (tag == null)
+            return
+
+        _tags.add(tag)
+
+        persistData()
+    }
 
     override fun onAccountChanged(account: Account?) {
         setProfileName(account)
@@ -32,11 +45,19 @@ internal class SearchTagStorage(private val context: Context, private val signIn
     }
 
     private fun restoreData() {
-        TODO("Not yet implemented")
+        _tags.clear()
+
+        val data = getSearchTagData()
+
+        val split = Helpers.splitData(data)
+
+        val tags = Helpers.parseStrList(split, 0)
+
+        _tags.addAll(tags)
     }
 
     private fun persistData() {
-        
+        setSearchTagData(Helpers.mergeData(_tags))
     }
 
     private fun getSearchTagData(): String? {

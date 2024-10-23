@@ -159,7 +159,7 @@ public class YouTubeAccount implements Account {
     }
 
     public boolean isSearchBroken() {
-        return false;
+        return mRefreshToken2 == null && mEmail == null;
     }
 
     public void merge(Account account) {

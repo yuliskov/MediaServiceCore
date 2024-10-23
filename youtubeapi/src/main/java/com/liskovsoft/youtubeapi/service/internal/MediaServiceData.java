@@ -266,7 +266,7 @@ public class MediaServiceData {
         }
 
         mCachedPrefs.setMediaServiceCache(
-                Helpers.mergeData( mVideoInfoVersion, mVideoInfoType,
+                Helpers.mergeData(mVideoInfoVersion, mVideoInfoType,
                         mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mPlayerUrl, mPlayerVersion));
     }
 }

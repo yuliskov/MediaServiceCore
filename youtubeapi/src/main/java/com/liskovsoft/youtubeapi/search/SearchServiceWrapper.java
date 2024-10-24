@@ -12,7 +12,6 @@ import java.util.List;
 
 public class SearchServiceWrapper extends SearchService {
     private static SearchServiceWrapper sInstance;
-    private SearchTagStorage mSearchTagStorage;
 
     public static SearchServiceWrapper instance() {
         if (sInstance == null) {
@@ -39,7 +38,7 @@ public class SearchServiceWrapper extends SearchService {
     @Override
     public List<String> getSearchTags(String searchText) {
         if (TextUtils.isEmpty(searchText) && isSearchTagsBroken()) {
-            return getSearchTagStorage().getTags();
+            return SearchTagStorage.getTags();
         }
 
         return super.getSearchTags(searchText);
@@ -47,20 +46,12 @@ public class SearchServiceWrapper extends SearchService {
 
     private void saveTagIfNeeded(String searchText) {
         if (isSearchTagsBroken()) {
-            getSearchTagStorage().saveTag(searchText);
+            SearchTagStorage.saveTag(searchText);
         }
     }
 
     private boolean isSearchTagsBroken() {
         Account account = YouTubeSignInService.instance().getSelectedAccount();
         return account == null || ((YouTubeAccount) account).isSearchBroken();
-    }
-
-    private SearchTagStorage getSearchTagStorage() {
-        if (mSearchTagStorage == null) {
-            mSearchTagStorage = new SearchTagStorage(GlobalPreferences.sInstance.getContext(), YouTubeSignInService.instance());
-        }
-
-        return mSearchTagStorage;
     }
 }

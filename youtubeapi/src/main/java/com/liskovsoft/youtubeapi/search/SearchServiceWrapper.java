@@ -51,6 +51,10 @@ public class SearchServiceWrapper extends SearchService {
     }
 
     private boolean isSearchTagsBroken() {
+        if (GlobalPreferences.sInstance == null) {
+            return false;
+        }
+
         Account account = YouTubeSignInService.instance().getSelectedAccount();
         return account == null || ((YouTubeAccount) account).isSearchBroken();
     }

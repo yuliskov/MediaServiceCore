@@ -226,6 +226,11 @@ internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNul
     it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent }
 // The video without a badge, probably Watch again
 internal fun LockupItem.isEmpty() = getPercentWatched() == 100 && getBadgeText() == null
+internal fun LockupItem.getFeedbackTokens() =
+    metadata?.lockupMetadataViewModel?.menuButton?.buttonViewModel?.onTap?.innertubeCommand?.showSheetCommand?.panelLoadingStrategy
+        ?.inlineContent?.sheetViewModel?.content?.listViewModel?.listItems?.mapNotNull {
+            it?.listItemViewModel?.rendererContext?.commandContext?.onTap?.innertubeCommand?.feedbackEndpoint?.feedbackToken
+        }
 private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = contentImage?.thumbnailViewModel?.overlays
@@ -261,7 +266,7 @@ internal fun ItemWrapper.getType(): Int {
             else -> MediaItem.TYPE_UNDEFINED
         }
 
-    return MediaItem.TYPE_UNDEFINED;
+    return MediaItem.TYPE_UNDEFINED
 }
 
 internal fun ItemWrapper.getVideoId() = getVideoItem()?.getVideoId() ?: getMusicItem()?.getVideoId() ?: getTileItem()?.getVideoId() ?: getRadioItem()?.getVideoId()
@@ -298,7 +303,7 @@ internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuation
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)
 internal fun ItemWrapper.getFeedbackToken2() = getFeedbackTokens()?.getOrNull(1)
 internal fun ItemWrapper.isEmpty() = getLockupItem()?.isEmpty() ?: false
-private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens()
+private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens() ?: getLockupItem()?.getFeedbackTokens()
 
 /////
 

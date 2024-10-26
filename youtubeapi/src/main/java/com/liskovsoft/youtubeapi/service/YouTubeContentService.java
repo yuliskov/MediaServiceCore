@@ -783,27 +783,49 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<GridTab> tabs = mBrowseService.getPlaylists();
+            MediaGroup playlists = getPlaylists();
 
-            if (tabs != null && tabs.size() > 0) {
-                for (GridTab tab : tabs) {
-                    GridTabContinuation tabContinuation = mBrowseService.continueGridTab(tab.getReloadPageKey());
-
-                    if (tabContinuation != null) {
-                        ArrayList<MediaGroup> list = new ArrayList<>();
-                        YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_USER_PLAYLISTS);
-                        mediaGroup.setTitle(tab.getTitle()); // id calculated by title hashcode
-                        list.add(YouTubeMediaGroup.from(tabContinuation, mediaGroup));
-                        emitter.onNext(list);
+            if (playlists != null && playlists.getMediaItems() != null) {
+                for (MediaItem playlist : playlists.getMediaItems()) {
+                    List<MediaGroup> content = BrowseService2.getChannel(playlist.getChannelId(), playlist.getParams());
+                    if (content != null) {
+                        ((BaseMediaGroup) content.get(0)).setTitle(playlist.getTitle());
+                        emitter.onNext(content);
                     }
                 }
-
                 emitter.onComplete();
             } else {
-                RxHelper.onError(emitter, "getPlaylistsObserve: tab is null");
+                RxHelper.onError(emitter, "getPlaylistsRowObserve: the content is null");
             }
         });
     }
+
+    //@Override
+    //public Observable<List<MediaGroup>> getPlaylistRowsObserve() {
+    //    return RxHelper.create(emitter -> {
+    //        checkSigned();
+    //
+    //        List<GridTab> tabs = mBrowseService.getPlaylists();
+    //
+    //        if (tabs != null && tabs.size() > 0) {
+    //            for (GridTab tab : tabs) {
+    //                GridTabContinuation tabContinuation = mBrowseService.continueGridTab(tab.getReloadPageKey());
+    //
+    //                if (tabContinuation != null) {
+    //                    ArrayList<MediaGroup> list = new ArrayList<>();
+    //                    YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_USER_PLAYLISTS);
+    //                    mediaGroup.setTitle(tab.getTitle()); // id calculated by title hashcode
+    //                    list.add(YouTubeMediaGroup.from(tabContinuation, mediaGroup));
+    //                    emitter.onNext(list);
+    //                }
+    //            }
+    //
+    //            emitter.onComplete();
+    //        } else {
+    //            RxHelper.onError(emitter, "getPlaylistsObserve: tab is null");
+    //        }
+    //    });
+    //}
 
     @Override
     public Observable<MediaGroup> getPlaylistsObserve() {

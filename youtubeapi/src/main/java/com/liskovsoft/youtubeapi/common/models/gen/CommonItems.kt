@@ -384,8 +384,42 @@ internal data class OnTap(
 ) {
     data class InnertubeCommand(
         val reelWatchEndpoint: ReelWatchEndpoint?,
-        val watchEndpoint: WatchEndpointItem?
-    )
+        val watchEndpoint: WatchEndpointItem?,
+        val showSheetCommand: ShowSheetCommand?,
+        val feedbackEndpoint: FeedbackEndpoint?
+    ) {
+        data class ShowSheetCommand(
+            val panelLoadingStrategy: PanelLoadingStrategy?
+        ) {
+            data class PanelLoadingStrategy(
+                val inlineContent: InlineContent?
+            ) {
+                data class InlineContent(
+                    val sheetViewModel: SheetViewModel?
+                ) {
+                    data class SheetViewModel(
+                        val content: Content?
+                    ) {
+                        data class Content(
+                            val listViewModel: ListViewModel?
+                        ) {
+                            data class ListViewModel(
+                                val listItems: List<ListItem?>?
+                            ) {
+                                data class ListItem(
+                                    val listItemViewModel: ListItemViewModel?
+                                ) {
+                                    data class ListItemViewModel(
+                                        val rendererContext: RendererContext?
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 internal data class LockupItem(
@@ -436,6 +470,7 @@ internal data class LockupItem(
         data class LockupMetadataViewModel(
             val title: TextItem?, // title
             val metadata: NestedMetadataItem?, // subtitle, channelId
+            val menuButton: MenuButton?
         ) {
             data class NestedMetadataItem(
                 val contentMetadataViewModel: ContentMetadataViewModel?
@@ -452,15 +487,23 @@ internal data class LockupItem(
                     }
                 }
             }
+            data class MenuButton(
+                val buttonViewModel: ButtonViewModel?
+            ) {
+                data class ButtonViewModel(
+                    val onTap: OnTap?
+                )
+            }
         }
     }
-    data class RendererContext(
-        val commandContext: CommandContext?
-    ) {
-        data class CommandContext(
-            val onTap: OnTap?
-        )
-    }
+}
+
+internal data class RendererContext(
+    val commandContext: CommandContext?
+) {
+    data class CommandContext(
+        val onTap: OnTap?
+    )
 }
 
 internal data class ThumbnailRenderer(
@@ -494,9 +537,6 @@ internal data class MenuItem(
             val feedbackEndpoint: FeedbackEndpoint?,
             val recordNotificationInteractionsEndpoint: RecordNotificationInteractionsEndpoint?
         ) {
-            data class FeedbackEndpoint(
-                val feedbackToken: String?
-            )
             data class RecordNotificationInteractionsEndpoint(
                 val serializedInteractionsRequest: String?
             )
@@ -507,6 +547,10 @@ internal data class MenuItem(
         val navigationEndpoint: NavigationEndpointItem?
     )
 }
+
+internal data class FeedbackEndpoint(
+    val feedbackToken: String?
+)
 
 internal data class RichThumbnailItem(
     val movingThumbnailRenderer: MovingThumbnailRenderer?

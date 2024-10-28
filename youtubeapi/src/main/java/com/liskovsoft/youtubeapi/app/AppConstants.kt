@@ -24,4 +24,6 @@ internal object AppConstants {
 
     const val GET_VIDEO_INFO_OLD2 =
         "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv"
+
+    const val WATCH_LATER_CHANNEL_ID = "VLWL"
 }

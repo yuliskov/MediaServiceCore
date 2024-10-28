@@ -22,11 +22,12 @@ public class MediaServiceData {
     public static final int FORMATS_DASH = 1;
     public static final int FORMATS_URL = 1 << 1;
     public static final int FORMATS_EXTENDED_HLS = 1 << 2;
-    public static final int CONTENT_ALL = Integer.MAX_VALUE;
+    public static final int CONTENT_NONE = 0;
     public static final int CONTENT_MIXES = 1;
     public static final int CONTENT_WATCHED_HOME = 1 << 1;
     public static final int CONTENT_WATCHED_SUBS = 1 << 2;
     public static final int CONTENT_SHORTS_HOME = 1 << 3;
+    public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 4;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;
@@ -40,7 +41,7 @@ public class MediaServiceData {
     private String mPlayerVersion;
     private String mVisitorCookie;
     private int mEnabledFormats = FORMATS_ALL;
-    private int mEnabledContent = CONTENT_ALL;
+    private int mHiddenContent = CONTENT_NONE;
     private Disposable mPersistAction;
     private boolean mSkipAuth;
     private MediaServiceCache mCachedPrefs;
@@ -194,18 +195,18 @@ public class MediaServiceData {
         return (mEnabledFormats & formats) == formats;
     }
 
-    public void enableContent(int content, boolean enable) {
-        if (enable) {
-            mEnabledContent |= content;
+    public void hideContent(int content, boolean hide) {
+        if (hide) {
+            mHiddenContent |= content;
         } else {
-            mEnabledContent &= ~content;
+            mHiddenContent &= ~content;
         }
 
         persistData();
     }
 
-    public boolean isContentEnabled(int content) {
-        return (mEnabledContent & content) == content;
+    public boolean isContentHidden(int content) {
+        return (mHiddenContent & content) == content;
     }
 
     private void restoreData() {
@@ -221,7 +222,7 @@ public class MediaServiceData {
         // entries here moved to the cache
         mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
-        mEnabledContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
+        mHiddenContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
         mSkipAuth = Helpers.parseBoolean(split, 13);
     }
 
@@ -257,7 +258,7 @@ public class MediaServiceData {
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
                         null, null, null, null, null,
-                        mVisitorCookie, mEnabledFormats, mEnabledContent, mSkipAuth));
+                        mVisitorCookie, mEnabledFormats, mHiddenContent, mSkipAuth));
     }
 
     private void persistCachedDataReal() {

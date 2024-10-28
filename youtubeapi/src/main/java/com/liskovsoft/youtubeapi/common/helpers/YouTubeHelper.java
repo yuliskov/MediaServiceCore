@@ -98,7 +98,7 @@ public final class YouTubeHelper {
             boolean isHideUpcomingEnabled = (prefs.isHideUpcomingFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
                     (prefs.isHideUpcomingFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
             boolean isHideStreamsEnabled = (prefs.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
-            boolean isHideMixesEnabled = !MediaServiceData.instance().isContentEnabled(MediaServiceData.CONTENT_MIXES);
+            boolean isHideMixesEnabled = MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_MIXES);
 
             if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled || isHideMixesEnabled) {
                 // NOTE: The group could be empty after filtering! Fix for that.

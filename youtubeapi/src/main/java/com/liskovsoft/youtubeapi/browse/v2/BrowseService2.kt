@@ -3,12 +3,14 @@ package com.liskovsoft.youtubeapi.browse.v2
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
+import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 internal object BrowseService2 {
     private val mBrowseApi = RetrofitHelper.create(BrowseApi::class.java)
@@ -241,12 +243,12 @@ internal object BrowseService2 {
             val title = it?.getTitle()
             if (it != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(ItemSectionMediaGroup(it,
-                    createOptions(if (title == null) MediaGroup.TYPE_CHANNEL_UPLOADS else MediaGroup.TYPE_CHANNEL))) } } // playlists don't have a title
+                    createOptions(if (title == null) MediaGroup.TYPE_CHANNEL_UPLOADS else MediaGroup.TYPE_CHANNEL, channelId))) } } // playlists don't have a title
 
         if (result.isEmpty()) {
             val playlist = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId))
             RetrofitHelper.get(playlist)?.let {
-                if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)))
+                if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS, channelId)))
             }
         }
 
@@ -322,7 +324,7 @@ internal object BrowseService2 {
         }
     }
 
-    private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS): MediaGroupOptions {
+    private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS, channelId: String? = null): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
         val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideShortsFromSubscriptionsEnabled ?: false) ||
                 (MediaGroup.TYPE_HOME == groupType && prefs?.isHideShortsFromHomeEnabled ?: false) ||
@@ -334,7 +336,8 @@ internal object BrowseService2 {
                 (MediaGroup.TYPE_CHANNEL == groupType && prefs?.isHideUpcomingFromChannelEnabled ?: false) ||
                 (MediaGroup.TYPE_HOME == groupType && prefs?.isHideUpcomingFromHomeEnabled ?: false)
         val removeWatched = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideWatchedFromSubscriptionsEnabled ?: false) ||
-                (MediaGroup.TYPE_HOME == groupType && prefs?.isHideWatchedFromHomeEnabled ?: false)
+                (MediaGroup.TYPE_HOME == groupType && prefs?.isHideWatchedFromHomeEnabled ?: false) ||
+                (channelId == AppConstants.WATCH_LATER_CHANNEL_ID && MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
 
         return MediaGroupOptions(
             removeShorts,

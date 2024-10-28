@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppConstants;
+import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,7 @@ public class MediaServiceData {
     private boolean mSkipAuth;
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
+    private PoTokenResponse mPoToken;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -209,6 +211,16 @@ public class MediaServiceData {
         return (mHiddenContent & content) == content;
     }
 
+    public PoTokenResponse getPoToken() {
+        return mPoToken;
+    }
+
+    public void setPoToken(PoTokenResponse poToken) {
+        mPoToken = poToken;
+
+        persistData();
+    }
+
     private void restoreData() {
         String data = mGlobalPrefs.getMediaServiceData();
 
@@ -224,6 +236,7 @@ public class MediaServiceData {
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
         mHiddenContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
         mSkipAuth = Helpers.parseBoolean(split, 13);
+        mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
     }
 
     private void restoreCachedData() {
@@ -258,7 +271,7 @@ public class MediaServiceData {
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
                         null, null, null, null, null,
-                        mVisitorCookie, mEnabledFormats, mHiddenContent, mSkipAuth));
+                        mVisitorCookie, mEnabledFormats, mHiddenContent, mSkipAuth, mPoToken));
     }
 
     private void persistCachedDataReal() {

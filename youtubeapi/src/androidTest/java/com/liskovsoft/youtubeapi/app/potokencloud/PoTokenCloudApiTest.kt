@@ -1,6 +1,8 @@
-package com.liskovsoft.youtubeapi.potokencloud
+package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo
+import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudApi
+import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager

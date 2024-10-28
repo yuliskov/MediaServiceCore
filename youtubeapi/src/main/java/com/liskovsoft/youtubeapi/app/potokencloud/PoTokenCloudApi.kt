@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.potokencloud
+package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.liskovsoft.youtubeapi.common.converters.gson.WithGson
 import retrofit2.Call

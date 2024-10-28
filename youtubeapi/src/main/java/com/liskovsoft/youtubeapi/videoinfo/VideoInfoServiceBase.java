@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.api.FileApi;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
@@ -42,14 +41,16 @@ public abstract class VideoInfoServiceBase {
 
         List<String> ciphered = extractCipheredStrings(formats);
         List<String> deciphered = mAppService.decipher(ciphered);
-        applyDecipheredStrings(deciphered, formats);
+        applyDecipheredStrings(formats, deciphered);
 
         List<String> throttled = extractThrottledStrings(formats);
         List<String> throttleFixed = mAppService.fixThrottling(throttled);
-        applyThrottleFixedStrings(throttleFixed, formats);
+        applyThrottleFixedStrings(formats, throttleFixed);
 
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
+
+        applyPoToken(formats, mAppService.getPoTokenResult());
     }
 
     private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
@@ -62,7 +63,7 @@ public abstract class VideoInfoServiceBase {
         return result;
     }
 
-    private static void applyDecipheredStrings(List<String> deciphered, List<? extends VideoFormat> formats) {
+    private static void applyDecipheredStrings(List<? extends VideoFormat> formats, List<String> deciphered) {
         if (deciphered.size() != formats.size()) {
             throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
         }
@@ -84,7 +85,7 @@ public abstract class VideoInfoServiceBase {
         return result;
     }
 
-    private static void applyThrottleFixedStrings(List<String> throttleFixed, List<? extends VideoFormat> formats) {
+    private static void applyThrottleFixedStrings(List<? extends VideoFormat> formats, List<String> throttleFixed) {
         if (throttleFixed.isEmpty()) {
             return;
         }
@@ -94,6 +95,16 @@ public abstract class VideoInfoServiceBase {
 
         for (int i = 0; i < formats.size(); i++) {
             formats.get(i).setThrottleCipher(throttleFixed.get(sameSize ? i : 0));
+        }
+    }
+
+    private static void applyPoToken(List<? extends VideoFormat> formats, String poToken) {
+        if (poToken == null) {
+            return;
+        }
+
+        for (int i = 0; i < formats.size(); i++) {
+            formats.get(i).setParam("pot", poToken);
         }
     }
 

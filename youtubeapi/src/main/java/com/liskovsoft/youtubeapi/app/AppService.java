@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
+import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
@@ -157,13 +158,7 @@ public class AppService {
     }
 
     public String getPoTokenResult() {
-        String function = getPoTokenResultFunction();
-
-        if (function == null) {
-            return null;
-        }
-
-        return V8Runtime.instance().evaluate(function);
+        return PoTokenCloudService.getPoToken();
     }
 
     /**
@@ -306,13 +301,6 @@ public class AppService {
         return mCachedPlayerData != null ? mCachedPlayerData.getClientPlaybackNonceFunction() : null;
     }
 
-    private String getPoTokenResultFunction() {
-        updatePlayerData();
-
-        // NOTE: NPE
-        return mCachedPlayerData != null ? mCachedPlayerData.getPoTokenResultFunction() : null;
-    }
-
     private String getPlayerUrl() {
         updateAppInfoData();
 
@@ -382,6 +370,10 @@ public class AppService {
         }
     }
 
+    private synchronized void updatePoTokenData() {
+        PoTokenCloudService.updatePoToken();
+    }
+
     public void invalidateCache() {
         mCachedAppInfo = null;
         mCachedPlayerData = null;
@@ -392,6 +384,7 @@ public class AppService {
         updateAppInfoData();
         updatePlayerData();
         updateClientData();
+        updatePoTokenData();
     }
 
     public boolean isPlayerCacheActual() {

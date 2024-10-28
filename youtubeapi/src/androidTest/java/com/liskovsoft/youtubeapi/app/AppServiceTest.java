@@ -79,15 +79,4 @@ public class AppServiceTest {
         assertFalse("Normalized not empty", TextUtils.isEmpty(normalized.get(0)));
         assertNotEquals("Throttled not equals", throttled.get(0), normalized.get(0));
     }
-
-    @Ignore
-    @Test
-    public void testPoTokenResult() {
-        String poToken1 = mAppService.getPoTokenResult();
-        String poToken2 = mAppService.getPoTokenResult();
-        String poToken3 = mAppService.getPoTokenResult();
-
-        assertTrue("PoToken result not empty", poToken1 != null && !poToken1.isEmpty());
-        assertFalse("PoToken result is unique", Helpers.equalsAny(poToken1, poToken2, poToken3));
-    }
 }

@@ -11,12 +11,12 @@ internal interface PoTokenCloudApi {
     @Headers(
         "Content-Type: application/json",
     )
-    @GET("https://potokenservice.onrender.com/")
+    @GET("$PO_TOKEN_CLOUD_BASE_URL/")
     fun getPoToken(@Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
 
     @Headers(
         "Content-Type: application/json",
     )
-    @GET("https://potokenservice.onrender.com/health-check")
+    @GET("$PO_TOKEN_CLOUD_BASE_URL/health-check")
     fun healthCheck(): Call<Void>
 }

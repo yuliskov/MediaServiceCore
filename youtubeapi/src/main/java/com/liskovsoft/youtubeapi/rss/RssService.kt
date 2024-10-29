@@ -42,7 +42,7 @@ internal object RssService {
     private fun fetchFeeds(vararg channelIds: String): MutableList<MediaItem> = runBlocking {
         val items = mutableListOf<MediaItem>()
 
-        coroutineScope { // cancels child coroutines on exception
+        coroutineScope { // wait for all child coroutines complete
             for (channelId in channelIds) {
                 launch {
                     appendFeed(channelId, items)

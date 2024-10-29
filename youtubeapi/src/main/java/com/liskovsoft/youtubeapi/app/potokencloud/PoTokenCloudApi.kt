@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.common.converters.gson.WithGson
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Query
 
 @WithGson
 internal interface PoTokenCloudApi {
@@ -11,7 +12,7 @@ internal interface PoTokenCloudApi {
         "Content-Type: application/json",
     )
     @GET("https://potokenservice.onrender.com/")
-    fun getPoToken(): Call<PoTokenResponse?>?
+    fun getPoToken(@Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
 
     @Headers(
         "Content-Type: application/json",

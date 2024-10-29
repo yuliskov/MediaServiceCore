@@ -206,7 +206,7 @@ public class AppService {
     /**
      * Used with get_video_info, anonymous search and suggestions
      */
-    public String getVisitorId() {
+    public String getVisitorData() {
         updateAppInfoData();
 
         // TODO: NPE 300!!!

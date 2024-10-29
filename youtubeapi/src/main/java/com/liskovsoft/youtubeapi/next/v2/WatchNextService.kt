@@ -7,7 +7,6 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
@@ -104,13 +103,13 @@ internal object WatchNextService {
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {
-        val wrapper = mWatchNextApi.getWatchNextResult(query, mAppService.visitorId)
+        val wrapper = mWatchNextApi.getWatchNextResult(query, mAppService.visitorData)
 
         return RetrofitHelper.get(wrapper)
     }
 
     private fun continueWatchNext(query: String, skipAuth: Boolean = false): WatchNextResultContinuation? {
-        val wrapper = mWatchNextApi.continueWatchNextResult(query, mAppService.visitorId)
+        val wrapper = mWatchNextApi.continueWatchNextResult(query, mAppService.visitorData)
 
         return RetrofitHelper.get(wrapper, skipAuth)
     }

@@ -4,7 +4,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
@@ -46,7 +45,7 @@ public class SearchService {
     }
 
     public SearchResult getSearch(String searchText, int options) {
-        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorId());
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorData());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -86,7 +85,7 @@ public class SearchService {
         // fix empty popular searches (country and language should match or use only country)
         //language = localeManager.getLanguage();
 
-        return getSearchTags(searchText, mBrowseService.getSuggestToken(), country, language, mAppService.getVisitorId());
+        return getSearchTags(searchText, mBrowseService.getSuggestToken(), country, language, mAppService.getVisitorData());
     }
 
     private List<String> getSearchTags(String searchText, String suggestToken, String country, String language, String visitorId) {

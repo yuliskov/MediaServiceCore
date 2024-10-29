@@ -108,12 +108,12 @@ public class VideoInfoApiSignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null), mAppService.getVisitorId(), AppClient.WEB.getUserAgent());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null), mAppService.getVisitorData(), AppClient.WEB.getUserAgent());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null), mAppService.getVisitorId(), AppClient.WEB.getUserAgent());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null), mAppService.getVisitorData(), AppClient.WEB.getUserAgent());
         return wrapper.execute().body();
     }
 }

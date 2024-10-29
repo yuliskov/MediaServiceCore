@@ -231,7 +231,7 @@ public class BrowseService {
         }
 
         String query = BrowseApiHelper.getContinuationQuery(nextKey);
-        Call<SectionContinuation> wrapper = mBrowseManagerSigned.continueSection(query, mAppService.getVisitorId());
+        Call<SectionContinuation> wrapper = mBrowseManagerSigned.continueSection(query, mAppService.getVisitorData());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -256,7 +256,7 @@ public class BrowseService {
 
         String query = BrowseApiHelper.getContinuationQuery(nextKey);
 
-        Call<SectionTabContinuation> wrapper = mBrowseManagerSigned.continueSectionTab(query, mAppService.getVisitorId());
+        Call<SectionTabContinuation> wrapper = mBrowseManagerSigned.continueSectionTab(query, mAppService.getVisitorData());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -292,7 +292,7 @@ public class BrowseService {
     private SectionTabList getSectionTabList(String query) {
         Log.d(TAG, "Getting section tab list for query: %s", query);
 
-        Call<SectionTabList> wrapper = mBrowseManagerSigned.getSectionTabList(query, mAppService.getVisitorId());
+        Call<SectionTabList> wrapper = mBrowseManagerSigned.getSectionTabList(query, mAppService.getVisitorData());
 
         return RetrofitHelper.get(wrapper);
     }
@@ -309,7 +309,7 @@ public class BrowseService {
     }
 
     private SectionList getSectionList(String query) {
-        Call<SectionList> wrapper = mBrowseManagerSigned.getSectionList(query, mAppService.getVisitorId());
+        Call<SectionList> wrapper = mBrowseManagerSigned.getSectionList(query, mAppService.getVisitorData());
 
         return RetrofitHelper.get(wrapper);
     }

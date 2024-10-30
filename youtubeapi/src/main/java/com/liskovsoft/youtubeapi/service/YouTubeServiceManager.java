@@ -26,7 +26,8 @@ public class YouTubeServiceManager implements ServiceManager {
     private final MediaItemService mMediaItemManager;
     private final YouTubeLiveChatService mLiveChatService;
     private final YouTubeCommentsService mCommentsService;
-    private Disposable mRefreshCacheAction;
+    private Disposable mRefreshCoreDataAction;
+    private Disposable mRefreshPoTokenAction;
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
@@ -90,15 +91,32 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void refreshCacheIfNeeded() {
-        if (RxHelper.isAnyActionRunning(mRefreshCacheAction)) {
+        refreshCoreDataIfNeeded();
+        refreshPoTokenIfNeeded();
+    }
+
+    private void refreshCoreDataIfNeeded() {
+        if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
             return;
         }
 
-        mRefreshCacheAction = RxHelper.execute(refreshCacheIfNeededObserve());
+        mRefreshCoreDataAction = RxHelper.execute(refreshCoreDataIfNeededObserve());
     }
 
-    private Observable<Void> refreshCacheIfNeededObserve() {
-        return RxHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded);
+    private void refreshPoTokenIfNeeded() {
+        if (RxHelper.isAnyActionRunning(mRefreshPoTokenAction)) {
+            return;
+        }
+
+        mRefreshPoTokenAction = RxHelper.execute(refreshPoTokenIfNeededObserve());
+    }
+
+    private Observable<Void> refreshCoreDataIfNeededObserve() {
+        return RxHelper.fromVoidable(AppService.instance()::refreshCoreDataIfNeeded);
+    }
+
+    private Observable<Void> refreshPoTokenIfNeededObserve() {
+        return RxHelper.fromVoidable(AppService.instance()::refreshPoTokenIfNeeded);
     }
 
     @Override

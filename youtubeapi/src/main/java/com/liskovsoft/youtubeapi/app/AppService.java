@@ -380,10 +380,13 @@ public class AppService {
         mCachedClientData = null;
     }
 
-    public void refreshCacheIfNeeded() {
+    public void refreshCoreDataIfNeeded() {
         updateAppInfoData();
         updatePlayerData();
         updateClientData();
+    }
+
+    public void refreshPoTokenIfNeeded() {
         updatePoTokenData();
     }
 

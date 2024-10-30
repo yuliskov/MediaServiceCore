@@ -8,8 +8,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 internal object PoTokenCloudService {
-    private const val RETRY_TIMES: Int = 5
-    private const val RETRY_DELAY_MS: Long = 20_000
+    private const val RETRY_TIMES: Int = Int.MAX_VALUE
+    private const val RETRY_DELAY_MS: Long = 100
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)
     private val appService = AppService.instance()
 
@@ -22,9 +22,8 @@ internal object PoTokenCloudService {
 
         val newPoToken = getPoTokenResponse()
 
-        if (newPoToken != null) {
+        if (newPoToken != null)
             MediaServiceData.instance().poToken = newPoToken
-        }
     }
 
     @JvmStatic
@@ -35,12 +34,13 @@ internal object PoTokenCloudService {
     private suspend fun getPoTokenResponse(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null
 
-        val times = RETRY_TIMES
-        repeat(times) { iteration ->
-            poToken = RetrofitHelper.get(api.getPoToken(appService.visitorData))
+        for (i in 0 until RETRY_TIMES) {
+            poToken = RetrofitHelper.get(api.getPoToken(appService.visitorData));
             if (poToken?.poToken != null)
-                return@repeat
-            else if (iteration != times - 1) delay(RETRY_DELAY_MS)
+                break
+
+            if (i < RETRY_TIMES - 1)
+                delay(RETRY_DELAY_MS)
         }
 
         return poToken

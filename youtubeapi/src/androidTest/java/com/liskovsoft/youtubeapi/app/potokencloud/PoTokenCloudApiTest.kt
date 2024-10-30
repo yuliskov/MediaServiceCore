@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo
-import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudApi
-import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -44,19 +44,21 @@ internal class PoTokenCloudApiTest {
         assertTrue("Health OK", response?.isSuccessful == true)
     }
 
-    private fun getPoToken(): PoTokenResponse? {
+    private fun getPoToken(): PoTokenResponse? = runBlocking {
         var poToken: PoTokenResponse? = null
 
-        val times = 3
-        repeat(times) { iteration ->
-            poToken = RetrofitHelper.get(api.getPoToken());
+        val times = Int.MAX_VALUE
+        for (i in 0 until times) {
+            poToken = RetrofitHelper.get(api.getPoToken())
             if (poToken?.poToken != null)
-                return@repeat
-            else if (iteration != times - 1) Thread.sleep(10_000)
+                break
+
+            if (i < times - 1)
+                delay(100)
         }
 
         assertNotNull("PoToken is not empty", poToken?.poToken)
 
-        return poToken
+        return@runBlocking poToken
     }
 }

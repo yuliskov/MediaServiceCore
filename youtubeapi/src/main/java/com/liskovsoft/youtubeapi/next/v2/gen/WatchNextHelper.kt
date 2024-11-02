@@ -39,9 +39,10 @@ internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNu
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true || (getSuggestedSections()?.filter { (it.getItemWrappers()?.size ?: 0) <= 3 }?.size ?: 0) >= 3
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
-internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = continuationContents?.horizontalListContinuation?.items
-internal fun WatchNextResultContinuation.getNextPageKey(): String? = continuationContents?.horizontalListContinuation?.continuations
+internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.items
+internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations
     ?.firstNotNullOfOrNull { it?.getContinuationKey() }
+private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation ?: continuationContents?.gridContinuation
 
 ///////
 

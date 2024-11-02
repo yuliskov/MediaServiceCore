@@ -41,8 +41,6 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val commentsKeyItem: String? by lazy {
         commentsPanel?.getTopCommentsToken()
-        // Old val
-        //suggestedSections?.lastOrNull()?.getItemWrappers()?.getOrNull(1)?.getContinuationKey()
     }
     private val videoOwner by lazy {
         videoMetadata?.getVideoOwner()

@@ -219,7 +219,7 @@ internal fun LockupItem.getSubTitle() = YouTubeHelper.createInfo(
         it?.metadataParts?.mapNotNull { it?.text?.getText() } }?.flatten()?.toTypedArray() ?: emptyArray<String>()
 )
 internal fun LockupItem.getVideoId() = rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint?.videoId
-internal fun LockupItem.getThumbnails() = contentImage?.thumbnailViewModel?.image
+internal fun LockupItem.getThumbnails() = getThumbnailView()?.image
 internal fun LockupItem.getBadgeText() = getBadge()?.text
 internal fun LockupItem.isLive() = BADGE_STYLE_LIVE == getBadge()?.badgeStyle
 internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNull {
@@ -233,7 +233,9 @@ internal fun LockupItem.getFeedbackTokens() =
         }
 private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
-private fun LockupItem.getOverlays() = contentImage?.thumbnailViewModel?.overlays
+private fun LockupItem.getOverlays() = getThumbnailView()?.overlays
+private fun LockupItem.getThumbnailView() = contentImage?.thumbnailViewModel ?: contentImage?.collectionThumbnailViewModel?.primaryThumbnail?.thumbnailViewModel
+
 
 ////////////
 

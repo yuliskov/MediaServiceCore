@@ -34,6 +34,7 @@ internal object BrowseService2 {
     @JvmStatic
     fun getTrending(): List<MediaGroup?>? {
         return getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING)
+            ?: getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING, true)
     }
 
     @JvmStatic
@@ -68,9 +69,19 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getSubscriptions(): MediaGroup? {
+        return getSubscriptionsWeb() ?: getSubscriptionsTV()
+    }
+
+    private fun getSubscriptionsWeb(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
 
         return RetrofitHelper.get(browseResult)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS)) }
+    }
+
+    private fun getSubscriptionsTV(): MediaGroup? {
+        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
+
+        return RetrofitHelper.get(browseResult)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS)) }
     }
 
     @JvmStatic
@@ -89,10 +100,14 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getShorts(): MediaGroup? {
+        return getShortsInt() ?: getShortsInt(true)
+    }
+
+    private fun getShortsInt(skipAuth: Boolean = false): MediaGroup? {
         val firstResult = mBrowseApi.getReelResult(BrowseApiHelper.getReelQuery())
 
-        return RetrofitHelper.get(firstResult)?.let { firstItem ->
-            val result = continueShorts(firstItem.getContinuationKey())
+        return RetrofitHelper.get(firstResult, skipAuth) ?.let { firstItem ->
+            val result = continueShorts(firstItem.getContinuationKey(), skipAuth)
             result?.mediaItems?.add(0, ShortsMediaItem(null, firstItem))
 
             getSubscribedShorts()?.let { result?.mediaItems?.addAll(0, it) }
@@ -129,21 +144,21 @@ internal object BrowseService2 {
         return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_USER_PLAYLISTS)) }
     }
 
-    private fun continueShorts(continuationKey: String?): MediaGroup? {
+    private fun continueShorts(continuationKey: String?, skipAuth: Boolean = false): MediaGroup? {
         if (continuationKey == null) {
             return null
         }
 
         val continuation = mBrowseApi?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(continuationKey))
 
-        return RetrofitHelper.get(continuation)?.let {
+        return RetrofitHelper.get(continuation, skipAuth)?.let {
             val result = mutableListOf<MediaItem?>()
 
             it.getItems()?.forEach {
                 if (it?.videoId != null && it.params != null) {
                     val details = mBrowseApi?.getReelResult(BrowseApiHelper.getReelDetailsQuery(it.videoId, it.params))
 
-                    RetrofitHelper.get(details)?.let {
+                    RetrofitHelper.get(details, skipAuth)?.let {
                             info -> result.add(ShortsMediaItem(it, info))
                     }
                 }
@@ -223,7 +238,7 @@ internal object BrowseService2 {
 
         val homeResult = getBrowseRedirect(channelId) {
             val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(it))
-            RetrofitHelper.get(home)
+            RetrofitHelper.get(home, true)
         }
 
         var shortTab: MediaGroup? = null
@@ -266,6 +281,7 @@ internal object BrowseService2 {
         return when (group) {
             is ShortsMediaGroup -> continueShorts(group.nextPageKey)
             is ShelfSectionMediaGroup -> continueTVGroup(group)
+            is BrowseMediaGroupTV -> continueTVGroup(group)
             is WatchNexContinuationMediaGroup -> continueTVGroup(group)
             else -> continueChip(group)?.firstOrNull()
         }
@@ -290,7 +306,7 @@ internal object BrowseService2 {
         val browseResult =
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(group.channelId, group.params))
 
-        return RetrofitHelper.get(browseResult)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
+        return RetrofitHelper.get(browseResult, true)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
     }
 
     private fun continueChip(group: MediaGroup?): List<MediaGroup?>? {
@@ -301,7 +317,7 @@ internal object BrowseService2 {
         val continuationResult =
             mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
 
-        return RetrofitHelper.get(continuationResult)?.let {
+        return RetrofitHelper.get(continuationResult, true)?.let {
             val result = mutableListOf<MediaGroup?>()
 
             result.add(ContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title })
@@ -326,7 +342,7 @@ internal object BrowseService2 {
 
     private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS, channelId: String? = null): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
-        val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideShortsFromSubscriptionsEnabled ?: false) ||
+        val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType) ||
                 (MediaGroup.TYPE_HOME == groupType && prefs?.isHideShortsFromHomeEnabled ?: false) ||
                 (MediaGroup.TYPE_HISTORY == groupType && prefs?.isHideShortsFromHistoryEnabled ?: false) ||
                 (MediaGroup.TYPE_CHANNEL == groupType && prefs?.isHideShortsFromChannelEnabled ?: false) ||
@@ -348,10 +364,10 @@ internal object BrowseService2 {
         )
     }
 
-    private fun getBrowseRows(query: String, sectionType: Int): List<MediaGroup?>? {
+    private fun getBrowseRows(query: String, sectionType: Int, skipAuth: Boolean = false): List<MediaGroup?>? {
         val browseResult = mBrowseApi.getBrowseResult(query)
 
-        return RetrofitHelper.get(browseResult)?.let {
+        return RetrofitHelper.get(browseResult, skipAuth)?.let {
             val result = mutableListOf<MediaGroup?>()
 
             // First chip is always empty and corresponds to current result.

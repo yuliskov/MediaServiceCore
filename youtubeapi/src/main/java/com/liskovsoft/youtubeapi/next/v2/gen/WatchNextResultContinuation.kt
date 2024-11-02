@@ -7,9 +7,10 @@ internal data class WatchNextResultContinuation(
     val contents: Contents?
 ) {
     data class ContinuationContents(
-        val horizontalListContinuation: HorizontalListContinuation?
+        val horizontalListContinuation: Continuation?,
+        val gridContinuation: Continuation?
     ) {
-        data class HorizontalListContinuation(
+        data class Continuation(
             val items: List<ItemWrapper?>?,
             val continuations: List<ContinuationItem?>?
         )

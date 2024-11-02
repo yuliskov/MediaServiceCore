@@ -130,6 +130,10 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQueryWeb(continuation)
     }
 
+    fun getSubscriptionsQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, SUBSCRIPTIONS)
+    }
+
     fun getSubscriptionsQueryWeb(): String {
         return ServiceHelper.createQueryWeb(SUBSCRIPTIONS)
     }

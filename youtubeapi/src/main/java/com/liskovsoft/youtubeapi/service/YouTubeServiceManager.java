@@ -92,7 +92,7 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void refreshCacheIfNeeded() {
         refreshCoreDataIfNeeded();
-        refreshPoTokenIfNeeded();
+        //refreshPoTokenIfNeeded();
     }
 
     private void refreshCoreDataIfNeeded() {

@@ -4,11 +4,15 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 internal class PoTokenCloudApiTest {
@@ -24,6 +28,12 @@ internal class PoTokenCloudApiTest {
         getPoToken()
     }
 
+    @Ignore("Server could block us")
+    @Test
+    fun testPoTokenHighLoad() {
+        getPoTokenHighLoad()
+    }
+
     @Test
     fun testPoTokenOnVideoUrl() {
         val poToken = getPoToken()
@@ -36,7 +46,7 @@ internal class PoTokenCloudApiTest {
     }
 
     @Test
-    fun testHealth() {
+    fun testHealth() = runBlocking {
         val tickle = api.healthCheck()
 
         val response = RetrofitHelper.getResponse(tickle)
@@ -47,18 +57,28 @@ internal class PoTokenCloudApiTest {
     private fun getPoToken(): PoTokenResponse? = runBlocking {
         var poToken: PoTokenResponse? = null
 
-        val times = Int.MAX_VALUE
-        for (i in 0 until times) {
+        val times = 10
+        for (i in 0.. times) {
             poToken = RetrofitHelper.get(api.getPoToken())
             if (poToken?.poToken != null)
                 break
 
-            if (i < times - 1)
-                delay(100)
+            if (i < times)
+                delay(1_000)
         }
 
         assertNotNull("PoToken is not empty", poToken?.poToken)
 
         return@runBlocking poToken
+    }
+
+    private fun getPoTokenHighLoad() = runBlocking {
+        val deferred = (0..Int.MAX_VALUE).map {
+            async {
+                RetrofitHelper.get(api.getPoToken()) ?: fail("pot is null")
+            }
+        }
+
+        deferred.awaitAll()
     }
 }

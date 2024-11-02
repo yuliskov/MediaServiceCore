@@ -14,6 +14,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.gen.isUpcoming
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
 import com.liskovsoft.youtubeapi.next.v2.gen.getChannelName
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 import com.liskovsoft.youtubeapi.next.v2.gen.getItemWrappers
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import com.liskovsoft.youtubeapi.next.v2.gen.getPublishDate
@@ -48,21 +49,23 @@ private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it
 /////
 
 internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
-    getGridContents()?.mapNotNull { it?.getItem() }
+    getGridContents()?.mapNotNull { it?.getItem() } ?: getTVGrid()?.items
 internal fun TabRenderer.getShortItems(): List<ItemWrapper?>? = getGridContents()?.flatMap { it?.getItems() ?: emptyList() }
 internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
         it?.getContinuationToken()
     } ?:
-    getGridContents()?.lastOrNull()?.getContinuationToken()
+    getGridContents()?.lastOrNull()?.getContinuationToken() ?:
+    getTVGrid()?.continuations?.getOrNull(0)?.getContinuationKey()
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getBrowseParams(): String? = endpoint?.getBrowseParams()
-private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents
-private fun TabRenderer.getGridContents() = content?.richGridRenderer?.contents
-private fun TabRenderer.getChipContents() = content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
 internal fun TabRenderer.getShelves(): List<ItemSectionRenderer?>? = getListContents()?.mapNotNull { it?.itemSectionRenderer }
 internal fun TabRenderer.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
 internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
+private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents
+private fun TabRenderer.getGridContents() = content?.richGridRenderer?.contents
+private fun TabRenderer.getChipContents() = content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
+private fun TabRenderer.getTVGrid() = content?.tvSurfaceContentRenderer?.content?.gridRenderer
 
 /////
 
@@ -175,8 +178,12 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
-private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
+    ?: getTabs()?.getOrNull(0)?.tabRenderer?.getItems()
+internal fun BrowseResultTV.getContinuationToken(): String? = getTabs()?.getOrNull(0)?.tabRenderer?.getContinuationToken()
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
 internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers()
 internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()
+private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
+private fun BrowseResultTV.getSections() = contents?.tvBrowseRenderer?.content?.tvSecondaryNavRenderer?.sections
+private fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs // e.g. Subscriptions section with a channel list (first one is All)
 

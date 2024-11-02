@@ -428,7 +428,8 @@ internal data class LockupItem(
     val rendererContext: RendererContext? // videoId
 ) {
     data class ContentImage(
-        val thumbnailViewModel: ThumbnailViewModel?
+        val thumbnailViewModel: ThumbnailViewModel?,
+        val collectionThumbnailViewModel: CollectionThumbnailViewModel?
     ) {
         data class ThumbnailViewModel(
             val image: ThumbnailItem?,
@@ -462,6 +463,13 @@ internal data class LockupItem(
                     }
                 }
             }
+        }
+        data class CollectionThumbnailViewModel(
+            val primaryThumbnail: PrimaryThumbnail?
+        ) {
+            data class PrimaryThumbnail(
+                val thumbnailViewModel: ThumbnailViewModel?
+            )
         }
     }
     data class MetadataItem(

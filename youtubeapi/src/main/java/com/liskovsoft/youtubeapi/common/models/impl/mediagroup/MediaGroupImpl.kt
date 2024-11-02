@@ -35,7 +35,7 @@ internal data class BrowseMediaGroupTV(
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?> =
         listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
-    override fun getNextPageKeyInt(): String? = null
+    override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
     override fun getTitleInt(): String? = null
 }
 

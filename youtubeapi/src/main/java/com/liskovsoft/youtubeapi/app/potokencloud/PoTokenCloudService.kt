@@ -8,8 +8,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 internal object PoTokenCloudService {
-    private const val RETRY_TIMES: Int = Int.MAX_VALUE
-    private const val RETRY_DELAY_MS: Long = 100
+    private const val RETRY_TIMES: Int = 10
+    private const val RETRY_DELAY_MS: Long = 1_000
+    private const val ONE_DAY_MS: Long = 24 * 60 * 60 * 1_000
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)
     private val appService = AppService.instance()
 
@@ -17,7 +18,7 @@ internal object PoTokenCloudService {
     fun updatePoToken() = runBlocking {
         val poToken = MediaServiceData.instance().poToken
 
-        if (DateHelper.toUnixTimeMs(poToken?.mintRefreshDate) > System.currentTimeMillis())
+        if (isTokenActual(poToken))
             return@runBlocking
 
         val newPoToken = getPoTokenResponse()
@@ -28,18 +29,25 @@ internal object PoTokenCloudService {
 
     @JvmStatic
     fun getPoToken(): String? {
-        return MediaServiceData.instance().poToken?.poToken
+        val poToken = MediaServiceData.instance().poToken
+        return if (isTokenAlmostActual(poToken)) poToken?.poToken else null
     }
+
+    private fun isTokenActual(poToken: PoTokenResponse?) =
+        poToken != null && DateHelper.toUnixTimeMs(poToken.mintRefreshDate) > System.currentTimeMillis()
+
+    private fun isTokenAlmostActual(poToken: PoTokenResponse?) =
+        poToken != null && (DateHelper.toUnixTimeMs(poToken.mintRefreshDate) + ONE_DAY_MS) > System.currentTimeMillis()
 
     private suspend fun getPoTokenResponse(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null
 
-        for (i in 0 until RETRY_TIMES) {
+        for (i in 0 .. RETRY_TIMES) {
             poToken = RetrofitHelper.get(api.getPoToken(appService.visitorData));
             if (poToken?.poToken != null)
                 break
 
-            if (i < RETRY_TIMES - 1)
+            if (i < RETRY_TIMES)
                 delay(RETRY_DELAY_MS)
         }
 

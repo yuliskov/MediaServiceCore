@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.PlaylistItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 
 /**
  * Based on:
@@ -21,18 +22,18 @@ internal data class BrowseResult(
     ) {
         data class TwoColumnBrowseResultsRenderer(
             val tabs: List<Tab?>?
-        ) {
-            data class Tab(
-                val tabRenderer: TabRenderer?,
-                val expandableTabRenderer: TabRenderer?
-            )
-        }
+        )
     }
     data class Header(
         val playlistHeaderRenderer: PlaylistItem?,
         val musicHeaderRenderer: PlaylistItem?
     )
 }
+
+internal data class Tab(
+    val tabRenderer: TabRenderer?,
+    val expandableTabRenderer: TabRenderer?
+)
 
 internal data class ContinuationResult(
     val onResponseReceivedActions: List<OnResponseReceivedAction?>?
@@ -147,17 +148,9 @@ internal data class BrowseResultTV(
             val content: Content?
         ) {
             data class Content(
-                val tvSurfaceContentRenderer: TvSurfaceContentRenderer?
-            ) {
-                data class TvSurfaceContentRenderer(
-                    val content: Content?
-                ) {
-                    data class Content(
-                        val sectionListRenderer: ItemSectionRenderer?,
-                        val gridRenderer: GridRenderer?
-                    )
-                }
-            }
+                val tvSurfaceContentRenderer: TvSurfaceContentRenderer?,
+                val tvSecondaryNavRenderer: TvSecondaryNavRenderer?
+            )
         }
     }
 }

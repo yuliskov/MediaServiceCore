@@ -32,7 +32,8 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions = 
         ?.mapIndexedNotNull { index, it -> it
             ?.let { if (it.isEmpty()) null else it }
             ?.let { if (filter.invoke(it)) null else it }
-            ?.let { WrapperMediaItem(it).let { if (YouTubeHelper.isEmpty(it)) null else it }?.apply { playlistIndex = index } }
+            ?.let { WrapperMediaItem(it).let {
+                if (YouTubeHelper.isEmpty(it) || (options.removeShorts && YouTubeHelper.isShort(it))) null else it }?.apply { playlistIndex = index } }
         }
     }
     private val nextPageKeyItem by lazy { getNextPageKeyInt() }

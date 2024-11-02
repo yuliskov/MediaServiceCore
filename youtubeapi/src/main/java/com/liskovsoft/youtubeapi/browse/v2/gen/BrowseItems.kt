@@ -23,7 +23,8 @@ internal data class TabRenderer(
 ) {
     data class Content(
         val sectionListRenderer: SectionListRenderer?,
-        val richGridRenderer: RichGridRenderer?
+        val richGridRenderer: RichGridRenderer?,
+        val tvSurfaceContentRenderer: TvSurfaceContentRenderer?
     ) {
         data class SectionListRenderer(
             val contents: List<SectionWrapper?>?
@@ -63,6 +64,27 @@ internal data class RichSectionRenderer(
                 val continuationItemRenderer: ContinuationItemRenderer?
             )
         }
+    }
+}
+
+internal data class TvSurfaceContentRenderer(
+    val content: Content?
+) {
+    data class Content(
+        val sectionListRenderer: ItemSectionRenderer?,
+        val gridRenderer: GridRenderer?
+    )
+}
+
+internal data class TvSecondaryNavRenderer(
+    val sections: List<Section?>?
+) {
+    data class Section(
+        val tvSecondaryNavSectionRenderer: TvSecondaryNavSectionRenderer?
+    ) {
+        data class TvSecondaryNavSectionRenderer(
+            val tabs: List<Tab>
+        )
     }
 }
 
@@ -163,5 +185,6 @@ internal data class Shelf(
 }
 
 internal data class GridRenderer(
-    val items: List<ItemWrapper?>?
+    val items: List<ItemWrapper?>?,
+    val continuations: List<ContinuationItem?>?
 )

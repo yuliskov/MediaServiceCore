@@ -147,7 +147,8 @@ internal data class WatchNextResult(
                         val markersList: MarkersList?
                     ) {
                         data class MarkersList(
-                            val markers: List<ChapterItemWrapper?>?
+                            val markers: List<ChapterItemWrapper?>?,
+                            val markerType: String?
                         )
                     }
                 }

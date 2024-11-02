@@ -283,14 +283,14 @@ internal object BrowseService2 {
             is ShelfSectionMediaGroup -> continueTVGroup(group)
             is BrowseMediaGroupTV -> continueTVGroup(group)
             is WatchNexContinuationMediaGroup -> continueTVGroup(group)
-            else -> continueChip(group)?.firstOrNull()
+            else -> continueChipOrGroup(group)?.firstOrNull()
         }
     }
 
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return continueChip(group)
+            return continueChipOrGroup(group)
         } else if (group?.channelId != null) {
             return continueTab(group)?.let { listOf(it) }
         }
@@ -309,7 +309,7 @@ internal object BrowseService2 {
         return RetrofitHelper.get(browseResult, true)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
     }
 
-    private fun continueChip(group: MediaGroup?): List<MediaGroup?>? {
+    private fun continueChipOrGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey == null) {
             return null
         }
@@ -317,7 +317,7 @@ internal object BrowseService2 {
         val continuationResult =
             mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
 
-        return RetrofitHelper.get(continuationResult, true)?.let {
+        return RetrofitHelper.get(continuationResult)?.let {
             val result = mutableListOf<MediaGroup?>()
 
             result.add(ContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title })

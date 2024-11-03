@@ -510,7 +510,7 @@ class BrowseApiTest {
     }
 
     private fun getLikedMusic(): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getLikedMusicQuery())
+        val result = mService?.getBrowseResult(BrowseApiHelper.getLikedMusicQuery(AppClient.WEB))
 
         return RetrofitHelper.get(result)
     }

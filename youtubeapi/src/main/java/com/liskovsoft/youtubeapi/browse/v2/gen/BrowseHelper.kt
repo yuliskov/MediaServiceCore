@@ -48,6 +48,8 @@ private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it
 
 /////
 
+private const val TAB_STYLE_NEW_CONTENT = "NEW_CONTENT"
+
 internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
     getGridContents()?.mapNotNull { it?.getItem() } ?: getTVGrid()?.items
 internal fun TabRenderer.getShortItems(): List<ItemWrapper?>? = getGridContents()?.flatMap { it?.getItems() ?: emptyList() }
@@ -58,7 +60,10 @@ internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.fi
     getTVGrid()?.continuations?.getOrNull(0)?.getContinuationKey()
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
+internal fun TabRenderer.getContinuationKey(): String? = content?.tvSurfaceContentRenderer?.continuation?.getContinuationKey()
 internal fun TabRenderer.getBrowseParams(): String? = endpoint?.getBrowseParams()
+internal fun TabRenderer.getThumbnails(): ThumbnailItem? = thumbnail
+internal fun TabRenderer.hasNewContent(): Boolean = presentationStyle?.style == TAB_STYLE_NEW_CONTENT
 internal fun TabRenderer.getShelves(): List<ItemSectionRenderer?>? = getListContents()?.mapNotNull { it?.itemSectionRenderer }
 internal fun TabRenderer.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
 internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
@@ -127,8 +132,8 @@ internal fun ChipCloudChipRenderer.getContinuationToken() = navigationEndpoint?.
 
 /////
 
-private const val STYLE_NEW_CONTENT = "GUIDE_ENTRY_PRESENTATION_STYLE_NEW_CONTENT"
-private const val STYLE_NONE = "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
+private const val GUIDE_STYLE_NEW_CONTENT = "GUIDE_ENTRY_PRESENTATION_STYLE_NEW_CONTENT"
+private const val GUIDE_STYLE_NONE = "GUIDE_ENTRY_PRESENTATION_STYLE_NONE"
 
 internal fun GuideResult.getFirstSubs(): List<GuideItem?>? = getSubsRoot()?.items?.mapNotNull { it?.guideEntryRenderer }
 internal fun GuideResult.getCollapsibleSubs(): List<GuideItem?>? =
@@ -140,7 +145,7 @@ internal fun GuideItem.getBrowseId() = navigationEndpoint?.getBrowseId()
 internal fun GuideItem.getBrowseParams() = navigationEndpoint?.getBrowseParams()
 internal fun GuideItem.getThumbnails() = thumbnail
 internal fun GuideItem.getTitle() = formattedTitle?.getText()
-internal fun GuideItem.hasNewContent() = presentationStyle == STYLE_NEW_CONTENT
+internal fun GuideItem.hasNewContent() = presentationStyle == GUIDE_STYLE_NEW_CONTENT
 internal fun GuideItem.isLive() = badges?.liveBroadcasting
 
 ///////
@@ -178,12 +183,13 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
-    ?: getTabs()?.getOrNull(0)?.tabRenderer?.getItems()
-internal fun BrowseResultTV.getContinuationToken(): String? = getTabs()?.getOrNull(0)?.tabRenderer?.getContinuationToken()
+    ?: getTabs()?.getOrNull(0)?.getItems()
+internal fun BrowseResultTV.getContinuationToken(): String? = getTabs()?.getOrNull(0)?.getContinuationToken()
+// Get tabs, e.g. Subscriptions section with a channel list (first one is All)
+internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs?.mapNotNull { it.tabRenderer ?: it.expandableTabRenderer }
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
 internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers()
 internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()
 private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
 private fun BrowseResultTV.getSections() = contents?.tvBrowseRenderer?.content?.tvSecondaryNavRenderer?.sections
-private fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs // e.g. Subscriptions section with a channel list (first one is All)
 

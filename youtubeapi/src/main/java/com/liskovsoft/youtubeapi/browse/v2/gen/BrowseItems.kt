@@ -19,7 +19,9 @@ internal data class SectionWrapper(
 internal data class TabRenderer(
     val title: String?,
     val content: Content?,
-    val endpoint: NavigationEndpointItem?
+    val endpoint: NavigationEndpointItem?,
+    val thumbnail: ThumbnailItem?,
+    val presentationStyle: PresentationStyle?
 ) {
     data class Content(
         val sectionListRenderer: SectionListRenderer?,
@@ -46,6 +48,9 @@ internal data class TabRenderer(
             }
         }
     }
+    data class PresentationStyle(
+        val style: String?
+    )
 }
 
 // WhatToWatch only
@@ -68,7 +73,8 @@ internal data class RichSectionRenderer(
 }
 
 internal data class TvSurfaceContentRenderer(
-    val content: Content?
+    val content: Content?,
+    val continuation: ContinuationItem?
 ) {
     data class Content(
         val sectionListRenderer: ItemSectionRenderer?,

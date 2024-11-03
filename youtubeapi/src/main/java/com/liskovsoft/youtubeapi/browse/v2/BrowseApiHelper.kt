@@ -103,8 +103,8 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQueryWeb(REEL)
     }
 
-    fun getLikedMusicQuery(): String {
-        return ServiceHelper.createQueryWeb(LIKED_MUSIC)
+    fun getLikedMusicQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, LIKED_MUSIC)
     }
 
     fun getNewMusicAlbumsQuery(): String {

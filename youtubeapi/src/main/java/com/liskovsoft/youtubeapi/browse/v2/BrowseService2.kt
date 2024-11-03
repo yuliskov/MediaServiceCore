@@ -86,9 +86,19 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getSubscribedChannels(): MediaGroup? {
+        return getSubscribedChannelsWeb() ?: getSubscribedChannelsTV()
+    }
+
+    private fun getSubscribedChannelsWeb(): MediaGroup? {
         val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let { GuideMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
+    }
+
+    private fun getSubscribedChannelsTV(): MediaGroup? {
+        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
+
+        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { TabListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) } }
     }
 
     @JvmStatic
@@ -100,10 +110,10 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getShorts(): MediaGroup? {
-        return getShortsInt() ?: getShortsInt(true)
+        return getShortsWeb() ?: getShortsWeb(true)
     }
 
-    private fun getShortsInt(skipAuth: Boolean = false): MediaGroup? {
+    private fun getShortsWeb(skipAuth: Boolean = false): MediaGroup? {
         val firstResult = mBrowseApi.getReelResult(BrowseApiHelper.getReelQuery())
 
         return RetrofitHelper.get(firstResult, skipAuth) ?.let { firstItem ->
@@ -118,9 +128,19 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getLikedMusic(): MediaGroup? {
-        val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getLikedMusicQuery())
+        return getLikedMusicWeb()
+    }
+
+    private fun getLikedMusicWeb(): MediaGroup? {
+        val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getLikedMusicQuery(AppClient.WEB))
 
         return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+    }
+
+    private fun getLikedMusicTV(): MediaGroup? {
+        val result = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getLikedMusicQuery(AppClient.TV))
+
+        return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
 
     @JvmStatic

@@ -64,6 +64,17 @@ internal data class GuideMediaItem(val guideItem: GuideItem): BaseMediaItem() {
     override val hasUploadsItem = true
 }
 
+internal data class TabMediaItem(val tabItem: TabRenderer): BaseMediaItem() {
+    override val titleItem by lazy { tabItem.getTitle() }
+    override val reloadPageKeyItem by lazy { tabItem.getContinuationKey() }
+    //override val channelIdItem by lazy { tabItem.getBrowseId() }
+    //override val playlistParamsItem by lazy { tabItem.getBrowseParams() }
+    override val cardThumbImageUrl by lazy { tabItem.getThumbnails()?.getOptimalResThumbnailUrl() }
+    override val backgroundThumbImageUrl by lazy { tabItem.getThumbnails()?.getHighResThumbnailUrl() }
+    override val hasNewContentItem by lazy { tabItem.hasNewContent() }
+    override val hasUploadsItem = true
+}
+
 internal data class ShortsMediaItem(val reel: ReelWatchEndpoint?, val reelDetails: ReelResult): BaseMediaItem() {
     override val videoIdItem by lazy { reel?.getVideoId() ?: reelDetails.getVideoId() }
     override val cardThumbImageUrl by lazy { getThumbnails()?.getOptimalResThumbnailUrl() }

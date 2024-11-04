@@ -15,7 +15,7 @@ internal data class CommentGroupImpl(val commentsResult: CommentsResult): Commen
     }
 
     private val nextCommentsKeyItem by lazy {
-        itemSectionContinuation?.continuations?.firstOrNull()?.getContinuationKey()
+        itemSectionContinuation?.continuations?.getContinuationKey()
     }
 
     private val commentItems by lazy {

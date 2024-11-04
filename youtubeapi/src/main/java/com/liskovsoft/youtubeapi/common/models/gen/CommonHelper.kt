@@ -56,7 +56,7 @@ internal fun NavigationEndpointItem.getBrowseParams() = browseEndpoint?.params
 internal fun NavigationEndpointItem.getOverlayToggleButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
 internal fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
 internal fun NavigationEndpointItem.isSubscribed() = getOverlaySubscribeButton()?.subscribed
-internal fun NavigationEndpointItem.getContinuation() = getContent()?.itemSectionRenderer?.continuations?.firstOrNull() ?: getEngagementPanel()?.content?.sectionListRenderer?.contents?.firstOrNull()?.itemSectionRenderer?.continuations?.firstOrNull()
+internal fun NavigationEndpointItem.getContinuations() = getContent()?.itemSectionRenderer?.continuations ?: getEngagementPanel()?.content?.sectionListRenderer?.contents?.firstOrNull()?.itemSectionRenderer?.continuations
 internal fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
 internal fun NavigationEndpointItem.getSubtitle() = getHeader()?.overlayPanelHeaderRenderer?.subtitle?.getText()
 internal fun NavigationEndpointItem.getStartTimeSeconds() = watchEndpoint?.startTimeSeconds
@@ -180,7 +180,7 @@ internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
-internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuation()?.getContinuationKey()
+internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationKey()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
 internal fun TileItem.isShorts() = false // TODO: not implemented

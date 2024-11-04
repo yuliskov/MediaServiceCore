@@ -57,7 +57,7 @@ internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.fi
         it?.getContinuationToken()
     } ?:
     getGridContents()?.lastOrNull()?.getContinuationToken() ?:
-    getTVGrid()?.continuations?.getOrNull(0)?.getContinuationKey()
+    getTVGrid()?.continuations?.getContinuationKey()
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getContinuationKey(): String? = content?.tvSurfaceContentRenderer?.continuation?.getContinuationKey()
@@ -103,7 +103,8 @@ internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()
     it.gridRenderer?.items ?:
     it.videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
 }
-internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let { it.playlistVideoListRenderer?.contents ?: it.gridRenderer?.items ?: it.shelfRenderer?.content?.gridRenderer?.items }?.lastOrNull()?.getContinuationToken()
+internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let {
+    it.playlistVideoListRenderer?.contents ?: it.gridRenderer?.items ?: it.shelfRenderer?.content?.gridRenderer?.items }?.lastOrNull()?.getContinuationToken()
 internal fun ItemSectionRenderer.getBrowseId() = getShelfRenderer()?.endpoint?.getBrowseId()
 internal fun ItemSectionRenderer.getBrowseParams() = getShelfRenderer()?.endpoint?.getBrowseParams()
 private fun ItemSectionRenderer.getContents() = contents?.getOrNull(0)
@@ -183,8 +184,10 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
+    ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.contents
     ?: getTabs()?.getOrNull(0)?.getItems()
 internal fun BrowseResultTV.getContinuationToken(): String? = getTabs()?.getOrNull(0)?.getContinuationToken()
+    ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.continuations?.getContinuationKey()
 // Get tabs, e.g. Subscriptions section with a channel list (first one is All)
 internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs?.mapNotNull { it.tabRenderer ?: it.expandableTabRenderer }
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()

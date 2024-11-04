@@ -60,10 +60,13 @@ internal class PoToken {
      */
     private fun invokeBotGuard(privateScript: String?, program: String?, globalName: String?, bgConfig: BotGuardConfig): BotGuardResult? {
         val script = listOf(
-            DOM_WRAPPER.trimIndent(),
+            //DOM_WRAPPER.trimIndent(),
 
-            //TestHelpers.readResource("potoken/jsdom_browserify.js"),
-            //"var mydom = new jsdom.JSDOM(); window = mydom.window; document = mydom.window.document;",
+            TestHelpers.readResource("potoken/jsdom_browserify.js"),
+            "var mydom = new jsdom.JSDOM(); window = mydom.window; document = mydom.window.document; " +
+                    "addEventListener = function(type, listener, options) {document.addEventListener(type, listener, options);};" +
+                    "removeEventListener = function(type, listener, options) {document.removeEventListener(type, listener, options);};" +
+                    "dispatchEvent = function(event) {document.dispatchEvent(event);};",
 
             //TestHelpers.readResource("potoken/domino_browserify.js"),
             //"var setTimeout = () => {}; var clearInterval = () => {}; var setInterval = () => {}; var clearTimeout = () => {};",
@@ -72,24 +75,26 @@ internal class PoToken {
 
             privateScript,
             """
-               var vm = $globalName;
-               const attFunctions = {};
-               const setAttFunctions = (fn1, fn2, fn3, fn4) => {
+                var vm = $globalName;
+                const attFunctions = {};
+                const setAttFunctions = (fn1, fn2, fn3, fn4) => {
                    Object.assign(attFunctions, { fn1, fn2, fn3, fn4 });
-               };
-
-               vm.a('$program', setAttFunctions, true, undefined, () => {});
-
-               var botguardResponse;
-               const postProcessFunctions = [];
-               attFunctions.fn1((response) => (botguardResponse = response), [, , postProcessFunctions]);
-               const payload = ['${bgConfig.requestKey}', botguardResponse];
-               // TODO: handle multiple postProcessFunctions?
-               var second = JSON.stringify(payload);
-               var first = '';
-               if (postProcessFunctions.length > 0)
+                };
+                
+                vm.a('$program', setAttFunctions, true, undefined, () => {});
+                
+                var botguardResponse;
+                const postProcessFunctions = [];
+                
+                attFunctions.fn1((response) => (botguardResponse = response), [, , postProcessFunctions]);
+                
+                const payload = ['${bgConfig.requestKey}', botguardResponse];
+                // TODO: handle multiple postProcessFunctions?
+                var second = JSON.stringify(payload);
+                var first = '';
+                if (postProcessFunctions.length > 0)
                     first = postProcessFunctions[0].name;
-               first + "$RESULT_DELIM" + second;
+                first + "$RESULT_DELIM" + second;
             """.trimIndent()
         )
 

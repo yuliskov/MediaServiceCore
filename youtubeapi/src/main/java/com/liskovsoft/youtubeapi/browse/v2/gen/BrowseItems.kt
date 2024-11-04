@@ -78,7 +78,24 @@ internal data class TvSurfaceContentRenderer(
 ) {
     data class Content(
         val sectionListRenderer: ItemSectionRenderer?,
-        val gridRenderer: GridRenderer?
+        val gridRenderer: GridRenderer?, // TV
+        val twoColumnRenderer: TwoColumnRenderer? // TV
+    )
+}
+
+internal data class TwoColumnRenderer(
+    val leftColumn: LeftColumn?,
+    val rightColumn: RightColumn?
+) {
+    data class LeftColumn(
+        val entityMetadataRenderer: EntityMetadataRenderer?
+    ) {
+        data class EntityMetadataRenderer(
+            val title: TextItem?
+        )
+    }
+    data class RightColumn(
+        val playlistVideoListRenderer: PlaylistVideoListRenderer?
     )
 }
 
@@ -184,11 +201,12 @@ internal data class Shelf(
     val playlistVideoListRenderer: PlaylistVideoListRenderer?,
     val gridRenderer: GridRenderer?,
     val videoRenderer: VideoItem?
-) {
-    data class PlaylistVideoListRenderer(
-        val contents: List<ItemWrapper?>?
-    )
-}
+)
+
+internal data class PlaylistVideoListRenderer(
+    val contents: List<ItemWrapper?>?,
+    val continuations: List<ContinuationItem?>?
+)
 
 internal data class GridRenderer(
     val items: List<ItemWrapper?>?,

@@ -250,6 +250,10 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getChannel(channelId: String?, params: String?): List<MediaGroup?>? {
+        return getChannelWeb(channelId, params) ?: getChannelWeb(channelId, params, true) ?: getChannelTV(channelId, params)
+    }
+
+    private fun getChannelWeb(channelId: String?, params: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (channelId == null) {
             return null
         }
@@ -258,7 +262,7 @@ internal object BrowseService2 {
 
         val homeResult = getBrowseRedirect(channelId) {
             val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(it))
-            RetrofitHelper.get(home, true)
+            RetrofitHelper.get(home, skipAuth)
         }
 
         var shortTab: MediaGroup? = null
@@ -282,7 +286,7 @@ internal object BrowseService2 {
 
         if (result.isEmpty()) {
             val playlist = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId))
-            RetrofitHelper.get(playlist)?.let {
+            RetrofitHelper.get(playlist, skipAuth)?.let {
                 if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS, channelId)))
             }
         }
@@ -293,7 +297,17 @@ internal object BrowseService2 {
         //    }
         //}
 
-        return result
+        return result.ifEmpty { null }
+    }
+
+    private fun getChannelTV(channelId: String?, params: String?): List<MediaGroup?>? {
+        if (channelId == null) {
+            return null
+        }
+
+        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params))
+
+        return RetrofitHelper.get(browseResult)?.let { listOf(BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS))) }
     }
 
     @JvmStatic
@@ -303,22 +317,22 @@ internal object BrowseService2 {
             is ShelfSectionMediaGroup -> continueTVGroup(group)
             is BrowseMediaGroupTV -> continueTVGroup(group)
             is WatchNexContinuationMediaGroup -> continueTVGroup(group)
-            else -> continueChipOrGroup(group)?.firstOrNull()
+            else -> (continueChipOrGroup(group) ?: continueChipOrGroup(group, true))?.firstOrNull()
         }
     }
 
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return continueChipOrGroup(group)
+            return (continueChipOrGroup(group) ?: continueChipOrGroup(group, true))
         } else if (group?.channelId != null) {
-            return continueTab(group)?.let { listOf(it) }
+            return (continueTab(group) ?: continueTab(group, true))?.let { listOf(it) }
         }
 
         return null
     }
 
-    private fun continueTab(group: MediaGroup?): MediaGroup? {
+    private fun continueTab(group: MediaGroup?, skipAuth: Boolean = false): MediaGroup? {
         if (group?.channelId == null) {
             return null
         }
@@ -326,10 +340,10 @@ internal object BrowseService2 {
         val browseResult =
             mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(group.channelId, group.params))
 
-        return RetrofitHelper.get(browseResult, true)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
+        return RetrofitHelper.get(browseResult, skipAuth)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
     }
 
-    private fun continueChipOrGroup(group: MediaGroup?): List<MediaGroup?>? {
+    private fun continueChipOrGroup(group: MediaGroup?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (group?.nextPageKey == null) {
             return null
         }
@@ -337,7 +351,7 @@ internal object BrowseService2 {
         val continuationResult =
             mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
 
-        return RetrofitHelper.get(continuationResult)?.let {
+        return RetrofitHelper.get(continuationResult, skipAuth)?.let {
             val result = mutableListOf<MediaGroup?>()
 
             result.add(ContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title })

@@ -41,11 +41,10 @@ internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNu
 // One of the suggested rows is too short or empty
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true || (getSuggestedSections()?.filter { (it.getItemWrappers()?.size ?: 0) <= 3 }?.size ?: 0) >= 3
 
-internal fun WatchNextResultContinuation.isEmpty(): Boolean = continuationContents?.horizontalListContinuation?.items == null
-internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.items
-internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations
-    ?.firstNotNullOfOrNull { it?.getContinuationKey() }
-private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation ?: continuationContents?.gridContinuation
+internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
+internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents }
+internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey()
+private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation ?: continuationContents?.gridContinuation ?: continuationContents?.playlistVideoListContinuation
 
 ///////
 
@@ -86,7 +85,7 @@ private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?
 
 internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
 internal fun ShelfRenderer.getItemWrappers() = content?.horizontalListRenderer?.items
-internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.firstNotNullOfOrNull { it?.getContinuationKey() }
+internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
 
@@ -140,10 +139,13 @@ internal fun ContinuationItem.getContinuationKey(): String? =
     nextContinuationData?.continuation ?: nextRadioContinuationData?.continuation ?: reloadContinuationData?.continuation
 internal fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()
 
+//internal fun List<ContinuationItem?>.getContinuationKey(): String? = firstOrNull()?.getContinuationKey()
+internal fun List<ContinuationItem?>.getContinuationKey(): String? = firstNotNullOfOrNull { it?.getContinuationKey() }
+
 ///////
 
 internal fun EngagementPanel.getTopCommentsToken(): String? = getSubMenuItems()?.getOrNull(0)?.continuation?.getContinuationKey() ?:
-    getSections()?.firstNotNullOfOrNull { it?.itemSectionRenderer?.continuations?.firstOrNull() }?.getContinuationKey()
+    getSections()?.firstNotNullOfOrNull { it?.itemSectionRenderer?.continuations?.getContinuationKey() }
 internal fun EngagementPanel.getNewCommentsToken(): String? = getSubMenuItems()?.getOrNull(1)?.continuation?.getContinuationKey()
 internal fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
 internal fun EngagementPanel.isDescriptionSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "video-description-ep-identifier"

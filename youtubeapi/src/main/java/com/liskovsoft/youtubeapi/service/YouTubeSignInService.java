@@ -72,7 +72,7 @@ public class YouTubeSignInService implements SignInService {
     }
 
     private synchronized void updateAuthHeadersIfNeeded() {
-        if (mCacheUpdateTime > 0 && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
+        if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
             return;
         }
 

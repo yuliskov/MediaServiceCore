@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 internal object PoTokenCloudService {
-    private const val RETRY_TIMES: Int = 10
+    private const val RETRY_TIMES: Int = 1
     private const val RETRY_DELAY_MS: Long = 1_000
     private const val ONE_DAY_MS: Long = 24 * 60 * 60 * 1_000
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)

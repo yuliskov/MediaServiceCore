@@ -109,10 +109,12 @@ public class YouTubeAccountManager {
         addAccount(tempAccount);
 
         // Use initial account to create auth header
+        mSignInService.invalidateCache();
         mSignInService.checkAuth();
 
         // Remove initial account (with only refresh key)
-        removeAccount(tempAccount);
+        //removeAccount(tempAccount);
+        mAccounts.remove(tempAccount); // multi thread fix
 
         List<AccountInt> accountsInt = mAuthService.getAccounts(); // runs under auth header from above
 
@@ -129,6 +131,9 @@ public class YouTubeAccountManager {
         // Apply merged tokens
         mSignInService.checkAuth();
 
+        persistAccounts();
+        onAccountChanged();
+
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
 
@@ -140,8 +145,6 @@ public class YouTubeAccountManager {
         }
 
         mAccounts.add(newAccount);
-
-        persistAccounts();
     }
 
     public void selectAccount(Account newAccount) {
@@ -154,12 +157,16 @@ public class YouTubeAccountManager {
         }
 
         persistAccounts();
+
+        onAccountChanged();
     }
 
     public void removeAccount(Account account) {
         if (account != null && mAccounts.contains(account)) {
             mAccounts.remove(account);
             persistAccounts();
+
+            onAccountChanged();
         }
     }
 
@@ -175,11 +182,6 @@ public class YouTubeAccountManager {
 
     private void persistAccounts() {
         setAccountManagerData(Helpers.mergeArray(mAccounts.toArray()));
-
-        mSignInService.invalidateCache();
-
-        // Fix sign in bug
-        mListeners.forEach(listener -> RxHelper.runUser(() -> listener.onAccountChanged(getSelectedAccount())));
     }
 
     private void restoreAccounts() {
@@ -241,5 +243,12 @@ public class YouTubeAccountManager {
         if (getSelectedAccount() == null) {
             selectAccount(mAccounts.get(0));
         }
+    }
+
+    private void onAccountChanged() {
+        mSignInService.invalidateCache();
+
+        // Fix sign in bug
+        mListeners.forEach(listener -> RxHelper.runUser(() -> listener.onAccountChanged(getSelectedAccount())));
     }
 }

@@ -71,15 +71,15 @@ public class YouTubeSignInService implements SignInService {
         updateAuthHeadersIfNeeded();
     }
 
-    private void updateAuthHeadersIfNeeded() {
-        if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
+    private synchronized void updateAuthHeadersIfNeeded() {
+        if (mCacheUpdateTime > 0 && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
             return;
         }
 
         updateAuthHeaders();
     }
 
-    private synchronized void updateAuthHeaders() {
+    private void updateAuthHeaders() {
         Account account = mAccountManager.getSelectedAccount();
         String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
         String refreshToken2 = account != null ? ((YouTubeAccount) account).getRefreshToken2() : null;

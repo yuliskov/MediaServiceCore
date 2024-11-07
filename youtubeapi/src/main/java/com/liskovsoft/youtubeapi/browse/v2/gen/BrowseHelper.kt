@@ -182,11 +182,13 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 
 ///////
 
+private const val SUBSCRIPTIONS_BROWSE_ID = "FEsubscriptions"
+
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.contents
-    ?: getTabs()?.getOrNull(0)?.getItems()
-internal fun BrowseResultTV.getContinuationToken(): String? = getTabs()?.getOrNull(0)?.getContinuationToken()
+    ?: getSubscriptionsTab()?.getItems()
+internal fun BrowseResultTV.getContinuationToken(): String? = getSubscriptionsTab()?.getContinuationToken()
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.continuations?.getContinuationKey()
 // Get tabs, e.g. Subscriptions section with a channel list (first one is All)
 internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs?.mapNotNull { it.tabRenderer ?: it.expandableTabRenderer }
@@ -195,4 +197,5 @@ internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrapp
 internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()
 private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
 private fun BrowseResultTV.getSections() = contents?.tvBrowseRenderer?.content?.tvSecondaryNavRenderer?.sections
+private fun BrowseResultTV.getSubscriptionsTab() = getTabs()?.firstOrNull { it.getBrowseId() == SUBSCRIPTIONS_BROWSE_ID } ?: getTabs()?.getOrNull(0)
 

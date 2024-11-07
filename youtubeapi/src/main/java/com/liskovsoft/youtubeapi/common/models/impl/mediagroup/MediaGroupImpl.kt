@@ -164,7 +164,7 @@ internal data class TabListMediaGroup(
         val result = mutableListOf<MediaItem>()
 
         tabs.forEach {
-            result.add(TabMediaItem(it))
+            result.add(TabMediaItem(it, options.groupType))
         }
 
         if (sort) result.sortBy { it.title?.lowercase() }

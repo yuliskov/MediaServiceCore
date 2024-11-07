@@ -183,7 +183,7 @@ internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer
 internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationKey()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
-internal fun TileItem.isShorts() = false // TODO: not implemented
+internal fun TileItem.isShorts() = getBadgeStyle() == BADGE_STYLE_SHORTS
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 private fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 private fun TileItem.getMenu() = menu ?: onLongPressCommand?.showMenuCommand?.menu

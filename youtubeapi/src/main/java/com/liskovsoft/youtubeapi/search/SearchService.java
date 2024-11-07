@@ -109,4 +109,8 @@ public class SearchService {
 
         return null;
     }
+
+    public void clearSearchHistory() {
+        
+    }
 }

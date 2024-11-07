@@ -871,5 +871,6 @@ public class YouTubeContentService implements ContentService {
     @Override
     public void clearSearchHistory() {
         mActionsService.clearSearchHistory();
+        mSearchService.clearSearchHistory();
     }
 }

@@ -243,10 +243,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //}
         }
 
-        if (obtainExtendedFormats(result) || result.isStoryboardBroken()) {
+        if (shouldObtainExtendedFormats(result) || result.isStoryboardBroken()) {
             Log.d(TAG, "Enable high bitrate formats...");
             VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
-            if (videoInfoHls != null && obtainExtendedFormats(result)) {
+            if (videoInfoHls != null && shouldObtainExtendedFormats(result)) {
                 result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
             }
             if (videoInfoHls != null && result.isStoryboardBroken()) {
@@ -355,7 +355,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         data.setVideoInfoType(mVideoInfoType, mSkipAuth);
     }
 
-    private static boolean obtainExtendedFormats(VideoInfo result) {
+    private static boolean shouldObtainExtendedFormats(VideoInfo result) {
         return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
     }
 }

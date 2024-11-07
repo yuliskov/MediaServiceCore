@@ -25,6 +25,13 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
         persistData()
     }
 
+    @JvmStatic
+    fun clear() {
+        _tags.clear()
+
+        persistData()
+    }
+
     override fun onProfileChanged() {
         restoreData()
     }

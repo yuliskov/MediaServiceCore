@@ -44,6 +44,11 @@ public class SearchServiceWrapper extends SearchService {
         return super.getSearchTags(searchText);
     }
 
+    @Override
+    public void clearSearchHistory() {
+        SearchTagStorage.clear();
+    }
+
     private void saveTagIfNeeded(String searchText) {
         if (isSearchTagsBroken()) {
             SearchTagStorage.saveTag(searchText);

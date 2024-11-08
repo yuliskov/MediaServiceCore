@@ -47,8 +47,8 @@ class NSigExtractorTest {
     }
 
     private fun testPlayerUrl(url: String) {
-        var extractor = NSigExtractor(url)
+        val extractor = NSigExtractor(url)
 
-        assertNotNull("NSig not null", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
+        assertNotNull("NSig not null for url $url", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
     }
 }

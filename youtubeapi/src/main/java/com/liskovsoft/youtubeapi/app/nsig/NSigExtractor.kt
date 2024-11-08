@@ -51,7 +51,7 @@ internal class NSigExtractor(private val playerUrl: String) {
 
         if (mNFuncCode == null) {
             ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
-            throw IllegalStateException("NSigExtractor: Can't obtain NSig code...")
+            throw IllegalStateException("NSigExtractor: Can't obtain NSig code for $playerUrl...")
         }
     }
 
@@ -103,7 +103,7 @@ internal class NSigExtractor(private val playerUrl: String) {
 
             val escapedFuncName = Pattern.quote(funcName)
 
-            val nameArrPattern = Pattern.compile("""var $escapedFuncName\s*=\s*(\[.+?\])\s*[,;]""")
+            val nameArrPattern = Pattern.compile("""$escapedFuncName\s*=\s*(\[.+?\])\s*[,;]""")
 
             val nameArrMatcher = nameArrPattern.matcher(jsCode)
 

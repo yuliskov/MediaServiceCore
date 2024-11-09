@@ -305,8 +305,9 @@ public class AppService {
         updateAppInfoData();
 
         // NOTE: NPE 2.5K
-        MediaServiceData data = MediaServiceData.instance();
-        return data.getPlayerUrl() != null ? data.getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        //MediaServiceData data = MediaServiceData.instance();
+        //return data.getPlayerUrl() != null ? data.getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
     }
 
     private String getClientUrl() {
@@ -349,9 +350,10 @@ public class AppService {
             try {
                 mNSigExtractor = new NSigExtractor(getPlayerUrl());
             } catch (Throwable e) { // StackOverflowError | IllegalStateException
+                e.printStackTrace();
                 mCachedPlayerData = null;
-                MediaServiceData data = MediaServiceData.instance();
-                data.setPlayerUrl(data.getNFuncPlayerUrl());
+                //MediaServiceData data = MediaServiceData.instance();
+                //data.setPlayerUrl(data.getNFuncPlayerUrl());
             }
         }
     }

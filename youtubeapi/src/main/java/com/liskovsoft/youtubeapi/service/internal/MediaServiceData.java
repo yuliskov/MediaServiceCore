@@ -133,19 +133,19 @@ public class MediaServiceData {
         persistData();
     }
 
-    public String getPlayerUrl() {
-        if (Helpers.equals(mPlayerVersion, mAppVersion)) {
-            return mPlayerUrl;
-        }
-
-        return null;
-    }
-
-    public void setPlayerUrl(String url) {
-        mPlayerVersion = mAppVersion;
-        mPlayerUrl = url;
-        persistData();
-    }
+    //public String getPlayerUrl() {
+    //    if (Helpers.equals(mPlayerVersion, mAppVersion)) {
+    //        return mPlayerUrl;
+    //    }
+    //
+    //    return null;
+    //}
+    //
+    //public void setPlayerUrl(String url) {
+    //    mPlayerVersion = mAppVersion;
+    //    mPlayerUrl = url;
+    //    persistData();
+    //}
 
     public String getNFuncPlayerUrl() {
         return mNFuncPlayerUrl;
@@ -246,7 +246,7 @@ public class MediaServiceData {
 
         mAppVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
 
-        String lastPlayerUrl = AppConstants.playerUrls.get(AppConstants.playerUrls.size() - 1); // fallback url for nfunc extractor
+        String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
         mVideoInfoVersion = Helpers.parseStr(split, 0);
         mVideoInfoType = Helpers.parseInt(split, 1);
         mNFuncPlayerUrl = Helpers.parseStr(split, 2, lastPlayerUrl);

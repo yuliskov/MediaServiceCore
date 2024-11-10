@@ -8,7 +8,8 @@ internal fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: s
     navigationEndpoint?.getOverlayToggleButton()?.isToggled ?: navigationEndpoint?.getOverlaySubscribeButton()?.subscribed
 internal fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 internal fun VideoOwnerItem.getThumbnails() = thumbnail
-internal fun VideoOwnerItem.getParams() = navigationEndpoint?.getOverlayToggleButton()?.getSubscribeParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams()
+internal fun VideoOwnerItem.getParams() =
+    navigationEndpoint?.getOverlayToggleButton()?.getParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams() ?: subscribeButton?.subscribeButtonRenderer?.getParams()
 internal fun VideoOwnerItem.getNotificationPreference() = subscribeButton?.subscribeButtonRenderer?.notificationPreferenceButton
 internal fun VideoOwnerItem.getSubscriberCount() = subscriberCountText?.getText() ?: subscribeButton?.subscribeButtonRenderer?.longSubscriberCountText?.getText()
 internal fun VideoOwnerItem.getShortSubscriberCount() = subscribeButton?.subscribeButtonRenderer?.shortSubscriberCountText?.getText()

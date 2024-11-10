@@ -316,12 +316,15 @@ private fun DefaultServiceEndpoint.getSubscribeEndpoint() =
 
 /////
 
-internal fun ToggleButtonRenderer.getSubscribeParams() = defaultServiceEndpoint?.getParams()
-internal fun ToggleButtonRenderer.getUnsubscribeParams() = toggledServiceEndpoint?.unsubscribeEndpoint?.params
+internal fun ToggledServiceEndpoint.getParams() = subscribeEndpoint?.params ?: unsubscribeEndpoint?.params
+
+/////
+
+internal fun ToggleButtonRenderer.getParams() = defaultServiceEndpoint?.getParams() ?: toggledServiceEndpoint?.getParams()
 
 //////
 
-internal fun SubscribeButtonRenderer.getParams() = serviceEndpoints?.firstNotNullOfOrNull { it?.getParams() }
+internal fun SubscribeButtonRenderer.getParams() = serviceEndpoints?.firstNotNullOfOrNull { it?.getParams() } ?: onSubscribeEndpoints?.firstNotNullOfOrNull { it?.getParams() }
 
 //////
 

@@ -29,6 +29,7 @@ import java.net.SocketException;
 import java.util.List;
 
 import okhttp3.Headers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -75,13 +76,27 @@ public class RetrofitHelper {
     }
 
     public static <T> T get(Call<T> wrapper, boolean skipAuth) {
+        return get(wrapper, skipAuth, false);
+    }
+
+    public static <T> T getSilent(Call<T> wrapper) {
+        return getSilent(wrapper, false);
+    }
+
+    public static <T> T getSilent(Call<T> wrapper, boolean skipAuth) {
+        return get(wrapper, skipAuth, true);
+    }
+
+    private static <T> T get(Call<T> wrapper, boolean skipAuth, boolean silent) {
         if (skipAuth) {
             RetrofitOkHttpHelper.addAuthSkip(wrapper.request());
         }
 
         Response<T> response = getResponse(wrapper);
 
-        //handleResponseErrors(response);
+        if (!silent) {
+            handleResponseErrors(response);
+        }
 
         return response != null ? response.body() : null;
     }
@@ -190,8 +205,8 @@ public class RetrofitHelper {
 
         if (response.code() == 400) {
             Gson gson = new GsonBuilder().create();
-            try {
-                ErrorResponse error = response.errorBody() != null ? gson.fromJson(response.errorBody().string(), ErrorResponse.class) : null;
+            try (ResponseBody body = response.errorBody()) {
+                ErrorResponse error = body != null ? gson.fromJson(body.string(), ErrorResponse.class) : null;
                 String errorMsg = error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error";
                 Log.e(TAG, errorMsg);
                 throw new IllegalStateException(errorMsg);

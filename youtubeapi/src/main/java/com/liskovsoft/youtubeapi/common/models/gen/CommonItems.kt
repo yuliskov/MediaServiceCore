@@ -90,15 +90,12 @@ internal data class DefaultServiceEndpoint(
     val authDeterminedCommand: AuthDeterminedCommand?
 ) {
     data class AuthDeterminedCommand(
-        val authenticatedCommand: AuthenticatedCommand?
-    ) {
-        data class AuthenticatedCommand(
-            val subscribeEndpoint: ChannelsEndpoint?
-        )
-    }
+        val authenticatedCommand: ToggledServiceEndpoint?
+    )
 }
 
 internal data class ToggledServiceEndpoint(
+    val subscribeEndpoint: ChannelsEndpoint?,
     val unsubscribeEndpoint: ChannelsEndpoint?
 )
 
@@ -132,7 +129,8 @@ internal data class SubscribeButtonRenderer(
     val shortSubscriberCountText: TextItem?,
     val longSubscriberCountText: TextItem?,
     val serviceEndpoints: List<DefaultServiceEndpoint?>?,
-    val notificationPreferenceButton: NotificationPreferenceButton?
+    val notificationPreferenceButton: NotificationPreferenceButton?,
+    val onSubscribeEndpoints: List<ToggledServiceEndpoint?>?
 )
 
 internal data class MusicPlayButtonRenderer(

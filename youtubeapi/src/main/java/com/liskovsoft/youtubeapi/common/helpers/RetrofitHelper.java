@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -20,6 +21,7 @@ import com.liskovsoft.youtubeapi.common.converters.querystring.WithQueryString;
 import com.liskovsoft.youtubeapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp;
 import com.liskovsoft.youtubeapi.common.converters.regexp.converter.RegExpConverterFactory;
+import com.liskovsoft.youtubeapi.common.models.gen.AuthErrorResponse;
 import com.liskovsoft.youtubeapi.common.models.gen.ErrorResponse;
 
 import java.io.IOException;
@@ -206,8 +208,19 @@ public class RetrofitHelper {
         if (response.code() == 400) {
             Gson gson = new GsonBuilder().create();
             try (ResponseBody body = response.errorBody()) {
-                ErrorResponse error = body != null ? gson.fromJson(body.string(), ErrorResponse.class) : null;
-                String errorMsg = error != null && error.getError() != null ? error.getError().getMessage() : "Unknown 400 error";
+                String errorMsg;
+                String errorData = body != null ? body.string() : null;
+
+                try {
+                    ErrorResponse error = errorData != null ? gson.fromJson(errorData, ErrorResponse.class) : null;
+                    errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
+                } catch (JsonSyntaxException e) {
+                    AuthErrorResponse authError = gson.fromJson(errorData, AuthErrorResponse.class);
+                    errorMsg = AuthErrorResponse.class.getSimpleName() + ": " + authError.getError();
+                }
+
+                errorMsg = errorMsg != null ? errorMsg : "Unknown 400 error";
+
                 Log.e(TAG, errorMsg);
                 throw new IllegalStateException(errorMsg);
             } catch (IOException e) {

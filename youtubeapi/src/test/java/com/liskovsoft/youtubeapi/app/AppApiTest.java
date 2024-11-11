@@ -86,39 +86,6 @@ public class AppApiTest {
         assertNotNull("Client secret not empty", clientData.getClientSecret());
     }
 
-    @Ignore
-    @Test
-    public void testPoTokenFunctionIsValid() {
-        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
-
-        String poTokenFunction = playerData.getPoTokenFunction();
-        assertNotNull("Player data contains poToken function", poTokenFunction);
-        assertTrue("poToken function is valid", poTokenFunction.contains("getPoToken"));
-        assertTrue("poToken function len is valid", poTokenFunction.length() < 700);
-    }
-
-    @Ignore
-    @Test
-    public void testPoTokenConcatFunctionIsValid() {
-        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
-
-        String poTokenConcatFunction = playerData.getPoTokenConcatFunction();
-        assertNotNull("Player data contains poToken function", poTokenConcatFunction);
-        assertTrue("poToken function is valid", poTokenConcatFunction.contains("poTokenConcat"));
-        assertTrue("poToken function len is valid", poTokenConcatFunction.length() < 700);
-    }
-
-    @Ignore
-    @Test
-    public void testPoTokenResultFunctionIsValid() {
-        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
-
-        String poTokenResultFunction = playerData.getPoTokenResultFunction();
-        assertNotNull("Player data contains poToken function", poTokenResultFunction);
-        assertTrue("poToken function is valid", poTokenResultFunction.contains("getPoTokenResult"));
-        assertTrue("poToken function len is valid", poTokenResultFunction.length() < 1500);
-    }
-
     private String getPlayerUrl(String userAgent) {
         AppInfo appInfo = mAppApiWrapper.getAppInfo(userAgent);
 

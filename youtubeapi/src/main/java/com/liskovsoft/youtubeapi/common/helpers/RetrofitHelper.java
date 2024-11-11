@@ -81,22 +81,24 @@ public class RetrofitHelper {
         return get(wrapper, skipAuth, false);
     }
 
-    public static <T> T getSilent(Call<T> wrapper) {
-        return getSilent(wrapper, false);
+    public static <T> T getWithErrors(Call<T> wrapper) {
+        return getWithErrors(wrapper, false);
     }
 
-    public static <T> T getSilent(Call<T> wrapper, boolean skipAuth) {
+    public static <T> T getWithErrors(Call<T> wrapper, boolean skipAuth) {
         return get(wrapper, skipAuth, true);
     }
 
-    private static <T> T get(Call<T> wrapper, boolean skipAuth, boolean silent) {
+    private static <T> T get(Call<T> wrapper, boolean skipAuth, boolean withErrors) {
         if (skipAuth) {
             RetrofitOkHttpHelper.addAuthSkip(wrapper.request());
         }
 
         Response<T> response = getResponse(wrapper);
 
-        if (!silent) {
+        if (withErrors) {
+            // NOTE: Be careful. Best suited for transaction like methods (e.g. authentication).
+            // Don't use it with BrowseService (invalid response) and others.
             handleResponseErrors(response);
         }
 

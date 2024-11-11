@@ -218,7 +218,8 @@ internal fun LockupItem.getSubTitle() = YouTubeHelper.createInfo(
     *metadata?.lockupMetadataViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.mapNotNull {
         it?.metadataParts?.mapNotNull { it?.text?.getText() } }?.flatten()?.toTypedArray() ?: emptyArray<String>()
 )
-internal fun LockupItem.getVideoId() = rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint?.videoId
+internal fun LockupItem.getVideoId() = getWatchEndpoint()?.videoId
+internal fun LockupItem.getPlaylistId() = getWatchEndpoint()?.playlistId
 internal fun LockupItem.getThumbnails() = getThumbnailView()?.image
 internal fun LockupItem.getBadgeText() = getBadge()?.text
 internal fun LockupItem.isLive() = BADGE_STYLE_LIVE == getBadge()?.badgeStyle
@@ -235,7 +236,7 @@ private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = getThumbnailView()?.overlays
 private fun LockupItem.getThumbnailView() = contentImage?.thumbnailViewModel ?: contentImage?.collectionThumbnailViewModel?.primaryThumbnail?.thumbnailViewModel
-
+private fun LockupItem.getWatchEndpoint() = rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint
 
 ////////////
 
@@ -291,7 +292,7 @@ internal fun ItemWrapper.getPublishedTime() = getVideoItem()?.getPublishedTimeTe
 internal fun ItemWrapper.getViewCountText() = getVideoItem()?.getViewCount() ?: getMusicItem()?.getViewsCountText() ?: getTileItem()?.getViewCountText()
 internal fun ItemWrapper.getUpcomingEventText() = getVideoItem()?.getUpcomingEventText() ?: getMusicItem()?.getUpcomingEventText()
     ?: getTileItem()?.getUpcomingEventText()
-internal fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId()
+internal fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: getMusicItem()?.getPlaylistId() ?: getTileItem()?.getPlaylistId() ?: getLockupItem()?.getPlaylistId()
     ?: getPlaylistItem()?.getPlaylistId() ?: getRadioItem()?.getPlaylistId()
 internal fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
     ?: getChannelItem()?.getChannelId() ?: getRadioItem()?.getChannelId()

@@ -26,14 +26,14 @@ public interface PlaylistApi {
      */
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/like")
-    Call<ActionResult> savePlaylist(@Body String saveRemovePlaylistQuery);
+    Call<ActionResult> saveForeignPlaylist(@Body String saveRemoveForeignPlaylistQuery);
 
     /**
      * Works with foreign playlists
      */
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/removelike")
-    Call<ActionResult> removePlaylist(@Body String saveRemovePlaylistQuery);
+    Call<ActionResult> removeForeignPlaylist(@Body String saveRemoveForeignPlaylistQuery);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/playlist/create")
@@ -44,5 +44,5 @@ public interface PlaylistApi {
      */
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/playlist/delete")
-    Call<ActionResult> deletePlaylist(@Body String deletePlaylistQuery);
+    Call<ActionResult> removePlaylist(@Body String removePlaylistQuery);
 }

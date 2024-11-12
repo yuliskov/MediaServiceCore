@@ -42,7 +42,7 @@ public class PlaylistApiHelper {
         return ServiceHelper.createQueryTV(queryTemplate);
     }
 
-    public static String getSaveRemovePlaylistQuery(String playlistId) {
+    public static String getSaveRemoveForeignPlaylistQuery(String playlistId) {
         String queryTemplate = String.format(SAVE_REMOVE_PLAYLIST_QUERY, playlistId);
         return ServiceHelper.createQueryTV(queryTemplate);
     }
@@ -50,11 +50,11 @@ public class PlaylistApiHelper {
     public static String getCreatePlaylistQuery(String playlistName, String videoId) {
         String queryTemplate = videoId == null ?
                 String.format(CREATE_PLAYLIST_QUERY, playlistName) : String.format(CREATE_PLAYLIST_AND_ADD_QUERY, playlistName, videoId);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return ServiceHelper.createQueryWeb(queryTemplate);
     }
 
-    public static String getDeletePlaylistQuery(String playlistName) {
+    public static String getRemovePlaylistQuery(String playlistName) {
         String queryTemplate = String.format(DELETE_PLAYLIST_QUERY, playlistName);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return ServiceHelper.createQueryWeb(queryTemplate);
     }
 }

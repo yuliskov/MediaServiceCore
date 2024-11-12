@@ -66,7 +66,7 @@ public class PlaylistService {
 
     public void savePlaylist(String playlistId) {
         Call<ActionResult> wrapper =
-                mPlaylistManager.savePlaylist(PlaylistApiHelper.getSaveRemovePlaylistQuery(playlistId));
+                mPlaylistManager.saveForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
 
         ActionResult result = RetrofitHelper.get(wrapper);
 
@@ -78,12 +78,12 @@ public class PlaylistService {
     public void removePlaylist(String playlistId) {
         // Try to remove foreign playlist first
         Call<ActionResult> removeWrapper =
-                mPlaylistManager.removePlaylist(PlaylistApiHelper.getSaveRemovePlaylistQuery(playlistId));
+                mPlaylistManager.removeForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
         ActionResult removeResult = RetrofitHelper.get(removeWrapper);
 
         // Then, delete user playlist
         Call<ActionResult> deleteWrapper =
-                mPlaylistManager.deletePlaylist(PlaylistApiHelper.getDeletePlaylistQuery(playlistId));
+                mPlaylistManager.removePlaylist(PlaylistApiHelper.getRemovePlaylistQuery(playlistId));
         ActionResult deleteResult = RetrofitHelper.get(deleteWrapper);
 
         if (removeResult == null && deleteResult == null) {

@@ -56,6 +56,6 @@ internal object NotificationsServiceInt {
 
         val result = mService.getModifyNotification(NotificationsApiHelper.getModifyNotificationQuery(modifyNotificationParams))
 
-        RetrofitHelper.get(result)
+        RetrofitHelper.getWithErrors(result)
     }
 }

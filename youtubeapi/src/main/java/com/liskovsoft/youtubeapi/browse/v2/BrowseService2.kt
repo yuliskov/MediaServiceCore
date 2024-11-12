@@ -103,9 +103,19 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getSubscribedChannelsByName(): MediaGroup? {
+        return getSubscribedChannelsByNameWeb() ?: getSubscribedChannelsByNameTV()
+    }
+
+    private fun getSubscribedChannelsByNameWeb(): MediaGroup? {
         val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let { GuideMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), true) }
+    }
+
+    private fun getSubscribedChannelsByNameTV(): MediaGroup? {
+        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
+
+        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { TabListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), true) } }
     }
 
     @JvmStatic

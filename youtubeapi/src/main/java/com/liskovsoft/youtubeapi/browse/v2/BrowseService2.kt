@@ -200,6 +200,10 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getChannelVideosFull(channelId: String?): MediaGroup? {
+        return getChannelVideosFullWeb(channelId) ?: getChannelVideosFullWeb(channelId, true)
+    }
+
+    private fun getChannelVideosFullWeb(channelId: String?, skipAuth: Boolean = false): MediaGroup? {
         if (channelId == null) {
             return null
         }
@@ -207,9 +211,9 @@ internal object BrowseService2 {
         val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
         val live = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId))
 
-        RetrofitHelper.get(videos)?.let { return BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), RetrofitHelper.get(live)) }
+        RetrofitHelper.get(videos, skipAuth)?.let { return BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), RetrofitHelper.get(live)) }
 
-        RetrofitHelper.get(live)?.let { return LiveMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
+        RetrofitHelper.get(live, skipAuth)?.let { return LiveMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
 
         return null
     }

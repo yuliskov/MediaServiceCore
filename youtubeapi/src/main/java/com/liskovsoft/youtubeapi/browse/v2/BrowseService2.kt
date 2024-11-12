@@ -242,13 +242,17 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getChannelSearch(channelId: String?, query: String?): MediaGroup? {
+        return getChannelSearchWeb(channelId, query) ?: getChannelSearchWeb(channelId, query, true)
+    }
+
+    private fun getChannelSearchWeb(channelId: String?, query: String?, skipAuth: Boolean = false): MediaGroup? {
         if (channelId == null || query == null) {
             return null
         }
 
         val search = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelSearchQueryWeb(channelId, query))
 
-        return RetrofitHelper.get(search)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
+        return RetrofitHelper.get(search, skipAuth)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
 
     @JvmStatic

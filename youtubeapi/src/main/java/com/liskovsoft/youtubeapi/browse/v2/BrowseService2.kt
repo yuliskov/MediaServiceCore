@@ -138,7 +138,7 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getLikedMusic(): MediaGroup? {
-        return getLikedMusicWeb()
+        return getLikedMusicTV() ?: getLikedMusicWeb()
     }
 
     private fun getLikedMusicWeb(): MediaGroup? {
@@ -148,23 +148,23 @@ internal object BrowseService2 {
     }
 
     private fun getLikedMusicTV(): MediaGroup? {
-        val result = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getLikedMusicQuery(AppClient.TV))
+        val result = mBrowseApi.getContinuationResultTV(BrowseApiHelper.getLikedMusicQuery(AppClient.TV))
 
-        return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+        return RetrofitHelper.get(result)?.let { WatchNexContinuationMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
 
     @JvmStatic
     fun getNewMusicAlbums(): MediaGroup? {
         val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getNewMusicAlbumsQuery())
 
-        return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+        return RetrofitHelper.get(result, true)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
 
     @JvmStatic
     fun getNewMusicVideos(): MediaGroup? {
         val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getNewMusicVideosQuery())
 
-        return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
+        return RetrofitHelper.get(result, true)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
 
     @JvmStatic

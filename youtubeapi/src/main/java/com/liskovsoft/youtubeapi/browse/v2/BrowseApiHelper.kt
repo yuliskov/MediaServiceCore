@@ -23,7 +23,7 @@ internal object BrowseApiHelper {
     private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
     private const val MOVIES = "\"browseId\":\"FEtopics_movies\""
     private const val LIKED_MUSIC = "\"browseId\":\"VLLM\""
-    private const val LIKED_MUSIC_TV = "\"continuation\":\"4qmFsgIWEhRGRW11c2ljX2xpa2VkX3ZpZGVvcw%3D%3D\""
+    private const val LIKED_MUSIC_CONTINUATION = "4qmFsgIWEhRGRW11c2ljX2xpa2VkX3ZpZGVvcw%3D%3D"
     private const val NEW_MUSIC_VIDEOS = "\"browseId\":\"FEmusic_new_releases_videos\""
     private const val NEW_MUSIC_ALBUMS = "\"browseId\":\"FEmusic_new_releases_albums\""
     private const val MY_PLAYLISTS = "\"browseId\":\"FEplaylist_aggregation\""
@@ -105,7 +105,11 @@ internal object BrowseApiHelper {
     }
 
     fun getLikedMusicQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, if (client == AppClient.TV) LIKED_MUSIC_TV else LIKED_MUSIC)
+        return ServiceHelper.createQuery(client.browseTemplate, LIKED_MUSIC)
+    }
+
+    fun getLikedMusicContinuationTV(): String {
+        return getContinuationQueryTV(LIKED_MUSIC_CONTINUATION)
     }
 
     fun getNewMusicAlbumsQuery(): String {

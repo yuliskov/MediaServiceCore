@@ -148,7 +148,7 @@ internal object BrowseService2 {
     }
 
     private fun getLikedMusicTV(): MediaGroup? {
-        val result = mBrowseApi.getContinuationResultTV(BrowseApiHelper.getLikedMusicQuery(AppClient.TV))
+        val result = mBrowseApi.getContinuationResultTV(BrowseApiHelper.getLikedMusicContinuationTV())
 
         return RetrofitHelper.get(result)?.let { WatchNexContinuationMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }

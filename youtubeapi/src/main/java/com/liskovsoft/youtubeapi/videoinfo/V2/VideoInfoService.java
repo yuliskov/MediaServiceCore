@@ -69,7 +69,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         if (mSkipAuth) {
-            result.sync(getRootVideoInfo(videoId, clickTrackingParams));
+            result.sync(firstNonNull(videoId, clickTrackingParams));
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);
@@ -95,6 +95,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         result.setAdaptiveFormats(adaptiveFormats);
         result.setRegularFormats(regularFormats);
+
+        return result;
+    }
+
+    private VideoInfo firstNonNull(String videoId, String clickTrackingParams) {
+        final int beginType = mVideoInfoType != -1 ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
+        int nextType = beginType;
+        VideoInfo result;
+
+        do {
+            result = getVideoInfo(nextType, videoId, clickTrackingParams);
+            nextType = Helpers.getNextValue(nextType, VIDEO_INFO_TYPE_LIST);
+        } while (result == null && nextType != beginType);
 
         return result;
     }

@@ -1,8 +1,11 @@
 package com.liskovsoft.youtubeapi.common.js;
 
 import com.eclipsesource.v8.V8;
+import com.eclipsesource.v8.V8ResultUndefined;
 import com.eclipsesource.v8.V8ScriptExecutionException;
 import com.liskovsoft.sharedutils.mylogger.Log;
+
+import java.util.List;
 
 public final class V8Runtime {
     private static final String TAG = V8Runtime.class.getSimpleName();
@@ -31,6 +34,10 @@ public final class V8Runtime {
 
     public String evaluate(final String source) {
         return evaluateSafe(source);
+    }
+
+    public String evaluate(final List<String> sources) {
+        return evaluateSafe(sources);
     }
 
     /**
@@ -67,6 +74,34 @@ public final class V8Runtime {
         try {
             runtime = V8.createV8Runtime();
             result = runtime.executeStringScript(source);
+        } catch (V8ScriptExecutionException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (runtime != null) {
+                runtime.release(false);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Thread safe solution but performance a bit slow.
+     */
+    private String evaluateSafe(final List<String> sources) {
+        V8 runtime = null;
+        String result = null;
+
+        try {
+            runtime = V8.createV8Runtime();
+            for (String source : sources) {
+                try {
+                    result = runtime.executeStringScript(source);
+                } catch (V8ResultUndefined e) {
+                    // NOP
+                }
+            }
         } catch (V8ScriptExecutionException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();

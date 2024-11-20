@@ -18,6 +18,7 @@ internal object BrowseApiHelper {
     private const val KIDS_HOME = "\"browseId\":\"FEkids_home\""
     private const val KIDS_HOME_PARAMS = "\"browseId\":\"FEkids_home\",\"params\":\"%s\""
     private const val WHAT_TO_WATCH = "\"browseId\":\"FEwhat_to_watch\""
+    private const val HOME_TV = "\"browseId\":\"default\""
     private const val TRENDING = "\"browseId\":\"FEtrending\",\"params\":\"6gQJRkVleHBsb3Jl\""
     private const val SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\""
     private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
@@ -37,7 +38,7 @@ internal object BrowseApiHelper {
     }
 
     fun getHomeQueryTV(): String {
-        return ServiceHelper.createQueryTV(WHAT_TO_WATCH)
+        return ServiceHelper.createQueryTV(HOME_TV)
     }
 
     fun getHomeQueryMWEB(): String {

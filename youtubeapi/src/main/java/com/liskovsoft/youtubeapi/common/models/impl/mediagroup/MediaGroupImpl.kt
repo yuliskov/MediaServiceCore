@@ -6,6 +6,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
+import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.GuideMediaItem
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaItem
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.TabMediaItem
@@ -32,11 +33,14 @@ internal data class BrowseMediaGroup(
 internal data class BrowseMediaGroupTV(
     private val browseResult: BrowseResultTV,
     private val options: MediaGroupOptions = MediaGroupOptions(),
-    private val liveResult: BrowseResult? = null
+    private val liveResult: BrowseResult? = null,
+    private val overrideItems: List<ItemWrapper?>? = null,
+    private val overrideKey: String? = null
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?> =
-        listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
-    override fun getNextPageKeyInt(): String? = browseResult.getContinuationToken()
+        overrideItems?.sortedByDescending { it?.isLive() ?: false }
+            ?: listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
+    override fun getNextPageKeyInt(): String? = if (overrideItems != null) overrideKey else browseResult.getContinuationToken()
     override fun getTitleInt(): String? = null
 }
 

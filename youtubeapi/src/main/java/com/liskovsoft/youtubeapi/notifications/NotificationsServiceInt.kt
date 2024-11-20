@@ -15,7 +15,7 @@ internal object NotificationsServiceInt {
     fun getItems(): MediaGroup? {
         val result = mService.getNotifications(NotificationsApiHelper.getNotificationsQuery())
 
-        return RetrofitHelper.get(result)?.let { NotificationsMediaGroup(it) }
+        return RetrofitHelper.getWithErrors(result)?.let { NotificationsMediaGroup(it) }
     }
 
     fun hideNotification(item: MediaItem?) {

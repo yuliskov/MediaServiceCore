@@ -61,11 +61,13 @@ internal object RetrofitOkHttpHelper {
             val headers = request.headers()
             val requestBuilder = request.newBuilder()
 
-            applyHeaders(this.headers, headers, requestBuilder)
+            //applyHeaders(this.headers, headers, requestBuilder)
 
             val url = request.url().toString()
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
+                applyHeaders(this.headers, headers, requestBuilder)
+
                 val doSkipAuth = authSkipList.remove(request)
                 if (authHeaders.isEmpty() || doSkipAuth) {
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false"), request, requestBuilder)

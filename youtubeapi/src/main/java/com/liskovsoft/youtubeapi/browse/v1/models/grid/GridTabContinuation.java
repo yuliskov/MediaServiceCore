@@ -45,8 +45,16 @@ public class GridTabContinuation {
         return mNextPageKey;
     }
 
+    public void setNextPageKey(String nextPageKey) {
+        mNextPageKey = nextPageKey;
+    }
+
     public List<ItemWrapper> getItemWrappers() {
         return mItemWrappers;
+    }
+
+    public void setItemWrappers(List<ItemWrapper> itemWrappers) {
+        mItemWrappers = itemWrappers;
     }
 
     public List<ChannelButton> getChannelButtons() {

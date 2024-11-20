@@ -68,39 +68,50 @@ internal class PoToken {
                     "removeEventListener = function(type, listener, options) {document.removeEventListener(type, listener, options);};" +
                     "dispatchEvent = function(event) {document.dispatchEvent(event);};",
 
-            //TestHelpers.readResource("potoken/domino_browserify.js"),
             //"var setTimeout = () => {}; var clearInterval = () => {}; var setInterval = () => {}; var clearTimeout = () => {};",
+            //TestHelpers.readResource("potoken/domino_browserify.js"),
             //"var window1 = domino.createWindow('<h1>Hello world</h1>', 'http://example.com'); var window = window1.window; var document = window1.document; var addEventListener = window.addEventListener;",
             //"var window1 = domino.createWindow('<h1>Hello world</h1>', 'http://example.com'); Object.assign(this, window1);",
 
             privateScript,
             """
-                var vm = $globalName;
-                const attFunctions = {};
-                const setAttFunctions = (fn1, fn2, fn3, fn4) => {
-                   Object.assign(attFunctions, { fn1, fn2, fn3, fn4 });
-                };
-                
-                vm.a('$program', setAttFunctions, true, undefined, () => {});
-                
-                var botguardResponse;
-                const postProcessFunctions = [];
-                
-                attFunctions.fn1((response) => (botguardResponse = response), [, , postProcessFunctions]);
-                
-                const payload = ['${bgConfig.requestKey}', botguardResponse];
-                // TODO: handle multiple postProcessFunctions?
-                var second = JSON.stringify(payload);
-                var first = '';
-                if (postProcessFunctions.length > 0)
-                    first = postProcessFunctions[0].name;
-                first + "$RESULT_DELIM" + second;
-            """.trimIndent()
+                var result = null;
+                (async function getPoToken() {
+                    var vm = $globalName;
+                    const attFunctions = {};
+                    const setAttFunctions = (fn1, fn2, fn3, fn4) => {
+                       Object.assign(attFunctions, { fn1, fn2, fn3, fn4 });
+                    };
+                    
+                    await vm.a('$program', setAttFunctions, true, undefined, () => {});
+                    
+                    var botguardResponse;
+                    const postProcessFunctions = [];
+                    
+                    await attFunctions.fn1((response) => (botguardResponse = response), [, , postProcessFunctions]);
+                    
+                    const payload = ['${bgConfig.requestKey}', botguardResponse];
+                    // TODO: handle multiple postProcessFunctions?
+                    var second = JSON.stringify(payload);
+                    var first = '';
+                    if (postProcessFunctions.length > 0)
+                        first = postProcessFunctions[0].name;
+                    result = first + "$RESULT_DELIM" + second;
+                })();
+            """.trimIndent(),
+            "result.toString();"
         )
 
-        val result = V8Runtime.instance().evaluate(script.joinToString(""))
+        val result = V8Runtime.instance().evaluate(script)
+        //val result = V8Runtime.instance().evaluate(script.joinToString(""))
 
         val (postProcessFunction, payload) = result.split(RESULT_DELIM)
+
+        if (payload.isEmpty())
+            throw IllegalArgumentException("No response")
+
+        if (postProcessFunction.isEmpty())
+            throw IllegalArgumentException("Got response but no post-process functions")
 
         val wrapper = bgConfig.api.generateIntegrityToken(payload)
 

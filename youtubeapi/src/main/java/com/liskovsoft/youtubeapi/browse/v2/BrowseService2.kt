@@ -9,7 +9,10 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
+import com.liskovsoft.youtubeapi.next.v2.gen.getItems
+import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 internal object BrowseService2 {
@@ -81,7 +84,12 @@ internal object BrowseService2 {
     private fun getSubscriptionsTV(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
 
-        return RetrofitHelper.get(browseResult)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS)) }
+        return RetrofitHelper.get(browseResult)?.let {
+            // Prepare to move LIVE items to the top. Multiple results should be combined first.
+            val (overrideItems, overrideKey) = continueIfNeeded(it.getItems(), it.getContinuationToken())
+
+            BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS), overrideItems = overrideItems, overrideKey = overrideKey)
+        }
     }
 
     @JvmStatic
@@ -199,7 +207,7 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
-    fun getChannelVideosFull(channelId: String?): MediaGroup? {
+    fun getChannelAsList2(channelId: String?): MediaGroup? {
         return getChannelVideosFullWeb(channelId) ?: getChannelVideosFullWeb(channelId, true)
     }
 
@@ -219,7 +227,7 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
-    fun getChannelVideos(channelId: String?): MediaGroup? {
+    fun getChannelAsList(channelId: String?): MediaGroup? {
         if (channelId == null) {
             return null
         }
@@ -476,6 +484,25 @@ internal object BrowseService2 {
     private fun getBrowseRedirect(browseId: String, browseExpression: (String) -> BrowseResult?): BrowseResult? {
         val result = browseExpression(browseId)
         return if (result?.getRedirectBrowseId() != null) browseExpression(result.getRedirectBrowseId()!!) else result
+    }
+
+    private fun continueIfNeeded(items: List<ItemWrapper?>?, continuationKey: String?): Pair<List<ItemWrapper?>?, String?> {
+        var combinedItems: List<ItemWrapper?>? = items
+        var combinedKey: String? = continuationKey
+        for (i in 0 until 10) {
+            if (combinedKey == null || (combinedItems?.size ?: 0) > 30)
+                break
+
+            val result =
+                mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(combinedKey))
+
+            RetrofitHelper.get(result)?.let {
+                combinedItems = (combinedItems ?: emptyList()) + (it.getItems() ?: emptyList())
+                combinedKey = it.getNextPageKey()
+            }
+        }
+
+        return Pair(combinedItems, combinedKey)
     }
 
     //private fun getChannelResult(client: AppClient, channelId: String, params: String? = null): BrowseResult? {

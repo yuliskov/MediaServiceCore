@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.potoken
+package com.liskovsoft.youtubeapi.app.potoken
 
 import android.util.Base64
 import com.google.gson.Gson
@@ -7,11 +7,11 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 
 internal class Challenge {
     data class Result(val messageId: String?,
-                       val interpreterJavascript: InterpreterJavascript?,
-                       val interpreterHash: String?,
-                       val program: String?,
-                       val globalName: String?,
-                       val clientExperimentsStateBlob: String?) {
+                      val interpreterJavascript: InterpreterJavascript?,
+                      val interpreterHash: String?,
+                      val program: String?,
+                      val globalName: String?,
+                      val clientExperimentsStateBlob: String?) {
         data class InterpreterJavascript(val privateDoNotAccessOrElseSafeScriptWrappedValue: String?)
     }
     data class Data(val messageId: String?,

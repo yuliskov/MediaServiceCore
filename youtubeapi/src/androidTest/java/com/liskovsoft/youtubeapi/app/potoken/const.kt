@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.potoken
+package com.liskovsoft.youtubeapi.app.potoken
 
 internal const val RESULT_DELIM = "%RESULT_DELIM%"
 internal const val DOM_WRAPPER =

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.potoken
+package com.liskovsoft.youtubeapi.app.potoken
 
 import com.liskovsoft.sharedutils.TestHelpers
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
@@ -37,11 +37,14 @@ class PoTokenApiTest {
 
         val poToken = PoToken()
 
-        val poTokenResult = poToken.generate(PoToken.Arguments(
-            result?.interpreterJavascript?.privateDoNotAccessOrElseSafeScriptWrappedValue,
-            result?.program,
-            result?.globalName,
-            getConfig()))
+        val poTokenResult = poToken.generate(
+            PoToken.Arguments(
+                result?.interpreterJavascript?.privateDoNotAccessOrElseSafeScriptWrappedValue,
+                result?.program,
+                result?.globalName,
+                getConfig()
+            )
+        )
 
         assertNotNull("PoToken not null", poTokenResult?.poToken)
     }

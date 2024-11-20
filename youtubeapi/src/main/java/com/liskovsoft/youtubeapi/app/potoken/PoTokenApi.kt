@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.potoken
+package com.liskovsoft.youtubeapi.app.potoken
 
 import com.google.gson.JsonElement
 import com.liskovsoft.youtubeapi.common.converters.gson.WithGson

@@ -880,7 +880,7 @@ public class YouTubeContentService implements ContentService {
         String combinedKey = continuationKey;
 
         for (int i = 0; i < 10; i++) {
-            if (combinedKey == null || (combinedItems != null && combinedItems.size() > 30)) {
+            if (combinedKey == null || (combinedItems != null && combinedItems.size() > 60)) {
                 break;
             }
 

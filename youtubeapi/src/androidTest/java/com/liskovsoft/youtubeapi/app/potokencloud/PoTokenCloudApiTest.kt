@@ -57,14 +57,14 @@ internal class PoTokenCloudApiTest {
     private fun getPoToken(): PoTokenResponse? = runBlocking {
         var poToken: PoTokenResponse? = null
 
-        val times = 10
+        val times = 1
         for (i in 0.. times) {
             poToken = RetrofitHelper.get(api.getPoToken())
             if (poToken?.poToken != null)
                 break
 
             if (i < times)
-                delay(1_000)
+                delay(50_000)
         }
 
         assertNotNull("PoToken is not empty", poToken?.poToken)

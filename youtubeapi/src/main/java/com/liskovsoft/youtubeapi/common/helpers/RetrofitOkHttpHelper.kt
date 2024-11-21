@@ -33,10 +33,13 @@ internal object RetrofitOkHttpHelper {
             authSkipList.add(request)
     }
 
-    private val headers = mapOf(
-        "User-Agent" to DefaultHeaders.APP_USER_AGENT,
+    private val commonHeaders = mapOf(
         // Enable compression in production
         "Accept-Encoding" to DefaultHeaders.ACCEPT_ENCODING,
+    )
+
+    private val apiHeaders = mapOf(
+        "User-Agent" to DefaultHeaders.APP_USER_AGENT,
         "Referer" to "https://www.youtube.com/tv"
     )
 
@@ -61,12 +64,12 @@ internal object RetrofitOkHttpHelper {
             val headers = request.headers()
             val requestBuilder = request.newBuilder()
 
-            //applyHeaders(this.headers, headers, requestBuilder)
+            applyHeaders(this.commonHeaders, headers, requestBuilder)
 
             val url = request.url().toString()
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
-                applyHeaders(this.headers, headers, requestBuilder)
+                applyHeaders(this.apiHeaders, headers, requestBuilder)
 
                 val doSkipAuth = authSkipList.remove(request)
                 if (authHeaders.isEmpty() || doSkipAuth) {
@@ -92,9 +95,9 @@ internal object RetrofitOkHttpHelper {
                 continue
             }
 
-            if (header.value == null) { // don't remove
-                continue
-            }
+            //if (header.value == null) { // don't remove
+            //    continue
+            //}
 
             // Don't override existing headers
             oldHeaders[header.key] ?: builder.header(header.key, header.value)

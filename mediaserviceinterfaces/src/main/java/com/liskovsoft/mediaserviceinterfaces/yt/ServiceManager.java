@@ -11,5 +11,6 @@ public interface ServiceManager {
     void invalidateCache();
     void refreshCacheIfNeeded();
     void applyNoPlaybackFix();
+    void applyAntiBotFix();
     void invalidatePlaybackCache();
 }

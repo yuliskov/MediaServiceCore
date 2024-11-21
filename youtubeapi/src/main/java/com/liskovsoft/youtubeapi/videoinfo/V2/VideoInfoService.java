@@ -158,7 +158,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         restoreVideoInfoType();
     }
 
-    public void fixPlaybackErrors() {
+    public void switchNextFormat() {
         MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false);
         nextVideoInfo();
         persistVideoInfoType();

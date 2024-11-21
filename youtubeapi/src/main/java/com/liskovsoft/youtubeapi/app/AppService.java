@@ -11,7 +11,6 @@ import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -382,7 +381,7 @@ public class AppService {
         mCachedClientData = null;
     }
 
-    public void refreshCoreDataIfNeeded() {
+    public void refreshCacheIfNeeded() {
         updateAppInfoData();
         updatePlayerData();
         updateClientData();

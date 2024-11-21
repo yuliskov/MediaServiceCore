@@ -403,11 +403,11 @@ public class YouTubeContentService implements ContentService {
             MediaGroup firstRow = BrowseService2.getLikedMusic();
             emitGroupsPartial(emitter, Collections.singletonList(firstRow));
 
-            MediaGroup secondRow = BrowseService2.getNewMusicVideos();
-            emitGroupsPartial(emitter, Collections.singletonList(secondRow));
-
-            MediaGroup thirdRow = BrowseService2.getNewMusicAlbums();
-            emitGroupsPartial(emitter, Collections.singletonList(thirdRow));
+            //MediaGroup secondRow = BrowseService2.getNewMusicVideos();
+            //emitGroupsPartial(emitter, Collections.singletonList(secondRow));
+            //
+            //MediaGroup thirdRow = BrowseService2.getNewMusicAlbums();
+            //emitGroupsPartial(emitter, Collections.singletonList(thirdRow));
 
             SectionTab tab = mBrowseService.getMusic();
 

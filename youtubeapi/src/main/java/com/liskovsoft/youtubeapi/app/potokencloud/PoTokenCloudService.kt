@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.app.AppService
+import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import kotlinx.coroutines.delay
@@ -21,7 +22,7 @@ internal object PoTokenCloudService {
         if (isTokenActual(poToken))
             return@runBlocking
 
-        val newPoToken = getPoTokenResponse()
+        val newPoToken = getPoTokenResponseAlt()
 
         if (newPoToken != null)
             MediaServiceData.instance().poToken = newPoToken
@@ -43,7 +44,22 @@ internal object PoTokenCloudService {
         var poToken: PoTokenResponse? = null
 
         for (i in 0 .. RETRY_TIMES) {
-            poToken = RetrofitHelper.get(api.getPoToken(appService.visitorData));
+            poToken = RetrofitHelper.get(api.getPoToken(appService.visitorData))
+            if (poToken?.poToken != null)
+                break
+
+            if (i < RETRY_TIMES)
+                delay(RETRY_DELAY_MS)
+        }
+
+        return poToken
+    }
+
+    private suspend fun getPoTokenResponseAlt(): PoTokenResponse? {
+        var poToken: PoTokenResponse? = null
+
+        for (i in 0 .. RETRY_TIMES) {
+            poToken = PoTokenService.getChallenge()?.program?.let { RetrofitHelper.get(api.getPoTokenAlt(it)) }
             if (poToken?.poToken != null)
                 break
 

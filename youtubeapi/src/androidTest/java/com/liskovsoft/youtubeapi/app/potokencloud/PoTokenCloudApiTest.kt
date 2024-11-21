@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo
+import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager
@@ -46,6 +47,17 @@ internal class PoTokenCloudApiTest {
     }
 
     @Test
+    fun testPoTokenOnVideoUrlAlt() {
+        val poToken = getPoTokenAlt()
+
+        val mediaItemDetails: MediaItemFormatInfo = YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_MUSIC_2)
+
+        val url = mediaItemDetails.dashFormats[0].url
+
+        assertTrue("Video url is working", TestHelpersV1.urlExists("$url&pot=${poToken?.poToken}"))
+    }
+
+    @Test
     fun testHealth() = runBlocking {
         val tickle = api.healthCheck()
 
@@ -60,6 +72,24 @@ internal class PoTokenCloudApiTest {
         val times = 1
         for (i in 0.. times) {
             poToken = RetrofitHelper.get(api.getPoToken())
+            if (poToken?.poToken != null)
+                break
+
+            if (i < times)
+                delay(50_000)
+        }
+
+        assertNotNull("PoToken is not empty", poToken?.poToken)
+
+        return@runBlocking poToken
+    }
+
+    private fun getPoTokenAlt(): PoTokenResponse? = runBlocking {
+        var poToken: PoTokenResponse? = null
+
+        val times = 1
+        for (i in 0.. times) {
+            poToken = PoTokenService.getChallenge()?.program?.let { RetrofitHelper.get(api.getPoTokenAlt(it)) }
             if (poToken?.poToken != null)
                 break
 

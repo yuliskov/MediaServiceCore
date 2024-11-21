@@ -22,7 +22,7 @@ internal object PoTokenCloudService {
         if (isTokenActual(poToken))
             return@runBlocking
 
-        val newPoToken = getPoTokenResponseAlt()
+        val newPoToken = getPoTokenResponse()
 
         if (newPoToken != null)
             MediaServiceData.instance().poToken = newPoToken
@@ -44,7 +44,7 @@ internal object PoTokenCloudService {
         var poToken: PoTokenResponse? = null
 
         for (i in 0 .. RETRY_TIMES) {
-            poToken = RetrofitHelper.get(api.getPoToken(appService.visitorData))
+            poToken = RetrofitHelper.get(api.getPoToken())
             if (poToken?.poToken != null)
                 break
 

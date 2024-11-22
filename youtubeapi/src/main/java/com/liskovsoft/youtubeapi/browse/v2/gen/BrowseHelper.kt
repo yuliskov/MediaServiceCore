@@ -190,6 +190,7 @@ internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.grid
     ?: getSubscriptionsTab()?.getItems()
 internal fun BrowseResultTV.getContinuationToken(): String? = getSubscriptionsTab()?.getContinuationToken()
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.continuations?.getContinuationKey()
+    ?: getContent()?.sectionListRenderer?.continuations?.getContinuationKey()
 // Get tabs, e.g. Subscriptions section with a channel list (first one is All)
 internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs?.mapNotNull { it.tabRenderer ?: it.expandableTabRenderer }
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()

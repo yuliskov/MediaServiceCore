@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
 internal data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
     val watchEndpoint: WatchEndpointItem?,
+    val reelWatchEndpoint: ReelWatchEndpoint?,
     val watchPlaylistEndpoint: WatchEndpointItem?,
     val openPopupAction: PopupActionItem?,
     val showEngagementPanelEndpoint: ShowEngagementPanelEndpoint?
@@ -212,6 +213,7 @@ internal data class ItemWrapper(
 )
 
 internal data class TileItem(
+    val style: String?,
     val metadata: Metadata?,
     val header: Header?,
     val onSelectCommand: NavigationEndpointItem?,
@@ -568,7 +570,8 @@ internal data class RichThumbnailItem(
 
 internal data class ThumbnailOverlayItem(
     val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
-    val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?
+    val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?,
+    val tileMetadataRenderer: TileItem.Metadata.TileMetadataRenderer?,
 ) {
     data class ThumbnailOverlayTimeStatusRenderer(
         val text: TextItem?,

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
+import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
 internal data class WatchNextResultContinuation(
@@ -10,7 +11,8 @@ internal data class WatchNextResultContinuation(
         val horizontalListContinuation: Continuation?,
         val gridContinuation: Continuation?, // TV?
         val playlistVideoListContinuation: Continuation?, // TV
-        val tvSurfaceContentContinuation: TvSurfaceContentContinuation? // TV
+        val tvSurfaceContentContinuation: TvSurfaceContentContinuation?, // TV
+        val sectionListContinuation: SectionListContinuation, // Home continuation TV
     ) {
         data class Continuation(
             val items: List<ItemWrapper?>?,
@@ -24,6 +26,10 @@ internal data class WatchNextResultContinuation(
                 val gridRenderer: Continuation?
             )
         }
+        data class SectionListContinuation(
+            val contents: List<Shelf?>?,
+            val continuations: List<ContinuationItem?>?
+        )
     }
 
     data class Contents(

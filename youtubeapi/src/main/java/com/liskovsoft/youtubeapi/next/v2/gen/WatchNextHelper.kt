@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
+import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
 //////
@@ -45,6 +46,8 @@ internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpt
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents }
 internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey()
+    ?: continuationContents?.sectionListContinuation?.continuations?.getContinuationKey()
+internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = continuationContents?.sectionListContinuation?.contents
 private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation
     ?: continuationContents?.gridContinuation ?: continuationContents?.playlistVideoListContinuation
     ?: continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer

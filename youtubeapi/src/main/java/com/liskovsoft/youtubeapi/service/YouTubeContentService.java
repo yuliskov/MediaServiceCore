@@ -252,7 +252,9 @@ public class YouTubeContentService implements ContentService {
 
         checkSigned();
 
-        List<MediaGroup> groups = BrowseService2.getHome();
+        kotlin.Pair<List<MediaGroup>, String> home = BrowseService2.getHome();
+
+        List<MediaGroup> groups = home != null ? home.getFirst() : null;
 
         return groups != null && !groups.isEmpty() ? groups.get(0) : null;
     }
@@ -325,7 +327,8 @@ public class YouTubeContentService implements ContentService {
         checkSigned();
 
         List<MediaGroup> result = new ArrayList<>();
-        List<MediaGroup> groups = BrowseService2.getHome();
+        kotlin.Pair<List<MediaGroup>, String> home = BrowseService2.getHome();
+        List<MediaGroup> groups = home != null ? home.getFirst() : null;
 
         if (groups == null) {
             Log.e(TAG, "Home group is empty");
@@ -522,25 +525,44 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> sections = BrowseService2.getHome();
-
-            if (sections != null && sections.size() > 5) {
-                emitGroups(emitter, sections);
-            } else {
-                // Fallback to old algo if user chrome page has no chips (why?)
-                SectionTab tab = mBrowseService.getHome();
-
-                if (tab != null && tab.getSections() != null && !tab.getSections().isEmpty()) {
-                    tab.getSections().remove(0); // replace Recommended
+            kotlin.Pair<List<MediaGroup>, String> home = BrowseService2.getHome();
+            if (home != null) {
+                List<MediaGroup> groups = home.getFirst();
+                String nextKey = home.getSecond();
+                while (groups != null && !groups.isEmpty()) {
+                    emitGroupsPartial(emitter, groups);
+                    home = BrowseService2.continueSectionList(nextKey);
+                    groups = home != null ? home.getFirst() : null;
+                    nextKey = home != null ? home.getSecond() : null;
                 }
-
-                List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
-
-                emitGroupsPartial(emitter, subGroup); // get Recommended only
-                emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+                emitter.onComplete();
             }
         });
     }
+
+    //private Observable<List<MediaGroup>> emitHome() {
+    //    return RxHelper.create(emitter -> {
+    //        checkSigned();
+    //
+    //        List<MediaGroup> sections = BrowseService2.getHome();
+    //
+    //        if (sections != null && sections.size() > 5) {
+    //            emitGroups(emitter, sections);
+    //        } else {
+    //            // Fallback to old algo if user chrome page has no chips (why?)
+    //            SectionTab tab = mBrowseService.getHome();
+    //
+    //            if (tab != null && tab.getSections() != null && !tab.getSections().isEmpty()) {
+    //                tab.getSections().remove(0); // replace Recommended
+    //            }
+    //
+    //            List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
+    //
+    //            emitGroupsPartial(emitter, subGroup); // get Recommended only
+    //            emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
+    //        }
+    //    });
+    //}
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {

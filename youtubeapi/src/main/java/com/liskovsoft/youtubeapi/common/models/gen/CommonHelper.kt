@@ -60,7 +60,7 @@ internal fun NavigationEndpointItem.getContinuations() = getContent()?.itemSecti
 internal fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
 internal fun NavigationEndpointItem.getSubtitle() = getHeader()?.overlayPanelHeaderRenderer?.subtitle?.getText()
 internal fun NavigationEndpointItem.getStartTimeSeconds() = watchEndpoint?.startTimeSeconds
-internal fun NavigationEndpointItem.getVideoId() = watchEndpoint?.videoId
+internal fun NavigationEndpointItem.getVideoId() = watchEndpoint?.videoId ?: reelWatchEndpoint?.videoId
 internal fun NavigationEndpointItem.getPlaylistId() = watchEndpoint?.playlistId ?: watchPlaylistEndpoint?.playlistId
 internal fun NavigationEndpointItem.getIndex() = watchEndpoint?.index
 private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
@@ -157,7 +157,10 @@ internal fun RadioItem.isUpcoming() = false
 
 ///////////
 
+private const val TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS"
+
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
+    ?: header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.tileMetadataRenderer?.title?.getText() }
 internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
 internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
@@ -183,11 +186,11 @@ internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer
 internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationKey()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
-internal fun TileItem.isShorts() = getBadgeStyle() == BADGE_STYLE_SHORTS
+internal fun TileItem.isShorts() = getBadgeStyle() == BADGE_STYLE_SHORTS || getBadgeStyle() == TILE_STYLE_SHORTS
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 private fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 private fun TileItem.getMenu() = menu ?: onLongPressCommand?.showMenuCommand?.menu
-private fun TileItem.getBadgeStyle() = header?.getBadgeStyle() ?: metadata?.getBadgeStyle()
+private fun TileItem.getBadgeStyle() = header?.getBadgeStyle() ?: metadata?.getBadgeStyle() ?: style
 
 ////////////
 

@@ -11,8 +11,10 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
+import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 internal object BrowseService2 {
@@ -25,13 +27,13 @@ internal object BrowseService2 {
     //}
 
     @JvmStatic
-    fun getHome(): List<MediaGroup?>? {
+    fun getHome(): Pair<List<MediaGroup?>?, String?>? {
         val rows = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
 
         if (rows?.all { it?.isEmpty == true } != false) // in anonymous mode WEB home page is empty
             return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
 
-        return rows
+        return Pair(rows, null)
     }
 
     @JvmStatic
@@ -42,12 +44,12 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getSports(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getSportsQueryTV(), MediaGroup.TYPE_SPORTS)
+        return getBrowseRowsTV(BrowseApiHelper.getSportsQueryTV(), MediaGroup.TYPE_SPORTS)?.first
     }
 
     @JvmStatic
     fun getMovies(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getMoviesQueryTV(), MediaGroup.TYPE_MOVIES)
+        return getBrowseRowsTV(BrowseApiHelper.getMoviesQueryTV(), MediaGroup.TYPE_MOVIES)?.first
     }
 
     @JvmStatic
@@ -362,6 +364,22 @@ internal object BrowseService2 {
         return null
     }
 
+    @JvmStatic
+    fun continueSectionList(nextPageKey: String?): Pair<List<MediaGroup?>?, String?>? {
+        if (nextPageKey == null) {
+            return null
+        }
+
+        val continuationResult =
+            mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(nextPageKey))
+
+        return RetrofitHelper.get(continuationResult)?.let {
+            val result = mutableListOf<MediaGroup?>()
+            it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it)) }
+            Pair(result, it.getNextPageKey())
+        }
+    }
+
     private fun continueTab(group: MediaGroup?, skipAuth: Boolean = false): MediaGroup? {
         if (group?.channelId == null) {
             return null
@@ -446,13 +464,13 @@ internal object BrowseService2 {
         }
     }
 
-    private fun getBrowseRowsTV(query: String, sectionType: Int): List<MediaGroup?>? {
+    private fun getBrowseRowsTV(query: String, sectionType: Int): Pair<List<MediaGroup?>?, String?>? {
         val browseResult = mBrowseApi.getBrowseResultTV(query)
 
         return RetrofitHelper.get(browseResult)?.let {
             val result = mutableListOf<MediaGroup?>()
             it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, createOptions(sectionType))) }
-            result
+            Pair(result, it.getContinuationToken())
         }
     }
 

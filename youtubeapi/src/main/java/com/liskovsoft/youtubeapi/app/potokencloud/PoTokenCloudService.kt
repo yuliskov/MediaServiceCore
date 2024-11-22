@@ -31,14 +31,15 @@ internal object PoTokenCloudService {
     @JvmStatic
     fun getPoToken(): String? {
         val poToken = MediaServiceData.instance().poToken
-        return if (isTokenAlmostActual(poToken)) poToken?.poToken else null
+        //return if (isTokenAlmostActual(poToken)) poToken?.poToken else null
+        return poToken?.poToken
     }
 
     private fun isTokenActual(poToken: PoTokenResponse?) =
         poToken != null && DateHelper.toUnixTimeMs(poToken.mintRefreshDate) > System.currentTimeMillis()
 
-    private fun isTokenAlmostActual(poToken: PoTokenResponse?) =
-        poToken != null && (DateHelper.toUnixTimeMs(poToken.mintRefreshDate) + ONE_DAY_MS) > System.currentTimeMillis()
+    //private fun isTokenAlmostActual(poToken: PoTokenResponse?) =
+    //    poToken != null && (DateHelper.toUnixTimeMs(poToken.mintRefreshDate) + ONE_DAY_MS) > System.currentTimeMillis()
 
     private suspend fun getPoTokenResponse(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null

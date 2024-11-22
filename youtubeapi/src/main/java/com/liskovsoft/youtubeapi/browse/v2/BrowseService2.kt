@@ -265,13 +265,17 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getChannelSorting(channelId: String?): List<MediaGroup?>? {
+        return getChannelSortingWeb(channelId) ?: getChannelSortingWeb(channelId, true)
+    }
+
+    private fun getChannelSortingWeb(channelId: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (channelId == null) {
             return null
         }
 
         val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
 
-        return RetrofitHelper.get(videos)?.let { it.getChips()?.mapNotNull { if (it != null) ChipMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) else null } }
+        return RetrofitHelper.get(videos, skipAuth)?.let { it.getChips()?.mapNotNull { if (it != null) ChipMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) else null } }
     }
 
     @JvmStatic

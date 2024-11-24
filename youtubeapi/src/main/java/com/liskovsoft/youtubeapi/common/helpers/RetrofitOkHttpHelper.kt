@@ -95,12 +95,10 @@ internal object RetrofitOkHttpHelper {
                 continue
             }
 
-            if (header.value == null) { // NOTE: don't remove
-                continue
+            header.value?.let { // NOTE: don't remove null check
+                // Don't override existing headers
+                oldHeaders[header.key] ?: builder.header(header.key, it)
             }
-
-            // Don't override existing headers
-            oldHeaders[header.key] ?: builder.header(header.key, header.value)
         }
     }
 

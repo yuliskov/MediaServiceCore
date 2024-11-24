@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
 import com.liskovsoft.sharedutils.rx.RxHelper
-import com.liskovsoft.youtubeapi.notifications.NotificationsServiceInt
+import com.liskovsoft.youtubeapi.notifications.NotificationsServiceWrapper
 import io.reactivex.Observable
 
 object YouTubeNotificationsService: NotificationsService {
@@ -14,19 +14,19 @@ object YouTubeNotificationsService: NotificationsService {
     override fun getNotificationItems(): MediaGroup? {
         checkSigned()
 
-        return NotificationsServiceInt.getItems()
+        return NotificationsServiceWrapper.getItems()
     }
 
     override fun hideNotification(item: MediaItem?) {
         checkSigned()
 
-        NotificationsServiceInt.hideNotification(item)
+        NotificationsServiceWrapper.hideNotification(item)
     }
 
     override fun setNotificationState(state: NotificationState?) {
         checkSigned()
 
-        NotificationsServiceInt.modifyNotification(state)
+        NotificationsServiceWrapper.modifyNotification(state)
     }
 
     override fun getNotificationItemsObserve(): Observable<MediaGroup> {

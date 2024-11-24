@@ -26,6 +26,8 @@ internal data class NotificationStateImpl(
 
     val stateParams = notificationStateItem.getStateParams()
 
+    val index by lazy { allStates.indexOf(this) }
+
     fun setSelected() {
         allStates.forEach { it._selected = it == this }
     }

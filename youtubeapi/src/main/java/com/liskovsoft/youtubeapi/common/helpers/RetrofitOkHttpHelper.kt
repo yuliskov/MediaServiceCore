@@ -89,15 +89,15 @@ internal object RetrofitOkHttpHelper {
         }
     }
 
-    private fun applyHeaders(newHeaders: Map<String, String>, oldHeaders: Headers, builder: Request.Builder) {
+    private fun applyHeaders(newHeaders: Map<String, String?>, oldHeaders: Headers, builder: Request.Builder) {
         for (header in newHeaders) {
             if (disableCompression && header.key == "Accept-Encoding") {
                 continue
             }
 
-            //if (header.value == null) { // don't remove
-            //    continue
-            //}
+            if (header.value == null) { // NOTE: don't remove
+                continue
+            }
 
             // Don't override existing headers
             oldHeaders[header.key] ?: builder.header(header.key, header.value)

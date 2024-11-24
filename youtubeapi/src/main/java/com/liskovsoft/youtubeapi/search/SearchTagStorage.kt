@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
 
 internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
+    private const val SEARCH_TAG_DATA = "search_tag_data"
     private val _tags: MutableList<String> = Helpers.createLRUList(50)
 
     @JvmStatic
@@ -39,7 +40,7 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
     private fun restoreData() {
         _tags.clear()
 
-        val data = MediaServicePrefs.getSearchTagData()
+        val data = MediaServicePrefs.getData(SEARCH_TAG_DATA)
 
         val split = Helpers.splitData(data)
 
@@ -49,6 +50,6 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
     }
 
     private fun persistData() {
-        MediaServicePrefs.setSearchTagData(Helpers.mergeData(_tags))
+        MediaServicePrefs.setData(SEARCH_TAG_DATA, Helpers.mergeData(_tags))
     }
 }

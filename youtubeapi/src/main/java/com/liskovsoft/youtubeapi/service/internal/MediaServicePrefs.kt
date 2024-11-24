@@ -11,7 +11,6 @@ private const val PREF_NAME = "yt_service_prefs"
 
 @Suppress("StaticFieldLeak")
 internal object MediaServicePrefs: SharedPreferencesBase(GlobalPreferences.sInstance.context, PREF_NAME), OnAccountChange {
-    private const val SEARCH_TAG_DATA = "search_tag_data"
     private const val ANONYMOUS_PROFILE_NAME = "anonymous"
     private val mListeners = WeakHashSet<ProfileChangeListener>()
     private lateinit var mProfileName: String
@@ -43,12 +42,12 @@ internal object MediaServicePrefs: SharedPreferencesBase(GlobalPreferences.sInst
         mListeners.add(listener)
     }
 
-    fun getSearchTagData(): String? {
-        return getString(getProfileDataKey(SEARCH_TAG_DATA), null)
+    fun getData(key: String): String? {
+        return getString(getProfileDataKey(key), null)
     }
 
-    fun setSearchTagData(data: String?) {
-        putString(getProfileDataKey(SEARCH_TAG_DATA), data)
+    fun setData(key: String, data: String?) {
+        putString(getProfileDataKey(key), data)
     }
 
     private fun getProfileDataKey(dataKey: String) = "${mProfileName}_$dataKey"

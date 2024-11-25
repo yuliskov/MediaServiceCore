@@ -258,7 +258,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         if (shouldObtainExtendedFormats(result) || result.isStoryboardBroken()) {
             Log.d(TAG, "Enable high bitrate formats...");
+            mSkipAuthBlock = true;
             VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
+            mSkipAuthBlock = false;
             if (videoInfoHls != null && shouldObtainExtendedFormats(result)) {
                 result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
             }

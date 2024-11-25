@@ -531,7 +531,7 @@ public class YouTubeContentService implements ContentService {
                 String nextKey = home.getSecond();
                 while (groups != null && !groups.isEmpty()) {
                     emitGroupsPartial(emitter, groups);
-                    home = BrowseService2.continueSectionList(nextKey);
+                    home = BrowseService2.continueSectionList(nextKey, MediaGroup.TYPE_HOME);
                     groups = home != null ? home.getFirst() : null;
                     nextKey = home != null ? home.getSecond() : null;
                 }

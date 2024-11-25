@@ -11,7 +11,6 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
-import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
@@ -28,12 +27,14 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getHome(): Pair<List<MediaGroup?>?, String?>? {
-        val rows = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
+        //val rows = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
+        //
+        //if (rows?.all { it?.isEmpty == true } != false) // in anonymous mode WEB home page is empty
+        //    return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
+        //
+        //return Pair(rows, null)
 
-        if (rows?.all { it?.isEmpty == true } != false) // in anonymous mode WEB home page is empty
-            return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
-
-        return Pair(rows, null)
+        return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
     }
 
     @JvmStatic
@@ -74,7 +75,7 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getSubscriptions(): MediaGroup? {
-        return getSubscriptionsWeb() ?: getSubscriptionsTV()
+        return getSubscriptionsTV()
     }
 
     private fun getSubscriptionsWeb(): MediaGroup? {
@@ -356,7 +357,7 @@ internal object BrowseService2 {
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return (continueChipOrGroup(group) ?: continueChipOrGroup(group, true))
+            return (continueTVGroup(group)?.let { listOf(it) } ?: continueChipOrGroup(group) ?: continueChipOrGroup(group, true))
         } else if (group?.channelId != null) {
             return (continueTab(group) ?: continueTab(group, true))?.let { listOf(it) }
         }
@@ -365,7 +366,7 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
-    fun continueSectionList(nextPageKey: String?): Pair<List<MediaGroup?>?, String?>? {
+    fun continueSectionList(nextPageKey: String?, groupType: Int): Pair<List<MediaGroup?>?, String?>? {
         if (nextPageKey == null) {
             return null
         }
@@ -375,7 +376,7 @@ internal object BrowseService2 {
 
         return RetrofitHelper.get(continuationResult)?.let {
             val result = mutableListOf<MediaGroup?>()
-            it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it)) }
+            it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, createOptions(groupType))) }
             Pair(result, it.getNextPageKey())
         }
     }

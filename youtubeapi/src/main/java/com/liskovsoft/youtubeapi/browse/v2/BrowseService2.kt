@@ -141,7 +141,8 @@ internal object BrowseService2 {
             val result = continueShorts(firstItem.getContinuationKey(), skipAuth)
             result?.mediaItems?.add(0, ShortsMediaItem(null, firstItem))
 
-            getSubscribedShorts()?.let { result?.mediaItems?.addAll(0, it) }
+            if (!skipAuth)
+                getSubscribedShorts()?.let { result?.mediaItems?.addAll(0, it) }
 
             return result
         }
@@ -346,7 +347,7 @@ internal object BrowseService2 {
     @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
         return when (group) {
-            is ShortsMediaGroup -> continueShorts(group.nextPageKey)
+            is ShortsMediaGroup -> continueShorts(group.nextPageKey) ?: continueShorts(group.nextPageKey, true)
             is ShelfSectionMediaGroup -> continueTVGroup(group)
             is BrowseMediaGroupTV -> continueTVGroup(group)
             is WatchNexContinuationMediaGroup -> continueTVGroup(group)
@@ -357,7 +358,7 @@ internal object BrowseService2 {
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return (continueTVGroup(group)?.let { listOf(it) } ?: continueChipOrGroup(group) ?: continueChipOrGroup(group, true))
+            return continueTVGroup(group)?.let { listOf(it) } ?: continueChipOrGroup(group) ?: continueChipOrGroup(group, true)
         } else if (group?.channelId != null) {
             return (continueTab(group) ?: continueTab(group, true))?.let { listOf(it) }
         }
@@ -501,7 +502,7 @@ internal object BrowseService2 {
     private fun getSubscribedShorts(): List<MediaItem?>? {
         val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
 
-        return RetrofitHelper.get(browseResult)?.let { it.getShortItems()?.let { WrapperMediaGroup(it) } }?.mediaItems
+        return RetrofitHelper.get(browseResult)?.let { it.getShortItems()?.let { SubscribedShortsMediaGroup(it) } }?.mediaItems
     }
 
     private fun getBrowseRedirect(browseId: String, browseExpression: (String) -> BrowseResult?): BrowseResult? {

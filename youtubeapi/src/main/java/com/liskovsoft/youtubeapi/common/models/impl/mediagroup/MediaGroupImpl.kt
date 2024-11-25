@@ -21,7 +21,7 @@ import com.liskovsoft.youtubeapi.notifications.gen.getItems
  */
 internal data class BrowseMediaGroup(
     private val browseResult: BrowseResult,
-    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val options: MediaGroupOptions,
     private val liveResult: BrowseResult? = null
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?> =
@@ -32,7 +32,7 @@ internal data class BrowseMediaGroup(
 
 internal data class BrowseMediaGroupTV(
     private val browseResult: BrowseResultTV,
-    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val options: MediaGroupOptions,
     private val liveResult: BrowseResult? = null,
     private val overrideItems: List<ItemWrapper?>? = null,
     private val overrideKey: String? = null
@@ -46,7 +46,7 @@ internal data class BrowseMediaGroupTV(
 
 internal data class LiveMediaGroup(
     private val liveResult: BrowseResult,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?> = listOfNotNull(liveResult.getLiveItems(), liveResult.getPastLiveItems()).flatten()
     override fun getNextPageKeyInt(): String? = null
@@ -55,7 +55,7 @@ internal data class LiveMediaGroup(
 
 internal data class ContinuationMediaGroup(
     private val continuationResult: ContinuationResult,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = continuationResult.getItems()
     override fun getNextPageKeyInt(): String? = continuationResult.getContinuationToken()
@@ -64,7 +64,7 @@ internal data class ContinuationMediaGroup(
 
 internal data class WatchNexContinuationMediaGroup(
     private val continuation: WatchNextResultContinuation,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = continuation.getItems()
     override fun getNextPageKeyInt(): String? = continuation.getNextPageKey()
@@ -73,7 +73,7 @@ internal data class WatchNexContinuationMediaGroup(
 
 internal data class RichSectionMediaGroup(
     private val richSectionRenderer: RichSectionRenderer,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = richSectionRenderer.getItems()
     override fun getNextPageKeyInt(): String? = richSectionRenderer.getContinuationToken()
@@ -82,7 +82,7 @@ internal data class RichSectionMediaGroup(
 
 internal data class ShelfSectionMediaGroup(
     private val shelf: Shelf,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = shelf.getItems()
     override fun getNextPageKeyInt(): String? = shelf.getNextPageKey()
@@ -91,7 +91,7 @@ internal data class ShelfSectionMediaGroup(
 
 internal data class ItemSectionMediaGroup(
     private val itemSectionRenderer: ItemSectionRenderer,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     // Fix row continuation (no next key but has channel) by reporting empty content (will be continued as a chip). Example https://www.youtube.com/@hdtvtest
     private val fixContinuation = nextPageKey == null && channelId != null
@@ -104,7 +104,7 @@ internal data class ItemSectionMediaGroup(
 
 internal data class TabMediaGroup(
     private val tabRenderer: TabRenderer,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = tabRenderer.getItems()
     override fun getNextPageKeyInt(): String? = tabRenderer.getContinuationToken()
@@ -115,7 +115,7 @@ internal data class TabMediaGroup(
 
 internal data class KidsSectionMediaGroup(
     private val anchoredSectionRenderer: AnchoredSectionRenderer,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = anchoredSectionRenderer.getItems()
     override fun getNextPageKeyInt(): String? = null
@@ -124,7 +124,7 @@ internal data class KidsSectionMediaGroup(
 
 internal data class ChipMediaGroup(
     private val chipCloudChipRenderer: ChipCloudChipRenderer,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = chipCloudChipRenderer.getContinuationToken()
@@ -133,7 +133,7 @@ internal data class ChipMediaGroup(
 
 internal data class GuideMediaGroup(
     private val guideResult: GuideResult,
-    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val options: MediaGroupOptions,
     private val sort: Boolean = false
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
@@ -158,7 +158,7 @@ internal data class GuideMediaGroup(
 
 internal data class TabListMediaGroup(
     private val tabs: List<TabRenderer>,
-    private val options: MediaGroupOptions = MediaGroupOptions(),
+    private val options: MediaGroupOptions,
     private val sort: Boolean = false
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
@@ -179,7 +179,7 @@ internal data class TabListMediaGroup(
 
 internal data class RecommendedMediaGroup(
     private val guideItem: GuideItem,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = null
@@ -191,7 +191,7 @@ internal data class RecommendedMediaGroup(
 internal data class ShortsMediaGroup(
     private val items: List<MediaItem?>,
     private val continuation: String? = null,
-    private val options: MediaGroupOptions = MediaGroupOptions()
+    private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = continuation
@@ -208,9 +208,9 @@ internal data class NotificationsMediaGroup(
     override val mediaItemList by lazy { result.getItems()?.mapNotNull { it?.let { NotificationMediaItem(it) } } }
 }
 
-internal data class WrapperMediaGroup(
+internal data class SubscribedShortsMediaGroup(
     private val items: List<ItemWrapper?>
-): BaseMediaGroup(MediaGroupOptions(false)) {
+): BaseMediaGroup(MediaGroupOptions(groupType = MediaGroup.TYPE_SUBSCRIPTIONS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?> = items
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null

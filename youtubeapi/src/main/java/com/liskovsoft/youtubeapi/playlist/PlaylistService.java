@@ -46,49 +46,33 @@ public class PlaylistService {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistApiHelper.getRenamePlaylistsQuery(playlistId, newName));
 
-        ActionResult result = RetrofitHelper.get(wrapper);
-
-        if (result == null) {
-            throw new IllegalStateException("Can't renamePlaylist. Unknown error.");
-        }
+        RetrofitHelper.getWithErrors(wrapper);
     }
 
     public void setPlaylistOrder(String playlistId, int playlistOrder) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.editPlaylist(PlaylistApiHelper.getPlaylistOrderQuery(playlistId, playlistOrder));
 
-        ActionResult result = RetrofitHelper.get(wrapper);
-
-        if (result == null) {
-            throw new IllegalStateException("Can't setPlaylistOrder. Unknown error.");
-        }
+        RetrofitHelper.getWithErrors(wrapper);
     }
 
     public void savePlaylist(String playlistId) {
         Call<ActionResult> wrapper =
                 mPlaylistManager.saveForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
 
-        ActionResult result = RetrofitHelper.get(wrapper);
-
-        if (result == null) {
-            throw new IllegalStateException("Can't savePlaylist. Unknown error.");
-        }
+        RetrofitHelper.getWithErrors(wrapper);
     }
 
     public void removePlaylist(String playlistId) {
         // Try to remove foreign playlist first
         Call<ActionResult> removeWrapper =
                 mPlaylistManager.removeForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
-        ActionResult removeResult = RetrofitHelper.get(removeWrapper);
+        RetrofitHelper.getWithErrors(removeWrapper);
 
         // Then, delete user playlist
         Call<ActionResult> deleteWrapper =
                 mPlaylistManager.removePlaylist(PlaylistApiHelper.getRemovePlaylistQuery(playlistId));
-        ActionResult deleteResult = RetrofitHelper.get(deleteWrapper);
-
-        if (removeResult == null && deleteResult == null) {
-            throw new IllegalStateException("Can't removePlaylist. Unknown error.");
-        }
+        RetrofitHelper.getWithErrors(deleteWrapper);
     }
 
     public void createPlaylist(String playlistName, String videoId) {

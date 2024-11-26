@@ -346,7 +346,7 @@ internal object BrowseService2 {
             return null
         }
 
-        return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL)?.first
+        return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL, MediaGroup.TYPE_CHANNEL_UPLOADS)?.first
     }
 
     @JvmStatic
@@ -471,7 +471,7 @@ internal object BrowseService2 {
         }
     }
 
-    private fun getBrowseRowsTV(query: String, sectionType: Int): Pair<List<MediaGroup?>?, String?>? {
+    private fun getBrowseRowsTV(query: String, sectionType: Int, gridType: Int = MediaGroup.TYPE_UNDEFINED): Pair<List<MediaGroup?>?, String?>? {
         val browseResult = mBrowseApi.getBrowseResultTV(query)
 
         return RetrofitHelper.get(browseResult)?.let {
@@ -479,7 +479,7 @@ internal object BrowseService2 {
             it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, createOptions(sectionType))) }
 
             if (result.isEmpty()) // playlist
-                addOrMerge(result, BrowseMediaGroupTV(it, createOptions(sectionType)))
+                addOrMerge(result, BrowseMediaGroupTV(it, createOptions(gridType)))
 
             Pair(result, it.getContinuationToken())
         }

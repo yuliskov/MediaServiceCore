@@ -66,7 +66,7 @@ internal object RssService {
      * Add missing props and remove shorts etc
      */
     private fun syncWithChannel(channelId: String, result: List<MediaItem>) {
-        val group = BrowseService2.getChannelAsList2(channelId)
+        val group = BrowseService2.getChannelAsGrid(channelId)
         val originItems = group?.mediaItems ?: return
 
         Helpers.removeIf(result) { item ->

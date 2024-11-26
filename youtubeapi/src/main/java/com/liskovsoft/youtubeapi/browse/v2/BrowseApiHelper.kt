@@ -33,20 +33,12 @@ internal object BrowseApiHelper {
     private const val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
     private const val CONTINUATION = "\"continuation\":\"%s\""
 
-    fun getHomeQueryWeb(): String {
-        return ServiceHelper.createQueryWeb(WHAT_TO_WATCH)
+    fun getHomeQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, HOME_TV)
     }
 
-    fun getHomeQueryTV(): String {
-        return ServiceHelper.createQueryTV(HOME_TV)
-    }
-
-    fun getHomeQueryMWEB(): String {
-        return ServiceHelper.createQueryMWeb(WHAT_TO_WATCH)
-    }
-
-    fun getTrendingQueryWeb(): String {
-        return ServiceHelper.createQueryWeb(TRENDING)
+    fun getTrendingQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, TRENDING)
     }
 
     fun getChannelQuery(client: AppClient, channelId: String, params: String? = null): String {
@@ -55,42 +47,36 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQuery(client.browseTemplate, channelTemplate)
     }
 
-    fun getChannelQueryWeb(channelId: String, params: String? = null): String {
-        val channelTemplate =
-            if (params != null) String.format(CHANNEL_FULL, channelId, params) else String.format(CHANNEL, channelId)
-        return ServiceHelper.createQueryWeb(channelTemplate)
+    fun getChannelHomeQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_HOME, channelId))
     }
 
-    fun getChannelHomeQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_HOME, channelId))
+    fun getChannelVideosQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_VIDEOS, channelId))
     }
 
-    fun getChannelVideosQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_VIDEOS, channelId))
+    fun getChannelShortsQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_SHORTS, channelId))
     }
 
-    fun getChannelShortsQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_SHORTS, channelId))
+    fun getChannelLiveQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_LIVE, channelId))
     }
 
-    fun getChannelLiveQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_LIVE, channelId))
+    fun getChannelPlaylistsQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_PLAYLISTS, channelId))
     }
 
-    fun getChannelPlaylistsQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_PLAYLISTS, channelId))
+    fun getChannelReleasesQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_RELEASES, channelId))
     }
 
-    fun getChannelReleasesQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_RELEASES, channelId))
+    fun getChannelCommunityQuery(client: AppClient, channelId: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_COMMUNITY, channelId))
     }
 
-    fun getChannelCommunityQueryWeb(channelId: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_COMMUNITY, channelId))
-    }
-
-    fun getChannelSearchQueryWeb(channelId: String, query: String): String {
-        return ServiceHelper.createQueryWeb(String.format(CHANNEL_SEARCH, channelId, query))
+    fun getChannelSearchQuery(client: AppClient, channelId: String, query: String): String {
+        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_SEARCH, channelId, query))
     }
 
     fun getKidsHomeQuery(): String {
@@ -109,8 +95,8 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQuery(client.browseTemplate, LIKED_MUSIC)
     }
 
-    fun getLikedMusicContinuationTV(): String {
-        return getContinuationQueryTV(LIKED_MUSIC_CONTINUATION)
+    fun getLikedMusicContinuation(client: AppClient): String {
+        return getContinuationQuery(client, LIKED_MUSIC_CONTINUATION)
     }
 
     fun getNewMusicAlbumsQuery(): String {
@@ -140,20 +126,12 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQuery(client.browseTemplate, SUBSCRIPTIONS)
     }
 
-    fun getSubscriptionsQueryWeb(): String {
-        return ServiceHelper.createQueryWeb(SUBSCRIPTIONS)
+    fun getSportsQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, SPORTS)
     }
 
-    fun getBrowseQueryWeb(browseId: String, browseParams: String?): String {
-        return ServiceHelper.createQueryWeb(browseParams?.let { String.format(CHANNEL_FULL, browseId, browseParams) } ?: String.format(CHANNEL, browseId))
-    }
-
-    fun getSportsQueryTV(): String {
-        return ServiceHelper.createQueryTV(SPORTS)
-    }
-
-    fun getMoviesQueryTV(): String {
-        return ServiceHelper.createQueryTV(MOVIES)
+    fun getMoviesQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, MOVIES)
     }
 
     /**
@@ -161,14 +139,9 @@ internal object BrowseApiHelper {
      * @param nextPageKey [GridTab.getNextPageKey]
      * @return data param
      */
-    fun getContinuationQueryWeb(nextPageKey: String): String {
+    fun getContinuationQuery(client: AppClient, nextPageKey: String): String {
         val continuation = String.format(CONTINUATION, nextPageKey)
-        return ServiceHelper.createQueryWeb(continuation)
-    }
-
-    fun getContinuationQueryTV(nextPageKey: String): String {
-        val continuation = String.format(CONTINUATION, nextPageKey)
-        return ServiceHelper.createQueryTV(continuation)
+        return ServiceHelper.createQuery(client.browseTemplate, continuation)
     }
 
     fun getMyPlaylistQuery(client: AppClient): String {

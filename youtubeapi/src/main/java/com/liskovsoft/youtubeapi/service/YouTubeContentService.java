@@ -304,7 +304,7 @@ public class YouTubeContentService implements ContentService {
     public MediaGroup getGroup(MediaItem mediaItem) {
         return mediaItem.getReloadPageKey() != null ?
                 getGroup(mediaItem.getReloadPageKey(), mediaItem.getTitle(), mediaItem.getType()) :
-                BrowseService2.getChannelAsList2(mediaItem.getChannelId());
+                BrowseService2.getChannelAsGrid(mediaItem.getChannelId());
     }
 
     @Override

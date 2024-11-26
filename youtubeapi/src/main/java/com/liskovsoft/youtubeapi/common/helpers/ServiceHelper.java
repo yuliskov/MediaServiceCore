@@ -96,8 +96,16 @@ public class ServiceHelper {
         return createQuery(AppClient.WEB_REMIX.getBrowseTemplate(), data);
     }
 
+    public static String createQuery(AppClient client, String data) {
+        return createQuery(client.getBrowseTemplate(), data);
+    }
+
     public static String createQuery(String postTemplate, String data) {
         return createQuery(postTemplate, null, data, null, null);
+    }
+
+    public static String createQuery(AppClient client, String data1, String data2) {
+        return createQuery(client.getPlayerTemplate(), data1, data2);
     }
 
     public static String createQuery(String postTemplate, String data1, String data2) {

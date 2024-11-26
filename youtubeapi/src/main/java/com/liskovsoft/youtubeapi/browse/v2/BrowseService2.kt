@@ -34,22 +34,22 @@ internal object BrowseService2 {
         //
         //return Pair(rows, null)
 
-        return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
+        return getBrowseRowsTV(BrowseApiHelper.getHomeQuery(AppClient.TV), MediaGroup.TYPE_HOME)
     }
 
     @JvmStatic
     fun getTrending(): List<MediaGroup?>? {
-        return getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING, true)
+        return getBrowseRows(BrowseApiHelper.getTrendingQuery(AppClient.WEB), MediaGroup.TYPE_TRENDING, true)
     }
 
     @JvmStatic
     fun getSports(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getSportsQueryTV(), MediaGroup.TYPE_SPORTS)?.first
+        return getBrowseRowsTV(BrowseApiHelper.getSportsQuery(AppClient.TV), MediaGroup.TYPE_SPORTS)?.first
     }
 
     @JvmStatic
     fun getMovies(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getMoviesQueryTV(), MediaGroup.TYPE_MOVIES)?.first
+        return getBrowseRowsTV(BrowseApiHelper.getMoviesQuery(AppClient.TV), MediaGroup.TYPE_MOVIES)?.first
     }
 
     @JvmStatic
@@ -78,7 +78,7 @@ internal object BrowseService2 {
     }
 
     private fun getSubscriptionsWeb(): MediaGroup? {
-        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
+        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQuery(AppClient.WEB))
 
         return RetrofitHelper.get(browseResult)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_SUBSCRIPTIONS)) }
     }
@@ -159,7 +159,7 @@ internal object BrowseService2 {
     }
 
     private fun getLikedMusicTV(): MediaGroup? {
-        val result = mBrowseApi.getContinuationResultTV(BrowseApiHelper.getLikedMusicContinuationTV())
+        val result = mBrowseApi.getContinuationResultTV(BrowseApiHelper.getLikedMusicContinuation(AppClient.TV))
 
         return RetrofitHelper.get(result)?.let { WatchNexContinuationMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
@@ -210,8 +210,16 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
-    fun getChannelAsList2(channelId: String?): MediaGroup? {
-        return getChannelVideosFullWeb(channelId) ?: getChannelVideosFullWeb(channelId, true)
+    fun getChannelAsGrid(channelId: String?): MediaGroup? {
+        return getChannelVideosFullTV(channelId) ?: getChannelVideosFullWeb(channelId, true)
+    }
+
+    private fun getChannelVideosFullTV(channelId: String?): MediaGroup? {
+        if (channelId == null) {
+            return null
+        }
+
+        return getBrowseRowsTV(BrowseApiHelper.getChannelVideosQuery(AppClient.TV, channelId), MediaGroup.TYPE_CHANNEL_UPLOADS)?.first?.firstOrNull()
     }
 
     private fun getChannelVideosFullWeb(channelId: String?, skipAuth: Boolean = false): MediaGroup? {
@@ -219,8 +227,8 @@ internal object BrowseService2 {
             return null
         }
 
-        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
-        val live = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId))
+        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId))
+        val live = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId))
 
         RetrofitHelper.get(videos, skipAuth)?.let { return BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), RetrofitHelper.get(live)) }
 
@@ -230,12 +238,12 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
-    fun getChannelAsList(channelId: String?): MediaGroup? {
+    fun getChannelAsGridOld(channelId: String?): MediaGroup? {
         if (channelId == null) {
             return null
         }
 
-        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
+        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId))
 
         return RetrofitHelper.get(videos)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
@@ -246,7 +254,7 @@ internal object BrowseService2 {
             return null
         }
 
-        val live = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId))
+        val live = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId))
 
         return RetrofitHelper.get(live)?.let { LiveMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
@@ -261,7 +269,7 @@ internal object BrowseService2 {
             return null
         }
 
-        val search = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelSearchQueryWeb(channelId, query))
+        val search = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelSearchQuery(AppClient.WEB, channelId, query))
 
         return RetrofitHelper.get(search, skipAuth)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
@@ -276,14 +284,14 @@ internal object BrowseService2 {
             return null
         }
 
-        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId))
+        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId))
 
         return RetrofitHelper.get(videos, skipAuth)?.let { it.getChips()?.mapNotNull { if (it != null) ChipMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) else null } }
     }
 
     @JvmStatic
     fun getChannel(channelId: String?, params: String?): List<MediaGroup?>? {
-        return getChannelWeb(channelId, params) ?: getChannelWeb(channelId, params, true) ?: getChannelTV(channelId, params)
+        return getChannelTV(channelId, params) ?: getChannelWeb(channelId, params, true)
     }
 
     private fun getChannelWeb(channelId: String?, params: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
@@ -294,7 +302,7 @@ internal object BrowseService2 {
         val result = mutableListOf<MediaGroup>()
 
         val homeResult = getBrowseRedirect(channelId) {
-            val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(it))
+            val home = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelHomeQuery(AppClient.WEB, it))
             RetrofitHelper.get(home, skipAuth)
         }
 
@@ -318,7 +326,7 @@ internal object BrowseService2 {
                     createOptions(if (title == null) MediaGroup.TYPE_CHANNEL_UPLOADS else MediaGroup.TYPE_CHANNEL, channelId))) } } // playlists don't have a title
 
         if (result.isEmpty()) {
-            val playlist = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId))
+            val playlist = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, channelId))
             RetrofitHelper.get(playlist, skipAuth)?.let {
                 if (it.getTitle() != null) result.add(BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS, channelId)))
             }
@@ -338,9 +346,7 @@ internal object BrowseService2 {
             return null
         }
 
-        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params))
-
-        return RetrofitHelper.get(browseResult)?.let { listOf(BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS))) }
+        return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL)?.first
     }
 
     @JvmStatic
@@ -372,7 +378,7 @@ internal object BrowseService2 {
         }
 
         val continuationResult =
-            mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(nextPageKey))
+            mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, nextPageKey))
 
         return RetrofitHelper.get(continuationResult)?.let {
             val result = mutableListOf<MediaGroup?>()
@@ -387,7 +393,7 @@ internal object BrowseService2 {
         }
 
         val browseResult =
-            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(group.channelId, group.params))
+            mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, group.channelId, group.params))
 
         return RetrofitHelper.get(browseResult, skipAuth)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
     }
@@ -398,7 +404,7 @@ internal object BrowseService2 {
         }
 
         val continuationResult =
-            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(group.nextPageKey))
+            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, group.nextPageKey))
 
         return RetrofitHelper.get(continuationResult, skipAuth)?.let {
             val result = mutableListOf<MediaGroup?>()
@@ -416,7 +422,7 @@ internal object BrowseService2 {
         }
 
         val continuationResult =
-            mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(group.nextPageKey))
+            mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, group.nextPageKey))
 
         return RetrofitHelper.get(continuationResult)?.let {
             WatchNexContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title }
@@ -471,6 +477,10 @@ internal object BrowseService2 {
         return RetrofitHelper.get(browseResult)?.let {
             val result = mutableListOf<MediaGroup?>()
             it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, createOptions(sectionType))) }
+
+            if (result.isEmpty()) // playlist
+                addOrMerge(result, BrowseMediaGroupTV(it, createOptions(sectionType)))
+
             Pair(result, it.getContinuationToken())
         }
     }
@@ -499,7 +509,7 @@ internal object BrowseService2 {
     }
 
     private fun getSubscribedShorts(): List<MediaItem?>? {
-        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
+        val browseResult = mBrowseApi.getBrowseResult(BrowseApiHelper.getSubscriptionsQuery(AppClient.WEB))
 
         return RetrofitHelper.get(browseResult)?.let { it.getShortItems()?.let { SubscribedShortsMediaGroup(it) } }?.mediaItems
     }
@@ -517,7 +527,7 @@ internal object BrowseService2 {
                 break
 
             val result =
-                mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(combinedKey))
+                mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, combinedKey))
 
             RetrofitHelper.get(result)?.let {
                 combinedItems = (combinedItems ?: emptyList()) + (it.getItems() ?: emptyList())

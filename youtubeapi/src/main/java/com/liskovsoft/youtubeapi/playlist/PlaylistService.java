@@ -95,6 +95,6 @@ public class PlaylistService {
         Call<ActionResult> wrapper =
                 mPlaylistManager.createPlaylist(PlaylistApiHelper.getCreatePlaylistQuery(playlistName, videoId));
 
-        RetrofitHelper.get(wrapper); // ignore result
+        RetrofitHelper.getWithErrors(wrapper); // ignore result
     }
 }

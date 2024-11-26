@@ -39,8 +39,7 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getTrending(): List<MediaGroup?>? {
-        return getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING)
-            ?: getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING, true)
+        return getBrowseRows(BrowseApiHelper.getTrendingQueryWeb(), MediaGroup.TYPE_TRENDING, true)
     }
 
     @JvmStatic
@@ -97,7 +96,7 @@ internal object BrowseService2 {
 
     @JvmStatic
     fun getSubscribedChannels(): MediaGroup? {
-        return getSubscribedChannelsWeb() ?: getSubscribedChannelsTV()
+        return getSubscribedChannelsTV() ?: getSubscribedChannelsWeb()
     }
 
     private fun getSubscribedChannelsWeb(): MediaGroup? {
@@ -358,9 +357,9 @@ internal object BrowseService2 {
     @JvmStatic
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return continueTVGroup(group)?.let { listOf(it) } ?: continueChipOrGroup(group) ?: continueChipOrGroup(group, true)
+            return continueTVGroup(group)?.let { listOf(it) } ?: continueChipOrGroup(group, true)
         } else if (group?.channelId != null) {
-            return (continueTab(group) ?: continueTab(group, true))?.let { listOf(it) }
+            return continueTab(group, true)?.let { listOf(it) }
         }
 
         return null

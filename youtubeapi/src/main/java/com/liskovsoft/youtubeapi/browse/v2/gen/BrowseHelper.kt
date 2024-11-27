@@ -184,7 +184,8 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 
 private const val SUBSCRIPTIONS_BROWSE_ID = "FEsubscriptions"
 
-internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents?.sortedByDescending { it?.isMainShelf() }
+internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
+    ?.sortedByDescending { it?.shelfRenderer?.endpoint?.getBrowseParams()?.let { it.startsWith("EgZ2aWRlb3MYAyACOAJwA") || it.startsWith("EgZ2aWRlb3MYAyAAcA") } ?: false } // Move Live and Videos rows to the top
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.contents
     ?: getSubscriptionsTab()?.getItems()
@@ -198,7 +199,6 @@ internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondary
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
 internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers()
 internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()
-internal fun Shelf.isMainShelf(): Boolean = shelfRenderer?.endpoint != null
 private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
 private fun BrowseResultTV.getSections() = contents?.tvBrowseRenderer?.content?.tvSecondaryNavRenderer?.sections
 private fun BrowseResultTV.getSubscriptionsTab() = getTabs()?.firstOrNull { it.getBrowseId() == SUBSCRIPTIONS_BROWSE_ID } ?: getTabs()?.getOrNull(0)

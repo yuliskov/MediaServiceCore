@@ -261,7 +261,7 @@ internal data class TileItem(
         val richTextTileHeaderRenderer: RichTextTileHeaderRenderer? // Video description (last row in the suggestions)
     ) {
         data class TileHeaderRenderer(
-            val thumbnail: ThumbnailItem,
+            val thumbnail: ThumbnailItem?,
             val thumbnailOverlays: List<ThumbnailOverlayItem?>?,
             val movingThumbnail: ThumbnailItem?, // v1
             val onFocusThumbnail: ThumbnailItem? // v2
@@ -271,7 +271,7 @@ internal data class TileItem(
          * Video description (last row in the suggestions)
          */
         data class RichTextTileHeaderRenderer(
-            val textContent: List<TextItem>
+            val textContent: List<TextItem?>?
         )
     }
 
@@ -433,7 +433,7 @@ internal data class LockupItem(
     ) {
         data class ThumbnailViewModel(
             val image: ThumbnailItem?,
-            val overlays: List<Overlay?>
+            val overlays: List<Overlay?>?
         ) {
             data class Overlay(
                 val thumbnailOverlayBadgeViewModel: ThumbnailOverlayBadgeViewModel?,

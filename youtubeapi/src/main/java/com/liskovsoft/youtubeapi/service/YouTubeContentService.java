@@ -287,7 +287,12 @@ public class YouTubeContentService implements ContentService {
         if (continuation != null) {
             // Prepare to move LIVE items to the top. Multiple results should be combined first.
             Pair<List<ItemWrapper>, String> result = continueIfNeeded(continuation.getItemWrappers(), continuation.getNextPageKey());
-            Collections.sort(result.first, (o1, o2) -> Boolean.compare(o2.isLive(), o1.isLive()));
+            Collections.sort(result.first, (o1, o2) -> {
+                if (o1 == null && o2 == null) return 0;
+                if (o1 == null) return -1;
+                if (o2 == null) return 1;
+                return Boolean.compare(o2.isLive(), o1.isLive());
+            });
             continuation.setItemWrappers(result.first);
             continuation.setNextPageKey(result.second);
         }

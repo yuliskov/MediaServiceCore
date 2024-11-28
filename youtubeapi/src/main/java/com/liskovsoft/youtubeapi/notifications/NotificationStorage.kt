@@ -22,7 +22,7 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
     fun removeChannel(channelId: String?) {
         channelId?.let {
             channels.remove(it)
-            restoreData()
+            persistData()
         }
     }
 

@@ -18,6 +18,10 @@ public class TileItem {
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
     private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
     private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
+    private static final String TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS";
+
+    @JsonPath("$.style")
+    private String mStyle;
 
     @JsonPath({
             "$.header.tileHeaderRenderer",
@@ -157,7 +161,7 @@ public class TileItem {
     }
 
     public boolean isShorts() {
-        return Helpers.equalsAny(BADGE_STYLE_SHORTS, getBadgeStyles());
+        return Helpers.equalsAny(BADGE_STYLE_SHORTS, getBadgeStyles()) || TILE_STYLE_SHORTS.equals(mStyle);
     }
 
     public String getFeedbackToken() {

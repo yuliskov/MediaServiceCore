@@ -5,13 +5,14 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.rss.RssService
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 
 internal object NotificationsServiceWrapper {
     fun getItems(): MediaGroup? {
         return try {
             NotificationsServiceInt.getItems()
         } catch (e: IllegalStateException) {
-            NotificationStorage.getChannels()?.let { RssService.getFeed(*it.toTypedArray()) }
+            NotificationStorage.getChannels()?.let { RssService.getFeed(*it.toTypedArray()) } ?: YouTubeMediaGroup(MediaGroup.TYPE_NOTIFICATIONS)
         }
     }
 

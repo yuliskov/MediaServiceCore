@@ -137,16 +137,6 @@ public class YouTubeContentService implements ContentService {
         return BrowseService2.getSubscriptions();
     }
 
-    //@Override
-    //public MediaGroup getSubscriptions() {
-    //    Log.d(TAG, "Getting subscriptions...");
-    //
-    //    checkSigned();
-    //
-    //    GridTab subscriptions = mBrowseService.getSubscriptions();
-    //    return YouTubeMediaGroup.from(subscriptions, MediaGroup.TYPE_SUBSCRIPTIONS);
-    //}
-
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
         return RxHelper.fromNullable(this::getSubscriptions);
@@ -183,23 +173,14 @@ public class YouTubeContentService implements ContentService {
     public MediaGroup getSubscribedChannelsByName() {
         checkSigned();
 
-        List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsByName();
-        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
-    }
-
-    @Override
-    public MediaGroup getSubscribedChannelsByName2() {
-        checkSigned();
-
         return BrowseService2.getSubscribedChannelsByName();
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsByViewed() {
+    public MediaGroup getSubscribedChannelsByLastViewed() {
         checkSigned();
 
-        List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsLastViewed();
-        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+        return BrowseService2.getSubscribedChannels();
     }
 
     @Override
@@ -218,13 +199,8 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<MediaGroup> getSubscribedChannelsByName2Observe() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsByName2);
-    }
-
-    @Override
-    public Observable<MediaGroup> getSubscribedChannelsByViewedObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsByViewed);
+    public Observable<MediaGroup> getSubscribedChannelsByLastViewedObserve() {
+        return RxHelper.fromNullable(this::getSubscribedChannelsByLastViewed);
     }
 
     //@Override

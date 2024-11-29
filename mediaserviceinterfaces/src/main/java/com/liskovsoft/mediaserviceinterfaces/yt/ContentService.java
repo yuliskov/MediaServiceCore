@@ -23,8 +23,7 @@ public interface ContentService {
     MediaGroup getSubscribedChannels();
     MediaGroup getSubscribedChannelsByUpdate();
     MediaGroup getSubscribedChannelsByName();
-    MediaGroup getSubscribedChannelsByName2();
-    MediaGroup getSubscribedChannelsByViewed();
+    MediaGroup getSubscribedChannelsByLastViewed();
     MediaGroup getGroup(MediaItem mediaItem);
     MediaGroup getChannelSearch(String channelId, String query);
     /**
@@ -69,8 +68,7 @@ public interface ContentService {
     Observable<MediaGroup> getSubscribedChannelsObserve();
     Observable<MediaGroup> getSubscribedChannelsByUpdateObserve();
     Observable<MediaGroup> getSubscribedChannelsByNameObserve();
-    Observable<MediaGroup> getSubscribedChannelsByName2Observe();
-    Observable<MediaGroup> getSubscribedChannelsByViewedObserve();
+    Observable<MediaGroup> getSubscribedChannelsByLastViewedObserve();
     Observable<MediaGroup> getGroupObserve(MediaItem mediaItem);
     /**
      * NOTE: returns unnamed group

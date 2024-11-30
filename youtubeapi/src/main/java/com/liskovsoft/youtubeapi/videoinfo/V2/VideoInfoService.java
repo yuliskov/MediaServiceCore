@@ -178,7 +178,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private void nextVideoInfo() {
         boolean defaultValue = true;
 
-        if (mVideoInfoType != -1 && mSkipAuth == defaultValue) {
+        // Only TV can work with auth
+        if (mVideoInfoType == VIDEO_INFO_TV && mSkipAuth == defaultValue) {
             mSkipAuth = !defaultValue;
             return;
         }

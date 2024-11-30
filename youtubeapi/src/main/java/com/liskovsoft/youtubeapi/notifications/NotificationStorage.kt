@@ -30,6 +30,10 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
         return channels.ifEmpty { null }
     }
 
+    fun contains(channelId: String?): Boolean {
+        return channels.contains(channelId)
+    }
+
     @JvmStatic
     fun clear() {
         channels.clear()

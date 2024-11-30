@@ -10,8 +10,8 @@ import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NextMediaItem
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.next.v2.gen.*
+import com.liskovsoft.youtubeapi.notifications.NotificationStateImplWrapper
 
 internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
                                  val suggestionsResult: WatchNextResult? = null) : MediaItemMetadata {
@@ -173,7 +173,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val notificationStateList by lazy {
         val currentId = notificationPreference?.getCurrentStateId()
         val result = notificationPreference?.getItems()?.mapNotNull {
-            it?.let { NotificationStateImpl(it, currentId, channelId, params, isSubscribed) }
+            it?.let { NotificationStateImplWrapper(it, currentId, channelId, params, isSubscribed) }
         }
 
         result?.forEach { it.allStates = result }

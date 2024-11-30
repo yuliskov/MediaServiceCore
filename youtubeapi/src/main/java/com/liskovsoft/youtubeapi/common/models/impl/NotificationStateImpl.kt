@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getStateId
 import com.liskovsoft.youtubeapi.common.models.gen.getStateParams
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 
-internal data class NotificationStateImpl(
+internal open class NotificationStateImpl(
     val notificationStateItem: NotificationStateItem,
     val selectedSateId: Int?,
     val channelId: String?,

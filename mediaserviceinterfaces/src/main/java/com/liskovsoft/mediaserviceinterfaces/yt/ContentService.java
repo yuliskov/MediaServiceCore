@@ -57,7 +57,6 @@ public interface ContentService {
     Observable<List<MediaGroup>> getMusicObserve();
     Observable<List<MediaGroup>> getNewsObserve();
     Observable<List<MediaGroup>> getGamingObserve();
-    Observable<List<MediaGroup>> getChannelV1Observe(String channelId);
     Observable<List<MediaGroup>> getChannelObserve(String channelId);
     Observable<List<MediaGroup>> getChannelObserve(MediaItem item);
     Observable<List<MediaGroup>> getChannelSortingObserve(String channelId);

@@ -71,7 +71,7 @@ internal object RetrofitOkHttpHelper {
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
                 // Empty Home fix (anonymous user) and improve Recommendations for everyone
-                headers["X-Goog-Visitor-Id"] ?: requestBuilder.header("X-Goog-Visitor-Id", AppService.instance().visitorData)
+                headers["X-Goog-Visitor-Id"] ?: AppService.instance().visitorData?.let { requestBuilder.header("X-Goog-Visitor-Id", it) }
 
                 applyHeaders(this.apiHeaders, headers, requestBuilder)
 
@@ -99,10 +99,8 @@ internal object RetrofitOkHttpHelper {
                 continue
             }
 
-            header.value?.let { // NOTE: don't remove null check
-                // Don't override existing headers
-                oldHeaders[header.key] ?: builder.header(header.key, it)
-            }
+            // Don't override existing headers
+            oldHeaders[header.key] ?: header.value?.let { builder.header(header.key, it) } // NOTE: don't remove null check
         }
     }
 

@@ -21,7 +21,7 @@ public interface ContentService {
     MediaGroup getHistory();
     List<MediaGroup> getHome();
     MediaGroup getSubscribedChannels();
-    MediaGroup getSubscribedChannelsByUpdate();
+    MediaGroup getSubscribedChannelsByNewContent();
     MediaGroup getSubscribedChannelsByName();
     MediaGroup getSubscribedChannelsByLastViewed();
     MediaGroup getGroup(MediaItem mediaItem);
@@ -65,7 +65,7 @@ public interface ContentService {
     Observable<List<MediaGroup>> getPlaylistRowsObserve();
     Observable<MediaGroup> getPlaylistsObserve();
     Observable<MediaGroup> getSubscribedChannelsObserve();
-    Observable<MediaGroup> getSubscribedChannelsByUpdateObserve();
+    Observable<MediaGroup> getSubscribedChannelsByNewContentObserve();
     Observable<MediaGroup> getSubscribedChannelsByNameObserve();
     Observable<MediaGroup> getSubscribedChannelsByLastViewedObserve();
     Observable<MediaGroup> getGroupObserve(MediaItem mediaItem);

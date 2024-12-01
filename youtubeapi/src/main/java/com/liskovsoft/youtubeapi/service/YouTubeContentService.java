@@ -162,11 +162,13 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public MediaGroup getSubscribedChannelsByUpdate() {
+    public MediaGroup getSubscribedChannelsByNewContent() {
         checkSigned();
 
-        List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsUpdate();
-        return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsUpdate();
+        //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
+
+        return BrowseService2.getSubscribedChannelsByNewContent();
     }
 
     @Override
@@ -189,8 +191,8 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<MediaGroup> getSubscribedChannelsByUpdateObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsByUpdate);
+    public Observable<MediaGroup> getSubscribedChannelsByNewContentObserve() {
+        return RxHelper.fromNullable(this::getSubscribedChannelsByNewContent);
     }
 
     @Override

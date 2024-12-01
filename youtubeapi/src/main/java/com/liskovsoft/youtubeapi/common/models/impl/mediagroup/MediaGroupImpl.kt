@@ -131,10 +131,14 @@ internal data class ChipMediaGroup(
     override fun getTitleInt(): String? = chipCloudChipRenderer.getTitle()
 }
 
+internal const val SORT_DEFAULT: Int = 0
+internal const val SORT_BY_NAME: Int = 1
+internal const val SORT_BY_NEW_CONTENT: Int = 2
+
 internal data class GuideMediaGroup(
     private val guideResult: GuideResult,
     private val options: MediaGroupOptions,
-    private val sort: Boolean = false
+    private val sort: Int = SORT_DEFAULT
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = null
@@ -150,7 +154,7 @@ internal data class GuideMediaGroup(
             it?.let { if (it.thumbnail != null) result.add(GuideMediaItem(it)) } // exclude 'special' items
         }
 
-        if (sort) result.sortBy { it.title?.lowercase() }
+        if (sort == SORT_BY_NAME) result.sortBy { it.title?.lowercase() }
 
         result
     }
@@ -159,7 +163,7 @@ internal data class GuideMediaGroup(
 internal data class TabListMediaGroup(
     private val tabs: List<TabRenderer>,
     private val options: MediaGroupOptions,
-    private val sort: Boolean = false
+    private val sort: Int = SORT_DEFAULT
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = null
@@ -171,7 +175,9 @@ internal data class TabListMediaGroup(
             result.add(TabMediaItem(it, options.groupType))
         }
 
-        if (sort) result.sortBy { it.title?.lowercase() }
+        if (sort == SORT_BY_NAME) result.sortBy { it.title?.lowercase() }
+
+        if (sort == SORT_BY_NEW_CONTENT) result.sortByDescending { it.hasNewContent() }
 
         result
     }

@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppConstants
+import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.search.SearchApi
 import okhttp3.Headers
 import okhttp3.HttpUrl
@@ -69,6 +70,9 @@ internal object RetrofitOkHttpHelper {
             val url = request.url().toString()
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
+                // Empty Home fix (anonymous user) and improve Recommendations for everyone
+                headers["X-Goog-Visitor-Id"] ?: requestBuilder.header("X-Goog-Visitor-Id", AppService.instance().visitorData)
+
                 applyHeaders(this.apiHeaders, headers, requestBuilder)
 
                 val doSkipAuth = authSkipList.remove(request)

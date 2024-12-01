@@ -492,8 +492,8 @@ public class YouTubeContentService implements ContentService {
                     groups = home != null ? home.getFirst() : null;
                     nextKey = home != null ? home.getSecond() : null;
                 }
-                emitter.onComplete();
             }
+            emitter.onComplete();
         });
     }
 

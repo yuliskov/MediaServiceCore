@@ -94,7 +94,8 @@ public final class YouTubeHelper {
                     (prefs.isHideShortsFromHomeEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
                     (prefs.isHideShortsFromHistoryEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HISTORY) ||
                     (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS) ||
-                    (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL);
+                    (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL) ||
+                    (MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH) && mediaGroup.getType() == MediaGroup.TYPE_SEARCH);
             boolean isHideUpcomingEnabled = (prefs.isHideUpcomingFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
                     (prefs.isHideUpcomingFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
             boolean isHideStreamsEnabled = (prefs.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);

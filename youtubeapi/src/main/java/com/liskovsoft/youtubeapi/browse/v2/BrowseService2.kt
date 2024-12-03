@@ -108,7 +108,7 @@ internal object BrowseService2 {
     private fun getSubscribedChannelsTV(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
 
-        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { TabListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) } }
+        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { ChannelListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) } }
     }
 
     @JvmStatic
@@ -125,7 +125,7 @@ internal object BrowseService2 {
     private fun getSubscribedChannelsByNameTV(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
 
-        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { TabListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), SORT_BY_NAME) } }
+        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { ChannelListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), SORT_BY_NAME) } }
     }
 
     @JvmStatic
@@ -136,7 +136,7 @@ internal object BrowseService2 {
     private fun getSubscribedChannelsByNewContentTV(): MediaGroup? {
         val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
 
-        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { TabListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), SORT_BY_NEW_CONTENT) } }
+        return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { ChannelListMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS), SORT_BY_NEW_CONTENT) } }
     }
 
     @JvmStatic

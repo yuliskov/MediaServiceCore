@@ -160,10 +160,10 @@ internal data class GuideMediaGroup(
     }
 }
 
-internal data class TabListMediaGroup(
+internal data class ChannelListMediaGroup(
     private val tabs: List<TabRenderer>,
     private val options: MediaGroupOptions,
-    private val sort: Int = SORT_DEFAULT
+    private val sortBy: Int = SORT_DEFAULT
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = null
@@ -171,13 +171,17 @@ internal data class TabListMediaGroup(
     override val mediaItemList by lazy {
         val result = mutableListOf<MediaItem>()
 
-        tabs.forEach {
+        tabs.forEachIndexed { idx, it ->
+            // Skip All subscriptions tab
+            if (idx == 0)
+                return@forEachIndexed
+
             result.add(TabMediaItem(it, options.groupType))
         }
 
-        if (sort == SORT_BY_NAME) result.sortBy { it.title?.lowercase() }
+        if (sortBy == SORT_BY_NAME) result.sortBy { it.title?.lowercase() }
 
-        if (sort == SORT_BY_NEW_CONTENT) result.sortByDescending { it.hasNewContent() }
+        if (sortBy == SORT_BY_NEW_CONTENT) result.sortByDescending { it.hasNewContent() }
 
         result
     }

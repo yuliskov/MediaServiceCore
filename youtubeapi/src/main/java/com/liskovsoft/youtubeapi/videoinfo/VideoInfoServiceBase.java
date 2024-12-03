@@ -159,34 +159,43 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        DashInfo dashInfo = getAudioDashInfo(videoInfo);
-
-        if (dashInfo == null) {
-            dashInfo = getAltAudioDashInfo(videoInfo);
-        }
-
-        return dashInfo;
+        return getAudioDashInfo(videoInfo);
     }
 
     private DashInfo getAudioDashInfo(VideoInfo videoInfo) {
-        try {
-            AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-            return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
-        } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
-            return null;
-        }
-    }
-
-    private DashInfo getAltAudioDashInfo(VideoInfo videoInfo) {
         AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
 
         try {
-            return getDashInfoUrl(format.getUrl());
-        } catch (ArithmeticException | NumberFormatException ex) {
-            // Empty results received. Url isn't available or something like that
-            return getDashInfoContent(format.getUrl());
+            return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
+        } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
+            try {
+                return getDashInfoUrl(format.getUrl());
+            } catch (ArithmeticException | NumberFormatException exc) {
+                // Empty results received. Url isn't available or something like that
+                return getDashInfoContent(format.getUrl());
+            }
         }
     }
+
+    //private DashInfo getAudioDashInfo(VideoInfo videoInfo) {
+    //    try {
+    //        AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
+    //        return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
+    //    } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
+    //        return null;
+    //    }
+    //}
+
+    //private DashInfo getAudioDashInfo2(VideoInfo videoInfo) {
+    //    AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
+    //
+    //    try {
+    //        return getDashInfoUrl(format.getUrl());
+    //    } catch (ArithmeticException | NumberFormatException ex) {
+    //        // Empty results received. Url isn't available or something like that
+    //        return getDashInfoContent(format.getUrl());
+    //    }
+    //}
 
     private DashInfo getVideoDashInfo(VideoInfo videoInfo) {
         try {

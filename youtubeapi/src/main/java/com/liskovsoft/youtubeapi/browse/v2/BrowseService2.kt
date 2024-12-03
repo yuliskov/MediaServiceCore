@@ -540,6 +540,8 @@ internal object BrowseService2 {
             val result =
                 mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, combinedKey))
 
+            combinedKey = null
+
             RetrofitHelper.get(result)?.let {
                 combinedItems = (combinedItems ?: emptyList()) + (it.getItems() ?: emptyList())
                 combinedKey = it.getNextPageKey()

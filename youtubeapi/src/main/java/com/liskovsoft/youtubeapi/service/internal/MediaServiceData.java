@@ -42,8 +42,8 @@ public class MediaServiceData {
     private String mPlayerUrl;
     private String mPlayerVersion;
     private String mVisitorCookie;
-    private int mEnabledFormats = FORMATS_ALL;
-    private int mHiddenContent = CONTENT_NONE;
+    private int mEnabledFormats;
+    private int mHiddenContent;
     private Disposable mPersistAction;
     private boolean mSkipAuth;
     private MediaServiceCache mCachedPrefs;
@@ -234,8 +234,8 @@ public class MediaServiceData {
         mDeviceId = Helpers.parseStr(split, 2);
         // entries here moved to the cache
         mVisitorCookie = Helpers.parseStr(split, 10);
-        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
-        mHiddenContent = Helpers.parseInt(split, 12, CONTENT_MIXES);
+        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
+        mHiddenContent = Helpers.parseInt(split, 12, CONTENT_NONE);
         mSkipAuth = Helpers.parseBoolean(split, 13);
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
     }

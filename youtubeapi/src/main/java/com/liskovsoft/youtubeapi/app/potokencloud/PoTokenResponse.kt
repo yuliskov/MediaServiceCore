@@ -26,3 +26,8 @@ internal data class PoTokenResponse(
         }
     }
 }
+
+internal data class PoTokenPart1Response(
+    val requestKey: String?,
+    val botguardResponse: String?
+)

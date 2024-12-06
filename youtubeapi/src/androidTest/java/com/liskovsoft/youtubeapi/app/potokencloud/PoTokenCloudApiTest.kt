@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokencloud
 
+import com.google.gson.Gson
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo
 import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
@@ -37,24 +38,17 @@ internal class PoTokenCloudApiTest {
 
     @Test
     fun testPoTokenOnVideoUrl() {
-        val poToken = getPoToken()
-
-        val mediaItemDetails: MediaItemFormatInfo = YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_MUSIC_2)
-
-        val url = mediaItemDetails.dashFormats[0].url
-
-        assertTrue("Video url is working", TestHelpersV1.urlExists("$url&pot=${poToken?.poToken}"))
+        testPoTokenResponse(getPoToken())
     }
 
     @Test
     fun testPoTokenOnVideoUrlAlt() {
-        val poToken = getPoTokenAlt()
+        testPoTokenResponse(getPoTokenAlt())
+    }
 
-        val mediaItemDetails: MediaItemFormatInfo = YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_MUSIC_2)
-
-        val url = mediaItemDetails.dashFormats[0].url
-
-        assertTrue("Video url is working", TestHelpersV1.urlExists("$url&pot=${poToken?.poToken}"))
+    @Test
+    fun testPoTokenOnVideoUrlPart() {
+        testPoTokenResponse(getPoTokenPart())
     }
 
     @Test
@@ -102,6 +96,35 @@ internal class PoTokenCloudApiTest {
         return@runBlocking poToken
     }
 
+    private fun getPoTokenPart(): PoTokenResponse? = runBlocking {
+        var poToken: PoTokenResponse? = null
+
+        val times = 1
+        for (i in 0.. times) {
+            val part1 = RetrofitHelper.get(api.getPoTokenPart1())
+
+            if (part1?.requestKey == null || part1.botguardResponse == null)
+                continue
+
+            val part2 = PoTokenService.generateIntegrityToken(part1.requestKey, part1.botguardResponse)
+
+            if (part2?.integrityTokenData == null)
+                continue
+
+            poToken = RetrofitHelper.get(api.getPoTokenPart2(Gson().toJson(part2)))
+
+            if (poToken?.poToken != null)
+                break
+
+            if (i < times)
+                delay(50_000)
+        }
+
+        assertNotNull("PoToken is not empty", poToken?.poToken)
+
+        return@runBlocking poToken
+    }
+
     private fun getPoTokenHighLoad() = runBlocking {
         val deferred = (0..Int.MAX_VALUE).map {
             async {
@@ -110,5 +133,14 @@ internal class PoTokenCloudApiTest {
         }
 
         deferred.awaitAll()
+    }
+
+    private fun testPoTokenResponse(poToken: PoTokenResponse?) {
+        val mediaItemDetails: MediaItemFormatInfo =
+            YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_MUSIC_2)
+
+        val url = mediaItemDetails.dashFormats[0].url
+
+        assertTrue("Video url is working", TestHelpersV1.urlExists("$url&pot=${poToken?.poToken}"))
     }
 }

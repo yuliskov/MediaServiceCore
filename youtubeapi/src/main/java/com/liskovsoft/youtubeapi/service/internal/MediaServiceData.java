@@ -42,7 +42,7 @@ public class MediaServiceData {
     private String mPlayerUrl;
     private String mPlayerVersion;
     private String mVisitorCookie;
-    private int mEnabledFormats;
+    private int mEnabledFormats = FORMATS_ALL; // Debug
     private int mHiddenContent;
     private Disposable mPersistAction;
     private boolean mSkipAuth;

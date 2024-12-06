@@ -29,6 +29,6 @@ public class TestHelpersV1 extends TestHelpersBase {
 
     public static boolean urlExists(String url) {
         // disable profiler because it could cause out of memory error
-        return OkHttpManager.instance(false).doGetRequest(url) != null;
+        return OkHttpManager.instance(false).doHeadRequest(url) != null;
     }
 }

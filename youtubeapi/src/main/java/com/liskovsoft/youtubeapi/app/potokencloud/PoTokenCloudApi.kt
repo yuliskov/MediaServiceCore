@@ -13,6 +13,9 @@ internal interface PoTokenCloudApi {
     @GET("$PO_TOKEN_CLOUD_BASE_URL/")
     fun getPoToken(@Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
 
+    @GET("$PO_TOKEN_CLOUD_BASE_URL2/")
+    fun getPoToken2(@Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
+
     @GET("$PO_TOKEN_CLOUD_BASE_URL/alt")
     fun getPoTokenAlt(@Query("program") program: String): Call<PoTokenResponse?>?
 

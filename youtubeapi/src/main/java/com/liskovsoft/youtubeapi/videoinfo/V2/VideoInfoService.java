@@ -32,7 +32,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_ANDROID = 4;
     private final static int VIDEO_INFO_IOS = 5;
     private final static int VIDEO_INFO_EMBED = 6;
-    private final static int[] VIDEO_INFO_TYPE_LIST = {
+    private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
     };
     private int mVideoInfoType = -1;

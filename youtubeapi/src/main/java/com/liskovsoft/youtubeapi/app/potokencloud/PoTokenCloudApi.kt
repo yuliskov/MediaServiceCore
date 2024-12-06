@@ -7,25 +7,23 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 @WithGson
 internal interface PoTokenCloudApi {
-    @GET("$PO_TOKEN_CLOUD_BASE_URL/")
-    fun getPoToken(@Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
+    @GET
+    fun getPoToken(@Url url: String, @Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
 
-    @GET("$PO_TOKEN_CLOUD_BASE_URL2/")
-    fun getPoToken2(@Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
+    // /health-check
+    @GET
+    fun healthCheck(@Url url: String): Call<Void>
 
-    @GET("$PO_TOKEN_CLOUD_BASE_URL/alt")
-    fun getPoTokenAlt(@Query("program") program: String): Call<PoTokenResponse?>?
+    // /part1
+    @GET
+    fun getPoTokenPart1(@Url url: String): Call<PoTokenPart1Response?>?
 
-    @GET("$PO_TOKEN_CLOUD_BASE_URL/health-check")
-    fun healthCheck(): Call<Void>
-
-    @GET("$PO_TOKEN_CLOUD_BASE_URL2/part1")
-    fun getPoTokenPart1(): Call<PoTokenPart1Response?>?
-
+    // /part2
     @Headers("Content-Type: application/json")
-    @POST("$PO_TOKEN_CLOUD_BASE_URL2/part2")
-    fun getPoTokenPart2(@Body poTokenPart2Query: String): Call<PoTokenResponse?>?
+    @POST
+    fun getPoTokenPart2(@Url url: String, @Body poTokenPart2Query: String): Call<PoTokenResponse?>?
 }

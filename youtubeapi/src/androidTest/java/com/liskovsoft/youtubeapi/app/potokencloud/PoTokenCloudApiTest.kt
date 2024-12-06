@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.google.gson.Gson
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
@@ -19,6 +20,7 @@ import org.junit.Test
 
 internal class PoTokenCloudApiTest {
     private lateinit var api: PoTokenCloudApi
+    private var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS[0]
 
     @Before
     fun setUp() {
@@ -41,11 +43,12 @@ internal class PoTokenCloudApiTest {
         testPoTokenResponse(getPoToken())
     }
 
-    @Test
-    fun testPoTokenOnVideoUrlAlt() {
-        testPoTokenResponse(getPoTokenAlt())
-    }
+    //@Test
+    //fun testPoTokenOnVideoUrlAlt() {
+    //    testPoTokenResponse(getPoTokenAlt())
+    //}
 
+    @Ignore("server is down")
     @Test
     fun testPoTokenOnVideoUrlPart() {
         testPoTokenResponse(getPoTokenPart())
@@ -53,7 +56,7 @@ internal class PoTokenCloudApiTest {
 
     @Test
     fun testHealth() = runBlocking {
-        val tickle = api.healthCheck()
+        val tickle = api.healthCheck("$baseUrl/health-check")
 
         val response = RetrofitHelper.getResponse(tickle)
 
@@ -65,9 +68,11 @@ internal class PoTokenCloudApiTest {
 
         val times = 1
         for (i in 0.. times) {
-            poToken = RetrofitHelper.get(api.getPoToken())
+            poToken = RetrofitHelper.get(api.getPoToken(baseUrl))
             if (poToken?.poToken != null)
                 break
+
+            baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
 
             if (i < times)
                 delay(50_000)
@@ -78,30 +83,30 @@ internal class PoTokenCloudApiTest {
         return@runBlocking poToken
     }
 
-    private fun getPoTokenAlt(): PoTokenResponse? = runBlocking {
-        var poToken: PoTokenResponse? = null
-
-        val times = 1
-        for (i in 0.. times) {
-            poToken = PoTokenService.getChallenge()?.program?.let { RetrofitHelper.get(api.getPoTokenAlt(it)) }
-            if (poToken?.poToken != null)
-                break
-
-            if (i < times)
-                delay(50_000)
-        }
-
-        assertNotNull("PoToken is not empty", poToken?.poToken)
-
-        return@runBlocking poToken
-    }
+    //private fun getPoTokenAlt(): PoTokenResponse? = runBlocking {
+    //    var poToken: PoTokenResponse? = null
+    //
+    //    val times = 1
+    //    for (i in 0.. times) {
+    //        poToken = PoTokenService.getChallenge()?.program?.let { RetrofitHelper.get(api.getPoTokenAlt(it)) }
+    //        if (poToken?.poToken != null)
+    //            break
+    //
+    //        if (i < times)
+    //            delay(50_000)
+    //    }
+    //
+    //    assertNotNull("PoToken is not empty", poToken?.poToken)
+    //
+    //    return@runBlocking poToken
+    //}
 
     private fun getPoTokenPart(): PoTokenResponse? = runBlocking {
         var poToken: PoTokenResponse? = null
 
         val times = 1
         for (i in 0.. times) {
-            val part1 = RetrofitHelper.get(api.getPoTokenPart1())
+            val part1 = RetrofitHelper.get(api.getPoTokenPart1("$baseUrl/part1"))
 
             if (part1?.requestKey == null || part1.botguardResponse == null)
                 continue
@@ -111,10 +116,12 @@ internal class PoTokenCloudApiTest {
             if (part2?.integrityTokenData == null)
                 continue
 
-            poToken = RetrofitHelper.get(api.getPoTokenPart2(Gson().toJson(part2)))
+            poToken = RetrofitHelper.get(api.getPoTokenPart2("$baseUrl/part2", Gson().toJson(part2)))
 
             if (poToken?.poToken != null)
                 break
+
+            baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
 
             if (i < times)
                 delay(50_000)
@@ -128,7 +135,7 @@ internal class PoTokenCloudApiTest {
     private fun getPoTokenHighLoad() = runBlocking {
         val deferred = (0..Int.MAX_VALUE).map {
             async {
-                RetrofitHelper.get(api.getPoToken()) ?: fail("pot is null")
+                RetrofitHelper.get(api.getPoToken(baseUrl)) ?: fail("pot is null")
             }
         }
 

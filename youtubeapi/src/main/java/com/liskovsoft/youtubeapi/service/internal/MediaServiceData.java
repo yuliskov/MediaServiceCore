@@ -19,6 +19,7 @@ import io.reactivex.disposables.Disposable;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
+    public static final int FORMATS_NONE = 0;
     public static final int FORMATS_ALL = Integer.MAX_VALUE;
     public static final int FORMATS_DASH = 1;
     public static final int FORMATS_URL = 1 << 1;
@@ -195,6 +196,10 @@ public class MediaServiceData {
     }
 
     public boolean isFormatEnabled(int formats) {
+        if (mEnabledFormats == FORMATS_NONE) {
+            enableFormat(FORMATS_DASH, true);
+        }
+
         return (mEnabledFormats & formats) == formats;
     }
 
@@ -234,7 +239,7 @@ public class MediaServiceData {
         mDeviceId = Helpers.parseStr(split, 2);
         // entries here moved to the cache
         mVisitorCookie = Helpers.parseStr(split, 10);
-        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
+        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
         mHiddenContent = Helpers.parseInt(split, 12, CONTENT_NONE);
         mSkipAuth = Helpers.parseBoolean(split, 13);
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);

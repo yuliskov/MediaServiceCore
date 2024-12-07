@@ -50,7 +50,6 @@ public class MediaServiceData {
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
     private PoTokenResponse mPoToken;
-    private String mPoTokenUrl;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -228,16 +227,6 @@ public class MediaServiceData {
         persistData();
     }
 
-    public String getPoTokenUrl() {
-        return mPoTokenUrl;
-    }
-
-    public void setPoTokenUrl(String url) {
-        mPoTokenUrl = url;
-
-        persistData();
-    }
-
     private void restoreData() {
         String data = mGlobalPrefs.getMediaServiceData();
 
@@ -254,7 +243,6 @@ public class MediaServiceData {
         mHiddenContent = Helpers.parseInt(split, 12, CONTENT_NONE);
         mSkipAuth = Helpers.parseBoolean(split, 13);
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
-        mPoTokenUrl = Helpers.parseStr(split, 15);
     }
 
     private void restoreCachedData() {
@@ -289,7 +277,7 @@ public class MediaServiceData {
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
                         null, null, null, null, null,
-                        mVisitorCookie, mEnabledFormats, mHiddenContent, mSkipAuth, mPoToken, mPoTokenUrl));
+                        mVisitorCookie, mEnabledFormats, mHiddenContent, mSkipAuth, mPoToken));
     }
 
     private void persistCachedDataReal() {

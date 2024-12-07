@@ -14,18 +14,7 @@ internal object PoTokenCloudService {
     private const val RETRY_DELAY_MS: Long = 50_000
     private const val ONE_DAY_MS: Long = 24 * 60 * 60 * 1_000
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)
-    private var baseUrl: String
-
-    init {
-        val poTokenUrl = MediaServiceData.instance().poTokenUrl
-
-        baseUrl = if (PO_TOKEN_CLOUD_BASE_URLS.contains(poTokenUrl)) {
-            poTokenUrl
-        } else {
-            MediaServiceData.instance().poToken = null
-            PO_TOKEN_CLOUD_BASE_URLS[0]
-        }
-    }
+    private var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS.random()
 
     @JvmStatic
     fun updatePoToken() = runBlocking {
@@ -59,7 +48,6 @@ internal object PoTokenCloudService {
         for (i in 0 .. RETRY_TIMES) {
             poToken = RetrofitHelper.get(api.getPoToken(baseUrl))
             if (poToken?.poToken != null) {
-                MediaServiceData.instance().poTokenUrl = baseUrl
                 break
             }
 

@@ -10,10 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 internal object PoTokenCloudService {
-    private const val RETRY_TIMES: Int = 1
     private const val RETRY_DELAY_MS: Long = 50_000
     private const val ONE_DAY_MS: Long = 24 * 60 * 60 * 1_000
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)
+    private val RETRY_TIMES: Int = PO_TOKEN_CLOUD_BASE_URLS.size
     private var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS.random()
 
     @JvmStatic
@@ -45,7 +45,7 @@ internal object PoTokenCloudService {
     private suspend fun getPoTokenResponse(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null
 
-        for (i in 0 .. RETRY_TIMES) {
+        for (i in 0 until RETRY_TIMES) {
             poToken = RetrofitHelper.get(api.getPoToken(baseUrl))
             if (poToken?.poToken != null) {
                 break
@@ -53,7 +53,7 @@ internal object PoTokenCloudService {
 
             baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
 
-            if (i < RETRY_TIMES)
+            if (i < (RETRY_TIMES - 1))
                 delay(RETRY_DELAY_MS)
         }
 
@@ -78,7 +78,7 @@ internal object PoTokenCloudService {
     private suspend fun getPoTokenResponsePart(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null
 
-        for (i in 0 .. RETRY_TIMES) {
+        for (i in 0 until RETRY_TIMES) {
             val part1 = RetrofitHelper.get(api.getPoTokenPart1("$baseUrl/part1"))
 
             if (part1?.requestKey == null || part1.botguardResponse == null)
@@ -96,7 +96,7 @@ internal object PoTokenCloudService {
 
             baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
 
-            if (i < RETRY_TIMES)
+            if (i < (RETRY_TIMES - 1))
                 delay(RETRY_DELAY_MS)
         }
 

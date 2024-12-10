@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.nsig.NSigExtractor;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
-import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
@@ -23,16 +23,14 @@ public class AppService {
     private static AppService sInstance;
     private final AppApiWrapper mAppApiWrapper;
     //private Duktape mDuktape;
-    private AppInfo mCachedAppInfo;
     private PlayerData mCachedPlayerData;
     private ClientData mCachedClientData;
-    private long mAppInfoUpdateTimeMs;
     private long mPlayerDataUpdateTimeMs;
     private long mClientDataUpdateTimeMs;
     private NSigExtractor mNSigExtractor;
 
     private AppService() {
-        mAppApiWrapper = new AppApiWrapper();
+        mAppApiWrapper = new AppApiWrapperCached();
     }
 
     public static AppService instance() {
@@ -181,10 +179,8 @@ public class AppService {
      * Used with get_video_info, anonymous search and suggestions
      */
     public String getVisitorData() {
-        updateAppInfoData();
-
         // TODO: NPE 300!!!
-        return mCachedAppInfo != null ? mCachedAppInfo.getVisitorData() : null;
+        return getAppInfoData() != null ? getAppInfoData().getVisitorData() : null;
     }
 
     private static boolean isAllNulls(List<String> ciphered) {
@@ -248,33 +244,19 @@ public class AppService {
     }
 
     private String getPlayerUrl() {
-        updateAppInfoData();
-
         // NOTE: NPE 2.5K
         //MediaServiceData data = MediaServiceData.instance();
         //return data.getPlayerUrl() != null ? data.getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
-        return mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        return getAppInfoData() != null ? getAppInfoData().getPlayerUrl() : null;
     }
 
     private String getClientUrl() {
-        updateAppInfoData();
-
         // NOTE: NPE 143K!!!
-        return mCachedAppInfo != null ? mCachedAppInfo.getClientUrl() : null;
+        return getAppInfoData() != null ? getAppInfoData().getClientUrl() : null;
     }
 
-    private synchronized void updateAppInfoData() {
-        if (mCachedAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
-            return;
-        }
-
-        Log.d(TAG, "updateAppInfoData");
-
-        mCachedAppInfo = mAppApiWrapper.getAppInfo(DefaultHeaders.APP_USER_AGENT);
-
-        if (mCachedAppInfo != null) {
-            mAppInfoUpdateTimeMs = System.currentTimeMillis();
-        }
+    private synchronized AppInfo getAppInfoData() {
+        return mAppApiWrapper.getAppInfo(DefaultHeaders.APP_USER_AGENT);
     }
 
     private synchronized void updatePlayerData() {
@@ -323,13 +305,13 @@ public class AppService {
     }
 
     public void invalidateCache() {
-        mCachedAppInfo = null;
+        mAppApiWrapper.invalidateCache();
         mCachedPlayerData = null;
         mCachedClientData = null;
     }
 
     public void refreshCacheIfNeeded() {
-        updateAppInfoData();
+        getAppInfoData();
         updatePlayerData();
         updateClientData();
     }

@@ -76,4 +76,8 @@ public class AppApiWrapper {
     public void invalidateVisitorData() {
         MediaServiceData.instance().setVisitorCookie(null);
     }
+
+    public void invalidateCache() {
+        // NOP
+    }
 }

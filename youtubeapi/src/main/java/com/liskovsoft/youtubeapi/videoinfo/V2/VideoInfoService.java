@@ -59,7 +59,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
         mSkipAuthBlock = mSkipAuth;
 
-        VideoInfo result = getRootVideoInfo(videoId, clickTrackingParams);
+        VideoInfo result = firstNonNull(videoId, clickTrackingParams);
 
         mSkipAuthBlock = false;
 

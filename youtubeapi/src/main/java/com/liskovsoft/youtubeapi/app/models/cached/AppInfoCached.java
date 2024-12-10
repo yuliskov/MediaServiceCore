@@ -6,7 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 
 public class AppInfoCached extends AppInfo {
-    private static final String DELIM = "%ai%";
+    private static final String DELIM = "%aic%";
     private final String mPlayerUrl;
     private final String mClientUrl;
     private final String mVisitorData;
@@ -17,7 +17,7 @@ public class AppInfoCached extends AppInfo {
         mVisitorData = visitorData;
     }
 
-    public static AppInfo fromString(String spec) {
+    public static AppInfoCached fromString(String spec) {
         if (spec == null) {
             return null;
         }
@@ -25,6 +25,10 @@ public class AppInfoCached extends AppInfo {
         String[] split = Helpers.split(DELIM, spec);
 
         return new AppInfoCached(Helpers.parseStr(split, 0), Helpers.parseStr(split, 1), Helpers.parseStr(split, 2));
+    }
+
+    public static AppInfoCached from(AppInfo appInfo) {
+        return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
     }
 
     @NonNull

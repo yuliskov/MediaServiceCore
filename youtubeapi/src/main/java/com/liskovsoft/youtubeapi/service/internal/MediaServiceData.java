@@ -56,9 +56,9 @@ public class MediaServiceData {
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
     private PoTokenResponse mPoToken;
-    private AppInfo mAppInfo;
-    private PlayerData mPlayerData;
-    private ClientData mClientData;
+    private AppInfoCached mAppInfo;
+    private PlayerDataCached mPlayerData;
+    private ClientDataCached mClientData;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -236,31 +236,31 @@ public class MediaServiceData {
         persistData();
     }
 
-    public AppInfo getAppInfo() {
+    public AppInfoCached getAppInfo() {
         return mAppInfo;
     }
 
-    public void setAppInfo(AppInfo appInfo) {
+    public void setAppInfo(AppInfoCached appInfo) {
         mAppInfo = appInfo;
 
         persistData();
     }
 
-    public PlayerData getPlayerData() {
+    public PlayerDataCached getPlayerData() {
         return mPlayerData;
     }
 
-    public void setPlayerData(PlayerData playerData) {
+    public void setPlayerData(PlayerDataCached playerData) {
         mPlayerData = playerData;
 
         persistData();
     }
 
-    public ClientData getClientData() {
+    public ClientDataCached getClientData() {
         return mClientData;
     }
 
-    public void setClientData(ClientData clientData) {
+    public void setClientData(ClientDataCached clientData) {
         mClientData = clientData;
 
         persistData();

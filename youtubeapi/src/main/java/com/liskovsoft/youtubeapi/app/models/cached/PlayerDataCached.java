@@ -6,33 +6,52 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 
 public class PlayerDataCached extends PlayerData {
-    private static final String DELIM = "%pd%";
+    private static final String DELIM = "%pdc%";
+    private final String mPlayerUrl;
     private final String mClientPlaybackNonceFunction;
     private final String mRawClientPlaybackNonceFunction;
     private final String mDecipherFunction;
     private final String mSignatureTimestamp;
 
-    private PlayerDataCached(String clientPlaybackNonceFunction, String rawClientPlaybackNonceFunction, String decipherFunction, String signatureTimestamp) {
+    private PlayerDataCached(String playerUrl,
+                             String clientPlaybackNonceFunction,
+                             String rawClientPlaybackNonceFunction,
+                             String decipherFunction,
+                             String signatureTimestamp) {
+        mPlayerUrl = playerUrl;
         mClientPlaybackNonceFunction = clientPlaybackNonceFunction;
         mRawClientPlaybackNonceFunction = rawClientPlaybackNonceFunction;
         mDecipherFunction = decipherFunction;
         mSignatureTimestamp = signatureTimestamp;
     }
 
-    public static PlayerData fromString(String spec) {
+    public static PlayerDataCached fromString(String spec) {
         if (spec == null) {
             return null;
         }
 
         String[] split = Helpers.split(DELIM, spec);
 
-        return new PlayerDataCached(Helpers.parseStr(split, 0), Helpers.parseStr(split, 1), Helpers.parseStr(split, 2), Helpers.parseStr(split, 3));
+        return new PlayerDataCached(
+                Helpers.parseStr(split, 0),
+                Helpers.parseStr(split, 1),
+                Helpers.parseStr(split, 2),
+                Helpers.parseStr(split, 3),
+                Helpers.parseStr(split, 4));
+    }
+
+    public static PlayerDataCached from(String playerUrl, PlayerData playerData) {
+        return new PlayerDataCached(playerUrl,
+                playerData.getClientPlaybackNonceFunction(),
+                playerData.getRawClientPlaybackNonceFunction(),
+                playerData.getDecipherFunction(),
+                playerData.getSignatureTimestamp());
     }
 
     @NonNull
     @Override
     public String toString() {
-        return Helpers.merge(DELIM, mClientPlaybackNonceFunction, mRawClientPlaybackNonceFunction, mDecipherFunction, mSignatureTimestamp);
+        return Helpers.merge(DELIM, mPlayerUrl, mClientPlaybackNonceFunction, mRawClientPlaybackNonceFunction, mDecipherFunction, mSignatureTimestamp);
     }
 
     @Override
@@ -53,5 +72,9 @@ public class PlayerDataCached extends PlayerData {
     @Override
     public String getSignatureTimestamp() {
         return mSignatureTimestamp;
+    }
+
+    public String getPlayerUrl() {
+        return mPlayerUrl;
     }
 }

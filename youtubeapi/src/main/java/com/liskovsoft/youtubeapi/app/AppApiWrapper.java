@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
+import com.liskovsoft.youtubeapi.app.nsig.NSigExtractor;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
@@ -46,7 +47,11 @@ public class AppApiWrapper {
         Call<PlayerData> wrapper = mAppApi.getPlayerData(playerUrl);
         return RetrofitHelper.get(wrapper);
     }
-    
+
+    public NSigExtractor getNSigExtractor(String playerUrl) {
+        return new NSigExtractor(playerUrl);
+    }
+
     public ClientData getClientData(String clientUrl) {
         if (clientUrl == null) {
             return null;
@@ -79,5 +84,10 @@ public class AppApiWrapper {
 
     public void invalidateCache() {
         // NOP
+    }
+
+    public boolean isPlayerCacheActual() {
+        // NOP
+        return false;
     }
 }

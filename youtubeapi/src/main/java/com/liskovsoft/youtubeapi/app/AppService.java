@@ -119,31 +119,6 @@ public class AppService {
     }
 
     /**
-     * Throttle strings using js code
-     */
-    private List<String> fixThrottlingOld(List<String> throttled) {
-        if (isAllNulls(throttled)) {
-            return throttled;
-        }
-
-        String throttleCode = createThrottleCode(throttled);
-
-        if (throttleCode == null) {
-            return throttled;
-        }
-
-        return runCode(throttleCode);
-    }
-
-    private String fixThrottlingOld(String throttled) {
-        if (throttled == null) {
-            return null;
-        }
-
-        return fixThrottlingOld(Collections.singletonList(throttled)).get(0);
-    }
-
-    /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
     public String getClientPlaybackNonce() {
@@ -243,27 +218,6 @@ public class AppService {
         return result.toString();
     }
 
-    private String createThrottleCode(List<String> throttled) {
-        String throttleFunction = getThrottleFunction();
-
-        if (throttleFunction == null) {
-            Log.e(TAG, "Oops. ThrottleFunction is null...");
-            return null;
-        }
-
-        StringBuilder result = new StringBuilder();
-        result.append(throttleFunction);
-        result.append("var result = [];");
-
-        for (String cipher : throttled) {
-            result.append(String.format("result.push(throttleSignature('%s'));", cipher));
-        }
-
-        result.append("result.toString();");
-
-        return result.toString();
-    }
-
     private List<String> runCode(String code) {
         String result = V8Runtime.instance().evaluate(code);
 
@@ -284,13 +238,6 @@ public class AppService {
         updatePlayerData();
 
         return mCachedPlayerData != null ? mCachedPlayerData.getDecipherFunction() : null;
-    }
-
-    private String getThrottleFunction() {
-        updatePlayerData();
-
-        // NOTE: NPE 24 events
-        return mCachedPlayerData != null ? mCachedPlayerData.getThrottleFunction() : null;
     }
 
     private String getClientPlaybackNonceFunction() {

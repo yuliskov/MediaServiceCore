@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
@@ -12,6 +13,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import junit.framework.Assert.assertNotNull
@@ -166,7 +168,7 @@ class BrowseApiTest {
     fun testKidsMediaItemConversion() {
         val kidsHome = getKidsHome()
 
-        val mediaGroup = KidsSectionMediaGroup(kidsHome?.getRootSection()!!)
+        val mediaGroup = KidsSectionMediaGroup(kidsHome?.getRootSection()!!, createOptions(MediaGroup.TYPE_KIDS_HOME))
 
         BrowseTestHelper.checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
     }
@@ -333,11 +335,11 @@ class BrowseApiTest {
 
         for (tab in trending!!.getTabs()!!) {
             if (tab!!.content != null) {
-                assertTrue("Root tab contains videos", tab.getItems()?.size ?: 0 > 10)
+                assertTrue("Root tab contains videos", (tab.getItems()?.size ?: 0) > 10)
             } else {
                 val tabContent = getTrendingTab(tab.endpoint?.getBrowseParams())
 
-                assertTrue("Next tab contains videos", tabContent?.getItems()?.size ?: 0 > 10)
+                assertTrue("Next tab contains videos", (tabContent?.getItems()?.size ?: 0) > 10)
             }
         }
     }
@@ -345,14 +347,14 @@ class BrowseApiTest {
     @Test
     fun testChannelTopicContinuation() {
         // World of tanks recently uploaded
-        val browse = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb("UC1dGjtlDiiDM0gc_ghB1nTQ", "EgZyZWNlbnQ%3D"))
+        val browse = mService?.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, "UC1dGjtlDiiDM0gc_ghB1nTQ", "EgZyZWNlbnQ%3D"))
 
         val result = RetrofitHelper.get(browse)
 
         assertTrue("Topic has continuation token", result?.getContinuationToken() != null)
 
         val continuation =
-            mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(result?.getContinuationToken()!!))
+            mService?.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, result?.getContinuationToken()!!))
 
         val continuationResult = RetrofitHelper.get(continuation)
 
@@ -402,7 +404,7 @@ class BrowseApiTest {
     }
 
     private fun checkContinuationWeb(token: String?, checkNextToken: Boolean = true) {
-        val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQueryWeb(token!!))
+        val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
 
@@ -414,7 +416,7 @@ class BrowseApiTest {
     }
 
     private fun checkContinuationTV(token: String?, checkNextToken: Boolean = true) {
-        val continuationResult = mService?.getContinuationResultTV(BrowseApiHelper.getContinuationQueryTV(token!!))
+        val continuationResult = mService?.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
 
@@ -426,55 +428,55 @@ class BrowseApiTest {
     }
 
     private fun getSubscriptions(): BrowseResult? {
-        val subsResult = mService?.getBrowseResult(BrowseApiHelper.getSubscriptionsQueryWeb())
+        val subsResult = mService?.getBrowseResult(BrowseApiHelper.getSubscriptionsQuery(AppClient.WEB))
 
         return RetrofitHelper.get(subsResult)
     }
 
     private fun getHome(): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getHomeQueryWeb())
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getHomeQuery(AppClient.WEB))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getAltHome(): BrowseResult? {
-        val homeResult = mService?.getBrowseResultMobile(BrowseApiHelper.getHomeQueryMWEB())
+        val homeResult = mService?.getBrowseResultMobile(BrowseApiHelper.getHomeQuery(AppClient.MWEB))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelSearch(channelId: String?, query: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelSearchQueryWeb(channelId!!, query!!))
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelSearchQuery(AppClient.WEB, channelId!!, query!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelVideos(channelId: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelVideosQueryWeb(channelId!!))
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelLive(channelId: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQueryWeb(channelId!!))
+        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelHome(channelId: String?): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelHomeQueryWeb(channelId!!))
+        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelHomeQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(result)
     }
 
     private fun getChannelReleases(channelId: String?): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelReleasesQueryWeb(channelId!!))
+        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelReleasesQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(result)
     }
 
     private fun getChannelPlaylist(channelId: String?): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb(channelId!!))
+        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(result)
     }
@@ -498,7 +500,7 @@ class BrowseApiTest {
     }
 
     private fun getSports(): BrowseResultTV? {
-        val kidsResult = mService?.getBrowseResultTV(BrowseApiHelper.getSportsQueryTV())
+        val kidsResult = mService?.getBrowseResultTV(BrowseApiHelper.getSportsQuery(AppClient.TV))
 
         return RetrofitHelper.get(kidsResult)
     }
@@ -540,14 +542,20 @@ class BrowseApiTest {
     }
 
     private fun getTrending(): BrowseResult? {
-        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getTrendingQueryWeb())
+        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getTrendingQuery(AppClient.WEB))
 
         return RetrofitHelper.get(trendingResult)
     }
 
     private fun getTrendingTab(params: String?): BrowseResult? {
-        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getChannelQueryWeb("FEtrending", params))
+        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, "FEtrending", params))
 
         return RetrofitHelper.get(trendingResult)
+    }
+
+    private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS): MediaGroupOptions {
+        return MediaGroupOptions(
+            groupType = groupType
+        )
     }
 }

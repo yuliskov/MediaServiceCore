@@ -17,7 +17,7 @@ public class PlayerData {
 
     private static final Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE_V1 = Pattern.compile("function [$\\w]+\\(\\)");
     private static final Pattern SIGNATURE_CLIENT_PLAYBACK_NONCE_V2 =
-            Pattern.compile("(function [$\\w]+\\(a?\\)[\\S\\s]*)(function [$\\w]+\\(a?\\))([\\S\\s]*)");
+            Pattern.compile("(function [$\\w]+\\(([\\w])\\)[\\S\\s]*)(function [$\\w]+\\([\\w]\\))([\\S\\s]*)");
 
     /**
      * Return Client Playback Nonce (CPN) function that used in tracking as string.<br/>
@@ -27,8 +27,8 @@ public class PlayerData {
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
     @FieldNullable
-    @RegExp(";function [$\\w]+\\(a?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues[\\S\\s]*?" +
-            "function [$\\w]+\\(\\)\\{for\\(var .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
+    @RegExp(";function [$\\w]+\\([\\w]?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues[\\S\\s]*?" +
+            "function [$\\w]+\\(\\)\\{for\\(var .*[\\w]\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return [\\w]\\.join\\(\"\"\\)\\}")
     private String mClientPlaybackNonceFunctionV1;
 
     /**
@@ -38,8 +38,8 @@ public class PlayerData {
      * Note: [\S\s]* - match any char (including new lines) after getRandomValues<br/>
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
-    @RegExp("function [$\\w]+\\(a?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues[\\S\\s]*?" +
-            "function [$\\w]+\\(a?\\)\\{.*for\\(\\w+ .*b\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return b\\.join\\(\"\"\\)\\}")
+    @RegExp("function [$\\w]+\\([\\w]?\\)\\{if\\(window\\.crypto&&window\\.crypto\\.getRandomValues[\\S\\s]*?" +
+            "function [$\\w]+\\([\\w]?\\)\\{.*for\\(\\w+ .*[\\w]\\.push\\(\".*\"\\.charAt\\(.*\\)\\);return [\\w]\\.join\\(\"\"\\)\\}")
     private String mClientPlaybackNonceFunctionV2;
 
     public String getClientPlaybackNonceFunction() {
@@ -64,14 +64,14 @@ public class PlayerData {
 
     private String getClientPlaybackNonceFunctionV2() {
         return Helpers.replace(mClientPlaybackNonceFunctionV2, SIGNATURE_CLIENT_PLAYBACK_NONCE_V2,
-                "$1function getCPN(a)$3function getClientPlaybackNonce(){return getCPN(16)}");
+                "$1function getCPN($2)$4function getClientPlaybackNonce(){return getCPN(16)}");
     }
 
     // End ClientPlaybackNonceFunction
 
     // Begin DecipherFunction
 
-    private static final Pattern SIGNATURE_DECIPHER = Pattern.compile("function [$\\w]+\\(a\\)");
+    private static final Pattern SIGNATURE_DECIPHER = Pattern.compile("function [$\\w]+\\(([\\w])\\)");
 
     /**
      * Return JS decipher function as string.<br/>
@@ -79,32 +79,15 @@ public class PlayerData {
      * Player url example: <b>https://www.youtube.com/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
     @RegExp({
-        ";\\w+ [$\\w]+=\\{[\\S\\s]{10,200}?a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
-        //";var [$\\w]+=\\{.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
-        //";var [$\\w]+=\\{.*\\n.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}",
-        //";var [$\\w]+=\\{.*\\n.*a\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}"
+        ";\\w+ [$\\w]+=\\{[\\S\\s]{10,200}?[\\w]\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\([\\w]\\)\\{.*[\\w]\\.split\\(\"\"\\).*;return [\\w]\\.join\\(\"\"\\)\\}",
     })
     private String mDecipherFunction;
 
     public String getDecipherFunction() {
-        return Helpers.replace(mDecipherFunction, SIGNATURE_DECIPHER, "function decipherSignature(a)");
+        return Helpers.replace(mDecipherFunction, SIGNATURE_DECIPHER, "function decipherSignature($1)");
     }
 
     // End DecipherFunction
-
-    // Begin ThrottleFunction
-
-    private static final Pattern SIGNATURE_THROTTLE = Pattern.compile("^;function [$\\w]+\\(a\\)");
-
-    @FieldNullable
-    @RegExp(";function [$\\w]+\\(a\\)\\{var b=a\\.split\\(\"\"\\)[\\S\\s]*?return b\\.join\\(\"\"\\)\\}")
-    private String mThrottleFunction;
-
-    public String getThrottleFunction() {
-        return Helpers.replace(mThrottleFunction, SIGNATURE_THROTTLE, "function throttleSignature(a)");
-    }
-
-    // End ThrottleFunction
 
     // Begin SignatureTimestamp
 

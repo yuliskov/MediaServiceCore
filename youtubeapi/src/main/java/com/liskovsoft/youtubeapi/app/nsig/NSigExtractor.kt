@@ -16,6 +16,22 @@ internal class NSigExtractor(private val playerUrl: String) {
     private var mNFuncPlayerUrl: String? = null
     private var mNFuncCode: Pair<List<String>, String>? = null
     private var mNSig: Pair<String, String?>? = null
+    //private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
+    //        (?:
+    //            \.get\("n"\)\)&&\(b=|
+    //            (?:
+    //                b=String\.fromCharCode\(110\)|
+    //                ([a-zA-Z0-9_$.]+)&&\(b="nn"\[\+\1\]
+    //            )
+    //            (?:
+    //                ,[a-zA-Z0-9_$]+\(a\))?,c=a\.
+    //                (?:
+    //                    get\(b\)|
+    //                    [a-zA-Z0-9_$]+\[b\]\|\|null
+    //                )\)&&\(c=|
+    //            \b([a-zA-Z0-9_$]+)=
+    //        )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
+    //        (?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
     private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
@@ -31,10 +47,13 @@ internal class NSigExtractor(private val playerUrl: String) {
                     )\)&&\(c=|
                 \b([a-zA-Z0-9_$]+)=
             )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
-            (?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
+            (?(2),[a-zA-Z0-9_$]+\.set\((?:"n+"|[a-zA-Z0-9_$]+)\,\2\))""", Pattern.COMMENTS)
+    //private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
+    //            ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
+    //            \s*\{(?:(?!\};).)+?["']enhanced_except_""", Pattern.COMMENTS)
     private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
                 ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
-                \s*\{(?:(?!\};).)+?["']enhanced_except_""", Pattern.COMMENTS)
+                \s*\{(?:(?!\};).)+?return\s*(["'])[\w-]+_w8_\1\s*\+\s*[a-zA-Z0-9_$]+""", Pattern.COMMENTS)
 
     init {
         restoreNFuncCode()
@@ -92,9 +111,19 @@ internal class NSigExtractor(private val playerUrl: String) {
 
         val funcName = extractNFunctionName(jsCode) ?: extractNFunctionName2(jsCode) ?: return
 
-        mNFuncCode = JSInterpret.extractFunctionCode(jsCode, funcName) ?: return
+        mNFuncCode = fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName))
 
         persistNFuncCode()
+    }
+
+    private fun fixupNFunctionCode(data: Pair<List<String>, String>): Pair<List<String>, String> {
+        val argNames = data.first
+        val code = data.second
+        val patternString = """;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(['"])undefined\1\s*\)\s*return\s+${argNames[0]};"""
+        val pattern = Pattern.compile(patternString)
+        val matcher = pattern.matcher(code)
+        val updatedCode = matcher.replaceAll(";")
+        return Pair(argNames, updatedCode)
     }
 
     /**

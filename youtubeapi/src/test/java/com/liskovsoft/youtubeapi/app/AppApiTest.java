@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.app;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -51,7 +51,7 @@ public class AppApiTest {
         assertNotNull("Decipher function not null", decipherFunctionContent);
         assertFalse("Decipher function is not empty", decipherFunctionContent.isEmpty());
         assertTrue("Decipher function has proper content",
-                decipherFunctionContent.startsWith(";var ") && decipherFunctionContent.contains("function ") &&
+                Helpers.startsWithAny(decipherFunctionContent, ";var ", ";const ") && decipherFunctionContent.contains("function ") &&
                         decipherFunctionContent.endsWith(".join(\"\")}"));
     }
 
@@ -64,18 +64,6 @@ public class AppApiTest {
         assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
         assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith("function ") &&
                 playbackNonceFunctionContent.contains("function getClientPlaybackNonce") && playbackNonceFunctionContent.endsWith("}"));
-    }
-
-    @Ignore
-    @Test
-    public void testThrottleFunctionIsValid() {
-        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
-
-        String throttleFunction = playerData.getThrottleFunction();
-        assertNotNull("Throttle function not null", throttleFunction);
-        assertFalse("Throttle function not empty", throttleFunction.isEmpty());
-        assertTrue("Throttle function has valid content", throttleFunction.startsWith("function throttleSignature")
-                && throttleFunction.endsWith(".join(\"\")}"));
     }
 
     @Test

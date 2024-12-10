@@ -27,7 +27,7 @@ class BrowseService2Test {
     fun testThatShortsNotEmpty() {
         val sections = BrowseService2.getHome()
 
-        val shorts = sections?.get(1)
+        val shorts = sections?.first?.get(1)
 
         assertTrue("Shorts not empty", shorts?.mediaItems?.isNotEmpty() == true)
     }
@@ -36,7 +36,7 @@ class BrowseService2Test {
     fun testThatHomeContainsFeedbackTokens() {
         val sections = BrowseService2.getHome()
 
-        val home = sections?.get(0)
+        val home = sections?.first?.get(0)
 
         val mediaItem = home?.mediaItems?.get(0)
 

@@ -69,7 +69,7 @@ public class AppApiWrapperCached extends AppApiWrapper {
         PlayerData playerData = super.getPlayerData(playerUrl);
 
         if (!check(playerData)) {
-            playerData = mData.getPlayerData() != null ? mData.getPlayerData() : playerData;
+            playerData = playerDataCached != null ? playerDataCached : playerData;
         } else {
             mData.setPlayerData(PlayerDataCached.from(playerUrl, playerData));
             mPlayerData = playerData;
@@ -115,7 +115,7 @@ public class AppApiWrapperCached extends AppApiWrapper {
         ClientData clientData = super.getClientData(clientUrl);
 
         if (!check(clientData)) {
-            clientData = mData.getClientData() != null ? mData.getClientData() : clientData;
+            clientData = clientDataCached != null ? clientDataCached : clientData;
         } else {
             mData.setClientData(ClientDataCached.from(clientUrl, clientData));
             mClientData = clientData;

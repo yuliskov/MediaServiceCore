@@ -39,12 +39,15 @@ public class AppApiWrapperCached extends AppApiWrapper {
         AppInfo appInfo = super.getAppInfo(userAgent);
 
         if (!check(appInfo)) {
-            appInfo = mData.getAppInfo() != null ? mData.getAppInfo() : appInfo;
+            if (mData.getAppInfo() != null) {
+                appInfo = mData.getAppInfo();
+            }
         } else {
             mData.setAppInfo(AppInfoCached.from(appInfo));
-            mAppInfo = appInfo;
-            mAppInfoUpdateTimeMs = System.currentTimeMillis();
         }
+
+        mAppInfo = appInfo;
+        mAppInfoUpdateTimeMs = System.currentTimeMillis();
 
         return appInfo;
     }
@@ -69,13 +72,16 @@ public class AppApiWrapperCached extends AppApiWrapper {
         PlayerData playerData = super.getPlayerData(playerUrl);
 
         if (!check(playerData)) {
-            playerData = playerDataCached != null ? playerDataCached : playerData;
+            if (playerDataCached != null) {
+                playerData = playerDataCached;
+                playerUrl = playerDataCached.getPlayerUrl();
+            }
         } else {
             mData.setPlayerData(PlayerDataCached.from(playerUrl, playerData));
-            mPlayerData = playerData;
-            mPlayerDataUpdateTimeMs = System.currentTimeMillis();
         }
 
+        mPlayerData = playerData;
+        mPlayerDataUpdateTimeMs = System.currentTimeMillis();
         updateNSigExtractor(playerUrl);
 
         return playerData;
@@ -87,7 +93,9 @@ public class AppApiWrapperCached extends AppApiWrapper {
             mNSigExtractor = super.getNSigExtractor(playerUrl);
         } catch (Throwable e) { // StackOverflowError | IllegalStateException
             e.printStackTrace();
+            mAppInfo = null;
             mPlayerData = null;
+            mClientData = null;
         }
     }
 
@@ -115,12 +123,15 @@ public class AppApiWrapperCached extends AppApiWrapper {
         ClientData clientData = super.getClientData(clientUrl);
 
         if (!check(clientData)) {
-            clientData = clientDataCached != null ? clientDataCached : clientData;
+            if (clientDataCached != null) {
+                clientData = clientDataCached;
+            }
         } else {
             mData.setClientData(ClientDataCached.from(clientUrl, clientData));
-            mClientData = clientData;
-            mClientDataUpdateTimeMs = System.currentTimeMillis();
         }
+
+        mClientData = clientData;
+        mClientDataUpdateTimeMs = System.currentTimeMillis();
 
         return clientData;
     }

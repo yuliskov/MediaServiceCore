@@ -16,13 +16,14 @@ public class AppApiWrapperCached extends AppApiWrapper {
     private static final String TAG = AppApiWrapperCached.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
     private final MediaServiceData mData;
-    private AppInfo mAppInfo;
-    private PlayerData mPlayerData;
-    private ClientData mClientData;
+    private AppInfoCached mAppInfo;
+    private PlayerDataCached mPlayerData;
+    private ClientDataCached mClientData;
     private NSigExtractor mNSigExtractor;
     private long mAppInfoUpdateTimeMs;
     private long mPlayerDataUpdateTimeMs;
     private long mClientDataUpdateTimeMs;
+    private boolean mFallbackMode;
 
     public AppApiWrapperCached() {
         mData = MediaServiceData.instance();
@@ -34,22 +35,28 @@ public class AppApiWrapperCached extends AppApiWrapper {
             return mAppInfo;
         }
 
+        if (mFallbackMode && mData.getAppInfo() != null) {
+            mAppInfo = mData.getAppInfo();
+            mAppInfoUpdateTimeMs = System.currentTimeMillis();
+            return mAppInfo;
+        }
+
         Log.d(TAG, "updateAppInfoData");
 
         AppInfo appInfo = super.getAppInfo(userAgent);
 
-        if (!check(appInfo)) {
-            if (mData.getAppInfo() != null) {
-                appInfo = mData.getAppInfo();
-            }
-        } else {
-            mData.setAppInfo(AppInfoCached.from(appInfo));
-        }
+        //if (!check(appInfo)) {
+        //    if (mData.getAppInfo() != null) {
+        //        mAppInfo = mData.getAppInfo();
+        //        mAppInfoUpdateTimeMs = System.currentTimeMillis();
+        //        return mAppInfo;
+        //    }
+        //}
 
-        mAppInfo = appInfo;
+        mAppInfo = AppInfoCached.from(appInfo);
         mAppInfoUpdateTimeMs = System.currentTimeMillis();
 
-        return appInfo;
+        return mAppInfo;
     }
 
     @Override
@@ -64,27 +71,32 @@ public class AppApiWrapperCached extends AppApiWrapper {
             mPlayerData = playerDataCached;
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
             updateNSigExtractor(playerUrl);
-            return playerDataCached;
+
+            persistCachedDataOrFail();
+
+            return mPlayerData;
         }
 
         Log.d(TAG, "updatePlayerData");
 
         PlayerData playerData = super.getPlayerData(playerUrl);
 
-        if (!check(playerData)) {
-            if (playerDataCached != null) {
-                playerData = playerDataCached;
-                playerUrl = playerDataCached.getPlayerUrl();
-            }
-        } else {
-            mData.setPlayerData(PlayerDataCached.from(playerUrl, playerData));
-        }
+        //if (!check(playerData)) {
+        //    if (playerDataCached != null) {
+        //        mPlayerData = playerDataCached;
+        //        mPlayerDataUpdateTimeMs = System.currentTimeMillis();
+        //        updateNSigExtractor(playerDataCached.getPlayerUrl());
+        //        return mPlayerData;
+        //    }
+        //}
 
-        mPlayerData = playerData;
+        mPlayerData = PlayerDataCached.from(playerUrl, playerData);
         mPlayerDataUpdateTimeMs = System.currentTimeMillis();
         updateNSigExtractor(playerUrl);
 
-        return playerData;
+        persistCachedDataOrFail();
+
+        return mPlayerData;
     }
 
     private void updateNSigExtractor(String playerUrl) {
@@ -115,25 +127,25 @@ public class AppApiWrapperCached extends AppApiWrapper {
         if (clientDataCached != null && Helpers.equals(clientDataCached.getClientUrl(), clientUrl)) {
             mClientData = clientDataCached;
             mClientDataUpdateTimeMs = System.currentTimeMillis();
-            return clientDataCached;
+            return mClientData;
         }
 
         Log.d(TAG, "updateClientData");
 
         ClientData clientData = super.getClientData(clientUrl);
 
-        if (!check(clientData)) {
-            if (clientDataCached != null) {
-                clientData = clientDataCached;
-            }
-        } else {
-            mData.setClientData(ClientDataCached.from(clientUrl, clientData));
-        }
+        //if (!check(clientData)) {
+        //    if (clientDataCached != null) {
+        //        mClientData = clientDataCached;
+        //        mClientDataUpdateTimeMs = System.currentTimeMillis();
+        //        return mClientData;
+        //    }
+        //}
 
-        mClientData = clientData;
+        mClientData = ClientDataCached.from(clientUrl, clientData);
         mClientDataUpdateTimeMs = System.currentTimeMillis();
 
-        return clientData;
+        return mClientData;
     }
 
     @Override
@@ -162,5 +174,18 @@ public class AppApiWrapperCached extends AppApiWrapper {
 
     private boolean check(ClientData clientData) {
         return clientData != null && clientData.getClientId() != null && clientData.getClientSecret() != null;
+    }
+
+    private void persistCachedDataOrFail() {
+        if (check(mAppInfo) && check(mPlayerData) && check(mClientData)) {
+            mData.setAppInfo(mAppInfo);
+            mData.setPlayerData(mPlayerData);
+            mData.setClientData(mClientData);
+        } else {
+            mAppInfo = null;
+            mPlayerData = null;
+            mClientData = null;
+            mFallbackMode = true;
+        }
     }
 }

@@ -28,6 +28,10 @@ public class AppInfoCached extends AppInfo {
     }
 
     public static AppInfoCached from(AppInfo appInfo) {
+        if (appInfo == null) {
+            return null;
+        }
+
         return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
     }
 

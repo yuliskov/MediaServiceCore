@@ -41,6 +41,10 @@ public class PlayerDataCached extends PlayerData {
     }
 
     public static PlayerDataCached from(String playerUrl, PlayerData playerData) {
+        if (playerData == null) {
+            return null;
+        }
+
         return new PlayerDataCached(playerUrl,
                 playerData.getClientPlaybackNonceFunction(),
                 playerData.getRawClientPlaybackNonceFunction(),

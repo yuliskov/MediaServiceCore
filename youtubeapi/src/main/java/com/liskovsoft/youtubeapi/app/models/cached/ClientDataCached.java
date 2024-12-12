@@ -28,6 +28,10 @@ public class ClientDataCached extends ClientData {
     }
 
     public static ClientDataCached from(String clientUrl, ClientData clientData) {
+        if (clientData == null) {
+            return null;
+        }
+
         return new ClientDataCached(clientUrl, clientData.getClientId(), clientData.getClientSecret());
     }
 

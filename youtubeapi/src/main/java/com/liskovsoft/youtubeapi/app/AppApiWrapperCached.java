@@ -70,9 +70,8 @@ public class AppApiWrapperCached extends AppApiWrapper {
         if (playerDataCached != null && Helpers.equals(playerDataCached.getPlayerUrl(), playerUrl)) {
             mPlayerData = playerDataCached;
             mPlayerDataUpdateTimeMs = System.currentTimeMillis();
-            updateNSigExtractor(playerUrl);
 
-            persistCachedDataOrFail();
+            persistPlayerDataOrFail();
 
             return mPlayerData;
         }
@@ -92,14 +91,17 @@ public class AppApiWrapperCached extends AppApiWrapper {
 
         mPlayerData = PlayerDataCached.from(playerUrl, playerData);
         mPlayerDataUpdateTimeMs = System.currentTimeMillis();
-        updateNSigExtractor(playerUrl);
 
-        persistCachedDataOrFail();
+        persistPlayerDataOrFail();
 
         return mPlayerData;
     }
 
     private void updateNSigExtractor(String playerUrl) {
+        if (mNSigExtractor != null && Helpers.equals(mNSigExtractor.getPlayerUrl(), playerUrl)) {
+            return;
+        }
+
         YouTubeMediaItemService.instance().invalidateCache();
         try {
             mNSigExtractor = super.getNSigExtractor(playerUrl);
@@ -176,11 +178,13 @@ public class AppApiWrapperCached extends AppApiWrapper {
         return clientData != null && clientData.getClientId() != null && clientData.getClientSecret() != null;
     }
 
-    private void persistCachedDataOrFail() {
+    private void persistPlayerDataOrFail() {
         if (check(mAppInfo) && check(mPlayerData) && check(mClientData)) {
             mData.setAppInfo(mAppInfo);
             mData.setPlayerData(mPlayerData);
             mData.setClientData(mClientData);
+
+            updateNSigExtractor(mPlayerData.getPlayerUrl());
         } else {
             mAppInfo = null;
             mPlayerData = null;

@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import java.util.regex.Pattern
 
-internal class NSigExtractor(private val playerUrl: String) {
+internal class NSigExtractor(val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data = MediaServiceData.instance()
     private var mNFuncPlayerUrl: String? = null

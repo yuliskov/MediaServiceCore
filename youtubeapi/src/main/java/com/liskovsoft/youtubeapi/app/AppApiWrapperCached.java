@@ -61,7 +61,7 @@ public class AppApiWrapperCached extends AppApiWrapper {
 
     @Override
     public PlayerData getPlayerData(String playerUrl) {
-        if (isPlayerCacheActual() || playerUrl == null) {
+        if (isPlayerCacheActual()) {
             return mPlayerData;
         }
 

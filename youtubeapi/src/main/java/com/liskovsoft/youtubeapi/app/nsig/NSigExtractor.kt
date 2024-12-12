@@ -12,7 +12,6 @@ import java.util.regex.Pattern
 internal class NSigExtractor(private val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data = MediaServiceData.instance()
-    private val mNFuncPatternUrl: String = "https://github.com/yuliskov/SmartTube/releases/download/latest/nfunc_pattern.txt"
     private var mNFuncPlayerUrl: String? = null
     private var mNFuncCode: Pair<List<String>, String>? = null
     private var mNSig: Pair<String, String?>? = null
@@ -56,18 +55,12 @@ internal class NSigExtractor(private val playerUrl: String) {
                 \s*\{(?:(?!\};).)+?return\s*(["'])[\w-]+_w8_\1\s*\+\s*[a-zA-Z0-9_$]+""", Pattern.COMMENTS)
 
     init {
+        // Get the code from the cache
         restoreNFuncCode()
 
+        // Obtain the code regularly
         if (mNFuncCode == null) {
             initNFuncCode()
-        }
-
-        if (mNFuncCode == null) {
-            val nFuncPattern = RetrofitHelper.get(mFileApi.getContent(mNFuncPatternUrl))?.content
-            nFuncPattern?.let {
-                mNFuncPattern = com.florianingerl.util.regex.Pattern.compile(nFuncPattern, Pattern.COMMENTS)
-                initNFuncCode()
-            }
         }
 
         // Restore previous success code

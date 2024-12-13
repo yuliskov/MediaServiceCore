@@ -178,13 +178,21 @@ public class AppApiWrapperCached extends AppApiWrapper {
         return clientData != null && clientData.getClientId() != null && clientData.getClientSecret() != null;
     }
 
+    private boolean checkNSig() {
+        if (mPlayerData == null) {
+            return false;
+        }
+
+        updateNSigExtractor(mPlayerData.getPlayerUrl());
+
+        return mPlayerData != null;
+    }
+
     private void persistPlayerDataOrFail() {
-        if (check(mAppInfo) && check(mPlayerData) && check(mClientData)) {
+        if (check(mAppInfo) && check(mPlayerData) && check(mClientData) && checkNSig()) {
             mData.setAppInfo(mAppInfo);
             mData.setPlayerData(mPlayerData);
             mData.setClientData(mClientData);
-
-            updateNSigExtractor(mPlayerData.getPlayerUrl());
         } else {
             mAppInfo = null;
             mPlayerData = null;

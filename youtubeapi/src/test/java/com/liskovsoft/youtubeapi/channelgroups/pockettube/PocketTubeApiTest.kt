@@ -1,8 +1,6 @@
-package com.liskovsoft.youtubeapi.channelgroups.grayjay
+package com.liskovsoft.youtubeapi.channelgroups.pockettube
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.liskovsoft.youtubeapi.channelgroups.grayjay.gen.GrayJayGroup
+import com.jayway.jsonpath.JsonPath
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
@@ -15,7 +13,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
-class GrayJayApiTest {
+class PocketTubeApiTest {
     private lateinit var mFileService: FileApi
 
     @Before
@@ -30,26 +28,21 @@ class GrayJayApiTest {
     }
 
     @Test
-    fun testRawResponse() {
-        val content = mFileService.getContent("https://github.com/yuliskov/SmartTube/releases/download/latest/grayjay_subscription_groups")
+    fun testResult() {
+        val content = mFileService.getContent("https://github.com/yuliskov/SmartTube/releases/download/latest/pockettube.json")
 
-        val grayJayContent = RetrofitHelper.get(content)?.content
+        val pocketTubeContent = RetrofitHelper.get(content)?.content
 
-        // replace:
-        // "{ => {
-        // }" => }
-        // \" => "
+        // Find group names
+        val groupNames: List<String> = JsonPath.read(pocketTubeContent, "$.ysc_collection.*~") // get keys query
 
-        val grayJayContentFixed = grayJayContent
-            ?.replace("\"{", "{")
-            ?.replace("}\"", "}")
-            ?.replace("\\\"", "\"")
+        assertTrue("Group names not empty", groupNames.isNotEmpty())
 
-        val gson = Gson()
-        val listType = object : TypeToken<List<GrayJayGroup>>() {}.type
+        for (groupName in groupNames) {
+            // Get groups content
+            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$.$groupName")
 
-        val response: List<GrayJayGroup> = gson.fromJson(grayJayContentFixed, listType)
-
-        assertTrue("Response not empty", response.isNotEmpty())
+            assertTrue("Channel ids not empty", channelIds.isNotEmpty())
+        }
     }
 }

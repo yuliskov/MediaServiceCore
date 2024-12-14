@@ -63,12 +63,12 @@ internal class NSigExtractor(val playerUrl: String) {
             initNFuncCode()
         }
 
-        // Restore previous success code
-        if (mNFuncCode == null && data.nFuncPlayerUrl != null) {
-            mNFuncPlayerUrl = data.nFuncPlayerUrl
-            initNFuncCode()
-            mNFuncPlayerUrl = null
-        }
+        //// Restore previous success code
+        //if (mNFuncCode == null && data.nFuncPlayerUrl != null) {
+        //    mNFuncPlayerUrl = data.nFuncPlayerUrl
+        //    initNFuncCode()
+        //    mNFuncPlayerUrl = null
+        //}
 
         if (mNFuncCode == null) {
             ReflectionHelper.dumpDebugInfo(javaClass, loadPlayer())
@@ -168,14 +168,14 @@ internal class NSigExtractor(val playerUrl: String) {
     }
 
     private fun persistNFuncCode() { // save on success
-        data.nFuncPlayerUrl = playerUrl
-        data.nFuncParams = mNFuncCode?.first
-        data.nFuncCode = mNFuncCode?.second
+        mNFuncCode?.let { data.nSigData = NSigData(playerUrl, it.first, it.second) }
     }
 
     private fun restoreNFuncCode() {
-        if (data.nFuncPlayerUrl == playerUrl && data.nFuncParams != null && data.nFuncCode != null) {
-            mNFuncCode = Pair(data.nFuncParams, data.nFuncCode)
+        val nSigData = data.nSigData
+
+        if (nSigData?.nFuncPlayerUrl == playerUrl) {
+            mNFuncCode = Pair(nSigData.nFuncParams, nSigData.nFuncCode)
         }
     }
 }

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsig
 
 import android.Manifest
 import androidx.test.rule.GrantPermissionRule
-import com.liskovsoft.youtubeapi.app.AppApiWrapper
+import com.liskovsoft.youtubeapi.app.AppServiceInt
 import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.app.models.AppInfo
 import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders
@@ -13,7 +13,7 @@ import org.junit.Test
 
 class NSigExtractorTest {
     private lateinit var mExtractor: NSigExtractor
-    private val mAppApiWrapper = AppApiWrapper()
+    private val mAppServiceInt = AppServiceInt()
 
     @JvmField
     @Rule
@@ -25,7 +25,7 @@ class NSigExtractorTest {
     }
 
     private fun getPlayerUrl(userAgent: String): String {
-        val appInfo: AppInfo = mAppApiWrapper.getAppInfo(userAgent)
+        val appInfo: AppInfo = mAppServiceInt.getAppInfo(userAgent)
 
         assertNotNull("AppInfo not null", appInfo)
 

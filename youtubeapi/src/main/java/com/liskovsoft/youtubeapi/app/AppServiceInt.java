@@ -10,10 +10,10 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class AppApiWrapper {
+public class AppServiceInt {
     private final AppApi mAppApi;
 
-    public AppApiWrapper() {
+    public AppServiceInt() {
         mAppApi = RetrofitHelper.create(AppApi.class);
     }
 

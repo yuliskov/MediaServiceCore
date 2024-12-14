@@ -12,8 +12,8 @@ import com.liskovsoft.youtubeapi.app.nsig.NSigExtractor;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
-public class AppApiWrapperCached extends AppApiWrapper {
-    private static final String TAG = AppApiWrapperCached.class.getSimpleName();
+public class AppServiceIntCached extends AppServiceInt {
+    private static final String TAG = AppServiceIntCached.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
     private final MediaServiceData mData;
     private AppInfoCached mAppInfo;
@@ -25,7 +25,7 @@ public class AppApiWrapperCached extends AppApiWrapper {
     private long mClientDataUpdateTimeMs;
     private boolean mFallbackMode;
 
-    public AppApiWrapperCached() {
+    public AppServiceIntCached() {
         mData = MediaServiceData.instance();
     }
 

@@ -3,6 +3,8 @@ package com.liskovsoft.youtubeapi.service.internal;
 import android.content.Context;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -16,6 +18,7 @@ import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
+import com.liskovsoft.youtubeapi.app.nsig.NSigData;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
 
 import java.util.List;
@@ -43,9 +46,6 @@ public class MediaServiceData {
     private String mDeviceId;
     private String mVideoInfoVersion;
     private int mVideoInfoType;
-    private String mNFuncPlayerUrl;
-    private List<String> mNFuncParams;
-    private String mNFuncCode;
     private String mPlayerUrl;
     private String mPlayerVersion;
     private String mVisitorCookie;
@@ -59,6 +59,7 @@ public class MediaServiceData {
     private AppInfoCached mAppInfo;
     private PlayerDataCached mPlayerData;
     private ClientDataCached mClientData;
+    private NSigData mNSigData;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -158,30 +159,13 @@ public class MediaServiceData {
     //    persistData();
     //}
 
-    public String getNFuncPlayerUrl() {
-        return mNFuncPlayerUrl;
+    @Nullable
+    public NSigData getNSigData() {
+        return mNSigData;
     }
 
-    public void setNFuncPlayerUrl(String playerUrl) {
-        mNFuncPlayerUrl = playerUrl;
-        persistData();
-    }
-
-    public List<String> getNFuncParams() {
-        return mNFuncParams;
-    }
-
-    public void setNFuncParams(List<String> nFuncParams) {
-        mNFuncParams = nFuncParams;
-        persistData();
-    }
-    
-    public String getNFuncCode() {
-        return mNFuncCode;
-    }
-
-    public void setNFuncCode(String nFuncCode) {
-        mNFuncCode = nFuncCode;
+    public void setNSigData(NSigData nSigData) {
+        mNSigData = nSigData;
         persistData();
     }
 
@@ -297,11 +281,12 @@ public class MediaServiceData {
         String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
         mVideoInfoVersion = Helpers.parseStr(split, 0);
         mVideoInfoType = Helpers.parseInt(split, 1);
-        mNFuncPlayerUrl = Helpers.parseStr(split, 2, lastPlayerUrl);
-        mNFuncParams = Helpers.parseStrList(split, 3);
-        mNFuncCode = Helpers.parseStr(split, 4);
+        //mNFuncPlayerUrl = Helpers.parseStr(split, 2, lastPlayerUrl);
+        //mNFuncParams = Helpers.parseStrList(split, 3);
+        //mNFuncCode = Helpers.parseStr(split, 4);
         mPlayerUrl = Helpers.parseStr(split, 5);
         mPlayerVersion = Helpers.parseStr(split, 6);
+        mNSigData = Helpers.parseItem(split, 7, NSigData::fromString);
     }
 
     private void persistData() {
@@ -329,6 +314,6 @@ public class MediaServiceData {
 
         mCachedPrefs.setMediaServiceCache(
                 Helpers.mergeData(mVideoInfoVersion, mVideoInfoType,
-                        mNFuncPlayerUrl, mNFuncParams, mNFuncCode, mPlayerUrl, mPlayerVersion));
+                        null, null, null, mPlayerUrl, mPlayerVersion, mNSigData));
     }
 }

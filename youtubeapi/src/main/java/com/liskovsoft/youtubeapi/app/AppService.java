@@ -19,11 +19,11 @@ import java.util.List;
 public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
     private static AppService sInstance;
-    private final AppApiWrapper mAppApiWrapper;
+    private final AppServiceInt mAppServiceInt;
     //private Duktape mDuktape;
 
     private AppService() {
-        mAppApiWrapper = new AppApiWrapperCached();
+        mAppServiceInt = new AppServiceIntCached();
     }
 
     public static AppService instance() {
@@ -239,19 +239,19 @@ public class AppService {
     }
 
     private synchronized AppInfo getAppInfoData() {
-        return mAppApiWrapper.getAppInfo(DefaultHeaders.APP_USER_AGENT);
+        return mAppServiceInt.getAppInfo(DefaultHeaders.APP_USER_AGENT);
     }
 
     private synchronized ClientData getClientData() {
-        return mAppApiWrapper.getClientData(getClientUrl());
+        return mAppServiceInt.getClientData(getClientUrl());
     }
 
     private synchronized PlayerData getPlayerData() {
-        return mAppApiWrapper.getPlayerData(getPlayerUrl());
+        return mAppServiceInt.getPlayerData(getPlayerUrl());
     }
 
     private NSigExtractor getNSigExtractor() {
-        return mAppApiWrapper.getNSigExtractor(getPlayerUrl());
+        return mAppServiceInt.getNSigExtractor(getPlayerUrl());
     }
 
     private synchronized void updatePoTokenData() {
@@ -259,7 +259,7 @@ public class AppService {
     }
 
     public void invalidateCache() {
-        mAppApiWrapper.invalidateCache();
+        mAppServiceInt.invalidateCache();
     }
 
     public void refreshCacheIfNeeded() {
@@ -277,10 +277,10 @@ public class AppService {
      * After reset user will get the latest js file versions.
      */
     public void invalidateVisitorData() {
-        mAppApiWrapper.invalidateVisitorData();
+        mAppServiceInt.invalidateVisitorData();
     }
 
     public boolean isPlayerCacheActual() {
-        return mAppApiWrapper.isPlayerCacheActual();
+        return mAppServiceInt.isPlayerCacheActual();
     }
 }

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 public class AppApiTest {
     private static final String POTOKEN_INPUT = "102307470137119736718||104417232878503778010";
-    private AppApiWrapper mAppApiWrapper;
+    private AppServiceInt mAppServiceInt;
 
     @Before
     public void setUp() {
@@ -30,7 +30,7 @@ public class AppApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mAppApiWrapper = new AppApiWrapper();
+        mAppServiceInt = new AppServiceInt();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class AppApiTest {
     public void testThatDecipherFunctionIsValid() {
         String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_TV);
 
-        PlayerData playerData = mAppApiWrapper.getPlayerData(playerUrl);
+        PlayerData playerData = mAppServiceInt.getPlayerData(playerUrl);
 
         assertNotNull("Decipher result not null", playerData);
 
@@ -75,7 +75,7 @@ public class AppApiTest {
     }
 
     private String getPlayerUrl(String userAgent) {
-        AppInfo appInfo = mAppApiWrapper.getAppInfo(userAgent);
+        AppInfo appInfo = mAppServiceInt.getAppInfo(userAgent);
 
         assertNotNull("AppInfo not null", appInfo);
 
@@ -87,7 +87,7 @@ public class AppApiTest {
     }
 
     private String getBaseUrl(String userAgent) {
-        AppInfo appInfo = mAppApiWrapper.getAppInfo(userAgent);
+        AppInfo appInfo = mAppServiceInt.getAppInfo(userAgent);
 
         assertNotNull("AppInfo not null", appInfo);
 
@@ -101,7 +101,7 @@ public class AppApiTest {
     private PlayerData getPlayerData(String userAgent) {
         String playerUrl = getPlayerUrl(userAgent);
 
-        PlayerData playerData = mAppApiWrapper.getPlayerData(playerUrl);
+        PlayerData playerData = mAppServiceInt.getPlayerData(playerUrl);
 
         assertNotNull("PlayerData not null", playerData);
 
@@ -111,7 +111,7 @@ public class AppApiTest {
     private ClientData getClientData(String userAgent) {
         String baseUrl = getBaseUrl(userAgent);
 
-        ClientData clientData = mAppApiWrapper.getClientData(baseUrl);
+        ClientData clientData = mAppServiceInt.getClientData(baseUrl);
 
         assertNotNull("Base data not null", clientData);
         return clientData;

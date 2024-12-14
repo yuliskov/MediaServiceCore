@@ -120,7 +120,10 @@ public class YouTubeServiceManager implements ServiceManager {
             return;
         }
 
-        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromVoidable(AppService.instance()::refreshCacheIfNeeded));
+        mRefreshCoreDataAction = RxHelper.execute(RxHelper.createLong(emitter -> {
+            AppService.instance().refreshCacheIfNeeded();
+            emitter.onComplete();
+        }));
     }
 
     private void refreshPoTokenIfNeeded() {

@@ -128,6 +128,9 @@ public class YouTubeServiceManager implements ServiceManager {
             return;
         }
 
-        mRefreshPoTokenAction = RxHelper.execute(RxHelper.fromVoidable(AppService.instance()::refreshPoTokenIfNeeded));
+        mRefreshPoTokenAction = RxHelper.execute(RxHelper.createLong(emitter -> {
+            AppService.instance().refreshPoTokenIfNeeded();
+            emitter.onComplete();
+        }));
     }
 }

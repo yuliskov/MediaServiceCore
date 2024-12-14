@@ -251,6 +251,10 @@ public class AppService {
     }
 
     private NSigExtractor getNSigExtractor() {
+        if (getPlayerData() == null) {
+            return null;
+        }
+
         return mAppServiceInt.getNSigExtractor(getPlayerUrl());
     }
 

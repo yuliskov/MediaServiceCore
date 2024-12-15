@@ -16,6 +16,7 @@ internal object PoTokenCloudService {
     private val RETRY_TIMES: Int = PO_TOKEN_CLOUD_BASE_URLS.size
     private var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS.random()
 
+    @Synchronized
     @JvmStatic
     fun updatePoToken() = runBlocking {
         val poToken = MediaServiceData.instance().poToken

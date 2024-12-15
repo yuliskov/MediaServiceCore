@@ -30,7 +30,7 @@ public class AppServiceIntCached extends AppServiceInt {
     }
 
     @Override
-    public AppInfo getAppInfo(String userAgent) {
+    public synchronized AppInfo getAppInfo(String userAgent) {
         if (mAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return mAppInfo;
         }
@@ -60,7 +60,7 @@ public class AppServiceIntCached extends AppServiceInt {
     }
 
     @Override
-    public PlayerData getPlayerData(String playerUrl) {
+    public synchronized PlayerData getPlayerData(String playerUrl) {
         if (isPlayerCacheActual()) {
             return mPlayerData;
         }
@@ -119,7 +119,7 @@ public class AppServiceIntCached extends AppServiceInt {
     }
 
     @Override
-    public ClientData getClientData(String clientUrl) {
+    public synchronized ClientData getClientData(String clientUrl) {
         if (mClientData != null && System.currentTimeMillis() - mClientDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return mClientData;
         }

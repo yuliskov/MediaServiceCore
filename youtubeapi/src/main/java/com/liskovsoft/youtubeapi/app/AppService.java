@@ -238,15 +238,15 @@ public class AppService {
         return getAppInfoData() != null ? getAppInfoData().getClientUrl() : null;
     }
 
-    private synchronized AppInfo getAppInfoData() {
+    private AppInfo getAppInfoData() {
         return mAppServiceInt.getAppInfo(DefaultHeaders.APP_USER_AGENT);
     }
 
-    private synchronized ClientData getClientData() {
+    private ClientData getClientData() {
         return mAppServiceInt.getClientData(getClientUrl());
     }
 
-    private synchronized PlayerData getPlayerData() {
+    private PlayerData getPlayerData() {
         return mAppServiceInt.getPlayerData(getPlayerUrl());
     }
 
@@ -258,7 +258,7 @@ public class AppService {
         return mAppServiceInt.getNSigExtractor(getPlayerUrl());
     }
 
-    private synchronized void updatePoTokenData() {
+    private void updatePoTokenData() {
         PoTokenCloudService.updatePoToken();
     }
 

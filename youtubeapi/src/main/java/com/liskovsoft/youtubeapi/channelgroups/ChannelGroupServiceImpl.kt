@@ -109,31 +109,20 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return mChannelGroups.isNullOrEmpty()
     }
 
-    override fun importGroups(uri: Uri?): Observable<Void> {
+    override fun importGroups(uri: Uri): Observable<Void> {
         TODO("Not yet implemented")
     }
 
-    override fun exportGroups(groups: MutableList<ChannelGroup>?) {
+    override fun exportGroups(groups: List<ChannelGroup>) {
         TODO("Not yet implemented")
     }
 
     fun subscribe(title: String, iconUrl: String?, channelId: String, subscribe: Boolean) {
         val group: ChannelGroup = findChannelGroup(SUBSCRIPTION_GROUP_ID) ?:
-            ChannelGroupImpl(
-                SUBSCRIPTION_GROUP_ID,
-                "Subscriptions", // TODO: this title should be localized?
-                null,
-                mutableListOf()
-            )
+            ChannelGroupImpl(SUBSCRIPTION_GROUP_ID, "Subscriptions", null, mutableListOf())
 
         if (subscribe) {
-            group.add(
-                ChannelImpl(
-                    title,
-                    iconUrl,
-                    channelId
-                )
-            )
+            group.add(ChannelImpl(title, iconUrl, channelId))
         } else {
             group.remove(channelId)
         }
@@ -146,8 +135,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     fun isSubscribed(channelId: String?): Boolean {
-        val group: ChannelGroup? =
-            findChannelGroup(SUBSCRIPTION_GROUP_ID)
+        val group: ChannelGroup? = findChannelGroup(SUBSCRIPTION_GROUP_ID)
 
         return group?.contains(channelId) ?: false
     }

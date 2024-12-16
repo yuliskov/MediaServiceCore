@@ -27,7 +27,6 @@ public class YouTubeServiceManager implements ServiceManager {
     private final YouTubeCommentsService mCommentsService;
     private Disposable mRefreshCoreDataAction;
     private Disposable mRefreshPoTokenAction;
-    private boolean mPlaybackFixFirstRun;
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
@@ -96,11 +95,6 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void applyNoPlaybackFix() {
-        if (!mPlaybackFixFirstRun) {
-            mPlaybackFixFirstRun = true;
-            return;
-        }
-
         //invalidatePlaybackCache();
         YouTubeMediaItemService.instance().invalidateCache();
         VideoInfoService.instance().switchNextFormat();

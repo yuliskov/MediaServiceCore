@@ -21,8 +21,6 @@ public class AppServiceIntCached extends AppServiceInt {
     private ClientDataCached mClientData;
     private NSigExtractor mNSigExtractor;
     private long mAppInfoUpdateTimeMs;
-    private long mPlayerDataUpdateTimeMs;
-    private long mClientDataUpdateTimeMs;
     private boolean mFallbackMode;
     private final Object mPlayerSync = new Object();
 
@@ -39,6 +37,9 @@ public class AppServiceIntCached extends AppServiceInt {
         if (mFallbackMode && mData.getAppInfo() != null) {
             mAppInfo = mData.getAppInfo();
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
+            // Reset dependent objects
+            mPlayerData = null;
+            mClientData = null;
             return mAppInfo;
         }
 
@@ -46,16 +47,11 @@ public class AppServiceIntCached extends AppServiceInt {
 
         AppInfo appInfo = super.getAppInfo(userAgent);
 
-        //if (!check(appInfo)) {
-        //    if (mData.getAppInfo() != null) {
-        //        mAppInfo = mData.getAppInfo();
-        //        mAppInfoUpdateTimeMs = System.currentTimeMillis();
-        //        return mAppInfo;
-        //    }
-        //}
-
         mAppInfo = AppInfoCached.from(appInfo);
         mAppInfoUpdateTimeMs = System.currentTimeMillis();
+        // Reset dependent objects
+        mPlayerData = null;
+        mClientData = null;
 
         return mAppInfo;
     }
@@ -76,8 +72,6 @@ public class AppServiceIntCached extends AppServiceInt {
 
         if (playerDataCached != null && Helpers.equals(playerDataCached.getPlayerUrl(), playerUrl)) {
             mPlayerData = playerDataCached;
-            mPlayerDataUpdateTimeMs = System.currentTimeMillis();
-
             persistPlayerDataOrFail();
 
             return mPlayerData;
@@ -87,17 +81,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
         PlayerData playerData = super.getPlayerData(playerUrl);
 
-        //if (!check(playerData)) {
-        //    if (playerDataCached != null) {
-        //        mPlayerData = playerDataCached;
-        //        mPlayerDataUpdateTimeMs = System.currentTimeMillis();
-        //        updateNSigExtractor(playerDataCached.getPlayerUrl());
-        //        return mPlayerData;
-        //    }
-        //}
-
         mPlayerData = PlayerDataCached.from(playerUrl, playerData);
-        mPlayerDataUpdateTimeMs = System.currentTimeMillis();
 
         persistPlayerDataOrFail();
 
@@ -129,7 +113,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     public synchronized ClientData getClientData(String clientUrl) {
-        if (mClientData != null && System.currentTimeMillis() - mClientDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
+        if (mClientData != null) {
             return mClientData;
         }
 
@@ -137,7 +121,6 @@ public class AppServiceIntCached extends AppServiceInt {
 
         if (clientDataCached != null && Helpers.equals(clientDataCached.getClientUrl(), clientUrl)) {
             mClientData = clientDataCached;
-            mClientDataUpdateTimeMs = System.currentTimeMillis();
             return mClientData;
         }
 
@@ -145,16 +128,11 @@ public class AppServiceIntCached extends AppServiceInt {
 
         ClientData clientData = super.getClientData(clientUrl);
 
-        //if (!check(clientData)) {
-        //    if (clientDataCached != null) {
-        //        mClientData = clientDataCached;
-        //        mClientDataUpdateTimeMs = System.currentTimeMillis();
-        //        return mClientData;
-        //    }
-        //}
-
         mClientData = ClientDataCached.from(clientUrl, clientData);
-        mClientDataUpdateTimeMs = System.currentTimeMillis();
+
+        if (check(mClientData)) {
+            mData.setClientData(mClientData);
+        }
 
         return mClientData;
     }
@@ -162,14 +140,12 @@ public class AppServiceIntCached extends AppServiceInt {
     @Override
     public void invalidateCache() {
         mAppInfo = null;
-        mPlayerData = null;
-        mClientData = null;
     }
 
     @Override
     public boolean isPlayerCacheActual() {
         synchronized (mPlayerSync) {
-            return mPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
+            return mPlayerData != null;
         }
     }
 
@@ -200,14 +176,11 @@ public class AppServiceIntCached extends AppServiceInt {
     }
 
     private void persistPlayerDataOrFail() {
-        if (check(mAppInfo) && check(mPlayerData) && check(mClientData) && checkNSig()) {
+        if (check(mAppInfo) && check(mPlayerData) && checkNSig()) {
             mData.setAppInfo(mAppInfo);
             mData.setPlayerData(mPlayerData);
-            mData.setClientData(mClientData);
         } else {
             mAppInfo = null;
-            mPlayerData = null;
-            mClientData = null;
             mFallbackMode = true;
         }
     }

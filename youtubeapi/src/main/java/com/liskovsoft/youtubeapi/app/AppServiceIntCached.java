@@ -24,6 +24,7 @@ public class AppServiceIntCached extends AppServiceInt {
     private long mPlayerDataUpdateTimeMs;
     private long mClientDataUpdateTimeMs;
     private boolean mFallbackMode;
+    private final Object mPlayerSync = new Object();
 
     public AppServiceIntCached() {
         mData = MediaServiceData.instance();
@@ -60,7 +61,13 @@ public class AppServiceIntCached extends AppServiceInt {
     }
 
     @Override
-    public synchronized PlayerData getPlayerData(String playerUrl) {
+    public PlayerData getPlayerData(String playerUrl) {
+        synchronized (mPlayerSync) {
+            return getPlayerDataInt(playerUrl);
+        }
+    }
+
+    private PlayerData getPlayerDataInt(String playerUrl) {
         if (isPlayerCacheActual()) {
             return mPlayerData;
         }
@@ -115,7 +122,9 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     public NSigExtractor getNSigExtractor(String playerUrl) {
-        return mNSigExtractor;
+        synchronized (mPlayerSync) {
+            return mNSigExtractor;
+        }
     }
 
     @Override
@@ -159,7 +168,9 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     public boolean isPlayerCacheActual() {
-        return mPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
+        synchronized (mPlayerSync) {
+            return mPlayerData != null && System.currentTimeMillis() - mPlayerDataUpdateTimeMs < CACHE_REFRESH_PERIOD_MS;
+        }
     }
 
     private boolean check(AppInfo appInfo) {

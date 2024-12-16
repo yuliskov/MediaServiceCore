@@ -121,13 +121,15 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
         groups.forEach {
             val idx = mChannelGroups?.indexOf(it) ?: -1
-            if (idx != -1) {
-                val existingGroup = mChannelGroups?.get(idx)
-                it.channels.forEach {
-                    if (existingGroup?.contains(it.channelId) == true)
-                        return@forEach
-                    existingGroup?.add(it)
-                }
+            if (idx != -1) { // already exists
+                mChannelGroups?.add(ChannelGroupImpl(title = "${it.title} 2", iconUrl = it.iconUrl, channels = it.channels))
+
+                //val existingGroup = mChannelGroups?.get(idx)
+                //it.channels.forEach {
+                //    if (existingGroup?.contains(it.channelId) == true)
+                //        return@forEach
+                //    existingGroup?.add(it)
+                //}
                 return@forEach
             }
 

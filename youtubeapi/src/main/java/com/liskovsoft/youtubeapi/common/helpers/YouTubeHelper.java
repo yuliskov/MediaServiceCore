@@ -1,10 +1,14 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
@@ -20,6 +24,8 @@ public final class YouTubeHelper {
      */
     public static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
     private static final int SHORTS_LEN_MS = 61_000;
+    private static final String CHANNEL_KEY = "channel";
+    private static final String CHANNEL_ALT_KEY = "c";
 
     /**
      * Find optimal thumbnail for tv screen<br/>
@@ -168,5 +174,41 @@ public final class YouTubeHelper {
         }
 
         return Helpers.hashCodeAny(item.getVideoId(), item.getPlaylistId(), item.getReloadPageKey(), item.getParams(), item.getChannelId());
+    }
+
+    /**
+     * Data: https://www.youtube.com/channel/UCtDjOV5nk982w35AIdVDuNw
+     */
+    public static String extractChannelId(Uri url) {
+        if (url == null) {
+            return null;
+        }
+
+        // https://youtube.com/channel/BLABLA/video
+        // Don't Uri directly or you might get UnsupportedOperationException on some urls.
+        UrlQueryString parser = UrlQueryStringFactory.parse(url);
+
+        // https://youtube.com/channel/UCIy_mMwdwbC6GkRSm6gqo6Q
+        String channelId = parser.get(CHANNEL_KEY);
+
+        if (channelId == null) {
+            // https://www.youtube.com/c/IngaMezerya
+            channelId = parser.get(CHANNEL_ALT_KEY);
+
+            if (channelId != null) {
+                channelId = "@" + channelId; // add the prefix to quickly distinguish later
+            }
+        }
+
+        if (channelId == null) {
+            // https://www.youtube.com/@IngaMezerya
+            String lastPathSegment = url.getLastPathSegment();
+
+            if (Helpers.startsWith(lastPathSegment, "@")) {
+                channelId = lastPathSegment; // already contains the prefix
+            }
+        }
+
+        return channelId;
     }
 }

@@ -4,6 +4,9 @@ import android.net.Uri
 import com.liskovsoft.mediaserviceinterfaces.yt.ChannelGroupService
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.sharedutils.rx.RxHelper
+import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.GrayJayService
+import com.liskovsoft.youtubeapi.channelgroups.importing.pockettube.PocketTubeService
 import com.liskovsoft.youtubeapi.channelgroups.models.ChannelGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
 import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
@@ -12,7 +15,7 @@ import io.reactivex.Observable
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener, ChannelGroupService {
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
-
+    private val mImportServices = listOf(PocketTubeService, GrayJayService)
     private var mChannelGroups: MutableList<ChannelGroup>? = null
 
     init {
@@ -110,11 +113,34 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun importGroups(uri: Uri): Observable<Void> {
-        TODO("Not yet implemented")
+        return RxHelper.fromVoidable { importGroupsReal(uri) }
     }
 
-    override fun exportGroups(groups: List<ChannelGroup>) {
-        TODO("Not yet implemented")
+    private fun importGroupsReal(uri: Uri) {
+        val groups = mImportServices.firstNotNullOfOrNull { it.importGroups(uri) } ?: return
+
+        groups.forEach {
+            val idx = mChannelGroups?.indexOf(it) ?: -1
+            if (idx != -1) {
+                val existingGroup = mChannelGroups?.get(idx)
+                it.channels.forEach {
+                    if (existingGroup?.contains(it.channelId) == true)
+                        return@forEach
+                    existingGroup?.add(it)
+                }
+                return@forEach
+            }
+
+            mChannelGroups?.add(it)
+        }
+
+        persistData()
+    }
+
+    override fun exportData(data: String?) {
+        data?.let {
+            restoreData(it)
+        }
     }
 
     fun subscribe(title: String, iconUrl: String?, channelId: String, subscribe: Boolean) {
@@ -142,6 +168,10 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     private fun restoreData() {
         val data = MediaServicePrefs.getData(CHANNEL_GROUP_DATA)
+        restoreData(data)
+    }
+
+    private fun restoreData(data: String?) {
         val split = Helpers.splitData(data)
 
         mChannelGroups = Helpers.parseList(split, 0, ChannelGroupImpl::fromString)

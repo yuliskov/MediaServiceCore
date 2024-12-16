@@ -13,6 +13,6 @@ public interface ChannelGroupService {
     ChannelGroup findChannelGroup(String title);
     String[] getChannelGroupIds(int channelGroupId);
     Observable<Void> importGroups(Uri uri);
-    void exportGroups(List<ChannelGroup> groups);
+    void exportData(String data);
     boolean isEmpty();
 }

@@ -11,7 +11,7 @@ private const val LIST_DELIM = "&sga;"
 internal data class ChannelGroupImpl(
     private val id: Int = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE),
     private val title: String,
-    private val iconUrl: String?,
+    private val iconUrl: String? = null,
     private val channels: MutableList<Channel>
 ): ChannelGroup {
     override fun getId(): Int {
@@ -50,6 +50,18 @@ internal data class ChannelGroupImpl(
 
     override fun toString(): String {
         return Helpers.merge(ITEM_DELIM, id, title, iconUrl, Helpers.mergeList(LIST_DELIM, channels))
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is ChannelGroup) {
+            return other.title == title
+        }
+
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
     }
 
     companion object {

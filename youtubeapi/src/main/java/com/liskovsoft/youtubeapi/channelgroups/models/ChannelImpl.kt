@@ -6,11 +6,11 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 private const val ITEM_DELIM = "&ci;"
 
 internal data class ChannelImpl(
-    private val title: String,
-    private val iconUrl: String?,
+    private val title: String? = null,
+    private val iconUrl: String? = null,
     private val channelId: String
 ): Channel {
-    override fun getTitle(): String {
+    override fun getTitle(): String? {
         return title
     }
 

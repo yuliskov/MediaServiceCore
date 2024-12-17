@@ -15,7 +15,7 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 public class AppServiceIntCached extends AppServiceInt {
     private static final String TAG = AppServiceIntCached.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
-    private final MediaServiceData mData;
+    private MediaServiceData mData;
     private AppInfoCached mAppInfo;
     private PlayerDataCached mPlayerData;
     private ClientDataCached mClientData;
@@ -24,18 +24,14 @@ public class AppServiceIntCached extends AppServiceInt {
     private boolean mFallbackMode;
     private final Object mPlayerSync = new Object();
 
-    public AppServiceIntCached() {
-        mData = MediaServiceData.instance();
-    }
-
     @Override
     public synchronized AppInfo getAppInfo(String userAgent) {
         if (mAppInfo != null && System.currentTimeMillis() - mAppInfoUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
             return mAppInfo;
         }
 
-        if (mFallbackMode && mData.getAppInfo() != null) {
-            mAppInfo = mData.getAppInfo();
+        if (mFallbackMode && getData().getAppInfo() != null) {
+            mAppInfo = getData().getAppInfo();
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
             // Reset dependent objects
             mPlayerData = null;
@@ -68,7 +64,7 @@ public class AppServiceIntCached extends AppServiceInt {
             return mPlayerData;
         }
 
-        PlayerDataCached playerDataCached = mData.getPlayerData();
+        PlayerDataCached playerDataCached = getData().getPlayerData();
 
         if (playerDataCached != null && Helpers.equals(playerDataCached.getPlayerUrl(), playerUrl)) {
             mPlayerData = playerDataCached;
@@ -117,7 +113,7 @@ public class AppServiceIntCached extends AppServiceInt {
             return mClientData;
         }
 
-        ClientDataCached clientDataCached = mData.getClientData();
+        ClientDataCached clientDataCached = getData().getClientData();
 
         if (clientDataCached != null && Helpers.equals(clientDataCached.getClientUrl(), clientUrl)) {
             mClientData = clientDataCached;
@@ -131,7 +127,7 @@ public class AppServiceIntCached extends AppServiceInt {
         mClientData = ClientDataCached.from(clientUrl, clientData);
 
         if (check(mClientData)) {
-            mData.setClientData(mClientData);
+            getData().setClientData(mClientData);
         }
 
         return mClientData;
@@ -177,11 +173,19 @@ public class AppServiceIntCached extends AppServiceInt {
 
     private void persistPlayerDataOrFail() {
         if (check(mAppInfo) && check(mPlayerData) && checkNSig()) {
-            mData.setAppInfo(mAppInfo);
-            mData.setPlayerData(mPlayerData);
+            getData().setAppInfo(mAppInfo);
+            getData().setPlayerData(mPlayerData);
         } else {
             mAppInfo = null;
             mFallbackMode = true;
         }
+    }
+
+    private MediaServiceData getData() {
+        if (mData == null) {
+            mData = MediaServiceData.instance();
+        }
+
+        return mData;
     }
 }

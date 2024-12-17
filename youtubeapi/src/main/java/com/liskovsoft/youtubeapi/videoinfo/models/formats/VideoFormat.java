@@ -321,8 +321,8 @@ public class VideoFormat {
                 UrlQueryString xtagsQuery = UrlQueryStringFactory.parse(xtags.replace(":", "&"));
                 String lang = xtagsQuery.get("lang");
                 String acont = xtagsQuery.get("acont");
-                // original, descriptive, dubbed
-                mLanguage = lang != null && acont != null && acont.equals("descriptive") ? String.format("%s (%s)", lang, acont) : lang;
+                // original, descriptive, dubbed, secondary
+                mLanguage = lang != null && acont != null ? String.format("%s (%s)", lang, acont) : lang;
             }
         }
 

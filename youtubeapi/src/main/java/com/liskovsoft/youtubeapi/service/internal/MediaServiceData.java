@@ -49,7 +49,7 @@ public class MediaServiceData {
     private String mPlayerUrl;
     private String mPlayerVersion;
     private String mVisitorCookie;
-    private int mEnabledFormats = FORMATS_ALL; // Debug
+    private int mEnabledFormats;
     private int mHiddenContent;
     private Disposable mPersistAction;
     private boolean mSkipAuth;
@@ -79,13 +79,9 @@ public class MediaServiceData {
     }
 
     private MediaServiceData() {
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "Can't restore data. GlobalPreferences isn't initialized yet.");
-            return;
-        }
-
         if (Helpers.isJUnitTest()) {
             Log.d(TAG, "JUnit test is running. Skipping data restore...");
+            mEnabledFormats = FORMATS_ALL; // Debug
             return;
         }
 
@@ -98,6 +94,10 @@ public class MediaServiceData {
 
     public static MediaServiceData instance() {
         if (sInstance == null) {
+            if (GlobalPreferences.sInstance == null) {
+                Log.e(TAG, "Can't init MediaServiceData. GlobalPreferences isn't initialized yet.");
+                return null;
+            }
             sInstance = new MediaServiceData();
         }
 

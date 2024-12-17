@@ -26,6 +26,7 @@ public final class YouTubeHelper {
     private static final int SHORTS_LEN_MS = 61_000;
     private static final String CHANNEL_KEY = "channel";
     private static final String CHANNEL_ALT_KEY = "c";
+    private static final String HYPHEN_SIGN = "\u2010";
 
     /**
      * Find optimal thumbnail for tv screen<br/>
@@ -210,5 +211,16 @@ public final class YouTubeHelper {
         }
 
         return channelId;
+    }
+
+    /**
+     * Fix truncated name after '-' sign (exo formats)
+     */
+    public static String exoNameFix(String lang) {
+        if (lang == null) {
+            return null;
+        }
+
+        return lang.replace("-", HYPHEN_SIGN);
     }
 }

@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+
 public class TranslatedCaptionTrack extends CaptionTrack {
     public final static String TRANSLATE_MARKER = "*";
     private final CaptionTrack mOriginTrack;
@@ -37,8 +39,7 @@ public class TranslatedCaptionTrack extends CaptionTrack {
         // NOTE: tag contain weird chars: (simplified) - chinese (simplified)
         //return mLanguage.getLanguageName() + (mTag != null ? " " + mTag : "") + TRANSLATE_MARKER;
 
-        // Fix truncated name after '-' sign (exo formats)
-        return mLanguage.getLanguageName().replace("-", " ") + TRANSLATE_MARKER;
+        return YouTubeHelper.exoNameFix(mLanguage.getLanguageName()) + TRANSLATE_MARKER;
     }
 
     @Override

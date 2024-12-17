@@ -2,10 +2,10 @@ package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 
 import java.util.List;
@@ -321,8 +321,8 @@ public class VideoFormat {
                 UrlQueryString xtagsQuery = UrlQueryStringFactory.parse(xtags.replace(":", "&"));
                 String lang = xtagsQuery.get("lang");
                 String acont = xtagsQuery.get("acont");
-                // original, descriptive, dubbed, secondary
-                mLanguage = lang != null && acont != null ? String.format("%s (%s)", lang, acont) : lang;
+                // original, descriptive, dubbed, dubbed-auto, secondary
+                mLanguage = lang != null && acont != null ? String.format("%s (%s)", YouTubeHelper.exoNameFix(lang), acont) : lang;
             }
         }
 

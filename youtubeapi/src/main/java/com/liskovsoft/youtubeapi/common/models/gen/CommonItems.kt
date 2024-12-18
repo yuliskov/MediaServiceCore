@@ -258,7 +258,8 @@ internal data class TileItem(
 
     data class Header(
         val tileHeaderRenderer: TileHeaderRenderer?,
-        val richTextTileHeaderRenderer: RichTextTileHeaderRenderer? // Video description (last row in the suggestions)
+        val richTextTileHeaderRenderer: RichTextTileHeaderRenderer?, // Video description (last row in the suggestions)
+        val trackTileHeaderRenderer: TrackTileHeaderRenderer? // Special case: music albums
     ) {
         data class TileHeaderRenderer(
             val thumbnail: ThumbnailItem?,
@@ -272,6 +273,12 @@ internal data class TileItem(
          */
         data class RichTextTileHeaderRenderer(
             val textContent: List<TextItem?>?
+        )
+
+        data class TrackTileHeaderRenderer(
+            val title: TextItem?,
+            val thumbnail: ThumbnailItem?,
+            val duration: TextItem?
         )
     }
 

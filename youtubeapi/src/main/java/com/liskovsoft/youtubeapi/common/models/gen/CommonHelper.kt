@@ -161,11 +161,13 @@ private const val TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS"
 
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
     ?: header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.tileMetadataRenderer?.title?.getText() }
+    ?: header?.trackTileHeaderRenderer?.title?.getText()
 internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
 internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
 internal fun TileItem.getSubTitle() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 internal fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }
+    ?: header?.trackTileHeaderRenderer?.duration?.getText()
 internal fun TileItem.getPercentWatched() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched }
 internal fun TileItem.getStartTimeSeconds() = onSelectCommand?.getStartTimeSeconds()
 internal fun TileItem.getUserName() = null
@@ -175,7 +177,7 @@ internal fun TileItem.getViewCountText() =
         ServiceHelper.combineItems(" ", *it?.lineRenderer?.items?.map { it?.lineItemRenderer?.text }?.toTypedArray() ?: emptyArray())
     }?.toTypedArray() ?: emptyArray())
 internal fun TileItem.getUpcomingEventText() = null
-internal fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail
+internal fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail ?: header?.trackTileHeaderRenderer?.thumbnail
 internal fun TileItem.getMovingThumbnails() = header?.tileHeaderRenderer?.let { it.movingThumbnail ?: it.onFocusThumbnail }
 internal fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
 internal fun TileItem.getChannelId() = onSelectCommand?.getBrowseId() ?: getMenu()?.getBrowseId()

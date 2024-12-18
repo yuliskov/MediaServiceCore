@@ -301,8 +301,8 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
-    fun getChannel(channelId: String?, params: String?): List<MediaGroup?>? {
-        return getChannelTV(channelId, params) ?: getChannelWeb(channelId, params, true)
+    fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
+        return getChannelTV(channelId, params) ?: getChannelWeb(channelId, params, true)?.let { Pair(it, null) }
     }
 
     private fun getChannelWeb(channelId: String?, params: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
@@ -352,12 +352,12 @@ internal object BrowseService2 {
         return result.ifEmpty { null }
     }
 
-    private fun getChannelTV(channelId: String?, params: String?): List<MediaGroup?>? {
+    private fun getChannelTV(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
         if (channelId == null) {
             return null
         }
 
-        return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL, MediaGroup.TYPE_CHANNEL_UPLOADS)?.first
+        return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL, MediaGroup.TYPE_CHANNEL_UPLOADS)
     }
 
     @JvmStatic

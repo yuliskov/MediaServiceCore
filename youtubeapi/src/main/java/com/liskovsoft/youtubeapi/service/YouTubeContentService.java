@@ -443,9 +443,14 @@ public class YouTubeContentService implements ContentService {
             if (BrowseApiHelper.isGridChannel(canonicalId)) {
                 GridTab gridChannel = mBrowseService.getGridChannel(canonicalId);
 
-                emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
+                if (gridChannel != null && gridChannel.getItemWrappers() != null) {
+                    emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
+                } else {
+                    kotlin.Pair<List<MediaGroup>, String> channel = BrowseService2.getChannel(canonicalId, params);
+                    emitGroups(emitter, channel);
+                }
             } else {
-                List<MediaGroup> channel = BrowseService2.getChannel(canonicalId, params);
+                kotlin.Pair<List<MediaGroup>, String> channel = BrowseService2.getChannel(canonicalId, params);
                 emitGroups(emitter, channel);
             }
         });
@@ -485,17 +490,7 @@ public class YouTubeContentService implements ContentService {
             checkSigned();
 
             kotlin.Pair<List<MediaGroup>, String> home = BrowseService2.getHome();
-            if (home != null) {
-                List<MediaGroup> groups = home.getFirst();
-                String nextKey = home.getSecond();
-                while (groups != null && !groups.isEmpty()) {
-                    emitGroupsPartial(emitter, groups);
-                    home = BrowseService2.continueSectionList(nextKey, MediaGroup.TYPE_HOME);
-                    groups = home != null ? home.getFirst() : null;
-                    nextKey = home != null ? home.getSecond() : null;
-                }
-            }
-            emitter.onComplete();
+            emitGroups(emitter, home);
         });
     }
 
@@ -522,6 +517,27 @@ public class YouTubeContentService implements ContentService {
     //        }
     //    });
     //}
+
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> result) {
+        if (result == null) {
+            String msg = "emitGroups2: groups are null or empty";
+            Log.e(TAG, msg);
+            RxHelper.onError(emitter, msg);
+            return;
+        }
+
+        List<MediaGroup> groups = result.getFirst();
+        String nextKey = result.getSecond();
+
+        while (groups != null && !groups.isEmpty()) {
+            emitGroupsPartial(emitter, groups);
+            result = BrowseService2.continueSectionList(nextKey, groups.get(0).getType());
+            groups = result != null ? result.getFirst() : null;
+            nextKey = result != null ? result.getSecond() : null;
+        }
+
+        emitter.onComplete();
+    }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
@@ -769,10 +785,10 @@ public class YouTubeContentService implements ContentService {
 
             if (playlists != null && playlists.getMediaItems() != null) {
                 for (MediaItem playlist : playlists.getMediaItems()) {
-                    List<MediaGroup> content = BrowseService2.getChannel(playlist.getChannelId(), playlist.getParams());
-                    if (content != null) {
-                        ((BaseMediaGroup) content.get(0)).setTitle(playlist.getTitle());
-                        emitter.onNext(content);
+                    kotlin.Pair<List<MediaGroup>, String> content = BrowseService2.getChannel(playlist.getChannelId(), playlist.getParams());
+                    if (content != null && content.getFirst() != null) {
+                        ((BaseMediaGroup) content.getFirst().get(0)).setTitle(playlist.getTitle());
+                        emitter.onNext(content.getFirst());
                     }
                 }
                 emitter.onComplete();

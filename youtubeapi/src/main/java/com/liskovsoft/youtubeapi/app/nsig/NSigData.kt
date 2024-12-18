@@ -21,7 +21,14 @@ internal data class NSigData(
 
             val split = Helpers.split(DELIM, spec)
 
-            return NSigData(Helpers.parseStr(split, 0), Helpers.parseStrList(split, 1), Helpers.parseStr(split, 2))
+            val nFuncPlayerUrl = Helpers.parseStr(split, 0)
+            val nFuncParams = Helpers.parseStrList(split, 1)
+            val nFuncCode = Helpers.parseStr(split, 2)
+
+            if (Helpers.anyNull(nFuncPlayerUrl, nFuncParams, nFuncCode))
+                return null
+
+            return NSigData(nFuncPlayerUrl, nFuncParams, nFuncCode)
         }
     }
 }

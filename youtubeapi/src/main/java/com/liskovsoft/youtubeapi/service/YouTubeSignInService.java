@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service;
 import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.yt.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.Account;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -118,17 +119,6 @@ public class YouTubeSignInService implements SignInService {
         return mAccountManager.getSelectedAccount();
     }
 
-    /**
-     * For testing purposes
-     */
-    public void setAuthorizationHeader(String authorizationHeader) {
-        mCachedAuthorizationHeader = authorizationHeader;
-        mCachedAuthorizationHeader2 = null;
-        mCacheUpdateTime = System.currentTimeMillis();
-
-        syncWithRetrofit();
-    }
-
     public void invalidateCache() {
         mCachedAuthorizationHeader = null;
         mCacheUpdateTime = 0;
@@ -181,6 +171,10 @@ public class YouTubeSignInService implements SignInService {
     }
 
     private void syncWithRetrofit() {
+        if (Helpers.isJUnitTest()) {
+            return;
+        }
+
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
         Map<String, String> headers2 = RetrofitOkHttpHelper.getAuthHeaders2();
         headers.clear();

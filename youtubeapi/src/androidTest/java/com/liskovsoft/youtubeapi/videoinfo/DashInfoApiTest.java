@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.api.FileApi;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -52,6 +56,17 @@ public class DashInfoApiTest {
         mAppService = AppService.instance();
     }
 
+    //@Test
+    //public void testDashInfoNotEmpty() throws IOException {
+    //    VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
+    //
+    //    VideoInfoService videoInfoService = VideoInfoService.instance();
+    //    DashInfo dashInfo = videoInfoService.getDashInfo(videoInfo);
+    //    assertTrue("Has start time", dashInfo.getStartTimeMs() != -1);
+    //    assertTrue("Has start segment", dashInfo.getStartSegmentNum() != -1);
+    //    assertTrue("Has segment duration", dashInfo.getSegmentDurationUs() > 0);
+    //}
+
     @Test
     public void testDashInfoUrlNotEmpty() throws IOException {
         VideoInfo videoInfo = getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE);
@@ -91,7 +106,7 @@ public class DashInfoApiTest {
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService2.getVideoInfo(VideoInfoApiTestHelper.getVideoInfoQuery(videoId));
+        Call<VideoInfo> wrapper = mService2.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null));
         return wrapper.execute().body();
     }
 

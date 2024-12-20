@@ -5,10 +5,10 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class YouTubeMPDBuilderTest {
 
     @After
     public void tearDown() {
-        YouTubeSignInService.instance().setAuthorizationHeader(null);
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", null);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class YouTubeMPDBuilderTest {
 
     @Test
     public void testThatSignedCipheredFormatValid() {
-        YouTubeSignInService.instance().setAuthorizationHeader(TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
 
         testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
     }
@@ -88,6 +88,7 @@ public class YouTubeMPDBuilderTest {
 
         String url = mediaItemDetails.getDashFormats().get(0).getUrl();
 
+        assertTrue("Video url is not empty", url != null);
         assertTrue("Video url is working", TestHelpersV1.urlExists(url));
     }
 }

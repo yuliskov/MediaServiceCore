@@ -3,6 +3,9 @@ package com.liskovsoft.youtubeapi.service;
 import com.liskovsoft.mediaserviceinterfaces.yt.ServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +28,7 @@ public class YouTubeServiceManagerTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
 
         mService = YouTubeServiceManager.instance();
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     /**

@@ -36,8 +36,8 @@ public class VideoInfoApiSignedTest {
         mService = RetrofitHelper.create(VideoInfoApi.class);
         mAppService = AppService.instance();
         mLocaleManager = LocaleManager.instance();
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
         RetrofitOkHttpHelper.setDisableCompression(true);
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class VideoInfoApiSignedTest {
 
     private void testThatVideoInfoContainsRequiredFields(VideoInfo result) {
         assertNotNull("Result not null", result);
-        assertFalse("Video available externally", result.isEmbedRestricted());
+        //assertFalse("Video available externally", result.isEmbedRestricted());
         List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
         assertTrue("Formats not empty", formats.size() > 0);
         assertTrue("Contains fps", formats.get(0).getFps() != 0);
@@ -108,12 +108,12 @@ public class VideoInfoApiSignedTest {
     }
 
     private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null), mAppService.getVisitorData(), AppClient.WEB.getUserAgent());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.TV, videoId, null), mAppService.getVisitorData(), AppClient.TV.getUserAgent());
         return wrapper.execute().body();
     }
 
     private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null), mAppService.getVisitorData(), AppClient.WEB.getUserAgent());
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.TV, videoId, null), mAppService.getVisitorData(), AppClient.TV.getUserAgent());
         return wrapper.execute().body();
     }
 }

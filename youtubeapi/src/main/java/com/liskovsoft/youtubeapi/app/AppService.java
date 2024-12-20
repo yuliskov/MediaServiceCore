@@ -100,20 +100,18 @@ public class AppService {
     }
 
     public String fixThrottling(String throttled) {
-        getPlayerData();
-
-        if (throttled == null || getNSigExtractor() == null) {
+        if (throttled == null || mAppServiceInt.getNSigExtractor() == null) {
             return null;
         }
 
-        return getNSigExtractor().extractNSig(throttled);
+        return mAppServiceInt.getNSigExtractor().extractNSig(throttled);
     }
 
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
     public String getClientPlaybackNonce() {
-        String function = getClientPlaybackNonceFunction();
+        String function = mAppServiceInt.getClientPlaybackNonceFunction();
 
         if (function == null) {
             return null;
@@ -143,31 +141,28 @@ public class AppService {
      * Constant used in {@link AuthApi}
      */
     public String getClientId() {
-        // TODO: NPE 1.6K!!!
-        return getClientData() != null ? getClientData().getClientId() : null;
+        return mAppServiceInt.getClientId();
     }
 
     /**
      * Constant used in {@link AuthApi}
      */
     public String getClientSecret() {
-        return getClientData() != null ? getClientData().getClientSecret() : null;
+        return mAppServiceInt.getClientSecret();
     }
 
     /**
      * Used in get_video_info
      */
     public String getSignatureTimestamp() {
-        // TODO: NPE 300!!!
-        return getPlayerData() != null ? getPlayerData().getSignatureTimestamp() : null;
+        return mAppServiceInt.getSignatureTimestamp();
     }
 
     /**
      * Used with get_video_info, anonymous search and suggestions
      */
     public String getVisitorData() {
-        // TODO: NPE 300!!!
-        return getAppInfoData() != null ? getAppInfoData().getVisitorData() : null;
+        return mAppServiceInt.getVisitorData();
     }
 
     private static boolean isAllNulls(List<String> ciphered) {
@@ -181,7 +176,7 @@ public class AppService {
     }
 
     private String createDecipherCode(List<String> ciphered) {
-        String decipherFunction = getDecipherFunction();
+        String decipherFunction = mAppServiceInt.getDecipherFunction();
 
         if (decipherFunction == null) {
             Log.e(TAG, "Oops. DecipherFunction is null...");
@@ -217,47 +212,6 @@ public class AppService {
     //    return Arrays.asList(values);
     //}
 
-    private String getDecipherFunction() {
-        return getPlayerData() != null ? getPlayerData().getDecipherFunction() : null;
-    }
-
-    private String getClientPlaybackNonceFunction() {
-        // NOTE: NPE 10K!!!
-        return getPlayerData() != null ? getPlayerData().getClientPlaybackNonceFunction() : null;
-    }
-
-    private String getPlayerUrl() {
-        // NOTE: NPE 2.5K
-        //MediaServiceData data = MediaServiceData.instance();
-        //return data.getPlayerUrl() != null ? data.getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
-        return getAppInfoData() != null ? getAppInfoData().getPlayerUrl() : null;
-    }
-
-    private String getClientUrl() {
-        // NOTE: NPE 143K!!!
-        return getAppInfoData() != null ? getAppInfoData().getClientUrl() : null;
-    }
-
-    private AppInfo getAppInfoData() {
-        return mAppServiceInt.getAppInfo(DefaultHeaders.APP_USER_AGENT);
-    }
-
-    private ClientData getClientData() {
-        return mAppServiceInt.getClientData(getClientUrl());
-    }
-
-    private PlayerData getPlayerData() {
-        return mAppServiceInt.getPlayerData(getPlayerUrl());
-    }
-
-    private NSigExtractor getNSigExtractor() {
-        if (getPlayerData() == null) {
-            return null;
-        }
-
-        return mAppServiceInt.getNSigExtractor(getPlayerUrl());
-    }
-
     private void updatePoTokenData() {
         PoTokenCloudService.updatePoToken();
     }
@@ -267,9 +221,7 @@ public class AppService {
     }
 
     public void refreshCacheIfNeeded() {
-        getAppInfoData();
-        getPlayerData();
-        getClientData();
+        mAppServiceInt.refreshCacheIfNeeded();
     }
 
     public void refreshPoTokenIfNeeded() {

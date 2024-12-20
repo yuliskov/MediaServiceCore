@@ -37,7 +37,6 @@ public class TrackingApiTest {
             sAuthorization = TestHelpersV2.getAuthorization();
         }
         mBrowseService = BrowseService.instance();
-
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
     }
 

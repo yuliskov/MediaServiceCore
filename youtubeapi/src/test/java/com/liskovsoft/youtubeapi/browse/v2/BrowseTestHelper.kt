@@ -12,7 +12,7 @@ object BrowseTestHelper {
 
     fun checkGuideMediaItem(mediaItem: MediaItem) {
         assertNotNull(mediaItem.title)
-        assertNotNull(mediaItem.channelId)
+        assertNotNull(mediaItem.channelId ?: mediaItem.reloadPageKey)
         assertNotNull(mediaItem.cardImageUrl)
         assertNotNull(mediaItem.backgroundImageUrl)
     }

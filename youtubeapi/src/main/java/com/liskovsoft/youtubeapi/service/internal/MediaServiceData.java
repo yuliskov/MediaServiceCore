@@ -91,10 +91,10 @@ public class MediaServiceData {
         restoreData();
         restoreCachedData();
     }
-
+    
     public static MediaServiceData instance() {
         if (sInstance == null) {
-            if (GlobalPreferences.sInstance == null) {
+            if (GlobalPreferences.sInstance == null && !Helpers.isJUnitTest()) {
                 Log.e(TAG, "Can't init MediaServiceData. GlobalPreferences isn't initialized yet.");
                 return null;
             }

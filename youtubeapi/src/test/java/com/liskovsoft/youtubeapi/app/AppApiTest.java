@@ -1,8 +1,6 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
-import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import org.junit.Before;
@@ -10,8 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -34,14 +30,14 @@ public class AppApiTest {
     }
 
     @Test
-    public void testThatAppInfoContainsAllRequiredFields() throws IOException {
-        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_TV);
+    public void testThatAppInfoContainsAllRequiredFields() {
+        String playerUrl = mAppServiceInt.getPlayerUrl();
         assertTrue("Player url should ends with js", playerUrl.endsWith(".js"));
     }
 
     @Test
     public void testThatDecipherFunctionIsValid() {
-        String playerUrl = getPlayerUrl(DefaultHeaders.USER_AGENT_TV);
+        String playerUrl = mAppServiceInt.getPlayerUrl();
 
         PlayerData playerData = mAppServiceInt.getPlayerData(playerUrl);
 
@@ -57,7 +53,7 @@ public class AppApiTest {
 
     @Test
     public void testThatPlaybackNonceFunctionIsValid() {
-        PlayerData playerData = getPlayerData(DefaultHeaders.USER_AGENT_TV);
+        PlayerData playerData = getPlayerData();
 
         String playbackNonceFunctionContent = playerData.getRawClientPlaybackNonceFunction();
         assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
@@ -68,38 +64,22 @@ public class AppApiTest {
 
     @Test
     public void testThatClientIdAndSecretNotEmpty() {
-        ClientData clientData = getClientData(DefaultHeaders.USER_AGENT_TV);
+        ClientData clientData = getClientData();
 
         assertNotNull("Client id not empty", clientData.getClientId());
         assertNotNull("Client secret not empty", clientData.getClientSecret());
     }
 
-    private String getPlayerUrl(String userAgent) {
-        AppInfo appInfo = mAppServiceInt.getAppInfo(userAgent);
-
-        assertNotNull("AppInfo not null", appInfo);
-
-        String playerUrl = appInfo.getPlayerUrl();
-
-        assertNotNull("Player url not null", playerUrl);
-
-        return playerUrl;
-    }
-
-    private String getBaseUrl(String userAgent) {
-        AppInfo appInfo = mAppServiceInt.getAppInfo(userAgent);
-
-        assertNotNull("AppInfo not null", appInfo);
-
-        String baseUrl = appInfo.getClientUrl();
+    private String getBaseUrl() {
+        String baseUrl = mAppServiceInt.getClientUrl();
 
         assertNotNull("Base url not null", baseUrl);
 
         return baseUrl;
     }
 
-    private PlayerData getPlayerData(String userAgent) {
-        String playerUrl = getPlayerUrl(userAgent);
+    private PlayerData getPlayerData() {
+        String playerUrl = mAppServiceInt.getPlayerUrl();
 
         PlayerData playerData = mAppServiceInt.getPlayerData(playerUrl);
 
@@ -108,8 +88,8 @@ public class AppApiTest {
         return playerData;
     }
 
-    private ClientData getClientData(String userAgent) {
-        String baseUrl = getBaseUrl(userAgent);
+    private ClientData getClientData() {
+        String baseUrl = getBaseUrl();
 
         ClientData clientData = mAppServiceInt.getClientData(baseUrl);
 

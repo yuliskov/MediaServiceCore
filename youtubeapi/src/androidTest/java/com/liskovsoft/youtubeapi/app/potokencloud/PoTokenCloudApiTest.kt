@@ -20,7 +20,6 @@ import org.junit.Test
 
 internal class PoTokenCloudApiTest {
     private lateinit var api: PoTokenCloudApi
-    private var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS[0]
 
     @Before
     fun setUp() {
@@ -30,12 +29,6 @@ internal class PoTokenCloudApiTest {
     @Test
     fun testThatPoTokenNotEmpty() {
         getPoToken()
-    }
-
-    @Ignore("Server could block us")
-    @Test
-    fun testPoTokenHighLoad() {
-        getPoTokenHighLoad()
     }
 
     @Test
@@ -54,9 +47,10 @@ internal class PoTokenCloudApiTest {
         testPoTokenResponse(getPoTokenPart())
     }
 
+    @Ignore("not used")
     @Test
     fun testHealth() = runBlocking {
-        val tickle = api.healthCheck("$baseUrl/health-check")
+        val tickle = api.healthCheck("${PO_TOKEN_CLOUD_BASE_URLS[0]}/health-check")
 
         val response = RetrofitHelper.getResponse(tickle)
 
@@ -66,15 +60,16 @@ internal class PoTokenCloudApiTest {
     private fun getPoToken(): PoTokenResponse? = runBlocking {
         var poToken: PoTokenResponse? = null
 
-        val times = 1
-        for (i in 0.. times) {
+        var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS.random()
+        val retryTimes = PO_TOKEN_CLOUD_BASE_URLS.size
+        for (i in 0 until retryTimes) {
             poToken = RetrofitHelper.get(api.getPoToken(baseUrl))
             if (poToken?.poToken != null)
                 break
 
-            baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
+            baseUrl = Helpers.getNextValue(PO_TOKEN_CLOUD_BASE_URLS[i], PO_TOKEN_CLOUD_BASE_URLS)
 
-            if (i < times)
+            if (i < (retryTimes - 1))
                 delay(50_000)
         }
 
@@ -104,8 +99,9 @@ internal class PoTokenCloudApiTest {
     private fun getPoTokenPart(): PoTokenResponse? = runBlocking {
         var poToken: PoTokenResponse? = null
 
-        val times = 1
-        for (i in 0.. times) {
+        var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS.random()
+        val times = PO_TOKEN_CLOUD_BASE_URLS.size
+        for (i in 0 until times) {
             val part1 = RetrofitHelper.get(api.getPoTokenPart1("$baseUrl/part1"))
 
             if (part1?.requestKey == null || part1.botguardResponse == null)
@@ -123,23 +119,13 @@ internal class PoTokenCloudApiTest {
 
             baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
 
-            if (i < times)
+            if (i < (times - 1))
                 delay(50_000)
         }
 
         assertNotNull("PoToken is not empty", poToken?.poToken)
 
         return@runBlocking poToken
-    }
-
-    private fun getPoTokenHighLoad() = runBlocking {
-        val deferred = (0..Int.MAX_VALUE).map {
-            async {
-                RetrofitHelper.get(api.getPoToken(baseUrl)) ?: fail("pot is null")
-            }
-        }
-
-        deferred.awaitAll()
     }
 
     private fun testPoTokenResponse(poToken: PoTokenResponse?) {

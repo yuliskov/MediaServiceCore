@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.browse.v2
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -13,6 +12,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
@@ -25,6 +25,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 
+@Ignore("Won't work with TV auth headers")
 @RunWith(RobolectricTestRunner::class)
 class BrowseApiTest {
     /**

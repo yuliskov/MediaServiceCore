@@ -21,15 +21,11 @@ class NSigExtractorTest {
 
     @Before
     fun setUp() {
-        mExtractor = NSigExtractor(getPlayerUrl(DefaultHeaders.APP_USER_AGENT))
+        mExtractor = NSigExtractor(getPlayerUrl())
     }
 
-    private fun getPlayerUrl(userAgent: String): String {
-        val appInfo: AppInfo = mAppServiceInt.getAppInfo(userAgent)
-
-        assertNotNull("AppInfo not null", appInfo)
-
-        val playerUrl = appInfo.playerUrl
+    private fun getPlayerUrl(): String {
+        val playerUrl = mAppServiceInt.playerUrl
 
         assertNotNull("Player url not null", playerUrl)
 

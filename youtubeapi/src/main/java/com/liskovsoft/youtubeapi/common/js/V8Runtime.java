@@ -32,11 +32,11 @@ public final class V8Runtime {
         sInstance = null;
     }
 
-    public synchronized String evaluate(final String source) {
+    public String evaluate(final String source) {
         return evaluateSafe(source);
     }
 
-    public synchronized String evaluate(final List<String> sources) {
+    public String evaluate(final List<String> sources) {
         return evaluateSafe(sources);
     }
 

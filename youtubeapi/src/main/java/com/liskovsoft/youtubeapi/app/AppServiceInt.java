@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app;
 
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
@@ -8,10 +9,13 @@ import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class AppServiceInt {
+    private static final String TAG = AppServiceInt.class.getSimpleName();
     private final AppApi mAppApi;
 
     public AppServiceInt() {
@@ -122,7 +126,7 @@ public class AppServiceInt {
         return getAppInfoData() != null ? getAppInfoData().getVisitorData() : null;
     }
 
-    public String getDecipherFunction() {
+    private String getDecipherFunction() {
         return getPlayerData() != null ? getPlayerData().getDecipherFunction() : null;
     }
 
@@ -168,5 +172,26 @@ public class AppServiceInt {
         getAppInfoData();
         getPlayerData();
         getClientData();
+    }
+
+    public String createDecipherCode(List<String> ciphered) {
+        String decipherFunction = getDecipherFunction();
+
+        if (decipherFunction == null) {
+            Log.e(TAG, "Oops. DecipherFunction is null...");
+            return null;
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(decipherFunction);
+        result.append("var result = [];");
+
+        for (String cipher : ciphered) {
+            result.append(String.format("result.push(decipherSignature('%s'));", cipher));
+        }
+
+        result.append("result.toString();");
+
+        return result.toString();
     }
 }

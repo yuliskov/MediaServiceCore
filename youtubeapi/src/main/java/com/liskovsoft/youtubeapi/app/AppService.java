@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService;
@@ -12,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class AppService {
-    private static final String TAG = AppService.class.getSimpleName();
     private static AppService sInstance;
     private final AppServiceInt mAppServiceInt;
     private String mClientPlaybackNonce;
@@ -55,21 +53,33 @@ public class AppService {
      * Decipher strings using js code
      */
     public List<String> decipher(List<String> ciphered) {
-        if (isAllNulls(ciphered)) {
+        if (Helpers.allNulls(ciphered)) {
             return ciphered;
         }
 
-        String decipherCode = createDecipherCode(ciphered);
+        String decipherCode = mAppServiceInt.createDecipherCode(ciphered);
 
         if (decipherCode == null) {
             return ciphered;
         }
 
-        return runCode(decipherCode);
+        String result = V8Runtime.instance().evaluate(decipherCode);
+
+        String[] values = result.split(",");
+
+        return Arrays.asList(values);
     }
 
+    //private List<String> runCodeDuktape(String decipherCode) {
+    //    String result = getDuktape().evaluate(decipherCode).toString();
+    //
+    //    String[] values = result.split(",");
+    //
+    //    return Arrays.asList(values);
+    //}
+
     public List<String> fixThrottling(List<String> throttledList) {
-        if (isAllNulls(throttledList)) {
+        if (Helpers.allNulls(throttledList)) {
             return throttledList;
         }
 
@@ -111,7 +121,7 @@ public class AppService {
      * NOTE: Unique per video info instance<br/>
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
-    public String getClientPlaybackNonce() {
+    public synchronized String getClientPlaybackNonce() {
         if (mClientPlaybackNonce != null) {
             return mClientPlaybackNonce;
         }
@@ -127,10 +137,6 @@ public class AppService {
         return mClientPlaybackNonce;
     }
 
-    public String getPoTokenResult() {
-        return PoTokenCloudService.getPoToken();
-    }
-
     /**
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
@@ -143,6 +149,10 @@ public class AppService {
     //
     //    return getDuktape().evaluate(code).toString();
     //}
+
+    public String getPoTokenResult() {
+        return PoTokenCloudService.getPoToken();
+    }
 
     /**
      * Constant used in {@link AuthApi}
@@ -171,53 +181,6 @@ public class AppService {
     public String getVisitorData() {
         return mAppServiceInt.getVisitorData();
     }
-
-    private static boolean isAllNulls(List<String> ciphered) {
-        for (String cipher : ciphered) {
-            if (cipher != null) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private String createDecipherCode(List<String> ciphered) {
-        String decipherFunction = mAppServiceInt.getDecipherFunction();
-
-        if (decipherFunction == null) {
-            Log.e(TAG, "Oops. DecipherFunction is null...");
-            return null;
-        }
-
-        StringBuilder result = new StringBuilder();
-        result.append(decipherFunction);
-        result.append("var result = [];");
-
-        for (String cipher : ciphered) {
-            result.append(String.format("result.push(decipherSignature('%s'));", cipher));
-        }
-
-        result.append("result.toString();");
-
-        return result.toString();
-    }
-
-    private List<String> runCode(String code) {
-        String result = V8Runtime.instance().evaluate(code);
-
-        String[] values = result.split(",");
-
-        return Arrays.asList(values);
-    }
-
-    //private List<String> runCodeDuktape(String code) {
-    //    String result = getDuktape().evaluate(code).toString();
-    //
-    //    String[] values = result.split(",");
-    //
-    //    return Arrays.asList(values);
-    //}
 
     private void updatePoTokenData() {
         PoTokenCloudService.updatePoToken();

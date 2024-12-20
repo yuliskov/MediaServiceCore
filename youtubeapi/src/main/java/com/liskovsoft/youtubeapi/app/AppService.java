@@ -2,11 +2,6 @@ package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.ClientData;
-import com.liskovsoft.youtubeapi.app.models.PlayerData;
-import com.liskovsoft.youtubeapi.app.nsig.NSigExtractor;
-import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService;
@@ -20,6 +15,7 @@ public class AppService {
     private static final String TAG = AppService.class.getSimpleName();
     private static AppService sInstance;
     private final AppServiceInt mAppServiceInt;
+    private String mClientPlaybackNonce;
     //private Duktape mDuktape;
 
     private AppService() {
@@ -107,17 +103,28 @@ public class AppService {
         return mAppServiceInt.getNSigExtractor().extractNSig(throttled);
     }
 
+    public void resetClientPlaybackNonce() {
+        mClientPlaybackNonce = null;
+    }
+
     /**
+     * NOTE: Unique per video info instance<br/>
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
     public String getClientPlaybackNonce() {
+        if (mClientPlaybackNonce != null) {
+            return mClientPlaybackNonce;
+        }
+
         String function = mAppServiceInt.getClientPlaybackNonceFunction();
 
         if (function == null) {
             return null;
         }
 
-        return V8Runtime.instance().evaluate(function);
+        mClientPlaybackNonce = V8Runtime.instance().evaluate(function);
+
+        return mClientPlaybackNonce;
     }
 
     public String getPoTokenResult() {

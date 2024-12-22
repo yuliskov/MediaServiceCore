@@ -13,6 +13,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
+import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
@@ -48,7 +49,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         mSponsorBlockService = SponsorBlockService.instance();
         mTrackingService = TrackingService.instance();
         mVideoInfoService = VideoInfoService.instance();
-        mActionsService = ActionsService.instance();
+        mActionsService = ActionsServiceWrapper.instance();
         mPlaylistService = PlaylistService.instance();
         mFeedbackService = FeedbackService.instance();
     }

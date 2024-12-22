@@ -116,20 +116,26 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return RxHelper.fromVoidable { importGroupsReal(uri) }
     }
 
+    override fun createChannelGroup(title: String, iconUrl: String?, channels: MutableList<ChannelGroup.Channel>): ChannelGroup {
+        return ChannelGroupImpl(title = title, iconUrl = iconUrl, channels = channels)
+    }
+
+    override fun renameChannelGroup(channelGroup: ChannelGroup, title: String) {
+        addChannelGroup(ChannelGroupImpl(channelGroup.id, title, channelGroup.iconUrl, channelGroup.channels))
+    }
+
+    override fun createChannel(title: String?, iconUrl: String?, channelId: String): ChannelGroup.Channel {
+        return ChannelImpl(title = title, iconUrl = iconUrl, channelId = channelId)
+    }
+
     private fun importGroupsReal(uri: Uri) {
         val groups = mImportServices.firstNotNullOfOrNull { it.importGroups(uri) } ?: return
 
         groups.forEach {
-            val idx = mChannelGroups?.indexOf(it) ?: -1
-            if (idx != -1) { // already exists
+            //val idx = mChannelGroups?.indexOf(it) ?: -1
+            val contains = Helpers.containsIf(mChannelGroups) { item -> item.title == it.title }
+            if (contains) { // already exists
                 mChannelGroups?.add(ChannelGroupImpl(title = "${it.title} 2", iconUrl = it.iconUrl, channels = it.channels))
-
-                //val existingGroup = mChannelGroups?.get(idx)
-                //it.channels.forEach {
-                //    if (existingGroup?.contains(it.channelId) == true)
-                //        return@forEach
-                //    existingGroup?.add(it)
-                //}
                 return@forEach
             }
 
@@ -142,10 +148,11 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     override fun exportData(data: String?) {
         data?.let {
             restoreData(it)
+            persistData()
         }
     }
 
-    fun subscribe(title: String, iconUrl: String?, channelId: String, subscribe: Boolean) {
+    fun subscribe(title: String?, iconUrl: String?, channelId: String, subscribe: Boolean) {
         val group: ChannelGroup = findChannelGroup(SUBSCRIPTION_GROUP_ID) ?:
             ChannelGroupImpl(SUBSCRIPTION_GROUP_ID, "Subscriptions", null, mutableListOf())
 

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import com.liskovsoft.mediaserviceinterfaces.yt.ChannelGroupService;
 import com.liskovsoft.mediaserviceinterfaces.yt.CommentsService;
 import com.liskovsoft.mediaserviceinterfaces.yt.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.yt.LiveChatService;
@@ -11,6 +12,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.SignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
@@ -80,6 +82,11 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public NotificationsService getNotificationsService() {
         return YouTubeNotificationsService.INSTANCE;
+    }
+
+    @Override
+    public ChannelGroupService getChannelGroupService() {
+        return ChannelGroupServiceImpl.INSTANCE;
     }
 
     @Override

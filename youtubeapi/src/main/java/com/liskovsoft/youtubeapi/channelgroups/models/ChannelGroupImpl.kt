@@ -54,7 +54,7 @@ internal data class ChannelGroupImpl(
 
     override fun equals(other: Any?): Boolean {
         if (other is ChannelGroup) {
-            return other.title == title
+            return other.id == id
         }
 
         return super.equals(other)

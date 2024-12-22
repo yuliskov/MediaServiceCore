@@ -57,6 +57,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val nextMediaItem by lazy {
         nextVideoItem?.let { NextMediaItem(it) }
     }
+    var isSubscribedOverrideItem: Boolean? = null
     private val isSubscribedItem by lazy {
         videoOwner?.isSubscribed() ?: channelOwner?.isSubscribed() ?: false
     }
@@ -229,7 +230,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
 
     override fun isSubscribed(): Boolean {
-        return isSubscribedItem
+        return isSubscribedOverrideItem ?: isSubscribedItem
     }
 
     override fun getParams(): String? {

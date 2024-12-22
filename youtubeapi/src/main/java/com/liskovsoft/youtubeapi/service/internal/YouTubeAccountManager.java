@@ -227,7 +227,11 @@ public class YouTubeAccountManager {
 
     public void addOnAccountChange(OnAccountChange listener) {
         if (!mListeners.contains(listener)) {
-            mListeners.add(listener);
+            if (listener instanceof MediaServicePrefs) {
+                mListeners.add(0, listener);
+            } else {
+                mListeners.add(listener);
+            }
         }
     }
 

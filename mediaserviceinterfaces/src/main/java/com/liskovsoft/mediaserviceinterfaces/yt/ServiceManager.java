@@ -8,6 +8,7 @@ public interface ServiceManager {
     LiveChatService getLiveChatService();
     CommentsService getCommentsService();
     NotificationsService getNotificationsService();
+    ChannelGroupService getChannelGroupService();
     void invalidateCache();
     void refreshCacheIfNeeded();
     void applyNoPlaybackFix();

@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.notifications
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
-import com.liskovsoft.youtubeapi.actions.ActionsService
+import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.NotificationsMediaGroup
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
@@ -33,7 +33,7 @@ internal object NotificationsServiceInt {
             //}
 
             // Fix bug when notification cannot be modified
-            ActionsService.instance().subscribe(notificationState.channelId, notificationState.params)
+            ActionsServiceWrapper.instance().subscribe(notificationState.channelId, notificationState.params)
 
             modifyNotification(notificationState.stateParams)
         }

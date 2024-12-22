@@ -10,6 +10,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
+import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
@@ -49,7 +50,7 @@ public class YouTubeContentService implements ContentService {
         Log.d(TAG, "Starting...");
 
         mSignInService = YouTubeSignInService.instance();
-        mActionsService = ActionsService.instance();
+        mActionsService = ActionsServiceWrapper.instance();
         mSearchService = SearchServiceWrapper.instance();
         mBrowseService = BrowseService.instance();
     }

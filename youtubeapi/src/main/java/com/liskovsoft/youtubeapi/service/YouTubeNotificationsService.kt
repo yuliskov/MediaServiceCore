@@ -8,7 +8,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.notifications.NotificationsServiceWrapper
 import io.reactivex.Observable
 
-object YouTubeNotificationsService: NotificationsService {
+internal object YouTubeNotificationsService: NotificationsService {
     private val mSignInService = YouTubeSignInService.instance()
 
     override fun getNotificationItems(): MediaGroup? {

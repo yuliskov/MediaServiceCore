@@ -125,13 +125,13 @@ public class YouTubeSignInService implements SignInService {
     }
 
     @Override
-    public void selectAccount(Account account) {
-        mAccountManager.selectAccount(account);
+    public Observable<Void> selectAccount(Account account) {
+        return RxHelper.fromVoidable(() -> mAccountManager.selectAccount(account));
     }
 
     @Override
-    public void removeAccount(Account account) {
-        mAccountManager.removeAccount(account);
+    public Observable<Void> removeAccount(Account account) {
+        return RxHelper.fromVoidable(() -> mAccountManager.removeAccount(account));
     }
 
     /**

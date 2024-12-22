@@ -13,8 +13,6 @@ public interface SignInService {
     boolean isSigned();
     List<Account> getAccounts();
     Account getSelectedAccount();
-    void selectAccount(Account account);
-    void removeAccount(Account account);
     void addOnAccountChange(OnAccountChange listener);
 
     // RxJava interfaces
@@ -26,4 +24,6 @@ public interface SignInService {
     Observable<Void> signOutObserve();
     Observable<Boolean> isSignedObserve();
     Observable<List<Account>> getAccountsObserve();
+    Observable<Void> selectAccount(Account account);
+    Observable<Void> removeAccount(Account account);
 }

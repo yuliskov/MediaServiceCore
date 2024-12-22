@@ -252,8 +252,15 @@ public class YouTubeAccountManager {
     private void onAccountChanged() {
         mSignInService.invalidateCache();
 
+        Account account = getSelectedAccount();
+
         // Fix sign in bug
-        //mListeners.forEach(listener -> RxHelper.runUser(() -> listener.onAccountChanged(getSelectedAccount())));
-        RxHelper.runUser(() -> mListeners.forEach(listener -> listener.onAccountChanged(getSelectedAccount())));
+        mListeners.forEach(listener -> {
+            if (listener instanceof MediaServicePrefs) {
+                listener.onAccountChanged(account);
+            } else {
+                RxHelper.runUser(() -> listener.onAccountChanged(account));
+            }
+        });
     }
 }

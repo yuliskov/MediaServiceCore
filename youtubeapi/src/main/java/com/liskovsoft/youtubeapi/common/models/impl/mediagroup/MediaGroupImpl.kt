@@ -64,10 +64,12 @@ internal data class ContinuationMediaGroup(
 
 internal data class WatchNexContinuationMediaGroup(
     private val continuation: WatchNextResultContinuation,
-    private val options: MediaGroupOptions
+    private val options: MediaGroupOptions,
+    private val overrideItems: List<ItemWrapper?>? = null,
+    private val overrideKey: String? = null
 ): BaseMediaGroup(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?>? = continuation.getItems()
-    override fun getNextPageKeyInt(): String? = continuation.getNextPageKey()
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = overrideItems?.sortedByDescending { it?.isLive() ?: false } ?: continuation.getItems()
+    override fun getNextPageKeyInt(): String? = if (overrideItems != null) overrideKey else continuation.getNextPageKey()
     override fun getTitleInt(): String? = null
 }
 
@@ -224,4 +226,14 @@ internal data class SubscribedShortsMediaGroup(
     override fun getItemWrappersInt(): List<ItemWrapper?> = items
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null
+}
+
+internal data class EmptyMediaGroup(
+    private val reloadPageKey: String,
+    private val type: Int,
+    private val title: String?
+): BaseMediaGroup(MediaGroupOptions(groupType = type)) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = null
+    override fun getNextPageKeyInt(): String = reloadPageKey
+    override fun getTitleInt(): String? = title
 }

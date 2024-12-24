@@ -258,36 +258,36 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.fromNullable(this::getHistory);
     }
 
-    private MediaGroup getGroup(String reloadPageKey, String title, int type) {
-        checkSigned();
-
-        GridTabContinuation continuation = mBrowseService.continueGridTab(reloadPageKey);
-
-        if (continuation != null) {
-            // Prepare to move LIVE items to the top. Multiple results should be combined first.
-            Pair<List<ItemWrapper>, String> result = continueIfNeeded(continuation.getItemWrappers(), continuation.getNextPageKey());
-            Collections.sort(result.first, (o1, o2) -> {
-                if (o1 == null && o2 == null) return 0;
-                if (o1 == null) return -1;
-                if (o2 == null) return 1;
-                return Boolean.compare(o2.isLive(), o1.isLive());
-            });
-            continuation.setItemWrappers(result.first);
-            continuation.setNextPageKey(result.second);
-        }
-
-        return YouTubeMediaGroup.from(continuation, reloadPageKey, title, type);
-    }
+    //private MediaGroup getGroup(String reloadPageKey, String title, int type) {
+    //    checkSigned();
+    //
+    //    GridTabContinuation continuation = mBrowseService.continueGridTab(reloadPageKey);
+    //
+    //    if (continuation != null) {
+    //        // Prepare to move LIVE items to the top. Multiple results should be combined first.
+    //        Pair<List<ItemWrapper>, String> result = continueIfNeeded(continuation.getItemWrappers(), continuation.getNextPageKey());
+    //        Collections.sort(result.first, (o1, o2) -> {
+    //            if (o1 == null && o2 == null) return 0;
+    //            if (o1 == null) return -1;
+    //            if (o2 == null) return 1;
+    //            return Boolean.compare(o2.isLive(), o1.isLive());
+    //        });
+    //        continuation.setItemWrappers(result.first);
+    //        continuation.setNextPageKey(result.second);
+    //    }
+    //
+    //    return YouTubeMediaGroup.from(continuation, reloadPageKey, title, type);
+    //}
 
     @Override
     public MediaGroup getGroup(String reloadPageKey) {
-        return getGroup(reloadPageKey, null, MediaGroup.TYPE_UNDEFINED);
+        return BrowseService2.getGroup(reloadPageKey, MediaGroup.TYPE_UNDEFINED, null);
     }
 
     @Override
     public MediaGroup getGroup(MediaItem mediaItem) {
         return mediaItem.getReloadPageKey() != null ?
-                getGroup(mediaItem.getReloadPageKey(), mediaItem.getTitle(), mediaItem.getType()) :
+                BrowseService2.getGroup(mediaItem.getReloadPageKey(), mediaItem.getType(), mediaItem.getTitle()) :
                 BrowseService2.getChannelAsGrid(mediaItem.getChannelId());
     }
 
@@ -298,7 +298,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getGroupObserve(String reloadPageKey) {
-        return RxHelper.fromNullable(() -> getGroup(reloadPageKey, null, MediaGroup.TYPE_UNDEFINED));
+        return RxHelper.fromNullable(() -> getGroup(reloadPageKey));
     }
 
     @Override
@@ -873,29 +873,29 @@ public class YouTubeContentService implements ContentService {
         mSearchService.clearSearchHistory();
     }
 
-    private Pair<List<ItemWrapper>, String> continueIfNeeded(List<ItemWrapper> items, String continuationKey) {
-        List<ItemWrapper> combinedItems = items;
-        String combinedKey = continuationKey;
-
-        for (int i = 0; i < 10; i++) {
-            if (combinedKey == null || (combinedItems != null && combinedItems.size() > 60)) {
-                break;
-            }
-
-            GridTabContinuation result = mBrowseService.continueGridTab(combinedKey);
-
-            if (result != null) {
-                List<ItemWrapper> newItems = result.getItemWrappers();
-                if (newItems != null) {
-                    if (combinedItems == null) {
-                        combinedItems = new ArrayList<>();
-                    }
-                    combinedItems.addAll(newItems);
-                }
-                combinedKey = result.getNextPageKey();
-            }
-        }
-
-        return new Pair<>(combinedItems, combinedKey);
-    }
+    //private Pair<List<ItemWrapper>, String> continueIfNeeded(List<ItemWrapper> items, String continuationKey) {
+    //    List<ItemWrapper> combinedItems = items;
+    //    String combinedKey = continuationKey;
+    //
+    //    for (int i = 0; i < 10; i++) {
+    //        if (combinedKey == null || (combinedItems != null && combinedItems.size() > 60)) {
+    //            break;
+    //        }
+    //
+    //        GridTabContinuation result = mBrowseService.continueGridTab(combinedKey);
+    //
+    //        if (result != null) {
+    //            List<ItemWrapper> newItems = result.getItemWrappers();
+    //            if (newItems != null) {
+    //                if (combinedItems == null) {
+    //                    combinedItems = new ArrayList<>();
+    //                }
+    //                combinedItems.addAll(newItems);
+    //            }
+    //            combinedKey = result.getNextPageKey();
+    //        }
+    //    }
+    //
+    //    return new Pair<>(combinedItems, combinedKey);
+    //}
 }

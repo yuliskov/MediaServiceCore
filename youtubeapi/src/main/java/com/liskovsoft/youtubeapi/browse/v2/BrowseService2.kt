@@ -361,6 +361,11 @@ internal object BrowseService2 {
     }
 
     @JvmStatic
+    fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
+        return continueTVGroup(EmptyMediaGroup(reloadPageKey, type, title), true)
+    }
+
+    @JvmStatic
     fun continueGroup(group: MediaGroup?): MediaGroup? {
         return when (group) {
             is ShortsMediaGroup -> continueShorts(group.nextPageKey) ?: continueShorts(group.nextPageKey, true)
@@ -427,7 +432,7 @@ internal object BrowseService2 {
         }
     }
 
-    private fun continueTVGroup(group: MediaGroup?): MediaGroup? {
+    private fun continueTVGroup(group: MediaGroup?, extraResults: Boolean = false): MediaGroup? {
         if (group?.nextPageKey == null) {
             return null
         }
@@ -436,7 +441,10 @@ internal object BrowseService2 {
             mBrowseApi.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, group.nextPageKey))
 
         return RetrofitHelper.get(continuationResult)?.let {
-            WatchNexContinuationMediaGroup(it, createOptions(group.type)).apply { title = group.title }
+            // Prepare to move LIVE items to the top. Multiple results should be combined first.
+            val (overrideItems, overrideKey) = if (extraResults) continueIfNeeded(it.getItems(), it.getNextPageKey()) else Pair(null, null)
+
+            WatchNexContinuationMediaGroup(it, createOptions(group.type), overrideItems = overrideItems, overrideKey = overrideKey).apply { title = group.title }
         }
     }
 

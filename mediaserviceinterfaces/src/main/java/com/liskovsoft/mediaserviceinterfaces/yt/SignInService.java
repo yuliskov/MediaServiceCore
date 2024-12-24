@@ -9,21 +9,17 @@ public interface SignInService {
     interface OnAccountChange {
         void onAccountChanged(Account account);
     }
-    void signOut();
     boolean isSigned();
     List<Account> getAccounts();
     Account getSelectedAccount();
     void addOnAccountChange(OnAccountChange listener);
+    void selectAccount(Account account);
+    void removeAccount(Account account);
 
     // RxJava interfaces
     /**
      * Trying to login using 2-factor authentication
-     * @return user code, user should apply this code on service web page (e.g. https://www.youtube.com/activate)
+     * @return user code, user should apply this code on service web page (e.g. <a href="https://yt.be/activate">https://yt.be/activate</a>)
      */
     Observable<String> signInObserve();
-    Observable<Void> signOutObserve();
-    Observable<Boolean> isSignedObserve();
-    Observable<List<Account>> getAccountsObserve();
-    Observable<Void> selectAccount(Account account);
-    Observable<Void> removeAccount(Account account);
 }

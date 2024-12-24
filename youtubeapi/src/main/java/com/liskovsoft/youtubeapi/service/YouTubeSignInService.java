@@ -6,7 +6,6 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
@@ -55,19 +54,6 @@ public class YouTubeSignInService implements SignInService {
         return mAccountManager.signInObserve();
     }
 
-    @Override
-    public void signOut() {
-        // TODO: not implemented
-    }
-
-    @Override
-    public Observable<Void> signOutObserve() {
-        return RxHelper.create(emitter -> {
-            signOut();
-            emitter.onComplete();
-        });
-    }
-
     public void checkAuth() {
         updateAuthHeadersIfNeeded();
     }
@@ -99,18 +85,8 @@ public class YouTubeSignInService implements SignInService {
     }
 
     @Override
-    public Observable<Boolean> isSignedObserve() {
-        return RxHelper.fromCallable(this::isSigned);
-    }
-
-    @Override
     public List<Account> getAccounts() {
         return mAccountManager.getAccounts();
-    }
-
-    @Override
-    public Observable<List<Account>> getAccountsObserve() {
-        return RxHelper.fromCallable(this::getAccounts);
     }
 
     @Nullable
@@ -124,14 +100,15 @@ public class YouTubeSignInService implements SignInService {
         mCacheUpdateTime = 0;
     }
 
+    // Fix empty content when quickly switch accounts???
     @Override
-    public Observable<Void> selectAccount(Account account) {
-        return RxHelper.fromVoidable(() -> mAccountManager.selectAccount(account));
+    public synchronized void selectAccount(Account account) {
+        mAccountManager.selectAccount(account);
     }
 
     @Override
-    public Observable<Void> removeAccount(Account account) {
-        return RxHelper.fromVoidable(() -> mAccountManager.removeAccount(account));
+    public synchronized void removeAccount(Account account) {
+        mAccountManager.removeAccount(account);
     }
 
     /**

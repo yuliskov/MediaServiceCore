@@ -142,7 +142,7 @@ public final class YouTubeHelper {
             return false;
         }
 
-        return !mediaItem.isLive() && mediaItem.getBadgeText() != null && !Helpers.hasDigits(mediaItem.getBadgeText()) && mediaItem.getDurationMs() <= 0 &&
+        return !mediaItem.isLive() && Helpers.hasWords(mediaItem.getBadgeText()) && mediaItem.getDurationMs() <= 0 &&
                 (mediaItem.getPlaylistId() != null || mediaItem.getChannelId() != null || mediaItem.hasUploads());
     }
 

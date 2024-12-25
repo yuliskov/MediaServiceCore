@@ -53,21 +53,21 @@ public class YouTubeRemoteControlService implements RemoteControlService {
 
     @Override
     public Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs, boolean isPlaying) {
-        return RxHelper.fromVoidable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, isPlaying));
+        return RxHelper.fromRunnable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, isPlaying));
     }
 
     @Override
     public Observable<Void> postStateChangeObserve(long positionMs, long durationMs, boolean isPlaying) {
-        return RxHelper.fromVoidable(() -> mLoungeService.postStateChange(positionMs, durationMs, isPlaying));
+        return RxHelper.fromRunnable(() -> mLoungeService.postStateChange(positionMs, durationMs, isPlaying));
     }
 
     @Override
     public Observable<Void> postVolumeChangeObserve(int volume) {
-        return RxHelper.fromVoidable(() -> mLoungeService.postVolumeChange(volume));
+        return RxHelper.fromRunnable(() -> mLoungeService.postVolumeChange(volume));
     }
 
     @Override
     public Observable<Void> resetDataObserve() {
-        return RxHelper.fromVoidable(mLoungeService::resetData);
+        return RxHelper.fromRunnable(mLoungeService::resetData);
     }
 }

@@ -210,6 +210,11 @@ public final class YouTubeHelper {
             }
         }
 
+        // GrayJay channel: lbry://@elissaclips#f396490429364e98d5070588aabfd039d0fc93b5
+        if (Helpers.equals(url.getScheme(), "lbry")) {
+            channelId = url.getAuthority(); // @elissaclips
+        }
+
         return channelId;
     }
 

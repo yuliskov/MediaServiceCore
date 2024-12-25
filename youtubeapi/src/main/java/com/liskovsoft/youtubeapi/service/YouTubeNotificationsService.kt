@@ -34,11 +34,11 @@ internal object YouTubeNotificationsService: NotificationsService {
     }
 
     override fun hideNotificationObserve(item: MediaItem?): Observable<Void> {
-        return RxHelper.fromVoidable { hideNotification(item) }
+        return RxHelper.fromRunnable { hideNotification(item) }
     }
 
     override fun setNotificationStateObserve(state: NotificationState?): Observable<Void> {
-        return RxHelper.fromVoidable { setNotificationState(state) }
+        return RxHelper.fromRunnable { setNotificationState(state) }
     }
 
     private fun checkSigned() {

@@ -16,7 +16,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
     private val mImportServices = listOf(PocketTubeService, GrayJayService)
-    private var mChannelGroups: MutableList<ChannelGroup>? = null
+    private lateinit var mChannelGroups: MutableList<ChannelGroup>
 
     init {
         MediaServicePrefs.addListener(this)
@@ -32,7 +32,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun addChannelGroup(group: ChannelGroup) {
-        mChannelGroups?.let {
+        mChannelGroups.let {
             // Move to the top
             it.remove(group)
             it.add(0, group)
@@ -41,7 +41,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun removeChannelGroup(group: ChannelGroup) {
-        mChannelGroups?.let {
+        mChannelGroups.let {
             if (it.contains(group)) {
                 it.remove(group)
                 persistData()
@@ -54,7 +54,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             return null
         }
 
-        mChannelGroups?.let {
+        mChannelGroups.let {
             for (group in it) {
                 if (group.id == channelGroupId) {
                     return group
@@ -70,7 +70,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             return null
         }
 
-        mChannelGroups?.let {
+        mChannelGroups.let {
             for (group in it) {
                 if (Helpers.equals(group.title, title)) {
                     return group
@@ -90,7 +90,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
         var channelGroup: ChannelGroup? = null
 
-        mChannelGroups?.let {
+        mChannelGroups.let {
             for (group in it) {
                 if (group.id == channelGroupId) {
                     channelGroup = group
@@ -109,11 +109,11 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun isEmpty(): Boolean {
-        return mChannelGroups.isNullOrEmpty()
+        return mChannelGroups.isEmpty()
     }
 
-    override fun importGroups(uri: Uri): Observable<Void> {
-        return RxHelper.fromVoidable { importGroupsReal(uri) }
+    override fun importGroupsObserve(uri: Uri): Observable<List<ChannelGroup>> {
+        return RxHelper.fromCallable { importGroupsReal(uri) }
     }
 
     override fun createChannelGroup(title: String, iconUrl: String?, channels: MutableList<ChannelGroup.Channel>): ChannelGroup {
@@ -128,21 +128,25 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return ChannelImpl(title = title, iconUrl = iconUrl, channelId = channelId)
     }
 
-    private fun importGroupsReal(uri: Uri) {
-        val groups = mImportServices.firstNotNullOfOrNull { it.importGroups(uri) } ?: return
+    private fun importGroupsReal(uri: Uri): List<ChannelGroup>? {
+        val groups = mImportServices.firstNotNullOfOrNull { it.importGroups(uri) } ?: return null
+        val result = mutableListOf<ChannelGroup>()
 
         groups.forEach {
             //val idx = mChannelGroups?.indexOf(it) ?: -1
             val contains = Helpers.containsIf(mChannelGroups) { item -> item.title == it.title }
             if (contains) { // already exists
-                mChannelGroups?.add(ChannelGroupImpl(title = "${it.title} 2", iconUrl = it.iconUrl, channels = it.channels))
+                //mChannelGroups?.add(ChannelGroupImpl(title = "${it.title} 2", iconUrl = it.iconUrl, channels = it.channels))
                 return@forEach
             }
 
-            mChannelGroups?.add(it)
+            mChannelGroups.add(it)
+            result.add(it)
         }
 
         persistData()
+
+        return result
     }
 
     override fun exportData(data: String?) {

@@ -36,7 +36,7 @@ internal data class ChannelImpl(
 
             val title = Helpers.parseStr(split, 0)
             val groupIconUrl = Helpers.parseStr(split, 1)
-            val channelId = Helpers.parseStr(split, 2)
+            val channelId = Helpers.parseStr(split, 2) ?: return null
 
             return ChannelImpl(title, groupIconUrl, channelId)
         }

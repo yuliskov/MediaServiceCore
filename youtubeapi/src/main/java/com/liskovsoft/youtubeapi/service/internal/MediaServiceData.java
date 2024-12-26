@@ -66,7 +66,7 @@ public class MediaServiceData {
         private static final String MEDIA_SERVICE_CACHE = "media_service_cache";
 
         public MediaServiceCache(Context context) {
-            super(context, PREF_NAME);
+            super(context, PREF_NAME, true);
         }
 
         public String getMediaServiceCache() {
@@ -74,7 +74,6 @@ public class MediaServiceData {
         }
 
         public void setMediaServiceCache(String cache) {
-            clear(); // Fix big size: remove unused values
             putString(MEDIA_SERVICE_CACHE, cache);
         }
     }

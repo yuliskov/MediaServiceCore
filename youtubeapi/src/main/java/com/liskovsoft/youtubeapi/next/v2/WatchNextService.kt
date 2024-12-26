@@ -46,21 +46,29 @@ internal object WatchNextService {
         return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
             val realChannelId = channelId
             if (!YouTubeSignInService.instance().isSigned && realChannelId != null) {
-                if (ChannelGroupServiceImpl.isSubscribed(realChannelId)) {
-                    isSubscribedOverrideItem = true
-                    // Fix absence of imageUrl and title
-                    val subscribedGroup = ChannelGroupServiceImpl.subscribedChannelGroup
-                    val channel = subscribedGroup?.findChannel(realChannelId)
-                    channel?.let {
-                        if (it.iconUrl == null || it.title == null) {
-                            subscribedGroup.add(ChannelImpl(author, authorImageUrl, realChannelId))
-                        }
-                    }
-                } else {
-                    isSubscribedOverrideItem = false
-                }
+                isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(realChannelId)
+                ChannelGroupServiceImpl.cachedChannel = ChannelImpl(realChannelId, author, authorImageUrl)
             }
         } else null
+
+        //return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
+        //    val realChannelId = channelId
+        //    if (!YouTubeSignInService.instance().isSigned && realChannelId != null) {
+        //        if (ChannelGroupServiceImpl.isSubscribed(realChannelId)) {
+        //            isSubscribedOverrideItem = true
+        //            // Fix absence of imageUrl and title
+        //            val subscribedGroup = ChannelGroupServiceImpl.subscribedChannelGroup
+        //            val channel = subscribedGroup?.findChannel(realChannelId)
+        //            channel?.let {
+        //                if (it.iconUrl == null || it.title == null) {
+        //                    subscribedGroup.add(ChannelImpl(author, authorImageUrl, realChannelId))
+        //                }
+        //            }
+        //        } else {
+        //            isSubscribedOverrideItem = false
+        //        }
+        //    }
+        //} else null
     }
 
     @JvmStatic

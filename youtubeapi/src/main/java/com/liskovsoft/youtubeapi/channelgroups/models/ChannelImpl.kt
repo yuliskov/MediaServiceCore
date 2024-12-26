@@ -6,9 +6,9 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 private const val ITEM_DELIM = "&ci;"
 
 internal data class ChannelImpl(
+    private val channelId: String,
     private val title: String? = null,
-    private val iconUrl: String? = null,
-    private val channelId: String
+    private val iconUrl: String? = null
 ): Channel {
     override fun getTitle(): String? {
         return title
@@ -50,7 +50,7 @@ internal data class ChannelImpl(
             val groupIconUrl = Helpers.parseStr(split, 1)
             val channelId = Helpers.parseStr(split, 2) ?: return null
 
-            return ChannelImpl(title, groupIconUrl, channelId)
+            return ChannelImpl(channelId, title, groupIconUrl)
         }
     }
 }

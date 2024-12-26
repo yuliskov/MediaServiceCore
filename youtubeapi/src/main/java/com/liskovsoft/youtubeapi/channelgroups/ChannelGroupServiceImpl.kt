@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.channelgroups
 import android.net.Uri
 import com.liskovsoft.mediaserviceinterfaces.yt.ChannelGroupService
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup.Channel
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.GrayJayService
@@ -19,6 +20,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     private val mImportServices = listOf(PocketTubeService, GrayJayService)
     private lateinit var mChannelGroups: MutableList<ChannelGroup>
     private var mPersistAction: Disposable? = null
+    var cachedChannel: Channel? = null
 
     init {
         MediaServicePrefs.addListener(this)
@@ -121,7 +123,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun createChannel(title: String?, iconUrl: String?, channelId: String): ChannelGroup.Channel {
-        return ChannelImpl(title = title, iconUrl = iconUrl, channelId = channelId)
+        return ChannelImpl(channelId = channelId, title = title, iconUrl = iconUrl)
     }
 
     private fun importGroupsReal(uri: Uri): List<ChannelGroup>? {
@@ -157,7 +159,11 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             ChannelGroupImpl(SUBSCRIPTION_GROUP_ID, "Subscriptions", null, mutableListOf())
 
         if (subscribe) {
-            group.add(ChannelImpl(title, iconUrl, channelId))
+            val realCachedChannel = cachedChannel
+            val newChannel = if (channelId == realCachedChannel?.channelId)
+                realCachedChannel
+            else ChannelImpl(channelId, title, iconUrl)
+            group.add(newChannel)
         } else {
             group.remove(channelId)
         }

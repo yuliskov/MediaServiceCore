@@ -74,6 +74,7 @@ public class MediaServiceData {
         }
 
         public void setMediaServiceCache(String cache) {
+            clear(); // Fix big size: remove unused values
             putString(MEDIA_SERVICE_CACHE, cache);
         }
     }

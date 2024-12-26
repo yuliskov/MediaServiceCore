@@ -71,7 +71,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return null
     }
 
-    override fun findSubscribedChannelGroup(): ChannelGroup? {
+    override fun getSubscribedChannelGroup(): ChannelGroup? {
         return findChannelGroup(SUBSCRIPTION_GROUP_ID)
     }
 
@@ -100,7 +100,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return result.toTypedArray()
     }
 
-    override fun findSubscribedChannelIds(): Array<String>? {
+    override fun getSubscribedChannelIds(): Array<String>? {
         return findChannelIdsForGroup(SUBSCRIPTION_GROUP_ID)
     }
 

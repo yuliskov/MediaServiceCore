@@ -49,7 +49,7 @@ internal object WatchNextService {
                 if (ChannelGroupServiceImpl.isSubscribed(realChannelId)) {
                     isSubscribedOverrideItem = true
                     // Fix absence of imageUrl and title
-                    val subscribedGroup = ChannelGroupServiceImpl.findSubscribedChannelGroup()
+                    val subscribedGroup = ChannelGroupServiceImpl.subscribedChannelGroup
                     val channel = subscribedGroup?.findChannel(realChannelId)
                     channel?.let {
                         if (it.iconUrl == null || it.title == null) {

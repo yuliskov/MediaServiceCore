@@ -11,12 +11,14 @@ import com.liskovsoft.youtubeapi.channelgroups.models.ChannelGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
 import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener, ChannelGroupService {
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
     private val mImportServices = listOf(PocketTubeService, GrayJayService)
     private lateinit var mChannelGroups: MutableList<ChannelGroup>
+    private var mPersistAction: Disposable? = null
 
     init {
         MediaServicePrefs.addListener(this)
@@ -27,25 +29,21 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         restoreData()
     }
 
-    override fun getChannelGroups(): List<ChannelGroup>? {
+    override fun getChannelGroups(): List<ChannelGroup> {
         return mChannelGroups
     }
 
     override fun addChannelGroup(group: ChannelGroup) {
-        mChannelGroups.let {
-            // Move to the top
-            it.remove(group)
-            it.add(0, group)
-            persistData()
-        }
+        // Move to the top
+        mChannelGroups.remove(group)
+        mChannelGroups.add(0, group)
+        persistData()
     }
 
     override fun removeChannelGroup(group: ChannelGroup) {
-        mChannelGroups.let {
-            if (it.contains(group)) {
-                it.remove(group)
-                persistData()
-            }
+        if (mChannelGroups.contains(group)) {
+            mChannelGroups.remove(group)
+            persistData()
         }
     }
 
@@ -54,34 +52,30 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             return null
         }
 
-        mChannelGroups.let {
-            for (group in it) {
-                if (group.id == channelGroupId) {
-                    return group
-                }
+        for (group in mChannelGroups) {
+            if (group.id == channelGroupId) {
+                return group
             }
         }
 
         return null
     }
 
-    override fun findChannelGroup(title: String?): ChannelGroup? {
-        if (title == null) {
-            return null
-        }
-
-        mChannelGroups.let {
-            for (group in it) {
-                if (Helpers.equals(group.title, title)) {
-                    return group
-                }
+    override fun findChannelGroup(title: String): ChannelGroup? {
+        for (group in mChannelGroups) {
+            if (group.title == title) {
+                return group
             }
         }
 
         return null
     }
 
-    override fun getChannelGroupIds(channelGroupId: Int): Array<String>? {
+    override fun findSubscribedChannelGroup(): ChannelGroup? {
+        return findChannelGroup(SUBSCRIPTION_GROUP_ID)
+    }
+
+    override fun findChannelIdsForGroup(channelGroupId: Int): Array<String>? {
         if (channelGroupId == -1) {
             return null
         }
@@ -90,12 +84,10 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
         var channelGroup: ChannelGroup? = null
 
-        mChannelGroups.let {
-            for (group in it) {
-                if (group.id == channelGroupId) {
-                    channelGroup = group
-                    break
-                }
+        for (group in mChannelGroups) {
+            if (group.id == channelGroupId) {
+                channelGroup = group
+                break
             }
         }
 
@@ -106,6 +98,10 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         }
 
         return result.toTypedArray()
+    }
+
+    override fun findSubscribedChannelIds(): Array<String>? {
+        return findChannelIdsForGroup(SUBSCRIPTION_GROUP_ID)
     }
 
     override fun isEmpty(): Boolean {
@@ -173,7 +169,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         }
     }
 
-    fun isSubscribed(channelId: String?): Boolean {
+    fun isSubscribed(channelId: String): Boolean {
         val group: ChannelGroup? = findChannelGroup(SUBSCRIPTION_GROUP_ID)
 
         return group?.contains(channelId) ?: false
@@ -190,7 +186,12 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         mChannelGroups = Helpers.parseList(split, 0, ChannelGroupImpl::fromString)
     }
 
-    private fun persistData() {
+    fun persistData() {
+        RxHelper.disposeActions(mPersistAction)
+        mPersistAction = RxHelper.runAsync({ persistDataReal() }, 5_000)
+    }
+
+    private fun persistDataReal() {
         MediaServicePrefs.setData(CHANNEL_GROUP_DATA, Helpers.mergeData(mChannelGroups))
     }
 }

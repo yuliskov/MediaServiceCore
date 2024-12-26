@@ -30,18 +30,25 @@ internal data class ChannelGroupImpl(
         return channels
     }
 
+    override fun findChannel(channelId: String): Channel? {
+        return Helpers.findFirst(channels) { channel -> channel.channelId == channelId }
+    }
+
     override fun add(channel: Channel) {
-        if (!channels.contains(channel)) {
-            channels.add(0, channel)
-        }
+        channels.remove(channel)
+        channels.add(0, channel)
+        ChannelGroupServiceImpl.persistData()
     }
 
     override fun remove(channelId: String) {
-        Helpers.removeIf(channels) { channel -> channel.channelId == channelId }
+        val removed = Helpers.removeIf(channels) { channel -> channel.channelId == channelId }
+        if (!removed.isNullOrEmpty()) {
+            ChannelGroupServiceImpl.persistData()
+        }
     }
 
     override fun contains(channelId: String): Boolean {
-        return Helpers.containsIf(channels) { value -> Helpers.equals(value.channelId, channelId) }
+        return Helpers.containsIf(channels) { channel -> channel.channelId == channelId }
     }
 
     override fun isEmpty(): Boolean {

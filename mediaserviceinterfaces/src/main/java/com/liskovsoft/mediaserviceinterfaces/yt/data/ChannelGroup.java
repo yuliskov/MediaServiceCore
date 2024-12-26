@@ -7,6 +7,7 @@ public interface ChannelGroup {
     String getTitle();
     String getIconUrl();
     List<Channel> getChannels();
+    Channel findChannel(String channelId);
     void add(Channel channel);
     void remove(String channelId);
     boolean contains(String channelId);

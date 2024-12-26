@@ -26,6 +26,18 @@ internal data class ChannelImpl(
         return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other is Channel) {
+            return other.channelId == channelId
+        }
+
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
     companion object {
         @JvmStatic
         fun fromString(spec: String?): Channel? {

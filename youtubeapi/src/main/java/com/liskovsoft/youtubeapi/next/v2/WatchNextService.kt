@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
@@ -43,7 +44,22 @@ internal object WatchNextService {
         val watchNext = getWatchNext(videoId, playlistId, playlistIndex, playlistParams)
 
         return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
-            if (!YouTubeSignInService.instance().isSigned) isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(channelId)
+            val realChannelId = channelId
+            if (!YouTubeSignInService.instance().isSigned && realChannelId != null) {
+                if (ChannelGroupServiceImpl.isSubscribed(realChannelId)) {
+                    isSubscribedOverrideItem = true
+                    // Fix absence of imageUrl and title
+                    val subscribedGroup = ChannelGroupServiceImpl.findSubscribedChannelGroup()
+                    val channel = subscribedGroup?.findChannel(realChannelId)
+                    channel?.let {
+                        if (it.iconUrl == null || it.title == null) {
+                            subscribedGroup.add(ChannelImpl(author, authorImageUrl, realChannelId))
+                        }
+                    }
+                } else {
+                    isSubscribedOverrideItem = false
+                }
+            }
         } else null
     }
 

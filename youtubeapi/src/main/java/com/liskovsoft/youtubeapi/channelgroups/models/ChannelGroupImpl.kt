@@ -82,7 +82,7 @@ internal data class ChannelGroupImpl(
             val id = Helpers.parseInt(split, 0)
             val title = Helpers.parseStr(split, 1) ?: return null
             val groupIconUrl = Helpers.parseStr(split, 2)
-            val channels: MutableList<Channel> = Helpers.parseList(split, 3, LIST_DELIM, ChannelImpl.Companion::fromString)
+            val channels: MutableList<Channel> = Helpers.parseList(split, 3, LIST_DELIM, ChannelImpl::fromString)
 
             return ChannelGroupImpl(id, title, groupIconUrl, channels)
         }

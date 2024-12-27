@@ -10,12 +10,10 @@ import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.nsig.NSigExtractor;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 public class AppServiceIntCached extends AppServiceInt {
     private static final String TAG = AppServiceIntCached.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
-    private MediaServiceData mData;
     private AppInfoCached mAppInfo;
     private PlayerDataCached mPlayerData;
     private ClientDataCached mClientData;
@@ -179,13 +177,5 @@ public class AppServiceIntCached extends AppServiceInt {
             mAppInfo = null;
             mFallbackMode = true;
         }
-    }
-
-    private MediaServiceData getData() {
-        if (mData == null) {
-            mData = MediaServiceData.instance();
-        }
-
-        return mData;
     }
 }

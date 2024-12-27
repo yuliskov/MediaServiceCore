@@ -42,7 +42,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         persistData()
     }
 
-    override fun removeChannelGroup(group: ChannelGroup) {
+    override fun removeChannelGroup(group: ChannelGroup?) {
         if (mChannelGroups.contains(group)) {
             mChannelGroups.remove(group)
             persistData()
@@ -114,15 +114,15 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return RxHelper.fromCallable { importGroupsReal(uri) }
     }
 
-    override fun createChannelGroup(title: String, iconUrl: String?, channels: MutableList<ChannelGroup.Channel>): ChannelGroup {
-        return ChannelGroupImpl(title = title, iconUrl = iconUrl, channels = channels)
+    override fun createChannelGroup(title: String, iconUrl: String?, channels: List<Channel>): ChannelGroup {
+        return ChannelGroupImpl(title = title, iconUrl = iconUrl, channels = channels.toMutableList())
     }
 
     override fun renameChannelGroup(channelGroup: ChannelGroup, title: String) {
         addChannelGroup(ChannelGroupImpl(channelGroup.id, title, channelGroup.iconUrl, channelGroup.channels))
     }
 
-    override fun createChannel(title: String?, iconUrl: String?, channelId: String): ChannelGroup.Channel {
+    override fun createChannel(title: String?, iconUrl: String?, channelId: String): Channel {
         return ChannelImpl(channelId = channelId, title = title, iconUrl = iconUrl)
     }
 

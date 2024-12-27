@@ -1,6 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces.yt;
 
 import android.net.Uri;
+
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup.Channel;
 

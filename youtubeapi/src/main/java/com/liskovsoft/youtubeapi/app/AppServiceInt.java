@@ -17,6 +17,7 @@ import retrofit2.Response;
 public class AppServiceInt {
     private static final String TAG = AppServiceInt.class.getSimpleName();
     private final AppApi mAppApi;
+    private MediaServiceData mData;
 
     public AppServiceInt() {
         mAppApi = RetrofitHelper.create(AppApi.class);
@@ -26,7 +27,7 @@ public class AppServiceInt {
      * Obtains info with respect of anonymous browsing data (visitor cookie)
      */
     protected AppInfo getAppInfo(String userAgent) {
-        String visitorCookie = MediaServiceData.instance().getVisitorCookie();
+        String visitorCookie = getData().getVisitorCookie();
         Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
 
@@ -34,7 +35,7 @@ public class AppServiceInt {
         if (visitorCookie == null) {
             Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
             if (response != null) {
-                MediaServiceData.instance().setVisitorCookie(RetrofitHelper.getCookie(response, AppConstants.VISITOR_COOKIE_NAME));
+                getData().setVisitorCookie(RetrofitHelper.getCookie(response, AppConstants.VISITOR_COOKIE_NAME));
                 result = response.body();
             }
         } else {
@@ -84,7 +85,7 @@ public class AppServiceInt {
     }
 
     public void invalidateVisitorData() {
-        MediaServiceData.instance().setVisitorCookie(null);
+        getData().setVisitorCookie(null);
     }
 
     public void invalidateCache() {
@@ -138,8 +139,7 @@ public class AppServiceInt {
 
     public String getPlayerUrl() {
         // NOTE: NPE 2.5K
-        //MediaServiceData data = MediaServiceData.instance();
-        //return data.getPlayerUrl() != null ? data.getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        //return getData().getPlayerUrl() != null ? getData().getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
         return getAppInfoData() != null ? getAppInfoData().getPlayerUrl() : null;
     }
 
@@ -193,5 +193,13 @@ public class AppServiceInt {
         result.append("result.toString();");
 
         return result.toString();
+    }
+
+    protected MediaServiceData getData() {
+        if (mData == null) {
+            mData = MediaServiceData.instance();
+        }
+
+        return mData;
     }
 }

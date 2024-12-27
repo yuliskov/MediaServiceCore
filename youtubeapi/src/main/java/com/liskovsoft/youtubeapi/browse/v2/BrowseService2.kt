@@ -454,6 +454,7 @@ internal object BrowseService2 {
                 (MediaGroup.TYPE_HOME == groupType && prefs?.isHideShortsFromHomeEnabled ?: false) ||
                 (MediaGroup.TYPE_HISTORY == groupType && prefs?.isHideShortsFromHistoryEnabled ?: false) ||
                 (MediaGroup.TYPE_CHANNEL == groupType && prefs?.isHideShortsFromChannelEnabled ?: false) ||
+                (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && prefs?.isHideShortsFromChannelEnabled ?: false) ||
                 (MediaGroup.TYPE_TRENDING == groupType && prefs?.isHideShortsFromTrendingEnabled ?: false)
         val removeLive = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideStreamsFromSubscriptionsEnabled ?: false)
         val removeUpcoming = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideUpcomingFromSubscriptionsEnabled ?: false) ||

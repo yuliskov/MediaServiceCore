@@ -13,6 +13,7 @@ import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
 import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import java.io.File
 
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener, ChannelGroupService {
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
@@ -114,6 +115,10 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return RxHelper.fromCallable { importGroupsReal(uri) }
     }
 
+    override fun importGroupsObserve(file: File): Observable<List<ChannelGroup>> {
+        return RxHelper.fromCallable { importGroupsReal(file) }
+    }
+
     override fun createChannelGroup(title: String, iconUrl: String?, channels: List<Channel>): ChannelGroup {
         return ChannelGroupImpl(title = title, iconUrl = iconUrl, channels = channels.toMutableList())
     }
@@ -128,6 +133,15 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     private fun importGroupsReal(uri: Uri): List<ChannelGroup>? {
         val groups = mImportServices.firstNotNullOfOrNull { it.importGroups(uri) } ?: return null
+        return persistGroups(groups)
+    }
+
+    private fun importGroupsReal(file: File): List<ChannelGroup>? {
+        val groups = mImportServices.firstNotNullOfOrNull { it.importGroups(file) } ?: return null
+        return persistGroups(groups)
+    }
+
+    private fun persistGroups(groups: List<ChannelGroup>): List<ChannelGroup> {
         val result = mutableListOf<ChannelGroup>()
 
         groups.forEach {
@@ -142,7 +156,9 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             result.add(it)
         }
 
-        persistData()
+        if (result.isNotEmpty()) {
+            persistData()
+        }
 
         return result
     }

@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.channelgroups.models.ChannelGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import java.io.File
 
 internal object PocketTubeService: GroupImportService {
     private val mFileService = RetrofitHelper.create(FileApi::class.java)
@@ -17,8 +18,16 @@ internal object PocketTubeService: GroupImportService {
     override fun importGroups(url: Uri): List<ChannelGroup>? {
         val content = mFileService.getContent(url.toString())
 
-        val pocketTubeContent = RetrofitHelper.get(content)?.content
+        val pocketTubeContent = RetrofitHelper.get(content)?.content ?: return null
 
+        return parseGroups(pocketTubeContent)
+    }
+
+    override fun importGroups(file: File): List<ChannelGroup>? {
+        return parseGroups(file.readText())
+    }
+
+    private fun parseGroups(pocketTubeContent: String): List<ChannelGroup>? {
         // Find group names
         val groupNames: List<String> = try {
             JsonPath.read(pocketTubeContent, "$.ysc_collection.*~")

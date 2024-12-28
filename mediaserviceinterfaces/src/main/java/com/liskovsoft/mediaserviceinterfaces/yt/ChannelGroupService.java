@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup;
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup.Channel;
 
+import java.io.File;
 import java.util.List;
 import io.reactivex.Observable;
 
@@ -21,6 +22,7 @@ public interface ChannelGroupService {
     String[] getSubscribedChannelIds();
     ChannelGroup getSubscribedChannelGroup();
     Observable<List<ChannelGroup>> importGroupsObserve(Uri uri);
+    Observable<List<ChannelGroup>> importGroupsObserve(File file);
     void exportData(String data);
     boolean isEmpty();
 }

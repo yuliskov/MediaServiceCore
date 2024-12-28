@@ -13,6 +13,7 @@ import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import java.io.File
 
 internal object GrayJayService: GroupImportService {
     private val mFileService = RetrofitHelper.create(FileApi::class.java)
@@ -20,17 +21,25 @@ internal object GrayJayService: GroupImportService {
     override fun importGroups(url: Uri): List<ChannelGroup>? {
         val content = mFileService.getContent(url.toString())
 
-        val grayJayContent = RetrofitHelper.get(content)?.content
+        val grayJayContent = RetrofitHelper.get(content)?.content ?: return null
 
+        return parseGroups(grayJayContent)
+    }
+
+    override fun importGroups(file: File): List<ChannelGroup>? {
+        return parseGroups(file.readText())
+    }
+
+    private fun parseGroups(grayJayContent: String): List<ChannelGroup>? {
         // replace:
         // "{ => {
         // }" => }
         // \" => "
 
         val grayJayContentFixed = grayJayContent
-            ?.replace("\"{", "{")
-            ?.replace("}\"", "}")
-            ?.replace("\\\"", "\"")
+            .replace("\"{", "{")
+            .replace("}\"", "}")
+            .replace("\\\"", "\"")
 
         val gson = Gson()
         val listType = object : TypeToken<List<GrayJayGroup>>() {}.type

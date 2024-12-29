@@ -101,7 +101,8 @@ public class AppServiceInt {
 
     public String getClientId() {
         // TODO: NPE 1.6K!!!
-        return getClientData() != null ? getClientData().getClientId() : null;
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.getClientId() : null;
     }
 
     /**

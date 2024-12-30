@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup.Channel
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.GrayJayService
+import com.liskovsoft.youtubeapi.channelgroups.importing.newpipe.NewPipeService
 import com.liskovsoft.youtubeapi.channelgroups.importing.pockettube.PocketTubeService
 import com.liskovsoft.youtubeapi.channelgroups.models.ChannelGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
@@ -18,7 +19,7 @@ import java.io.File
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener, ChannelGroupService {
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
-    private val mImportServices = listOf(PocketTubeService, GrayJayService)
+    private val mImportServices = listOf(PocketTubeService, GrayJayService, NewPipeService)
     private lateinit var mChannelGroups: MutableList<ChannelGroup>
     private var mPersistAction: Disposable? = null
     var cachedChannel: Channel? = null

@@ -28,7 +28,7 @@ public class SearchService {
         mAppService = AppService.instance();
     }
 
-    private static SearchService instance() {
+    public static SearchService instance() {
         if (sInstance == null) {
             sInstance = new SearchService();
         }

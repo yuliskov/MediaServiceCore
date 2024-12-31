@@ -11,6 +11,7 @@ public interface ChannelGroup {
     List<Channel> getChannels();
     Channel findChannel(String channelId);
     void add(@NonNull Channel channel);
+    void addAll(@NonNull List<Channel> newChannels);
     void remove(String channelId);
     boolean contains(String channelId);
     boolean isEmpty();

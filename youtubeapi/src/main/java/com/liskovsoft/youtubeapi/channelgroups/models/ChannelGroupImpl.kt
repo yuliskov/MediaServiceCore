@@ -40,6 +40,12 @@ internal data class ChannelGroupImpl(
         ChannelGroupServiceImpl.persistData()
     }
 
+    override fun addAll(newChannels: List<Channel>) {
+        channels.removeAll(newChannels)
+        channels.addAll(newChannels)
+        ChannelGroupServiceImpl.persistData()
+    }
+
     override fun remove(channelId: String) {
         val removed = Helpers.removeIf(channels) { channel -> channel.channelId == channelId }
         if (!removed.isNullOrEmpty()) {

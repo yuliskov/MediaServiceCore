@@ -117,7 +117,8 @@ public class AppServiceInt {
      */
     public String getSignatureTimestamp() {
         // TODO: NPE 300!!!
-        return getPlayerData() != null ? getPlayerData().getSignatureTimestamp() : null;
+        PlayerData playerData = getPlayerData();
+        return playerData != null ? playerData.getSignatureTimestamp() : null;
     }
 
     /**

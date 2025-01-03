@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.channelgroups.models
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 
 private const val ITEM_DELIM = "&ci;"
@@ -11,7 +11,7 @@ internal data class MediaItemImpl(
     private val iconUrl: String? = null,
     private val videoId: String? = null,
     private val subtitle: String? = null
-): MediaItem {
+): Item {
     override fun getTitle(): String? {
         return title
     }
@@ -37,7 +37,7 @@ internal data class MediaItemImpl(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is MediaItem) {
+        if (other is Item) {
             return other.channelId == channelId && other.videoId == videoId
         }
 
@@ -50,7 +50,7 @@ internal data class MediaItemImpl(
 
     companion object {
         @JvmStatic
-        fun fromString(spec: String?): MediaItem? {
+        fun fromString(spec: String?): Item? {
             if (spec == null)
                 return null
 

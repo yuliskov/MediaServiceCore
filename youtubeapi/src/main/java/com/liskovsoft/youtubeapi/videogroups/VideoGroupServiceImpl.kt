@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videogroups
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 
 internal object VideoGroupServiceImpl : MediaServicePrefs.ProfileChangeListener {
     private const val VIDEO_GROUP_DATA = "video_group_data"
-    private lateinit var mPlaylists: MutableList<MediaItemGroup>
+    private lateinit var mPlaylists: MutableList<ItemGroup>
     private var mPersistAction: Disposable? = null
 
     init {

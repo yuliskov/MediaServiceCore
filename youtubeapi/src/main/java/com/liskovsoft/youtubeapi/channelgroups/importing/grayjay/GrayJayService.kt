@@ -4,8 +4,8 @@ import android.net.Uri
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.gen.GrayJayGroup
 import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
@@ -18,7 +18,7 @@ import java.io.File
 internal object GrayJayService: GroupImportService {
     private val mFileService = RetrofitHelper.create(FileApi::class.java)
 
-    override fun importGroups(url: Uri): List<MediaItemGroup>? {
+    override fun importGroups(url: Uri): List<ItemGroup>? {
         val content = mFileService.getContent(url.toString())
 
         val grayJayContent = RetrofitHelper.get(content)?.content ?: return null
@@ -26,11 +26,11 @@ internal object GrayJayService: GroupImportService {
         return parseGroups(grayJayContent)
     }
 
-    override fun importGroups(file: File): List<MediaItemGroup>? {
+    override fun importGroups(file: File): List<ItemGroup>? {
         return parseGroups(file.readText())
     }
 
-    private fun parseGroups(grayJayContent: String): List<MediaItemGroup>? {
+    private fun parseGroups(grayJayContent: String): List<ItemGroup>? {
         // replace:
         // "{ => {
         // }" => }
@@ -50,15 +50,15 @@ internal object GrayJayService: GroupImportService {
             return null
         }
 
-        val result = mutableListOf<MediaItemGroup>()
+        val result = mutableListOf<ItemGroup>()
 
         for (group in response) {
-            val mediaItems: MutableList<MediaItem> = mutableListOf()
+            val items: MutableList<Item> = mutableListOf()
 
             // channel url: https://www.youtube.com/channel/UCbWcXB0PoqOsAvAdfzWMf0w
-            group.urls?.forEach { mediaItems.add(MediaItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it)))) }
+            group.urls?.forEach { items.add(MediaItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it)))) }
 
-            result.add(MediaItemGroupImpl(group.id.hashCode(), group.name, group.image?.url, mediaItems))
+            result.add(MediaItemGroupImpl(group.id.hashCode(), group.name, group.image?.url, items))
         }
 
         return result

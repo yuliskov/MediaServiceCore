@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.channelgroups.models
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 
@@ -12,9 +12,9 @@ internal data class MediaItemGroupImpl(
     private val id: Int = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE),
     private val title: String,
     private val iconUrl: String? = null,
-    private val mediaItems: MutableList<MediaItem>,
-    var onChange: (MediaItemGroup) -> Unit = { ChannelGroupServiceImpl.persistData() }
-): MediaItemGroup {
+    private val items: MutableList<Item>,
+    var onChange: (ItemGroup) -> Unit = { ChannelGroupServiceImpl.persistData() }
+): ItemGroup {
     override fun getId(): Int {
         return id
     }
@@ -27,47 +27,47 @@ internal data class MediaItemGroupImpl(
         return iconUrl
     }
 
-    override fun getMediaItems(): List<MediaItem> {
-        return mediaItems
+    override fun getItems(): List<Item> {
+        return items
     }
 
-    override fun findMediaItem(channelOrVideoId: String): MediaItem? {
-        return Helpers.findFirst(mediaItems) { mediaItem -> mediaItem.channelId == channelOrVideoId || mediaItem.videoId == channelOrVideoId }
+    override fun findItem(channelOrVideoId: String): Item? {
+        return Helpers.findFirst(items) { mediaItem -> mediaItem.channelId == channelOrVideoId || mediaItem.videoId == channelOrVideoId }
     }
 
-    override fun add(mediaItem: MediaItem) {
-        mediaItems.remove(mediaItem)
-        mediaItems.add(0, mediaItem)
+    override fun add(item: Item) {
+        items.remove(item)
+        items.add(0, item)
         onChange.invoke(this)
     }
 
-    override fun addAll(newMediaItems: List<MediaItem>) {
-        mediaItems.removeAll(newMediaItems)
-        mediaItems.addAll(newMediaItems)
+    override fun addAll(newItems: List<Item>) {
+        items.removeAll(newItems)
+        items.addAll(newItems)
         onChange.invoke(this)
     }
 
     override fun remove(channelOrVideoId: String) {
-        val removed = Helpers.removeIf(mediaItems) { mediaItem -> mediaItem.channelId == channelOrVideoId || mediaItem.videoId == channelOrVideoId }
+        val removed = Helpers.removeIf(items) { mediaItem -> mediaItem.channelId == channelOrVideoId || mediaItem.videoId == channelOrVideoId }
         if (!removed.isNullOrEmpty()) {
             onChange.invoke(this)
         }
     }
 
     override fun contains(channelOrVideoId: String): Boolean {
-        return Helpers.containsIf(mediaItems) { mediaItem -> mediaItem.channelId == channelOrVideoId || mediaItem.videoId == channelOrVideoId }
+        return Helpers.containsIf(items) { mediaItem -> mediaItem.channelId == channelOrVideoId || mediaItem.videoId == channelOrVideoId }
     }
 
     override fun isEmpty(): Boolean {
-        return mediaItems.isEmpty()
+        return items.isEmpty()
     }
 
     override fun toString(): String {
-        return Helpers.merge(ITEM_DELIM, id, title, iconUrl, Helpers.mergeList(LIST_DELIM, mediaItems))
+        return Helpers.merge(ITEM_DELIM, id, title, iconUrl, Helpers.mergeList(LIST_DELIM, items))
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is MediaItemGroup) {
+        if (other is ItemGroup) {
             return other.id == id
         }
 
@@ -80,7 +80,7 @@ internal data class MediaItemGroupImpl(
 
     companion object {
         @JvmStatic
-        fun fromString(spec: String?): MediaItemGroup? {
+        fun fromString(spec: String?): ItemGroup? {
             if (spec == null)
                 return null
 
@@ -89,9 +89,9 @@ internal data class MediaItemGroupImpl(
             val id = Helpers.parseInt(split, 0)
             val title = Helpers.parseStr(split, 1) ?: return null
             val groupIconUrl = Helpers.parseStr(split, 2)
-            val mediaItems: MutableList<MediaItem> = Helpers.parseList(split, 3, LIST_DELIM, MediaItemImpl::fromString)
+            val items: MutableList<Item> = Helpers.parseList(split, 3, LIST_DELIM, MediaItemImpl::fromString)
 
-            return MediaItemGroupImpl(id, title, groupIconUrl, mediaItems)
+            return MediaItemGroupImpl(id, title, groupIconUrl, items)
         }
     }
 }

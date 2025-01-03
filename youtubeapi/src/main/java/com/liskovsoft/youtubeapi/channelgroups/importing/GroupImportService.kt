@@ -1,10 +1,10 @@
 package com.liskovsoft.youtubeapi.channelgroups.importing
 
 import android.net.Uri
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup
 import java.io.File
 
 internal interface GroupImportService {
-    fun importGroups(url: Uri): List<ChannelGroup>?
-    fun importGroups(file: File): List<ChannelGroup>?
+    fun importGroups(url: Uri): List<MediaItemGroup>?
+    fun importGroups(file: File): List<MediaItemGroup>?
 }

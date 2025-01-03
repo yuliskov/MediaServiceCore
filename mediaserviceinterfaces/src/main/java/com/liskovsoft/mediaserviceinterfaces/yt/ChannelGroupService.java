@@ -2,27 +2,27 @@ package com.liskovsoft.mediaserviceinterfaces.yt;
 
 import android.net.Uri;
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup;
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup.Channel;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup.MediaItem;
 
 import java.io.File;
 import java.util.List;
 import io.reactivex.Observable;
 
 public interface ChannelGroupService {
-    List<ChannelGroup> getChannelGroups();
-    void addChannelGroup(ChannelGroup group);
-    void removeChannelGroup(ChannelGroup group);
-    ChannelGroup createChannelGroup(String title, String iconUrl, List<Channel> channels);
-    void renameChannelGroup(ChannelGroup channelGroup, String title);
-    Channel createChannel(String title, String iconUrl, String channelId);
-    ChannelGroup findChannelGroup(int channelGroupId);
-    ChannelGroup findChannelGroup(String title);
+    List<MediaItemGroup> getChannelGroups();
+    void addChannelGroup(MediaItemGroup group);
+    void removeChannelGroup(MediaItemGroup group);
+    MediaItemGroup createChannelGroup(String title, String iconUrl, List<MediaItem> channels);
+    void renameChannelGroup(MediaItemGroup channelGroup, String title);
+    MediaItem createChannel(String title, String iconUrl, String channelId);
+    MediaItemGroup findChannelGroup(int channelGroupId);
+    MediaItemGroup findChannelGroup(String title);
     String[] findChannelIdsForGroup(int channelGroupId);
     String[] getSubscribedChannelIds();
-    ChannelGroup getSubscribedChannelGroup();
-    Observable<List<ChannelGroup>> importGroupsObserve(Uri uri);
-    Observable<List<ChannelGroup>> importGroupsObserve(File file);
+    MediaItemGroup getSubscribedChannelGroup();
+    Observable<List<MediaItemGroup>> importGroupsObserve(Uri uri);
+    Observable<List<MediaItemGroup>> importGroupsObserve(File file);
     void exportData(String data);
     boolean isEmpty();
 }

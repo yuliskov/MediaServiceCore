@@ -3,11 +3,11 @@ package com.liskovsoft.youtubeapi.channelgroups.importing.pockettube
 import android.net.Uri
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ChannelGroup.Channel
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemGroup.MediaItem
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
-import com.liskovsoft.youtubeapi.channelgroups.models.ChannelGroupImpl
-import com.liskovsoft.youtubeapi.channelgroups.models.ChannelImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemImpl
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.io.File
@@ -15,7 +15,7 @@ import java.io.File
 internal object PocketTubeService: GroupImportService {
     private val mFileService = RetrofitHelper.create(FileApi::class.java)
 
-    override fun importGroups(url: Uri): List<ChannelGroup>? {
+    override fun importGroups(url: Uri): List<MediaItemGroup>? {
         val content = mFileService.getContent(url.toString())
 
         val pocketTubeContent = RetrofitHelper.get(content)?.content ?: return null
@@ -23,11 +23,11 @@ internal object PocketTubeService: GroupImportService {
         return parseGroups(pocketTubeContent)
     }
 
-    override fun importGroups(file: File): List<ChannelGroup>? {
+    override fun importGroups(file: File): List<MediaItemGroup>? {
         return parseGroups(file.readText())
     }
 
-    private fun parseGroups(pocketTubeContent: String): List<ChannelGroup>? {
+    private fun parseGroups(pocketTubeContent: String): List<MediaItemGroup>? {
         // Find group names
         val groupNames: List<String> = try {
             JsonPath.read(pocketTubeContent, "$.ysc_collection.*~")
@@ -35,18 +35,18 @@ internal object PocketTubeService: GroupImportService {
             return null
         }
 
-        val result = mutableListOf<ChannelGroup>()
+        val result = mutableListOf<MediaItemGroup>()
 
         for (groupName in groupNames) {
             // Get groups content
             val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$.$groupName")
 
-            val channels: MutableList<Channel> = mutableListOf()
+            val mediaItems: MutableList<MediaItem> = mutableListOf()
 
             // channel id: UCsjTlfV61bBwzLLmenR5zmg
-            channelIds.forEach { channels.add(ChannelImpl(channelId = it)) }
+            channelIds.forEach { mediaItems.add(MediaItemImpl(channelId = it)) }
 
-            result.add(ChannelGroupImpl(title = groupName, channels = channels))
+            result.add(MediaItemGroupImpl(title = groupName, mediaItems = mediaItems))
         }
 
         return result

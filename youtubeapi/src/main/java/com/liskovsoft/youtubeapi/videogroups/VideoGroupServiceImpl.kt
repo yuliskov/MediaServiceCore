@@ -8,7 +8,7 @@ import io.reactivex.disposables.Disposable
 
 internal object VideoGroupServiceImpl : MediaServicePrefs.ProfileChangeListener {
     const val PLAYLIST_GROUP_ID: Int = 1000
-    private const val VIDEO_GROUP_DATA = "channel_group_data"
+    private const val VIDEO_GROUP_DATA = "video_group_data"
     private lateinit var mVideoGroups: MutableList<VideoGroupImpl>
     private var mPersistAction: Disposable? = null
 

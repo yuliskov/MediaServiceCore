@@ -171,13 +171,11 @@ internal data class ChannelListMediaGroup(
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null
     override val mediaItemList by lazy {
-        lateinit var allSubs: MediaItem
         val result = mutableListOf<MediaItem>()
 
         tabs.forEachIndexed { idx, it ->
             // Skip All subscriptions tab
-            if (idx == 0) {
-                allSubs = TabMediaItem(it, options.groupType)
+            if (idx == 0 && it.getThumbnails() == null) {
                 return@forEachIndexed
             }
 
@@ -188,7 +186,6 @@ internal data class ChannelListMediaGroup(
 
         if (sortBy == SORT_BY_NEW_CONTENT) result.sortByDescending { it.hasNewContent() }
 
-        result.add(0, allSubs)
         result
     }
 }

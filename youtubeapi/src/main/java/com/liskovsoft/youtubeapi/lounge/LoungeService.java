@@ -247,6 +247,9 @@ public class LoungeService {
     }
 
     public void postVolumeChange(int volume) {
+        if (volume == -1) {
+            return;
+        }
         Log.d(TAG, "Post onVolumeChanged: %s...", volume);
         postCommand(CommandParams.getOnVolumeChanged(volume));
     }

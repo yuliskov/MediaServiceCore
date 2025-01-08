@@ -17,7 +17,7 @@ internal interface BrowseApi {
     //@POST("https://www.youtube.com/youtubei/v1/browse")
     //fun getBrowseResult(@Body browseQuery: String?,
     //                    @Header("User-Agent") userAgent: String = DefaultHeaders.USER_AGENT_WEB,
-    //                    @Header("Referer") referer: String? = "https://www.youtube.com/"): Call<BrowseResult?>?
+    //                    @Header("Referer") referer: String? = "https://www.youtube.com/"): Call<BrowseResult?>
 
     @Headers(
         "Content-Type: application/json",
@@ -25,7 +25,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    fun getBrowseResult(@Body browseQuery: String?): Call<BrowseResult?>?
+    fun getBrowseResult(@Body browseQuery: String?): Call<BrowseResult?>
 
     @Headers(
         "Content-Type: application/json",
@@ -33,7 +33,7 @@ internal interface BrowseApi {
         "Referer: https://m.youtube.com/"
     )
     @POST("https://m.youtube.com/youtubei/v1/browse")
-    fun getBrowseResultMobile(@Body browseQuery: String?): Call<BrowseResult?>?
+    fun getBrowseResultMobile(@Body browseQuery: String?): Call<BrowseResult?>
 
     @Headers(
         "Content-Type: application/json",
@@ -41,7 +41,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/tv/kids"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    fun getBrowseResultKids(@Body browseQuery: String?): Call<BrowseResultKids?>?
+    fun getBrowseResultKids(@Body browseQuery: String?): Call<BrowseResultKids?>
 
     @Headers(
         "Content-Type: application/json",
@@ -49,7 +49,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    fun getBrowseResultTV(@Body browseQuery: String?): Call<BrowseResultTV?>?
+    fun getBrowseResultTV(@Body browseQuery: String?): Call<BrowseResultTV?>
 
     @Headers(
         "Content-Type: application/json",
@@ -57,7 +57,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    fun getContinuationResult(@Body continuationQuery: String?): Call<ContinuationResult?>?
+    fun getContinuationResult(@Body continuationQuery: String?): Call<ContinuationResult?>
 
     @Headers(
         "Content-Type: application/json",
@@ -65,7 +65,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    fun getContinuationResultTV(@Body continuationQuery: String?): Call<WatchNextResultContinuation?>?
+    fun getContinuationResultTV(@Body continuationQuery: String?): Call<WatchNextResultContinuation?>
 
     @Headers(
         "Content-Type: application/json",
@@ -73,7 +73,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/guide")
-    fun getGuideResult(@Body guideQuery: String?): Call<GuideResult?>?
+    fun getGuideResult(@Body guideQuery: String?): Call<GuideResult?>
 
     @Headers(
         "Content-Type: application/json",
@@ -81,7 +81,7 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_item_watch")
-    fun getReelResult(@Body reelQuery: String?): Call<ReelResult?>?
+    fun getReelResult(@Body reelQuery: String?): Call<ReelResult?>
 
     @Headers(
         "Content-Type: application/json",
@@ -89,5 +89,5 @@ internal interface BrowseApi {
         "Referer: https://www.youtube.com/"
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_watch_sequence")
-    fun getReelContinuationResult(@Body reelQuery: String?): Call<ReelContinuationResult?>?
+    fun getReelContinuationResult(@Body reelQuery: String?): Call<ReelContinuationResult?>
 }

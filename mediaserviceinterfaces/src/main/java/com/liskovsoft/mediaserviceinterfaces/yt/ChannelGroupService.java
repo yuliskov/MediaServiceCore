@@ -19,8 +19,6 @@ public interface ChannelGroupService {
     ItemGroup findChannelGroup(int channelGroupId);
     ItemGroup findChannelGroup(String title);
     String[] findChannelIdsForGroup(int channelGroupId);
-    String[] getSubscribedChannelIds();
-    ItemGroup getSubscribedChannelGroup();
     Observable<List<ItemGroup>> importGroupsObserve(Uri uri);
     Observable<List<ItemGroup>> importGroupsObserve(File file);
     void exportData(String data);

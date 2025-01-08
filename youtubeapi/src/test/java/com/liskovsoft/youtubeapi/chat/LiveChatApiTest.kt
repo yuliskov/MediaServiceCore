@@ -17,21 +17,21 @@ import org.junit.Assert.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 class LiveChatApiTest {
-    private var mApi: LiveChatApi? = null
-    private var mApi2: WatchNextApi? = null
+    private lateinit var mLiveChatApi: LiveChatApi
+    private lateinit var mWatchNextApi: WatchNextApi
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mApi = RetrofitHelper.create(LiveChatApi::class.java)
-        mApi2 = RetrofitHelper.create(WatchNextApi::class.java)
+        mLiveChatApi = RetrofitHelper.create(LiveChatApi::class.java)
+        mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
     }
 
     @Test
     fun testThatLiveChatResultIsNotEmpty() {
-        val watchNextResult = mApi2?.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_LIVE))
+        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_LIVE))
         val watchNext = watchNextResult?.execute()?.body()
 
         val liveChatResult = getLiveChatResult(watchNext?.getLiveChatToken())
@@ -42,7 +42,7 @@ class LiveChatApiTest {
 
     @Test
     fun testThatContinuationIsWorking() {
-        val watchNextResult = mApi2?.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_LIVE))
+        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_LIVE))
         val watchNext = watchNextResult?.execute()?.body()
 
         var liveChatResult = getLiveChatResult(watchNext?.getLiveChatToken())
@@ -71,7 +71,7 @@ class LiveChatApiTest {
         }
 
         val chatQuery = LiveChatApiParams.getLiveChatQuery(chatKey)
-        val wrapper = mApi!!.getLiveChat(chatQuery)
+        val wrapper = mLiveChatApi.getLiveChat(chatQuery)
         return RetrofitHelper.get(wrapper)
     }
 }

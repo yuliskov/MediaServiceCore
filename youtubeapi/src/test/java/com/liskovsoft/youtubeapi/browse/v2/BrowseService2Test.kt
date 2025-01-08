@@ -12,6 +12,8 @@ import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
 class BrowseService2Test {
+    private lateinit var mBrowseService2: BrowseService2
+
     @Before
     fun setUp() {
         // fix issue: No password supplied for PKCS#12 KeyStore
@@ -20,12 +22,13 @@ class BrowseService2Test {
         ShadowLog.stream = System.out // catch Log class output
         RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
+        mBrowseService2 = BrowseService2.instance
     }
 
     @Ignore("Shorts may be removed by the user")
     @Test
     fun testThatShortsNotEmpty() {
-        val sections = BrowseService2.getHome()
+        val sections = mBrowseService2.getHome()
 
         val shorts = sections?.first?.get(1)
 
@@ -34,7 +37,7 @@ class BrowseService2Test {
 
     @Test
     fun testThatHomeContainsFeedbackTokens() {
-        val sections = BrowseService2.getHome()
+        val sections = mBrowseService2.getHome()
 
         val home = sections?.first?.get(0)
 
@@ -46,7 +49,7 @@ class BrowseService2Test {
 
     @Test
     fun testThatSubscribedChannelsNotEmpty() {
-        val channels = BrowseService2.getSubscribedChannels()
+        val channels = mBrowseService2.getSubscribedChannels()
 
         assertTrue("Channel list not empty", channels?.mediaItems?.size ?: 0 > 30)
 
@@ -59,25 +62,25 @@ class BrowseService2Test {
 
     @Test
     fun testThatTrendingNotEmpty() {
-        val trending = BrowseService2.getTrending()
+        val trending = mBrowseService2.getTrending()
 
         assertTrue("Trending not empty", trending?.get(0)?.mediaItems?.size ?: 0 > 10)
     }
 
     @Test
     fun testThatChannelSortingNotEmpty() {
-        val sorting = BrowseService2.getChannelSorting(TestHelpersV2.CHANNEL_ID_3)
+        val sorting = mBrowseService2.getChannelSorting(TestHelpersV2.CHANNEL_ID_3)
 
         assertTrue("Has sorting entries", (sorting?.size ?: 0) == 3)
         assertTrue("Has continuations", sorting?.mapNotNull { it?.nextPageKey }?.size == 3)
 
-        val continueGroup = BrowseService2.continueGroup(sorting?.firstOrNull())
+        val continueGroup = mBrowseService2.continueGroup(sorting?.firstOrNull())
         assertTrue("Can continue", (continueGroup?.mediaItems?.size ?: 0) > 3)
     }
 
     @Test
     fun testThatChannelSearchNotEmpty() {
-        val search = BrowseService2.getChannelSearch(TestHelpersV2.CHANNEL_ID_3, "army now")
+        val search = mBrowseService2.getChannelSearch(TestHelpersV2.CHANNEL_ID_3, "army now")
 
         assertTrue("Has items", (search?.mediaItems?.size ?: 0) > 3)
     }

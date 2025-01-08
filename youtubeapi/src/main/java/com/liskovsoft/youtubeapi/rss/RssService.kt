@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.rss
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.browse.v2.BrowseService2
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
+    private val mBrowseService2 = BrowseService2Wrapper.instance
 
     @JvmStatic
     fun getFeed(vararg channelIds: String): MediaGroup? {
@@ -66,7 +67,7 @@ internal object RssService {
      * Add missing props and remove shorts etc
      */
     private fun syncWithChannel(channelId: String, result: List<MediaItem>) {
-        val group = BrowseService2.getChannelAsGrid(channelId)
+        val group = mBrowseService2.getChannelAsGrid(channelId)
         val originItems = group?.mediaItems ?: return
 
         Helpers.removeIf(result) { item ->

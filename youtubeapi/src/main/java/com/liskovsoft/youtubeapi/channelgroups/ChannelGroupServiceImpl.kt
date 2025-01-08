@@ -75,8 +75,12 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return null
     }
 
-    override fun getSubscribedChannelGroup(): ItemGroup? {
+    fun getSubscribedChannelGroup(): ItemGroup? {
         return findChannelGroup(SUBSCRIPTION_GROUP_ID)
+    }
+
+    fun getSubscribedChannelIds(): Array<String>? {
+        return findChannelIdsForGroup(SUBSCRIPTION_GROUP_ID)
     }
 
     override fun findChannelIdsForGroup(channelGroupId: Int): Array<String>? {
@@ -102,10 +106,6 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         }
 
         return result.toTypedArray()
-    }
-
-    override fun getSubscribedChannelIds(): Array<String>? {
-        return findChannelIdsForGroup(SUBSCRIPTION_GROUP_ID)
     }
 
     override fun isEmpty(): Boolean {
@@ -143,7 +143,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             if (it is NewPipeService) {
                 // NewPipe can export only subscribed channels
                 result?.firstOrNull()?.items?.let {
-                    subscribedChannelGroup?.addAll(it)
+                    getSubscribedChannelGroup()?.addAll(it)
                 }
             }
             result

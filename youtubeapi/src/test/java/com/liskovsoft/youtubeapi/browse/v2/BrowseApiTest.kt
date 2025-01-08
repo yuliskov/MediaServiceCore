@@ -31,7 +31,7 @@ class BrowseApiTest {
     /**
      * Authorization should be updated each hour
      */
-    private var mService: BrowseApi? = null
+    private lateinit var mService: BrowseApi
 
     @Before
     fun setUp() {
@@ -348,14 +348,14 @@ class BrowseApiTest {
     @Test
     fun testChannelTopicContinuation() {
         // World of tanks recently uploaded
-        val browse = mService?.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, "UC1dGjtlDiiDM0gc_ghB1nTQ", "EgZyZWNlbnQ%3D"))
+        val browse = mService.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, "UC1dGjtlDiiDM0gc_ghB1nTQ", "EgZyZWNlbnQ%3D"))
 
         val result = RetrofitHelper.get(browse)
 
         assertTrue("Topic has continuation token", result?.getContinuationToken() != null)
 
         val continuation =
-            mService?.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, result?.getContinuationToken()!!))
+            mService.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, result?.getContinuationToken()!!))
 
         val continuationResult = RetrofitHelper.get(continuation)
 
@@ -365,7 +365,7 @@ class BrowseApiTest {
     @Test
     fun testMyPlaylists() {
         val client = AppClient.TV
-        val browse = mService?.getBrowseResultTV(browseQuery = BrowseApiHelper.getMyPlaylistQuery(client))
+        val browse = mService.getBrowseResultTV(browseQuery = BrowseApiHelper.getMyPlaylistQuery(client))
 
         val result = RetrofitHelper.get(browse)
 
@@ -405,7 +405,7 @@ class BrowseApiTest {
     }
 
     private fun checkContinuationWeb(token: String?, checkNextToken: Boolean = true) {
-        val continuationResult = mService?.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, token!!))
+        val continuationResult = mService.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
 
@@ -417,7 +417,7 @@ class BrowseApiTest {
     }
 
     private fun checkContinuationTV(token: String?, checkNextToken: Boolean = true) {
-        val continuationResult = mService?.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, token!!))
+        val continuationResult = mService.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
 
@@ -429,127 +429,127 @@ class BrowseApiTest {
     }
 
     private fun getSubscriptions(): BrowseResult? {
-        val subsResult = mService?.getBrowseResult(BrowseApiHelper.getSubscriptionsQuery(AppClient.WEB))
+        val subsResult = mService.getBrowseResult(BrowseApiHelper.getSubscriptionsQuery(AppClient.WEB))
 
         return RetrofitHelper.get(subsResult)
     }
 
     private fun getHome(): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getHomeQuery(AppClient.WEB))
+        val homeResult = mService.getBrowseResult(BrowseApiHelper.getHomeQuery(AppClient.WEB))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getAltHome(): BrowseResult? {
-        val homeResult = mService?.getBrowseResultMobile(BrowseApiHelper.getHomeQuery(AppClient.MWEB))
+        val homeResult = mService.getBrowseResultMobile(BrowseApiHelper.getHomeQuery(AppClient.MWEB))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelSearch(channelId: String?, query: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelSearchQuery(AppClient.WEB, channelId!!, query!!))
+        val homeResult = mService.getBrowseResult(BrowseApiHelper.getChannelSearchQuery(AppClient.WEB, channelId!!, query!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelVideos(channelId: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId!!))
+        val homeResult = mService.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelLive(channelId: String?): BrowseResult? {
-        val homeResult = mService?.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId!!))
+        val homeResult = mService.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(homeResult)
     }
 
     private fun getChannelHome(channelId: String?): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelHomeQuery(AppClient.WEB, channelId!!))
+        val result = mService.getBrowseResult(BrowseApiHelper.getChannelHomeQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(result)
     }
 
     private fun getChannelReleases(channelId: String?): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelReleasesQuery(AppClient.WEB, channelId!!))
+        val result = mService.getBrowseResult(BrowseApiHelper.getChannelReleasesQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(result)
     }
 
     private fun getChannelPlaylist(channelId: String?): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, channelId!!))
+        val result = mService.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, channelId!!))
 
         return RetrofitHelper.get(result)
     }
 
     private fun getGuide(): GuideResult? {
-        val guideResult = mService?.getGuideResult(ServiceHelper.createQueryWeb(""))
+        val guideResult = mService.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)
     }
 
     private fun getKidsHome(): BrowseResultKids? {
-        val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery())
+        val kidsResult = mService.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery())
 
         return RetrofitHelper.get(kidsResult)
     }
 
     private fun getKidsHome(params: String?): BrowseResultKids? {
-        val kidsResult = mService?.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params!!))
+        val kidsResult = mService.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(params!!))
 
         return RetrofitHelper.get(kidsResult)
     }
 
     private fun getSports(): BrowseResultTV? {
-        val kidsResult = mService?.getBrowseResultTV(BrowseApiHelper.getSportsQuery(AppClient.TV))
+        val kidsResult = mService.getBrowseResultTV(BrowseApiHelper.getSportsQuery(AppClient.TV))
 
         return RetrofitHelper.get(kidsResult)
     }
 
     private fun getReel(): ReelResult? {
-        val reelsResult = mService?.getReelResult(BrowseApiHelper.getReelQuery())
+        val reelsResult = mService.getReelResult(BrowseApiHelper.getReelQuery())
 
         return RetrofitHelper.get(reelsResult)
     }
 
     private fun getLikedMusic(): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getLikedMusicQuery(AppClient.WEB))
+        val result = mService.getBrowseResult(BrowseApiHelper.getLikedMusicQuery(AppClient.WEB))
 
         return RetrofitHelper.get(result)
     }
 
     private fun getNewMusicAlbums(): BrowseResult? {
-        val result = mService?.getBrowseResult(BrowseApiHelper.getNewMusicAlbumsQuery())
+        val result = mService.getBrowseResult(BrowseApiHelper.getNewMusicAlbumsQuery())
 
         return RetrofitHelper.get(result)
     }
 
     private fun getReelDetails(videoId: String?, params: String?): ReelResult? {
-        val details = mService?.getReelResult(BrowseApiHelper.getReelDetailsQuery(videoId!!, params!!))
+        val details = mService.getReelResult(BrowseApiHelper.getReelDetailsQuery(videoId!!, params!!))
 
         return RetrofitHelper.get(details)
     }
 
     private fun getReelContinuation(sequenceParams: String?): ReelContinuationResult? {
-        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(sequenceParams!!))
+        val continuation = mService.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(sequenceParams!!))
 
         return RetrofitHelper.get(continuation)
     }
 
     private fun getReelContinuation2(nextPageKey: String?): ReelContinuationResult? {
-        val continuation = mService?.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey!!))
+        val continuation = mService.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey!!))
 
         return RetrofitHelper.get(continuation)
     }
 
     private fun getTrending(): BrowseResult? {
-        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getTrendingQuery(AppClient.WEB))
+        val trendingResult = mService.getBrowseResult(BrowseApiHelper.getTrendingQuery(AppClient.WEB))
 
         return RetrofitHelper.get(trendingResult)
     }
 
     private fun getTrendingTab(params: String?): BrowseResult? {
-        val trendingResult = mService?.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, "FEtrending", params))
+        val trendingResult = mService.getBrowseResult(BrowseApiHelper.getChannelQuery(AppClient.WEB, "FEtrending", params))
 
         return RetrofitHelper.get(trendingResult)
     }

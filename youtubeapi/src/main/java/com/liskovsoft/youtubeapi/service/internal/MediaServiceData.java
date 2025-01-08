@@ -39,7 +39,7 @@ public class MediaServiceData {
     public static final int CONTENT_WATCHED_SUBS = 1 << 2;
     public static final int CONTENT_SHORTS_HOME = 1 << 3;
     public static final int CONTENT_SHORTS_SEARCH = 1 << 4;
-    public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 4;
+    public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 5;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;

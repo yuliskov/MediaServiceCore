@@ -22,7 +22,7 @@ class BrowseService2Test {
         ShadowLog.stream = System.out // catch Log class output
         RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
-        mBrowseService2 = BrowseService2.instance
+        mBrowseService2 = BrowseService2()
     }
 
     @Ignore("Shorts may be removed by the user")

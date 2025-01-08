@@ -541,8 +541,4 @@ internal open class BrowseService2 {
     //        BrowseApiHelper.getChannelQuery(client, channelId, params), client.userAgent, client.referer)
     //    return RetrofitHelper.get(wrapper)
     //}
-
-    companion object {
-        val instance: BrowseService2 by lazy { BrowseService2() }
-    }
 }

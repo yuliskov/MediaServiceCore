@@ -8,8 +8,8 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.gen.GrayJayGroup
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
@@ -56,9 +56,9 @@ internal object GrayJayService: GroupImportService {
             val items: MutableList<Item> = mutableListOf()
 
             // channel url: https://www.youtube.com/channel/UCbWcXB0PoqOsAvAdfzWMf0w
-            group.urls?.forEach { items.add(MediaItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it)))) }
+            group.urls?.forEach { items.add(ItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it)))) }
 
-            result.add(MediaItemGroupImpl(group.id.hashCode(), group.name, group.image?.url, items))
+            result.add(ItemGroupImpl(group.id.hashCode(), group.name, group.image?.url, items))
         }
 
         return result

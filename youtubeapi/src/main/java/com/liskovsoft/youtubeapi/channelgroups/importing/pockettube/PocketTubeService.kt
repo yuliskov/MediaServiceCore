@@ -6,8 +6,8 @@ import com.jayway.jsonpath.PathNotFoundException
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.io.File
@@ -44,9 +44,9 @@ internal object PocketTubeService: GroupImportService {
             val items: MutableList<Item> = mutableListOf()
 
             // channel id: UCsjTlfV61bBwzLLmenR5zmg
-            channelIds.forEach { items.add(MediaItemImpl(channelId = it)) }
+            channelIds.forEach { items.add(ItemImpl(channelId = it)) }
 
-            result.add(MediaItemGroupImpl(title = groupName, items = items))
+            result.add(ItemGroupImpl(title = groupName, items = items))
         }
 
         return result

@@ -1,6 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces.yt.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -20,7 +21,11 @@ public interface ItemGroup {
         String getTitle();
         String getSubtitle();
         String getIconUrl();
+        @Nullable
         String getChannelId();
+        @Nullable
         String getVideoId();
+        @Nullable
+        String getReloadPageKey();
     }
 }

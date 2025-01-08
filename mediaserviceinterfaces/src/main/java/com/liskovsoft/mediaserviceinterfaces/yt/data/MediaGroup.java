@@ -1,5 +1,7 @@
 package com.liskovsoft.mediaserviceinterfaces.yt.data;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 public interface MediaGroup {
@@ -24,6 +26,7 @@ public interface MediaGroup {
     int TYPE_SPORTS = 17;
     int TYPE_MOVIES = 18;
     int getType();
+    @Nullable
     List<MediaItem> getMediaItems();
     String getTitle();
     // Below settings for Channel section group

@@ -576,6 +576,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mReloadPageKey;
     }
 
+    public void setReloadPageKey(String reloadPageKey) {
+        mReloadPageKey = reloadPageKey;
+    }
+
     @NonNull
     @Override
     public String toString() {

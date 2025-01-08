@@ -5,12 +5,13 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 
 private const val ITEM_DELIM = "&ci;"
 
-internal data class MediaItemImpl(
+internal data class ItemImpl(
     private val channelId: String? = null,
     private val title: String? = null,
     private val iconUrl: String? = null,
     private val videoId: String? = null,
-    private val subtitle: String? = null
+    private val subtitle: String? = null,
+    private val reloadPageKey: String? = null
 ): Item {
     override fun getTitle(): String? {
         return title
@@ -32,13 +33,17 @@ internal data class MediaItemImpl(
         return subtitle
     }
 
+    override fun getReloadPageKey(): String? {
+        return reloadPageKey
+    }
+
     override fun toString(): String {
-        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle)
+        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle, reloadPageKey)
     }
 
     override fun equals(other: Any?): Boolean {
         if (other is Item) {
-            return other.channelId == channelId && other.videoId == videoId
+            return other.channelId == channelId && other.videoId == videoId && other.reloadPageKey == reloadPageKey
         }
 
         return super.equals(other)
@@ -61,12 +66,13 @@ internal data class MediaItemImpl(
             val channelId = Helpers.parseStr(split, 2)
             val videoId = Helpers.parseStr(split, 3)
             val subtitle = Helpers.parseStr(split, 4)
+            val reloadPageKey = Helpers.parseStr(split, 5)
 
-            if (channelId == null && videoId == null) {
+            if (channelId == null && videoId == null && reloadPageKey == null) {
                 return null
             }
 
-            return MediaItemImpl(channelId, title, groupIconUrl, videoId, subtitle)
+            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle, reloadPageKey)
         }
     }
 }

@@ -7,7 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
@@ -47,7 +47,7 @@ internal object WatchNextService {
             val realChannelId = channelId
             if (!YouTubeSignInService.instance().isSigned && realChannelId != null) {
                 isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(realChannelId)
-                ChannelGroupServiceImpl.cachedChannel = MediaItemImpl(realChannelId, author, authorImageUrl)
+                ChannelGroupServiceImpl.cachedChannel = ItemImpl(realChannelId, author, authorImageUrl)
             }
         } else null
 

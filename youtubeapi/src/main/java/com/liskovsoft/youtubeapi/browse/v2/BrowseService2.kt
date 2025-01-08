@@ -486,7 +486,7 @@ internal open class BrowseService2 {
 
         // Home section parsing downside: one row (e.g. Shorts) could be divided amount other videos
         if (filter.size == 1) {
-            filter.first()?.mediaItems?.addAll(group.mediaItems)
+            group.mediaItems?.let { filter.first()?.mediaItems?.addAll(it) }
         } else {
             result.add(group)
         }

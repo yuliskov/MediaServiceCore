@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 private const val ITEM_DELIM = "&sgi;"
 private const val LIST_DELIM = "&sga;"
 
-internal data class MediaItemGroupImpl(
+internal data class ItemGroupImpl(
     private val id: Int = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE),
     private val title: String,
     private val iconUrl: String? = null,
@@ -89,9 +89,9 @@ internal data class MediaItemGroupImpl(
             val id = Helpers.parseInt(split, 0)
             val title = Helpers.parseStr(split, 1) ?: return null
             val groupIconUrl = Helpers.parseStr(split, 2)
-            val items: MutableList<Item> = Helpers.parseList(split, 3, LIST_DELIM, MediaItemImpl::fromString)
+            val items: MutableList<Item> = Helpers.parseList(split, 3, LIST_DELIM, ItemImpl::fromString)
 
-            return MediaItemGroupImpl(id, title, groupIconUrl, items)
+            return ItemGroupImpl(id, title, groupIconUrl, items)
         }
     }
 }

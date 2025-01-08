@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 
 public class ActionsServiceWrapper extends ActionsService {
     private static ActionsServiceWrapper sInstance;
@@ -16,19 +15,25 @@ public class ActionsServiceWrapper extends ActionsService {
 
     @Override
     public void subscribe(String channelId, String params) {
-        if (YouTubeSignInService.instance().isSigned()) {
-            super.subscribe(channelId, params);
-        } else {
-            ChannelGroupServiceImpl.INSTANCE.subscribe(null, null, channelId, true);
-        }
+        //if (YouTubeSignInService.instance().isSigned()) {
+        //    super.subscribe(channelId, params);
+        //} else {
+        //    ChannelGroupServiceImpl.subscribe(null, null, channelId, true);
+        //}
+
+        super.subscribe(channelId, params);
+        ChannelGroupServiceImpl.subscribe(null, null, channelId, true); // save locally
     }
 
     @Override
     public void unsubscribe(String channelId) {
-        if (YouTubeSignInService.instance().isSigned()) {
-            super.unsubscribe(channelId);
-        } else {
-            ChannelGroupServiceImpl.INSTANCE.subscribe(null, null, channelId, false);
-        }
+        //if (YouTubeSignInService.instance().isSigned()) {
+        //    super.unsubscribe(channelId);
+        //} else {
+        //    ChannelGroupServiceImpl.subscribe(null, null, channelId, false);
+        //}
+
+        super.unsubscribe(channelId);
+        ChannelGroupServiceImpl.subscribe(null, null, channelId, false); // save locally
     }
 }

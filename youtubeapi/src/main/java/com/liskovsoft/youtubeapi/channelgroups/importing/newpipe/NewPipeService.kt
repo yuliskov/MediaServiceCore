@@ -8,8 +8,8 @@ import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.importing.newpipe.gen.NewPipeSubscriptionsGroup
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
@@ -45,9 +45,9 @@ internal object NewPipeService: GroupImportService {
         val items: MutableList<Item> = mutableListOf()
 
         // channel url: https://www.youtube.com/channel/UCbWcXB0PoqOsAvAdfzWMf0w
-        response.subscriptions?.forEach { items.add(MediaItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it.url)))) }
+        response.subscriptions?.forEach { items.add(ItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it.url)))) }
 
-        result.add(MediaItemGroupImpl(title = NewPipeSubscriptionsGroup::subscriptions.name, items = items))
+        result.add(ItemGroupImpl(title = NewPipeSubscriptionsGroup::subscriptions.name, items = items))
 
         return result
     }

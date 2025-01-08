@@ -10,7 +10,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
     override fun getSubscriptions(): MediaGroup? {
         val subscriptions = super.getSubscriptions()
 
-        if (subscriptions == null || subscriptions.isEmpty()) {
+        if (subscriptions == null || subscriptions.isEmpty) {
             val channelIds = ChannelGroupServiceImpl.getSubscribedChannelIds()
 
             return channelIds?.let { RssService.getFeed(*it) }
@@ -38,7 +38,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
     }
 
     private fun getCachedChannels(subscribedChannels: MediaGroup?): MediaGroup? {
-        if (subscribedChannels == null || subscribedChannels.isEmpty()) {
+        if (subscribedChannels == null || subscribedChannels.isEmpty) {
             val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
 
             return channelGroup?.let {
@@ -49,9 +49,16 @@ internal class BrowseService2Wrapper: BrowseService2() {
                             secondTitle = it.subtitle
                             channelId = it.channelId
                             cardImageUrl = it.iconUrl
+                            reloadPageKey = it.reloadPageKey
                         }
                     }
                 }
+            }
+        } else {
+            val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
+
+            if (channelGroup?.items?.size != subscribedChannels.mediaItems?.size) {
+                ChannelGroupServiceImpl.backupSubscribedChannels(subscribedChannels)
             }
         }
 

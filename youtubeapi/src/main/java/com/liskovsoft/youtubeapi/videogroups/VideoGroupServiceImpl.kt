@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.videogroups
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
-import com.liskovsoft.youtubeapi.channelgroups.models.MediaItemGroupImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
 import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
 import io.reactivex.disposables.Disposable
 
@@ -29,9 +29,9 @@ internal object VideoGroupServiceImpl : MediaServicePrefs.ProfileChangeListener 
     private fun restoreData(data: String?) {
         val split = Helpers.splitData(data)
 
-        mPlaylists = Helpers.parseList(split, 0, MediaItemGroupImpl::fromString)
+        mPlaylists = Helpers.parseList(split, 0, ItemGroupImpl::fromString)
         mPlaylists.forEach {
-            it as MediaItemGroupImpl
+            it as ItemGroupImpl
             it.onChange = { persistData() }
         }
     }

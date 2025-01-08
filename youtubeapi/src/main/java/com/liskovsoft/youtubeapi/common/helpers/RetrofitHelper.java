@@ -130,6 +130,7 @@ public class RetrofitHelper {
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
             // Don't rethrow!!! These exceptions cannot be caught inside RxJava!!! Thread died!!!
             e.printStackTrace();
+            throw new IllegalStateException(e);
         }
 
         return null;

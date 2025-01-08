@@ -13,9 +13,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
         if (subscriptions == null || subscriptions.isEmpty()) {
             val channelIds = ChannelGroupServiceImpl.getSubscribedChannelIds()
 
-            channelIds?.let {
-                return RssService.getFeed(*it)
-            }
+            return channelIds?.let { RssService.getFeed(*it) }
         }
 
         return subscriptions
@@ -24,13 +22,27 @@ internal class BrowseService2Wrapper: BrowseService2() {
     override fun getSubscribedChannels(): MediaGroup? {
         // Backup channels ones
         // Add each channel on subscribe
-        val subscribedChannels = super.getSubscribedChannels()
+        return getCachedChannels(super.getSubscribedChannels())
+    }
 
+    override fun getSubscribedChannelsByName(): MediaGroup? {
+        // Backup channels ones
+        // Add each channel on subscribe
+        return getCachedChannels(super.getSubscribedChannelsByName())
+    }
+
+    override fun getSubscribedChannelsByNewContent(): MediaGroup? {
+        // Backup channels ones
+        // Add each channel on subscribe
+        return getCachedChannels(super.getSubscribedChannelsByNewContent())
+    }
+
+    private fun getCachedChannels(subscribedChannels: MediaGroup?): MediaGroup? {
         if (subscribedChannels == null || subscribedChannels.isEmpty()) {
             val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
 
-            channelGroup?.let {
-                return YouTubeMediaGroup(MediaGroup.TYPE_CHANNEL_UPLOADS).apply {
+            return channelGroup?.let {
+                YouTubeMediaGroup(MediaGroup.TYPE_CHANNEL_UPLOADS).apply {
                     mediaItems = it.items?.map {
                         YouTubeMediaItem().apply {
                             title = it.title
@@ -44,18 +56,6 @@ internal class BrowseService2Wrapper: BrowseService2() {
         }
 
         return subscribedChannels
-    }
-
-    override fun getSubscribedChannelsByName(): MediaGroup? {
-        // Backup channels ones
-        // Add each channel on subscribe
-        return super.getSubscribedChannelsByName()
-    }
-
-    override fun getSubscribedChannelsByNewContent(): MediaGroup? {
-        // Backup channels ones
-        // Add each channel on subscribe
-        return super.getSubscribedChannelsByNewContent()
     }
 
     companion object {

@@ -44,31 +44,15 @@ internal object WatchNextService {
         val watchNext = getWatchNext(videoId, playlistId, playlistIndex, playlistParams)
 
         return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
-            val realChannelId = channelId
-            if (!YouTubeSignInService.instance().isSigned && realChannelId != null) {
-                isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(realChannelId)
-                ChannelGroupServiceImpl.cachedChannel = ItemImpl(realChannelId, author, authorImageUrl)
+            channelId?.let {
+                ChannelGroupServiceImpl.cachedChannel = ItemImpl(it, author, authorImageUrl)
+                if (!YouTubeSignInService.instance().isSigned) {
+                    isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(it)
+                } else if (isSubscribed != ChannelGroupServiceImpl.isSubscribed(it)) {
+                    ChannelGroupServiceImpl.subscribe(isSubscribed, it, author, authorImageUrl)
+                }
             }
         } else null
-
-        //return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
-        //    val realChannelId = channelId
-        //    if (!YouTubeSignInService.instance().isSigned && realChannelId != null) {
-        //        if (ChannelGroupServiceImpl.isSubscribed(realChannelId)) {
-        //            isSubscribedOverrideItem = true
-        //            // Fix absence of imageUrl and title
-        //            val subscribedGroup = ChannelGroupServiceImpl.subscribedChannelGroup
-        //            val channel = subscribedGroup?.findChannel(realChannelId)
-        //            channel?.let {
-        //                if (it.iconUrl == null || it.title == null) {
-        //                    subscribedGroup.add(ChannelImpl(author, authorImageUrl, realChannelId))
-        //                }
-        //            }
-        //        } else {
-        //            isSubscribedOverrideItem = false
-        //        }
-        //    }
-        //} else null
     }
 
     @JvmStatic

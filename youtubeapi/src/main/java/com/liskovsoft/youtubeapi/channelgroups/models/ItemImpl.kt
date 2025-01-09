@@ -11,7 +11,6 @@ internal data class ItemImpl(
     private val iconUrl: String? = null,
     private val videoId: String? = null,
     private val subtitle: String? = null,
-    private val reloadPageKey: String? = null
 ): Item {
     override fun getTitle(): String? {
         return title
@@ -33,17 +32,13 @@ internal data class ItemImpl(
         return subtitle
     }
 
-    override fun getReloadPageKey(): String? {
-        return reloadPageKey
-    }
-
     override fun toString(): String {
-        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle, reloadPageKey)
+        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle)
     }
 
     override fun equals(other: Any?): Boolean {
         if (other is Item) {
-            return other.channelId == channelId && other.videoId == videoId && other.reloadPageKey == reloadPageKey
+            return other.channelId == channelId && other.videoId == videoId
         }
 
         return super.equals(other)
@@ -66,13 +61,12 @@ internal data class ItemImpl(
             val channelId = Helpers.parseStr(split, 2)
             val videoId = Helpers.parseStr(split, 3)
             val subtitle = Helpers.parseStr(split, 4)
-            val reloadPageKey = Helpers.parseStr(split, 5)
 
-            if (channelId == null && videoId == null && reloadPageKey == null) {
+            if (channelId == null && videoId == null) {
                 return null
             }
 
-            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle, reloadPageKey)
+            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle)
         }
     }
 }

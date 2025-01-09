@@ -49,18 +49,14 @@ internal class BrowseService2Wrapper: BrowseService2() {
                             secondTitle = it.subtitle
                             channelId = it.channelId
                             cardImageUrl = it.iconUrl
-                            reloadPageKey = it.reloadPageKey
                         }
                     }
                 }
             }
-        } else {
-            val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
-
-            if (channelGroup?.items?.size != subscribedChannels.mediaItems?.size) {
-                ChannelGroupServiceImpl.backupSubscribedChannels(subscribedChannels)
-            }
         }
+
+        // NOTE: Can't backup. ReloadPageKey cannot be used without an account.
+        // The channels contain reloadPageKey instead of channelId field.
 
         return subscribedChannels
     }

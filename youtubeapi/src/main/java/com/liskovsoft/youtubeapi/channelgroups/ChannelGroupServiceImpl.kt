@@ -4,7 +4,6 @@ import android.net.Uri
 import com.liskovsoft.mediaserviceinterfaces.yt.ChannelGroupService
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.GrayJayService
@@ -77,13 +76,13 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return null
     }
 
-    fun backupSubscribedChannels(subscribedChannels: MediaGroup) {
-        val items = subscribedChannels.mediaItems?.map {
-            ItemImpl(it.channelId, it.title, it.cardImageUrl, it.videoId, it.secondTitle, it.reloadPageKey)
-        } ?: return
-        val group = ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, items.toMutableList())
-        addChannelGroup(group)
-    }
+    //fun backupSubscribedChannels(subscribedChannels: MediaGroup) {
+    //    val items = subscribedChannels.mediaItems?.map {
+    //        ItemImpl(it.channelId, it.title, it.cardImageUrl, it.videoId, it.secondTitle)
+    //    } ?: return
+    //    val group = ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, items.toMutableList())
+    //    addChannelGroup(group)
+    //}
 
     fun getSubscribedChannelGroup(): ItemGroup? {
         return findChannelGroup(SUBSCRIPTION_GROUP_ID)
@@ -191,7 +190,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     @JvmStatic
-    fun subscribe(title: String?, iconUrl: String?, channelId: String, subscribe: Boolean) {
+    fun subscribe(subscribe: Boolean, channelId: String, title: String?, iconUrl: String?) {
         val group: ItemGroup = findChannelGroup(SUBSCRIPTION_GROUP_ID) ?:
             ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, mutableListOf())
 

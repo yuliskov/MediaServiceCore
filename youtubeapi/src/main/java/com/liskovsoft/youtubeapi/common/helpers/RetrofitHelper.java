@@ -27,7 +27,6 @@ import com.liskovsoft.youtubeapi.common.models.gen.ErrorResponse;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
-import java.net.SocketException;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -115,22 +114,14 @@ public class RetrofitHelper {
         try {
             return wrapper.execute();
         } catch (ConnectException e) {
-            // ConnectException - server is down or address is banned
-            // Usually happen on sites like returnyoutubedislikeapi.com
-            // We could skip it safe?
+            // ConnectException - server is down or address is banned (returnyoutubedislikeapi.com)
             e.printStackTrace();
-        } catch (SocketException e) {
-            // SocketException - no internet
-            // ConnectException - server is down or address is banned
-            //wrapper.cancel(); // fix background running when RxJava object is disposed?
-            e.printStackTrace();
-            throw new IllegalStateException(e); // notify caller about network condition
         } catch (IOException e) {
+            // SocketException - no internet
             // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
-            // Don't rethrow!!! These exceptions cannot be caught inside RxJava!!! Thread died!!!
             e.printStackTrace();
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e); // notify caller about network condition
         }
 
         return null;

@@ -25,7 +25,5 @@ public interface ItemGroup {
         String getChannelId();
         @Nullable
         String getVideoId();
-        @Nullable
-        String getReloadPageKey();
     }
 }

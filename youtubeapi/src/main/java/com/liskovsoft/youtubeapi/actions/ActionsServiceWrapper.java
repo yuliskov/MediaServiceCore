@@ -22,7 +22,7 @@ public class ActionsServiceWrapper extends ActionsService {
         //}
 
         super.subscribe(channelId, params);
-        ChannelGroupServiceImpl.subscribe(null, null, channelId, true); // save locally
+        ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
     }
 
     @Override
@@ -34,6 +34,6 @@ public class ActionsServiceWrapper extends ActionsService {
         //}
 
         super.unsubscribe(channelId);
-        ChannelGroupServiceImpl.subscribe(null, null, channelId, false); // save locally
+        ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
     }
 }

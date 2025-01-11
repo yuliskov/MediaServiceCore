@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.v2.gen
 
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
@@ -185,7 +186,10 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 private const val SUBSCRIPTIONS_BROWSE_ID = "FEsubscriptions"
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
-    ?.sortedByDescending { it?.shelfRenderer?.endpoint?.getBrowseParams()?.let { it.startsWith("EgZ2aWRlb3MYAyACOAJwA") || it.startsWith("EgZ2aWRlb3MYAyAAcA") } ?: false } // Move Live and Videos rows to the top
+    ?.sortedByDescending { it?.shelfRenderer?.endpoint?.getBrowseParams()?.let {
+        // Move Live, Past Streams and Videos to the top
+        Helpers.startsWithAny(it,"EgZ2aWRlb3MYAyACOAJwA", "EgZ2aWRlb3MYAyAAcA", "EgZ2aWRlb3MYAyACOARwA")
+    } ?: false }
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.contents
     ?: getSubscriptionsTab()?.getItems()

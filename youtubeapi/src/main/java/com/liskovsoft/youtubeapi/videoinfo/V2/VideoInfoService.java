@@ -24,7 +24,7 @@ import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
-    private static final boolean SKIP_AUTH_DEFAULT = false;
+    private static final boolean SKIP_AUTH_DEFAULT = true;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static int VIDEO_INFO_INITIAL = 0;

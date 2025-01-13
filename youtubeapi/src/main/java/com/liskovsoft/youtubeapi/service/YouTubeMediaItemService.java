@@ -20,6 +20,7 @@ import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
+import com.liskovsoft.youtubeapi.playlist.PlaylistServiceWrapper;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubePlaylistInfo;
@@ -50,7 +51,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         mTrackingService = TrackingService.instance();
         mVideoInfoService = VideoInfoService.instance();
         mActionsService = ActionsServiceWrapper.instance();
-        mPlaylistService = PlaylistService.instance();
+        mPlaylistService = PlaylistServiceWrapper.instance();
         mFeedbackService = FeedbackService.instance();
     }
 

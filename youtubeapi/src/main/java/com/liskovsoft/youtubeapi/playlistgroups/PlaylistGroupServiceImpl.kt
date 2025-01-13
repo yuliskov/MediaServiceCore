@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videogroups
+package com.liskovsoft.youtubeapi.playlistgroups
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
 import com.liskovsoft.sharedutils.helpers.Helpers
@@ -7,8 +7,9 @@ import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
 import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
 import io.reactivex.disposables.Disposable
 
-internal object VideoGroupServiceImpl : MediaServicePrefs.ProfileChangeListener {
-    private const val VIDEO_GROUP_DATA = "video_group_data"
+internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListener {
+    private const val PLAYLIST_GROUP_DATA = "playlist_group_data"
+    private const val PERSIST_DELAY_MS: Long = 5_000
     private lateinit var mPlaylists: MutableList<ItemGroup>
     private var mPersistAction: Disposable? = null
 
@@ -22,7 +23,7 @@ internal object VideoGroupServiceImpl : MediaServicePrefs.ProfileChangeListener 
     }
 
     private fun restoreData() {
-        val data = MediaServicePrefs.getData(VIDEO_GROUP_DATA)
+        val data = MediaServicePrefs.getData(PLAYLIST_GROUP_DATA)
         restoreData(data)
     }
 
@@ -38,10 +39,10 @@ internal object VideoGroupServiceImpl : MediaServicePrefs.ProfileChangeListener 
 
     private fun persistData() {
         RxHelper.disposeActions(mPersistAction)
-        mPersistAction = RxHelper.runAsync({ persistDataReal() }, 5_000)
+        mPersistAction = RxHelper.runAsync({ persistDataReal() }, PERSIST_DELAY_MS)
     }
 
     private fun persistDataReal() {
-        MediaServicePrefs.setData(VIDEO_GROUP_DATA, Helpers.mergeData(mPlaylists))
+        MediaServicePrefs.setData(PLAYLIST_GROUP_DATA, Helpers.mergeData(mPlaylists))
     }
 }

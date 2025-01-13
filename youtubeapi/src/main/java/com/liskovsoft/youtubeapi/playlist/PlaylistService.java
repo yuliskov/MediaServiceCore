@@ -9,7 +9,7 @@ public class PlaylistService {
     private static PlaylistService sInstance;
     private final PlaylistApi mPlaylistManager;
 
-    private PlaylistService() {
+    protected PlaylistService() {
         mPlaylistManager = RetrofitHelper.create(PlaylistApi.class);
     }
 

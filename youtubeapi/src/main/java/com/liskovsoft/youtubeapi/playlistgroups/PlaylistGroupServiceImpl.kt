@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.playlistgroups
 
 import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
+import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
@@ -20,6 +21,17 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
 
     override fun onProfileChanged() {
         restoreData()
+    }
+
+    fun addPlaylistGroup(group: ItemGroup) {
+        // Move to the top
+        mPlaylists.remove(group)
+        mPlaylists.add(0, group)
+        persistData()
+    }
+
+    fun createPlaylistGroup(title: String, iconUrl: String?, items: List<Item>): ItemGroup {
+        return ItemGroupImpl(title = title, iconUrl = iconUrl, items = items.toMutableList())
     }
 
     private fun restoreData() {

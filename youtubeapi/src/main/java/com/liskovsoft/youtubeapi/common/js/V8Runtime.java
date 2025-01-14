@@ -12,6 +12,11 @@ public final class V8Runtime {
     private static V8Runtime sInstance;
     private V8 mRuntime;
 
+    static {
+        // Fix? J2V8 native library not loaded (j2v8-android-arm_32/j2v8-android-arm_32)
+        System.loadLibrary("j2v8");
+    }
+
     private V8Runtime() {
     }
 

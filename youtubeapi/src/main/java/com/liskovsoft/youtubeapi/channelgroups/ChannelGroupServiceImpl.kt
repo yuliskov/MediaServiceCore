@@ -18,7 +18,7 @@ import java.io.File
 
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener, ChannelGroupService {
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
-    const val SUBSCRIPTION_GROUP_NAME: String = "Subscriptions"
+    private const val SUBSCRIPTION_GROUP_NAME: String = "Subscriptions"
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
     private val mImportServices = listOf(PocketTubeService, GrayJayService, NewPipeService)
     private lateinit var mChannelGroups: MutableList<ItemGroup>

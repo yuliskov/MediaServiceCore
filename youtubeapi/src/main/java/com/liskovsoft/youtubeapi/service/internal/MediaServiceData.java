@@ -267,13 +267,14 @@ public class MediaServiceData {
         // entries here moved to the cache
         mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
-        mHiddenContent = Helpers.parseInt(split, 12,
-                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME);
+        // null
         mSkipAuth = Helpers.parseBoolean(split, 13);
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
+        mHiddenContent = Helpers.parseInt(split, 18,
+                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME);
     }
 
     private void restoreCachedData() {
@@ -309,7 +310,7 @@ public class MediaServiceData {
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
                         null, null, null, null, null,
-                        mVisitorCookie, mEnabledFormats, mHiddenContent, mSkipAuth, mPoToken, mAppInfo, mPlayerData, mClientData));
+                        mVisitorCookie, mEnabledFormats, null, mSkipAuth, mPoToken, mAppInfo, mPlayerData, mClientData, mHiddenContent));
     }
 
     private void persistCachedDataReal() {

@@ -1,10 +1,10 @@
 package com.liskovsoft.googleapi.youtubedata3.data
 
-internal data class MetadataResponse(
-    val items: List<ItemMetadata?>?
+internal data class SnippetResponse(
+    val items: List<SnippetWrapper?>?
 )
 
-internal data class ItemMetadata(
+internal data class SnippetWrapper(
     val kind: String?,
     val id: String?,
     val snippet: Snippet?

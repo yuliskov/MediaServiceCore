@@ -26,30 +26,30 @@ internal interface DriveApi {
      */
     @Multipart
     @POST("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart")
-    fun uploadFile(@Part("metadata") metadata: FileMetadata, @Part("file") file: RequestBody): Call<FileMetadata?>?
+    fun uploadFile(@Part("metadata") metadata: FileMetadata, @Part("file") file: RequestBody): Call<FileMetadata?>
 
     @Headers("Content-Type: text/plain")
     @POST("https://www.googleapis.com/upload/drive/v3/files?uploadType=media")
-    fun uploadFile(@Body file: RequestBody): Call<FileMetadata?>?
+    fun uploadFile(@Body file: RequestBody): Call<FileMetadata?>
 
     @PATCH("https://www.googleapis.com/upload/drive/v3/files/{fileId}?uploadType=media")
-    fun updateFile(@Path("fileId") fileId: String, @Body file: RequestBody): Call<FileMetadata?>?
+    fun updateFile(@Path("fileId") fileId: String, @Body file: RequestBody): Call<FileMetadata?>
 
     @DELETE("https://www.googleapis.com/drive/v3/files/{fileId}")
-    fun deleteFile(@Path("fileId") fileId: String): Call<Unit?>?
+    fun deleteFile(@Path("fileId") fileId: String): Call<Unit?>
 
     /**
      * https://developers.google.com/drive/api/reference/rest/v3/files/get
      */
     @GET("https://www.googleapis.com/drive/v3/files/{fileId}?alt=media")
-    fun getFile(@Path("fileId") fileId: String): Call<ResponseBody?>?
+    fun getFile(@Path("fileId") fileId: String): Call<ResponseBody?>
 
     @GET("https://www.googleapis.com/drive/v3/files/generateIds")
-    fun generateIds(): Call<GeneratedIds?>?
+    fun generateIds(): Call<GeneratedIds?>
 
     @Headers("Content-Type: application/json")
     @POST("https://www.googleapis.com/drive/v3/files")
-    fun createFolder(@Body metadata: FileMetadata): Call<FileMetadata?>?
+    fun createFolder(@Body metadata: FileMetadata): Call<FileMetadata?>
 
     /**
      * Query example: mimeType='text/plain' and parents in '1JfVoj74d1TBf-pAe8GxGVo0LTSWi6sNP'
@@ -67,5 +67,5 @@ internal interface DriveApi {
      * https://developers.google.com/drive/api/reference/rest/v3/files/list
      */
     @GET("https://www.googleapis.com/drive/v3/files")
-    fun getList(@Query("q") query: String): Call<ListResult?>?
+    fun getList(@Query("q") query: String): Call<ListResult?>
 }

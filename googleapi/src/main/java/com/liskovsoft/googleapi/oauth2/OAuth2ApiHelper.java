@@ -1,7 +1,7 @@
 package com.liskovsoft.googleapi.oauth2;
 
 import com.liskovsoft.googleapi.common.helpers.ServiceHelper;
-import com.liskovsoft.googleapi.common.helpers.tests.ApiKeys;
+import com.liskovsoft.googleapi.common.ApiKeys;
 
 /**
  * https://developers.google.com/identity/protocols/oauth2/limited-input-device#allowedscopes<br/>

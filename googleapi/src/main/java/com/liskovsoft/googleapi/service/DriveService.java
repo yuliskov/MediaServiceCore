@@ -1,4 +1,4 @@
-package com.liskovsoft.googleapi.drive3.impl;
+package com.liskovsoft.googleapi.service;
 
 import android.net.Uri;
 
@@ -11,16 +11,16 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class GDriveService {
-    private static GDriveService sInstance;
+public class DriveService {
+    private static DriveService sInstance;
 
-    private GDriveService() {
+    private DriveService() {
         
     }
 
-    public static GDriveService instance() {
+    public static DriveService instance() {
         if (sInstance == null) {
-            sInstance = new GDriveService();
+            sInstance = new DriveService();
         }
 
         return sInstance;

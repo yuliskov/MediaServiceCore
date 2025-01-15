@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.notifications
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem
-import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.youtubeapi.common.models.gen.NotificationStateItem
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.rss.RssService

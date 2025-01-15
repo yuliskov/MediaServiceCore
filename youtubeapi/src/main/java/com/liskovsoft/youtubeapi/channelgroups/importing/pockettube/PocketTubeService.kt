@@ -3,8 +3,8 @@ package com.liskovsoft.youtubeapi.channelgroups.importing.pockettube
 import android.net.Uri
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl

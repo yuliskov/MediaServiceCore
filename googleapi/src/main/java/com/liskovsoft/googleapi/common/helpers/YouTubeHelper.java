@@ -3,12 +3,9 @@ package com.liskovsoft.googleapi.common.helpers;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.googleapi.common.models.items.Thumbnail;
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 
-import java.util.Collections;
 import java.util.List;
 
 public final class YouTubeHelper {

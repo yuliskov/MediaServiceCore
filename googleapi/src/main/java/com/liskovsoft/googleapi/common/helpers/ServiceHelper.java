@@ -3,7 +3,7 @@ package com.liskovsoft.googleapi.common.helpers;
 import com.liskovsoft.googleapi.app.AppConstants;
 import com.liskovsoft.googleapi.app.AppService;
 import com.liskovsoft.googleapi.common.locale.LocaleManager;
-import com.liskovsoft.mediaserviceinterfaces.yt.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import java.text.DecimalFormat;

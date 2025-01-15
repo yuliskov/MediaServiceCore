@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.channelgroups.models
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 
 private const val ITEM_DELIM = "&ci;"

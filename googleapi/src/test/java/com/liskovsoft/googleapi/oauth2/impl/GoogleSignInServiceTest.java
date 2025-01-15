@@ -1,7 +1,7 @@
 package com.liskovsoft.googleapi.oauth2.impl;
 
 import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.mediaserviceinterfaces.google.SignInService;
+import com.liskovsoft.mediaserviceinterfaces.oauth.SignInService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

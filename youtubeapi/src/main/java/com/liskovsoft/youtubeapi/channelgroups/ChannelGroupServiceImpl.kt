@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.channelgroups
 
 import android.net.Uri
-import com.liskovsoft.mediaserviceinterfaces.yt.ChannelGroupService
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup
-import com.liskovsoft.mediaserviceinterfaces.yt.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.GrayJayService
@@ -16,7 +16,8 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.io.File
 
-internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener, ChannelGroupService {
+internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener,
+    ChannelGroupService {
     const val SUBSCRIPTION_GROUP_ID: Int = 1000
     private const val SUBSCRIPTION_GROUP_NAME: String = "Subscriptions"
     private const val CHANNEL_GROUP_DATA = "channel_group_data"

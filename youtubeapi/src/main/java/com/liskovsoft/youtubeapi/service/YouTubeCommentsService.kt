@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service
 
-import com.liskovsoft.mediaserviceinterfaces.yt.CommentsService
-import com.liskovsoft.mediaserviceinterfaces.yt.data.CommentGroup
+import com.liskovsoft.mediaserviceinterfaces.CommentsService
+import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.comments.CommentsServiceInt
 import io.reactivex.Observable

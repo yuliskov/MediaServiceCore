@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.impl
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.NotificationState
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.youtubeapi.common.models.gen.NotificationStateItem
 import com.liskovsoft.youtubeapi.common.models.gen.getStateId
 import com.liskovsoft.youtubeapi.common.models.gen.getStateParams

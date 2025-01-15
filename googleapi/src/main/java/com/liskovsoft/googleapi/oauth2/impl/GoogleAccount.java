@@ -2,7 +2,7 @@ package com.liskovsoft.googleapi.oauth2.impl;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.mediaserviceinterfaces.google.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.googleapi.oauth2.models.info.AccountInt;
 import com.liskovsoft.googleapi.common.helpers.YouTubeHelper;

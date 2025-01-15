@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.comments.impl
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.CommentItem
+import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.comments.gen.CommentItemWrapper
 import com.liskovsoft.youtubeapi.comments.gen.getContinuationKey

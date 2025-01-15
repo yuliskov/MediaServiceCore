@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.block;
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.SponsorSegment;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.youtubeapi.block.data.Segment;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;

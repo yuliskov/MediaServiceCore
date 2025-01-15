@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.dearrow
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.DeArrowData
+import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 
 internal object DeArrowService {

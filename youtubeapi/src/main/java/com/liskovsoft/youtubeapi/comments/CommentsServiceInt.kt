@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.comments
 
-import com.liskovsoft.mediaserviceinterfaces.yt.data.CommentGroup
+import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup
 import com.liskovsoft.youtubeapi.comments.impl.CommentGroupImpl
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 

@@ -425,20 +425,21 @@ internal open class BrowseService2 {
 
     private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS, channelId: String? = null): MediaGroupOptions {
         val prefs = GlobalPreferences.sInstance
-        val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType) ||
-                (MediaGroup.TYPE_HOME == groupType && prefs?.isHideShortsFromHomeEnabled ?: false) ||
-                (MediaGroup.TYPE_HISTORY == groupType && prefs?.isHideShortsFromHistoryEnabled ?: false) ||
-                (MediaGroup.TYPE_CHANNEL == groupType && prefs?.isHideShortsFromChannelEnabled ?: false) ||
-                (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && prefs?.isHideShortsFromChannelEnabled ?: false) ||
-                (MediaGroup.TYPE_TRENDING == groupType && prefs?.isHideShortsFromTrendingEnabled ?: false)
-        val removeLive = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideStreamsFromSubscriptionsEnabled ?: false)
-        val removeUpcoming = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideUpcomingFromSubscriptionsEnabled ?: false) ||
-                (MediaGroup.TYPE_CHANNEL == groupType && prefs?.isHideUpcomingFromChannelEnabled ?: false) ||
-                (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && prefs?.isHideUpcomingFromChannelEnabled ?: false) ||
-                (MediaGroup.TYPE_HOME == groupType && prefs?.isHideUpcomingFromHomeEnabled ?: false)
-        val removeWatched = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && prefs?.isHideWatchedFromSubscriptionsEnabled ?: false) ||
-                (MediaGroup.TYPE_HOME == groupType && prefs?.isHideWatchedFromHomeEnabled ?: false) ||
-                (channelId == AppConstants.WATCH_LATER_CHANNEL_ID && MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
+        val data = MediaServiceData.instance()
+        val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)) ||
+                (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)) ||
+                (MediaGroup.TYPE_HISTORY == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY)) ||
+                (MediaGroup.TYPE_CHANNEL == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL)) ||
+                (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL)) ||
+                (MediaGroup.TYPE_TRENDING == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING))
+        val removeLive = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS))
+        val removeUpcoming = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)) ||
+                (MediaGroup.TYPE_CHANNEL == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)) ||
+                (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)) ||
+                (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME))
+        val removeWatched = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)) ||
+                (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME)) ||
+                (channelId == AppConstants.WATCH_LATER_CHANNEL_ID && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
 
         return MediaGroupOptions(
             removeShorts,

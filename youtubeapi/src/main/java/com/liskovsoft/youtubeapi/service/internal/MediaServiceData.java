@@ -12,16 +12,12 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppConstants;
-import com.liskovsoft.youtubeapi.app.models.AppInfo;
-import com.liskovsoft.youtubeapi.app.models.ClientData;
-import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.nsig.NSigData;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
 
-import java.util.List;
 import java.util.UUID;
 
 import io.reactivex.disposables.Disposable;
@@ -36,10 +32,18 @@ public class MediaServiceData {
     public static final int CONTENT_NONE = 0;
     public static final int CONTENT_MIXES = 1;
     public static final int CONTENT_WATCHED_HOME = 1 << 1;
-    public static final int CONTENT_WATCHED_SUBS = 1 << 2;
+    public static final int CONTENT_WATCHED_SUBSCRIPTIONS = 1 << 2;
     public static final int CONTENT_SHORTS_HOME = 1 << 3;
     public static final int CONTENT_SHORTS_SEARCH = 1 << 4;
     public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 5;
+    public static final int CONTENT_SHORTS_SUBSCRIPTIONS = 1 << 6;
+    public static final int CONTENT_SHORTS_HISTORY = 1 << 7;
+    public static final int CONTENT_UPCOMING_CHANNEL = 1 << 8;
+    public static final int CONTENT_UPCOMING_HOME = 1 << 9;
+    public static final int CONTENT_SHORTS_TRENDING = 1 << 10;
+    public static final int CONTENT_UPCOMING_SUBSCRIPTIONS = 1 << 11;
+    public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
+    public static final int CONTENT_SHORTS_CHANNEL = 1 << 13;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;
@@ -91,7 +95,7 @@ public class MediaServiceData {
         restoreData();
         restoreCachedData();
     }
-    
+
     public static MediaServiceData instance() {
         if (sInstance == null) {
             if (GlobalPreferences.sInstance == null && !Helpers.isJUnitTest()) {
@@ -263,7 +267,8 @@ public class MediaServiceData {
         // entries here moved to the cache
         mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
-        mHiddenContent = Helpers.parseInt(split, 12, CONTENT_NONE);
+        mHiddenContent = Helpers.parseInt(split, 12,
+                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME);
         mSkipAuth = Helpers.parseBoolean(split, 13);
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);

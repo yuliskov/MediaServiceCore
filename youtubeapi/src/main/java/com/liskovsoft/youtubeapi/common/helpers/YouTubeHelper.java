@@ -96,17 +96,17 @@ public final class YouTubeHelper {
         }
 
         if (GlobalPreferences.isInitialized()) {
-            GlobalPreferences prefs = GlobalPreferences.sInstance;
-            boolean isHideShortsEnabled = (prefs.isHideShortsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (prefs.isHideShortsFromHomeEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
-                    (prefs.isHideShortsFromHistoryEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HISTORY) ||
-                    (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS) ||
-                    (prefs.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL) ||
-                    (MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH) && mediaGroup.getType() == MediaGroup.TYPE_SEARCH);
-            boolean isHideUpcomingEnabled = (prefs.isHideUpcomingFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (prefs.isHideUpcomingFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
-            boolean isHideStreamsEnabled = (prefs.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
-            boolean isHideMixesEnabled = MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_MIXES);
+            MediaServiceData data = MediaServiceData.instance();
+            boolean isHideShortsEnabled = (data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS) && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
+                    (data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME) && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
+                    (data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY) && mediaGroup.getType() == MediaGroup.TYPE_HISTORY) ||
+                    (data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL) && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS) ||
+                    (data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL) && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL) ||
+                    (data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH) && mediaGroup.getType() == MediaGroup.TYPE_SEARCH);
+            boolean isHideUpcomingEnabled = (data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS) && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
+                    (data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL) && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
+            boolean isHideStreamsEnabled = (data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS) && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
+            boolean isHideMixesEnabled = data.isContentHidden(MediaServiceData.CONTENT_MIXES);
 
             if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled || isHideMixesEnabled) {
                 // NOTE: The group could be empty after filtering! Fix for that.

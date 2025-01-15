@@ -60,58 +60,6 @@ public final class YouTubeHelper {
         return ServiceHelper.itemsToInfo(items);
     }
 
-    public static void filterIfNeeded(MediaGroup mediaGroup) {
-        if (mediaGroup == null || mediaGroup.getMediaItems() == null) {
-            return;
-        }
-
-        if (mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) {
-            // LIVE & UPCOMING videos always on top
-            Collections.sort(mediaGroup.getMediaItems(), (o1, o2) ->
-                    o1.isLive() == o2.isLive() && o1.isUpcoming() == o2.isUpcoming() ? 0 :
-                            o1.isLive() || (o1.isUpcoming() && !o2.isLive()) ? -1 : 1
-            );
-        }
-
-        if (GlobalPreferences.isInitialized()) {
-            boolean isHideShortsEnabled = (GlobalPreferences.sInstance.isHideShortsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromHomeEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HOME) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromHistoryEnabled() && mediaGroup.getType() == MediaGroup.TYPE_HISTORY) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS) ||
-                    (GlobalPreferences.sInstance.isHideShortsFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL);
-            boolean isHideUpcomingEnabled = (GlobalPreferences.sInstance.isHideUpcomingFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (GlobalPreferences.sInstance.isHideUpcomingFromChannelEnabled() && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
-            boolean isHideStreamsEnabled = (GlobalPreferences.sInstance.isHideStreamsFromSubscriptionsEnabled() && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
-
-            if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled) {
-                // NOTE: The group could be empty after filtering! Fix for that.
-
-                // Remove Shorts and/or Upcoming
-                // NOTE: Predicate replacement function for devices with Android 6.0 and below.
-                Helpers.removeIf(mediaGroup.getMediaItems(), mediaItem -> {
-                    if (mediaItem == null) {
-                        return false;
-                    }
-
-                    return (isHideShortsEnabled && isShort(mediaItem)) || (isHideUpcomingEnabled && mediaItem.isUpcoming()) ||
-                            (isHideStreamsEnabled && mediaItem.isLive());
-                });
-            }
-        }
-    }
-
-    public static boolean isShort(MediaItem mediaItem) {
-        if (mediaItem == null || mediaItem.getTitle() == null) {
-            return false;
-        }
-
-        String title = mediaItem.getTitle().toLowerCase();
-
-        long lengthMs = mediaItem.getDurationMs();
-        boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
-        return isShortLength || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
-    }
-
     /**
      * Avatar blocking fix
      */
@@ -122,10 +70,6 @@ public final class YouTubeHelper {
 
         return url;
     }
-
-    //public boolean isEmpty() {
-    //    return mTitle == null && mCardImageUrl == null;
-    //}
 
     public static boolean isEmpty(MediaItem item) {
         if (item == null) {

@@ -85,8 +85,15 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     //    addChannelGroup(group)
     //}
 
-    fun getSubscribedChannelGroup(): ItemGroup? {
-        return findChannelGroup(SUBSCRIPTION_GROUP_ID)
+    fun getSubscribedChannelGroup(): ItemGroup {
+        return findChannelGroup(SUBSCRIPTION_GROUP_ID) ?: initSubscriptions()
+    }
+
+    private fun initSubscriptions(): ItemGroup {
+        val group = ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, mutableListOf())
+        addChannelGroup(group)
+
+        return group
     }
 
     fun getSubscribedChannelIds(): Array<String>? {
@@ -153,7 +160,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             if (it is NewPipeService) {
                 // NewPipe can export only subscribed channels
                 result?.firstOrNull()?.items?.let {
-                    getSubscribedChannelGroup()?.addAll(it)
+                    getSubscribedChannelGroup().addAll(it)
                 }
             }
             result
@@ -192,8 +199,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     @JvmStatic
     fun subscribe(subscribe: Boolean, channelId: String, title: String?, iconUrl: String?) {
-        val group: ItemGroup = findChannelGroup(SUBSCRIPTION_GROUP_ID) ?:
-            ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, mutableListOf())
+        val group: ItemGroup = getSubscribedChannelGroup()
 
         if (subscribe) {
             val realCachedChannel = cachedChannel
@@ -203,12 +209,6 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             group.add(newChannel)
         } else {
             group.remove(channelId)
-        }
-
-        if (!group.isEmpty()) {
-            addChannelGroup(group)
-        } else {
-            removeChannelGroup(group)
         }
     }
 

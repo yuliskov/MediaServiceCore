@@ -17,7 +17,8 @@ internal data class SnippetWrapper(
         val channelTitle: String?,
         val publishedAt: String?,
         val categoryId: String?, // type of the content?
-        val thumbnails: ThumbnailsHolder?
+        val thumbnails: ThumbnailsHolder?,
+        val localized: Localized?
     ) {
         data class ThumbnailsHolder(
             val default: ThumbnailItem?,
@@ -32,5 +33,10 @@ internal data class SnippetWrapper(
                 val height: Int?
             )
         }
+
+        data class Localized(
+            val title: String?,
+            val description: String?
+        )
     }
 }

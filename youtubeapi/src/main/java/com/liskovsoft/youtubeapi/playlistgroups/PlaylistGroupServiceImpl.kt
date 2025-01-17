@@ -23,6 +23,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
         restoreData()
     }
 
+    @JvmStatic
     fun addPlaylistGroup(group: ItemGroup) {
         // Move to the top
         mPlaylists.remove(group)
@@ -30,6 +31,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
         persistData()
     }
 
+    @JvmStatic
     fun createPlaylistGroup(title: String, iconUrl: String?, items: List<Item>): ItemGroup {
         return ItemGroupImpl(title = title, iconUrl = iconUrl, items = items.toMutableList())
     }

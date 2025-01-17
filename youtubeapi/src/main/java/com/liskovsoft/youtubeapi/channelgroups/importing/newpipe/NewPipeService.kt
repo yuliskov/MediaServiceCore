@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
@@ -47,7 +48,11 @@ internal object NewPipeService: GroupImportService {
         // channel url: https://www.youtube.com/channel/UCbWcXB0PoqOsAvAdfzWMf0w
         response.subscriptions?.forEach { items.add(ItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it.url)))) }
 
-        result.add(ItemGroupImpl(title = NewPipeSubscriptionsGroup::subscriptions.name, items = items))
+        // Get channels thumbs and titles
+        val metadata = YouTubeDataServiceInt.getChannelMetadata(*items.mapNotNull { it.channelId }.toTypedArray())
+        val newItems = metadata?.map { ItemImpl(it.channelId, it.title, it.cardImageUrl) }
+
+        result.add(ItemGroupImpl(title = NewPipeSubscriptionsGroup::subscriptions.name, items = newItems?.toMutableList() ?: items))
 
         return result
     }

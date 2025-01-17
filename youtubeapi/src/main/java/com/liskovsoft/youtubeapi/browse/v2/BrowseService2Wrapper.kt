@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
+import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.youtubeapi.rss.RssService
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
@@ -41,7 +43,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
         if (subscribedChannels == null || subscribedChannels.isEmpty) {
             val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
 
-            return channelGroup?.let {
+            return if (channelGroup.isEmpty) null else channelGroup.let {
                 YouTubeMediaGroup(MediaGroup.TYPE_CHANNEL_UPLOADS).apply {
                     mediaItems = it.items?.map {
                         YouTubeMediaItem().apply {
@@ -59,6 +61,38 @@ internal class BrowseService2Wrapper: BrowseService2() {
         // The channels contain reloadPageKey instead of channelId field.
 
         return subscribedChannels
+    }
+
+    override fun getMyPlaylists(): MediaGroup? {
+        return getCachedPlaylists(super.getMyPlaylists())
+    }
+
+    private fun getCachedPlaylists(myPlaylists: MediaGroup?): MediaGroup? {
+        if (PlaylistGroupServiceImpl.getPlaylistGroups().isNotEmpty()) {
+            val result: MutableList<MediaItem> = mutableListOf()
+            // Place WatchLater before all
+            myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) }
+
+            PlaylistGroupServiceImpl.getPlaylistGroups().forEach {
+                result.add(YouTubeMediaItem().apply {
+                    title = it.title
+                    cardImageUrl = it.iconUrl
+                    playlistId = "${it.id}"
+                    badgeText = "${it.items.size} videos"
+                })
+            }
+
+            // Remove WatchLater
+            myPlaylists?.mediaItems?.drop(1)?.let {
+                result.addAll(it)
+            }
+
+            return YouTubeMediaGroup(myPlaylists?.type ?: MediaGroup.TYPE_USER_PLAYLISTS).apply {
+                mediaItems = result
+            }
+        }
+
+        return myPlaylists
     }
 
     companion object {

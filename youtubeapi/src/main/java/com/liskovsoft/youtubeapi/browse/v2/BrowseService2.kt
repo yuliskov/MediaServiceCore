@@ -175,7 +175,7 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(result, true)?.let { BrowseMediaGroup(it, createOptions(MediaGroup.TYPE_MUSIC)) }
     }
 
-    fun getMyPlaylists(): MediaGroup? {
+    open fun getMyPlaylists(): MediaGroup? {
         val result = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getMyPlaylistQuery(AppClient.TV))
 
         return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_USER_PLAYLISTS)) }

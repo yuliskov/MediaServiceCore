@@ -477,6 +477,10 @@ public class YouTubeMediaItem implements MediaItem {
         return mPlaylistId;
     }
 
+    public void setPlaylistId(String playlistId) {
+        mPlaylistId = playlistId;
+    }
+
     @Override
     public String getParams() {
         return mParams;

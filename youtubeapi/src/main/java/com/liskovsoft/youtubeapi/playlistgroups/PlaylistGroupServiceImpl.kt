@@ -36,6 +36,11 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
         return ItemGroupImpl(title = title, iconUrl = iconUrl, items = items.toMutableList())
     }
 
+    @JvmStatic
+    fun getPlaylistGroups(): List<ItemGroup> {
+        return mPlaylists
+    }
+
     private fun restoreData() {
         val data = MediaServicePrefs.getData(PLAYLIST_GROUP_DATA)
         restoreData(data)

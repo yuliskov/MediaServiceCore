@@ -23,7 +23,7 @@ import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistServiceWrapper;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
-import com.liskovsoft.youtubeapi.service.data.YouTubePlaylistInfo;
+import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
@@ -357,9 +357,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     public List<PlaylistInfo> getPlaylistsInfo(String videoId) {
         checkSigned();
 
-        PlaylistsResult playlistsInfo = mPlaylistService.getPlaylistsInfo(videoId);
-
-        return YouTubePlaylistInfo.from(playlistsInfo);
+        return mPlaylistService.getPlaylistsInfo(videoId);
     }
 
     @Override

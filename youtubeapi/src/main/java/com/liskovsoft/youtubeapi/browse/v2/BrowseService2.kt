@@ -339,7 +339,7 @@ internal open class BrowseService2 {
         return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL, MediaGroup.TYPE_CHANNEL_UPLOADS)
     }
 
-    fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
+    open fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
         return continueTVGroup(EmptyMediaGroup(reloadPageKey, type, title), true)
     }
 

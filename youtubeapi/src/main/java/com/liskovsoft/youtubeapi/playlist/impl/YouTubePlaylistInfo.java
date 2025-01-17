@@ -1,5 +1,6 @@
-package com.liskovsoft.youtubeapi.service.data;
+package com.liskovsoft.youtubeapi.playlist.impl;
 
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfoItem;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
@@ -32,6 +33,16 @@ public class YouTubePlaylistInfo implements PlaylistInfo {
         info.mTitle = playlist.getTitle();
         info.mPlaylistId = playlist.getPlaylistId();
         info.mIsSelected = playlist.isSelected();
+
+        return info;
+    }
+
+    public static YouTubePlaylistInfo from(ItemGroup itemGroup, boolean isSelected) {
+        YouTubePlaylistInfo info = new YouTubePlaylistInfo();
+
+        info.mTitle = itemGroup.getTitle();
+        info.mPlaylistId = String.valueOf(itemGroup.getId());
+        info.mIsSelected = isSelected;
 
         return info;
     }

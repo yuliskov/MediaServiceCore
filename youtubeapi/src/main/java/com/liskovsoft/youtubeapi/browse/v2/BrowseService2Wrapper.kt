@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.youtubeapi.rss.RssService
@@ -68,16 +69,19 @@ internal class BrowseService2Wrapper: BrowseService2() {
     }
 
     private fun getCachedPlaylists(myPlaylists: MediaGroup?): MediaGroup? {
-        if (PlaylistGroupServiceImpl.getPlaylistGroups().isNotEmpty()) {
+        val playlistGroups = PlaylistGroupServiceImpl.getPlaylistGroups()
+        if (playlistGroups.isNotEmpty()) {
             val result: MutableList<MediaItem> = mutableListOf()
             // Place WatchLater before all
             myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) }
 
-            PlaylistGroupServiceImpl.getPlaylistGroups().forEach {
+            playlistGroups.forEach {
                 result.add(YouTubeMediaItem().apply {
                     title = it.title
                     cardImageUrl = it.iconUrl
                     playlistId = "${it.id}"
+                    channelId = "${it.id}"
+                    reloadPageKey = "${it.id}"
                     badgeText = "${it.items.size} videos"
                 })
             }
@@ -93,6 +97,26 @@ internal class BrowseService2Wrapper: BrowseService2() {
         }
 
         return myPlaylists
+    }
+
+    override fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
+        val group = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(reloadPageKey))
+        if (group != null) {
+            return YouTubeMediaGroup(type).apply {
+                this.title = group.title
+                mediaItems = group.items?.map {
+                    YouTubeMediaItem().apply {
+                        this.title = it.title
+                        secondTitle = it.subtitle
+                        cardImageUrl = it.iconUrl
+                        videoId = it.videoId
+                        channelId = it.channelId
+                    }
+                }
+            }
+        }
+
+        return super.getGroup(reloadPageKey, type, title)
     }
 
     companion object {

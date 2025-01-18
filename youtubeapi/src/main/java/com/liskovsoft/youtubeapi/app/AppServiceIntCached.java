@@ -41,7 +41,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
         AppInfo appInfo = super.getAppInfo(userAgent);
 
-        mAppInfo = AppInfoCached.from(appInfo);
+        mAppInfo = AppInfoCached.from(appInfo, getData().getAppInfo()); // sync visitor data
         mAppInfoUpdateTimeMs = System.currentTimeMillis();
         // Reset dependent objects
         mPlayerData = null;

@@ -35,6 +35,20 @@ public class AppInfoCached extends AppInfo {
         return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
     }
 
+    /**
+     * Sync visitor data<br/>
+     * This should help to update recommendations more often, especially in anonymous mode
+     */
+    public static AppInfoCached from(AppInfo appInfo, AppInfo oldAppInfo) {
+        if (appInfo == null) {
+            return null;
+        }
+
+        String oldVisitorData = oldAppInfo != null ? oldAppInfo.getVisitorData() : null;
+
+        return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), oldVisitorData != null ? oldVisitorData : appInfo.getVisitorData());
+    }
+
     @NonNull
     @Override
     public String toString() {

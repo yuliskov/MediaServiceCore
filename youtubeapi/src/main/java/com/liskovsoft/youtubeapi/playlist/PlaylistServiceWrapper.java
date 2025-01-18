@@ -32,14 +32,20 @@ public class PlaylistServiceWrapper extends PlaylistService {
         try {
             super.createPlaylist(playlistName, videoId);
         } catch (IllegalStateException e) {
-            List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
-            if (metadata != null && !metadata.isEmpty()) {
-                ItemMetadata info = metadata.get(0);
-                ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, info.getCardImageUrl(),
-                        Collections.singletonList(
-                                new ItemImpl(info.getChannelId(), info.getTitle(), info.getCardImageUrl(), info.getVideoId(), info.getSecondTitle())));
-                PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
-            }
+            // NOP
+        }
+        
+        createCachedPlaylist(playlistName, videoId);
+    }
+
+    private static void createCachedPlaylist(String playlistName, String videoId) {
+        List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
+        if (metadata != null && !metadata.isEmpty()) {
+            ItemMetadata info = metadata.get(0);
+            ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, info.getCardImageUrl(),
+                    Collections.singletonList(
+                            new ItemImpl(info.getChannelId(), info.getTitle(), info.getCardImageUrl(), info.getVideoId(), info.getSecondTitle())));
+            PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
         }
     }
 
@@ -75,6 +81,10 @@ public class PlaylistServiceWrapper extends PlaylistService {
     public void addToPlaylist(String playlistId, String videoId) {
         super.addToPlaylist(playlistId, videoId);
 
+        addToCachedPlaylist(playlistId, videoId);
+    }
+
+    private static void addToCachedPlaylist(String playlistId, String videoId) {
         ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(playlistId));
 
         if (playlistGroup == null) {
@@ -86,6 +96,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
         if (metadata != null && !metadata.isEmpty()) {
             ItemMetadata item = metadata.get(0);
             playlistGroup.add(new ItemImpl(item.getChannelId(), item.getTitle(), item.getCardImageUrl(), item.getVideoId(), item.getSecondTitle()));
+            PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
         }
     }
 
@@ -94,11 +105,17 @@ public class PlaylistServiceWrapper extends PlaylistService {
         try {
             super.renamePlaylist(playlistId, newName);
         } catch (IllegalStateException e) {
-            ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(playlistId));
+            // NOP
+        }
 
-            if (playlistGroup != null) {
-                PlaylistGroupServiceImpl.renamePlaylistGroup(playlistGroup, newName);
-            }
+        renameCachedPlaylist(playlistId, newName);
+    }
+
+    private static void renameCachedPlaylist(String playlistId, String newName) {
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(playlistId));
+
+        if (playlistGroup != null) {
+            PlaylistGroupServiceImpl.renamePlaylistGroup(playlistGroup, newName);
         }
     }
 }

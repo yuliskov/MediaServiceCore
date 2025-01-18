@@ -1,15 +1,14 @@
 package com.liskovsoft.youtubeapi.playlist;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt;
 import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;
-import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImplKt;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl;
 import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
-import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.List;
 
 public class PlaylistServiceWrapper extends PlaylistService {
     private static PlaylistServiceWrapper sInstance;
+    private @Nullable List<PlaylistInfo> mCachedPlaylistInfos;
 
     public static PlaylistServiceWrapper instance() {
         if (sInstance == null) {
@@ -54,27 +54,41 @@ public class PlaylistServiceWrapper extends PlaylistService {
         return getCachedPlaylistInfo(super.getPlaylistsInfo(videoId), videoId);
     }
 
-    private List<PlaylistInfo> getCachedPlaylistInfo(List<PlaylistInfo> playlistsInfo, String videoId) {
+    private List<PlaylistInfo> getCachedPlaylistInfo(List<PlaylistInfo> playlistsInfos, String videoId) {
         List<ItemGroup> playlistGroups = PlaylistGroupServiceImpl.getPlaylistGroups();
         if (!playlistGroups.isEmpty()) {
+            mCachedPlaylistInfos = playlistsInfos;
             List<PlaylistInfo> result = new ArrayList<>();
 
-            if (playlistsInfo != null && !playlistsInfo.isEmpty()) {
-                result.add(playlistsInfo.get(0)); // WatchLater
+            if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
+                result.add(playlistsInfos.get(0)); // WatchLater
             }
 
             for (ItemGroup itemGroup : playlistGroups) {
+                // Merge local and remote
+                if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
+                    PlaylistInfo item = findFirst(playlistsInfos, itemGroup.getId());
+                    if (item != null) {
+                        result.add(item);
+                        continue;
+                    }
+                }
+
                 result.add(YouTubePlaylistInfo.from(itemGroup, itemGroup.contains(videoId)));
             }
-
-            if (playlistsInfo != null && !playlistsInfo.isEmpty()) {
-                result.addAll(playlistsInfo.subList(1, playlistsInfo.size())); // exclude WatchLater
+            
+            if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
+                for (PlaylistInfo info : playlistsInfos) {
+                    if (!result.contains(info)) {
+                        result.add(info);
+                    }
+                }
             }
 
             return result;
         }
 
-        return playlistsInfo;
+        return playlistsInfos;
     }
 
     @Override
@@ -84,11 +98,13 @@ public class PlaylistServiceWrapper extends PlaylistService {
         addToCachedPlaylist(playlistId, videoId);
     }
 
-    private static void addToCachedPlaylist(String playlistId, String videoId) {
-        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(playlistId));
+    private void addToCachedPlaylist(String playlistId, String videoId) {
+        int id = convertToId(playlistId);
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(id);
 
         if (playlistGroup == null) {
-            return;
+            playlistGroup = PlaylistGroupServiceImpl.createPlaylistGroup(
+                    id, findTitle(playlistId), null);
         }
 
         List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
@@ -112,10 +128,56 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private static void renameCachedPlaylist(String playlistId, String newName) {
-        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(playlistId));
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(convertToId(playlistId));
 
         if (playlistGroup != null) {
             PlaylistGroupServiceImpl.renamePlaylistGroup(playlistGroup, newName);
         }
+    }
+
+    @Override
+    public void removePlaylist(String playlistId) {
+        try {
+            super.removePlaylist(playlistId);
+        } catch (IllegalStateException e) {
+            // NOP
+        }
+
+        PlaylistGroupServiceImpl.removePlaylistGroup(convertToId(playlistId));
+    }
+
+    @Override
+    public void removeFromPlaylist(String playlistId, String videoId) {
+        super.removeFromPlaylist(playlistId, videoId);
+
+        removeFromCachedPlaylist(playlistId, videoId);
+    }
+
+    private void removeFromCachedPlaylist(String playlistId, String videoId) {
+        int id = convertToId(playlistId);
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(id);
+
+        if (playlistGroup != null) {
+            playlistGroup.remove(videoId);
+        }
+    }
+
+    private static int convertToId(String playlistId) {
+        if (playlistId == null) {
+            return -1;
+        }
+
+        int id = Helpers.parseInt(playlistId);
+        return id != -1 ? id : Helpers.hashCode(playlistId);
+    }
+
+    private PlaylistInfo findFirst(List<PlaylistInfo> playlistsInfos, int id) {
+        return Helpers.findFirst(playlistsInfos, item -> convertToId(item.getPlaylistId()) == id);
+    }
+
+    private String findTitle(String playlistId) {
+        PlaylistInfo first = Helpers.findFirst(mCachedPlaylistInfos, item -> Helpers.equals(item.getPlaylistId(), playlistId));
+
+        return first != null ? first.getTitle() : "Untitled";
     }
 }

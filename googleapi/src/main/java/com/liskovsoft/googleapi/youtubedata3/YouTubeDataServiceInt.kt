@@ -20,4 +20,11 @@ object YouTubeDataServiceInt {
         val response = RetrofitHelper.get(mYouTubeDataApi.getChannelMetadata(ids))
         return response?.items?.mapNotNull { it?.let { ItemMetadataImpl(it) } }
     }
+
+    @JvmStatic
+    fun getPlaylistMetadata(vararg playlistIds: String): List<ItemMetadata>? {
+        val ids = playlistIds.joinToString(",")
+        val response = RetrofitHelper.get(mYouTubeDataApi.getPlaylistMetadata(ids))
+        return response?.items?.mapNotNull { it?.let { ItemMetadataImpl(it) } }
+    }
 }

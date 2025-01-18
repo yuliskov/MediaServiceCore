@@ -2,6 +2,7 @@ package com.liskovsoft.googleapi.youtubedata3.data
 
 private const val TYPE_VIDEO = "youtube#video"
 private const val TYPE_CHANNEL = "youtube#channel"
+private const val TYPE_PLAYLIST = "youtube#playlist"
 
 internal fun SnippetWrapper.getTitle(): String? = snippet?.title
 internal fun SnippetWrapper.getVideoId(): String? = if (isVideo()) id else null
@@ -14,3 +15,4 @@ internal fun SnippetWrapper.getCategoryId(): String? = snippet?.categoryId
 internal fun SnippetWrapper.getThumbnailUrl(): String? = snippet?.thumbnails?.medium?.url
 private fun SnippetWrapper.isVideo() = kind == TYPE_VIDEO
 private fun SnippetWrapper.isChannel() = kind == TYPE_CHANNEL
+private fun SnippetWrapper.isPlaylist() = kind == TYPE_PLAYLIST

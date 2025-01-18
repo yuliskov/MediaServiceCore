@@ -39,6 +39,17 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     @JvmStatic
+    fun removePlaylistGroup(id: Int) {
+        if (id == -1)
+            return
+
+        val result = Helpers.removeIf(mPlaylists) { it.id == id }
+        if (!result.isNullOrEmpty()) {
+            persistData()
+        }
+    }
+
+    @JvmStatic
     fun renamePlaylistGroup(itemGroup: ItemGroup, title: String) {
         addPlaylistGroup(ItemGroupImpl(itemGroup.id, title, itemGroup.iconUrl, itemGroup.items))
     }
@@ -46,6 +57,11 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     @JvmStatic
     fun createPlaylistGroup(title: String, iconUrl: String?, items: List<Item>): ItemGroup {
         return ItemGroupImpl(title = title, iconUrl = iconUrl, items = items.toMutableList())
+    }
+
+    @JvmStatic
+    fun createPlaylistGroup(id: Int, title: String, iconUrl: String?): ItemGroup {
+        return ItemGroupImpl(id = id, title = title, iconUrl = iconUrl, items = mutableListOf())
     }
 
     @JvmStatic

@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
@@ -72,10 +73,18 @@ internal class BrowseService2Wrapper: BrowseService2() {
         val playlistGroups = PlaylistGroupServiceImpl.getPlaylistGroups()
         if (playlistGroups.isNotEmpty()) {
             val result: MutableList<MediaItem> = mutableListOf()
-            // Place WatchLater before all
-            myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) }
+            myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) } // WatchLater
 
             playlistGroups.forEach {
+                // Merge local and remote
+                if (myPlaylists?.mediaItems?.isNotEmpty() == true) {
+                    // Can't match by playlistId because we have only reloadPageKey
+                    findFirst(myPlaylists.mediaItems, it.title)?.let {
+                        result.add(it)
+                        return@forEach
+                    }
+                }
+
                 result.add(YouTubeMediaItem().apply {
                     title = it.title
                     cardImageUrl = it.iconUrl
@@ -85,10 +94,11 @@ internal class BrowseService2Wrapper: BrowseService2() {
                     badgeText = "${it.items.size} videos"
                 })
             }
-
-            // Remove WatchLater
-            myPlaylists?.mediaItems?.drop(1)?.let {
-                result.addAll(it)
+            
+            myPlaylists?.mediaItems?.forEach {
+                if (!result.contains(it)) {
+                    result.add(it)
+                }
             }
 
             return YouTubeMediaGroup(myPlaylists?.type ?: MediaGroup.TYPE_USER_PLAYLISTS).apply {
@@ -100,7 +110,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
     }
 
     override fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
-        val group = PlaylistGroupServiceImpl.findPlaylistGroup(Helpers.parseInt(reloadPageKey))
+        val group = PlaylistGroupServiceImpl.findPlaylistGroup(convertToId(reloadPageKey))
         if (group != null) {
             return YouTubeMediaGroup(type).apply {
                 this.title = group.title
@@ -117,6 +127,19 @@ internal class BrowseService2Wrapper: BrowseService2() {
         }
 
         return super.getGroup(reloadPageKey, type, title)
+    }
+
+    private fun convertToId(playlistId: String?): Int {
+        if (playlistId == null) {
+            return -1
+        }
+
+        val id = Helpers.parseInt(playlistId)
+        return if (id != -1) id else Helpers.hashCode(playlistId)
+    }
+
+    private fun findFirst(mediaItems: List<MediaItem>?, title: String): MediaItem? {
+        return Helpers.findFirst(mediaItems) { Helpers.equals(it.title, title) }
     }
 
     companion object {

@@ -103,8 +103,14 @@ public class PlaylistServiceWrapper extends PlaylistService {
         ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(id);
 
         if (playlistGroup == null) {
+            String title = findTitle(playlistId);
+
+            if (title == null) {
+                return;
+            }
+
             playlistGroup = PlaylistGroupServiceImpl.createPlaylistGroup(
-                    id, findTitle(playlistId), null);
+                    id, title, null);
         }
 
         List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
@@ -178,6 +184,6 @@ public class PlaylistServiceWrapper extends PlaylistService {
     private String findTitle(String playlistId) {
         PlaylistInfo first = Helpers.findFirst(mCachedPlaylistInfos, item -> Helpers.equals(item.getPlaylistId(), playlistId));
 
-        return first != null ? first.getTitle() : "Untitled";
+        return first != null ? first.getTitle() : null;
     }
 }

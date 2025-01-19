@@ -110,13 +110,21 @@ internal class BrowseService2Wrapper: BrowseService2() {
     }
 
     override fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
+        return getCachedGroup(reloadPageKey, type) ?: super.getGroup(reloadPageKey, type, title)
+    }
+
+    override fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
+        return getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS)?.let { Pair(listOf(it), null) } ?: super.getChannel(channelId, params)
+    }
+
+    private fun getCachedGroup(reloadPageKey: String?, type: Int): MediaGroup? {
         val group = PlaylistGroupServiceImpl.findPlaylistGroup(convertToId(reloadPageKey))
         if (group != null) {
             return YouTubeMediaGroup(type).apply {
-                this.title = group.title
+                title = group.title
                 mediaItems = group.items?.map {
                     YouTubeMediaItem().apply {
-                        this.title = it.title
+                        title = it.title
                         secondTitle = it.subtitle
                         cardImageUrl = it.iconUrl
                         videoId = it.videoId
@@ -126,7 +134,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
             }
         }
 
-        return super.getGroup(reloadPageKey, type, title)
+        return null
     }
 
     private fun convertToId(playlistId: String?): Int {

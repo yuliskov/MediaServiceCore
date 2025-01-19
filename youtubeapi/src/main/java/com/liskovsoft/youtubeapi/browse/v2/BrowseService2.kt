@@ -280,7 +280,7 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(videos, skipAuth)?.let { it.getChips()?.mapNotNull { if (it != null) ChipMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) else null } }
     }
 
-    fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
+    open fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
         return getChannelTV(channelId, params) ?: getChannelWeb(channelId, params, true)?.let { Pair(it, null) }
     }
 

@@ -787,7 +787,10 @@ public class YouTubeContentService implements ContentService {
                 for (MediaItem playlist : playlists.getMediaItems()) {
                     kotlin.Pair<List<MediaGroup>, String> content = mBrowseService2.getChannel(playlist.getChannelId(), playlist.getParams());
                     if (content != null && content.getFirst() != null) {
-                        ((BaseMediaGroup) content.getFirst().get(0)).setTitle(playlist.getTitle());
+                        MediaGroup mediaGroup = content.getFirst().get(0);
+                        if (mediaGroup instanceof BaseMediaGroup) {
+                            ((BaseMediaGroup) mediaGroup).setTitle(playlist.getTitle());
+                        }
                         emitter.onNext(content.getFirst());
                     }
                 }

@@ -1,8 +1,11 @@
 package com.liskovsoft.googleapi.common.helpers;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.googleapi.app.AppConstants;
 import com.liskovsoft.googleapi.app.AppService;
 import com.liskovsoft.googleapi.common.locale.LocaleManager;
+import com.liskovsoft.googleapi.common.models.items.Thumbnail;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
@@ -15,6 +18,10 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class ServiceHelper {
+    /**
+     * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
+     */
+    private static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
     private static final String BULLET_SYMBOL = "\u2022";
     private static final String ITEMS_DIVIDER = " " + BULLET_SYMBOL + " ";
     private static final String TIME_TEXT_DELIM = ":";
@@ -114,7 +121,7 @@ public class ServiceHelper {
     /**
      * Additional video info such as user, published etc.
      */
-    public static String itemsToInfo(Object... items) {
+    public static @Nullable String itemsToInfo(Object... items) {
         return Helpers.combineItems(ITEMS_DIVIDER, items);
     }
 
@@ -278,5 +285,51 @@ public class ServiceHelper {
         } else {
             return new DecimalFormat("#,##0").format(numValue);
         }
+    }
+
+    /**
+     * Find optimal thumbnail for tv screen<br/>
+     * For Kotlin counterpart see: com.liskovsoft.googleapi.common.models.gen.CommonHelperKt#getOptimalResThumbnailUrl(ThumbnailItem)
+     */
+    public static String findOptimalResThumbnailUrl(List<Thumbnail> thumbnails) {
+        if (thumbnails == null) {
+            return null;
+        }
+
+        int size = thumbnails.size();
+
+        if (size == 0) {
+            return null;
+        }
+
+        return thumbnails.get(size > OPTIMAL_RES_THUMBNAIL_INDEX ? OPTIMAL_RES_THUMBNAIL_INDEX : size - 1).getUrl();
+    }
+
+    /**
+     * For Kotlin counterpart see: com.liskovsoft.youtubeapi.common.models.gen.CommonHelperKt#getHighResThumbnailUrl(ThumbnailItem)
+     */
+    public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
+        if (thumbnails == null) {
+            return null;
+        }
+
+        int size = thumbnails.size();
+
+        if (size == 0) {
+            return null;
+        }
+
+        return thumbnails.get(size - 1).getUrl();
+    }
+
+    /**
+     * Avatar blocking fix
+     */
+    public static String avatarBlockFix(String url) {
+        if (url != null) {
+            url = url.replaceFirst("^https://yt3.ggpht.com", "https://yt4.ggpht.com");
+        }
+
+        return url;
     }
 }

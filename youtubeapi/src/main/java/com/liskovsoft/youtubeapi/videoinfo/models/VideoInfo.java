@@ -290,7 +290,7 @@ public class VideoInfo {
     }
 
     public String getPlayabilityStatus() {
-        return ServiceHelper.itemsToInfo(mPlayabilityReason, mPlayabilityDescription);
+        return ServiceHelper.createInfo(mPlayabilityReason, mPlayabilityDescription);
     }
 
     public String getStoryboardSpec() {

@@ -67,7 +67,7 @@ public final class YouTubeHelper {
      * Additional video info such as user, published etc.
      */
     public static @Nullable String createInfo(Object... items) {
-        return ServiceHelper.itemsToInfo(items);
+        return ServiceHelper.createInfo(items);
     }
 
     public static String extractNextKey(MediaGroup mediaGroup) {

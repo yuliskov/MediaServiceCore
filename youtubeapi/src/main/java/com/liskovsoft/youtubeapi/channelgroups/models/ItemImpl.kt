@@ -1,7 +1,10 @@
 package com.liskovsoft.youtubeapi.channelgroups.models
 
+import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 
 private const val ITEM_DELIM = "&ci;"
 
@@ -11,6 +14,7 @@ internal data class ItemImpl(
     private val iconUrl: String? = null,
     private val videoId: String? = null,
     private val subtitle: String? = null,
+    private val badge: String? = null,
 ): Item {
     override fun getTitle(): String? {
         return title
@@ -32,8 +36,12 @@ internal data class ItemImpl(
         return subtitle
     }
 
+    override fun getBadge(): String? {
+        return badge
+    }
+
     override fun toString(): String {
-        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle)
+        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle, badge)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -61,12 +69,20 @@ internal data class ItemImpl(
             val channelId = Helpers.parseStr(split, 2)
             val videoId = Helpers.parseStr(split, 3)
             val subtitle = Helpers.parseStr(split, 4)
+            val badge = Helpers.parseStr(split, 5)
 
             if (channelId == null && videoId == null) {
                 return null
             }
 
-            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle)
+            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle, badge)
+        }
+
+        @JvmStatic
+        fun fromMetadata(metadata: ItemMetadata): Item {
+            val secondTitle = ServiceHelper.createInfo(metadata.channelTitle, DateHelper.toShortDate(metadata.publishedAt, true, true, false))
+            val badge = ServiceHelper.convertIsoDurationToHHMMSS(metadata.durationIso)
+            return ItemImpl(metadata.channelId, metadata.title, metadata.cardImageUrl, metadata.videoId, secondTitle, badge)
         }
     }
 }

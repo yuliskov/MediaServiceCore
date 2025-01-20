@@ -13,6 +13,7 @@ internal fun SnippetWrapper.getDescription(): String? = snippet?.description
 internal fun SnippetWrapper.getChannelUrl(): String? = snippet?.customUrl
 internal fun SnippetWrapper.getCategoryId(): String? = snippet?.categoryId
 internal fun SnippetWrapper.getThumbnailUrl(): String? = snippet?.thumbnails?.medium?.url
+internal fun SnippetWrapper.getDurationIso(): String? = contentDetails?.duration
 private fun SnippetWrapper.isVideo() = kind == TYPE_VIDEO
 private fun SnippetWrapper.isChannel() = kind == TYPE_CHANNEL
 private fun SnippetWrapper.isPlaylist() = kind == TYPE_PLAYLIST

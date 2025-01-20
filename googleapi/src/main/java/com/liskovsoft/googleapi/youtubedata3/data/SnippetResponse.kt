@@ -7,7 +7,8 @@ internal data class SnippetResponse(
 internal data class SnippetWrapper(
     val kind: String?,
     val id: String?,
-    val snippet: Snippet?
+    val snippet: Snippet?,
+    val contentDetails: ContentDetails?
 ) {
     data class Snippet(
         val title: String?,
@@ -39,4 +40,7 @@ internal data class SnippetWrapper(
             val description: String?
         )
     }
+    data class ContentDetails(
+        val duration: String?, // PT2H4M4S
+    )
 }

@@ -43,8 +43,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
         if (metadata != null && !metadata.isEmpty()) {
             ItemMetadata info = metadata.get(0);
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, info.getCardImageUrl(),
-                    Collections.singletonList(
-                            new ItemImpl(info.getChannelId(), info.getTitle(), info.getCardImageUrl(), info.getVideoId(), info.getSecondTitle())));
+                    Collections.singletonList(ItemImpl.fromMetadata(info)));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
         }
     }
@@ -117,7 +116,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
 
         if (metadata != null && !metadata.isEmpty()) {
             ItemMetadata item = metadata.get(0);
-            playlistGroup.add(new ItemImpl(item.getChannelId(), item.getTitle(), item.getCardImageUrl(), item.getVideoId(), item.getSecondTitle()));
+            playlistGroup.add(ItemImpl.fromMetadata(item));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
         }
     }

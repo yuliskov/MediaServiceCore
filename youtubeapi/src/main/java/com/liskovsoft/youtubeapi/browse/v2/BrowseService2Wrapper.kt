@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
@@ -53,6 +52,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
                             secondTitle = it.subtitle
                             channelId = it.channelId
                             cardImageUrl = it.iconUrl
+                            badgeText = it.badge
                         }
                     }
                 }
@@ -129,6 +129,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
                         cardImageUrl = it.iconUrl
                         videoId = it.videoId
                         channelId = it.channelId
+                        badgeText = it.badge
                     }
                 }
             }

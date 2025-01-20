@@ -1,7 +1,7 @@
 package com.liskovsoft.googleapi.common.models.items;
 
 import com.liskovsoft.googleapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.googleapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.googleapi.common.helpers.ServiceHelper;
 
 public class Thumbnail {
     @JsonPath("$.url")
@@ -17,7 +17,7 @@ public class Thumbnail {
             url = "https:" + url;
         }
 
-        url = YouTubeHelper.avatarBlockFix(url);
+        url = ServiceHelper.avatarBlockFix(url);
 
         return url;
     }

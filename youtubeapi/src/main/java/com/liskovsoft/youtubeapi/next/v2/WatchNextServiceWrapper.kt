@@ -9,20 +9,24 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata
 
 internal class WatchNextServiceWrapper : WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
-        return getCachedGroup(playlistId, MediaGroup.TYPE_SUGGESTIONS) ?: super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)
+        return getCachedGroup(videoId, playlistId) ?: super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)
     }
 
-    private fun getCachedGroup(id: String?, type: Int): MediaItemMetadata? {
-        val group = PlaylistGroupServiceImpl.findPlaylistGroup(id)
+    private fun getCachedGroup(videoId: String?, playlistId: String?): MediaItemMetadata? {
+        if (videoId != null) { // Dynamic suggestions needed
+            return null
+        }
+
+        val group = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId)
         if (group != null && !group.isEmpty) {
-            val result = YouTubeMediaGroup(type).apply {
+            val result = YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS).apply {
                 title = group.title
                 mediaItems = group.items?.map {
                     YouTubeMediaItem().apply {
                         title = it.title
                         secondTitle = it.subtitle
                         cardImageUrl = it.iconUrl
-                        videoId = it.videoId
+                        this.videoId = it.videoId
                         channelId = it.channelId
                         badgeText = it.badge
                     }

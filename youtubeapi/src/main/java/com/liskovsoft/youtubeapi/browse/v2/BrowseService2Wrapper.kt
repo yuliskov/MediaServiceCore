@@ -80,7 +80,9 @@ internal class BrowseService2Wrapper: BrowseService2() {
                 if (myPlaylists?.mediaItems?.isNotEmpty() == true) {
                     // Can't match by playlistId because we have only reloadPageKey
                     findFirst(myPlaylists.mediaItems, it.title)?.let {
-                        result.add(it)
+                        if (!result.contains(it)) {
+                            result.add(it)
+                        }
                         return@forEach
                     }
                 }

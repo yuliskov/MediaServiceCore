@@ -69,7 +69,9 @@ public class PlaylistServiceWrapper extends PlaylistService {
                 if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
                     PlaylistInfo item = findFirst(playlistsInfos, itemGroup.getId());
                     if (item != null) {
-                        result.add(item);
+                        if (!result.contains(item)) {
+                            result.add(item);
+                        }
                         continue;
                     }
                 }

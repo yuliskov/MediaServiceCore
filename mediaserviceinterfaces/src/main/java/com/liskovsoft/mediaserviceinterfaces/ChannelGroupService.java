@@ -16,9 +16,9 @@ public interface ChannelGroupService {
     ItemGroup createChannelGroup(String title, String iconUrl, List<Item> channels);
     void renameChannelGroup(ItemGroup channelGroup, String title);
     Item createChannel(String title, String iconUrl, String channelId);
-    ItemGroup findChannelGroup(int channelGroupId);
-    ItemGroup findChannelGroup(String title);
-    String[] findChannelIdsForGroup(int channelGroupId);
+    ItemGroup findChannelGroupById(String channelGroupId);
+    ItemGroup findChannelGroupByTitle(String title);
+    String[] findChannelIdsForGroup(String channelGroupId);
     Observable<List<ItemGroup>> importGroupsObserve(Uri uri);
     Observable<List<ItemGroup>> importGroupsObserve(File file);
     void exportData(String data);

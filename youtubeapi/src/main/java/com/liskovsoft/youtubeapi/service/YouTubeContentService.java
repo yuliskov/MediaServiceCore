@@ -12,6 +12,7 @@ import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.rss.RssService;
 import com.liskovsoft.youtubeapi.search.SearchServiceWrapper;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
@@ -43,6 +44,7 @@ public class YouTubeContentService implements ContentService {
     private final SearchService mSearchService;
     private final BrowseService mBrowseService;
     private final BrowseService2 mBrowseService2;
+    private final WatchNextServiceWrapper mWatchNextService;
 
     private YouTubeContentService() {
         Log.d(TAG, "Starting...");
@@ -52,6 +54,7 @@ public class YouTubeContentService implements ContentService {
         mSearchService = SearchServiceWrapper.instance();
         mBrowseService = BrowseService.instance();
         mBrowseService2 = BrowseService2Wrapper.getInstance();
+        mWatchNextService = WatchNextServiceWrapper.getInstance();
     }
 
     public static ContentService instance() {
@@ -725,7 +728,7 @@ public class YouTubeContentService implements ContentService {
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
         if (mediaGroup instanceof SuggestionsGroup) {
-            return WatchNextService.continueGroup(mediaGroup);
+            return mWatchNextService.continueGroup(mediaGroup);
         }
 
         if (mediaGroup instanceof BaseMediaGroup) {

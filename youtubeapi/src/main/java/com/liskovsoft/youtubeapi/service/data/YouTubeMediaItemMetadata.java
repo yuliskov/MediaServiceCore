@@ -270,6 +270,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         return mSuggestions;
     }
 
+    public void setSuggestions(List<MediaGroup> suggestions) {
+        mSuggestions = suggestions;
+    }
+
     @Override
     public PlaylistInfo getPlaylistInfo() {
         return null;

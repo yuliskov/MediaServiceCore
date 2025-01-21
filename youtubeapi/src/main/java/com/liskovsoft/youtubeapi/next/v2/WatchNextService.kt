@@ -20,27 +20,23 @@ import com.liskovsoft.youtubeapi.next.v2.gen.isEmpty
 import com.liskovsoft.youtubeapi.next.v2.impl.MediaItemMetadataImpl
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
-internal object WatchNextService {
+internal open class WatchNextService {
     private var mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
     private val mAppService = AppService.instance()
 
-    @JvmStatic
     fun getMetadata(videoId: String): MediaItemMetadata? {
         return getMetadata(videoId, null, 0)
     }
 
-    @JvmStatic
     fun getMetadata(item: MediaItem): MediaItemMetadata? {
         return getMetadata(item.videoId, item.playlistId, item.playlistIndex)
     }
 
-    @JvmStatic
-    fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int): MediaItemMetadata? {
+    open fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int): MediaItemMetadata? {
         return getMetadata(videoId, playlistId, playlistIndex, null)
     }
 
-    @JvmStatic
-    fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
+    open fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         val watchNext = getWatchNext(videoId, playlistId, playlistIndex, playlistParams)
 
         return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
@@ -55,7 +51,6 @@ internal object WatchNextService {
         } else null
     }
 
-    @JvmStatic
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {
         val nextKey = YouTubeHelper.extractNextKey(mediaGroup) ?: return null
 
@@ -68,7 +63,6 @@ internal object WatchNextService {
         return SuggestionsGroup.from(continuation, mediaGroup)
     }
 
-    @JvmStatic
     fun getDislikeData(videoId: String?): DislikeData? {
         return getDislikesResult(videoId)?.let {
              object : DislikeData {

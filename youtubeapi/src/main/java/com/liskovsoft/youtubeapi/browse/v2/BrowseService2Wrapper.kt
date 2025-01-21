@@ -88,10 +88,10 @@ internal class BrowseService2Wrapper: BrowseService2() {
                 result.add(YouTubeMediaItem().apply {
                     title = it.title
                     cardImageUrl = it.iconUrl
-                    playlistId = "${it.id}"
-                    channelId = "${it.id}"
-                    reloadPageKey = "${it.id}"
-                    badgeText = "${it.items.size} videos"
+                    playlistId = it.id
+                    channelId = it.id
+                    //reloadPageKey = it.id
+                    badgeText = it.badge ?: "${it.items.size} videos"
                 })
             }
             
@@ -117,9 +117,13 @@ internal class BrowseService2Wrapper: BrowseService2() {
         return getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS)?.let { Pair(listOf(it), null) } ?: super.getChannel(channelId, params)
     }
 
+    override fun getChannelAsGrid(channelId: String?): MediaGroup? {
+        return getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS) ?: super.getChannelAsGrid(channelId)
+    }
+
     private fun getCachedGroup(reloadPageKey: String?, type: Int): MediaGroup? {
-        val group = PlaylistGroupServiceImpl.findPlaylistGroup(convertToId(reloadPageKey))
-        if (group != null) {
+        val group = PlaylistGroupServiceImpl.findPlaylistGroup(reloadPageKey)
+        if (group != null && !group.isEmpty) {
             return YouTubeMediaGroup(type).apply {
                 title = group.title
                 mediaItems = group.items?.map {
@@ -136,15 +140,6 @@ internal class BrowseService2Wrapper: BrowseService2() {
         }
 
         return null
-    }
-
-    private fun convertToId(playlistId: String?): Int {
-        if (playlistId == null) {
-            return -1
-        }
-
-        val id = Helpers.parseInt(playlistId)
-        return if (id != -1) id else Helpers.hashCode(playlistId)
     }
 
     private fun findFirst(mediaItems: List<MediaItem>?, title: String): MediaItem? {

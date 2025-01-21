@@ -18,7 +18,7 @@ import java.io.File
 
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener,
     ChannelGroupService {
-    const val SUBSCRIPTION_GROUP_ID: Int = 1000
+    private const val SUBSCRIPTION_GROUP_ID: String = "1000"
     private const val SUBSCRIPTION_GROUP_NAME: String = "Subscriptions"
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
     private val mImportServices = listOf(PocketTubeService, GrayJayService, NewPipeService)
@@ -53,8 +53,8 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         }
     }
 
-    override fun findChannelGroup(channelGroupId: Int): ItemGroup? {
-        if (channelGroupId == -1) {
+    override fun findChannelGroupById(channelGroupId: String?): ItemGroup? {
+        if (channelGroupId == null) {
             return null
         }
 
@@ -67,7 +67,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return null
     }
 
-    override fun findChannelGroup(title: String): ItemGroup? {
+    override fun findChannelGroupByTitle(title: String): ItemGroup? {
         for (group in mChannelGroups) {
             if (group.title == title) {
                 return group
@@ -86,7 +86,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     //}
 
     fun getSubscribedChannelGroup(): ItemGroup {
-        return findChannelGroup(SUBSCRIPTION_GROUP_ID) ?: initSubscriptions()
+        return findChannelGroupById(SUBSCRIPTION_GROUP_ID) ?: initSubscriptions()
     }
 
     private fun initSubscriptions(): ItemGroup {
@@ -100,8 +100,8 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return findChannelIdsForGroup(SUBSCRIPTION_GROUP_ID)
     }
 
-    override fun findChannelIdsForGroup(channelGroupId: Int): Array<String>? {
-        if (channelGroupId == -1) {
+    override fun findChannelIdsForGroup(channelGroupId: String?): Array<String>? {
+        if (channelGroupId == null) {
             return null
         }
 
@@ -213,7 +213,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     fun isSubscribed(channelId: String): Boolean {
-        val group: ItemGroup? = findChannelGroup(SUBSCRIPTION_GROUP_ID)
+        val group: ItemGroup? = findChannelGroupById(SUBSCRIPTION_GROUP_ID)
 
         return group?.contains(channelId) ?: false
     }

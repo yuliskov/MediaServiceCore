@@ -6,10 +6,11 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 public interface ItemGroup {
-    int getId();
+    String getId();
     String getTitle();
     String getIconUrl();
     List<Item> getItems();
+    String getBadge();
     Item findItem(String channelOrVideoId);
     void add(@NonNull Item mediaItem);
     void addAll(@NonNull List<Item> newMediaItems);

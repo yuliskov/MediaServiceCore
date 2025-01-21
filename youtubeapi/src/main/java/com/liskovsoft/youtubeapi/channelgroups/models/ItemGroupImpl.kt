@@ -1,21 +1,25 @@
 package com.liskovsoft.youtubeapi.channelgroups.models
 
+import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
+import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 
 private const val ITEM_DELIM = "&sgi;"
 private const val LIST_DELIM = "&sga;"
 
 internal data class ItemGroupImpl(
-    private val id: Int = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE),
+    //private val id: String = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE).toString(),
+    private val id: String = ServiceHelper.generateRandomId(12),
     private val title: String,
     private val iconUrl: String? = null,
     private val items: MutableList<Item>,
+    private val badge: String? = null,
     var onChange: (ItemGroup) -> Unit = { ChannelGroupServiceImpl.persistData() }
 ): ItemGroup {
-    override fun getId(): Int {
+    override fun getId(): String {
         return id
     }
 
@@ -29,6 +33,10 @@ internal data class ItemGroupImpl(
 
     override fun getItems(): List<Item> {
         return items
+    }
+
+    override fun getBadge(): String? {
+        return badge
     }
 
     override fun findItem(channelOrVideoId: String): Item? {
@@ -63,7 +71,7 @@ internal data class ItemGroupImpl(
     }
 
     override fun toString(): String {
-        return Helpers.merge(ITEM_DELIM, id, title, iconUrl, Helpers.mergeList(LIST_DELIM, items))
+        return Helpers.merge(ITEM_DELIM, id, title, iconUrl, Helpers.mergeList(LIST_DELIM, items), badge)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -86,12 +94,25 @@ internal data class ItemGroupImpl(
 
             val split = Helpers.split(ITEM_DELIM, spec)
 
-            val id = Helpers.parseInt(split, 0)
+            val id = Helpers.parseStr(split, 0) ?: return null
             val title = Helpers.parseStr(split, 1) ?: return null
             val groupIconUrl = Helpers.parseStr(split, 2)
             val items: MutableList<Item> = Helpers.parseList(split, 3, LIST_DELIM, ItemImpl::fromString)
+            val badge = Helpers.parseStr(split, 4)
 
-            return ItemGroupImpl(id, title, groupIconUrl, items)
+            return ItemGroupImpl(id, title, groupIconUrl, items, badge)
+        }
+
+        @JvmStatic
+        fun fromMetadata(metadata: ItemMetadata): ItemGroup? {
+            val playlistId = metadata.playlistId
+            val title = metadata.title
+            if (playlistId == null || title == null)
+                return null
+
+            return ItemGroupImpl(
+                playlistId, title, metadata.cardImageUrl, mutableListOf(), metadata.itemCount?.let { "$it videos" }
+            )
         }
     }
 }

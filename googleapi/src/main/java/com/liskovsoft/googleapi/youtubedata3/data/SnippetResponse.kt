@@ -42,5 +42,6 @@ internal data class SnippetWrapper(
     }
     data class ContentDetails(
         val duration: String?, // PT2H4M4S
+        val itemCount: Int? // for playlists
     )
 }

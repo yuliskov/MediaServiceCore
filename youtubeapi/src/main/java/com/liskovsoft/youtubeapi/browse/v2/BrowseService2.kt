@@ -205,7 +205,7 @@ internal open class BrowseService2 {
         }
     }
 
-    fun getChannelAsGrid(channelId: String?): MediaGroup? {
+    open fun getChannelAsGrid(channelId: String?): MediaGroup? {
         return getChannelVideosFullTV(channelId) ?: getChannelVideosFullWeb(channelId, true)
     }
 

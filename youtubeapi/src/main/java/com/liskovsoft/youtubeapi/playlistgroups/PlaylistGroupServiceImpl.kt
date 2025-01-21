@@ -24,7 +24,10 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     @JvmStatic
-    fun addPlaylistGroup(group: ItemGroup) {
+    fun addPlaylistGroup(group: ItemGroup?) {
+        if (group == null)
+            return
+
         // Move to the top
         (group as ItemGroupImpl).onChange = { persistData() }
         mPlaylists.remove(group)
@@ -39,8 +42,8 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     @JvmStatic
-    fun removePlaylistGroup(id: Int) {
-        if (id == -1)
+    fun removePlaylistGroup(id: String?) {
+        if (id == null)
             return
 
         val result = Helpers.removeIf(mPlaylists) { it.id == id }
@@ -60,7 +63,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     @JvmStatic
-    fun createPlaylistGroup(id: Int, title: String, iconUrl: String?): ItemGroup {
+    fun createPlaylistGroup(id: String, title: String, iconUrl: String?): ItemGroup {
         return ItemGroupImpl(id = id, title = title, iconUrl = iconUrl, items = mutableListOf())
     }
 
@@ -70,8 +73,8 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     @JvmStatic
-    fun findPlaylistGroup(id: Int): ItemGroup? {
-        if (id == -1)
+    fun findPlaylistGroup(id: String?): ItemGroup? {
+        if (id == null)
             return null
 
         return mPlaylists.firstOrNull { it.id == id }

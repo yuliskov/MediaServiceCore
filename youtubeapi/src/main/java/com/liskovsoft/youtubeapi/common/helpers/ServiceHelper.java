@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.common.helpers;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.text.BidiFormatter;
 
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -358,5 +360,18 @@ public class ServiceHelper {
         }
 
         return null;
+    }
+
+    public static String generateRandomId(int length) {
+        String charPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder randomId = new StringBuilder(length);
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(charPool.length());
+            randomId.append(charPool.charAt(index));
+        }
+
+        return randomId.toString();
     }
 }

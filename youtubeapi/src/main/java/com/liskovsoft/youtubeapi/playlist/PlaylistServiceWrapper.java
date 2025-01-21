@@ -7,6 +7,7 @@ import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl;
 import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
@@ -98,8 +99,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private void addToCachedPlaylist(String playlistId, String videoId) {
-        int id = convertToId(playlistId);
-        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(id);
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId);
 
         if (playlistGroup == null) {
             String title = findTitle(playlistId);
@@ -109,7 +109,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
             }
 
             playlistGroup = PlaylistGroupServiceImpl.createPlaylistGroup(
-                    id, title, null);
+                    playlistId, title, (String) null);
         }
 
         List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
@@ -133,7 +133,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private static void renameCachedPlaylist(String playlistId, String newName) {
-        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(convertToId(playlistId));
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId);
 
         if (playlistGroup != null) {
             PlaylistGroupServiceImpl.renamePlaylistGroup(playlistGroup, newName);
@@ -148,7 +148,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
             // NOP
         }
 
-        PlaylistGroupServiceImpl.removePlaylistGroup(convertToId(playlistId));
+        PlaylistGroupServiceImpl.removePlaylistGroup(playlistId);
     }
 
     @Override
@@ -159,25 +159,26 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private void removeFromCachedPlaylist(String playlistId, String videoId) {
-        int id = convertToId(playlistId);
-        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(id);
+        ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId);
 
         if (playlistGroup != null) {
             playlistGroup.remove(videoId);
         }
     }
 
-    private static int convertToId(String playlistId) {
-        if (playlistId == null) {
-            return -1;
-        }
+    @Override
+    public void savePlaylist(String playlistId) {
+        super.savePlaylist(playlistId);
 
-        int id = Helpers.parseInt(playlistId);
-        return id != -1 ? id : Helpers.hashCode(playlistId);
+        List<ItemMetadata> metadata = YouTubeDataServiceInt.getPlaylistMetadata(playlistId);
+
+        if (metadata != null && !metadata.isEmpty()) {
+            PlaylistGroupServiceImpl.addPlaylistGroup(ItemGroupImpl.fromMetadata(metadata.get(0)));
+        }
     }
 
-    private PlaylistInfo findFirst(List<PlaylistInfo> playlistsInfos, int id) {
-        return Helpers.findFirst(playlistsInfos, item -> convertToId(item.getPlaylistId()) == id);
+    private PlaylistInfo findFirst(List<PlaylistInfo> playlistsInfos, String id) {
+        return Helpers.findFirst(playlistsInfos, item -> Helpers.equals(item.getPlaylistId(), id));
     }
 
     private String findTitle(String playlistId) {

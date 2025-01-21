@@ -58,7 +58,7 @@ internal object GrayJayService: GroupImportService {
             // channel url: https://www.youtube.com/channel/UCbWcXB0PoqOsAvAdfzWMf0w
             group.urls?.forEach { items.add(ItemImpl(channelId = YouTubeHelper.extractChannelId(Uri.parse(it)))) }
 
-            result.add(ItemGroupImpl(group.id.hashCode(), group.name, group.image?.url, items))
+            result.add(ItemGroupImpl(group.id, group.name, group.image?.url, items))
         }
 
         return result

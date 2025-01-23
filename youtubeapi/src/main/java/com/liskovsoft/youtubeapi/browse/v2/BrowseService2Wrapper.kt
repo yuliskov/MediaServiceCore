@@ -89,7 +89,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
 
                 result.add(YouTubeMediaItem().apply {
                     title = it.title
-                    cardImageUrl = it.iconUrl
+                    cardImageUrl = it.items?.firstOrNull()?.iconUrl ?: it.iconUrl
                     playlistId = it.id
                     channelId = it.id
                     //reloadPageKey = it.id

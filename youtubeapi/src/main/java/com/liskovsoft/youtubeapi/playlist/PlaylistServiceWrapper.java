@@ -7,6 +7,7 @@ import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl;
 import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
@@ -137,7 +138,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
     private static void renameCachedPlaylist(String playlistId, String newName) {
         ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId);
 
-        if (playlistGroup != null) {
+        if (playlistGroup != null && !Helpers.equalsAny(playlistId, AppConstants.WATCH_LATER_PLAYLIST, AppConstants.LIKED_PLAYLIST)) {
             PlaylistGroupServiceImpl.renamePlaylistGroup(playlistGroup, newName);
         }
     }

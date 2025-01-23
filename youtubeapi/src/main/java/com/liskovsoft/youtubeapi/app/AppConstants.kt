@@ -29,4 +29,6 @@ internal object AppConstants {
         "https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&ps=default&eurl=https%3A%2F%2Fwww.youtube.com%2Ftv"
 
     const val WATCH_LATER_CHANNEL_ID = "VLWL"
+    const val WATCH_LATER_PLAYLIST = "WL"
+    const val LIKED_PLAYLIST = "LL"
 }

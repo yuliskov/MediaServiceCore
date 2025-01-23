@@ -67,7 +67,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
             for (ItemGroup itemGroup : playlistGroups) {
                 // Merge local and remote
                 if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
-                    PlaylistInfo item = findFirst(playlistsInfos, itemGroup.getId());
+                    PlaylistInfo item = findFirst(playlistsInfos, itemGroup.getTitle());
                     if (item != null) {
                         if (!result.contains(item)) {
                             result.add(item);
@@ -179,8 +179,8 @@ public class PlaylistServiceWrapper extends PlaylistService {
         }
     }
 
-    private PlaylistInfo findFirst(List<PlaylistInfo> playlistsInfos, String id) {
-        return Helpers.findFirst(playlistsInfos, item -> Helpers.equals(item.getPlaylistId(), id));
+    private PlaylistInfo findFirst(List<PlaylistInfo> playlistsInfos, String title) {
+        return Helpers.findFirst(playlistsInfos, item -> Helpers.equals(item.getTitle(), title));
     }
 
     private String findTitle(String playlistId) {

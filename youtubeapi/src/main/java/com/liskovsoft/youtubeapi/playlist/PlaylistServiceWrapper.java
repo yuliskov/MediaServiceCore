@@ -136,9 +136,13 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private static void renameCachedPlaylist(String playlistId, String newName) {
+        if (Helpers.equalsAny(playlistId, AppConstants.LIKED_PLAYLIST, AppConstants.WATCH_LATER_PLAYLIST)) {
+            throw new IllegalStateException("Can't rename a special playlist!");
+        }
+
         ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId);
 
-        if (playlistGroup != null && !Helpers.equalsAny(playlistId, AppConstants.WATCH_LATER_PLAYLIST, AppConstants.LIKED_PLAYLIST)) {
+        if (playlistGroup != null) {
             PlaylistGroupServiceImpl.renamePlaylistGroup(playlistGroup, newName);
         }
     }

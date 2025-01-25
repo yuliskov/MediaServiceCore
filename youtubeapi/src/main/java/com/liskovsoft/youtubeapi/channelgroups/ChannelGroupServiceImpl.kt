@@ -36,7 +36,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun getChannelGroups(): List<ItemGroup> {
-        return mChannelGroups
+        return mChannelGroups.filter { it.id != SUBSCRIPTION_GROUP_ID }
     }
 
     override fun addChannelGroup(group: ItemGroup) {

@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.channelgroups
 
 import android.net.Uri
+import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt
 import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
@@ -205,7 +206,12 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             val realCachedChannel = cachedChannel
             val newChannel = if (channelId == realCachedChannel?.channelId)
                 realCachedChannel
-            else ItemImpl(channelId, title, iconUrl)
+            else if (title == null || iconUrl == null) {
+                val channelMetadata = YouTubeDataServiceInt.getChannelMetadata(channelId)
+                val metadata = channelMetadata?.firstOrNull()
+                ItemImpl(channelId, metadata?.title ?: title, metadata?.cardImageUrl ?: iconUrl)
+            } else
+                ItemImpl(channelId, title, iconUrl)
             group.add(newChannel)
         } else {
             group.remove(channelId)

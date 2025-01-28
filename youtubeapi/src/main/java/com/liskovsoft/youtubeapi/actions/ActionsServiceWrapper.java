@@ -20,10 +20,8 @@ public class ActionsServiceWrapper extends ActionsService {
     @Override
     public void subscribe(String channelId, String params) {
         super.subscribe(channelId, params);
-        List<ItemMetadata> channelMetadata = YouTubeDataServiceInt.getChannelMetadata(channelId);
-        String title = channelMetadata != null && !channelMetadata.isEmpty() ? channelMetadata.get(0).getTitle() : null;
-        String iconUrl = channelMetadata != null && !channelMetadata.isEmpty() ? channelMetadata.get(0).getCardImageUrl() : null;
-        ChannelGroupServiceImpl.subscribe(true, channelId, title, iconUrl); // save locally
+
+        ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
     }
 
     @Override

@@ -56,9 +56,19 @@ public class RetrofitHelper {
     }
 
     public static <T> T get(Call<T> wrapper) {
+        return get(wrapper, false);
+    }
+
+    public static <T> T getWithErrors(Call<T> wrapper) {
+        return get(wrapper, true);
+    }
+
+    public static <T> T get(Call<T> wrapper, boolean withErrors) {
         Response<T> response = getResponse(wrapper);
 
-        handleErrors(response);
+        if (withErrors) {
+            handleResponseErrors(response);
+        }
 
         return response != null ? response.body() : null;
     }
@@ -151,6 +161,28 @@ public class RetrofitHelper {
                 ErrorResponse error = body != null ? gson.fromJson(body.string(), ErrorResponse.class) : null;
                 String message = error != null && error.getError() != null ? error.getError().getMessage() : String.format("Unknown %s error", response.code());
                 throw new IllegalStateException(message);
+            } catch (IOException e) {
+                // handle failure to read error
+            }
+        }
+    }
+
+    private static <T> void handleResponseErrors(Response<T> response) {
+        if (response == null || response.body() != null) {
+            return;
+        }
+
+        if (response.code() == 400 || response.code() == 403) {
+            Gson gson = new GsonBuilder().create();
+            try (ResponseBody body = response.errorBody()) {
+                String errorData = body != null ? body.string() : null;
+
+                ErrorResponse error = errorData != null ? gson.fromJson(errorData, ErrorResponse.class) : null;
+                String errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
+
+                errorMsg = errorMsg != null ? errorMsg : String.format("Unknown %s error", response.code());
+
+                throw new IllegalStateException(errorMsg);
             } catch (IOException e) {
                 // handle failure to read error
             }

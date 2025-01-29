@@ -199,7 +199,7 @@ public class RetrofitHelper {
             return;
         }
 
-        if (response.code() == 400) {
+        if (response.code() == 400 || response.code() == 403) {
             Gson gson = new GsonBuilder().create();
             try (ResponseBody body = response.errorBody()) {
                 String errorMsg;
@@ -210,10 +210,10 @@ public class RetrofitHelper {
                     errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
                 } catch (JsonSyntaxException e) {
                     AuthErrorResponse authError = gson.fromJson(errorData, AuthErrorResponse.class);
-                    errorMsg = AuthErrorResponse.class.getSimpleName() + ": " + authError.getError();
+                    errorMsg = "AuthError: " + authError.getError();
                 }
 
-                errorMsg = errorMsg != null ? errorMsg : "Unknown 400 error";
+                errorMsg = errorMsg != null ? errorMsg : String.format("Unknown %s error", response.code());
 
                 Log.e(TAG, errorMsg);
                 throw new IllegalStateException(errorMsg);

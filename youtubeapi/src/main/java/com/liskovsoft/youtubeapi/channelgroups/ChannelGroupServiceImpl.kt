@@ -163,8 +163,9 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
                 result?.firstOrNull()?.items?.let {
                     getSubscribedChannelGroup().addAll(it)
                 }
-            }
-            result
+                emptyList()
+            } else
+                result
         } ?: return null
         return persistGroups(groups)
     }

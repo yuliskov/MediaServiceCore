@@ -64,6 +64,7 @@ public class MediaServiceData {
     private PlayerDataCached mPlayerData;
     private ClientDataCached mClientData;
     private NSigData mNSigData;
+    private boolean mIsMoreSubtitlesUnlocked;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -254,6 +255,15 @@ public class MediaServiceData {
         persistData();
     }
 
+    public void unlockMoreSubtitles(boolean unlock) {
+        mIsMoreSubtitlesUnlocked = unlock;
+        persistData();
+    }
+
+    public boolean isMoreSubtitlesUnlocked() {
+        return mIsMoreSubtitlesUnlocked;
+    }
+
     private void restoreData() {
         String data = mGlobalPrefs.getMediaServiceData();
 
@@ -275,6 +285,7 @@ public class MediaServiceData {
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
         mHiddenContent = Helpers.parseInt(split, 18,
                 CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME);
+        mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
     }
 
     private void restoreCachedData() {
@@ -310,7 +321,8 @@ public class MediaServiceData {
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
                         null, null, null, null, null,
-                        mVisitorCookie, mEnabledFormats, null, mSkipAuth, mPoToken, mAppInfo, mPlayerData, mClientData, mHiddenContent));
+                        mVisitorCookie, mEnabledFormats, null, mSkipAuth, mPoToken, mAppInfo,
+                        mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked));
     }
 
     private void persistCachedDataReal() {

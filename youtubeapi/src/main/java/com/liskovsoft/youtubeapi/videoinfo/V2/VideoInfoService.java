@@ -24,7 +24,7 @@ import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
-    private static final boolean SKIP_AUTH_DEFAULT = true;
+    private static final boolean SKIP_AUTH_DEFAULT = false;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static int VIDEO_INFO_INITIAL = 0;
@@ -279,7 +279,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         // TV and others has a limited number of auto generated subtitles
-        if (result.getTranslationLanguages() != null && result.getTranslationLanguages().size() < 50) {
+        if (result.getTranslationLanguages() != null && result.getTranslationLanguages().size() < 50 && shouldUnlockMoreSubtitles()) {
             Log.d(TAG, "Enable full list of auto generated subtitles...");
             mSkipAuthBlock = true;
             VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
@@ -383,5 +383,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean shouldObtainExtendedFormats(VideoInfo result) {
         return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
+    }
+
+    private static boolean shouldUnlockMoreSubtitles() {
+        return MediaServiceData.instance().isMoreSubtitlesUnlocked();
     }
 }

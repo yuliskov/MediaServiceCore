@@ -24,7 +24,6 @@ import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
-    private static final boolean SKIP_AUTH_DEFAULT = false;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static int VIDEO_INFO_INITIAL = 0;
@@ -180,15 +179,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfo() {
-        if (mVideoInfoType != -1 && mSkipAuth == SKIP_AUTH_DEFAULT) {
-            if (isAuthSupported(mVideoInfoType) || !SKIP_AUTH_DEFAULT) {
-                mSkipAuth = !mSkipAuth;
-                return;
-            }
-        }
+        //if (mVideoInfoType != -1 && mSkipAuth == SKIP_AUTH_DEFAULT) {
+        //    if (isAuthSupported(mVideoInfoType) || !SKIP_AUTH_DEFAULT) {
+        //        mSkipAuth = !mSkipAuth;
+        //        return;
+        //    }
+        //}
 
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
-        mSkipAuth = !isAuthSupported(mVideoInfoType) || SKIP_AUTH_DEFAULT;
+        mSkipAuth = !isAuthSupported(mVideoInfoType) || MediaServiceData.instance().isPremiumFixEnabled();
     }
 
     private static boolean isAuthSupported(int videoInfoType) {

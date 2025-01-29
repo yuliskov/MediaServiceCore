@@ -289,6 +289,10 @@ public class VideoInfo {
         return getVideoDetails() != null && getVideoDetails().isLive();
     }
 
+    public boolean hasSubtitles() {
+        return mCaptionTracks != null;
+    }
+
     public String getPlayabilityStatus() {
         return ServiceHelper.createInfo(mPlayabilityReason, mPlayabilityDescription);
     }

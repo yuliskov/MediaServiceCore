@@ -278,7 +278,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         // TV and others has a limited number of auto generated subtitles
-        if (result.getTranslationLanguages() != null && result.getTranslationLanguages().size() < 50 && shouldUnlockMoreSubtitles()) {
+        if (result.hasSubtitles() && shouldUnlockMoreSubtitles()) {
             Log.d(TAG, "Enable full list of auto generated subtitles...");
             mSkipAuthBlock = true;
             VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);

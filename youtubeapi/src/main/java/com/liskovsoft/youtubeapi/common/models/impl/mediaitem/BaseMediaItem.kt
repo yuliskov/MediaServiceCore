@@ -281,7 +281,7 @@ open class BaseMediaItem : MediaItem {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is BaseMediaItem) {
+        if (other is MediaItem) {
             if (videoId != null) {
                 return videoId == other.videoId
             }

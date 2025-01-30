@@ -46,7 +46,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
-        initVideoInfo();
     }
 
     public static VideoInfoService instance() {
@@ -58,6 +57,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        initVideoInfo();
+
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
 
         mSkipAuthBlock = mSkipAuth;
@@ -157,6 +158,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void initVideoInfo() {
+        if (mVideoInfoType != -1) {
+            return;
+        }
+
         resetData();
         restoreVideoInfoType();
     }
@@ -358,13 +363,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void restoreVideoInfoType() {
-        if (!GlobalPreferences.isInitialized()) {
-            return;
-        }
-
-        MediaServiceData data = MediaServiceData.instance();
-
-        Pair<Integer, Boolean> videoInfoType = data.getVideoInfoType();
+        Pair<Integer, Boolean> videoInfoType = MediaServiceData.instance().getVideoInfoType();
         if (videoInfoType != null && videoInfoType.first != -1) {
             mVideoInfoType = videoInfoType.first;
             mSkipAuth = videoInfoType.second;

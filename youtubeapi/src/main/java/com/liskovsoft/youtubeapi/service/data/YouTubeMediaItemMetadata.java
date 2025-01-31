@@ -293,4 +293,9 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     public long getDurationMs() {
         return -1;
     }
+
+    @Override
+    public String getBadgeText() {
+        return null;
+    }
 }

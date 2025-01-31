@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt;
 import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppConstants;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 
@@ -46,6 +48,15 @@ public class PlaylistServiceWrapper extends PlaylistService {
             ItemMetadata info = metadata.get(0);
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, info.getCardImageUrl(),
                     Collections.singletonList(ItemImpl.fromMetadata(info)));
+            PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
+        } else { // Google api quota exceeded
+            MediaItemMetadata ytMetadata = WatchNextServiceWrapper.getInstance().getMetadata(videoId);
+            String title = ytMetadata != null ? ytMetadata.getTitle() : null;
+            String subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
+            String badgeText = ytMetadata != null ? ytMetadata.getBadgeText() : null;
+            String channelId = ytMetadata != null ? ytMetadata.getChannelId() : null;
+            ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, null,
+                    Collections.singletonList(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText)));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
         }
     }
@@ -120,6 +131,14 @@ public class PlaylistServiceWrapper extends PlaylistService {
         if (metadata != null && !metadata.isEmpty()) {
             ItemMetadata item = metadata.get(0);
             playlistGroup.add(ItemImpl.fromMetadata(item));
+            PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
+        } else { // Google api quota exceeded
+            MediaItemMetadata ytMetadata = WatchNextServiceWrapper.getInstance().getMetadata(videoId);
+            String title = ytMetadata != null ? ytMetadata.getTitle() : null;
+            String subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
+            String badgeText = ytMetadata != null ? ytMetadata.getBadgeText() : null;
+            String channelId = ytMetadata != null ? ytMetadata.getChannelId() : null;
+            playlistGroup.add(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
         }
     }

@@ -10,11 +10,13 @@ public class AppInfoCached extends AppInfo {
     private final String mPlayerUrl;
     private final String mClientUrl;
     private final String mVisitorData;
+    private final long mCreationTimeMs;
 
     private AppInfoCached(String playerUrl, String clientUrl, String visitorData) {
         mPlayerUrl = playerUrl;
         mClientUrl = clientUrl;
         mVisitorData = visitorData;
+        mCreationTimeMs = System.currentTimeMillis();
     }
 
     public static AppInfoCached fromString(String spec) {
@@ -68,5 +70,9 @@ public class AppInfoCached extends AppInfo {
     @Override
     public String getVisitorData() {
         return mVisitorData;
+    }
+
+    public long getCreationTimeMs() {
+        return mCreationTimeMs;
     }
 }

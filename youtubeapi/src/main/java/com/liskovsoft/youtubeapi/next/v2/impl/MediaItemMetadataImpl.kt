@@ -193,6 +193,8 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     private val durationMsItem by lazy { ServiceHelper.timeTextToMillis(videoDetails?.getLengthText()) }
 
+    private val badgeTextItem by lazy { videoDetails?.getLengthText() }
+
     override fun getTitle(): String? {
         return videoTitle
     }
@@ -295,5 +297,9 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     override fun getDurationMs(): Long {
         return durationMsItem
+    }
+
+    override fun getBadgeText(): String? {
+        return badgeTextItem
     }
 }

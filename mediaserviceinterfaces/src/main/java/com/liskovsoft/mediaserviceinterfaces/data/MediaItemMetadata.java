@@ -32,4 +32,5 @@ public interface MediaItemMetadata {
     List<ChapterItem> getChapters();
     List<NotificationState> getNotificationStates();
     long getDurationMs();
+    String getBadgeText();
 }

@@ -37,6 +37,15 @@ public class AppServiceIntCached extends AppServiceInt {
             return mAppInfo;
         }
 
+        if (getData().getAppInfo() != null && System.currentTimeMillis() - getData().getAppInfo().getCreationTimeMs() < CACHE_REFRESH_PERIOD_MS) {
+            mAppInfo = getData().getAppInfo();
+            mAppInfoUpdateTimeMs = getData().getAppInfo().getCreationTimeMs();
+            // Reset dependent objects
+            mPlayerData = null;
+            mClientData = null;
+            return mAppInfo;
+        }
+
         Log.d(TAG, "updateAppInfoData");
 
         AppInfo appInfo = super.getAppInfo(userAgent);

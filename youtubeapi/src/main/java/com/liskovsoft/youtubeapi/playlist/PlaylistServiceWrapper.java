@@ -160,11 +160,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
 
     @Override
     public void renamePlaylist(String playlistId, String newName) {
-        try {
-            super.renamePlaylist(playlistId, newName);
-        } catch (IllegalStateException e) {
-            // NOP
-        }
+        super.renamePlaylist(playlistId, newName);
 
         renameCachedPlaylist(playlistId, newName);
     }
@@ -183,11 +179,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
 
     @Override
     public void removePlaylist(String playlistId) {
-        try {
-            super.removePlaylist(playlistId);
-        } catch (IllegalStateException e) {
-            // NOP
-        }
+        super.removePlaylist(playlistId);
 
         PlaylistGroupServiceImpl.removePlaylistGroup(playlistId);
     }

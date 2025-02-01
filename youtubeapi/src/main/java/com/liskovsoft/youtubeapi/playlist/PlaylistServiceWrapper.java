@@ -76,25 +76,40 @@ public class PlaylistServiceWrapper extends PlaylistService {
                 result.add(playlistsInfos.get(0)); // WatchLater
             }
 
+            int firstIdx = -1;
+
             for (ItemGroup itemGroup : playlistGroups) {
-                // Merge local and remote
+                // Replace local pl with remote one
                 if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
                     PlaylistInfo item = findFirst(playlistsInfos, itemGroup.getTitle()); // More robust to find by id?
                     if (item != null) {
                         if (!result.contains(item)) {
                             result.add(item);
+
+                            if (firstIdx == -1) { // Save for later
+                                firstIdx = playlistsInfos.indexOf(item);
+                            }
                         }
                         continue;
                     }
                 }
 
+                // Add remained local playlists
                 result.add(YouTubePlaylistInfo.from(itemGroup, itemGroup.contains(videoId)));
             }
-            
+
+            // Add remained remote playlists
             if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
+                int idx = -1;
                 for (PlaylistInfo info : playlistsInfos) {
+                    idx++;
                     if (!result.contains(info)) {
-                        result.add(info);
+                        // Move newer playlists before
+                        if (idx < firstIdx && result.size() > idx) {
+                            result.add(idx, info);
+                        } else {
+                            result.add(info);
+                        }
                     }
                 }
             }

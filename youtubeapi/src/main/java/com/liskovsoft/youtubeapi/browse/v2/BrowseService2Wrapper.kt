@@ -75,18 +75,25 @@ internal class BrowseService2Wrapper: BrowseService2() {
             val result: MutableList<MediaItem> = mutableListOf()
             myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) } // WatchLater
 
+            var firstIdx: Int = -1
+
             playlistGroups.forEach {
-                // Merge local and remote
+                // Replace local pl with matched remote one
                 if (myPlaylists?.mediaItems?.isNotEmpty() == true) {
                     // Can't match by playlistId because we have only reloadPageKey
                     findFirst(myPlaylists.mediaItems, it.title)?.let {
                         if (!result.contains(it)) {
                             result.add(it)
+
+                            if (firstIdx == -1) { // Save for later
+                                firstIdx = myPlaylists.mediaItems?.indexOf(it) ?: -1
+                            }
                         }
                         return@forEach
                     }
                 }
 
+                // Add remained local playlists
                 result.add(YouTubeMediaItem().apply {
                     title = it.title
                     cardImageUrl = it.items?.firstOrNull()?.iconUrl ?: it.iconUrl
@@ -96,10 +103,16 @@ internal class BrowseService2Wrapper: BrowseService2() {
                     badgeText = it.badge ?: "${it.items.size} videos"
                 })
             }
-            
-            myPlaylists?.mediaItems?.forEach {
-                if (!result.contains(it)) {
-                    result.add(it)
+
+            // Add remained remote playlists
+            myPlaylists?.mediaItems?.forEachIndexed { idx, item ->
+                if (!result.contains(item)) {
+                    // Move newer playlists before
+                    if (idx < firstIdx && result.size > idx) {
+                        result.add(idx, item)
+                    } else {
+                        result.add(item)
+                    }
                 }
             }
 

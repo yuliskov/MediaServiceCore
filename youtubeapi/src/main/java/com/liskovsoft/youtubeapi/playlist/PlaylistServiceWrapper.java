@@ -160,7 +160,13 @@ public class PlaylistServiceWrapper extends PlaylistService {
 
     @Override
     public void renamePlaylist(String playlistId, String newName) {
-        super.renamePlaylist(playlistId, newName);
+        try {
+            super.renamePlaylist(playlistId, newName);
+        } catch (IllegalStateException e) {
+            if (Helpers.equals(e.getMessage(), "ErrorResponse: The caller does not have permission")) {
+                throw e;
+            }
+        }
 
         renameCachedPlaylist(playlistId, newName);
     }
@@ -179,7 +185,13 @@ public class PlaylistServiceWrapper extends PlaylistService {
 
     @Override
     public void removePlaylist(String playlistId) {
-        super.removePlaylist(playlistId);
+        try {
+            super.removePlaylist(playlistId);
+        } catch (IllegalStateException e) {
+            if (Helpers.equals(e.getMessage(), "ErrorResponse: The caller does not have permission")) {
+                throw e;
+            }
+        }
 
         PlaylistGroupServiceImpl.removePlaylistGroup(playlistId);
     }

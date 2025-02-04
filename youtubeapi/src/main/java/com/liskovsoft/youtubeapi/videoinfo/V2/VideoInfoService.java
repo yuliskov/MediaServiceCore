@@ -112,7 +112,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         do {
             result = getVideoInfo(nextType, videoId, clickTrackingParams);
             nextType = Helpers.getNextValue(nextType, VIDEO_INFO_TYPE_LIST);
-        } while (result == null && nextType != beginType);
+        } while ((result == null || result.isUnplayable()) && nextType != beginType);
 
         return result;
     }

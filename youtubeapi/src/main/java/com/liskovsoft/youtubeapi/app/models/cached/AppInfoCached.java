@@ -75,4 +75,8 @@ public class AppInfoCached extends AppInfo {
     public long getCreationTimeMs() {
         return mCreationTimeMs;
     }
+
+    public boolean validate() {
+        return mPlayerUrl != null && mClientUrl != null && mVisitorData != null;
+    }
 }

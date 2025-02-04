@@ -81,4 +81,8 @@ public class PlayerDataCached extends PlayerData {
     public String getPlayerUrl() {
         return mPlayerUrl;
     }
+
+    public boolean validate() {
+        return mClientPlaybackNonceFunction != null && mRawClientPlaybackNonceFunction != null && mDecipherFunction != null && mSignatureTimestamp != null;
+    }
 }

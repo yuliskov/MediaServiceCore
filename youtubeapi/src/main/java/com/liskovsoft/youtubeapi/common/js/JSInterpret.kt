@@ -20,12 +20,13 @@ internal object JSInterpret {
      * yt-dlp\yt_dlp\jsinterp.py
      */
     fun extractFunctionCode(jsCode: String, funcName: String): Pair<List<String>, String> {
+        val escapedFuncName = Pattern.quote(funcName)
         val pattern = Pattern.compile(
             """(?xs)
                 (?:
-                    function\s+$funcName|
-                    [{;,]\s*$funcName\s*=\s*function|
-                    (?:var|const|let)\s+$funcName\s*=\s*function
+                    function\s+$escapedFuncName|
+                    [{;,]\s*$escapedFuncName\s*=\s*function|
+                    (?:var|const|let)\s+$escapedFuncName\s*=\s*function
                 )\s*
                 \(([^)]*)\)\s*
                 (\{.+\})

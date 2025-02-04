@@ -28,7 +28,7 @@ public class AppServiceIntCached extends AppServiceInt {
             return mAppInfo;
         }
 
-        if (mFallbackMode && getData().getAppInfo() != null) {
+        if (mFallbackMode && check(getData().getAppInfo())) {
             mAppInfo = getData().getAppInfo();
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
             // Reset dependent objects
@@ -37,7 +37,7 @@ public class AppServiceIntCached extends AppServiceInt {
             return mAppInfo;
         }
 
-        if (getData().getAppInfo() != null && System.currentTimeMillis() - getData().getAppInfo().getCreationTimeMs() < CACHE_REFRESH_PERIOD_MS) {
+        if (check(getData().getAppInfo()) && System.currentTimeMillis() - getData().getAppInfo().getCreationTimeMs() < CACHE_REFRESH_PERIOD_MS) {
             mAppInfo = getData().getAppInfo();
             mAppInfoUpdateTimeMs = getData().getAppInfo().getCreationTimeMs();
             // Reset dependent objects
@@ -152,20 +152,16 @@ public class AppServiceIntCached extends AppServiceInt {
         }
     }
 
-    private boolean check(AppInfo appInfo) {
-        return appInfo != null && appInfo.getPlayerUrl() != null && appInfo.getClientUrl() != null && appInfo.getVisitorData() != null;
+    private boolean check(AppInfoCached appInfo) {
+        return appInfo != null && appInfo.validate();
     }
 
-    private boolean check(PlayerData playerData) {
-        return playerData != null &&
-                playerData.getClientPlaybackNonceFunction() != null &&
-                playerData.getRawClientPlaybackNonceFunction() != null &&
-                playerData.getDecipherFunction() != null &&
-                playerData.getSignatureTimestamp() != null;
+    private boolean check(PlayerDataCached playerData) {
+        return playerData != null && playerData.validate();
     }
 
-    private boolean check(ClientData clientData) {
-        return clientData != null && clientData.getClientId() != null && clientData.getClientSecret() != null;
+    private boolean check(ClientDataCached clientData) {
+        return clientData != null && clientData.validate();
     }
 
     private boolean checkNSig() {

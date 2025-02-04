@@ -54,4 +54,8 @@ public class ClientDataCached extends ClientData {
     public String getClientUrl() {
         return mClientUrl;
     }
+
+    public boolean validate() {
+        return mClientId != null && mClientSecret != null;
+    }
 }

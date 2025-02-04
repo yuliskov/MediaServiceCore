@@ -75,7 +75,9 @@ public class AppServiceIntCached extends AppServiceInt {
 
         if (playerDataCached != null && Helpers.equals(playerDataCached.getPlayerUrl(), playerUrl)) {
             mPlayerData = playerDataCached;
-            updateNSigExtractor(mPlayerData.getPlayerUrl());
+            if (!checkNSig()) {
+                mAppInfo = null;
+            }
 
             return mPlayerData;
         }
@@ -91,19 +93,18 @@ public class AppServiceIntCached extends AppServiceInt {
         return mPlayerData;
     }
 
-    private void updateNSigExtractor(String playerUrl) {
+    private boolean updateNSigExtractor(String playerUrl) {
         if (mNSigExtractor != null && Helpers.equals(mNSigExtractor.getPlayerUrl(), playerUrl)) {
-            return;
+            return true;
         }
 
         YouTubeMediaItemService.instance().invalidateCache();
         try {
             mNSigExtractor = super.getNSigExtractor(playerUrl);
+            return true;
         } catch (Throwable e) { // StackOverflowError | IllegalStateException
             e.printStackTrace();
-            mAppInfo = null;
-            mPlayerData = null;
-            mClientData = null;
+            return false;
         }
     }
 
@@ -169,9 +170,7 @@ public class AppServiceIntCached extends AppServiceInt {
             return false;
         }
 
-        updateNSigExtractor(mPlayerData.getPlayerUrl());
-
-        return mPlayerData != null;
+        return updateNSigExtractor(mPlayerData.getPlayerUrl());
     }
 
     private void persistPlayerDataOrFail() {

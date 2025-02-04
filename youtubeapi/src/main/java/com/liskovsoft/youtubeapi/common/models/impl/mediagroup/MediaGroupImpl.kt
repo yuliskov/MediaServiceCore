@@ -184,7 +184,10 @@ internal data class ChannelListMediaGroup(
 
         if (sortBy == SORT_BY_NAME) result.sortBy { it.title?.lowercase() }
 
-        if (sortBy == SORT_BY_NEW_CONTENT) result.sortByDescending { it.hasNewContent() }
+        if (sortBy == SORT_BY_NEW_CONTENT) {
+            result.sortBy { it.title?.lowercase() }
+            result.sortByDescending { it.hasNewContent() }
+        }
 
         result
     }

@@ -29,6 +29,7 @@ public class AppServiceIntCached extends AppServiceInt {
         }
 
         if (mFallbackMode && check(getData().getAppInfo())) {
+            mFallbackMode = false;
             mAppInfo = getData().getAppInfo();
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
             // Reset dependent objects

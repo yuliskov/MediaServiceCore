@@ -26,6 +26,7 @@ public interface MediaGroup {
     int TYPE_SPORTS = 17;
     int TYPE_MOVIES = 18;
     int TYPE_LIVE = 19;
+    int TYPE_MY_VIDEOS = 20;
     int getType();
     @Nullable
     List<MediaItem> getMediaItems();

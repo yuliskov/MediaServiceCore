@@ -47,6 +47,10 @@ internal open class BrowseService2 {
         return getBrowseRowsTV(BrowseApiHelper.getLiveQuery(AppClient.TV), MediaGroup.TYPE_LIVE)?.first
     }
 
+    fun getMyVideos(): MediaGroup? {
+        return getBrowseGridTV(BrowseApiHelper.getMyVideosQuery(AppClient.TV), MediaGroup.TYPE_MY_VIDEOS)
+    }
+
     fun getMovies(): List<MediaGroup?>? {
         return getBrowseRowsTV(BrowseApiHelper.getMoviesQuery(AppClient.TV), MediaGroup.TYPE_MOVIES)?.first
     }
@@ -483,6 +487,20 @@ internal open class BrowseService2 {
                 addOrMerge(result, BrowseMediaGroupTV(it, createOptions(gridType)))
 
             Pair(result, it.getContinuationToken())
+        }
+    }
+
+    private fun getBrowseGridTV(query: String, sectionType: Int, shouldContinue: Boolean = false): MediaGroup? {
+        val browseResult = mBrowseApi.getBrowseResultTV(query)
+
+        return RetrofitHelper.get(browseResult)?.let {
+            // Prepare to move LIVE items to the top. Multiple results should be combined first.
+            var continuation: Pair<List<ItemWrapper?>?, String?>? = null
+            if (shouldContinue) {
+                continuation = continueIfNeeded(it.getItems(), it.getContinuationToken())
+            }
+
+            BrowseMediaGroupTV(it, createOptions(sectionType), overrideItems = continuation?.first, overrideKey = continuation?.second)
         }
     }
 

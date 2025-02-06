@@ -395,6 +395,11 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
+    public Observable<MediaGroup> getMyVideosObserve() {
+        return RxHelper.fromNullable(mBrowseService2::getMyVideos);
+    }
+
+    @Override
     public Observable<List<MediaGroup>> getMusicObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();

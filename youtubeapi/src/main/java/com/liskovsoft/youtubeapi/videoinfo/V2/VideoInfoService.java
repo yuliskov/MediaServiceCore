@@ -14,6 +14,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
+import com.liskovsoft.youtubeapi.videoinfo.models.TranslationLanguage;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -40,6 +41,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
     private boolean mSkipAuthBlock;
+    private List<TranslationLanguage> mCachedTranslationLanguages;
 
     private interface VideoInfoCallback {
         VideoInfo call();
@@ -286,11 +288,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
         // TV and others has a limited number of auto generated subtitles
         if (result.hasSubtitles() && shouldUnlockMoreSubtitles()) {
             Log.d(TAG, "Enable full list of auto generated subtitles...");
-            mSkipAuthBlock = true;
-            VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
-            mSkipAuthBlock = false;
-            if (webInfo != null) {
-                result.setTranslationLanguages(webInfo.getTranslationLanguages());
+
+            if (mCachedTranslationLanguages == null) {
+                mSkipAuthBlock = true;
+                VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                mSkipAuthBlock = false;
+                if (webInfo != null) {
+                    mCachedTranslationLanguages = webInfo.getTranslationLanguages();
+                }
+            }
+
+            if (mCachedTranslationLanguages != null) {
+                result.setTranslationLanguages(mCachedTranslationLanguages);
             }
         }
     }

@@ -22,6 +22,7 @@ internal object BrowseApiHelper {
     private const val TRENDING = "\"browseId\":\"FEtrending\",\"params\":\"6gQJRkVleHBsb3Jl\""
     private const val SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\""
     private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
+    private const val LIVE = "\"browseId\":\"FEtopics_live\""
     private const val MOVIES = "\"browseId\":\"FEtopics_movies\""
     private const val LIKED_MUSIC = "\"browseId\":\"VLLM\""
     private const val LIKED_MUSIC_CONTINUATION = "4qmFsgIWEhRGRW11c2ljX2xpa2VkX3ZpZGVvcw%3D%3D"
@@ -128,6 +129,10 @@ internal object BrowseApiHelper {
 
     fun getSportsQuery(client: AppClient): String {
         return ServiceHelper.createQuery(client.browseTemplate, SPORTS)
+    }
+
+    fun getLiveQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, LIVE)
     }
 
     fun getMoviesQuery(client: AppClient): String {

@@ -43,6 +43,10 @@ internal open class BrowseService2 {
         return getBrowseRowsTV(BrowseApiHelper.getSportsQuery(AppClient.TV), MediaGroup.TYPE_SPORTS)?.first
     }
 
+    fun getLive(): List<MediaGroup?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getLiveQuery(AppClient.TV), MediaGroup.TYPE_LIVE)?.first
+    }
+
     fun getMovies(): List<MediaGroup?>? {
         return getBrowseRowsTV(BrowseApiHelper.getMoviesQuery(AppClient.TV), MediaGroup.TYPE_MOVIES)?.first
     }

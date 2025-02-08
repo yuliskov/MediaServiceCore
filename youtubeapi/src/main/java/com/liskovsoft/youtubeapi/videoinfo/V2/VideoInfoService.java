@@ -187,7 +187,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfo() {
-        mVideoInfoType = mVideoInfoType == -1 && isExtendedFormatsEnabled() ? VIDEO_INFO_IOS : Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
+        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
         mSkipAuth = !isAuthSupported(mVideoInfoType) || MediaServiceData.instance().isPremiumFixEnabled();
     }
 
@@ -383,11 +383,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private static boolean shouldObtainExtendedFormats(VideoInfo result) {
-        return isExtendedFormatsEnabled() && result.isExtendedHlsFormatsBroken();
-    }
-
-    private static boolean isExtendedFormatsEnabled() {
-        return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS);
+        return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
     }
 
     private static boolean shouldUnlockMoreSubtitles() {

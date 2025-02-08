@@ -114,7 +114,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         do {
             result = mSkipAuthBlock || isAuthSupported(nextType) ? getVideoInfo(nextType, videoId, clickTrackingParams) : null;
             nextType = Helpers.getNextValue(nextType, VIDEO_INFO_TYPE_LIST);
-        } while ((result == null || result.isUnplayable()) && nextType != beginType);
+        } while (result == null && nextType != beginType);
 
         return result;
     }

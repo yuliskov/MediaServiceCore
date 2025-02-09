@@ -218,6 +218,7 @@ internal data class TileItem(
     val header: Header?,
     val onSelectCommand: NavigationEndpointItem?,
     val menu: MenuWrapper?,
+    val contentId: String?,
     val contentType: String?,
     val onLongPressCommand: OnLongPressCommand?
 ) {

@@ -9,18 +9,12 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 
-private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
-private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
-private const val TILE_CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
-private const val TILE_CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
 private const val BADGE_STYLE_LIVE = "LIVE"
 private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_SHORTS = "SHORTS"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 private const val BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
 private const val OLD_BADGE_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
-private const val ICON_TYPE_NOT_INTERESTED = "NOT_INTERESTED"
-private const val ICON_TYPE_REMOVE = "REMOVE"
 
 ///////////
 
@@ -71,6 +65,9 @@ private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
 
 ////////
 
+private const val MENU_ICON_TYPE_NOT_INTERESTED = "NOT_INTERESTED"
+private const val MENU_ICON_TYPE_REMOVE = "REMOVE"
+
 internal fun MenuWrapper.getBrowseId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getBrowseId() }
 internal fun MenuWrapper.getPlaylistId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getPlaylistId() }
 internal fun MenuWrapper.getVideoId() = menuRenderer?.items?.firstNotNullOfOrNull { it?.getVideoId() }
@@ -78,11 +75,11 @@ internal fun MenuWrapper.getNotificationToken() = menuRenderer?.items?.firstNotN
 internal fun MenuWrapper.getFeedbackTokens(): List<String?>? = menuRenderer?.items?.mapNotNull { it?.getFeedbackToken() }
 // Filter by icon not robust. Icon item not always present.
 internal fun MenuWrapper.getVideoToken() = menuRenderer?.items?.firstOrNull {
-        it?.getIconType() == ICON_TYPE_NOT_INTERESTED
+        it?.getIconType() == MENU_ICON_TYPE_NOT_INTERESTED
     }?.getFeedbackToken()
 // Filter by icon not robust. Icon item not always present.
 internal fun MenuWrapper.getChannelToken() = menuRenderer?.items?.firstOrNull {
-        it?.getIconType() == ICON_TYPE_REMOVE
+        it?.getIconType() == MENU_ICON_TYPE_REMOVE
     }?.getFeedbackToken()
 
 //////////
@@ -157,13 +154,18 @@ internal fun RadioItem.isUpcoming() = false
 
 ///////////
 
+private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
+private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
+private const val TILE_CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
+private const val TILE_CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
+
 private const val TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS"
 
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
     ?: header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.tileMetadataRenderer?.title?.getText() }
     ?: header?.trackTileHeaderRenderer?.title?.getText()
 internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
-internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId()
+internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId() ?: getMenu()?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
 internal fun TileItem.getSubTitle() = metadata?.tileMetadataRenderer?.lines?.map { it?.lineRenderer?.items?.getOrNull(0)?.lineItemRenderer?.badge?.metadataBadgeRenderer?.label }?.firstOrNull()
 internal fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }

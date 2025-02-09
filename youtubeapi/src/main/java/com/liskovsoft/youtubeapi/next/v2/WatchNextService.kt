@@ -37,9 +37,13 @@ internal open class WatchNextService {
     }
 
     open fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
-        val watchNext = getWatchNext(videoId, playlistId, playlistIndex, playlistParams)
+        val watchNext = getWatchNext(videoId, playlistId, playlistIndex, playlistParams) ?: return null
 
-        return if (watchNext != null) MediaItemMetadataImpl(watchNext).apply {
+        if (videoId == null && watchNext.isEmpty()) {
+            return null
+        }
+
+        return MediaItemMetadataImpl(watchNext).apply {
             channelId?.let {
                 ChannelGroupServiceImpl.cachedChannel = ItemImpl(it, author, authorImageUrl)
                 if (!YouTubeSignInService.instance().isSigned) {
@@ -48,7 +52,7 @@ internal open class WatchNextService {
                     ChannelGroupServiceImpl.subscribe(isSubscribed, it, author, authorImageUrl)
                 }
             }
-        } else null
+        }
     }
 
     fun continueGroup(mediaGroup: MediaGroup?): MediaGroup? {

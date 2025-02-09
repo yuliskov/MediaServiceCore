@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata
 
 internal class WatchNextServiceWrapper : WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
-        return getCachedGroup(videoId, playlistId) ?: super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)
+        return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams) ?: getCachedGroup(videoId, playlistId)
     }
 
     private fun getCachedGroup(videoId: String?, playlistId: String?): MediaItemMetadata? {

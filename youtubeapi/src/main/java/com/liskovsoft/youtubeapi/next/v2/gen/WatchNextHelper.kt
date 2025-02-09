@@ -40,8 +40,7 @@ internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlaye
     frameworkUpdates?.entityBatchUpdate?.mutations?.firstNotNullOfOrNull { it?.payload?.macroMarkersListEntity?.markersList?.takeIf { it.markerType == MARKER_TYPE_CHAPTERS }?.markers }
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNull { it?.isDescriptionSection() == true }
-// One of the suggested rows is too short or empty
-internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true || (getSuggestedSections()?.filter { (it.getItemWrappers()?.size ?: 0) <= 3 }?.size ?: 0) >= 3
+internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents }

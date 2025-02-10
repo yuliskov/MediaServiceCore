@@ -6,7 +6,14 @@ public class VolumeParams {
     @JsonPath("$.volume")
     private String mVolume;
 
+    @JsonPath("$.delta")
+    private String mDelta;
+
     public String getVolume() {
         return mVolume;
+    }
+
+    public String getDelta() {
+        return mDelta;
     }
 }

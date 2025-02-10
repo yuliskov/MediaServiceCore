@@ -33,6 +33,7 @@ public interface Command {
     String getDeviceId();
     int getPlaylistIndex();
     int getVolume();
+    int getDelta();
     int getKey();
     boolean isVoiceStarted();
 }

@@ -19,6 +19,7 @@ public class YouTubeCommand implements Command {
     private String mDeviceId;
     private int mPlaylistIndex;
     private int mVolume;
+    private int mDelta;
     private int mKey = Command.KEY_UNDEFINED;
     private boolean mIsVoiceStarted;
 
@@ -52,6 +53,7 @@ public class YouTubeCommand implements Command {
                 command.mType = Command.TYPE_VOLUME;
                 VolumeParams volumeParams = info.getVolumeParams();
                 command.mVolume = Helpers.parseInt(volumeParams.getVolume());
+                command.mDelta = Helpers.parseInt(volumeParams.getDelta());
                 break;
             case CommandItem.TYPE_PLAY:
                 command.mType = Command.TYPE_PLAY;
@@ -162,6 +164,11 @@ public class YouTubeCommand implements Command {
     @Override
     public int getVolume() {
         return mVolume;
+    }
+
+    @Override
+    public int getDelta() {
+        return mDelta;
     }
 
     @Override

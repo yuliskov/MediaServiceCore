@@ -87,4 +87,8 @@ dependencies {
 
     // https://github.com/florianingerl/com.florianingerl.util.regex
     implementation 'com.github.florianingerl.util:regex:1.1.11'
+
+    // NewPipe pot
+    implementation 'androidx.webkit:webkit:1.11.0' // Latest with Android 4.4 support
+    implementation 'com.grack:nanojson:1.7'
 }

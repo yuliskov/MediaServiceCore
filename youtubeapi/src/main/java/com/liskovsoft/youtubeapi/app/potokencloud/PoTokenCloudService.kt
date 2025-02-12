@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.app.potokencloud
 
-import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import kotlinx.coroutines.delay
@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 
 internal object PoTokenCloudService {
     private const val RETRY_DELAY_MS: Long = 20_000
+    private const val PO_TOKEN_LIFETIME_MS: Long = 12 * 60 * 60 * 1_000
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)
     //private val RETRY_TIMES: Int = PO_TOKEN_CLOUD_BASE_URLS.size
     //private var baseUrl: String = PO_TOKEN_CLOUD_BASE_URLS.random()
@@ -34,7 +35,7 @@ internal object PoTokenCloudService {
     }
 
     private fun isTokenActual(poToken: PoTokenResponse?) =
-        poToken != null && DateHelper.toUnixTimeMs(poToken.mintRefreshDate) > System.currentTimeMillis()
+        poToken?.poToken != null && (System.currentTimeMillis() - poToken.timestamp < PO_TOKEN_LIFETIME_MS)
 
     private suspend fun getPoTokenResponse(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null
@@ -42,7 +43,7 @@ internal object PoTokenCloudService {
 
         while (baseUrls.isNotEmpty()) {
             val baseUrl = baseUrls[Helpers.getRandomNumber(0, baseUrls.size - 1)]
-            poToken = RetrofitHelper.get(api.getPoToken(baseUrl))
+            poToken = RetrofitHelper.get(api.getPoToken(baseUrl, AppService.instance().visitorData))
             if (poToken?.poToken != null) {
                 break
             }

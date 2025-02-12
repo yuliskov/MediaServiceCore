@@ -8,10 +8,11 @@ internal data class PoTokenResponse(
     val visitorData: String?,
     val placeholderPoToken: String?,
     val poToken: String?,
-    val mintRefreshDate: String?
+    val mintRefreshDate: String?,
+    val timestamp: Long = System.currentTimeMillis()
 ) {
     override fun toString(): String {
-        return Helpers.merge(DELIM, visitorData, placeholderPoToken, poToken, mintRefreshDate)
+        return Helpers.merge(DELIM, visitorData, placeholderPoToken, poToken, mintRefreshDate, timestamp)
     }
 
     companion object {
@@ -22,7 +23,13 @@ internal data class PoTokenResponse(
 
             val split = Helpers.split(DELIM, spec)
 
-            return PoTokenResponse(split.getOrNull(0), split.getOrNull(1), split.getOrNull(2), split.getOrNull(3))
+            val visitorData = Helpers.parseStr(split, 0)
+            val placeholderPoToken = Helpers.parseStr(split, 1)
+            val poToken = Helpers.parseStr(split, 2)
+            val mintRefreshDate = Helpers.parseStr(split, 3)
+            val timestamp = Helpers.parseLong(split, 4)
+
+            return PoTokenResponse(visitorData, placeholderPoToken, poToken, mintRefreshDate, timestamp)
         }
     }
 }

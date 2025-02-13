@@ -77,8 +77,10 @@ public class PlaylistServiceWrapper extends PlaylistService {
             }
 
             int firstIdx = -1;
+            int firstIdxShift = -1;
 
             for (ItemGroup itemGroup : playlistGroups) {
+                firstIdxShift++;
                 // Replace local pl with remote one
                 if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
                     PlaylistInfo item = findFirst(playlistsInfos, itemGroup.getTitle()); // More robust to find by id?
@@ -106,7 +108,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
                     if (!result.contains(info)) {
                         // Move newer playlists before
                         if (idx < firstIdx && result.size() > idx) {
-                            result.add(idx, info);
+                            result.add(idx + firstIdxShift, info);
                         } else {
                             result.add(info);
                         }

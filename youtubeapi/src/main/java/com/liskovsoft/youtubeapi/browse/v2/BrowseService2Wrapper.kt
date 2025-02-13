@@ -76,8 +76,10 @@ internal class BrowseService2Wrapper: BrowseService2() {
             myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) } // WatchLater
 
             var firstIdx: Int = -1
+            var firstIdxShift: Int = -1
 
             playlistGroups.forEach {
+                firstIdxShift++
                 // Replace local pl with matched remote one
                 if (myPlaylists?.mediaItems?.isNotEmpty() == true) {
                     // Can't match by playlistId because we have only reloadPageKey
@@ -109,7 +111,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
                 if (!result.contains(item)) {
                     // Move newer playlists before
                     if (idx < firstIdx && result.size > idx) {
-                        result.add(idx, item)
+                        result.add(idx + firstIdxShift, item)
                     } else {
                         result.add(item)
                     }

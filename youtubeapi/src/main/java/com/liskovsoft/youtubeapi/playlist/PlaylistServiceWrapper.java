@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt;
 import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -43,11 +44,11 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private static void createCachedPlaylist(String playlistName, String videoId) {
-        List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
-        if (metadata != null && !metadata.isEmpty()) {
-            ItemMetadata info = metadata.get(0);
-            ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, info.getCardImageUrl(),
-                    Collections.singletonList(ItemImpl.fromMetadata(info)));
+        MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedVideo;
+
+        if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
+            ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, cachedVideo.getCardImageUrl(),
+                    Collections.singletonList(ItemImpl.fromMediaItem(cachedVideo)));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
         } else { // Google api quota exceeded
             MediaItemMetadata ytMetadata = WatchNextServiceWrapper.getInstance().getMetadata(videoId);
@@ -143,11 +144,10 @@ public class PlaylistServiceWrapper extends PlaylistService {
                     playlistId, title, (String) null);
         }
 
-        List<ItemMetadata> metadata = YouTubeDataServiceInt.getVideoMetadata(videoId);
+        MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedVideo;
 
-        if (metadata != null && !metadata.isEmpty()) {
-            ItemMetadata item = metadata.get(0);
-            playlistGroup.add(ItemImpl.fromMetadata(item));
+        if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
+            playlistGroup.add(ItemImpl.fromMediaItem(cachedVideo));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
         } else { // Google api quota exceeded
             MediaItemMetadata ytMetadata = WatchNextServiceWrapper.getInstance().getMetadata(videoId);

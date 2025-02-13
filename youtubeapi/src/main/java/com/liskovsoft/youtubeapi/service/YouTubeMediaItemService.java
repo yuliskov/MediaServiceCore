@@ -1,5 +1,8 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
 import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
@@ -22,6 +25,7 @@ import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistServiceWrapper;
+import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.track.TrackingService;
@@ -361,11 +365,17 @@ public class YouTubeMediaItemService implements MediaItemService {
         return mPlaylistService.getPlaylistsInfo(videoId);
     }
 
-    @Override
-    public void addToPlaylist(String playlistId, String videoId) {
+    private void addToPlaylist(String playlistId, String videoId) {
         checkSigned();
 
         mPlaylistService.addToPlaylist(playlistId, videoId);
+    }
+
+    private void addToPlaylist(String playlistId, @NonNull MediaItem item) {
+        checkSigned();
+
+        PlaylistGroupServiceImpl.cachedVideo = item;
+        mPlaylistService.addToPlaylist(playlistId, item.getVideoId());
     }
 
     @Override
@@ -403,11 +413,17 @@ public class YouTubeMediaItemService implements MediaItemService {
         mPlaylistService.removePlaylist(playlistId);
     }
 
-    @Override
-    public void createPlaylist(String playlistName, String videoId) {
+    private void createPlaylist(String playlistName, String videoId) {
         checkSigned();
 
         mPlaylistService.createPlaylist(playlistName, videoId);
+    }
+
+    private void createPlaylist(String playlistName, @Nullable MediaItem item) {
+        checkSigned();
+
+        PlaylistGroupServiceImpl.cachedVideo = item;
+        mPlaylistService.createPlaylist(playlistName, item != null ? item.getVideoId() : null);
     }
 
     @Override
@@ -432,6 +448,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<Void> addToPlaylistObserve(String playlistId, String videoId) {
         return RxHelper.fromRunnable(() -> addToPlaylist(playlistId, videoId));
+    }
+
+    @Override
+    public Observable<Void> addToPlaylistObserve(String playlistId, MediaItem item) {
+        return RxHelper.fromRunnable(() -> addToPlaylist(playlistId, item));
     }
 
     @Override
@@ -462,6 +483,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<Void> createPlaylistObserve(String playlistName, String videoId) {
         return RxHelper.fromRunnable(() -> createPlaylist(playlistName, videoId));
+    }
+
+    @Override
+    public Observable<Void> createPlaylistObserve(String playlistName, MediaItem item) {
+        return RxHelper.fromRunnable(() -> createPlaylist(playlistName, item));
     }
 
     @Override

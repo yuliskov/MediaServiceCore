@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.channelgroups.models
 
 import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -83,6 +84,11 @@ internal data class ItemImpl(
             val secondTitle = ServiceHelper.createInfo(metadata.channelTitle, DateHelper.toShortDate(metadata.publishedAt, true, true, false))
             val badge = ServiceHelper.convertIsoDurationToHHMMSS(metadata.durationIso)
             return ItemImpl(metadata.channelId, metadata.title, metadata.cardImageUrl, metadata.videoId, secondTitle, badge)
+        }
+
+        @JvmStatic
+        fun fromMediaItem(mediaItem: MediaItem): Item {
+            return ItemImpl(mediaItem.channelId, mediaItem.title, mediaItem.cardImageUrl, mediaItem.videoId, mediaItem.secondTitle, mediaItem.badgeText)
         }
     }
 }

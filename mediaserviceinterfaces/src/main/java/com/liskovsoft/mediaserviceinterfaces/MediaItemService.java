@@ -42,13 +42,11 @@ public interface MediaItemService {
     void unsubscribe(String channelId);
     void markAsNotInterested(String feedbackToken);
     List<PlaylistInfo> getPlaylistsInfo(String videoId);
-    void addToPlaylist(String playlistId, String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
     void renamePlaylist(String playlistId, String newName);
     void setPlaylistOrder(String playlistId, int playlistOrder);
     void savePlaylist(String playlistId);
     void removePlaylist(String playlistId);
-    void createPlaylist(String playlistName, String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories);
 
@@ -75,12 +73,14 @@ public interface MediaItemService {
     Observable<Void> removeDislikeObserve(MediaItem item);
     Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId);
     Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
+    Observable<Void> addToPlaylistObserve(String playlistId, MediaItem item);
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
     Observable<Void> renamePlaylistObserve(String playlistId, String newName);
     Observable<Void> setPlaylistOrderObserve(String playlistId, int playlistOrder);
     Observable<Void> savePlaylistObserve(String playlistId);
     Observable<Void> removePlaylistObserve(String playlistId);
     Observable<Void> createPlaylistObserve(String playlistName, String videoId);
+    Observable<Void> createPlaylistObserve(String playlistName, MediaItem item);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
     Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories);
     Observable<DeArrowData> getDeArrowDataObserve(String videoId);

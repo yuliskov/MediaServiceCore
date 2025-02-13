@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.playlistgroups
 
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
@@ -13,6 +14,8 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     private const val PERSIST_DELAY_MS: Long = 5_000
     private lateinit var mPlaylists: MutableList<ItemGroup>
     private var mPersistAction: Disposable? = null
+    @JvmField
+    var cachedVideo: MediaItem? = null
 
     init {
         MediaServicePrefs.addListener(this)

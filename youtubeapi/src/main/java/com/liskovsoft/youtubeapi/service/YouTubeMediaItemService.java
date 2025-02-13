@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.service;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
@@ -46,7 +45,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     private final ActionsService mActionsService;
     private final PlaylistService mPlaylistService;
     private final FeedbackService mFeedbackService;
-    private final WatchNextServiceWrapper mWatchNextService;
+    private final WatchNextService mWatchNextService;
     private YouTubeMediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemService() {
@@ -371,10 +370,10 @@ public class YouTubeMediaItemService implements MediaItemService {
         mPlaylistService.addToPlaylist(playlistId, videoId);
     }
 
-    private void addToPlaylist(String playlistId, @NonNull MediaItem item) {
+    private void addToPlaylist(String playlistId, MediaItem item) {
         checkSigned();
 
-        PlaylistGroupServiceImpl.cachedVideo = item;
+        PlaylistGroupServiceImpl.cachedItem = item;
         mPlaylistService.addToPlaylist(playlistId, item.getVideoId());
     }
 
@@ -399,11 +398,17 @@ public class YouTubeMediaItemService implements MediaItemService {
         mPlaylistService.setPlaylistOrder(playlistId, playlistOrder);
     }
 
-    @Override
-    public void savePlaylist(String playlistId) {
+    private void savePlaylist(String playlistId) {
         checkSigned();
 
         mPlaylistService.savePlaylist(playlistId);
+    }
+
+    private void savePlaylist(MediaItem item) {
+        checkSigned();
+
+        PlaylistGroupServiceImpl.cachedItem = item;
+        mPlaylistService.savePlaylist(item.getPlaylistId());
     }
 
     @Override
@@ -422,7 +427,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     private void createPlaylist(String playlistName, @Nullable MediaItem item) {
         checkSigned();
 
-        PlaylistGroupServiceImpl.cachedVideo = item;
+        PlaylistGroupServiceImpl.cachedItem = item;
         mPlaylistService.createPlaylist(playlistName, item != null ? item.getVideoId() : null);
     }
 
@@ -473,6 +478,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<Void> savePlaylistObserve(String playlistId) {
         return RxHelper.fromRunnable(() -> savePlaylist(playlistId));
+    }
+
+    @Override
+    public Observable<Void> savePlaylistObserve(MediaItem item) {
+        return RxHelper.fromRunnable(() -> savePlaylist(item));
     }
 
     @Override

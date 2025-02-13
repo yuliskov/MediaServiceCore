@@ -45,7 +45,6 @@ public interface MediaItemService {
     void removeFromPlaylist(String playlistId, String videoId);
     void renamePlaylist(String playlistId, String newName);
     void setPlaylistOrder(String playlistId, int playlistOrder);
-    void savePlaylist(String playlistId);
     void removePlaylist(String playlistId);
     List<SponsorSegment> getSponsorSegments(String videoId);
     List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories);
@@ -78,6 +77,7 @@ public interface MediaItemService {
     Observable<Void> renamePlaylistObserve(String playlistId, String newName);
     Observable<Void> setPlaylistOrderObserve(String playlistId, int playlistOrder);
     Observable<Void> savePlaylistObserve(String playlistId);
+    Observable<Void> savePlaylistObserve(MediaItem item);
     Observable<Void> removePlaylistObserve(String playlistId);
     Observable<Void> createPlaylistObserve(String playlistName, String videoId);
     Observable<Void> createPlaylistObserve(String playlistName, MediaItem item);

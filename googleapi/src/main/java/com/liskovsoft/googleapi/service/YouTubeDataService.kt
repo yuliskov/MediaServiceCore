@@ -15,4 +15,9 @@ object YouTubeDataService {
     fun getChannelMetadata(vararg channelIds: String): Observable<List<ItemMetadata>?> {
         return RxHelper.fromCallable { YouTubeDataServiceInt.getChannelMetadata(*channelIds) }
     }
+
+    @JvmStatic
+    fun getPlaylistMetadata(vararg playlistIds: String): Observable<List<ItemMetadata>?> {
+        return RxHelper.fromCallable { YouTubeDataServiceInt.getPlaylistMetadata(*playlistIds) }
+    }
 }

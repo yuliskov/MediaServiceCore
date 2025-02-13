@@ -44,7 +44,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private static void createCachedPlaylist(String playlistName, String videoId) {
-        MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedVideo;
+        MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedItem;
 
         if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, cachedVideo.getCardImageUrl(),
@@ -144,7 +144,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
                     playlistId, title, (String) null);
         }
 
-        MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedVideo;
+        MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedItem;
 
         if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
             playlistGroup.add(ItemImpl.fromMediaItem(cachedVideo));
@@ -217,10 +217,10 @@ public class PlaylistServiceWrapper extends PlaylistService {
     public void savePlaylist(String playlistId) {
         super.savePlaylist(playlistId);
 
-        List<ItemMetadata> metadata = YouTubeDataServiceInt.getPlaylistMetadata(playlistId);
+        MediaItem cachedList = PlaylistGroupServiceImpl.cachedItem;
 
-        if (metadata != null && !metadata.isEmpty()) {
-            PlaylistGroupServiceImpl.addPlaylistGroup(ItemGroupImpl.fromMetadata(metadata.get(0)));
+        if (cachedList != null && Helpers.equals(cachedList.getPlaylistId(), playlistId)) {
+            PlaylistGroupServiceImpl.addPlaylistGroup(ItemGroupImpl.fromMediaItem(cachedList));
         }
     }
 

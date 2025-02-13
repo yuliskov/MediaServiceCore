@@ -15,7 +15,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     private lateinit var mPlaylists: MutableList<ItemGroup>
     private var mPersistAction: Disposable? = null
     @JvmField
-    var cachedVideo: MediaItem? = null
+    var cachedItem: MediaItem? = null
 
     init {
         MediaServicePrefs.addListener(this)

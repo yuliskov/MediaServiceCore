@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.channelgroups.models
 import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
@@ -113,6 +114,11 @@ internal data class ItemGroupImpl(
             return ItemGroupImpl(
                 playlistId, title, metadata.cardImageUrl, mutableListOf(), metadata.itemCount?.let { "$it videos" }
             )
+        }
+
+        @JvmStatic
+        fun fromMediaItem(mediaItem: MediaItem): ItemGroup {
+            return ItemGroupImpl(mediaItem.playlistId, mediaItem.title, mediaItem.cardImageUrl, mutableListOf(), mediaItem.badgeText)
         }
     }
 }

@@ -158,9 +158,9 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     private fun importGroupsReal(file: File): List<ItemGroup>? {
         val groups = mImportServices.firstNotNullOfOrNull {
             val result = it.importGroups(file)
-            if (it is NewPipeService) {
+            if (it is NewPipeService && result != null) {
                 // NewPipe can export only subscribed channels
-                result?.firstOrNull()?.items?.let {
+                result.firstOrNull()?.items?.let {
                     getSubscribedChannelGroup().addAll(it)
                 }
                 emptyList()

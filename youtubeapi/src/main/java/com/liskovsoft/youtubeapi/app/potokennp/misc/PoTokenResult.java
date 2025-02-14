@@ -9,6 +9,8 @@ import java.util.Objects;
  * {@link PoTokenProvider}.
  */
 public final class PoTokenResult {
+    @Nonnull
+    public final String videoId;
 
     /**
      * The visitor data associated with a {@code poToken}.
@@ -37,14 +39,17 @@ public final class PoTokenResult {
     /**
      * Construct a {@link PoTokenResult} instance.
      *
+     * @param videoId              see {@link #videoId}
      * @param visitorData          see {@link #visitorData}
      * @param playerRequestPoToken see {@link #playerRequestPoToken}
      * @param streamingDataPoToken see {@link #streamingDataPoToken}
      * @throws NullPointerException if a non-null parameter is null
      */
-    public PoTokenResult(@Nonnull final String visitorData,
+    public PoTokenResult(@Nonnull final String videoId,
+                         @Nonnull final String visitorData,
                          @Nonnull final String playerRequestPoToken,
                          @Nullable final String streamingDataPoToken) {
+        this.videoId = Objects.requireNonNull(videoId);
         this.visitorData = Objects.requireNonNull(visitorData);
         this.playerRequestPoToken = Objects.requireNonNull(playerRequestPoToken);
         this.streamingDataPoToken = streamingDataPoToken;

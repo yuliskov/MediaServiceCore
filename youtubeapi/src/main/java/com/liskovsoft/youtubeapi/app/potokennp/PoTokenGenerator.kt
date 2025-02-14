@@ -8,7 +8,7 @@ import java.io.Closeable
  * This interface was created to allow for multiple methods to generate poTokens in the future (e.g.
  * via WebView and via a local DOM implementation)
  */
-interface PoTokenGenerator : Closeable {
+internal interface PoTokenGenerator : Closeable {
     /**
      * Generates a poToken for the provided identifier, using the `integrityToken` and
      * `webPoSignalOutput` previously obtained in the initialization of [PoTokenWebView]. Can be

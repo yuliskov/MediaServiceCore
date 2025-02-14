@@ -1,6 +1,9 @@
 package com.liskovsoft.youtubeapi.app;
 
+import android.content.Context;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.js.V8Runtime;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService;
@@ -150,8 +153,8 @@ public class AppService {
     //    return getDuktape().evaluate(code).toString();
     //}
 
-    public String getPoTokenResult() {
-        return PoTokenCloudService.getPoToken();
+    public String getSessionPoToken() {
+        return PoTokenGate.getSessionPoToken();
     }
 
     /**
@@ -183,7 +186,7 @@ public class AppService {
     }
 
     private void updatePoTokenData() {
-        PoTokenCloudService.updatePoToken();
+        PoTokenGate.updatePoToken();
     }
 
     public void invalidateCache() {
@@ -208,5 +211,9 @@ public class AppService {
 
     public boolean isPlayerCacheActual() {
         return mAppServiceInt.isPlayerCacheActual();
+    }
+
+    public Context getContext() {
+        return GlobalPreferences.isInitialized() ? GlobalPreferences.sInstance.getContext() : null;
     }
 }

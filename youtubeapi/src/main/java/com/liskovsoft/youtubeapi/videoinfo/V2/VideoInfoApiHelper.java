@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
@@ -10,6 +11,9 @@ public class VideoInfoApiHelper {
             "\"playbackContext\":{\"contentPlaybackContext\":{\"html5Preference\":\"HTML5_PREF_WANTS\"," +
             "\"lactMilliseconds\":\"60000\"," +
             "\"signatureTimestamp\":%s}}";
+
+    private static final String CONTENT_POT_PARAMS =
+            "\"serviceIntegrityDimensions\":{\"poToken\":\"%s\"}";
 
     private static final String CLICK_TRACKING =
             "\"clickTracking\":{\"clickTrackingParams\":\"%s\"},";
@@ -61,9 +65,11 @@ public class VideoInfoApiHelper {
     }
 
     private static String createCheckedQuery(String template, String videoId, String clickTrackingParams, String query) {
-        String videoIdTemplate = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
-        String checkParamsTemplate = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
+        String videoIdParams = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
+        String checkParams = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
+        String contentPoToken = PoTokenGate.getContentPoToken(videoId);
+        String contentPotParams = contentPoToken != null ? String.format(CONTENT_POT_PARAMS, contentPoToken) : null;
         clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
-        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParamsTemplate, videoIdTemplate, query));
+        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, contentPotParams, videoIdParams, query));
     }
 }

@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.app.potokennp
 
-class PoTokenException(message: String) : Exception(message)
+internal class PoTokenException(message: String) : Exception(message)
 
 // to be thrown if the WebView provided by the system is broken
-class BadWebViewException(message: String) : Exception(message)
+internal class BadWebViewException(message: String) : Exception(message)
 
-fun buildExceptionForJsError(error: String): Exception {
+internal fun buildExceptionForJsError(error: String): Exception {
     return if (error.contains("SyntaxError"))
         BadWebViewException(error)
     else

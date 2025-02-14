@@ -10,17 +10,18 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.annotation.MainThread
+import androidx.annotation.RequiresApi
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import org.schabi.newpipe.DownloaderImpl
-import java.time.Instant
 
-class PoTokenWebView private constructor(
+@RequiresApi(19)
+internal class PoTokenWebView private constructor(
     context: Context,
     // to be used exactly once only during initialization!
     private val generatorEmitter: SingleEmitter<PoTokenGenerator>,
@@ -28,7 +29,8 @@ class PoTokenWebView private constructor(
     private val webView = WebView(context)
     private val disposables = CompositeDisposable() // used only during initialization
     private val poTokenEmitters = mutableListOf<Pair<String, SingleEmitter<String>>>()
-    private lateinit var expirationInstant: Instant
+    //private lateinit var expirationInstant: Instant
+    private var expirationMs: Long = -1
 
     //region Initialization
     init {
@@ -76,7 +78,7 @@ class PoTokenWebView private constructor(
 
         disposables.add(
             Single.fromCallable {
-                val html = context.assets.open("potoken/po_token.html").bufferedReader()
+                val html = context.assets.open("po_token.html").bufferedReader()
                     .use { it.readText() }
                 return@fromCallable html
             }
@@ -163,8 +165,10 @@ class PoTokenWebView private constructor(
             }
             val (integrityToken, expirationTimeInSeconds) = parseIntegrityTokenData(responseBody)
 
+            // MOD: backport Instant.now().plusSeconds
             // leave 10 minutes of margin just to be sure
-            expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
+            //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
+            expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
             webView.evaluateJavascript(
                 "this.integrityToken = $integrityToken"
@@ -240,7 +244,9 @@ class PoTokenWebView private constructor(
     }
 
     override fun isExpired(): Boolean {
-        return Instant.now().isAfter(expirationInstant)
+        // MOD: java.time backport
+        //return Instant.now().isAfter(expirationInstant)
+        return System.currentTimeMillis() > expirationMs
     }
     //endregion
 
@@ -298,32 +304,42 @@ class PoTokenWebView private constructor(
     ) {
         disposables.add(
             Single.fromCallable {
-                return@fromCallable DownloaderImpl.getInstance().post(
+                return@fromCallable OkHttpManager.instance().doPostRequest(
                     url,
                     mapOf(
                         // replace the downloader user agent
-                        "User-Agent" to listOf(USER_AGENT),
-                        "Accept" to listOf("application/json"),
-                        "Content-Type" to listOf("application/json+protobuf"),
-                        "x-goog-api-key" to listOf(GOOGLE_API_KEY),
-                        "x-user-agent" to listOf("grpc-web-javascript/0.1"),
+                        "User-Agent" to USER_AGENT,
+                        "Accept" to "application/json",
+                        "Content-Type" to "application/json+protobuf",
+                        "x-goog-api-key" to GOOGLE_API_KEY,
+                        "x-user-agent" to "grpc-web-javascript/0.1",
                     ),
-                    data.toByteArray()
+                    data,
+                    null
                 )
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { response ->
-                        val httpCode = response.responseCode()
+                        val httpCode = response.code()
                         if (httpCode != 200) {
                             onInitializationErrorCloseAndCancel(
                                 PoTokenException("Invalid response code: $httpCode")
                             )
                             return@subscribe
                         }
-                        val responseBody = response.responseBody()
-                        handleResponseBody(responseBody)
+
+                        if (response.body() == null) {
+                            onInitializationErrorCloseAndCancel(
+                                PoTokenException("Response body is empty. Response code: $httpCode")
+                            )
+                            return@subscribe
+                        }
+
+                        response.body()?.let {
+                            handleResponseBody(it.string())
+                        }
                     },
                     this::onInitializationErrorCloseAndCancel
                 )

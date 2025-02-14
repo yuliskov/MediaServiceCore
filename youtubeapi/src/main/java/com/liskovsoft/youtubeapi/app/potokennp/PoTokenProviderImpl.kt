@@ -7,12 +7,11 @@ import com.liskovsoft.youtubeapi.BuildConfig
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences
-import org.schabi.newpipe.extractor.NewPipe
-import org.schabi.newpipe.extractor.services.youtube.InnertubeClientRequestInfo
-import org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper
+import androidx.annotation.RequiresApi
+import com.liskovsoft.youtubeapi.app.AppService
 
-object PoTokenProviderImpl : PoTokenProvider {
+@RequiresApi(19)
+internal object PoTokenProviderImpl : PoTokenProvider {
     val TAG = PoTokenProviderImpl::class.simpleName
     private val webViewSupported by lazy { DeviceUtils.supportsWebView() }
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
@@ -59,25 +58,29 @@ object PoTokenProviderImpl : PoTokenProvider {
 
                 if (shouldRecreate) {
 
-                    val innertubeClientRequestInfo = InnertubeClientRequestInfo.ofWebClient()
-                    innertubeClientRequestInfo.clientInfo.clientVersion =
-                        YoutubeParsingHelper.getClientVersion()
+                    //val innertubeClientRequestInfo = InnertubeClientRequestInfo.ofWebClient()
+                    //innertubeClientRequestInfo.clientInfo.clientVersion =
+                    //    YoutubeParsingHelper.getClientVersion()
+                    //
+                    //webPoTokenVisitorData = YoutubeParsingHelper.getVisitorDataFromInnertube(
+                    //    innertubeClientRequestInfo,
+                    //    NewPipe.getPreferredLocalization(),
+                    //    NewPipe.getPreferredContentCountry(),
+                    //    YoutubeParsingHelper.getYouTubeHeaders(),
+                    //    YoutubeParsingHelper.YOUTUBEI_V1_URL,
+                    //    null,
+                    //    false
+                    //)
 
-                    webPoTokenVisitorData = YoutubeParsingHelper.getVisitorDataFromInnertube(
-                        innertubeClientRequestInfo,
-                        NewPipe.getPreferredLocalization(),
-                        NewPipe.getPreferredContentCountry(),
-                        YoutubeParsingHelper.getYouTubeHeaders(),
-                        YoutubeParsingHelper.YOUTUBEI_V1_URL,
-                        null,
-                        false
-                    )
+                    // MOD: my visitor data
+                    webPoTokenVisitorData = AppService.instance().visitorData
+
                     // close the current webPoTokenGenerator on the main thread
                     webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }
 
                     // create a new webPoTokenGenerator
                     webPoTokenGenerator = PoTokenWebView
-                        .newPoTokenGenerator(GlobalPreferences.sInstance.context).blockingGet()
+                        .newPoTokenGenerator(AppService.instance().context).blockingGet()
 
                     // The streaming poToken needs to be generated exactly once before generating
                     // any other (player) tokens.
@@ -120,7 +123,7 @@ object PoTokenProviderImpl : PoTokenProvider {
             )
         }
 
-        return PoTokenResult(visitorData, playerPot, streamingPot)
+        return PoTokenResult(videoId, visitorData, playerPot, streamingPot)
     }
 
     override fun getWebEmbedClientPoToken(videoId: String): PoTokenResult? = null

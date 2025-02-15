@@ -76,7 +76,8 @@ public class AppServiceIntCached extends AppServiceInt {
 
         if (playerDataCached != null && Helpers.equals(playerDataCached.getPlayerUrl(), playerUrl)) {
             mPlayerData = playerDataCached;
-            checkNSig();
+
+            persistPlayerDataOrFail();
 
             return mPlayerData;
         }

@@ -273,6 +273,8 @@ public class MediaServiceData {
 
     public void enablePremiumFix(boolean enable) {
         mIsPremiumFixEnabled = enable;
+        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        VideoInfoService.instance().resetInfoType(); // Optimize format obtainment routine
         persistData();
     }
 

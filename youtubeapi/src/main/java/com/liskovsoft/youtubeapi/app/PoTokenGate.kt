@@ -24,7 +24,11 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun getSessionPoToken(): String? {
-        return npPoToken?.streamingDataPoToken ?: PoTokenCloudService.getPoToken()
+        return if (supportsNpPot()) {
+            if (npPoToken == null)
+                getContentPoToken("any_val_to_init")
+            npPoToken?.streamingDataPoToken
+        } else PoTokenCloudService.getPoToken()
     }
 
     @Synchronized
@@ -34,6 +38,6 @@ internal object PoTokenGate {
             PoTokenCloudService.updatePoToken()
     }
     
-    private fun supportsNpPot() = false
-    //private fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
+    //private fun supportsNpPot() = false
+    private fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
 }

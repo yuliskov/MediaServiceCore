@@ -108,7 +108,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
                     idx++;
                     if (!result.contains(info)) {
                         // Move newer playlists before
-                        if (idx < firstIdx && result.size() > idx) {
+                        if (idx < firstIdx && result.size() > (idx + firstIdxShift)) {
                             result.add(idx + firstIdxShift, info);
                         } else {
                             result.add(info);

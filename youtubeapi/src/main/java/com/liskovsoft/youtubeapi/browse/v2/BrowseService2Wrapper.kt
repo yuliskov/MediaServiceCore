@@ -110,7 +110,7 @@ internal class BrowseService2Wrapper: BrowseService2() {
             myPlaylists?.mediaItems?.forEachIndexed { idx, item ->
                 if (!result.contains(item)) {
                     // Move newer playlists before
-                    if (idx < firstIdx && result.size > idx) {
+                    if (idx < firstIdx && result.size > (idx + firstIdxShift)) {
                         result.add(idx + firstIdxShift, item)
                     } else {
                         result.add(item)

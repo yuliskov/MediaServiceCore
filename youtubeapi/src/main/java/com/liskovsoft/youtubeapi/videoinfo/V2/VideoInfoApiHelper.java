@@ -12,8 +12,10 @@ public class VideoInfoApiHelper {
             "\"lactMilliseconds\":\"60000\"," +
             "\"signatureTimestamp\":%s}}";
 
-    private static final String CONTENT_POT_PARAMS =
+    private static final String CONTENT_POT_WEB =
             "\"serviceIntegrityDimensions\":{\"poToken\":\"%s\"}";
+
+    private static final String CONTENT_POT_TV = "\"attestationRequest\":{\"omitBotguardData\":true}";
 
     private static final String CLICK_TRACKING =
             "\"clickTracking\":{\"clickTrackingParams\":\"%s\"},";
@@ -37,14 +39,14 @@ public class VideoInfoApiHelper {
     //private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
 
     public static String getVideoInfoQuery(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client.getPlayerTemplate(), videoId, clickTrackingParams);
+        return createCheckedQuery(client, videoId, clickTrackingParams);
     }
 
     /**
      * NOTE: Should use protobuf to bypass geo blocking.
      */
     public static String getVideoInfoQueryGeo(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client.getPlayerTemplate(), videoId, clickTrackingParams, THROTTLE_QUERY);
+        return createCheckedQuery(client, videoId, clickTrackingParams, THROTTLE_QUERY);
     }
 
     /**
@@ -60,15 +62,25 @@ public class VideoInfoApiHelper {
         return originUrl + "&alr=no&headm=3&rn=1&rbuf=0"; // alr=yes is bugged
     }
 
-    private static String createCheckedQuery(String template, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(template, videoId, clickTrackingParams, null);
+    private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams) {
+        return createCheckedQuery(client, videoId, clickTrackingParams, null);
     }
 
-    private static String createCheckedQuery(String template, String videoId, String clickTrackingParams, String query) {
+    private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
+        String contentPotParams = null;
+        if (client == AppClient.TV) {
+            contentPotParams = CONTENT_POT_TV;
+        } else {
+            String contentPoToken = PoTokenGate.getContentPoToken(videoId);
+            if (contentPoToken != null) {
+                contentPotParams = String.format(CONTENT_POT_WEB, contentPoToken);
+            }
+        }
+
+        String template = client.getPlayerTemplate();
         String videoIdParams = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
         String checkParams = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-        String contentPoToken = PoTokenGate.getContentPoToken(videoId);
-        String contentPotParams = contentPoToken != null ? String.format(CONTENT_POT_PARAMS, contentPoToken) : null;
+
         clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
         return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, contentPotParams, videoIdParams, query));
     }

@@ -17,8 +17,9 @@ internal object AppConstants {
      */
     const val VIDEO_INFO_JSON_CONTENT_PARAM = "player_response"
 
-    const val VISITOR_COOKIE_NAME = "VISITOR_INFO1_LIVE"
-    
+    const val VISITOR_INFO_COOKIE = "VISITOR_INFO1_LIVE"
+    const val VISITOR_PRIVACY_COOKIE = "VISITOR_PRIVACY_METADATA"
+
     const val SCRIPTS_URL_BASE = "https://www.youtube.com"
     const val API_KEY = API_KEY_NEW
 

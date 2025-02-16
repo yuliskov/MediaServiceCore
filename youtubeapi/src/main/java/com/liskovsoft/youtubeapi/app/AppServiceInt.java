@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
@@ -31,15 +32,13 @@ public class AppServiceInt {
         Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
 
-        // visitorCookie obtained once per all app lifecycle?
-        if (visitorCookie == null) {
-            Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
-            if (response != null) {
-                getData().setVisitorCookie(RetrofitHelper.getCookie(response, AppConstants.VISITOR_COOKIE_NAME));
-                result = response.body();
-            }
-        } else {
-            result = RetrofitHelper.get(wrapper);
+        Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
+
+        if (response != null) {
+            String visitorInfoCookie = RetrofitHelper.getCookie(response, AppConstants.VISITOR_INFO_COOKIE);
+            String visitorPrivacyCookie = RetrofitHelper.getCookie(response, AppConstants.VISITOR_PRIVACY_COOKIE);
+            getData().setVisitorCookie(Helpers.join("; ", visitorInfoCookie, visitorPrivacyCookie));
+            result = response.body();
         }
 
         return result;

@@ -293,7 +293,7 @@ public class MediaServiceData {
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
         // entries here moved to the cache
-        mVisitorCookie = Helpers.parseStr(split, 10);
+        //mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
         // null
         mSkipAuth = Helpers.parseBoolean(split, 13);
@@ -305,6 +305,7 @@ public class MediaServiceData {
                 CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME);
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
+        mVisitorCookie = Helpers.parseStr(split, 21);
     }
 
     private void restoreCachedData() {
@@ -340,8 +341,9 @@ public class MediaServiceData {
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
                         null, null, null, null, null,
-                        mVisitorCookie, mEnabledFormats, null, mSkipAuth, mPoToken, mAppInfo,
-                        mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked, mIsPremiumFixEnabled));
+                        null, mEnabledFormats, null, mSkipAuth, mPoToken, mAppInfo,
+                        mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
+                        mIsPremiumFixEnabled, mVisitorCookie));
     }
 
     private void persistCachedDataReal() {

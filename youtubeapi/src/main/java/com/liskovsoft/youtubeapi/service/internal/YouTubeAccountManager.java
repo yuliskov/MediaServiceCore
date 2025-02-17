@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
 import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
@@ -13,6 +14,8 @@ import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+
 import io.reactivex.Observable;
 
 import java.util.List;
@@ -251,6 +254,8 @@ public class YouTubeAccountManager {
 
     private void onAccountChanged() {
         mSignInService.invalidateCache();
+        AppService.instance().invalidateCache(); // regenerate visitor data
+        VideoInfoService.instance().resetInfoType(); // reset to the default format
 
         Account account = getSelectedAccount();
 

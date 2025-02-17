@@ -319,27 +319,31 @@ internal class PoTokenWebView private constructor(
                 )
             }
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map { response ->
+                    val httpCode = response.code()
+                    if (httpCode != 200) {
+                        onInitializationErrorCloseAndCancel(
+                            PoTokenException("Invalid response code: $httpCode")
+                        )
+                        return@map null
+                    }
+
+                    if (response.body() == null) {
+                        onInitializationErrorCloseAndCancel(
+                            PoTokenException("Response body is empty. Response code: $httpCode")
+                        )
+                        return@map null
+                    }
+
+                    response.body()?.let {
+                        return@map it.string()
+                    }
+                }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { response ->
-                        val httpCode = response.code()
-                        if (httpCode != 200) {
-                            onInitializationErrorCloseAndCancel(
-                                PoTokenException("Invalid response code: $httpCode")
-                            )
-                            return@subscribe
-                        }
-
-                        if (response.body() == null) {
-                            onInitializationErrorCloseAndCancel(
-                                PoTokenException("Response body is empty. Response code: $httpCode")
-                            )
-                            return@subscribe
-                        }
-
-                        response.body()?.let {
-                            handleResponseBody(it.string())
-                        }
+                        response?.let { handleResponseBody(response) }
                     },
                     this::onInitializationErrorCloseAndCancel
                 )

@@ -42,6 +42,6 @@ internal object PoTokenGate {
         }
     }
     
-    //private fun supportsNpPot() = false
-    private fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
+    private fun supportsNpPot() = false
+    //private fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
 }

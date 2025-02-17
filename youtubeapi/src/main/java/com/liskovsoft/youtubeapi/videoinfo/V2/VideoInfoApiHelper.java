@@ -68,14 +68,20 @@ public class VideoInfoApiHelper {
 
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
         String contentPotParams = null;
-        if (client == AppClient.TV) {
-            contentPotParams = CONTENT_POT_TV;
-        } else {
-            String contentPoToken = PoTokenGate.getContentPoToken(videoId);
-            if (contentPoToken != null) {
-                contentPotParams = String.format(CONTENT_POT_WEB, contentPoToken);
-            }
-        }
+        //if (client == AppClient.TV) {
+        //    contentPotParams = CONTENT_POT_TV;
+        //}
+        //} else {
+        //    String contentPoToken = PoTokenGate.getContentPoToken(videoId);
+        //    if (contentPoToken != null) {
+        //        contentPotParams = String.format(CONTENT_POT_WEB, contentPoToken);
+        //    }
+        //}
+
+        //String contentPoToken = PoTokenGate.getContentPoToken(videoId);
+        //if (contentPoToken != null) {
+        //    contentPotParams = String.format(CONTENT_POT_WEB, contentPoToken);
+        //}
 
         String template = client.getPlayerTemplate();
         String videoIdParams = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());

@@ -170,7 +170,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
-        MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false);
+        MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
+        MediaServiceData.instance().enablePremiumFix(true); // anonymous player fetching, less errors 
         nextVideoInfo();
         persistVideoInfoType();
     }

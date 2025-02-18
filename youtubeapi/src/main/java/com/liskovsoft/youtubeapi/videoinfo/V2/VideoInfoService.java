@@ -171,7 +171,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
-        MediaServiceData.instance().enablePremiumFix(true); // anonymous player fetching, less errors 
         nextVideoInfo();
         persistVideoInfoType();
     }
@@ -188,6 +187,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfo() {
+        // The same format but without auth may behave better
+        if (mVideoInfoType != -1 && !mSkipAuth) {
+            mSkipAuth = true;
+            return;
+        }
+
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
         mSkipAuth = !isAuthSupported(mVideoInfoType) || MediaServiceData.instance().isPremiumFixEnabled();
     }

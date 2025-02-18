@@ -17,7 +17,9 @@ internal object PoTokenGate {
             return npPoToken?.playerRequestPoToken
         }
 
-        npPoToken = if (supportsNpPot()) PoTokenProviderImpl.getWebClientPoToken(videoId) else null
+        npPoToken = if (supportsNpPot())
+            PoTokenProviderImpl.getWebClientPoToken(videoId)
+        else null
 
         return npPoToken?.playerRequestPoToken
     }

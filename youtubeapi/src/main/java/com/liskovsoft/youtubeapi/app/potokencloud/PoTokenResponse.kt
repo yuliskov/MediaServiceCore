@@ -5,7 +5,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 private const val DELIM: String = "%pot%"
 
 internal data class PoTokenResponse(
-    val visitorData: String?,
+    var visitorData: String?,
     val placeholderPoToken: String?,
     val poToken: String?,
     val mintRefreshDate: String?,

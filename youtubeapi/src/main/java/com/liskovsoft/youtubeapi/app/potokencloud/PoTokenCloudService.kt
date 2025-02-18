@@ -24,8 +24,10 @@ internal object PoTokenCloudService {
 
         val newPoToken = getPoTokenResponse()
 
-        if (newPoToken != null)
+        if (newPoToken != null) {
+            newPoToken.visitorData = AppService.instance().visitorData
             MediaServiceData.instance().poToken = newPoToken
+        }
     }
 
     @JvmStatic
@@ -35,7 +37,8 @@ internal object PoTokenCloudService {
     }
 
     private fun isTokenActual(poToken: PoTokenResponse?) =
-        poToken?.poToken != null && (System.currentTimeMillis() - poToken.timestamp < PO_TOKEN_LIFETIME_MS)
+        poToken?.poToken != null && poToken.visitorData == AppService.instance().visitorData
+                && (System.currentTimeMillis() - poToken.timestamp < PO_TOKEN_LIFETIME_MS)
 
     private suspend fun getPoTokenResponse(): PoTokenResponse? {
         var poToken: PoTokenResponse? = null

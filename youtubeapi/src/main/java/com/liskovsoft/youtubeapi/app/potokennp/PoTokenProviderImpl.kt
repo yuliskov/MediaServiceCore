@@ -9,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.liskovsoft.youtubeapi.app.AppService
+import com.liskovsoft.youtubeapi.app.potokennp.visitor.VisitorService
 
 @RequiresApi(19)
 internal object PoTokenProviderImpl : PoTokenProvider {
@@ -73,7 +74,8 @@ internal object PoTokenProviderImpl : PoTokenProvider {
                     //)
 
                     // MOD: my visitor data
-                    webPoTokenVisitorData = AppService.instance().visitorData
+                    //webPoTokenVisitorData = AppService.instance().visitorData
+                    webPoTokenVisitorData = VisitorService.getVisitorData()
 
                     // close the current webPoTokenGenerator on the main thread
                     webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }

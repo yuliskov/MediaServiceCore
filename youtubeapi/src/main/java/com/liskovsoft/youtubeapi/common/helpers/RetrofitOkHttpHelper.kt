@@ -70,12 +70,16 @@ internal object RetrofitOkHttpHelper {
             val url = request.url().toString()
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
+                val doSkipAuth = authSkipList.remove(request)
+
                 // Empty Home fix (anonymous user) and improve Recommendations for everyone
                 headers["X-Goog-Visitor-Id"] ?: AppService.instance().visitorData?.let { requestBuilder.header("X-Goog-Visitor-Id", it) }
 
+                if (doSkipAuth) // visitor generation fix
+                    requestBuilder.removeHeader("X-Goog-Visitor-Id")
+
                 applyHeaders(this.apiHeaders, headers, requestBuilder)
 
-                val doSkipAuth = authSkipList.remove(request)
                 if (authHeaders.isEmpty() || doSkipAuth) {
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false"), request, requestBuilder)
                 } else {

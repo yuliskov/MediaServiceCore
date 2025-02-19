@@ -4,7 +4,9 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataBuilder;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class VideoInfoApiHelper {
     private static final String CHECK_PARAMS =
@@ -67,7 +69,22 @@ public class VideoInfoApiHelper {
     }
 
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
-        String contentPotParams = null;
+        if ((client == AppClient.WEB || client == AppClient.MWEB) && PoTokenGate.supportsNpPot()) {
+            LocaleManager localeManager = LocaleManager.instance();
+            return new PostDataBuilder(client)
+                    .setLanguage(localeManager.getLanguage())
+                    .setCountry(localeManager.getCountry())
+                    .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
+                    .setVideoId(videoId)
+                    .setClickTrackingParams(clickTrackingParams)
+                    .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce()) // get it somewhere else?
+                    .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
+                    .setPoToken(PoTokenGate.getContentPoToken(videoId))
+                    .setVisitorData(PoTokenGate.getVisitorData())
+                    .build();
+        }
+
+        //String contentPotParams = null;
         //if (client == AppClient.TV) {
         //    contentPotParams = CONTENT_POT_TV;
         //}
@@ -88,6 +105,6 @@ public class VideoInfoApiHelper {
         String checkParams = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
 
         clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
-        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, contentPotParams, videoIdParams, query));
+        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, videoIdParams, query));
     }
 }

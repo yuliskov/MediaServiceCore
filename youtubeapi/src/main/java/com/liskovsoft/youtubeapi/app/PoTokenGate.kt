@@ -43,7 +43,15 @@ internal object PoTokenGate {
             PoTokenCloudService.updatePoToken()
         }
     }
-    
-    private fun supportsNpPot() = false
-    //private fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
+
+    @JvmStatic
+    fun getVisitorData(): String? {
+        return npPoToken?.visitorData
+    }
+
+    //@JvmStatic
+    //fun supportsNpPot() = false
+
+    @JvmStatic
+    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
 }

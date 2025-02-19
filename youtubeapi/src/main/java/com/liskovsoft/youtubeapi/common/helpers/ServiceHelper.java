@@ -131,7 +131,7 @@ public class ServiceHelper {
             country = localeManager.getCountry();
         }
         return String.format(postTemplate, language, country,
-                localeManager.getUtcOffsetMinutes(), appService.getVisitorData(), data1 != null ? data1 : "", data2);
+                localeManager.getUtcOffsetMinutes(), appService.getVisitorData(), data1 != null ? data1 : "", data2 != null ? data2 : "");
     }
 
     /**

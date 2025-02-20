@@ -71,6 +71,12 @@ public class AppServiceIntCached extends AppServiceInt {
             return mPlayerData;
         }
 
+        // See https://github.com/yt-dlp/yt-dlp/issues/12398
+        if (playerUrl.contains("/player_ias_tce.vflset/")) {
+            Log.d(TAG, "Modifying tce player URL: %s", playerUrl);
+            playerUrl = playerUrl.replace("/player_ias_tce.vflset/", "/player_ias.vflset/");
+        }
+
         PlayerDataCached playerDataCached = getData().getPlayerData();
 
         if (playerDataCached != null && Helpers.equals(playerDataCached.getPlayerUrl(), playerUrl)) {

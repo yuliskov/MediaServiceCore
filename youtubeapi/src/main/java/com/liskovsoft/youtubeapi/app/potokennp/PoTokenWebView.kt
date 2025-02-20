@@ -1,10 +1,8 @@
 package com.liskovsoft.youtubeapi.app.potokennp
 
-import com.liskovsoft.youtubeapi.BuildConfig
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -13,6 +11,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
+import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
@@ -72,9 +71,7 @@ internal class PoTokenWebView private constructor(
      * run it, and obtain an `integrityToken`.
      */
     private fun loadHtmlAndObtainBotguard(context: Context) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "loadHtmlAndObtainBotguard() called")
-        }
+        Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
         disposables.add(
             Single.fromCallable {
@@ -109,9 +106,7 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun downloadAndRunBotguard() {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "downloadAndRunBotguard() called")
-        }
+        Log.d(TAG, "downloadAndRunBotguard() called")
 
         makeBotguardServiceRequest(
             "https://www.youtube.com/api/jnn/v1/Create",
@@ -141,9 +136,7 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onJsInitializationError(error: String) {
-        if (BuildConfig.DEBUG) {
-            Log.e(TAG, "Initialization error from JavaScript: $error")
-        }
+        Log.e(TAG, "Initialization error from JavaScript: $error")
         onInitializationErrorCloseAndCancel(buildExceptionForJsError(error))
     }
 
@@ -153,16 +146,12 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onRunBotguardResult(botguardResponse: String) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "botguardResponse: $botguardResponse")
-        }
+        Log.d(TAG, "botguardResponse: $botguardResponse")
         makeBotguardServiceRequest(
             "https://www.youtube.com/api/jnn/v1/GenerateIT",
             "[ \"$REQUEST_KEY\", \"$botguardResponse\" ]",
         ) { responseBody ->
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "GenerateIT response: $responseBody")
-            }
+            Log.d(TAG, "GenerateIT response: $responseBody")
             val (integrityToken, expirationTimeInSeconds) = parseIntegrityTokenData(responseBody)
 
             // MOD: backport Instant.now().plusSeconds
@@ -173,9 +162,7 @@ internal class PoTokenWebView private constructor(
             webView.evaluateJavascript(
                 "this.integrityToken = $integrityToken"
             ) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-                }
+                Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
                 generatorEmitter.onSuccess(this)
             }
         }
@@ -185,9 +172,7 @@ internal class PoTokenWebView private constructor(
     //region Obtaining poTokens
     override fun generatePoToken(identifier: String): Single<String> =
         Single.create { emitter ->
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "generatePoToken() called with identifier $identifier")
-            }
+            Log.d(TAG, "generatePoToken() called with identifier $identifier")
             runOnMainThread(emitter) {
                 addPoTokenEmitter(identifier, emitter)
                 val u8Identifier = stringToU8(identifier)
@@ -215,9 +200,7 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onObtainPoTokenError(identifier: String, error: String) {
-        if (BuildConfig.DEBUG) {
-            Log.e(TAG, "obtainPoToken error from JavaScript: $error")
-        }
+        Log.e(TAG, "obtainPoToken error from JavaScript: $error")
         popPoTokenEmitter(identifier)?.onError(buildExceptionForJsError(error))
     }
 
@@ -227,9 +210,7 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onObtainPoTokenResult(identifier: String, poTokenU8: String) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Generated poToken (before decoding): identifier=$identifier poTokenU8=$poTokenU8")
-        }
+        Log.d(TAG, "Generated poToken (before decoding): identifier=$identifier poTokenU8=$poTokenU8")
         val poToken = try {
             u8ToBase64(poTokenU8)
         } catch (t: Throwable) {
@@ -237,9 +218,7 @@ internal class PoTokenWebView private constructor(
             return
         }
 
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Generated poToken: identifier=$identifier poToken=$poToken")
-        }
+        Log.d(TAG, "Generated poToken: identifier=$identifier poToken=$poToken")
         popPoTokenEmitter(identifier)?.onSuccess(poToken)
     }
 

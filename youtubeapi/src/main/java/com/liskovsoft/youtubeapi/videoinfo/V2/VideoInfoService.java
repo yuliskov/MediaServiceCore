@@ -37,7 +37,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_EMBED = 6;
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
-            VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
+            //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
+            VIDEO_INFO_WEB
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -77,7 +78,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         if (mSkipAuth && YouTubeSignInService.instance().isSigned()) {
-            result.sync(firstNonNull(videoId, clickTrackingParams));
+            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);

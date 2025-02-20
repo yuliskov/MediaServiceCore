@@ -3,11 +3,10 @@ package com.liskovsoft.youtubeapi.app.potokennp
 import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenResult
 import com.liskovsoft.youtubeapi.app.potokennp.misc.DeviceUtils
-import com.liskovsoft.youtubeapi.BuildConfig
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
+import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.potokennp.visitor.VisitorService
 
@@ -58,21 +57,6 @@ internal object PoTokenProviderImpl : PoTokenProvider {
                     webPoTokenGenerator!!.isExpired()
 
                 if (shouldRecreate) {
-
-                    //val innertubeClientRequestInfo = InnertubeClientRequestInfo.ofWebClient()
-                    //innertubeClientRequestInfo.clientInfo.clientVersion =
-                    //    YoutubeParsingHelper.getClientVersion()
-                    //
-                    //webPoTokenVisitorData = YoutubeParsingHelper.getVisitorDataFromInnertube(
-                    //    innertubeClientRequestInfo,
-                    //    NewPipe.getPreferredLocalization(),
-                    //    NewPipe.getPreferredContentCountry(),
-                    //    YoutubeParsingHelper.getYouTubeHeaders(),
-                    //    YoutubeParsingHelper.YOUTUBEI_V1_URL,
-                    //    null,
-                    //    false
-                    //)
-
                     // MOD: my visitor data
                     //webPoTokenVisitorData = AppService.instance().visitorData
                     webPoTokenVisitorData = VisitorService.getVisitorData()
@@ -117,13 +101,11 @@ internal object PoTokenProviderImpl : PoTokenProvider {
             }
         }
 
-        if (BuildConfig.DEBUG) {
-            Log.d(
-                TAG,
-                "poToken for $videoId: playerPot=$playerPot, " +
+        Log.d(
+            TAG,
+            "poToken for $videoId: playerPot=$playerPot, " +
                     "streamingPot=$streamingPot, visitor_data=$visitorData"
-            )
-        }
+        )
 
         return PoTokenResult(videoId, visitorData, playerPot, streamingPot)
     }

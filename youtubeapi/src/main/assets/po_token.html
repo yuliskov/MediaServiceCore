@@ -1,5 +1,65 @@
 <!DOCTYPE html>
 <html lang="en"><head><title></title><script>
+
+/**
+ * MOD: old webview support
+ */
+if (typeof Promise === "undefined") {
+  (function () {
+    function Promise(fn) {
+      var state = "pending",
+        value,
+        deferred = [];
+
+      function resolve(newValue) {
+        try {
+          if (
+            newValue &&
+            typeof newValue.then === "function"
+          ) {
+            newValue.then(resolve, reject);
+            return;
+          }
+          state = "resolved";
+          value = newValue;
+          setTimeout(function () {
+            deferred.forEach(function (handler) {
+              handler(value);
+            });
+          }, 0);
+        } catch (e) {
+          reject(e);
+        }
+      }
+
+      function reject(reason) {
+        state = "rejected";
+        value = reason;
+        setTimeout(function () {
+          deferred.forEach(function (handler) {
+            handler(value);
+          });
+        }, 0);
+      }
+
+      this.then = function (onResolved) {
+        return new Promise(function (resolve) {
+          deferred.push(function () {
+            resolve(onResolved(value));
+          });
+          if (state === "resolved") {
+            resolve(value);
+          }
+        });
+      };
+
+      fn(resolve, reject);
+    }
+
+    window.Promise = Promise;
+  })();
+}
+
 /**
  * Factory method to create and load a BotGuardClient instance.
  * @param options - Configuration options for the BotGuardClient.

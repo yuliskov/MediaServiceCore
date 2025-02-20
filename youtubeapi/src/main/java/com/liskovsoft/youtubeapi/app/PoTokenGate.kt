@@ -28,7 +28,7 @@ internal object PoTokenGate {
     fun getSessionPoToken(): String? {
         return if (supportsNpPot()) {
             if (npPoToken == null)
-                getContentPoToken("any_val_to_init")
+                getContentPoToken("")
             npPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
@@ -38,7 +38,7 @@ internal object PoTokenGate {
     fun updatePoToken() {
         if (supportsNpPot()) {
             if (npPoToken == null)
-                getContentPoToken("any_val_to_init")
+                getContentPoToken("")
         } else {
             PoTokenCloudService.updatePoToken()
         }

@@ -77,7 +77,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        if (mSkipAuth && YouTubeSignInService.instance().isSigned()) {
+        if (mSkipAuth) {
             result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
         }
 

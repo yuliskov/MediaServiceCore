@@ -54,4 +54,10 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
+
+    @JvmStatic
+    fun resetCache() {
+        if (supportsNpPot())
+            PoTokenProviderImpl.resetCache()
+    }
 }

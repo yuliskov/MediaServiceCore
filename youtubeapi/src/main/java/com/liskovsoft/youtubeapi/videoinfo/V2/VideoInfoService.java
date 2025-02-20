@@ -8,6 +8,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
@@ -173,6 +174,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
+        PoTokenGate.resetCache();
         nextVideoInfo();
         persistVideoInfoType();
     }

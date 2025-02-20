@@ -115,4 +115,8 @@ internal object PoTokenProviderImpl : PoTokenProvider {
     override fun getAndroidClientPoToken(videoId: String): PoTokenResult? = null
 
     override fun getIosClientPoToken(videoId: String): PoTokenResult? = null
+
+    fun resetCache() {
+        webPoTokenGenerator = null
+    }
 }

@@ -61,6 +61,10 @@ internal object PoTokenCloudService {
         return poToken
     }
 
+    fun resetCache() {
+        MediaServiceData.instance().poToken = null
+    }
+
     //private suspend fun getPoTokenResponsePart(): PoTokenResponse? {
     //    var poToken: PoTokenResponse? = null
     //

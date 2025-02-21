@@ -33,7 +33,6 @@ internal object PoTokenGate {
         } else PoTokenCloudService.getPoToken()
     }
 
-    @Synchronized
     @JvmStatic
     fun updatePoToken() {
         if (supportsNpPot()) {
@@ -55,9 +54,13 @@ internal object PoTokenGate {
     @JvmStatic
     fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
 
+    @TargetApi(19)
     @JvmStatic
     fun resetCache() {
-        if (supportsNpPot())
+        if (supportsNpPot()) {
+            npPoToken = null
             PoTokenProviderImpl.resetCache()
+        } else
+            PoTokenCloudService.resetCache()
     }
 }

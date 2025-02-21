@@ -13,6 +13,7 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
+import com.liskovsoft.youtubeapi.app.potokennp.misc.DeviceUtils
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -36,9 +37,12 @@ internal class PoTokenWebView private constructor(
         val webViewSettings = webView.settings
         //noinspection SetJavaScriptEnabled we want to use JavaScript!
         webViewSettings.javaScriptEnabled = true
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
-            WebSettingsCompat.setSafeBrowsingEnabled(webViewSettings, false)
-        }
+        // MOD: fix AbstractMethodError (Android 8/9)
+        //if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
+        //    WebSettingsCompat.setSafeBrowsingEnabled(webViewSettings, false)
+        //}
+        DeviceUtils.setSafeBrowsingEnabled(webViewSettings, false)
+
         webViewSettings.userAgentString = USER_AGENT
         webViewSettings.blockNetworkLoads = true // the WebView does not need internet access
 
@@ -302,17 +306,11 @@ internal class PoTokenWebView private constructor(
                 .map { response ->
                     val httpCode = response.code()
                     if (httpCode != 200) {
-                        onInitializationErrorCloseAndCancel(
-                            PoTokenException("Invalid response code: $httpCode")
-                        )
-                        return@map null
+                        throw PoTokenException("Invalid response code: $httpCode")
                     }
 
                     if (response.body() == null) {
-                        onInitializationErrorCloseAndCancel(
-                            PoTokenException("Response body is empty. Response code: $httpCode")
-                        )
-                        return@map null
+                        throw PoTokenException("Response body is empty. Response code: $httpCode")
                     }
 
                     response.body()?.let {
@@ -322,7 +320,7 @@ internal class PoTokenWebView private constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { response ->
-                        response?.let { handleResponseBody(response) }
+                        handleResponseBody(response)
                     },
                     this::onInitializationErrorCloseAndCancel
                 )

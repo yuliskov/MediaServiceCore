@@ -1,24 +1,17 @@
 package com.liskovsoft.youtubeapi.app.potokennp.misc;
 
-import static android.content.Context.INPUT_SERVICE;
-
-import android.annotation.SuppressLint;
-import android.app.UiModeManager;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.hardware.input.InputManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.TypedValue;
-import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.webkit.CookieManager;
+import android.webkit.WebSettings;
 
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
-import java.lang.reflect.Method;
+import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewFeature;
 
 public final class DeviceUtils {
 
@@ -115,82 +108,6 @@ public final class DeviceUtils {
     private DeviceUtils() {
     }
 
-    /**
-     * Checks if the device is in desktop or DeX mode. This function should only
-     * be invoked once on view load as it is using reflection for the DeX checks.
-     * @param context the context to use for services and config.
-     * @return true if the Android device is in desktop mode or using DeX.
-     */
-    @SuppressWarnings("JavaReflectionMemberAccess")
-    public static boolean isDesktopMode(@NonNull final Context context) {
-        // Adapted from https://stackoverflow.com/a/64615568
-        // to check for all input devices that have an active cursor
-        final InputManager im = (InputManager) context.getSystemService(INPUT_SERVICE);
-        for (final int id : im.getInputDeviceIds()) {
-            final InputDevice inputDevice = im.getInputDevice(id);
-            if (inputDevice.supportsSource(InputDevice.SOURCE_BLUETOOTH_STYLUS)
-                    || inputDevice.supportsSource(InputDevice.SOURCE_MOUSE)
-                    || inputDevice.supportsSource(InputDevice.SOURCE_STYLUS)
-                    || inputDevice.supportsSource(InputDevice.SOURCE_TOUCHPAD)
-                    || inputDevice.supportsSource(InputDevice.SOURCE_TRACKBALL)) {
-                return true;
-            }
-        }
-
-        final UiModeManager uiModeManager =
-                ContextCompat.getSystemService(context, UiModeManager.class);
-        if (uiModeManager != null
-                && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_DESK) {
-            return true;
-        }
-
-        if (!SAMSUNG) {
-            return false;
-            // DeX is Samsung-specific, skip the checks below on non-Samsung devices
-        }
-        // DeX check for standalone and multi-window mode, from:
-        // https://developer.samsung.com/samsung-dex/modify-optimizing.html
-        try {
-            final Configuration config = context.getResources().getConfiguration();
-            final Class<?> configClass = config.getClass();
-            final int semDesktopModeEnabledConst =
-                    configClass.getField("SEM_DESKTOP_MODE_ENABLED").getInt(configClass);
-            final int currentMode =
-                    configClass.getField("semDesktopModeEnabled").getInt(config);
-            if (semDesktopModeEnabledConst == currentMode) {
-                return true;
-            }
-        } catch (final NoSuchFieldException | IllegalAccessException ignored) {
-            // Device doesn't seem to support DeX
-        }
-
-        @SuppressLint("WrongConstant") final Object desktopModeManager = context
-                .getApplicationContext()
-                .getSystemService("desktopmode");
-
-        if (desktopModeManager != null) {
-            try {
-                final Method getDesktopModeStateMethod = desktopModeManager.getClass()
-                        .getDeclaredMethod("getDesktopModeState");
-                final Object desktopModeState = getDesktopModeStateMethod
-                        .invoke(desktopModeManager);
-                final Class<?> desktopModeStateClass = desktopModeState.getClass();
-                final Method getEnabledMethod = desktopModeStateClass
-                        .getDeclaredMethod("getEnabled");
-                final int enabledStatus = (int) getEnabledMethod.invoke(desktopModeState);
-                if (enabledStatus == desktopModeStateClass
-                        .getDeclaredField("ENABLED").getInt(desktopModeStateClass)) {
-                    return true;
-                }
-            } catch (final Exception ignored) {
-                // Device does not support DeX 3.0 or something went wrong when trying to determine
-                // if it supports this feature
-            }
-        }
-
-        return false;
-    }
-
     public static boolean isConfirmKey(final int keyCode) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -267,6 +184,17 @@ public final class DeviceUtils {
             return true;
         } catch (final Throwable ignored) {
             return false;
+        }
+    }
+
+    public static void setSafeBrowsingEnabled(@NonNull WebSettings settings, boolean enabled) {
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
+            try {
+                WebSettingsCompat.setSafeBrowsingEnabled(settings, enabled);
+            } catch (AbstractMethodError e) { // Sometimes happens on Android 8/9
+                e.printStackTrace();
+                //getAdapter(settings).setSafeBrowsingEnabled(enabled); // try alt approach from WebSettingsCompat
+            }
         }
     }
 }

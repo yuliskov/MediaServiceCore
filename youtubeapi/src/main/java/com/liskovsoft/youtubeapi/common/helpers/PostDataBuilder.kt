@@ -1,14 +1,9 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
-private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
-        "\"clientScreen\":\"%s\",\"userAgent\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
-        "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
-        "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
-// Include Shorts: "browserName":"Cobalt"
-private const val POST_DATA_BROWSE =
-    "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"browserName\":\"Cobalt\",\"webpSupport\":false,\"animatedWebpSupport\":true,"
+internal enum class PostDataType { Default, Player, Browse }
 
 internal class PostDataBuilder(val client: AppClient) {
+    private var type: PostDataType? = null
     private var acceptLanguage: String? = null
     private var acceptRegion: String? = null
     private var utcOffsetMinutes: Int? = null
@@ -19,6 +14,7 @@ internal class PostDataBuilder(val client: AppClient) {
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
 
+    fun setType(type: PostDataType) = apply { this.type = type }
     fun setLanguage(lang: String?) = apply { acceptLanguage = lang }
     fun setCountry(country: String?) = apply { acceptRegion = country }
     fun setUtcOffsetMinutes(offset: Int?) = apply { utcOffsetMinutes = offset }
@@ -54,15 +50,17 @@ internal class PostDataBuilder(val client: AppClient) {
             "userAgent": "${client.userAgent}",
         """.trimIndent()
         val postVars = client.postData
-        val browseVars = """
-            "tvAppInfo": { 
-                "appQuality": "TV_APP_QUALITY_FULL_ANIMATION",
-                "zylonLeftNav": true
-            },
-            "browserName": "Cobalt",
-            "webpSupport": false,
-            "animatedWebpSupport": true,
-        """.trimIndent() // Include Shorts: "browserName":"Cobalt"
+        val browseVars = if (requireNotNull(type) == PostDataType.Browse)
+            """
+                "tvAppInfo": { 
+                    "appQuality": "TV_APP_QUALITY_FULL_ANIMATION",
+                    "zylonLeftNav": true
+                },
+                "browserName": "Cobalt",
+                "webpSupport": false,
+                "animatedWebpSupport": true,
+            """.trimIndent() // Include Shorts: "browserName":"Cobalt"
+            else null
         val regionVars = """
             "acceptLanguage": "${requireNotNull(acceptLanguage)}",
             "acceptRegion": "${requireNotNull(acceptRegion)}",

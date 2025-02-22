@@ -5,6 +5,7 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.PostDataBuilder;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataType;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
@@ -69,9 +70,10 @@ public class VideoInfoApiHelper {
     }
 
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
-        if ((client == AppClient.WEB || client == AppClient.MWEB) && PoTokenGate.supportsNpPot()) {
+        if (PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
             return new PostDataBuilder(client)
+                    .setType(PostDataType.Player)
                     .setLanguage(localeManager.getLanguage())
                     .setCountry(localeManager.getCountry())
                     .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
@@ -83,22 +85,6 @@ public class VideoInfoApiHelper {
                     .setVisitorData(PoTokenGate.getVisitorData())
                     .build();
         }
-
-        //String contentPotParams = null;
-        //if (client == AppClient.TV) {
-        //    contentPotParams = CONTENT_POT_TV;
-        //}
-        //} else {
-        //    String contentPoToken = PoTokenGate.getContentPoToken(videoId);
-        //    if (contentPoToken != null) {
-        //        contentPotParams = String.format(CONTENT_POT_WEB, contentPoToken);
-        //    }
-        //}
-
-        //String contentPoToken = PoTokenGate.getContentPoToken(videoId);
-        //if (contentPoToken != null) {
-        //    contentPotParams = String.format(CONTENT_POT_WEB, contentPoToken);
-        //}
 
         String template = client.getPlayerTemplate();
         String videoIdParams = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());

@@ -36,8 +36,8 @@ internal object PoTokenGate {
     @JvmStatic
     fun updatePoToken() {
         if (supportsNpPot()) {
-            if (npPoToken == null)
-                getContentPoToken("")
+            //if (npPoToken == null)
+            //    getContentPoToken("")
         } else {
             PoTokenCloudService.updatePoToken()
         }

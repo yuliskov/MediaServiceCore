@@ -31,7 +31,7 @@ class PocketTubeApiTest {
 
         for (groupName in groupNames) {
             // Get groups content
-            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$.$groupName")
+            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$['$groupName']")
 
             assertTrue("Channel ids not empty", channelIds.isNotEmpty())
         }
@@ -52,7 +52,7 @@ class PocketTubeApiTest {
 
         for (groupName in groupNames) {
             // Get groups content
-            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$.$groupName")
+            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$['$groupName']")
 
             assertTrue("Channel ids not empty", channelIds.isNotEmpty())
         }

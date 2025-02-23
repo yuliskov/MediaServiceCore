@@ -6,6 +6,7 @@ import android.os.Looper
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
+import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
@@ -13,7 +14,6 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
-import com.liskovsoft.youtubeapi.app.potokennp.misc.DeviceUtils
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,7 +41,7 @@ internal class PoTokenWebView private constructor(
         //if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
         //    WebSettingsCompat.setSafeBrowsingEnabled(webViewSettings, false)
         //}
-        DeviceUtils.setSafeBrowsingEnabled(webViewSettings, false)
+        setSafeBrowsingEnabled(webViewSettings, false)
 
         webViewSettings.userAgentString = USER_AGENT
         webViewSettings.blockNetworkLoads = true // the WebView does not need internet access
@@ -65,6 +65,17 @@ internal class PoTokenWebView private constructor(
                     popAllPoTokenEmitters().forEach { (_, emitter) -> emitter.onError(exception) }
                 }
                 return super.onConsoleMessage(m)
+            }
+        }
+    }
+
+    private fun setSafeBrowsingEnabled(settings: WebSettings, enabled: Boolean) {
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
+            try {
+                WebSettingsCompat.setSafeBrowsingEnabled(settings, enabled)
+            } catch (e: AbstractMethodError) { // Sometimes happens on Android 8/9
+                e.printStackTrace()
+                //getAdapter(settings).setSafeBrowsingEnabled(enabled); // try alt approach from WebSettingsCompat
             }
         }
     }

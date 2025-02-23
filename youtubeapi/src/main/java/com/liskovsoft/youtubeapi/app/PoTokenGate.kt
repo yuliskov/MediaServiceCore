@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.app
 
 import android.annotation.TargetApi
 import android.os.Build.VERSION
+import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp.PoTokenProviderImpl
-import com.liskovsoft.youtubeapi.app.potokennp.misc.DeviceUtils
 import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenResult
 
 internal object PoTokenGate {
@@ -52,7 +52,7 @@ internal object PoTokenGate {
     //fun supportsNpPot() = false
 
     @JvmStatic
-    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceUtils.supportsWebView()
+    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView()
 
     @TargetApi(19)
     @JvmStatic

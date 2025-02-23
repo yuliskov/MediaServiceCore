@@ -2,10 +2,10 @@ package com.liskovsoft.youtubeapi.app.potokennp
 
 import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenResult
-import com.liskovsoft.youtubeapi.app.potokennp.misc.DeviceUtils
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
+import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.potokennp.visitor.VisitorService
@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.app.potokennp.visitor.VisitorService
 @RequiresApi(19)
 internal object PoTokenProviderImpl : PoTokenProvider {
     val TAG = PoTokenProviderImpl::class.simpleName
-    private val webViewSupported by lazy { DeviceUtils.supportsWebView() }
+    private val webViewSupported by lazy { DeviceHelpers.supportsWebView() }
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
 
     private object WebPoTokenGenLock

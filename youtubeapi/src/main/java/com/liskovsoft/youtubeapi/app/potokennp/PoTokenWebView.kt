@@ -329,15 +329,12 @@ internal class PoTokenWebView private constructor(
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { response ->
-                    handleResponseBody(response)
-                }
-                //.subscribe(
-                //    { response ->
-                //        handleResponseBody(response)
-                //    },
-                //    this::onInitializationErrorCloseAndCancel
-                //)
+                .subscribe(
+                    { response ->
+                        handleResponseBody(response)
+                    },
+                    this::onInitializationErrorCloseAndCancel
+                )
         )
     }
 

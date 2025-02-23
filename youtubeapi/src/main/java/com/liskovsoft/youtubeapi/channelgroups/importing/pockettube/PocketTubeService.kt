@@ -39,7 +39,7 @@ internal object PocketTubeService: GroupImportService {
 
         for (groupName in groupNames) {
             // Get groups content
-            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$.$groupName")
+            val channelIds: List<String> = JsonPath.read(pocketTubeContent, "$['$groupName']")
 
             val items: MutableList<Item> = mutableListOf()
 

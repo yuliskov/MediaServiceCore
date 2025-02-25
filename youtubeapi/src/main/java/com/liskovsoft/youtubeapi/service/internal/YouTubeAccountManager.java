@@ -26,7 +26,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
-    private boolean mStorageSynced;
     private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
@@ -277,20 +276,20 @@ public class YouTubeAccountManager {
      * Sync avatars, names and emails
      */
     public void syncStorage() {
-        if (mStorageSynced)
-            return;
-
         List<Account> storedAccounts = getAccounts();
 
         if (storedAccounts != null && !storedAccounts.isEmpty()) {
             List<AccountInt> newAccounts = mAuthService.getAccounts();
 
+            Account selectedAccount = getSelectedAccount();
+
             if (newAccounts != null) {
                 for (AccountInt newAccount : newAccounts) {
-                    addAccount(YouTubeAccount.from(newAccount));
+                    YouTubeAccount account = YouTubeAccount.from(newAccount);
+                    account.setSelected(account.equals(selectedAccount));
+                    addAccount(account);
                 }
                 persistAccounts();
-                mStorageSynced = true;
             }
         }
     }

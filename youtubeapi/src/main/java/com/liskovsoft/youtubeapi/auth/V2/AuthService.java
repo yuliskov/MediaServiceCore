@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.auth.V2;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
@@ -107,6 +109,7 @@ public class AuthService {
         }
     }
 
+    @Nullable
     public List<AccountInt> getAccounts() {
         Call<AccountsList> wrapper = mAuthApi.getAccountsList(AuthApiHelper.getAccountsListQuery());
 

@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -94,6 +96,7 @@ public class YouTubeAccountManager {
         });
     }
 
+    @Nullable
     public List<Account> getAccounts() {
         return mAccounts;
     }
@@ -267,5 +270,23 @@ public class YouTubeAccountManager {
                 RxHelper.runUser(() -> listener.onAccountChanged(account));
             }
         });
+    }
+
+    /**
+     * Sync avatars
+     */
+    public void syncStorage() {
+        List<Account> storedAccounts = getAccounts();
+
+        if (storedAccounts != null && !storedAccounts.isEmpty()) {
+            List<AccountInt> newAccounts = mAuthService.getAccounts();
+
+            if (newAccounts != null) {
+                for (AccountInt newAccount : newAccounts) {
+                    addAccount(YouTubeAccount.from(newAccount));
+                }
+                persistAccounts();
+            }
+        }
     }
 }

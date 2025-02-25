@@ -76,6 +76,7 @@ public class YouTubeSignInService implements SignInService {
         mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
         mCachedAuthorizationHeader2 = createAuthorizationHeader(refreshToken2);
         syncWithRetrofit();
+        mAccountManager.syncStorage();
     }
 
     @Override

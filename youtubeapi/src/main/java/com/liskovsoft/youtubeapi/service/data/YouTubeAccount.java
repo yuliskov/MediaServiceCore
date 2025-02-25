@@ -163,19 +163,41 @@ public class YouTubeAccount implements Account {
     }
 
     public void merge(Account account) {
-        YouTubeAccount youTubeAccount = (YouTubeAccount) account;
-
-        if (Helpers.equals(getPageIdToken(), youTubeAccount.getPageIdToken()) && Helpers.equals(getRefreshToken2(), youTubeAccount.getRefreshToken2())) {
+        if (!equals(account)) {
             return;
         }
 
-        if (getPageIdToken() != null) {
-            mRefreshToken2 = Helpers.firstNonNull(youTubeAccount.getRefreshToken2(), youTubeAccount.getRefreshToken());
-            mEmail = youTubeAccount.getEmail();
-        } else {
+        YouTubeAccount originAccount = (YouTubeAccount) account;
+
+        if (Helpers.equals(getPageIdToken(), originAccount.getPageIdToken())) { // same account types
+            if (mRefreshToken == null)
+                mRefreshToken = originAccount.getRefreshToken();
+            if (mRefreshToken2 == null)
+                mRefreshToken2 = originAccount.getRefreshToken2();
+        } else if (getPageIdToken() != null) { // origin has old type, make it second (old type used to the search suggestions)
+            mRefreshToken2 = Helpers.firstNonNull(originAccount.getRefreshToken2(), originAccount.getRefreshToken());
+            mEmail = originAccount.getEmail();
+        } else { // origin has a new type, make it main
             mRefreshToken2 = mRefreshToken;
-            mRefreshToken = youTubeAccount.getRefreshToken();
-            mPageIdToken = youTubeAccount.getPageIdToken();
+            mRefreshToken = originAccount.getRefreshToken();
+            mPageIdToken = originAccount.getPageIdToken();
         }
     }
+
+    //public void merge(Account account) {
+    //    YouTubeAccount youTubeAccount = (YouTubeAccount) account;
+    //
+    //    if (Helpers.equals(getPageIdToken(), youTubeAccount.getPageIdToken()) && Helpers.equals(getRefreshToken2(), youTubeAccount.getRefreshToken2())) {
+    //        return;
+    //    }
+    //
+    //    if (getPageIdToken() != null) {
+    //        mRefreshToken2 = Helpers.firstNonNull(youTubeAccount.getRefreshToken2(), youTubeAccount.getRefreshToken());
+    //        mEmail = youTubeAccount.getEmail();
+    //    } else {
+    //        mRefreshToken2 = mRefreshToken;
+    //        mRefreshToken = youTubeAccount.getRefreshToken();
+    //        mPageIdToken = youTubeAccount.getPageIdToken();
+    //    }
+    //}
 }

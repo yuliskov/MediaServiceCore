@@ -72,7 +72,7 @@ public class VideoInfoApiHelper {
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
         // Important: use only for the clients that don't support auth.
         // Otherwise, google suggestions and history won't work (visitor data bug)
-        if ((client == AppClient.WEB || client == AppClient.MWEB) && PoTokenGate.supportsNpPot()) {
+        if ((client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBEDDED_PLAYER) && PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
             return new PostDataBuilder(client)
                     .setType(PostDataType.Player)

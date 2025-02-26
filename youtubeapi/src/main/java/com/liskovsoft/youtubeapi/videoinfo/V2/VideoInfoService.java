@@ -36,10 +36,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_ANDROID = 4;
     private final static int VIDEO_INFO_IOS = 5;
     private final static int VIDEO_INFO_EMBED = 6;
+    private final static int WEB_EMBEDDED_PLAYER = 7;
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
-            VIDEO_INFO_WEB
+//            VIDEO_INFO_WEB,
+            WEB_EMBEDDED_PLAYER,
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -133,7 +135,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_INITIAL:
                 result = InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
                 if (result != null) {
-                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
                     result.sync(syncInfo);
                     break;
                 }
@@ -144,6 +146,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 break;
             case VIDEO_INFO_WEB:
                 result = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                break;
+            case WEB_EMBEDDED_PLAYER:
+                result = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_MWEB:
                 result = getVideoInfo(AppClient.MWEB, videoId, clickTrackingParams);
@@ -294,7 +299,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
             if (mCachedTranslationLanguages == null) {
                 mSkipAuthBlock = true;
-                VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                VideoInfo webInfo = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
                 mSkipAuthBlock = false;
                 if (webInfo != null) {
                     mCachedTranslationLanguages = webInfo.getTranslationLanguages();

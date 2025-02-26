@@ -37,6 +37,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_IOS = 5;
     private final static int VIDEO_INFO_EMBED = 6;
     private final static int WEB_EMBEDDED_PLAYER = 7;
+    private final static int ANDROID_VR = 8;
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
@@ -81,7 +82,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         if (mSkipAuth) {
-            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
+            result.sync(getVideoInfo(AppClient.TV, videoId, clickTrackingParams));
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);
@@ -149,6 +150,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 break;
             case WEB_EMBEDDED_PLAYER:
                 result = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
+                break;
+            case ANDROID_VR:
+                result = getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams);
                 break;
             case VIDEO_INFO_MWEB:
                 result = getVideoInfo(AppClient.MWEB, videoId, clickTrackingParams);
@@ -319,12 +323,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         VideoInfo result = null;
 
-        if (videoInfo.isUnplayable() && videoInfo.isRent()) {
+        if (videoInfo.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    () -> getVideoInfo(AppClient.EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
+                    () -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {

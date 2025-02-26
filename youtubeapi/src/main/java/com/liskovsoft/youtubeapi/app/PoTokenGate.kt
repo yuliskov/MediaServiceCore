@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenResult
 
 internal object PoTokenGate {
     private var npPoToken: PoTokenResult? = null
+    private var mCacheResetTimeMs: Long = -1
 
     @TargetApi(19)
     @JvmStatic
@@ -56,11 +57,18 @@ internal object PoTokenGate {
 
     @TargetApi(19)
     @JvmStatic
-    fun resetCache() {
+    fun resetCache(): Boolean {
+        if (System.currentTimeMillis() < mCacheResetTimeMs)
+            return false
+
         if (supportsNpPot()) {
             npPoToken = null
             PoTokenProviderImpl.resetCache()
         } else
             PoTokenCloudService.resetCache()
+
+        mCacheResetTimeMs = System.currentTimeMillis() + 60_000
+
+        return true
     }
 }

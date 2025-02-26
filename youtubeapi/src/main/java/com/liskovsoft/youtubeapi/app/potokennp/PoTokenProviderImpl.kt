@@ -59,7 +59,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
                 if (shouldRecreate) {
                     // MOD: my visitor data
                     //webPoTokenVisitorData = AppService.instance().visitorData
-                    webPoTokenVisitorData = VisitorService.getVisitorData()
+                    webPoTokenVisitorData = VisitorService.getVisitorData() ?: throw IllegalStateException("Visitor data is null")
 
                     // close the current webPoTokenGenerator on the main thread
                     webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }

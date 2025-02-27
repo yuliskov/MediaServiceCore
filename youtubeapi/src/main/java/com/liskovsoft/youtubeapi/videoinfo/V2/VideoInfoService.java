@@ -221,6 +221,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return videoInfoType == VIDEO_INFO_TV;
     }
 
+    private static boolean isAuthSupported(AppClient client) {
+        // Only TV can work with auth
+        return client == AppClient.TV;
+    }
+
     private boolean isPotSupported(int videoInfoType) {
         return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
     }
@@ -247,19 +252,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
 
-        return getVideoInfo(wrapper);
+        return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
     }
 
     private VideoInfo getVideoInfoRestricted(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
 
-        return getVideoInfo(wrapper);
+        return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
     }
 
-    private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper) {
-        VideoInfo videoInfo = RetrofitHelper.get(wrapper, mSkipAuthBlock);
+    private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper, boolean skipAuth) {
+        VideoInfo videoInfo = RetrofitHelper.get(wrapper, skipAuth);
 
-        if (videoInfo != null && mSkipAuthBlock) {
+        if (videoInfo != null && skipAuth) {
             videoInfo.setHistoryBroken(true);
         }
 
@@ -338,6 +343,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
+                    () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
                     () -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location

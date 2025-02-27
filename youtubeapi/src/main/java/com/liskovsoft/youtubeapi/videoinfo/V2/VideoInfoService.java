@@ -37,11 +37,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_EMBED = 6;
     private final static int WEB_EMBEDDED_PLAYER = 7;
     private final static int ANDROID_VR = 8;
+    // NOTE: Add VIDEO_INFO_TV to bypass "Sign in to confirm you're not a bot" (rare case)
+    // NOTE: EMBED type doesn't support music videos but can fix 403 is some cases
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
             // VIDEO_INFO_WEB, VIDEO_INFO_TV
-            WEB_EMBEDDED_PLAYER, VIDEO_INFO_TV // Add TV to bypass "Sign in to confirm you're not a bot" (rare case).
+            VIDEO_INFO_WEB, VIDEO_INFO_TV, WEB_EMBEDDED_PLAYER
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -135,7 +137,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_INITIAL:
                 result = InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
                 if (result != null) {
-                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
+                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                     result.sync(syncInfo);
                     break;
                 }
@@ -308,7 +310,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
             if (mCachedTranslationLanguages == null) {
                 mSkipAuthBlock = true;
-                VideoInfo webInfo = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
+                VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                 mSkipAuthBlock = false;
                 if (webInfo != null) {
                     mCachedTranslationLanguages = webInfo.getTranslationLanguages();

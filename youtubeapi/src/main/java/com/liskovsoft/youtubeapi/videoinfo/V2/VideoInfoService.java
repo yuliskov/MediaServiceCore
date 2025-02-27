@@ -39,7 +39,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
             //VIDEO_INFO_WEB
-            VIDEO_INFO_WEB, VIDEO_INFO_TV
+            VIDEO_INFO_TV, VIDEO_INFO_WEB
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;

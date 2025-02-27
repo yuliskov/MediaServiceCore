@@ -83,6 +83,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
+        mIsUnplayable = result.isUnplayable();
+
         if (mSkipAuth) {
             result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
         }
@@ -110,8 +112,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         result.setAdaptiveFormats(adaptiveFormats);
         result.setRegularFormats(regularFormats);
-
-        mIsUnplayable = result.isUnplayable();
 
         return result;
     }

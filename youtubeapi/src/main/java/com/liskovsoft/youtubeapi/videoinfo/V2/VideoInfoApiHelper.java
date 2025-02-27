@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-import com.liskovsoft.youtubeapi.common.helpers.PostDataBuilder;
+import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder;
 import com.liskovsoft.youtubeapi.common.helpers.PostDataType;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
@@ -74,7 +74,7 @@ public class VideoInfoApiHelper {
         // Otherwise, google suggestions and history won't work (visitor data bug)
         if (isPotSupported(client) && PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
-            return new PostDataBuilder(client)
+            return new QueryBuilder(client)
                     .setType(PostDataType.Player)
                     .setLanguage(localeManager.getLanguage())
                     .setCountry(localeManager.getCountry())

@@ -40,8 +40,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
-//            VIDEO_INFO_WEB, VIDEO_INFO_TV, VIDEO_INFO_WEB
-            WEB_EMBEDDED_PLAYER,
+            // VIDEO_INFO_WEB, VIDEO_INFO_TV
+            WEB_EMBEDDED_PLAYER, VIDEO_INFO_TV // Add TV to bypass "Sign in to confirm you're not a bot" (rare case).
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;

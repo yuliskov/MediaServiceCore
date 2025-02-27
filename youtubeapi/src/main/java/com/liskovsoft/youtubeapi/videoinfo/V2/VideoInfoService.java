@@ -43,12 +43,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
             // VIDEO_INFO_WEB, VIDEO_INFO_TV
-            VIDEO_INFO_WEB, VIDEO_INFO_TV, WEB_EMBEDDED_PLAYER
+            VIDEO_INFO_WEB, WEB_EMBEDDED_PLAYER, VIDEO_INFO_TV
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
     private boolean mSkipAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
+    private boolean mIsUnplayable;
 
     private interface VideoInfoCallback {
         VideoInfo call();
@@ -109,6 +110,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         result.setAdaptiveFormats(adaptiveFormats);
         result.setRegularFormats(regularFormats);
+
+        mIsUnplayable = result.isUnplayable();
 
         return result;
     }
@@ -184,7 +187,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
-        if (isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
+        if (!mIsUnplayable && isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
             return;
         }
         nextVideoInfo();

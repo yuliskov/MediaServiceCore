@@ -97,6 +97,6 @@ public class VideoInfoApiHelper {
     }
 
     private static boolean isPotSupported(AppClient client) {
-        return client == AppClient.WEB || client == AppClient.MWEB;
+        return client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBEDDED_PLAYER || client == AppClient.ANDROID_VR;
     }
 }

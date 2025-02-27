@@ -39,7 +39,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
             //VIDEO_INFO_WEB
-            VIDEO_INFO_TV, VIDEO_INFO_WEB
+            VIDEO_INFO_WEB, VIDEO_INFO_TV
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -117,7 +117,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         do {
             result = mSkipAuthBlock || isAuthSupported(nextType) ? getVideoInfo(nextType, videoId, clickTrackingParams) : null;
             nextType = Helpers.getNextValue(nextType, VIDEO_INFO_TYPE_LIST);
-        } while ((result == null || result.isUnplayable()) && nextType != beginType);
+        } while (result == null && nextType != beginType);
 
         return result;
     }

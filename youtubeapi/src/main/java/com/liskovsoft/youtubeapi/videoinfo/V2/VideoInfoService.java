@@ -216,20 +216,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         mSkipAuth = !isAuthSupported(mVideoInfoType) || MediaServiceData.instance().isPremiumFixEnabled();
     }
 
-    private static boolean isAuthSupported(int videoInfoType) {
-        // Only TV can work with auth
-        return videoInfoType == VIDEO_INFO_TV;
-    }
-
-    private static boolean isAuthSupported(AppClient client) {
-        // Only TV can work with auth
-        return client == AppClient.TV;
-    }
-
-    private boolean isPotSupported(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
-    }
-
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
         return getVideoInfo(client, videoInfoQuery);
@@ -343,8 +329,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
+                    !isMusicSupported(mVideoInfoType) ? () -> getVideoInfo(AppClient.WEB, videoId, clickTrackingParams) : null,
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
-                    () -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos
+                    //() -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos (doesn't work without auth)
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {
@@ -367,11 +354,14 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         return result != null ? result : videoInfo;
     }
-    
+
     private VideoInfo getFirstPlayable(VideoInfoCallback... callbacks) {
         VideoInfo result = null;
 
         for (VideoInfoCallback callback : callbacks) {
+            if (callback == null)
+                continue;
+
             VideoInfo videoInfo = callback.call();
 
             if (videoInfo != null && !videoInfo.isUnplayable()) {
@@ -423,5 +413,23 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean shouldUnlockMoreSubtitles() {
         return MediaServiceData.instance().isMoreSubtitlesUnlocked();
+    }
+
+    private boolean isMusicSupported(int videoInfoType) {
+        return videoInfoType != VIDEO_INFO_EMBED && videoInfoType != WEB_EMBEDDED_PLAYER;
+    }
+
+    private static boolean isAuthSupported(int videoInfoType) {
+        // Only TV can work with auth
+        return videoInfoType == VIDEO_INFO_TV;
+    }
+
+    private static boolean isAuthSupported(AppClient client) {
+        // Only TV can work with auth
+        return client == AppClient.TV;
+    }
+
+    private boolean isPotSupported(int videoInfoType) {
+        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
     }
 }

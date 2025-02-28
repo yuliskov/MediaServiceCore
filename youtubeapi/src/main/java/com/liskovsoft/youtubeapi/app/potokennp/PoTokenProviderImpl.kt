@@ -86,7 +86,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
             // Not using synchronized here, since poTokenGenerator would be able to generate
             // multiple poTokens in parallel if needed. The only important thing is for exactly one
             // visitorData/streaming poToken to be generated before anything else.
-            poTokenGenerator.generatePoToken(videoId).blockingGet()
+            if (videoId.isEmpty()) "" else poTokenGenerator.generatePoToken(videoId).blockingGet()
         } catch (throwable: Throwable) {
             if (hasBeenRecreated) {
                 // the poTokenGenerator has just been recreated (and possibly this is already the

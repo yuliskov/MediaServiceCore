@@ -29,7 +29,7 @@ internal object PoTokenGate {
     fun getSessionPoToken(): String? {
         return if (supportsNpPot()) {
             if (npPoToken == null)
-                getContentPoToken("")
+                npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
             npPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
@@ -37,8 +37,8 @@ internal object PoTokenGate {
     @JvmStatic
     fun updatePoToken() {
         if (supportsNpPot()) {
-            //if (npPoToken == null)
-            //    getContentPoToken("")
+            if (npPoToken == null)
+                npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
         } else {
             PoTokenCloudService.updatePoToken()
         }
@@ -48,9 +48,6 @@ internal object PoTokenGate {
     fun getVisitorData(): String? {
         return npPoToken?.visitorData
     }
-
-    //@JvmStatic
-    //fun supportsNpPot() = false
 
     @JvmStatic
     fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView()

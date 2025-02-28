@@ -54,6 +54,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private float mLoudnessDb;
     private boolean mContainsDashVideoFormats;
     private boolean mIsHistoryBroken;
+    private String mPaidContentText;
 
     private YouTubeMediaItemFormatInfo() {
         mCreatedTimeMs = System.currentTimeMillis();
@@ -116,6 +117,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mSegmentDurationUs = videoInfo.getSegmentDurationUs();
         formatInfo.mHasExtendedHlsFormats = videoInfo.hasExtendedHlsFormats();
         formatInfo.mLoudnessDb = videoInfo.getLoudnessDb();
+        formatInfo.mPaidContentText = videoInfo.getPaidContentText();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -358,6 +360,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public int getSegmentDurationUs() {
         return mSegmentDurationUs;
+    }
+
+    @Override
+    public String getPaidContentText() {
+        return mPaidContentText;
     }
 
     public String getEventId() {

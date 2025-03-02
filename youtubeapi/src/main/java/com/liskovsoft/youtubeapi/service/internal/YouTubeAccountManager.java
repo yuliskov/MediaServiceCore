@@ -26,7 +26,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
-    private boolean mStorageSynced;
     private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
@@ -177,7 +176,7 @@ public class YouTubeAccountManager {
         }
     }
 
-    public Account getSelectedAccount() {
+    public synchronized Account getSelectedAccount() {
         for (Account account : mAccounts) {
             if (account != null && account.isSelected()) {
                 return account;
@@ -191,7 +190,7 @@ public class YouTubeAccountManager {
         setAccountManagerData(Helpers.mergeArray(mAccounts.toArray()));
     }
 
-    private void restoreAccounts() {
+    private synchronized void restoreAccounts() {
         String data = getAccountManagerData();
 
         if (data != null) {
@@ -203,7 +202,13 @@ public class YouTubeAccountManager {
             }
         }
 
-        mListeners.forEach(listener -> listener.onAccountChanged(getSelectedAccount()));
+        // Sync avatars
+        mSignInService.checkAuth();
+        syncStorage();
+
+        notifyListeners();
+
+        //mListeners.forEach(listener -> listener.onAccountChanged(getSelectedAccount()));
     }
 
     private void setAccountManagerData(String data) {
@@ -261,6 +266,10 @@ public class YouTubeAccountManager {
         AppService.instance().invalidateCache(); // regenerate visitor data
         VideoInfoService.instance().resetInfoType(); // reset to the default format
 
+        notifyListeners();
+    }
+
+    private void notifyListeners() {
         Account account = getSelectedAccount();
 
         // Fix sign in bug
@@ -276,11 +285,7 @@ public class YouTubeAccountManager {
     /**
      * Sync avatars, names and emails
      */
-    public void syncStorage() {
-        if (mStorageSynced) {
-            return;
-        }
-
+    private void syncStorage() {
         List<Account> storedAccounts = getAccounts();
 
         if (storedAccounts != null && !storedAccounts.isEmpty()) {
@@ -295,7 +300,6 @@ public class YouTubeAccountManager {
                     addAccount(account);
                 }
                 persistAccounts();
-                mStorageSynced = true;
             }
         }
     }

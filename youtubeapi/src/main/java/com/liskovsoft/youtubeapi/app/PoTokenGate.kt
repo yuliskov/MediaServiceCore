@@ -53,7 +53,9 @@ internal object PoTokenGate {
     @JvmStatic
     fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView() && !isWebViewBroken()
 
-    private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && Build.BRAND.startsWith("TCL") // "TCL TV - Harman"
+    private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && isTCL() // "TCL TV - Harman"
+
+    private fun isTCL() = Build.MANUFACTURER.contains("TCL", ignoreCase = true) || Build.BRAND.contains("TCL", ignoreCase = true)
 
     @TargetApi(19)
     @JvmStatic

@@ -329,7 +329,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    !isMusicSupported(mVideoInfoType) ? () -> getVideoInfo(AppClient.WEB, videoId, clickTrackingParams) : null,
+                    isMusicRestricted(mVideoInfoType) ? () -> getVideoInfo(AppClient.WEB, videoId, clickTrackingParams) : null,
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
                     //() -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos (doesn't work without auth)
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
@@ -415,8 +415,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return MediaServiceData.instance().isMoreSubtitlesUnlocked();
     }
 
-    private boolean isMusicSupported(int videoInfoType) {
-        return videoInfoType != VIDEO_INFO_EMBED && videoInfoType != WEB_EMBEDDED_PLAYER;
+    private boolean isMusicRestricted(int videoInfoType) {
+        return videoInfoType == VIDEO_INFO_EMBED || videoInfoType == WEB_EMBEDDED_PLAYER;
     }
 
     private static boolean isAuthSupported(int videoInfoType) {

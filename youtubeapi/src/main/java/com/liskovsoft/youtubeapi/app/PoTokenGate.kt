@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app
 
 import android.annotation.TargetApi
+import android.os.Build
 import android.os.Build.VERSION
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
@@ -50,7 +51,9 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView()
+    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView() && !isWebViewBroken()
+
+    private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && Build.BRAND.startsWith("TCL") // "TCL TV - Harman"
 
     @TargetApi(19)
     @JvmStatic

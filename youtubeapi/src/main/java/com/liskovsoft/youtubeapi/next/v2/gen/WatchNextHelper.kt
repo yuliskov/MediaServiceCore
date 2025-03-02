@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
+import com.liskovsoft.youtubeapi.browse.v2.gen.GridRenderer
+import com.liskovsoft.youtubeapi.browse.v2.gen.PlaylistVideoListRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
@@ -45,11 +47,13 @@ internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpt
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents }
 internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey()
-    ?: continuationContents?.sectionListContinuation?.continuations?.getContinuationKey()
-internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = continuationContents?.sectionListContinuation?.contents
+    ?: getSectionContinuation()?.continuations?.getContinuationKey()
+internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.contents
 private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation
     ?: continuationContents?.gridContinuation ?: continuationContents?.playlistVideoListContinuation
     ?: continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer
+private fun WatchNextResultContinuation.getSectionContinuation() =
+    continuationContents?.sectionListContinuation ?: continuationContents?.tvSurfaceContentContinuation?.content?.sectionListRenderer
 
 ///////
 
@@ -93,6 +97,14 @@ internal fun ShelfRenderer.getItemWrappers() = content?.horizontalListRenderer?.
 internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
+
+///////
+
+internal fun GridRenderer.getNextPageKey() = continuations?.firstOrNull()?.getContinuationKey() ?: items?.lastOrNull()?.getContinuationToken()
+
+///////
+
+internal fun PlaylistVideoListRenderer.getNextPageKey() = continuations?.firstOrNull()?.getContinuationKey() ?: contents?.lastOrNull()?.getContinuationToken()
 
 ////////
 

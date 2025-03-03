@@ -27,7 +27,11 @@ internal object PoTokenProviderImpl : PoTokenProvider {
         }
 
         try {
-            return getWebClientPoToken(videoId = videoId, forceRecreate = false)
+            return try {
+                getWebClientPoToken(videoId = videoId, forceRecreate = false)
+            } catch (e: RuntimeException) {
+                getWebClientPoToken(videoId = videoId, forceRecreate = true)
+            }
         } catch (e: RuntimeException) {
             // RxJava's Single wraps exceptions into RuntimeErrors, so we need to unwrap them here
             when (val cause = e.cause) {

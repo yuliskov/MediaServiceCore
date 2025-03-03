@@ -26,6 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
+    private boolean mStorageSynced;
     private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
@@ -33,29 +34,55 @@ public class YouTubeAccountManager {
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
     private final List<Account> mAccounts = new CopyOnWriteArrayList<Account>() {
+        //@Override
+        //public boolean add(Account account) {
+        //    if (account == null) {
+        //        return false;
+        //    }
+        //
+        //    merge(account);
+        //
+        //    // Don't remove these lines or you won't be able to enter to the account.
+        //    while (contains(account)) {
+        //        remove(account);
+        //    }
+        //
+        //    return super.add(account);
+        //}
+        //
+        //private void merge(Account account) {
+        //    int index = indexOf(account);
+        //
+        //    if (index != -1) {
+        //        Account matched = get(index);
+        //        ((YouTubeAccount) account).merge(matched);
+        //        remove(matched);
+        //    }
+        //}
+
         @Override
         public boolean add(Account account) {
             if (account == null) {
                 return false;
             }
 
-            merge(account);
-
-            // Don't remove these lines or you won't be able to enter to the account.
-            while (contains(account)) {
-                remove(account);
-            }
+            mergeAndRemove(account);
 
             return super.add(account);
         }
 
-        private void merge(Account account) {
+        private void mergeAndRemove(Account account) {
             int index = indexOf(account);
 
             if (index != -1) {
                 Account matched = get(index);
+
+                // Don't remove these lines or you won't be able to enter to the account.
+                while (contains(account)) {
+                    remove(account);
+                }
+
                 ((YouTubeAccount) account).merge(matched);
-                remove(matched);
             }
         }
     };
@@ -176,7 +203,7 @@ public class YouTubeAccountManager {
         }
     }
 
-    public synchronized Account getSelectedAccount() {
+    public Account getSelectedAccount() {
         for (Account account : mAccounts) {
             if (account != null && account.isSelected()) {
                 return account;
@@ -190,7 +217,7 @@ public class YouTubeAccountManager {
         setAccountManagerData(Helpers.mergeArray(mAccounts.toArray()));
     }
 
-    private synchronized void restoreAccounts() {
+    private void restoreAccounts() {
         String data = getAccountManagerData();
 
         if (data != null) {
@@ -202,13 +229,7 @@ public class YouTubeAccountManager {
             }
         }
 
-        // Sync avatars
-        mSignInService.checkAuth();
-        syncStorage();
-
         notifyListeners();
-
-        //mListeners.forEach(listener -> listener.onAccountChanged(getSelectedAccount()));
     }
 
     private void setAccountManagerData(String data) {
@@ -269,23 +290,13 @@ public class YouTubeAccountManager {
         notifyListeners();
     }
 
-    private void notifyListeners() {
-        Account account = getSelectedAccount();
-
-        // Fix sign in bug
-        mListeners.forEach(listener -> {
-            if (listener instanceof MediaServicePrefs) {
-                listener.onAccountChanged(account);
-            } else {
-                RxHelper.runUser(() -> listener.onAccountChanged(account));
-            }
-        });
-    }
-
     /**
      * Sync avatars, names and emails
      */
-    private void syncStorage() {
+    public void syncStorage() {
+        if (mStorageSynced)
+            return;
+
         List<Account> storedAccounts = getAccounts();
 
         if (storedAccounts != null && !storedAccounts.isEmpty()) {
@@ -302,5 +313,20 @@ public class YouTubeAccountManager {
                 persistAccounts();
             }
         }
+
+        mStorageSynced = true;
+    }
+
+    private void notifyListeners() {
+        Account account = getSelectedAccount();
+
+        // Fix sign in bug
+        mListeners.forEach(listener -> {
+            if (listener instanceof MediaServicePrefs) {
+                listener.onAccountChanged(account);
+            } else {
+                RxHelper.runUser(() -> listener.onAccountChanged(account));
+            }
+        });
     }
 }

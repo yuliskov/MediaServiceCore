@@ -74,18 +74,21 @@ public class VideoInfoApiHelper {
         // Otherwise, google suggestions and history won't work (visitor data bug)
         if ((client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBEDDED_PLAYER) && PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
-            return new PostDataBuilder(client)
+            PostDataBuilder builder = new PostDataBuilder(client)
                     .setType(PostDataType.Player)
                     .setLanguage(localeManager.getLanguage())
                     .setCountry(localeManager.getCountry())
                     .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
                     .setVideoId(videoId)
                     .setClickTrackingParams(clickTrackingParams)
-                    .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce()) // get it somewhere else?
-                    .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
+                    .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce())
+                    .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp()))
                     .setPoToken(PoTokenGate.getContentPoToken(videoId))
-                    .setVisitorData(PoTokenGate.getVisitorData())
-                    .build();
+                    .setVisitorData(PoTokenGate.getVisitorData());
+            if (client == AppClient.WEB_EMBEDDED_PLAYER) {
+                builder.setAsWebEmbedded();
+            }
+            return builder.build();
         }
 
         String template = client.getPlayerTemplate();

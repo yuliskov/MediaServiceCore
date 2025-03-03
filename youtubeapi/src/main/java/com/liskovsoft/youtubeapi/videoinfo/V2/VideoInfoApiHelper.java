@@ -74,7 +74,7 @@ public class VideoInfoApiHelper {
         // Otherwise, google suggestions and history won't work (visitor data bug)
         if (isPotSupported(client) && PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
-            QueryBuilder builder = new PostDataBuilder(client)
+            QueryBuilder builder = new QueryBuilder(client)
                     .setType(PostDataType.Player)
                     .setLanguage(localeManager.getLanguage())
                     .setCountry(localeManager.getCountry())

@@ -80,8 +80,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
+        // In which cases we need to send second request for getting information about video?
+        // (First request as current mVideoInfoType, second as VIDEO_INFO_TV)
+        // Can we do result sync without sending second request as in
+        // getVideoInfo(int type, String videoId, String clickTrackingParams) function
+        // (VIDEO_INFO_INITIAL switch case)?
         if (mSkipAuth) {
-            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
+            result.sync(result);
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);

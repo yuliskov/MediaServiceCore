@@ -421,7 +421,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private boolean isMusicRestricted(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_EMBED || videoInfoType == WEB_EMBEDDED_PLAYER;
+        return videoInfoType == VIDEO_INFO_EMBED;
     }
 
     private static boolean isAuthSupported(int videoInfoType) {

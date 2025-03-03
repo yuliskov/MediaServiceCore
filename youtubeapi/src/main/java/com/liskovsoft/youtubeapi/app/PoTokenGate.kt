@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app
 
 import android.annotation.TargetApi
+import android.os.Build
 import android.os.Build.VERSION
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
@@ -29,7 +30,7 @@ internal object PoTokenGate {
     fun getSessionPoToken(): String? {
         return if (supportsNpPot()) {
             if (npPoToken == null)
-                getContentPoToken("")
+                npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
             npPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
@@ -37,8 +38,8 @@ internal object PoTokenGate {
     @JvmStatic
     fun updatePoToken() {
         if (supportsNpPot()) {
-            //if (npPoToken == null)
-            //    getContentPoToken("")
+            if (npPoToken == null)
+                npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
         } else {
             PoTokenCloudService.updatePoToken()
         }
@@ -49,11 +50,10 @@ internal object PoTokenGate {
         return npPoToken?.visitorData
     }
 
-    //@JvmStatic
-    //fun supportsNpPot() = false
-
     @JvmStatic
-    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView()
+    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView() && !isWebViewBroken()
+
+    private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && DeviceHelpers.isTCL() // "TCL TV - Harman"
 
     @TargetApi(19)
     @JvmStatic

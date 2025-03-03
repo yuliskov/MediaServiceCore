@@ -34,29 +34,55 @@ public class YouTubeAccountManager {
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
     private final List<Account> mAccounts = new CopyOnWriteArrayList<Account>() {
+        //@Override
+        //public boolean add(Account account) {
+        //    if (account == null) {
+        //        return false;
+        //    }
+        //
+        //    merge(account);
+        //
+        //    // Don't remove these lines or you won't be able to enter to the account.
+        //    while (contains(account)) {
+        //        remove(account);
+        //    }
+        //
+        //    return super.add(account);
+        //}
+        //
+        //private void merge(Account account) {
+        //    int index = indexOf(account);
+        //
+        //    if (index != -1) {
+        //        Account matched = get(index);
+        //        ((YouTubeAccount) account).merge(matched);
+        //        remove(matched);
+        //    }
+        //}
+
         @Override
         public boolean add(Account account) {
             if (account == null) {
                 return false;
             }
 
-            merge(account);
-
-            // Don't remove these lines or you won't be able to enter to the account.
-            while (contains(account)) {
-                remove(account);
-            }
+            mergeAndRemove(account);
 
             return super.add(account);
         }
 
-        private void merge(Account account) {
+        private void mergeAndRemove(Account account) {
             int index = indexOf(account);
 
             if (index != -1) {
                 Account matched = get(index);
+
+                // Don't remove these lines or you won't be able to enter to the account.
+                while (contains(account)) {
+                    remove(account);
+                }
+
                 ((YouTubeAccount) account).merge(matched);
-                remove(matched);
             }
         }
     };
@@ -203,7 +229,7 @@ public class YouTubeAccountManager {
             }
         }
 
-        mListeners.forEach(listener -> listener.onAccountChanged(getSelectedAccount()));
+        notifyListeners();
     }
 
     private void setAccountManagerData(String data) {
@@ -261,25 +287,15 @@ public class YouTubeAccountManager {
         AppService.instance().invalidateCache(); // regenerate visitor data
         VideoInfoService.instance().resetInfoType(); // reset to the default format
 
-        Account account = getSelectedAccount();
-
-        // Fix sign in bug
-        mListeners.forEach(listener -> {
-            if (listener instanceof MediaServicePrefs) {
-                listener.onAccountChanged(account);
-            } else {
-                RxHelper.runUser(() -> listener.onAccountChanged(account));
-            }
-        });
+        notifyListeners();
     }
 
     /**
      * Sync avatars, names and emails
      */
     public void syncStorage() {
-        if (mStorageSynced) {
+        if (mStorageSynced)
             return;
-        }
 
         List<Account> storedAccounts = getAccounts();
 
@@ -295,8 +311,22 @@ public class YouTubeAccountManager {
                     addAccount(account);
                 }
                 persistAccounts();
-                mStorageSynced = true;
             }
         }
+
+        mStorageSynced = true;
+    }
+
+    private void notifyListeners() {
+        Account account = getSelectedAccount();
+
+        // Fix sign in bug
+        mListeners.forEach(listener -> {
+            if (listener instanceof MediaServicePrefs) {
+                listener.onAccountChanged(account);
+            } else {
+                RxHelper.runUser(() -> listener.onAccountChanged(account));
+            }
+        });
     }
 }

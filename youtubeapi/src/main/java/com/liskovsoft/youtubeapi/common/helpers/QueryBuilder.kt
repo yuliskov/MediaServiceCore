@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common.helpers
 
 internal enum class PostDataType { Default, Player, Browse }
 
-internal class PostDataBuilder(val client: AppClient) {
+internal class QueryBuilder(val client: AppClient) {
     private var type: PostDataType? = null
     private var acceptLanguage: String? = null
     private var acceptRegion: String? = null
@@ -28,21 +28,28 @@ internal class PostDataBuilder(val client: AppClient) {
     fun setAsWebEmbedded() = apply { this.isWebEmbedded = true}
 
     fun build(): String {
-        return """
+        val json = """
              {
                 "context": {
-                     ${createClientChunk()},
-                     ${createClickTrackingChunk()?.let { "$it," } ?: ""}
-                     ${createUserChunk()},
-                     ${createWebEmbeddedChunk()?.let { "$it," } ?: ""}
+                     ${createClientChunk()}
+                     ${createClickTrackingChunk() ?: ""}
+                     ${createUserChunk()}
+                     ${createWebEmbeddedChunk() ?: ""}
                 },
                 "racyCheckOk": true,
                 "contentCheckOk": true,
-                ${createCheckParamsChunk()?.let { "$it," } ?: ""}
-                ${createPotChunk()?.let { "$it," } ?: ""}
-                ${createVideoIdChunk()?.let { "$it," } ?: ""}
+                ${createCheckParamsChunk() ?: ""}
+                ${createPotChunk() ?: ""}
+                ${createVideoIdChunk() ?: ""}
              }
-        """.trimIndent()
+        """
+
+        // Remove all indentations
+        val result = buildString {
+            json.lineSequence().forEach { append(it.trim()) }
+        }
+
+        return result
     }
 
     private fun createClientChunk(): String {
@@ -51,7 +58,7 @@ internal class PostDataBuilder(val client: AppClient) {
             "clientVersion": "${client.clientVersion}",
             "clientScreen": "${client.clientScreen}",
             "userAgent": "${client.userAgent}",
-        """.trimIndent()
+        """
         val postVars = client.postData
         val browseVars = if (requireNotNull(type) == PostDataType.Browse)
             """
@@ -62,13 +69,13 @@ internal class PostDataBuilder(val client: AppClient) {
                 "browserName": "Cobalt",
                 "webpSupport": false,
                 "animatedWebpSupport": true,
-            """.trimIndent() // Include Shorts: "browserName":"Cobalt"
+            """ // Include Shorts: "browserName":"Cobalt"
             else null
         val regionVars = """
             "acceptLanguage": "${requireNotNull(acceptLanguage)}",
             "acceptRegion": "${requireNotNull(acceptRegion)}",
             "utcOffsetMinutes": "${requireNotNull(utcOffsetMinutes)}",
-        """.trimIndent()
+        """
         val visitorVar = visitorData?.let { """ "visitorData": "$visitorData" """ }
         return """
              "client": {
@@ -77,8 +84,8 @@ internal class PostDataBuilder(val client: AppClient) {
                 ${browseVars ?: ""}
                 $regionVars
                 ${visitorVar ?: ""}
-             }
-        """.trimIndent()
+             },
+        """
     }
 
     private fun createClickTrackingChunk(): String? {
@@ -86,8 +93,8 @@ internal class PostDataBuilder(val client: AppClient) {
             """
                 "clickTracking": {
                     "clickTrackingParams": "$it"
-                }
-            """.trimIndent()
+                },
+            """
         }
     }
     private fun createWebEmbeddedChunk(): String? {
@@ -95,8 +102,8 @@ internal class PostDataBuilder(val client: AppClient) {
             """
                 "thirdParty": {
                     "embedUrl": "https://www.youtube.com/embed/$videoId"
-                }
-            """.trimIndent()
+                },
+            """
         }
     }
 
@@ -105,8 +112,8 @@ internal class PostDataBuilder(val client: AppClient) {
            "user":{
                 "enableSafetyMode": false,
                 "lockedSafetyMode":false
-           } 
-        """.trimIndent()
+           }, 
+        """
     }
 
     private fun createPotChunk(): String? {
@@ -114,8 +121,8 @@ internal class PostDataBuilder(val client: AppClient) {
             """
                "serviceIntegrityDimensions": {
                     "poToken": "$it"
-               } 
-            """.trimIndent()
+               }, 
+            """
         }
     }
 
@@ -123,8 +130,8 @@ internal class PostDataBuilder(val client: AppClient) {
         return videoId?.let {
             """
                 "videoId": "$it",
-                "cpn": "${requireNotNull(cpn)}"
-            """.trimIndent()
+                "cpn": "${requireNotNull(cpn)}",
+            """
         }
     }
 
@@ -137,8 +144,8 @@ internal class PostDataBuilder(val client: AppClient) {
                         "lactMilliseconds": 60000,
                         "signatureTimestamp": $it
                     }
-                }
-            """.trimIndent()
+                },
+            """
         }
     }
 }

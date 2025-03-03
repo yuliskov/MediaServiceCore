@@ -37,16 +37,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_EMBED = 6;
     private final static int WEB_EMBEDDED_PLAYER = 7;
     private final static int ANDROID_VR = 8;
+    // NOTE: Add VIDEO_INFO_TV to bypass "Sign in to confirm you're not a bot" (rare case)
+    // NOTE: EMBED type doesn't support music videos but can fix 403 is some cases
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
-//            VIDEO_INFO_WEB, VIDEO_INFO_TV, VIDEO_INFO_WEB
-            WEB_EMBEDDED_PLAYER,
+            // VIDEO_INFO_WEB, VIDEO_INFO_TV
+            WEB_EMBEDDED_PLAYER, VIDEO_INFO_WEB, VIDEO_INFO_TV
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
     private boolean mSkipAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
+    private boolean mIsUnplayable;
 
     private interface VideoInfoCallback {
         VideoInfo call();
@@ -79,6 +82,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             Log.e(TAG, "Can't get video info. videoId: %s", videoId);
             return null;
         }
+
+        mIsUnplayable = result.isUnplayable();
 
         // In which cases we need to send second request for getting information about video?
         // (First request as current mVideoInfoType, second as VIDEO_INFO_TV)
@@ -124,7 +129,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         do {
             result = mSkipAuthBlock || isAuthSupported(nextType) ? getVideoInfo(nextType, videoId, clickTrackingParams) : null;
             nextType = Helpers.getNextValue(nextType, VIDEO_INFO_TYPE_LIST);
-        } while ((result == null || result.isUnplayable()) && nextType != beginType);
+        } while (result == null && nextType != beginType);
 
         return result;
     }
@@ -140,7 +145,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_INITIAL:
                 result = InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
                 if (result != null) {
-                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
+                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                     result.sync(syncInfo);
                     break;
                 }
@@ -187,7 +192,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
-        if (isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
+        if (!mIsUnplayable && isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
             return;
         }
         nextVideoInfo();
@@ -216,15 +221,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         mSkipAuth = !isAuthSupported(mVideoInfoType) || MediaServiceData.instance().isPremiumFixEnabled();
     }
 
-    private static boolean isAuthSupported(int videoInfoType) {
-        // Only TV can work with auth
-        return videoInfoType == VIDEO_INFO_TV;
-    }
-
-    private boolean isPotSupported(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
-    }
-
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
         return getVideoInfo(client, videoInfoQuery);
@@ -247,19 +243,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
 
-        return getVideoInfo(wrapper);
+        return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
     }
 
     private VideoInfo getVideoInfoRestricted(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
 
-        return getVideoInfo(wrapper);
+        return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
     }
 
-    private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper) {
-        VideoInfo videoInfo = RetrofitHelper.get(wrapper, mSkipAuthBlock);
+    private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper, boolean skipAuth) {
+        VideoInfo videoInfo = RetrofitHelper.get(wrapper, skipAuth);
 
-        if (videoInfo != null && mSkipAuthBlock) {
+        if (videoInfo != null && skipAuth) {
             videoInfo.setHistoryBroken(true);
         }
 
@@ -313,7 +309,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
             if (mCachedTranslationLanguages == null) {
                 mSkipAuthBlock = true;
-                VideoInfo webInfo = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
+                VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                 mSkipAuthBlock = false;
                 if (webInfo != null) {
                     mCachedTranslationLanguages = webInfo.getTranslationLanguages();
@@ -338,7 +334,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    () -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos
+                    isMusicRestricted(mVideoInfoType) ? () -> getVideoInfo(AppClient.WEB, videoId, clickTrackingParams) : null,
+                    () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
+                    //() -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos (doesn't work without auth)
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {
@@ -361,11 +359,14 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         return result != null ? result : videoInfo;
     }
-    
+
     private VideoInfo getFirstPlayable(VideoInfoCallback... callbacks) {
         VideoInfo result = null;
 
         for (VideoInfoCallback callback : callbacks) {
+            if (callback == null)
+                continue;
+
             VideoInfo videoInfo = callback.call();
 
             if (videoInfo != null && !videoInfo.isUnplayable()) {
@@ -417,5 +418,23 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean shouldUnlockMoreSubtitles() {
         return MediaServiceData.instance().isMoreSubtitlesUnlocked();
+    }
+
+    private boolean isMusicRestricted(int videoInfoType) {
+        return videoInfoType == VIDEO_INFO_EMBED || videoInfoType == WEB_EMBEDDED_PLAYER;
+    }
+
+    private static boolean isAuthSupported(int videoInfoType) {
+        // Only TV can work with auth
+        return videoInfoType == VIDEO_INFO_TV;
+    }
+
+    private static boolean isAuthSupported(AppClient client) {
+        // Only TV can work with auth
+        return client == AppClient.TV;
+    }
+
+    private boolean isPotSupported(int videoInfoType) {
+        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
     }
 }

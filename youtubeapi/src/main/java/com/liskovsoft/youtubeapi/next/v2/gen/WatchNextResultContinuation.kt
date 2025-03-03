@@ -12,7 +12,7 @@ internal data class WatchNextResultContinuation(
         val gridContinuation: Continuation?, // TV?
         val playlistVideoListContinuation: Continuation?, // TV
         val tvSurfaceContentContinuation: TvSurfaceContentContinuation?, // TV
-        val sectionListContinuation: SectionListContinuation, // Home continuation TV
+        val sectionListContinuation: SectionListContinuation?, // Home continuation TV
     ) {
         data class Continuation(
             val items: List<ItemWrapper?>?,
@@ -23,7 +23,8 @@ internal data class WatchNextResultContinuation(
             val content: Content?
         ) {
             data class Content(
-                val gridRenderer: Continuation?
+                val gridRenderer: Continuation?,
+                val sectionListRenderer: SectionListContinuation?
             )
         }
         data class SectionListContinuation(

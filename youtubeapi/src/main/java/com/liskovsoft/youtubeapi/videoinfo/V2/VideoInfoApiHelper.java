@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-import com.liskovsoft.youtubeapi.common.helpers.PostDataBuilder;
+import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder;
 import com.liskovsoft.youtubeapi.common.helpers.PostDataType;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
@@ -74,15 +74,15 @@ public class VideoInfoApiHelper {
         // Otherwise, google suggestions and history won't work (visitor data bug)
         if (isPotSupported(client) && PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
-            PostDataBuilder builder = new PostDataBuilder(client)
+            QueryBuilder builder = new PostDataBuilder(client)
                     .setType(PostDataType.Player)
                     .setLanguage(localeManager.getLanguage())
                     .setCountry(localeManager.getCountry())
                     .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
                     .setVideoId(videoId)
                     .setClickTrackingParams(clickTrackingParams)
-                    .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce())
-                    .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp()))
+                    .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce()) // get it somewhere else?
+                    .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
                     .setPoToken(PoTokenGate.getContentPoToken(videoId))
                     .setVisitorData(PoTokenGate.getVisitorData());
             if (client == AppClient.WEB_EMBEDDED_PLAYER) {

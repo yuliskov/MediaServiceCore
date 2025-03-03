@@ -11,7 +11,6 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
@@ -37,10 +36,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_IOS = 5;
     private final static int VIDEO_INFO_EMBED = 6;
     private final static int WEB_EMBEDDED_PLAYER = 7;
+    private final static int ANDROID_VR = 8;
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
-//            VIDEO_INFO_WEB,
+//            VIDEO_INFO_WEB, VIDEO_INFO_TV, VIDEO_INFO_WEB
             WEB_EMBEDDED_PLAYER,
     };
     private int mVideoInfoType = -1;
@@ -155,6 +155,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case WEB_EMBEDDED_PLAYER:
                 result = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
                 break;
+            case ANDROID_VR:
+                result = getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams);
+                break;
             case VIDEO_INFO_MWEB:
                 result = getVideoInfo(AppClient.MWEB, videoId, clickTrackingParams);
                 break;
@@ -184,7 +187,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
-        PoTokenGate.resetCache();
+        if (isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
+            return;
+        }
         nextVideoInfo();
         persistVideoInfoType();
     }
@@ -214,6 +219,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static boolean isAuthSupported(int videoInfoType) {
         // Only TV can work with auth
         return videoInfoType == VIDEO_INFO_TV;
+    }
+
+    private boolean isPotSupported(int videoInfoType) {
+        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
@@ -324,12 +333,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         VideoInfo result = null;
 
-        if (videoInfo.isUnplayable() && videoInfo.isRent()) {
+        if (videoInfo.isRent()) {
             Log.e(TAG, "Found rent content. Show trailer instead...");
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    () -> getVideoInfo(AppClient.EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
+                    () -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
                     () -> {

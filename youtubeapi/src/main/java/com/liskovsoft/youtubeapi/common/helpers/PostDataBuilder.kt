@@ -72,7 +72,11 @@ internal class PostDataBuilder(val client: AppClient) {
         val visitorVar = visitorData?.let { """ "visitorData": "$visitorData" """ }
         return """
              "client": {
-                ${ServiceHelper.combineText(clientVars, postVars, browseVars, regionVars, visitorVar)}
+                $clientVars
+                ${postVars ?: ""}
+                ${browseVars ?: ""}
+                $regionVars
+                ${visitorVar ?: ""}
              }
         """.trimIndent()
     }

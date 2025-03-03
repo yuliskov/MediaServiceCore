@@ -19,6 +19,7 @@ internal enum class AppClient(
     TV("TVHTML5", "7.20250212.16.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBEDDED_PLAYER("WEB_EMBEDDED_PLAYER", "2.20250222.10.01", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+    ANDROID_VR("ANDROID_VR", "1.37", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
     WEB("WEB", "2.20250222.10.01", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
     MWEB("MWEB", "2.20250213.05.00", userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com/"),
     // Request contains an invalid argument.

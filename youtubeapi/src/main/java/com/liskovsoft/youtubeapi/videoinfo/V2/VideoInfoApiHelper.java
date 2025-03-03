@@ -72,7 +72,7 @@ public class VideoInfoApiHelper {
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
         // Important: use only for the clients that don't support auth.
         // Otherwise, google suggestions and history won't work (visitor data bug)
-        if ((client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBEDDED_PLAYER) && PoTokenGate.supportsNpPot()) {
+        if (isPotSupported(client) && PoTokenGate.supportsNpPot()) {
             LocaleManager localeManager = LocaleManager.instance();
             PostDataBuilder builder = new PostDataBuilder(client)
                     .setType(PostDataType.Player)
@@ -97,5 +97,9 @@ public class VideoInfoApiHelper {
 
         clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
         return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, videoIdParams, query));
+    }
+
+    private static boolean isPotSupported(AppClient client) {
+        return client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBEDDED_PLAYER || client == AppClient.ANDROID_VR;
     }
 }

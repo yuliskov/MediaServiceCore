@@ -145,6 +145,9 @@ public class ServiceHelper {
         return combineItems(null, items);
     }
 
+    /**
+     * NOTE: ADDS SPECIAL BIDI CHARS. DON'T USE THIS INSIDE JSON
+     */
     public static String combineItems(String divider, Object... items) {
         StringBuilder result = new StringBuilder();
 

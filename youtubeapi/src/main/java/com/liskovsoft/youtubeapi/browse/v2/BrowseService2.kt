@@ -155,6 +155,10 @@ internal open class BrowseService2 {
         }
     }
 
+    fun getMusic(): List<MediaGroup?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getMusicQuery(AppClient.TV), MediaGroup.TYPE_MUSIC)?.first
+    }
+
     fun getLikedMusic(): MediaGroup? {
         return getLikedMusicTV() ?: getLikedMusicWeb()
     }

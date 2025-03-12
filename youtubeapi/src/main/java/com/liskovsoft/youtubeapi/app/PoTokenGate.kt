@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.app
 
 import android.annotation.TargetApi
-import android.os.Build
 import android.os.Build.VERSION
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
@@ -9,37 +8,38 @@ import com.liskovsoft.youtubeapi.app.potokennp.PoTokenProviderImpl
 import com.liskovsoft.youtubeapi.app.potokennp.misc.PoTokenResult
 
 internal object PoTokenGate {
-    private var npPoToken: PoTokenResult? = null
+    private var mNpPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
 
     @TargetApi(19)
     @JvmStatic
     fun getContentPoToken(videoId: String): String? {
-        if (npPoToken?.videoId == videoId) {
-            return npPoToken?.playerRequestPoToken
+        if (mNpPoToken?.videoId == videoId) {
+            return mNpPoToken?.playerRequestPoToken
         }
 
-        npPoToken = if (supportsNpPot())
+        mNpPoToken = if (supportsNpPot())
             PoTokenProviderImpl.getWebClientPoToken(videoId)
         else null
 
-        return npPoToken?.playerRequestPoToken
+        return mNpPoToken?.playerRequestPoToken
     }
 
     @JvmStatic
     fun getSessionPoToken(): String? {
         return if (supportsNpPot()) {
-            if (npPoToken == null)
-                npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
-            npPoToken?.streamingDataPoToken
+            if (mNpPoToken == null)
+                mNpPoToken = PoTokenProviderImpl.getWebClientPoToken("")
+            mNpPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
 
     @JvmStatic
     fun updatePoToken() {
         if (supportsNpPot()) {
-            if (npPoToken == null)
-                npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
+            mNpPoToken = null
+            //if (npPoToken == null)
+            //    npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
         } else {
             PoTokenCloudService.updatePoToken()
         }
@@ -47,7 +47,7 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun getVisitorData(): String? {
-        return npPoToken?.visitorData
+        return mNpPoToken?.visitorData
     }
 
     @JvmStatic
@@ -62,8 +62,8 @@ internal object PoTokenGate {
             return false
 
         if (supportsNpPot()) {
-            npPoToken = null
-            PoTokenProviderImpl.resetCache()
+            mNpPoToken = null
+            //PoTokenProviderImpl.resetCache()
         } else
             PoTokenCloudService.resetCache()
 

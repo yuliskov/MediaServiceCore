@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.nsig.NSigData;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 
 import java.util.UUID;
 
@@ -192,6 +193,8 @@ public class MediaServiceData {
         }
 
         persistData();
+
+        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isFormatEnabled(int formats) {
@@ -259,6 +262,8 @@ public class MediaServiceData {
     public void unlockMoreSubtitles(boolean unlock) {
         mIsMoreSubtitlesUnlocked = unlock;
         persistData();
+
+        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isMoreSubtitlesUnlocked() {
@@ -268,6 +273,8 @@ public class MediaServiceData {
     public void enablePremiumFix(boolean enable) {
         mIsPremiumFixEnabled = enable;
         persistData();
+
+        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isPremiumFixEnabled() {

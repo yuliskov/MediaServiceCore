@@ -85,8 +85,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mIsUnplayable = result.isUnplayable();
 
+        // In which cases we need to send second request for getting information about video?
+        // (First request as current mVideoInfoType, second as VIDEO_INFO_TV)
+        // Can we do result sync without sending second request as in
+        // getVideoInfo(int type, String videoId, String clickTrackingParams) function
+        // (VIDEO_INFO_INITIAL switch case)?
         if (mSkipAuth) {
-            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
+            result.sync(result);
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);
@@ -416,7 +421,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private boolean isMusicRestricted(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_EMBED || videoInfoType == WEB_EMBEDDED_PLAYER;
+        return videoInfoType == VIDEO_INFO_EMBED;
     }
 
     private static boolean isAuthSupported(int videoInfoType) {

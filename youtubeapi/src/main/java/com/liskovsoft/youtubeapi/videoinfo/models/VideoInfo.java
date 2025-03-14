@@ -344,14 +344,14 @@ public class VideoInfo {
         return mPaidContentText != null ? mPaidContentText.getText() : null;
     }
 
-    public boolean isValid() {
-        if (STATUS_OFFLINE.equals(mPlayabilityStatus)) {
-            return true;
-        }
-
-        // Check that history data is present
-        return getEventId() != null && getVisitorMonitoringData() != null;
-    }
+    //public boolean isValid() {
+    //    if (STATUS_OFFLINE.equals(mPlayabilityStatus)) {
+    //        return true;
+    //    }
+    //
+    //    // Check that history data is present
+    //    return getEventId() != null && getVisitorMonitoringData() != null;
+    //}
 
     /**
      * Sync live data

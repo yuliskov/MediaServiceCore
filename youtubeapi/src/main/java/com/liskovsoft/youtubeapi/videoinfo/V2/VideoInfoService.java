@@ -85,11 +85,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mIsUnplayable = result.isUnplayable();
 
-        // Enable auth features like history, suggestions etc
-        if (mSkipAuth) {
-            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
-        }
-
         result = retryIfNeeded(result, videoId, clickTrackingParams);
 
         mSkipAuthBlock = result.isHistoryBroken();
@@ -113,6 +108,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         result.setAdaptiveFormats(adaptiveFormats);
         result.setRegularFormats(regularFormats);
+
+        if (result.isHistoryBroken()) {
+            // Only the tv client supports auth features
+            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
+        }
 
         return result;
     }
@@ -141,8 +141,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_INITIAL:
                 result = InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
                 if (result != null) {
-                    VideoInfo syncInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
-                    result.sync(syncInfo);
+                    //VideoInfo syncInfo = getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
+                    //result.sync(syncInfo);
                     break;
                 }
             case VIDEO_INFO_TV:

@@ -102,9 +102,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
         formatInfo.mDashManifestUrl = videoInfo.getDashManifestUrl();
         formatInfo.mHlsManifestUrl = videoInfo.getHlsManifestUrl();
+        // BEGIN Tracking params
         formatInfo.mEventId = videoInfo.getEventId();
         formatInfo.mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
         formatInfo.mOfParam = videoInfo.getOfParam();
+        // END Tracking params
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
         formatInfo.mIsHistoryBroken = videoInfo.isHistoryBroken();

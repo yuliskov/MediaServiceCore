@@ -85,13 +85,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mIsUnplayable = result.isUnplayable();
 
-        // In which cases we need to send second request for getting information about video?
-        // (First request as current mVideoInfoType, second as VIDEO_INFO_TV)
-        // Can we do result sync without sending second request as in
-        // getVideoInfo(int type, String videoId, String clickTrackingParams) function
-        // (VIDEO_INFO_INITIAL switch case)?
+        // Enable auth features like history, suggestions etc
         if (mSkipAuth) {
-            result.sync(result);
+            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
         }
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);
@@ -334,7 +330,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    isMusicRestricted(mVideoInfoType) ? () -> getVideoInfo(AppClient.WEB, videoId, clickTrackingParams) : null,
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
                     //() -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos (doesn't work without auth)
                     //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
@@ -418,10 +413,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean shouldUnlockMoreSubtitles() {
         return MediaServiceData.instance().isMoreSubtitlesUnlocked();
-    }
-
-    private boolean isMusicRestricted(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_EMBED;
     }
 
     private static boolean isAuthSupported(int videoInfoType) {

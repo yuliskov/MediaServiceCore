@@ -13,7 +13,7 @@ internal class QueryBuilder(val client: AppClient) {
     private var clickTrackingParams: String? = null
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
-    private var isWebEmbedded: Boolean? = null
+    private var isWebEmbedded: Boolean = false
 
     fun setType(type: PostDataType) = apply { this.type = type }
     fun setLanguage(lang: String?) = apply { acceptLanguage = lang }
@@ -25,7 +25,7 @@ internal class QueryBuilder(val client: AppClient) {
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
     fun setVisitorData(visitorData: String?) = apply { this.visitorData = visitorData }
-    fun setAsWebEmbedded() = apply { this.isWebEmbedded = true}
+    fun setAsWebEmbedded(isWebEmbedded: Boolean) = apply { this.isWebEmbedded = isWebEmbedded }
 
     fun build(): String {
         val json = """
@@ -97,14 +97,15 @@ internal class QueryBuilder(val client: AppClient) {
             """
         }
     }
+
     private fun createWebEmbeddedChunk(): String? {
-        return isWebEmbedded?.let {
+        return if (isWebEmbedded)
             """
                 "thirdParty": {
-                    "embedUrl": "https://www.youtube.com/embed/$videoId"
+                    "embedUrl": "https://www.youtube.com/embed/${requireNotNull(videoId)}"
                 },
             """
-        }
+           else null
     }
 
     private fun createUserChunk(): String {

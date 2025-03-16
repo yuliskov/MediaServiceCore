@@ -96,12 +96,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
         List<AdaptiveVideoFormat> adaptiveFormats = null;
         List<RegularVideoFormat> regularFormats = null;
 
-        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_DASH) || result.getRegularFormats() == null) {
+        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_DASH) || !result.containsRegularVideoInfo()) {
             decipherFormats(result.getAdaptiveFormats());
             adaptiveFormats = result.getAdaptiveFormats();
         }
 
-        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_URL) || result.getAdaptiveFormats() == null) {
+        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_URL) || !result.containsAdaptiveVideoInfo()) {
             decipherFormats(result.getRegularFormats());
             regularFormats = result.getRegularFormats();
         }

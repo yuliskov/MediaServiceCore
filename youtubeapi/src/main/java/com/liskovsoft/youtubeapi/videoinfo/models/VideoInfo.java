@@ -284,6 +284,24 @@ public class VideoInfo {
         return result;
     }
 
+    public boolean containsRegularVideoInfo() {
+        if (getRegularFormats() == null) {
+            return false;
+        }
+
+        boolean result = false;
+
+        for (RegularVideoFormat format : getRegularFormats()) {
+            String mimeType = format.getMimeType();
+            if (mimeType != null && mimeType.startsWith("video/")) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
     public boolean isStoryboardBroken() {
         return !isLive() && getStoryboardSpec() == null;
     }

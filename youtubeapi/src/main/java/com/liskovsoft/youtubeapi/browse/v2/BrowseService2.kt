@@ -555,8 +555,8 @@ internal open class BrowseService2 {
             combinedKey = null
 
             RetrofitHelper.get(result)?.let {
-                //combinedItems = (combinedItems ?: emptyList()) + (it.getItems() ?: emptyList())
-                combinedItems = (combinedItems.orEmpty() + it.getItems().orEmpty()).distinct() // remove duplicates
+                combinedItems = (combinedItems ?: emptyList()) + (it.getItems() ?: emptyList())
+                //combinedItems = (combinedItems.orEmpty() + it.getItems().orEmpty()).distinct() // remove duplicates
                 combinedKey = it.getNextPageKey()
             }
         }

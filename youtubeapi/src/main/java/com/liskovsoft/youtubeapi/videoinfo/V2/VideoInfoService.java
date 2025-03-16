@@ -260,13 +260,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(AppClient.IOS, videoId, clickTrackingParams);
-        return getVideoInfoHls(videoInfoQuery);
+        return getVideoInfoHls(AppClient.IOS, videoInfoQuery);
     }
 
-    private VideoInfoHls getVideoInfoHls(String videoInfoQuery) {
+    private VideoInfoHls getVideoInfoHls(AppClient client, String videoInfoQuery) {
         Call<VideoInfoHls> wrapper = mVideoInfoApi.getVideoInfoHls(videoInfoQuery, mAppService.getVisitorData());
 
-        return RetrofitHelper.get(wrapper, mSkipAuthBlock);
+        return RetrofitHelper.get(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
     }
 
     private void applyFixesIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {

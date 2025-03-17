@@ -227,23 +227,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getVideoInfo(client, videoInfoQuery);
     }
 
-    /**
-     * NOTE: user history won't work with this method
-     */
-    private VideoInfo getVideoInfoRestricted(AppClient client, String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
-
-        return getVideoInfoRestricted(client, videoInfoQuery);
-    }
-
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
-
-        return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
-    }
-
-    private VideoInfo getVideoInfoRestricted(AppClient client, String videoInfoQuery) {
-        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfoRestricted(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
 
         return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
     }
@@ -277,13 +262,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         if (result.isLive()) {
             Log.d(TAG, "Enable seeking support on live streams...");
             result.sync(getDashInfo(result));
-
-            // Add dash and hls manifests (for backward compatibility)
-            //if (YouTubeMediaService.instance().isOldStreamsEnabled()) {
-            //    VideoInfo result2 = getVideoInfoLive(videoId, clickTrackingParams);
-            //    result.setDashManifestUrl(result2.getDashManifestUrl());
-            //    result.setHlsManifestUrl(result2.getHlsManifestUrl());
-            //}
         }
 
         if (shouldObtainExtendedFormats(result) || result.isStoryboardBroken()) {
@@ -331,25 +309,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
-                    //() -> getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams), // Restricted (18+) videos (doesn't work without auth)
-                    //() -> getVideoInfoRestricted(videoId, clickTrackingParams, AppClient.MWEB), // Restricted videos (no history)
-                    () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams), // Video clip blocked in current location
-                    () -> {
-                        // Auth users only. The latest bug fix for "This content isn't available".
-                        mSkipAuthBlock = !mSkipAuth;
-                        VideoInfo rootResult = getRootVideoInfo(videoId, clickTrackingParams);
-                        mSkipAuthBlock = false;
-
-                        if (rootResult == null || rootResult.isUnplayable()) {
-                            return null;
-                        }
-                        return rootResult;
-                    }
+                    () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams) // Video clip blocked in current location
             );
-
-            //if (result == null || result.isUnplayable()) {
-            //    result = getFirstPlayableByType(videoId, clickTrackingParams);
-            //}
         }
 
         return result != null ? result : videoInfo;

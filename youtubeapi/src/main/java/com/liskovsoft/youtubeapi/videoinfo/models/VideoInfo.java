@@ -303,7 +303,7 @@ public class VideoInfo {
     }
 
     public boolean isStoryboardBroken() {
-        return !isLive() && getStoryboardSpec() == null;
+        return !isLive() && getStoryboardSpec() == null && (containsAdaptiveVideoInfo() || containsRegularVideoInfo());
     }
 
     public boolean isLive() {

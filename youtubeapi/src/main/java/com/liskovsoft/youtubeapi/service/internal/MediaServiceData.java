@@ -301,7 +301,7 @@ public class MediaServiceData {
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
         mHiddenContent = Helpers.parseInt(split, 18,
-                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME);
+                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME | CONTENT_UPCOMING_SUBSCRIPTIONS);
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);

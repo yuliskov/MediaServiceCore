@@ -1,7 +1,10 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
 import androidx.annotation.NonNull;
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.api.FileApi;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
@@ -40,12 +43,10 @@ public class DashInfoApiTest {
 
     @Before
     public void setUp() throws Exception {
-        // Fix temp video url ban
-        Thread.sleep(3_000);
+        //// Fix temp video url ban
+        //Thread.sleep(3_000);
 
-        // fix issue: No password supplied for PKCS#12 KeyStore
-        // https://github.com/robolectric/robolectric/issues/5115
-        System.setProperty("javax.net.ssl.trustStoreType", "JKS");
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
 
         mService = RetrofitHelper.create(DashInfoApi.class);
 

@@ -5,7 +5,7 @@ import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.googleapi.oauth2.OAuth2Service;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 
-public class TestHelpersV2 extends TestHelpersBase {
+public class TestHelpersV2 {
     public static final String REFRESH_TOKEN = "";
     private static String mAuthorization; // type: Bearer
 

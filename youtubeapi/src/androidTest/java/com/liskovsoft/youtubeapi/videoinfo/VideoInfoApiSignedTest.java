@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
@@ -23,6 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 /**
  * NOTE: testing with Duktape (native libs)!!!
  */
@@ -33,6 +36,7 @@ public class VideoInfoApiSignedTest {
 
     @Before
     public void setUp() {
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mService = RetrofitHelper.create(VideoInfoApi.class);
         mAppService = AppService.instance();
         mLocaleManager = LocaleManager.instance();

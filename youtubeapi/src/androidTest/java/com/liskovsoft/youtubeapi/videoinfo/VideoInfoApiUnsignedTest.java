@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
@@ -22,6 +23,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 /**
  * NOTE: testing with Duktape (native libs)!!!
  */
@@ -30,7 +33,8 @@ public class VideoInfoApiUnsignedTest {
     private LocaleManager mLocaleManager;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mService = RetrofitHelper.create(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
         RetrofitOkHttpHelper.setDisableCompression(true);

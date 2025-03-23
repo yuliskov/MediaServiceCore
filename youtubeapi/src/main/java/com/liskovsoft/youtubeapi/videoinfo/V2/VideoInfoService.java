@@ -20,6 +20,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -118,7 +119,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo firstNonNull(String videoId, String clickTrackingParams) {
-        final int beginType = mVideoInfoType != -1 ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
+        final int beginType = Arrays.binarySearch(VIDEO_INFO_TYPE_LIST, mVideoInfoType) >= 0 ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
         int nextType = beginType;
         VideoInfo result;
 

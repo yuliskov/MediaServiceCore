@@ -51,8 +51,6 @@ public class MediaServiceData {
     private String mDeviceId;
     private String mVideoInfoVersion;
     private int mVideoInfoType;
-    private String mPlayerUrl;
-    private String mPlayerVersion;
     private String mVisitorCookie;
     private int mEnabledFormats;
     private int mHiddenContent;
@@ -89,6 +87,7 @@ public class MediaServiceData {
         if (Helpers.isJUnitTest()) {
             Log.d(TAG, "JUnit test is running. Skipping data restore...");
             mEnabledFormats = FORMATS_ALL; // Debug
+            mVideoInfoType = -1; // Required for testing
             return;
         }
 
@@ -151,20 +150,6 @@ public class MediaServiceData {
         mSkipAuth = skipAuth;
         persistData();
     }
-
-    //public String getPlayerUrl() {
-    //    if (Helpers.equals(mPlayerVersion, mAppVersion)) {
-    //        return mPlayerUrl;
-    //    }
-    //
-    //    return null;
-    //}
-    //
-    //public void setPlayerUrl(String url) {
-    //    mPlayerVersion = mAppVersion;
-    //    mPlayerUrl = url;
-    //    persistData();
-    //}
 
     @Nullable
     public NSigData getNSigData() {
@@ -291,11 +276,13 @@ public class MediaServiceData {
         // null for ScreenItem
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
+        //String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
+        mVideoInfoVersion = Helpers.parseStr(split, 3);
+        mVideoInfoType = Helpers.parseInt(split, 4, -1);
+        mSkipAuth = Helpers.parseBoolean(split, 5);
         // entries here moved to the cache
-        //mVisitorCookie = Helpers.parseStr(split, 10);
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
         // null
-        mSkipAuth = Helpers.parseBoolean(split, 13);
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
@@ -312,16 +299,6 @@ public class MediaServiceData {
 
         String[] split = Helpers.splitData(cache);
 
-        mAppVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
-
-        String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
-        mVideoInfoVersion = Helpers.parseStr(split, 0);
-        mVideoInfoType = Helpers.parseInt(split, 1);
-        //mNFuncPlayerUrl = Helpers.parseStr(split, 2, lastPlayerUrl);
-        //mNFuncParams = Helpers.parseStrList(split, 3);
-        //mNFuncCode = Helpers.parseStr(split, 4);
-        mPlayerUrl = Helpers.parseStr(split, 5);
-        mPlayerVersion = Helpers.parseStr(split, 6);
         mNSigData = Helpers.parseItem(split, 7, NSigData::fromString);
     }
 
@@ -338,9 +315,9 @@ public class MediaServiceData {
         }
 
         mGlobalPrefs.setMediaServiceData(
-                Helpers.mergeData(null, mScreenId, mDeviceId, null, null,
-                        null, null, null, null, null,
-                        null, mEnabledFormats, null, mSkipAuth, mPoToken, mAppInfo,
+                Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion,
+                        mVideoInfoType, mSkipAuth, null, null, null, null,
+                        null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
                         mIsPremiumFixEnabled, mVisitorCookie));
     }
@@ -351,7 +328,7 @@ public class MediaServiceData {
         }
 
         mCachedPrefs.setMediaServiceCache(
-                Helpers.mergeData(mVideoInfoVersion, mVideoInfoType,
-                        null, null, null, mPlayerUrl, mPlayerVersion, mNSigData));
+                Helpers.mergeData(null, null,
+                        null, null, null, null, null, mNSigData));
     }
 }

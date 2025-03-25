@@ -83,8 +83,26 @@ public class PlayerData {
     })
     private String mDecipherFunction;
 
+    @RegExp({
+            ";\\w+ [$\\w]+=\\{[\\S\\s]{10,200}?[\\w]\\.reverse\\(\\)[\\S\\s]*?function [$\\w]+\\([\\w]\\)\\{.*[\\w]\\.split\\(.+\\).*;return [\\w]\\.join\\([$\\w]+\\[\\d+\\]\\)\\}",
+    })
+    private String mDecipherFunctionPart1;
+
+    @RegExp({
+            "'use strict';(var [$\\w]+=.+\\.split\\(.+\\);)",
+    })
+    private String mDecipherFunctionPart2;
+
     public String getDecipherFunction() {
-        return Helpers.replace(mDecipherFunction, SIGNATURE_DECIPHER, "function decipherSignature($1)");
+        String deFunc = null;
+
+        if (mDecipherFunction != null) {
+            deFunc = Helpers.replace(mDecipherFunction, SIGNATURE_DECIPHER, "function decipherSignature($1)");
+        } else if (mDecipherFunctionPart1 != null && mDecipherFunctionPart2 != null) {
+            deFunc = Helpers.replace(mDecipherFunctionPart1, SIGNATURE_DECIPHER, "function decipherSignature($1)") + ";" + mDecipherFunctionPart2;
+        }
+
+        return deFunc;
     }
 
     // End DecipherFunction

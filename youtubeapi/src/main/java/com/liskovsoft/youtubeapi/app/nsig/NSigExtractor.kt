@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsig
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
@@ -10,6 +11,7 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import java.util.regex.Pattern
 
 internal class NSigExtractor(val playerUrl: String) {
+    private val TAG = NSigExtractor::class.java.simpleName
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data = MediaServiceData.instance()
     private var mNFuncPlayerUrl: String? = null
@@ -104,19 +106,51 @@ internal class NSigExtractor(val playerUrl: String) {
 
         val funcName = extractNFunctionName(jsCode) ?: extractNFunctionName2(jsCode) ?: return
 
-        mNFuncCode = fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName))
+        mNFuncCode = fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), jsCode)
 
         persistNFuncCode()
     }
 
-    private fun fixupNFunctionCode(data: Pair<List<String>, String>): Pair<List<String>, String> {
+    private fun fixupNFunctionCode(data: Pair<List<String>, String>, jsCode: String): Pair<List<String>, String> {
         val argNames = data.first
-        val code = data.second
-        val patternString = """;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(['"])undefined\1\s*\)\s*return\s+${argNames[0]};"""
+        var code = data.second
+
+        val (globalVar, varName, _) = extractPlayerJsGlobalVar(jsCode)
+
+        if (globalVar != null) {
+            Log.d(TAG, "Prepending n function code with global array variable \"$varName\"")
+            code = "$globalVar; $code"
+        } else {
+            Log.d(TAG, "No global array variable found in player JS")
+        }
+
+        val patternString = """;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(?:(['"])undefined\1|${varName ?: ""}\[\d+\])\s*\)\s*return\s+${argNames[0]};"""
         val pattern = Pattern.compile(patternString)
         val matcher = pattern.matcher(code)
         val updatedCode = matcher.replaceAll(";")
         return Pair(argNames, updatedCode)
+    }
+
+    private fun extractPlayerJsGlobalVar(jsCode: String): Triple<String?, String?, String?> {
+        val patternString = """(?x)
+            (["'])use\s+strict\1;\s*
+            (
+                var\s+([a-zA-Z0-9_$]+)\s*=\s*
+                (
+                    (["'])(?:(?!\5).|\\.)+\5
+                    \.split\((["'])(?:(?!\6).)+\6\)
+                )
+            )[;,]
+        """
+
+        val pattern = Pattern.compile(patternString, Pattern.COMMENTS)
+        val matcher = pattern.matcher(jsCode)
+
+        return if (matcher.find()) {
+            Triple(matcher.group(2), matcher.group(3), matcher.group(4))
+        } else {
+            Triple(null, null, null)
+        }
     }
 
     /**

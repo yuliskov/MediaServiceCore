@@ -3,6 +3,8 @@ package com.liskovsoft.youtubeapi.app
 internal object AppConstants {
     @JvmField
     val playerUrls = listOf(
+        "https://www.youtube.com/s/player/643afba4/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/363db69b/player_ias.vflset/en_US/base.js",
         "https://www.youtube.com/s/player/c8dbda2a/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/e7567ecf/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/2f1832d2/tv-player-es6.vflset/tv-player-es6.js",
@@ -10,7 +12,8 @@ internal object AppConstants {
         "https://www.youtube.com/s/player/fb725ac8/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/20dfca59/player_ias.vflset/en_US/base.js",
-        "https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js")
+        "https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js"
+    )
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
     private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
 

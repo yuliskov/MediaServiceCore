@@ -21,23 +21,16 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         restoreNFuncCode()
         restoreOtherData()
 
-        var jsCode: String? = null
-        var globalVarData: Triple<String?, String?, String?>? = null
         if (mNFuncCode == null || mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
-            jsCode = loadPlayer()
-            globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) }
-        }
+            val jsCode = loadPlayer()
+            val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) }
 
-        // Obtain the code regularly
-        if (mNFuncCode == null) {
             mNFuncCode = jsCode?.let { NSigExtractor.extractNFuncCode(it, globalVarData) }
-            persistNFuncCode()
-        }
-
-        if (mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             mCipherCode = jsCode?.let { CipherExtractor.extractCipherCode(it, globalVarData) }
             mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
             mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
+
+            persistNFuncCode()
             persistOtherCode()
         }
 

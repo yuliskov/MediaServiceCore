@@ -5,11 +5,8 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
-import com.liskovsoft.youtubeapi.common.js.V8Runtime;
-import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +14,6 @@ public class AppService {
     private static AppService sInstance;
     private final AppServiceInt mAppServiceInt;
     private String mClientPlaybackNonce;
-    //private Duktape mDuktape;
 
     private AppService() {
         mAppServiceInt = new AppServiceIntCached();
@@ -31,19 +27,6 @@ public class AppService {
         return sInstance;
     }
 
-    /**
-     * Js evaluator. Contains native *.so libs.<br/>
-     * Note, lazy init for easy testing.<br/>
-     * Could be tested only inside instrumented tests!
-     */
-    //private Duktape getDuktape() {
-    //    if (mDuktape == null) {
-    //        mDuktape = Duktape.create(); // js evaluator, contains native *.so libs
-    //    }
-    //
-    //    return mDuktape;
-    //}
-
     public String decipher(String ciphered) {
         if (ciphered == null) {
             return null;
@@ -56,30 +39,12 @@ public class AppService {
      * Decipher strings using js code
      */
     public List<String> decipher(List<String> ciphered) {
-        if (Helpers.allNulls(ciphered)) {
-            return ciphered;
+        if (mAppServiceInt.getPlayerDataExtractor() == null) {
+            return null;
         }
 
-        String decipherCode = mAppServiceInt.createDecipherCode(ciphered);
-
-        if (decipherCode == null) {
-            return ciphered;
-        }
-
-        String result = V8Runtime.instance().evaluate(decipherCode);
-
-        String[] values = result.split(",");
-
-        return Arrays.asList(values);
+        return mAppServiceInt.getPlayerDataExtractor().decipherItems(ciphered);
     }
-
-    //private List<String> runCodeDuktape(String decipherCode) {
-    //    String result = getDuktape().evaluate(decipherCode).toString();
-    //
-    //    String[] values = result.split(",");
-    //
-    //    return Arrays.asList(values);
-    //}
 
     public List<String> fixThrottling(List<String> throttledList) {
         if (Helpers.allNulls(throttledList)) {
@@ -109,11 +74,11 @@ public class AppService {
     }
 
     public String fixThrottling(String throttled) {
-        if (throttled == null || mAppServiceInt.getNSigExtractor() == null) {
+        if (throttled == null || mAppServiceInt.getPlayerDataExtractor() == null) {
             return null;
         }
 
-        return mAppServiceInt.getNSigExtractor().extractNSig(throttled);
+        return mAppServiceInt.getPlayerDataExtractor().extractNSig(throttled);
     }
 
     public void resetClientPlaybackNonce() {
@@ -129,13 +94,11 @@ public class AppService {
             return mClientPlaybackNonce;
         }
 
-        String function = mAppServiceInt.getClientPlaybackNonceFunction();
-
-        if (function == null) {
+        if (mAppServiceInt.getPlayerDataExtractor() == null) {
             return null;
         }
 
-        mClientPlaybackNonce = V8Runtime.instance().evaluate(function);
+        mClientPlaybackNonce = mAppServiceInt.getPlayerDataExtractor().createClientPlaybackNonce();
 
         return mClientPlaybackNonce;
     }
@@ -175,7 +138,11 @@ public class AppService {
      * Used in get_video_info
      */
     public String getSignatureTimestamp() {
-        return mAppServiceInt.getSignatureTimestamp();
+        if (mAppServiceInt.getPlayerDataExtractor() == null) {
+            return null;
+        }
+
+        return mAppServiceInt.getPlayerDataExtractor().getSignatureTimestamp();
     }
 
     /**

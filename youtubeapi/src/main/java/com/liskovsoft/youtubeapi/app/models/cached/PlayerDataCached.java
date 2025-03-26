@@ -13,7 +13,7 @@ public class PlayerDataCached extends PlayerData {
     private final String mDecipherFunction;
     private final String mSignatureTimestamp;
 
-    private PlayerDataCached(String playerUrl,
+    public PlayerDataCached(String playerUrl,
                              String clientPlaybackNonceFunction,
                              String rawClientPlaybackNonceFunction,
                              String decipherFunction,

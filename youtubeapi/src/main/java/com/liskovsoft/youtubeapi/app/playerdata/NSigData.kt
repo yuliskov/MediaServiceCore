@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.nsig
+package com.liskovsoft.youtubeapi.app.playerdata
 
 import com.liskovsoft.sharedutils.helpers.Helpers
 

@@ -5,13 +5,13 @@ import com.liskovsoft.youtubeapi.common.js.V8Runtime
 import java.util.regex.Pattern
 
 internal object CipherExtractor {
-    private val mCipherPattern1: Pattern = Pattern.compile("""(?x)
+    private val mCipherPattern: Pattern = Pattern.compile("""(?x)
                 ;\w+\ [$\w]+=\{[\S\s]{10,200}?[\w]\.reverse\(\)[\S\s]*?
-                function\ [$\w]+\([\w]\)\{.*[\w]\.split\((?:""|.+)\).*;return\ [\w]\.join\((?:""|([$\w]+)\[\d+\])\)\}""", Pattern.COMMENTS)
+                function\ [$\w]+\([\w]\)\{.*[\w]\.split\((?:""|[$\w]+\[\d+\])\).*;return\ [\w]\.join\((?:""|([$\w]+)\[\d+\])\)\}""", Pattern.COMMENTS)
     private val SIGNATURE_DECIPHER: Pattern = Pattern.compile("function [$\\w]+\\(([\\w])\\)")
 
-    fun extract(jsCode: String, globalVarData: Triple<String?, String?, String?>?): String? {
-        val cipherMatcher = mCipherPattern1.matcher(jsCode)
+    fun extractCipherCode(jsCode: String, globalVarData: Triple<String?, String?, String?>?): String? {
+        val cipherMatcher = mCipherPattern.matcher(jsCode)
 
         val code = if (cipherMatcher.find()) {
             if (cipherMatcher.groupCount() == 1 && globalVarData?.first != null) { // need global var

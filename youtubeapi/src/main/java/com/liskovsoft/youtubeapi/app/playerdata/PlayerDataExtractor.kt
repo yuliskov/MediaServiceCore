@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
-import com.liskovsoft.youtubeapi.app.nsig.NSigData
+import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
@@ -10,34 +10,39 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 internal class PlayerDataExtractor(val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data = MediaServiceData.instance()
-    private var mNFuncPlayerUrl: String? = null
     private var mNFuncCode: Pair<List<String>, String>? = null
     private var mNSig: Pair<String, String?>? = null
     private var mCipherCode: String? = null
+    private var mCPNCode: String? = null
+    private var mSignatureTimestamp: String? = null
 
     init {
         // Get the code from the cache
         restoreNFuncCode()
+        restoreOtherData()
 
         var jsCode: String? = null
         var globalVarData: Triple<String?, String?, String?>? = null
-        if (mNFuncCode == null || mCipherCode == null) {
+        if (mNFuncCode == null || mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             jsCode = loadPlayer()
             globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) }
         }
 
         // Obtain the code regularly
         if (mNFuncCode == null) {
-            mNFuncCode = jsCode?.let { NSigExtractor2.extractNFuncCode(it, globalVarData) }
+            mNFuncCode = jsCode?.let { NSigExtractor.extractNFuncCode(it, globalVarData) }
             persistNFuncCode()
         }
 
-        if (mCipherCode == null) {
-            mCipherCode = jsCode?.let { CipherExtractor.extract(it, globalVarData) }
+        if (mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
+            mCipherCode = jsCode?.let { CipherExtractor.extractCipherCode(it, globalVarData) }
+            mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
+            mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
+            persistOtherCode()
         }
 
         if (mNFuncCode == null) {
-            ReflectionHelper.dumpDebugInfo(NSigExtractor2::class.java, loadPlayer())
+            ReflectionHelper.dumpDebugInfo(NSigExtractor::class.java, loadPlayer())
             throw IllegalStateException("NSigExtractor: Can't obtain NSig code for $playerUrl...")
         }
     }
@@ -60,6 +65,14 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return mCipherCode?.let { CipherExtractor.decipherItems(items, it) } ?: items
     }
 
+    fun createClientPlaybackNonce(): String? {
+        return mCPNCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) }
+    }
+
+    fun getSignatureTimestamp(): String? {
+        return mSignatureTimestamp
+    }
+
     private fun extractNSigReal(nParam: String): String? {
         val funcCode = mNFuncCode ?: return null
 
@@ -69,11 +82,23 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     private fun loadPlayer(): String? {
-        return RetrofitHelper.get(mFileApi.getContent(mNFuncPlayerUrl ?: playerUrl))?.content
+        return RetrofitHelper.get(mFileApi.getContent(fixupPlayerUrl(playerUrl)))?.content
+    }
+
+    private fun fixupPlayerUrl(playerUrl: String): String {
+        return playerUrl
+            .replace("/player_ias_tce.vflset/", "/player_ias.vflset/") // See https://github.com/yt-dlp/yt-dlp/issues/12398
+            .replace("player_ias.vflset/en_US/base.js", "tv-player-ias.vflset/tv-player-ias.js")
     }
 
     private fun persistNFuncCode() { // save on success
         mNFuncCode?.let { data.nSigData = NSigData(playerUrl, it.first, it.second) }
+    }
+
+    private fun persistOtherCode() {
+        if (mCipherCode != null && mCPNCode != null && mSignatureTimestamp != null) {
+            data.playerData = PlayerDataCached(playerUrl, mCPNCode, null, mCipherCode, mSignatureTimestamp)
+        }
     }
 
     private fun restoreNFuncCode() {
@@ -81,6 +106,16 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
         if (nSigData?.nFuncPlayerUrl == playerUrl) {
             mNFuncCode = Pair(nSigData.nFuncParams, nSigData.nFuncCode)
+        }
+    }
+
+    private fun restoreOtherData() {
+        val playerData = data.playerData
+
+        if (playerData?.playerUrl == playerUrl) {
+            mCPNCode = playerData.clientPlaybackNonceFunction
+            mCipherCode = playerData.decipherFunction
+            mSignatureTimestamp = playerData.signatureTimestamp
         }
     }
 }

@@ -9,7 +9,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 
-class NSigExtractorTest {
+class PlayerDataExtractorTest {
     private val mAppServiceInt = AppServiceInt()
 
     @JvmField
@@ -26,7 +26,7 @@ class NSigExtractorTest {
 
     @Test
     fun testExtractNSig() {
-        val extractor = NSigExtractor(getPlayerUrl())
+        val extractor = PlayerDataExtractor(getPlayerUrl())
         assertNotNull("NSig not null", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
     }
 
@@ -35,18 +35,7 @@ class NSigExtractorTest {
         AppConstants.playerUrls.forEach { testPlayerUrl(it) }
     }
 
-    @Test
-    fun testPlayerVersions2() {
-        AppConstants.playerUrls.forEach { testPlayerUrl2(it) }
-    }
-
     private fun testPlayerUrl(url: String) {
-        val extractor = NSigExtractor(url)
-
-        assertNotNull("NSig not null for url $url", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
-    }
-
-    private fun testPlayerUrl2(url: String) {
         val extractor = PlayerDataExtractor(url)
 
         assertNotNull("NSig not null for url $url", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))

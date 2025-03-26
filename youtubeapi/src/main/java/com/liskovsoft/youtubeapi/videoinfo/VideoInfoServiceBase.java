@@ -64,6 +64,10 @@ public abstract class VideoInfoServiceBase {
     }
 
     private static void applyDecipheredStrings(List<? extends VideoFormat> formats, List<String> deciphered) {
+        if (deciphered == null) {
+            return;
+        }
+
         if (deciphered.size() != formats.size()) {
             throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
         }
@@ -86,7 +90,7 @@ public abstract class VideoInfoServiceBase {
     }
 
     private static void applyThrottleFixedStrings(List<? extends VideoFormat> formats, List<String> throttleFixed) {
-        if (throttleFixed.isEmpty()) {
+        if (throttleFixed == null || throttleFixed.isEmpty()) {
             return;
         }
 

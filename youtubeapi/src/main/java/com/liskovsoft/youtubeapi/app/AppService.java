@@ -48,7 +48,7 @@ public class AppService {
 
     public List<String> fixThrottling(List<String> throttledList) {
         if (Helpers.allNulls(throttledList)) {
-            return throttledList;
+            return null;
         }
 
         List<String> result = new ArrayList<>();
@@ -102,19 +102,6 @@ public class AppService {
 
         return mClientPlaybackNonce;
     }
-
-    /**
-     * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
-     */
-    //public String getClientPlaybackNonceDuktape() {
-    //    String code = createClientPlaybackNonceCode();
-    //
-    //    if (code == null) {
-    //        return null;
-    //    }
-    //
-    //    return getDuktape().evaluate(code).toString();
-    //}
 
     public String getSessionPoToken() {
         return PoTokenGate.getSessionPoToken();

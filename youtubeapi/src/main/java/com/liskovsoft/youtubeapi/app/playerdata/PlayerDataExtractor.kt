@@ -61,8 +61,8 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return mCipherCode
     }
 
-    fun decipherItems(items: List<String>): List<String> {
-        return mCipherCode?.let { CipherExtractor.decipherItems(items, it) } ?: items
+    fun decipherItems(items: List<String>): List<String>? {
+        return mCipherCode?.let { CipherExtractor.decipherItems(items, it) }
     }
 
     fun createClientPlaybackNonce(): String? {

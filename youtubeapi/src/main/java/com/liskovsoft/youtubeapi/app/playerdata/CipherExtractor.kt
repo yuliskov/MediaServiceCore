@@ -26,9 +26,9 @@ internal object CipherExtractor {
         return code?.let { Helpers.replace(code, SIGNATURE_DECIPHER, "function decipherSignature($1)") }
     }
 
-    fun decipherItems(items: List<String>, cipherCode: String): List<String> {
+    fun decipherItems(items: List<String>, cipherCode: String): List<String>? {
         if (Helpers.allNulls(items))
-            return items
+            return null
 
         val decipherCode = createDecipherCode(items, cipherCode)
 

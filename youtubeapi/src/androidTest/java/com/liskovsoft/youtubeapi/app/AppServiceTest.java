@@ -7,6 +7,7 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import org.junit.Before;
@@ -55,6 +56,15 @@ public class AppServiceTest {
 
         for (String decipher : deciphered) {
              assertNotEquals("Cipher and decipher not the same", decipher, cipher);
+        }
+    }
+
+    @Test
+    public void testCipherExtractor() {
+        for (String url : AppConstants.playerUrls) {
+            PlayerDataExtractor dataExtractor = new PlayerDataExtractor(url);
+
+            assertNotNull("Cipher found for url: " + url, dataExtractor.extractCipher());
         }
     }
 

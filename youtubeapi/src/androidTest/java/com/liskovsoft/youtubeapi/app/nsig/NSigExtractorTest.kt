@@ -4,6 +4,7 @@ import android.Manifest
 import androidx.test.rule.GrantPermissionRule
 import com.liskovsoft.youtubeapi.app.AppServiceInt
 import com.liskovsoft.youtubeapi.app.AppConstants
+import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
@@ -34,8 +35,19 @@ class NSigExtractorTest {
         AppConstants.playerUrls.forEach { testPlayerUrl(it) }
     }
 
+    @Test
+    fun testPlayerVersions2() {
+        AppConstants.playerUrls.forEach { testPlayerUrl2(it) }
+    }
+
     private fun testPlayerUrl(url: String) {
         val extractor = NSigExtractor(url)
+
+        assertNotNull("NSig not null for url $url", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
+    }
+
+    private fun testPlayerUrl2(url: String) {
+        val extractor = PlayerDataExtractor(url)
 
         assertNotNull("NSig not null for url $url", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
     }

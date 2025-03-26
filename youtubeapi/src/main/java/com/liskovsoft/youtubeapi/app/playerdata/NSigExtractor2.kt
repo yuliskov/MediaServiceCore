@@ -52,17 +52,17 @@ internal object NSigExtractor2 {
      *
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
-    fun extractNFuncCode(jsCode: String): Pair<List<String>, String>? {
+    fun extractNFuncCode(jsCode: String, globalVarData: Triple<String?, String?, String?>?): Pair<List<String>, String>? {
         val funcName = extractNFunctionName(jsCode) ?: extractNFunctionName2(jsCode) ?: return null
 
-        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), jsCode)
+        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData ?: Triple(null, null, null))
     }
 
-    private fun fixupNFunctionCode(data: Pair<List<String>, String>, jsCode: String): Pair<List<String>, String> {
+    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String> {
         val argNames = data.first
         var code = data.second
 
-        val (globalVar, varName, _) = extractPlayerJsGlobalVar(jsCode)
+        val (globalVar, varName, _) = globalVarData
 
         if (globalVar != null) {
             Log.d(TAG, "Prepending n function code with global array variable \"$varName\"")
@@ -76,28 +76,6 @@ internal object NSigExtractor2 {
         val matcher = pattern.matcher(code)
         val updatedCode = matcher.replaceAll(";")
         return Pair(argNames, updatedCode)
-    }
-
-    fun extractPlayerJsGlobalVar(jsCode: String): Triple<String?, String?, String?> {
-        val patternString = """(?x)
-            (["'])use\s+strict\1;\s*
-            (
-                var\s+([a-zA-Z0-9_$]+)\s*=\s*
-                (
-                    (["'])(?:(?!\5).|\\.)+\5
-                    \.split\((["'])(?:(?!\6).)+\6\)
-                )
-            )[;,]
-        """
-
-        val pattern = Pattern.compile(patternString, Pattern.COMMENTS)
-        val matcher = pattern.matcher(jsCode)
-
-        return if (matcher.find()) {
-            Triple(matcher.group(2), matcher.group(3), matcher.group(4))
-        } else {
-            Triple(null, null, null)
-        }
     }
 
     /**

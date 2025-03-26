@@ -55,7 +55,27 @@ public class AppServiceTest {
         assertFalse("Deciphered not empty", deciphered.isEmpty());
 
         for (String decipher : deciphered) {
-             assertNotEquals("Cipher and decipher not the same", decipher, cipher);
+             assertNotEquals("Cipher and decipher not the same", cipher, decipher);
+        }
+    }
+
+    @Test
+    public void testThatItemsDecipheredCorrectly2() {
+        List<String> ciphered = new ArrayList<>();
+        String cipher = "ADBVCGD2934FBBBBBDDDFFF";
+        ciphered.add(cipher);
+        ciphered.add(cipher);
+        ciphered.add(cipher);
+
+        PlayerDataExtractor extractor = new PlayerDataExtractor(AppConstants.playerUrls.get(0));
+
+        List<String> deciphered = extractor.decipherItems(ciphered);
+
+        assertNotNull("Deciphered not null", deciphered);
+        assertFalse("Deciphered not empty", deciphered.isEmpty());
+
+        for (String decipher : deciphered) {
+            assertNotEquals("Cipher and decipher not the same", cipher, decipher);
         }
     }
 

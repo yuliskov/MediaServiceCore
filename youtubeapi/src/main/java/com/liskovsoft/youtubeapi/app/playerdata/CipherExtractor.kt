@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.common.js.V8Runtime
 import java.util.regex.Pattern
 
 internal object CipherExtractor {
@@ -9,12 +10,12 @@ internal object CipherExtractor {
                 function\ [$\w]+\([\w]\)\{.*[\w]\.split\((?:""|.+)\).*;return\ [\w]\.join\((?:""|([$\w]+)\[\d+\])\)\}""", Pattern.COMMENTS)
     private val SIGNATURE_DECIPHER: Pattern = Pattern.compile("function [$\\w]+\\(([\\w])\\)")
 
-    fun extract(jsCode: String): String? {
+    fun extract(jsCode: String, globalVarData: Triple<String?, String?, String?>?): String? {
         val cipherMatcher = mCipherPattern1.matcher(jsCode)
 
         val code = if (cipherMatcher.find()) {
-            if (cipherMatcher.groupCount() == 1) { // need global var
-                "${NSigExtractor2.extractPlayerJsGlobalVar(jsCode).first}; ${cipherMatcher.group(0)}"
+            if (cipherMatcher.groupCount() == 1 && globalVarData?.first != null) { // need global var
+                "${globalVarData.first}; ${cipherMatcher.group(0)}"
             } else {
                 cipherMatcher.group(0)
             }
@@ -23,5 +24,30 @@ internal object CipherExtractor {
         }
 
         return code?.let { Helpers.replace(code, SIGNATURE_DECIPHER, "function decipherSignature($1)") }
+    }
+
+    fun decipherItems(items: List<String>, cipherCode: String): List<String> {
+        if (Helpers.allNulls(items))
+            return items
+
+        val decipherCode = createDecipherCode(items, cipherCode)
+
+        val result = V8Runtime.instance().evaluate(decipherCode)
+
+        return result.split(",")
+    }
+
+    private fun createDecipherCode(items: List<String>, cipherCode: String): String {
+        val result = StringBuilder()
+        result.append(cipherCode)
+        result.append("var result = [];")
+
+        for (item in items) {
+            result.append(String.format("result.push(decipherSignature('%s'));", item))
+        }
+
+        result.append("result.toString();")
+
+        return result.toString()
     }
 }

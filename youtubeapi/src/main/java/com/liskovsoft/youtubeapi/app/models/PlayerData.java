@@ -89,7 +89,7 @@ public class PlayerData {
     private String mDecipherFunctionPart1;
 
     @RegExp({
-            "'use strict';(var [$\\w]+=.+\\.split\\(.+\\);)",
+            "'use strict';(var [$\\w]+=[.\\S\\s]+?\\.split\\(.+?\\);)",
     })
     private String mDecipherFunctionPart2;
 

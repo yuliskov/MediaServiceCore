@@ -20,18 +20,20 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         restoreNFuncCode()
 
         var jsCode: String? = null
+        var globalVarData: Triple<String?, String?, String?>? = null
         if (mNFuncCode == null || mCipherCode == null) {
             jsCode = loadPlayer()
+            globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) }
         }
 
         // Obtain the code regularly
         if (mNFuncCode == null) {
-            mNFuncCode = jsCode?.let { NSigExtractor2.extractNFuncCode(it) }
+            mNFuncCode = jsCode?.let { NSigExtractor2.extractNFuncCode(it, globalVarData) }
             persistNFuncCode()
         }
 
         if (mCipherCode == null) {
-            mCipherCode = jsCode?.let { CipherExtractor.extract(it) }
+            mCipherCode = jsCode?.let { CipherExtractor.extract(it, globalVarData) }
         }
 
         if (mNFuncCode == null) {
@@ -52,6 +54,10 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     fun extractCipher(): String? {
         return mCipherCode
+    }
+
+    fun decipherItems(items: List<String>): List<String> {
+        return mCipherCode?.let { CipherExtractor.decipherItems(items, it) } ?: items
     }
 
     private fun extractNSigReal(nParam: String): String? {

@@ -95,6 +95,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return playerUrl
             .replace("/player_ias_tce.vflset/", "/player_ias.vflset/") // See https://github.com/yt-dlp/yt-dlp/issues/12398
             .replace("player_ias.vflset/en_US/base.js", "tv-player-ias.vflset/tv-player-ias.js")
+            .replace("20830619", "69f581a5")
     }
 
     private fun persistAllData() {

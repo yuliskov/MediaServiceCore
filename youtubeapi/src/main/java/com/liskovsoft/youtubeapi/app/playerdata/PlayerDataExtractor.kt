@@ -40,8 +40,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
             mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
 
-            persistNFuncCode()
-            persistOtherCode()
+            persistAllData()
         }
 
         if (mNFuncCode == null) {
@@ -98,12 +97,9 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             .replace("player_ias.vflset/en_US/base.js", "tv-player-ias.vflset/tv-player-ias.js")
     }
 
-    private fun persistNFuncCode() { // save on success
-        mNFuncCode?.let { data.nSigData = NSigData(playerUrl, it.first, it.second) }
-    }
-
-    private fun persistOtherCode() {
-        if (mCipherCode != null && mCPNCode != null && mSignatureTimestamp != null) {
+    private fun persistAllData() {
+        if (mNFuncCode != null && mCipherCode != null && mCPNCode != null && mSignatureTimestamp != null) {
+            mNFuncCode?.let { data.nSigData = NSigData(playerUrl, it.first, it.second) }
             data.playerData = PlayerDataCached(playerUrl, mCPNCode, null, mCipherCode, mSignatureTimestamp)
         }
     }

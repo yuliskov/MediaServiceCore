@@ -298,7 +298,7 @@ public class MediaServiceData {
 
         String[] split = Helpers.splitData(cache);
 
-        mNSigData = Helpers.parseItem(split, 7, NSigData::fromString);
+        mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
     }
 
     private void persistData() {
@@ -328,6 +328,6 @@ public class MediaServiceData {
 
         mCachedPrefs.setMediaServiceCache(
                 Helpers.mergeData(null, null,
-                        null, null, null, null, null, mNSigData));
+                        null, null, null, null, null, null, mNSigData));
     }
 }

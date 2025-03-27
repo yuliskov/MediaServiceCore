@@ -13,7 +13,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data = MediaServiceData.instance()
     private var mNFuncCode: Pair<List<String>, String>? = null
-    private var mNSig: Pair<String, String?>? = null
+    private var mNSigTmp: Pair<String, String?>? = null
     private var mCipherCode: String? = null
     private var mCPNCode: String? = null
     private var mSignatureTimestamp: String? = null
@@ -50,11 +50,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     fun extractNSig(nParam: String): String? {
-        if (mNSig?.first == nParam) return mNSig?.second
+        if (mNSigTmp?.first == nParam) return mNSigTmp?.second
 
         val nSig = extractNSigReal(nParam)
 
-        mNSig = Pair(nParam, nSig)
+        mNSigTmp = Pair(nParam, nSig)
 
         return nSig
     }
@@ -76,7 +76,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     fun validate(): Boolean {
-        return mNSig != null && mCipherCode != null && mCPNCode != null && mSignatureTimestamp != null
+        return mNFuncCode != null && mCipherCode != null && mCPNCode != null && mSignatureTimestamp != null
     }
 
     private fun extractNSigReal(nParam: String): String? {

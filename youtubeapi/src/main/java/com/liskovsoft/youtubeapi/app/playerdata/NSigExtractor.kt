@@ -52,7 +52,9 @@ internal object NSigExtractor {
             Log.d(TAG, "No global array variable found in player JS")
         }
 
-        val patternString = """;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(?:(['"])undefined\1|${varName ?: ""}\[\d+\])\s*\)\s*return\s+${argNames[0]};"""
+        val escapedVarName = varName?.let { Pattern.quote(it) } ?: ""
+        val escapedArgName = Pattern.quote(argNames[0])
+        val patternString = """;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(?:(['"])undefined\1|$escapedVarName\[\d+\])\s*\)\s*return\s+$escapedArgName;"""
         val pattern = Pattern.compile(patternString)
         val matcher = pattern.matcher(code)
         val updatedCode = matcher.replaceAll(";")

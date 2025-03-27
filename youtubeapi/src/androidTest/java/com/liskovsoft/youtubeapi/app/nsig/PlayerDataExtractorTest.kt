@@ -5,6 +5,7 @@ import androidx.test.rule.GrantPermissionRule
 import com.liskovsoft.youtubeapi.app.AppServiceInt
 import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
@@ -38,6 +39,9 @@ class PlayerDataExtractorTest {
     private fun testPlayerUrl(url: String) {
         val extractor = PlayerDataExtractor(url)
 
-        assertNotNull("NSig not null for url $url", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
+        val nParam = "5cNpZqIJ7ixNqU68Y7S"
+        val nSig = extractor.extractNSig(nParam)
+        assertNotNull("NSig not null for url $url", nSig)
+        assertNotEquals("NSig not equal failed for url $url", nParam, nSig)
     }
 }

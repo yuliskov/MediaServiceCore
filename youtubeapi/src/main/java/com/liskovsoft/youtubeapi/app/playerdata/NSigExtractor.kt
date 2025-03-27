@@ -8,22 +8,6 @@ import java.util.regex.Pattern
 
 internal object NSigExtractor {
     private val TAG = NSigExtractor::class.java.simpleName
-    //private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
-    //        (?:
-    //            \.get\("n"\)\)&&\(b=|
-    //            (?:
-    //                b=String\.fromCharCode\(110\)|
-    //                ([a-zA-Z0-9_$.]+)&&\(b="nn"\[\+\1\]
-    //            )
-    //            (?:
-    //                ,[a-zA-Z0-9_$]+\(a\))?,c=a\.
-    //                (?:
-    //                    get\(b\)|
-    //                    [a-zA-Z0-9_$]+\[b\]\|\|null
-    //                )\)&&\(c=|
-    //            \b([a-zA-Z0-9_$]+)=
-    //        )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
-    //        (?(2),[a-zA-Z0-9_$]+\.set\("n"\,\2\),\3\.length)""", Pattern.COMMENTS)
     private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
@@ -40,9 +24,6 @@ internal object NSigExtractor {
                 \b([a-zA-Z0-9_$]+)=
             )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
             (?(2),[a-zA-Z0-9_$]+\.set\((?:"n+"|[a-zA-Z0-9_$]+)\,\2\))""", Pattern.COMMENTS)
-    //private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
-    //            ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
-    //            \s*\{(?:(?!\};).)+?["']enhanced_except_""", Pattern.COMMENTS)
     private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
                 ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
                 \s*\{(?:(?!\};).)+?return\s*(["'])[\w-]+_w8_\1\s*\+\s*[a-zA-Z0-9_$]+""", Pattern.COMMENTS)

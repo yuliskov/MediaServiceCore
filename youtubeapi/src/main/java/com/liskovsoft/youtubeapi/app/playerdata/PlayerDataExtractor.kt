@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
+import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.youtubeapi.common.api.FileApi
 import com.liskovsoft.youtubeapi.common.helpers.ReflectionHelper
@@ -8,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 internal class PlayerDataExtractor(val playerUrl: String) {
+    private val TAG = PlayerDataExtractor::class.java.simpleName
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data = MediaServiceData.instance()
     private var mNFuncCode: Pair<List<String>, String>? = null
@@ -25,7 +27,15 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             val jsCode = loadPlayer()
             val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) }
 
-            mNFuncCode = jsCode?.let { NSigExtractor.extractNFuncCode(it, globalVarData) }
+            mNFuncCode = jsCode?.let {
+                try {
+                    NSigExtractor.extractNFuncCode(it, globalVarData)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                    Log.d(TAG, "NSig init failed: %s", e.message)
+                    null
+                }
+            }
             mCipherCode = jsCode?.let { CipherExtractor.extractCipherCode(it, globalVarData) }
             mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
             mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
@@ -36,7 +46,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
         if (mNFuncCode == null) {
             ReflectionHelper.dumpDebugInfo(NSigExtractor::class.java, loadPlayer())
-            throw IllegalStateException("NSigExtractor: Can't obtain NSig code for $playerUrl...")
+            //throw IllegalStateException("NSigExtractor: Can't obtain NSig code for $playerUrl...")
         }
     }
 
@@ -64,6 +74,10 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     fun getSignatureTimestamp(): String? {
         return mSignatureTimestamp
+    }
+
+    fun validate(): Boolean {
+        return mNSig != null && mCipherCode != null && mCPNCode != null && mSignatureTimestamp != null
     }
 
     private fun extractNSigReal(nParam: String): String? {

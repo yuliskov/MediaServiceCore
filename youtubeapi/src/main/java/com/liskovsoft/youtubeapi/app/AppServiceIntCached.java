@@ -63,7 +63,12 @@ public class AppServiceIntCached extends AppServiceInt {
             YouTubeMediaItemService.instance().invalidateCache();
             try {
                 mPlayerDataExtractor = super.getPlayerDataExtractor(playerUrl);
-                getData().setAppInfo(mAppInfo);
+                if (mPlayerDataExtractor.validate()) {
+                    getData().setAppInfo(mAppInfo);
+                } else {
+                    mAppInfo = null;
+                    mFallbackMode = true;
+                }
                 return mPlayerDataExtractor;
             } catch (Throwable e) { // StackOverflowError | IllegalStateException
                 e.printStackTrace();

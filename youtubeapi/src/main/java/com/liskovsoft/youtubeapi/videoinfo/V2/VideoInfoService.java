@@ -43,8 +43,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
-            //WEB_EMBEDDED_PLAYER, VIDEO_INFO_WEB, VIDEO_INFO_TV
-            WEB_EMBEDDED_PLAYER, VIDEO_INFO_IOS
+            WEB_EMBEDDED_PLAYER, VIDEO_INFO_IOS // IOS can work without NSig. Use it as a fallback.
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -119,7 +118,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo firstNonNull(String videoId, String clickTrackingParams) {
-        final int beginType = Arrays.binarySearch(VIDEO_INFO_TYPE_LIST, mVideoInfoType) >= 0 ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
+        final int beginType = Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
         int nextType = beginType;
         VideoInfo result;
 

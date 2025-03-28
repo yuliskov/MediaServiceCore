@@ -187,7 +187,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
-        MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
+        //MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
         if (!mIsUnplayable && isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
             return;
         }

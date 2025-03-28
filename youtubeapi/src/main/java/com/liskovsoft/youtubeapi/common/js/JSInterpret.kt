@@ -22,34 +22,23 @@ internal object JSInterpret {
     fun extractFunctionCode(jsCode: String, funcName: String): Pair<List<String>, String> {
         val escapedFuncName = Pattern.quote(funcName)
         val pattern = Pattern.compile(
-            """(?xm)
-                (?:function\s+$escapedFuncName|
-                [{;,]\s*$escapedFuncName\s*=\s*function|
-                (?:var|const|let)\s+$escapedFuncName\s*=\s*function)
-                \(([^)]*)\)\{([\s\S]*?return.*?\.join\(.*\))
+            """(?xs)
+                (?:
+                    function\s+$escapedFuncName|
+                    [{;,]\s*$escapedFuncName\s*=\s*function|
+                    (?:var|const|let)\s+$escapedFuncName\s*=\s*function
+                )\s*
+                \(([^)]*)\)\s*
+                (\{.+\})
             """.trimIndent()
         )
-//        val pattern = Pattern.compile(
-//
-//            """(?xs)
-//                (?:
-//                    function\s+$escapedFuncName|
-//                    [{;,]\s*$escapedFuncName\s*=\s*function|
-//                    (?:var|const|let)\s+$escapedFuncName\s*=\s*function
-//                )\s*
-//                \(([^)]*)\)\s*
-//                (\{.+\})
-//            """.trimIndent()
-//        )
-
         val matcher = pattern.matcher(jsCode)
         if (!matcher.find()) {
             throw IllegalStateException("Could not find JS function \"$funcName\"")
         }
         val args = matcher.group(1)?.split(",")?.map { it.trim() } ?: emptyList()
         val codeBlock = matcher.group(2) ?: ""
-//        val (code, _) = separateAtParen(codeBlock)
-        val code = codeBlock
+        val (code, _) = separateAtParen(codeBlock)
         return Pair(args, code)
     }
 

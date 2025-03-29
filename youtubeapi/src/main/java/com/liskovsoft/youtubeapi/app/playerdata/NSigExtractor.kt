@@ -36,8 +36,7 @@ internal object NSigExtractor {
     fun extractNFuncCode(jsCode: String, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String>? {
         val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
 
-        val funcName =
-            extractNFunctionName(jsCode, globalVar) ?: extractNFunctionName2(jsCode) ?: return null
+        val funcName = extractInitNFunctionName(jsCode, globalVar) ?: extractNFunctionName1(jsCode) ?: extractNFunctionName2(jsCode) ?: return null
 
         return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
     }
@@ -79,13 +78,13 @@ internal object NSigExtractor {
      *
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
-    private fun extractNFunctionName(jsCode: String, globalVar: Pair<String?, List<String>?>): String? {
+    private fun extractInitNFunctionName(jsCode: String, globalVar: Pair<String?, List<String>?>): String? {
         val (varName, globalList) = globalVar
         val itemValue = globalList?.first { it.endsWith("_w8_") }
         if (itemValue != null) {
             val escapedVarName = varName?.let { Pattern.quote(it) } ?: ""
             val varIndex = globalList.indexOf(itemValue)
-            val pattern = Pattern.compile("""(?xs)
+            val initPattern = Pattern.compile("""(?xs)
                     [;\n](?:
                         (function\s+)|
                         (?:var\s+)?
@@ -95,19 +94,30 @@ internal object NSigExtractor {
                     \}\s*catch\(\s*[a-zA-Z0-9_$]+\s*\)\s*
                     \{\s*return\s+$escapedVarName\[$varIndex\]\s*\+\s*\3\s*\}\s*return\s+[^}]+\}[;\n]
                 """, Pattern.COMMENTS)
-            val matcher = pattern.matcher(jsCode)
+            val initMatcher = initPattern.matcher(jsCode)
 
-            if (matcher.find() && matcher.groupCount() >= 2) {
-                return matcher.group(2)
+            if (initMatcher.find() && initMatcher.groupCount() >= 2) {
+                val funcName = initMatcher.group(2)
+                return funcName
             }
+
+            Log.d(TAG, "Initial search was unable to find nsig function name")
         }
 
-        val nFuncPattern = mNFuncPattern
-        val nFuncMatcher = nFuncPattern.matcher(jsCode)
+        return null
+    }
 
-        if (nFuncMatcher.find() && nFuncMatcher.groupCount() >= 2) {
-            val funcName = nFuncMatcher.group(nFuncMatcher.groupCount() - 1)
-            val idx = nFuncMatcher.group(nFuncMatcher.groupCount())
+    /**
+     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_name
+     *
+     * yt-dlp\yt_dlp\extractor\youtube.py
+     */
+    private fun extractNFunctionName1(jsCode: String): String? {
+        val nFuncMatcher = mNFuncPattern.matcher(jsCode)
+
+        if (nFuncMatcher.find() && nFuncMatcher.groupCount() >= 3) {
+            val funcName = nFuncMatcher.group(3) // nFuncMatcher.groupCount() - 1
+            val idx = if (nFuncMatcher.groupCount() >= 4) nFuncMatcher.group(4) else return funcName // nFuncMatcher.groupCount()
 
             val escapedFuncName = Pattern.quote(funcName)
 
@@ -129,9 +139,13 @@ internal object NSigExtractor {
         return null
     }
 
+    /**
+     * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_name
+     *
+     * yt-dlp\yt_dlp\extractor\youtube.py
+     */
     private fun extractNFunctionName2(jsCode: String): String? {
-        val nFuncPattern = mNFuncPattern2
-        val nFuncMatcher = nFuncPattern.matcher(jsCode)
+        val nFuncMatcher = mNFuncPattern2.matcher(jsCode)
 
         if (nFuncMatcher.find() && nFuncMatcher.groupCount() == 1) {
             return nFuncMatcher.group(1)

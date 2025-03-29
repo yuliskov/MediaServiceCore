@@ -1,5 +1,8 @@
 package com.liskovsoft.youtubeapi.common.js
 
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
 import java.util.regex.Pattern
 
 internal object JSInterpret {
@@ -9,8 +12,7 @@ internal object JSInterpret {
         return { args: List<String> ->
             val fullCode =
                 "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
-            val result = V8Runtime.instance().evaluate(fullCode)
-            result?.toString()
+            V8Runtime.instance().evaluate(fullCode)
         }
     }
 
@@ -40,6 +42,21 @@ internal object JSInterpret {
         val codeBlock = matcher.group(2) ?: ""
         val (code, _) = separateAtParen(codeBlock)
         return Pair(args, code)
+    }
+
+    fun interpretExpression(jsCode: String): List<String>? {
+        val result = V8Runtime.instance().evaluate("JSON.stringify($jsCode)")
+
+        val gson = Gson()
+        val listType = object : TypeToken<List<String>>() {}.type
+
+        val response: List<String>? = try {
+            gson.fromJson(result, listType)
+        } catch (e: JsonSyntaxException) {
+            null
+        }
+        
+        return response
     }
 
     /**

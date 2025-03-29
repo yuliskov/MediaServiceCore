@@ -25,7 +25,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
         if (mNFuncCode == null || mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             val jsCode = loadPlayer()
-            val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) }
+            val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) } ?: Triple(null, null, null)
 
             mNFuncCode = jsCode?.let {
                 try {

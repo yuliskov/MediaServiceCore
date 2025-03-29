@@ -33,7 +33,7 @@ internal object ClientPlaybackNonceExtractor {
         return extractRawClientPlaybackNonceFunction(jsCode)?.let { "${FUNCTION_RANDOM_BYTES}${it}getClientPlaybackNonce();" }
     }
 
-    fun createClientPlaybackNonce(clientPlaybackNonceCode: String): String {
+    fun createClientPlaybackNonce(clientPlaybackNonceCode: String): String? {
         return V8Runtime.instance().evaluate(clientPlaybackNonceCode)
     }
 

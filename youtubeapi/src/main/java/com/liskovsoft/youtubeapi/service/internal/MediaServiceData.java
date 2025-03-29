@@ -59,6 +59,7 @@ public class MediaServiceData {
     private GlobalPreferences mGlobalPrefs;
     private PoTokenResponse mPoToken;
     private AppInfoCached mAppInfo;
+    private AppInfoCached mFailedAppInfo;
     private PlayerDataCached mPlayerData;
     private ClientDataCached mClientData;
     private NSigData mNSigData;
@@ -219,8 +220,17 @@ public class MediaServiceData {
 
     public void setAppInfo(AppInfoCached appInfo) {
         mAppInfo = appInfo;
+        mFailedAppInfo = null;
 
         persistData();
+    }
+
+    public AppInfoCached getFailedAppInfo() {
+        return mFailedAppInfo;
+    }
+
+    public void setFailedAppInfo(AppInfoCached appInfo) {
+        mFailedAppInfo = appInfo;
     }
 
     public PlayerDataCached getPlayerData() {

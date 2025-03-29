@@ -8,7 +8,7 @@ import java.util.regex.Pattern
 
 internal object NSigExtractor {
     private val TAG = NSigExtractor::class.java.simpleName
-    private var mNFuncPattern: com.florianingerl.util.regex.Pattern? = com.florianingerl.util.regex.Pattern.compile("""(?x)
+    private val mNFuncPattern = com.florianingerl.util.regex.Pattern.compile("""(?x)
             (?:
                 \.get\("n"\)\)&&\(b=|
                 (?:
@@ -24,7 +24,7 @@ internal object NSigExtractor {
                 \b([a-zA-Z0-9_$]+)=
             )([a-zA-Z0-9_$]+)(?:\[(\d+)\])?\([a-zA-Z]\)
             (?(2),[a-zA-Z0-9_$]+\.set\((?:"n+"|[a-zA-Z0-9_$]+)\,\2\))""", Pattern.COMMENTS)
-    private var mNFuncPattern2: Pattern? = Pattern.compile("""(?xs)
+    private val mNFuncPattern2 = Pattern.compile("""(?xs)
                 ;\s*([a-zA-Z0-9_$]+)\s*=\s*function\([a-zA-Z0-9_$]+\)
                 \s*\{(?:(?!\};).)+?return\s*(["'])[\w-]+_w8_\1\s*\+\s*[a-zA-Z0-9_$]+""", Pattern.COMMENTS)
 
@@ -33,32 +33,45 @@ internal object NSigExtractor {
      *
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
-    fun extractNFuncCode(jsCode: String, globalVarData: Triple<String?, String?, String?>?): Pair<List<String>, String>? {
-        val funcName = extractNFunctionName(jsCode) ?: extractNFunctionName2(jsCode) ?: return null
+    fun extractNFuncCode(jsCode: String, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String>? {
+        val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
 
-        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData ?: Triple(null, null, null))
+        val funcName =
+            extractNFunctionName(jsCode, globalVar) ?: extractNFunctionName2(jsCode) ?: return null
+
+        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
     }
 
-    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String> {
+    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>): Pair<List<String>, String> {
         val argNames = data.first
-        var code = data.second
+        var nSigCode = data.second
 
-        val (globalVar, varName, _) = globalVarData
+        var (varCode, varName, _) = globalVarData
+        val globalList: List<String>? = globalVar.second
 
-        if (globalVar != null) {
+        if (varCode != null && varName != null) {
             Log.d(TAG, "Prepending n function code with global array variable \"$varName\"")
-            code = "$globalVar; $code"
+            nSigCode = "$varCode; $nSigCode"
         } else {
-            Log.d(TAG, "No global array variable found in player JS")
+            varName = "dlp_wins"
         }
 
-        val escapedVarName = varName?.let { Pattern.quote(it) } ?: ""
+        val undefinedIdx = globalList?.indexOf("undefined") ?: -1
+        val escapedVarName = Pattern.quote(varName)
         val escapedArgName = Pattern.quote(argNames[0])
-        val patternString = """;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(?:(['"])undefined\1|$escapedVarName\[\d+\])\s*\)\s*return\s+$escapedArgName;"""
-        val pattern = Pattern.compile(patternString)
-        val matcher = pattern.matcher(code)
-        val updatedCode = matcher.replaceAll(";")
-        return Pair(argNames, updatedCode)
+        val fixupPattern = Pattern.compile("""(?x)
+                ;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(?:
+                    (["\'])undefined\1|
+                    ${escapedVarName}\[${if (undefinedIdx != -1) undefinedIdx else "\\d+"}\]
+                )\s*\)\s*return\s+${escapedArgName};""", Pattern.COMMENTS)
+        val fixupMatcher = fixupPattern.matcher(nSigCode)
+        val fixedCode = fixupMatcher.replaceAll(";")
+
+        if (fixedCode == nSigCode) {
+            Log.d(TAG, "No typeof statement found in nsig function code")
+        }
+
+        return Pair(argNames, fixedCode)
     }
 
     /**
@@ -66,8 +79,30 @@ internal object NSigExtractor {
      *
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
-    private fun extractNFunctionName(jsCode: String): String? {
-        val nFuncPattern = mNFuncPattern ?: return null
+    private fun extractNFunctionName(jsCode: String, globalVar: Pair<String?, List<String>?>): String? {
+        val (varName, globalList) = globalVar
+        val itemValue = globalList?.first { it.endsWith("_w8_") }
+        if (itemValue != null) {
+            val escapedVarName = varName?.let { Pattern.quote(it) } ?: ""
+            val varIndex = globalList.indexOf(itemValue)
+            val pattern = Pattern.compile("""(?xs)
+                    [;\n](?:
+                        (function\s+)|
+                        (?:var\s+)?
+                    )([a-zA-Z0-9_$]+)\s*    #(?(1)|=\s*function\s*)
+                    \(([a-zA-Z0-9_$]+)\)\s*\{
+                    (?:(?!\}[;\n]).)+
+                    \}\s*catch\(\s*[a-zA-Z0-9_$]+\s*\)\s*
+                    \{\s*return\s+$escapedVarName\[$varIndex\]\s*\+\s*\3\s*\}\s*return\s+[^}]+\}[;\n]
+                """, Pattern.COMMENTS)
+            val matcher = pattern.matcher(jsCode)
+
+            if (matcher.find() && matcher.groupCount() >= 2) {
+                return matcher.group(2)
+            }
+        }
+
+        val nFuncPattern = mNFuncPattern
         val nFuncMatcher = nFuncPattern.matcher(jsCode)
 
         if (nFuncMatcher.find() && nFuncMatcher.groupCount() >= 2) {
@@ -95,7 +130,7 @@ internal object NSigExtractor {
     }
 
     private fun extractNFunctionName2(jsCode: String): String? {
-        val nFuncPattern = mNFuncPattern2 ?: return null
+        val nFuncPattern = mNFuncPattern2
         val nFuncMatcher = nFuncPattern.matcher(jsCode)
 
         if (nFuncMatcher.find() && nFuncMatcher.groupCount() == 1) {

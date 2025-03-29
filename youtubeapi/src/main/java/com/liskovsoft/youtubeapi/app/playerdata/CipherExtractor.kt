@@ -34,7 +34,7 @@ internal object CipherExtractor {
 
         val result = V8Runtime.instance().evaluate(decipherCode)
 
-        return result.split(",")
+        return result?.split(",")
     }
 
     private fun createDecipherCode(items: List<String>, cipherCode: String): String {

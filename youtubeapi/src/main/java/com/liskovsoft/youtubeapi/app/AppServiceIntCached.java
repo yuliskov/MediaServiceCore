@@ -66,6 +66,7 @@ public class AppServiceIntCached extends AppServiceInt {
                 if (mPlayerDataExtractor.validate()) {
                     getData().setAppInfo(mAppInfo);
                 } else {
+                    getData().setFailedAppInfo(mAppInfo);
                     mAppInfo = null;
                     mFallbackMode = true;
                 }

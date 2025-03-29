@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.common.js;
 
+import androidx.annotation.Nullable;
+
 import com.eclipsesource.v8.V8;
 import com.eclipsesource.v8.V8ResultUndefined;
 import com.eclipsesource.v8.V8ScriptExecutionException;
@@ -37,6 +39,7 @@ public final class V8Runtime {
         sInstance = null;
     }
 
+    @Nullable
     public String evaluate(final String source) {
         return evaluateSafe(source);
     }

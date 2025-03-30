@@ -15,17 +15,15 @@ import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import io.reactivex.SingleEmitter
-import java.io.Closeable
 import java.util.concurrent.CountDownLatch
 
 @RequiresApi(19)
 internal class PoTokenWebView private constructor(
     context: Context,
-    private val onSuccess: Runnable
+    private val onSuccess: () -> Unit
 ) : PoTokenGenerator {
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
-    //private lateinit var expirationInstant: Instant
     private var expirationMs: Long = -1
 
     //region Initialization
@@ -156,20 +154,20 @@ internal class PoTokenWebView private constructor(
             "[ \"$REQUEST_KEY\", \"$botguardResponse\" ]",
         ) ?: return
 
+        Log.d(TAG, "GenerateIT response: $responseBody")
+        val (integrityToken, expirationTimeInSeconds) = parseIntegrityTokenData(responseBody)
+
+        // MOD: backport Instant.now().plusSeconds
+        // leave 10 minutes of margin just to be sure
+        //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
+        expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
+
         runOnMainThread {
-            Log.d(TAG, "GenerateIT response: $responseBody")
-            val (integrityToken, expirationTimeInSeconds) = parseIntegrityTokenData(responseBody)
-
-            // MOD: backport Instant.now().plusSeconds
-            // leave 10 minutes of margin just to be sure
-            //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
-            expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
-
             webView.evaluateJavascript(
                 "this.integrityToken = $integrityToken"
             ) {
                 Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-                onSuccess.run()
+                onSuccess()
             }
         }
     }
@@ -185,8 +183,9 @@ internal class PoTokenWebView private constructor(
             pot = it
         }
 
+        val u8Identifier = stringToU8(identifier)
+
         runOnMainThread {
-            val u8Identifier = stringToU8(identifier)
             webView.evaluateJavascript(
                 """try {
                         identifier = "$identifier"
@@ -322,6 +321,7 @@ internal class PoTokenWebView private constructor(
      * to [generatorEmitter].
      */
     private fun onInitializationErrorCloseAndCancel(error: Throwable) {
+        popAllPoTokenEmitters()
         runOnMainThread {
             close()
             throw error

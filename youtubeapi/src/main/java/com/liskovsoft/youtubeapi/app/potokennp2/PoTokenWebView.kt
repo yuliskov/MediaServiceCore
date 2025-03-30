@@ -375,18 +375,9 @@ internal class PoTokenWebView private constructor(
          * if the `post` fails emits an error on [emitterIfPostFails].
          */
         private fun runOnMainThread(
-            closable: Closeable? = null,
             runnable: Runnable
         ) {
-            if (!Handler(Looper.getMainLooper()).post {
-                    try {
-                        runnable.run()
-                    } catch (e: Exception) {
-                        closable?.close()
-                        throw e
-                    }
-                }) {
-                closable?.close()
+            if (!Handler(Looper.getMainLooper()).post(runnable)) {
                 throw PoTokenException("Could not run on main thread")
             }
         }

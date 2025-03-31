@@ -52,11 +52,10 @@ internal class PoTokenWebView private constructor(
                     // supports a really old version of JS.
 
                     val fmt = "\"${m.message()}\", source: ${m.sourceId()} (${m.lineNumber()})"
-                    val exception = BadWebViewException(fmt)
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
 
-                    onInitializationErrorCloseAndCancel(exception)
-                    //popAllPoTokenEmitters().forEach { (_, emitter) -> emitter.onError(exception) }
+                    //val exception = BadWebViewException(fmt)
+                    //onInitializationErrorCloseAndCancel(exception)
                 }
                 return super.onConsoleMessage(m)
             }
@@ -215,7 +214,8 @@ internal class PoTokenWebView private constructor(
     @JavascriptInterface
     fun onObtainPoTokenError(identifier: String, error: String) {
         Log.e(TAG, "obtainPoToken error from JavaScript: $error")
-        throw buildExceptionForJsError(error)
+        //throw buildExceptionForJsError(error)
+        onInitializationErrorCloseAndCancel(buildExceptionForJsError(error))
     }
 
     /**

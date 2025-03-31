@@ -54,8 +54,8 @@ internal class PoTokenWebView private constructor(
                     val fmt = "\"${m.message()}\", source: ${m.sourceId()} (${m.lineNumber()})"
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
 
-                    //val exception = BadWebViewException(fmt)
-                    //onInitializationErrorCloseAndCancel(exception)
+                    val exception = BadWebViewException(fmt)
+                    onInitializationErrorCloseAndCancel(exception)
                 }
                 return super.onConsoleMessage(m)
             }

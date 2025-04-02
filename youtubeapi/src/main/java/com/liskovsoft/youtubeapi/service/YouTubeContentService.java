@@ -426,9 +426,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            SectionTab tab = mBrowseService.getNews();
-
-            emitGroups(emitter, tab, MediaGroup.TYPE_NEWS);
+            emitGroups(emitter, mBrowseService2.getNews());
         });
     }
 
@@ -437,9 +435,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            SectionTab tab = mBrowseService.getGaming();
-
-            emitGroups(emitter, tab, MediaGroup.TYPE_GAMING);
+            emitGroups(emitter, mBrowseService2.getGaming());
         });
     }
 

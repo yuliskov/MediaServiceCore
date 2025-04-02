@@ -29,6 +29,7 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@Ignore("Old api")
 @RunWith(RobolectricTestRunner.class)
 public class BrowseApiSignedTest extends BrowseApiTestBase {
     /**

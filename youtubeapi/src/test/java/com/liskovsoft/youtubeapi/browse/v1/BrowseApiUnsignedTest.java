@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@Ignore("Old api")
 @RunWith(RobolectricTestRunner.class)
 public class BrowseApiUnsignedTest extends BrowseApiTestBase {
     private BrowseApi mService;
@@ -42,7 +44,7 @@ public class BrowseApiUnsignedTest extends BrowseApiTestBase {
 
         mService = RetrofitHelper.create(BrowseApi.class);
 
-        Thread.sleep(2_000); // add delay between tests
+        RetrofitOkHttpHelper.getAuthHeaders().clear();
     }
 
     @Test

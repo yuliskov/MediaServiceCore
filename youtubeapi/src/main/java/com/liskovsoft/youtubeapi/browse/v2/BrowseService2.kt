@@ -163,6 +163,14 @@ internal open class BrowseService2 {
         return getLikedMusicTV() ?: getLikedMusicWeb()
     }
 
+    fun getNews(): List<MediaGroup?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getNewsQuery(AppClient.TV), MediaGroup.TYPE_NEWS)?.first
+    }
+
+    fun getGaming(): List<MediaGroup?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getGamingQuery(AppClient.TV), MediaGroup.TYPE_GAMING)?.first
+    }
+
     private fun getLikedMusicWeb(): MediaGroup? {
         val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getLikedMusicQuery(AppClient.WEB))
 

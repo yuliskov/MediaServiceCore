@@ -31,6 +31,8 @@ internal object BrowseApiHelper {
     private const val NEW_MUSIC_VIDEOS = "\"browseId\":\"FEmusic_new_releases_videos\""
     private const val NEW_MUSIC_ALBUMS = "\"browseId\":\"FEmusic_new_releases_albums\""
     private const val MY_PLAYLISTS = "\"browseId\":\"FEplaylist_aggregation\""
+    private const val GAMING = "\"browseId\":\"FEtopics_gaming\""
+    private const val NEWS = "\"browseId\":\"FEtopics_news\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
     private const val REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerRequest\":{\"videoId\":\"%s\"}"
     private const val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
@@ -112,6 +114,14 @@ internal object BrowseApiHelper {
 
     fun getNewMusicVideosQuery(): String {
         return ServiceHelper.createQueryRemix(NEW_MUSIC_VIDEOS)
+    }
+
+    fun getNewsQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, NEWS)
+    }
+
+    fun getGamingQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, GAMING)
     }
 
     fun getReelDetailsQuery(videoId: String, params: String): String {

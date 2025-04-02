@@ -94,11 +94,18 @@ public class AuthApiTest {
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 
-        AccountInt firstAccount = accountsList.getAccounts().get(0);
+        AccountInt selectedAccount = null;
 
-        assertNotNull("Contains Name", firstAccount.getName());
-        assertNotNull("Contains Thumbnails", firstAccount.getThumbnails());
-        assertTrue("Is selected", firstAccount.isSelected());
+        for (AccountInt account : accountsList.getAccounts()) {
+            if (account.isSelected()) {
+                selectedAccount = account;
+                break;
+            }
+        }
+
+        assertNotNull("Account not null", selectedAccount);
+        assertNotNull("Account contains Name", selectedAccount.getName());
+        assertNotNull("Account contains Thumbnails", selectedAccount.getThumbnails());
     }
 
     private boolean notEmpty(String userCode) {

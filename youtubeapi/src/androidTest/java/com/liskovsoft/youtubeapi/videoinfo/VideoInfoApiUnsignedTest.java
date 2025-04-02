@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
@@ -38,27 +38,28 @@ public class VideoInfoApiUnsignedTest {
         mService = RetrofitHelper.create(VideoInfoApi.class);
         mLocaleManager = LocaleManager.instance();
         RetrofitOkHttpHelper.setDisableCompression(true);
+        RetrofitOkHttpHelper.getAuthHeaders().clear();
     }
 
     @Ignore("Require sign-in")
     @Test
     public void testThatAgeRestrictedVideoContainsRequiredFields() throws IOException {
-        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpersV1.VIDEO_ID_AGE_RESTRICTED));
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpers.VIDEO_ID_AGE_RESTRICTED));
     }
 
     @Test
     public void testThatUnavailableVideoContainsRequiredFields() throws IOException {
-        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(TestHelpersV1.VIDEO_ID_UNAVAILABLE));
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_UNAVAILABLE));
     }
 
     @Test
     public void testThatLiveVideoContainsSpecificFields()  throws IOException {
-        testThatLiveVideoContainsSpecificFields(getVideoInfo(TestHelpersV1.VIDEO_ID_LIVE));
+        testThatLiveVideoContainsSpecificFields(getVideoInfo(TestHelpers.VIDEO_ID_LIVE));
     }
 
     @Test
     public void testThatVideoWithCaptionsContainsRequiredFields() throws IOException {
-        testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpersV1.VIDEO_ID_CAPTIONS));
+        testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_CAPTIONS));
     }
 
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {
@@ -83,7 +84,7 @@ public class VideoInfoApiUnsignedTest {
         assertNotNull("Contains mime type", track.getMimeType());
         assertNotNull("Contains codecs", track.getCodecs());
 
-        assertTrue("Subtitle url exists", TestHelpersV1.urlExists(track.getBaseUrl()));
+        assertTrue("Subtitle url exists", TestHelpers.urlExists(track.getBaseUrl()));
 
         testThatNonLiveVideoInfoContainsRequiredFields(result);
     }

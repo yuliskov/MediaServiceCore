@@ -5,9 +5,9 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 
 import org.junit.After;
@@ -22,6 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 public class YouTubeMPDBuilderTest {
     private ServiceManager mService;
 
@@ -30,6 +32,7 @@ public class YouTubeMPDBuilderTest {
         // Fix temp video url ban
         Thread.sleep(3_000);
 
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mService = YouTubeServiceManager.instance();
     }
 
@@ -40,24 +43,24 @@ public class YouTubeMPDBuilderTest {
 
     @Test
     public void testThatCipheredFormatValid() {
-        testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
+        testVideoFormatUrl(TestHelpers.VIDEO_ID_MUSIC_2);
     }
 
     @Test
     public void testThatSignedCipheredFormatValid() {
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
 
-        testVideoFormatUrl(TestHelpersV1.VIDEO_ID_MUSIC_2);
+        testVideoFormatUrl(TestHelpers.VIDEO_ID_MUSIC_2);
     }
 
     @Test
     public void testThatSimpleFormatValid() throws IOException {
-        testVideoFormatUrl(TestHelpersV1.VIDEO_ID_CAPTIONS);
+        testVideoFormatUrl(TestHelpers.VIDEO_ID_CAPTIONS);
     }
 
     @Test
     public void testThatMpdNotEmpty() {
-        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_CAPTIONS);
+        MediaItemFormatInfo mediaItemDetails = mService.getMediaItemService().getFormatInfo(TestHelpers.VIDEO_ID_CAPTIONS);
 
         assertTrue("Is dash", mediaItemDetails.containsDashFormats());
 
@@ -89,6 +92,6 @@ public class YouTubeMPDBuilderTest {
         String url = mediaItemDetails.getDashFormats().get(0).getUrl();
 
         assertTrue("Video url is not empty", url != null);
-        assertTrue("Video url is working", TestHelpersV1.urlExists(url));
+        assertTrue("Video url is working", TestHelpers.urlExists(url));
     }
 }

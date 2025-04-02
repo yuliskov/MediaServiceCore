@@ -1,21 +1,18 @@
 package com.liskovsoft.youtubeapi.app;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.app.models.PlayerData;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import com.liskovsoft.youtubeapi.app.models.ClientData;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 @RunWith(RobolectricTestRunner.class)
 public class AppApiTest {
-    private static final String POTOKEN_INPUT = "102307470137119736718||104417232878503778010";
     private AppServiceInt mAppServiceInt;
 
     @Before
@@ -39,27 +36,7 @@ public class AppApiTest {
     public void testThatDecipherFunctionIsValid() {
         String playerUrl = mAppServiceInt.getPlayerUrl();
 
-        PlayerData playerData = mAppServiceInt.getPlayerData(playerUrl);
-
-        assertNotNull("Decipher result not null", playerData);
-
-        String decipherFunctionContent = playerData.getDecipherFunction();
-        assertNotNull("Decipher function not null", decipherFunctionContent);
-        assertFalse("Decipher function is not empty", decipherFunctionContent.isEmpty());
-        assertTrue("Decipher function has proper content",
-                Helpers.startsWithAny(decipherFunctionContent, ";var ", ";const ") && decipherFunctionContent.contains("function ") &&
-                        decipherFunctionContent.endsWith(".join(\"\")}"));
-    }
-
-    @Test
-    public void testThatPlaybackNonceFunctionIsValid() {
-        PlayerData playerData = getPlayerData();
-
-        String playbackNonceFunctionContent = playerData.getRawClientPlaybackNonceFunction();
-        assertNotNull("Playback nonce function not null", playbackNonceFunctionContent);
-        assertFalse("Playback nonce function not empty", playbackNonceFunctionContent.isEmpty());
-        assertTrue("Playback nonce has valid content", playbackNonceFunctionContent.startsWith("function ") &&
-                playbackNonceFunctionContent.contains("function getClientPlaybackNonce") && playbackNonceFunctionContent.endsWith("}"));
+        mAppServiceInt.getPlayerDataExtractor(playerUrl).validate();
     }
 
     @Test
@@ -76,16 +53,6 @@ public class AppApiTest {
         assertNotNull("Base url not null", baseUrl);
 
         return baseUrl;
-    }
-
-    private PlayerData getPlayerData() {
-        String playerUrl = mAppServiceInt.getPlayerUrl();
-
-        PlayerData playerData = mAppServiceInt.getPlayerData(playerUrl);
-
-        assertNotNull("PlayerData not null", playerData);
-
-        return playerData;
     }
 
     private ClientData getClientData() {

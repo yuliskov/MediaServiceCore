@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.potokennp2
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager
 import org.junit.Assert
@@ -17,7 +17,7 @@ class PoTokenNPApiTest {
 
     @Test
     fun testWebPoTokenIsNotEmpty() {
-        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(TestHelpersV2.VIDEO_ID_3)
+        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(TestHelpers.VIDEO_ID_3)
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
@@ -31,7 +31,7 @@ class PoTokenNPApiTest {
 
     @Test
     fun testPoTokenResponse() {
-        val videoIdMusic = TestHelpersV2.VIDEO_ID_MUSIC_2
+        val videoIdMusic = TestHelpers.VIDEO_ID_MUSIC_2
 
         val mediaItemDetails: MediaItemFormatInfo =
             YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(videoIdMusic)
@@ -40,6 +40,6 @@ class PoTokenNPApiTest {
 
         val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(videoIdMusic)
 
-        Assert.assertTrue("Video url is working", TestHelpersV2.urlExists("$url&pot=${webClientPoToken?.streamingDataPoToken}"))
+        Assert.assertTrue("Video url is working", TestHelpers.urlExists("$url&pot=${webClientPoToken?.streamingDataPoToken}"))
     }
 }

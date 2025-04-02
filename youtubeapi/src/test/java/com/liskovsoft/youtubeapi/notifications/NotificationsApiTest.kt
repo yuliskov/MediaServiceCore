@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.notifications
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import com.liskovsoft.youtubeapi.notifications.gen.getItems
 import org.junit.Before
@@ -28,7 +28,7 @@ class NotificationsApiTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         mService = RetrofitHelper.create(NotificationsApi::class.java)
-        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
+        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
     }
 

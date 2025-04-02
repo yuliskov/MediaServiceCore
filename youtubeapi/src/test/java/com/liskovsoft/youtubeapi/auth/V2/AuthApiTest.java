@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +46,7 @@ public class AuthApiTest {
         mService = RetrofitHelper.create(AuthApi.class);
         mAppService = AppService.instance();
 
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
     
     @Test

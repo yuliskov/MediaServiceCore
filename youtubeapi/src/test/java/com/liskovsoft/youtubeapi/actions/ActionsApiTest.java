@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.actions;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,13 +29,13 @@ public class ActionsApiTest {
         mActionsManager = RetrofitHelper.create(ActionsApi.class);
 
         RetrofitOkHttpHelper.setDisableCompression(true);
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     @Test
     public void testThatLikeIsWorking() {
-        testThatLikeIsWorking(TestHelpersV2.VIDEO_ID_3);
-        testThatLikeIsWorking(TestHelpersV2.VIDEO_ID_CAPTIONS);
+        testThatLikeIsWorking(TestHelpers.VIDEO_ID_3);
+        testThatLikeIsWorking(TestHelpers.VIDEO_ID_CAPTIONS);
     }
 
     @Ignore("Error 429, Resource has been exhausted (e.g. check quota)")
@@ -44,7 +44,7 @@ public class ActionsApiTest {
         // Error 429, Resource has been exhausted (e.g. check quota)
         //Thread.sleep(10_000);
 
-        testThatSubscribeIsWorking(TestHelpersV2.CHANNEL_ID_UNSUBSCRIBED);
+        testThatSubscribeIsWorking(TestHelpers.CHANNEL_ID_UNSUBSCRIBED);
     }
 
     private void testThatLikeIsWorking(String videoId) {

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.next.v1;
 
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
@@ -80,7 +80,7 @@ public class WatchNextApiUnsignedTest extends WatchNextManagerTestBase {
     }
 
     private WatchNextResult getWatchNextResult() {
-        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS));
+        Call<WatchNextResult> wrapper = mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS));
         return RetrofitHelper.get(wrapper);
     }
 }

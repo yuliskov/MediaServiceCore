@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.search;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchTags;
@@ -35,17 +35,17 @@ public class SearchApiSignedTest extends SearchApiTestBase {
         mSearchManagerSigned = RetrofitHelper.create(SearchApi.class);
         mBrowseServiceSigned = BrowseService.instance();
 
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     @Test
     public void testThatSearchResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT), TestHelpers.getAuthorization());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
 
-        wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR), TestHelpersV2.getAuthorization());
+        wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT_SPECIAL_CHAR), TestHelpers.getAuthorization());
         searchResult = RetrofitHelper.get(wrapper);
 
         checkSearchResult(searchResult);
@@ -53,7 +53,7 @@ public class SearchApiSignedTest extends SearchApiTestBase {
 
     @Test
     public void testThatContinuationResultIsValid() {
-        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT), TestHelpersV2.getAuthorization());
+        Call<SearchResult> wrapper = mSearchManagerSigned.getSearchResult(SearchApiHelper.getSearchQuery(SEARCH_TEXT), TestHelpers.getAuthorization());
         SearchResult result = RetrofitHelper.get(wrapper);
         checkSearchResult(result);
 

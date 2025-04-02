@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.playlist;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfoItem;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import org.junit.Before;
@@ -31,12 +31,12 @@ public class PlaylistApiTest {
 
         mService = RetrofitHelper.create(PlaylistApi.class);
 
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     @Test
     public void testThatPlaylistResultNotEmpty() {
-        PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
 
         assertTrue("Playlist info not empty", playlistsInfo != null && playlistsInfo.getPlaylists() != null);
 
@@ -47,11 +47,11 @@ public class PlaylistApiTest {
     public void testAddToPlaylist() throws InterruptedException {
         Thread.sleep(10_000);
 
-        PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
         Call<ActionResult> wrapper = mService.editPlaylist(PlaylistApiHelper.getAddToPlaylistQuery(firstPlaylistItem.getPlaylistId(),
-                TestHelpersV2.VIDEO_ID_AGE_RESTRICTED));
+                TestHelpers.VIDEO_ID_AGE_RESTRICTED));
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
 
@@ -59,7 +59,7 @@ public class PlaylistApiTest {
 
         Thread.sleep(10_000);
 
-        playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
         assertTrue("Action successful", firstPlaylistItem.isSelected());
@@ -69,11 +69,11 @@ public class PlaylistApiTest {
     public void testRemoveFromPlaylist() throws InterruptedException {
         Thread.sleep(10_000);
 
-        PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
         Call<ActionResult> wrapper = mService.editPlaylist(PlaylistApiHelper.getRemoveFromPlaylistsQuery(firstPlaylistItem.getPlaylistId(),
-                TestHelpersV2.VIDEO_ID_AGE_RESTRICTED));
+                TestHelpers.VIDEO_ID_AGE_RESTRICTED));
 
         ActionResult actionResult = RetrofitHelper.get(wrapper);
 
@@ -81,7 +81,7 @@ public class PlaylistApiTest {
 
         Thread.sleep(10_000);
 
-        playlistsInfo = getPlaylistsInfo(TestHelpersV2.VIDEO_ID_AGE_RESTRICTED);
+        playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
         assertFalse("Action successful", firstPlaylistItem.isSelected());

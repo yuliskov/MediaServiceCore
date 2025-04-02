@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
 import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import okhttp3.RequestBody;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -89,7 +89,7 @@ public class AuthApiTest {
 
     @Test
     public void testThatAccountsListNotEmpty() {
-        Call<AccountsList> wrapper = mService.getAccountsList(AuthApiHelper.getAccountsListQuery(), TestHelpersV2.getAuthorization());
+        Call<AccountsList> wrapper = mService.getAccountsList(AuthApiHelper.getAccountsListQuery(), TestHelpers.getAuthorization());
 
         AccountsList accountsList = RetrofitHelper.get(wrapper);
 

@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuatio
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -47,7 +47,7 @@ public class BrowseApiSignedTest extends BrowseApiTestBase {
         mService = RetrofitHelper.create(BrowseApi.class);
 
         RetrofitOkHttpHelper.setDisableCompression(true);
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     @Test

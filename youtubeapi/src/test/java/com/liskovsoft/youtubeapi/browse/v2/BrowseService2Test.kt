@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import junit.framework.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
@@ -20,7 +20,7 @@ class BrowseService2Test {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
+        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
         mBrowseService2 = BrowseService2()
     }
@@ -69,7 +69,7 @@ class BrowseService2Test {
 
     @Test
     fun testThatChannelSortingNotEmpty() {
-        val sorting = mBrowseService2.getChannelSorting(TestHelpersV2.CHANNEL_ID_3)
+        val sorting = mBrowseService2.getChannelSorting(TestHelpers.CHANNEL_ID_3)
 
         assertTrue("Has sorting entries", (sorting?.size ?: 0) == 3)
         assertTrue("Has continuations", sorting?.mapNotNull { it?.nextPageKey }?.size == 3)
@@ -80,7 +80,7 @@ class BrowseService2Test {
 
     @Test
     fun testThatChannelSearchNotEmpty() {
-        val search = mBrowseService2.getChannelSearch(TestHelpersV2.CHANNEL_ID_3, "army now")
+        val search = mBrowseService2.getChannelSearch(TestHelpers.CHANNEL_ID_3, "army now")
 
         assertTrue("Has items", (search?.mediaItems?.size ?: 0) > 3)
     }

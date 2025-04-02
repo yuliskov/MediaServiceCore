@@ -25,6 +25,8 @@ internal class PoTokenWebView private constructor(
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
+    var isBroken: Boolean = false
+        private set
 
     //region Initialization
     init {
@@ -54,8 +56,10 @@ internal class PoTokenWebView private constructor(
                     val fmt = "\"${m.message()}\", source: ${m.sourceId()} (${m.lineNumber()})"
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
 
-                    val exception = BadWebViewException(fmt)
-                    onInitializationErrorCloseAndCancel(exception)
+                    // Next lines cause crashes
+                    //val exception = BadWebViewException(fmt)
+                    //onInitializationErrorCloseAndCancel(exception)
+                    isBroken = true
                 }
                 return super.onConsoleMessage(m)
             }

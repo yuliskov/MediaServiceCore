@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -128,10 +128,10 @@ internal class PoTokenCloudApiTest {
 
     private fun testPoTokenResponse(poToken: PoTokenResponse?) {
         val mediaItemDetails: MediaItemFormatInfo =
-            YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpersV1.VIDEO_ID_MUSIC_2)
+            YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpers.VIDEO_ID_MUSIC_2)
 
         val url = mediaItemDetails.dashFormats[0].url
 
-        assertTrue("Video url is working", TestHelpersV1.urlExists("$url&pot=${poToken?.poToken}"))
+        assertTrue("Video url is working", TestHelpers.urlExists("$url&pot=${poToken?.poToken}"))
     }
 }

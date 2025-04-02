@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.rss
 
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -11,7 +11,7 @@ import org.robolectric.RobolectricTestRunner
 class RssServiceTest {
     @Test
     fun testGetFeed() {
-        val feed = RssService.getFeed(TestHelpersV2.CHANNEL_ID_3, TestHelpersV2.CHANNEL_ID_2)
+        val feed = RssService.getFeed(TestHelpers.CHANNEL_ID_3, TestHelpers.CHANNEL_ID_2)
 
         assertNotNull("Feed is empty", feed)
         assertTrue("Feed contains items", feed?.mediaItems?.isNotEmpty() == true)

@@ -4,8 +4,10 @@ import com.liskovsoft.youtubeapi.app.potokennp.visitor.data.getVisitorData
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore("Switch to second version")
 class VisitorApiTest {
     private lateinit var mApi: VisitorApi
 

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 
 import org.junit.Before;
@@ -26,12 +26,12 @@ public class YouTubeUrlListBuilderTest {
 
     @Test
     public void testThatUrlListNotEmpty() {
-        testUrlList(TestHelpersV1.VIDEO_ID_CAPTIONS);
+        testUrlList(TestHelpers.VIDEO_ID_CAPTIONS);
     }
 
     @Test
     public void testThatCipheredUrlListNotEmpty() {
-        testUrlList(TestHelpersV1.VIDEO_ID_MUSIC_2);
+        testUrlList(TestHelpers.VIDEO_ID_MUSIC_2);
     }
 
     private void testUrlList(String videoId) {
@@ -42,7 +42,7 @@ public class YouTubeUrlListBuilderTest {
         assertNotNull("Url list not empty", urlList);
 
         for (String url : urlList) {
-            assertTrue("Video url is working", TestHelpersV1.urlExists(url));
+            assertTrue("Video url is working", TestHelpers.urlExists(url));
         }
     }
 }

@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock
@@ -138,16 +138,16 @@ class WatchNextApiTest {
         assertNotNull("Contains subs count", metadata?.subscriberCount)
     }
 
-    private fun getMediaItemMetadataUnsigned() = mService!!.getMetadata(TestHelpersV1.VIDEO_ID_CAPTIONS)
+    private fun getMediaItemMetadataUnsigned() = mService!!.getMetadata(TestHelpers.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {
-        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS)
         val wrapper = mApi!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 
     private fun getMockedWatchNextResult(): WatchNextResult? {
-        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpersV1.VIDEO_ID_CAPTIONS)
+        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS)
         val wrapper = mApiMock!!.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }

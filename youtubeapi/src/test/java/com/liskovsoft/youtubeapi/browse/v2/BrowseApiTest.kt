@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
@@ -40,7 +40,7 @@ class BrowseApiTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         mService = RetrofitHelper.create(BrowseApi::class.java)
-        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
+        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
     }
 
@@ -239,7 +239,7 @@ class BrowseApiTest {
 
     @Test
     fun testThatChannelTabsNotEmpty() {
-        val home = getChannelHome(TestHelpersV2.CHANNEL_ID_3)
+        val home = getChannelHome(TestHelpers.CHANNEL_ID_3)
 
         val firstTab = home?.getTabs()?.get(0)
 
@@ -264,14 +264,14 @@ class BrowseApiTest {
 
     @Test
     fun testThatChannelLiveTabEmpty() {
-        val videos = getChannelLive(TestHelpersV2.CHANNEL_ID_3)
+        val videos = getChannelLive(TestHelpers.CHANNEL_ID_3)
 
         assertTrue("Contains videos", videos?.getItems()?.filter { it?.isLive() == true }?.size ?: 0 == 0)
     }
 
     @Test
     fun testThatChannelHomeTabNotEmpty() {
-        val result = getChannelHome(TestHelpersV2.CHANNEL_ID_2)
+        val result = getChannelHome(TestHelpers.CHANNEL_ID_2)
 
         val firstShelve = result?.getShelves()?.get(0)
         assertNotNull("Contains title", firstShelve?.getTitle())
@@ -280,7 +280,7 @@ class BrowseApiTest {
 
     @Test
     fun testThatChannelReleasesTabNotEmpty() {
-        val result = getChannelReleases(TestHelpersV2.CHANNEL_ID_3)
+        val result = getChannelReleases(TestHelpers.CHANNEL_ID_3)
 
         val first = result?.getItems()?.getOrNull(0)
 
@@ -310,7 +310,7 @@ class BrowseApiTest {
 
     @Test
     fun testThatChannelSearchNotEmpty() {
-        val channelId = TestHelpersV2.CHANNEL_ID_3
+        val channelId = TestHelpers.CHANNEL_ID_3
 
         val videos = getChannelSearch(channelId, "in the army now")
 

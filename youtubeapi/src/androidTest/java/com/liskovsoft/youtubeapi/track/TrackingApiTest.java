@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
@@ -34,10 +34,10 @@ public class TrackingApiTest {
         mAppService = AppService.instance();
         mVideoInfoService = VideoInfoService.instance();
         if (sAuthorization == null) {
-            sAuthorization = TestHelpersV2.getAuthorization();
+            sAuthorization = TestHelpers.getAuthorization();
         }
         mBrowseService = BrowseService.instance();
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     //@Test
@@ -55,7 +55,7 @@ public class TrackingApiTest {
     @Test
     public void testUpdateWatchTime() throws IOException {
         String playbackNonce = mAppService.getClientPlaybackNonce();
-        String videoIdSimple = TestHelpersV2.VIDEO_ID_3;
+        String videoIdSimple = TestHelpers.VIDEO_ID_3;
 
         Response<WatchTimeEmptyResult> response;
 

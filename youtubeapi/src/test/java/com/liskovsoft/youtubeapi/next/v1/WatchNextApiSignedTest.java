@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.next.v1;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import org.junit.Before;
@@ -31,13 +31,13 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
 
         mManager = RetrofitHelper.create(WatchNextApi.class);
 
-        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     @Test
     public void testThatWatchNextContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
-                mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_SUBSCRIBED));
+                mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_SUBSCRIBED));
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedWatchNextResultFields(watchNextResult);
@@ -47,7 +47,7 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
     public void testThatWatchNextPlaylistItemContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
                 mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(
-                        TestHelpersV2.VIDEO_ID_MUSIC, TestHelpersV2.PLAYLIST_ID, TestHelpersV2.PLAYLIST_VIDEO_INDEX));
+                        TestHelpers.VIDEO_ID_MUSIC, TestHelpers.PLAYLIST_ID, TestHelpers.PLAYLIST_VIDEO_INDEX));
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedPlaylistWatchNextResultFields(watchNextResult);
@@ -57,7 +57,7 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
     public void testThatWatchNextNullPlaylistItemContainsAllRequiredFields() {
         Call<WatchNextResult> wrapper =
                 mManager.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(
-                        null, TestHelpersV2.PLAYLIST_ID, 0));
+                        null, TestHelpers.PLAYLIST_ID, 0));
         WatchNextResult watchNextResult = RetrofitHelper.get(wrapper);
 
         checkSignedPlaylistWatchNextResultFields(watchNextResult);
@@ -87,7 +87,7 @@ public class WatchNextApiSignedTest extends WatchNextManagerTestBase {
 
     private WatchNextResult getWatchNextResult() {
         Call<WatchNextResult> wrapper = mManager.getWatchNextResult(
-                WatchNextApiHelper.getWatchNextQuery(TestHelpersV2.VIDEO_ID_CAPTIONS));
+                WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS));
         return RetrofitHelper.get(wrapper);
     }
 }

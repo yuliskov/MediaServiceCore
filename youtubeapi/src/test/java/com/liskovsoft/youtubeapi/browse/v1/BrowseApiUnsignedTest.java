@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabList;
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpersV1;
+import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
@@ -180,7 +180,7 @@ public class BrowseApiUnsignedTest extends BrowseApiTestBase {
 
     @Test
     public void testThatChannelResultNotEmpty() throws IOException {
-        Call<SectionList> wrapper = mService.getSectionList(BrowseApiHelper.getChannelQuery(TestHelpersV1.CHANNEL_ID_UNSUBSCRIBED));
+        Call<SectionList> wrapper = mService.getSectionList(BrowseApiHelper.getChannelQuery(TestHelpers.CHANNEL_ID_UNSUBSCRIBED));
 
         Response<SectionList> execute = wrapper.execute();
         SectionList browseResult = execute.body();

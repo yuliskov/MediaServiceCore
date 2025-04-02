@@ -228,4 +228,10 @@ public final class YouTubeHelper {
 
         return lang.replace("-", HYPHEN_SIGN);
     }
+
+    public static boolean isGridChannel(String channelId) {
+        //return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID, SUBSCRIBED_MUSIC_BROWSE_ID, PLAYED_MUSIC_BROWSE_ID);
+        // NOTE: user channel starts with 'UC'
+        return channelId != null && channelId.startsWith("FE");
+    }
 }

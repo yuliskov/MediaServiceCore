@@ -237,7 +237,7 @@ internal data class SubscribedShortsMediaGroup(
 internal data class EmptyMediaGroup(
     private val reloadPageKey: String,
     private val type: Int,
-    private val title: String?
+    private val title: String? = null
 ): BaseMediaGroup(MediaGroupOptions(groupType = type)) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String = reloadPageKey

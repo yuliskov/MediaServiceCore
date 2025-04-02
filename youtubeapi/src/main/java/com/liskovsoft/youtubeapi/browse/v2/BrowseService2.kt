@@ -145,7 +145,7 @@ internal open class BrowseService2 {
         val firstResult = mBrowseApi.getReelResult(BrowseApiHelper.getReelQuery())
 
         return RetrofitHelper.get(firstResult, skipAuth) ?.let { firstItem ->
-            val result = continueShorts(firstItem.getContinuationKey(), skipAuth)
+            val result = continueWebShorts(firstItem.getContinuationKey(), skipAuth)
             result?.mediaItems?.add(0, ShortsMediaItem(null, firstItem))
 
             if (!skipAuth)
@@ -169,6 +169,10 @@ internal open class BrowseService2 {
 
     fun getGaming(): List<MediaGroup?>? {
         return getBrowseRowsTV(BrowseApiHelper.getGamingQuery(AppClient.TV), MediaGroup.TYPE_GAMING)?.first
+    }
+
+    fun getHistory(): MediaGroup? {
+        return getBrowseGridTV(BrowseApiHelper.getMyLibraryQuery(AppClient.TV), MediaGroup.TYPE_HISTORY)
     }
 
     private fun getLikedMusicWeb(): MediaGroup? {
@@ -201,19 +205,19 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_USER_PLAYLISTS)) }
     }
 
-    private fun continueShorts(continuationKey: String?, skipAuth: Boolean = false): MediaGroup? {
+    private fun continueWebShorts(continuationKey: String?, skipAuth: Boolean = false): MediaGroup? {
         if (continuationKey == null) {
             return null
         }
 
-        val continuation = mBrowseApi?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(continuationKey))
+        val continuation = mBrowseApi?.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(AppClient.WEB, continuationKey))
 
         return RetrofitHelper.get(continuation, skipAuth)?.let {
             val result = mutableListOf<MediaItem?>()
 
             it.getItems()?.forEach {
                 if (it?.videoId != null && it.params != null) {
-                    val details = mBrowseApi?.getReelResult(BrowseApiHelper.getReelDetailsQuery(it.videoId, it.params))
+                    val details = mBrowseApi?.getReelResult(BrowseApiHelper.getReelDetailsQuery(AppClient.WEB, it.videoId, it.params))
 
                     RetrofitHelper.get(details, skipAuth)?.let {
                             info -> result.add(ShortsMediaItem(it, info))
@@ -359,23 +363,30 @@ internal open class BrowseService2 {
         return getBrowseRowsTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId, params), MediaGroup.TYPE_CHANNEL, MediaGroup.TYPE_CHANNEL_UPLOADS)
     }
 
+    /**
+     * A special type of a channel that could be found inside Music section (see Liked row More button)
+     */
+    fun getGridChannel(channelId: String): MediaGroup? {
+        return getBrowseGridTV(BrowseApiHelper.getChannelQuery(AppClient.TV, channelId), MediaGroup.TYPE_CHANNEL_UPLOADS)
+    }
+
     open fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
         return continueTVGroup(EmptyMediaGroup(reloadPageKey, type, title), true)
     }
 
     fun continueGroup(group: MediaGroup?): MediaGroup? {
         return when (group) {
-            is ShortsMediaGroup -> continueShorts(group.nextPageKey) ?: continueShorts(group.nextPageKey, true)
+            is ShortsMediaGroup -> continueWebShorts(group.nextPageKey, true)
             is ShelfSectionMediaGroup -> continueTVGroup(group)
             is BrowseMediaGroupTV -> continueTVGroup(group)
             is WatchNexContinuationMediaGroup -> continueTVGroup(group)
-            else -> (continueChipOrGroup(group) ?: continueChipOrGroup(group, true))?.firstOrNull()
+            else -> continueWebGroup(group, true)?.firstOrNull()
         }
     }
 
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return continueTVGroup(group)?.let { listOf(it) } ?: continueChipOrGroup(group, true)
+            return continueTVGroup(group)?.let { listOf(it) } ?: continueWebGroup(group, true)
         } else if (group?.channelId != null) {
             return continueTab(group, true)?.let { listOf(it) }
         }
@@ -409,7 +420,10 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(browseResult, skipAuth)?.let { BrowseMediaGroup(it, createOptions(group.type)).apply { title = group.title } }
     }
 
-    private fun continueChipOrGroup(group: MediaGroup?, skipAuth: Boolean = false): List<MediaGroup?>? {
+    /**
+     * NOTE: Can continue Chip or Group
+     */
+    private fun continueWebGroup(group: MediaGroup?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (group?.nextPageKey == null) {
             return null
         }
@@ -427,7 +441,7 @@ internal open class BrowseService2 {
         }
     }
 
-    private fun continueTVGroup(group: MediaGroup?, extraResults: Boolean = false): MediaGroup? {
+    private fun continueTVGroup(group: MediaGroup?, continueIfNeeded: Boolean = false): MediaGroup? {
         if (group?.nextPageKey == null) {
             return null
         }
@@ -437,7 +451,7 @@ internal open class BrowseService2 {
 
         return RetrofitHelper.get(continuationResult)?.let {
             // Prepare to move LIVE items to the top. Multiple results should be combined first.
-            val (overrideItems, overrideKey) = if (extraResults) continueIfNeeded(it.getItems(), it.getNextPageKey()) else Pair(null, null)
+            val (overrideItems, overrideKey) = if (continueIfNeeded) continueIfNeeded(it.getItems(), it.getNextPageKey()) else Pair(null, null)
 
             WatchNexContinuationMediaGroup(it, createOptions(group.type), overrideItems = overrideItems, overrideKey = overrideKey).apply { title = group.title }
         }

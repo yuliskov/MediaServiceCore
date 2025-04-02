@@ -31,6 +31,7 @@ internal object BrowseApiHelper {
     private const val NEW_MUSIC_VIDEOS = "\"browseId\":\"FEmusic_new_releases_videos\""
     private const val NEW_MUSIC_ALBUMS = "\"browseId\":\"FEmusic_new_releases_albums\""
     private const val MY_PLAYLISTS = "\"browseId\":\"FEplaylist_aggregation\""
+    private const val MY_LIBRARY = "\"browseId\":\"FEmy_youtube\""
     private const val GAMING = "\"browseId\":\"FEtopics_gaming\""
     private const val NEWS = "\"browseId\":\"FEtopics_news\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
@@ -124,19 +125,23 @@ internal object BrowseApiHelper {
         return ServiceHelper.createQuery(client.browseTemplate, GAMING)
     }
 
-    fun getReelDetailsQuery(videoId: String, params: String): String {
+    fun getMyLibraryQuery(client: AppClient): String {
+        return ServiceHelper.createQuery(client.browseTemplate, MY_LIBRARY)
+    }
+
+    fun getReelDetailsQuery(client: AppClient, videoId: String, params: String): String {
         val details = String.format(REEL_DETAILS, params, videoId)
-        return ServiceHelper.createQueryWeb(details)
+        return ServiceHelper.createQuery(client.browseTemplate, details)
     }
 
-    fun getReelContinuationQuery(sequenceParams: String): String {
+    fun getReelContinuationQuery(client: AppClient, sequenceParams: String): String {
         val continuation = String.format(REEL_CONTINUATION, sequenceParams)
-        return ServiceHelper.createQueryWeb(continuation)
+        return ServiceHelper.createQuery(client.browseTemplate, continuation)
     }
 
-    fun getReelContinuation2Query(nextPageKey: String): String {
+    fun getReelContinuation2Query(client: AppClient, nextPageKey: String): String {
         val continuation = String.format(CONTINUATION, nextPageKey)
-        return ServiceHelper.createQueryWeb(continuation)
+        return ServiceHelper.createQuery(client.browseTemplate, continuation)
     }
 
     fun getSubscriptionsQuery(client: AppClient): String {

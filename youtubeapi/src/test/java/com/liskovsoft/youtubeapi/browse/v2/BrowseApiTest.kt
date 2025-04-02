@@ -525,19 +525,19 @@ class BrowseApiTest {
     }
 
     private fun getReelDetails(videoId: String?, params: String?): ReelResult? {
-        val details = mService.getReelResult(BrowseApiHelper.getReelDetailsQuery(videoId!!, params!!))
+        val details = mService.getReelResult(BrowseApiHelper.getReelDetailsQuery(AppClient.WEB, videoId!!, params!!))
 
         return RetrofitHelper.get(details)
     }
 
     private fun getReelContinuation(sequenceParams: String?): ReelContinuationResult? {
-        val continuation = mService.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(sequenceParams!!))
+        val continuation = mService.getReelContinuationResult(BrowseApiHelper.getReelContinuationQuery(AppClient.WEB, sequenceParams!!))
 
         return RetrofitHelper.get(continuation)
     }
 
     private fun getReelContinuation2(nextPageKey: String?): ReelContinuationResult? {
-        val continuation = mService.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(nextPageKey!!))
+        val continuation = mService.getReelContinuationResult(BrowseApiHelper.getReelContinuation2Query(AppClient.WEB, nextPageKey!!))
 
         return RetrofitHelper.get(continuation)
     }

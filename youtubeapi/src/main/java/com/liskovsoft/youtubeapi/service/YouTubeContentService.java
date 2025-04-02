@@ -11,17 +11,11 @@ import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
-import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.rss.RssService;
 import com.liskovsoft.youtubeapi.search.SearchServiceWrapper;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
-import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
-import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
-import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionList;
-import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
-import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BaseMediaGroup;
@@ -251,35 +245,13 @@ public class YouTubeContentService implements ContentService {
 
         checkSigned();
 
-        GridTab history = mBrowseService.getHistory();
-        return YouTubeMediaGroup.from(history, MediaGroup.TYPE_HISTORY);
+        return mBrowseService2.getHistory();
     }
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
         return RxHelper.fromNullable(this::getHistory);
     }
-
-    //private MediaGroup getGroup(String reloadPageKey, String title, int type) {
-    //    checkSigned();
-    //
-    //    GridTabContinuation continuation = mBrowseService.continueGridTab(reloadPageKey);
-    //
-    //    if (continuation != null) {
-    //        // Prepare to move LIVE items to the top. Multiple results should be combined first.
-    //        Pair<List<ItemWrapper>, String> result = continueIfNeeded(continuation.getItemWrappers(), continuation.getNextPageKey());
-    //        Collections.sort(result.first, (o1, o2) -> {
-    //            if (o1 == null && o2 == null) return 0;
-    //            if (o1 == null) return -1;
-    //            if (o2 == null) return 1;
-    //            return Boolean.compare(o2.isLive(), o1.isLive());
-    //        });
-    //        continuation.setItemWrappers(result.first);
-    //        continuation.setNextPageKey(result.second);
-    //    }
-    //
-    //    return YouTubeMediaGroup.from(continuation, reloadPageKey, title, type);
-    //}
 
     @Override
     public MediaGroup getGroup(String reloadPageKey) {
@@ -441,26 +413,27 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<List<MediaGroup>> getChannelObserve(String channelId) {
-        return getChannelObserve(channelId, null);
+        return getChannelObserve(channelId, null, null);
     }
 
     @Override
     public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
-        return getChannelObserve(item.getChannelId(), item.getParams());
+        return getChannelObserve(item.getChannelId(), item.getTitle(), item.getParams());
     }
 
-    private Observable<List<MediaGroup>> getChannelObserve(String channelId, String params) {
+    private Observable<List<MediaGroup>> getChannelObserve(String channelId, String title, String params) {
         return RxHelper.create(emitter -> {
             checkSigned();
 
             String canonicalId = UtilsService.canonicalChannelId(channelId);
 
             // Special type of channel that could be found inside Music section (see Liked row More button)
-            if (BrowseApiHelper.isGridChannel(canonicalId)) {
-                GridTab gridChannel = mBrowseService.getGridChannel(canonicalId);
+            if (YouTubeHelper.isGridChannel(canonicalId)) {
+                MediaGroup gridChannel = mBrowseService2.getGridChannel(canonicalId);
 
-                if (gridChannel != null && gridChannel.getItemWrappers() != null) {
-                    emitGroups(emitter, gridChannel, MediaGroup.TYPE_CHANNEL_UPLOADS);
+                if (gridChannel instanceof BaseMediaGroup && !gridChannel.isEmpty()) {
+                    ((BaseMediaGroup) gridChannel).setTitle(title);
+                    emitGroups(emitter, Collections.singletonList(gridChannel));
                 } else {
                     kotlin.Pair<List<MediaGroup>, String> channel = mBrowseService2.getChannel(canonicalId, params);
                     emitGroups(emitter, channel);
@@ -604,88 +577,88 @@ public class YouTubeContentService implements ContentService {
         }
     }
 
-    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
-        if (tab == null) {
-            String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-            return;
-        }
+    //private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
+    //    if (tab == null) {
+    //        String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
+    //        Log.e(TAG, msg);
+    //        RxHelper.onError(emitter, msg);
+    //        return;
+    //    }
+    //
+    //    Log.d(TAG, "emitGroups: begin emitting BrowseTab of type %s...", type);
+    //
+    //    String nextPageKey = tab.getNextPageKey();
+    //    List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), type);
+    //
+    //    if (groups.isEmpty()) {
+    //        String msg = "Media group is empty: " + type;
+    //        Log.e(TAG, msg);
+    //        RxHelper.onError(emitter, msg);
+    //    } else {
+    //        while (!groups.isEmpty()) {
+    //            for (MediaGroup group : groups) { // Preserve positions
+    //                if (group.isEmpty()) { // Contains Chips (nested sections)?
+    //                    group = continueGroup(group);
+    //                }
+    //
+    //                if (group != null) {
+    //                    emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
+    //                }
+    //            }
+    //
+    //            SectionTabContinuation continuation = mBrowseService.continueSectionTab(nextPageKey);
+    //
+    //            if (continuation != null) {
+    //                nextPageKey = continuation.getNextPageKey();
+    //                groups = YouTubeMediaGroup.from(continuation.getSections(), type);
+    //            } else {
+    //                break;
+    //            }
+    //        }
+    //
+    //        emitter.onComplete();
+    //    }
+    //}
 
-        Log.d(TAG, "emitGroups: begin emitting BrowseTab of type %s...", type);
+    //private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionList sectionList, int type) {
+    //    if (sectionList == null) {
+    //        String msg = "emitGroups: SectionList is null";
+    //        Log.e(TAG, msg);
+    //        RxHelper.onError(emitter, msg);
+    //        return;
+    //    }
+    //
+    //    List<MediaGroup> groups = YouTubeMediaGroup.from(sectionList.getSections(), type);
+    //
+    //    if (groups.isEmpty()) {
+    //        String msg = "emitGroups: SectionList content is null";
+    //        Log.e(TAG, msg);
+    //        RxHelper.onError(emitter, msg);
+    //    } else {
+    //        emitter.onNext(groups);
+    //        emitter.onComplete();
+    //    }
+    //}
 
-        String nextPageKey = tab.getNextPageKey();
-        List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), type);
-
-        if (groups.isEmpty()) {
-            String msg = "Media group is empty: " + type;
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-        } else {
-            while (!groups.isEmpty()) {
-                for (MediaGroup group : groups) { // Preserve positions
-                    if (group.isEmpty()) { // Contains Chips (nested sections)?
-                        group = continueGroup(group);
-                    }
-
-                    if (group != null) {
-                        emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
-                    }
-                }
-
-                SectionTabContinuation continuation = mBrowseService.continueSectionTab(nextPageKey);
-
-                if (continuation != null) {
-                    nextPageKey = continuation.getNextPageKey();
-                    groups = YouTubeMediaGroup.from(continuation.getSections(), type);
-                } else {
-                    break;
-                }
-            }
-
-            emitter.onComplete();
-        }
-    }
-
-    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionList sectionList, int type) {
-        if (sectionList == null) {
-            String msg = "emitGroups: SectionList is null";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-            return;
-        }
-
-        List<MediaGroup> groups = YouTubeMediaGroup.from(sectionList.getSections(), type);
-
-        if (groups.isEmpty()) {
-            String msg = "emitGroups: SectionList content is null";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-        } else {
-            emitter.onNext(groups);
-            emitter.onComplete();
-        }
-    }
-
-    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, GridTab grid, int type) {
-        if (grid == null) {
-            String msg = "emitGroups: Grid is null";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-            return;
-        }
-
-        MediaGroup group = YouTubeMediaGroup.from(grid, type);
-
-        if (group == null) {
-            String msg = "emitGroups: Grid content is null";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-        } else {
-            emitter.onNext(Collections.singletonList(group));
-            emitter.onComplete();
-        }
-    }
+    //private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, GridTab grid, int type) {
+    //    if (grid == null) {
+    //        String msg = "emitGroups: Grid is null";
+    //        Log.e(TAG, msg);
+    //        RxHelper.onError(emitter, msg);
+    //        return;
+    //    }
+    //
+    //    MediaGroup group = YouTubeMediaGroup.from(grid, type);
+    //
+    //    if (group == null) {
+    //        String msg = "emitGroups: Grid content is null";
+    //        Log.e(TAG, msg);
+    //        RxHelper.onError(emitter, msg);
+    //    } else {
+    //        emitter.onNext(Collections.singletonList(group));
+    //        emitter.onComplete();
+    //    }
+    //}
 
     //@Override
     //public MediaGroup continueGroup(MediaGroup mediaGroup) {

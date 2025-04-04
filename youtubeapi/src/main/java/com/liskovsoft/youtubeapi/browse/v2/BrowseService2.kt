@@ -39,20 +39,20 @@ internal open class BrowseService2 {
         return getBrowseRows(BrowseApiHelper.getTrendingQuery(AppClient.WEB), MediaGroup.TYPE_TRENDING, true)
     }
 
-    fun getSports(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getSportsQuery(AppClient.TV), MediaGroup.TYPE_SPORTS)?.first
+    fun getSports(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getSportsQuery(AppClient.TV), MediaGroup.TYPE_SPORTS)
     }
 
-    fun getLive(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getLiveQuery(AppClient.TV), MediaGroup.TYPE_LIVE)?.first
+    fun getLive(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getLiveQuery(AppClient.TV), MediaGroup.TYPE_LIVE)
     }
 
     fun getMyVideos(): MediaGroup? {
         return getBrowseGridTV(BrowseApiHelper.getMyVideosQuery(AppClient.TV), MediaGroup.TYPE_MY_VIDEOS)
     }
 
-    fun getMovies(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getMoviesQuery(AppClient.TV), MediaGroup.TYPE_MOVIES)?.first
+    fun getMovies(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getMoviesQuery(AppClient.TV), MediaGroup.TYPE_MOVIES)
     }
 
     fun getKidsHome(): List<MediaGroup?>? {
@@ -155,20 +155,20 @@ internal open class BrowseService2 {
         }
     }
 
-    fun getMusic(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getMusicQuery(AppClient.TV), MediaGroup.TYPE_MUSIC)?.first
+    fun getMusic(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getMusicQuery(AppClient.TV), MediaGroup.TYPE_MUSIC)
     }
 
     fun getLikedMusic(): MediaGroup? {
         return getLikedMusicTV() ?: getLikedMusicWeb()
     }
 
-    fun getNews(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getNewsQuery(AppClient.TV), MediaGroup.TYPE_NEWS)?.first
+    fun getNews(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getNewsQuery(AppClient.TV), MediaGroup.TYPE_NEWS)
     }
 
-    fun getGaming(): List<MediaGroup?>? {
-        return getBrowseRowsTV(BrowseApiHelper.getGamingQuery(AppClient.TV), MediaGroup.TYPE_GAMING)?.first
+    fun getGaming(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getGamingQuery(AppClient.TV), MediaGroup.TYPE_GAMING)
     }
 
     fun getHistory(): MediaGroup? {

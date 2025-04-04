@@ -351,8 +351,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> sections = mBrowseService2.getSports();
-            emitGroups(emitter, sections);
+            emitGroups(emitter, mBrowseService2.getSports());
         });
     }
 
@@ -361,8 +360,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> sections = mBrowseService2.getLive();
-            emitGroups(emitter, sections);
+            emitGroups(emitter, mBrowseService2.getLive());
         });
     }
 
@@ -379,17 +377,7 @@ public class YouTubeContentService implements ContentService {
             MediaGroup firstRow = mBrowseService2.getLikedMusic();
             emitGroupsPartial(emitter, Collections.singletonList(firstRow));
 
-            //MediaGroup secondRow = mBrowseService2.getNewMusicVideos();
-            //emitGroupsPartial(emitter, Collections.singletonList(secondRow));
-            //
-            //MediaGroup thirdRow = mBrowseService2.getNewMusicAlbums();
-            //emitGroupsPartial(emitter, Collections.singletonList(thirdRow));
-
-            //SectionTab tab = mBrowseService.getMusic();
-            //emitGroups(emitter, tab, MediaGroup.TYPE_MUSIC);
-
-            List<MediaGroup> music = mBrowseService2.getMusic();
-            emitGroups(emitter, music);
+            emitGroups(emitter, mBrowseService2.getMusic());
         });
     }
 

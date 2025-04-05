@@ -276,11 +276,6 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<List<MediaGroup>> getHomeV1Observe() {
-        return emitHome();
-    }
-
-    @Override
     public List<MediaGroup> getHome() {
         checkSigned();
 
@@ -466,8 +461,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            kotlin.Pair<List<MediaGroup>, String> home = mBrowseService2.getHome();
-            emitGroups(emitter, home);
+            emitGroups(emitter, mBrowseService2.getHome());
         });
     }
 

@@ -38,12 +38,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_EMBED = 6;
     private final static int WEB_EMBEDDED_PLAYER = 7;
     private final static int ANDROID_VR = 8;
-    // NOTE: Add VIDEO_INFO_TV to bypass "Sign in to confirm you're not a bot" (rare case)
-    // NOTE: EMBED type doesn't support music videos but can fix 403 is some cases
+    // VIDEO_INFO_TV can bypass "Sign in to confirm you're not a bot" (rare case)
+    // WEB_EMBEDDED_PLAYER - the best one, with no occasional 403 errors
+    // VIDEO_INFO_IOS can work without NSig. VIDEO_INFO_TV and VIDEO_INFO_EMBED are the only ones working in North America
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
-            //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_ANDROID
-            WEB_EMBEDDED_PLAYER, VIDEO_INFO_IOS // IOS can work without NSig. Use it as a fallback.
+            //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_IOS, WEB_EMBEDDED_PLAYER, VIDEO_INFO_ANDROID, VIDEO_INFO_TV, VIDEO_INFO_EMBED
+            WEB_EMBEDDED_PLAYER, VIDEO_INFO_IOS, VIDEO_INFO_TV, VIDEO_INFO_EMBED
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;

@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.app
 internal object AppConstants {
     @JvmField
     val playerUrls = listOf(
+        "https://www.youtube.com/s/player/73381ccc/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/8a8ac953/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/20830619/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/69f581a5/tv-player-es6.vflset/tv-player-es6.js",

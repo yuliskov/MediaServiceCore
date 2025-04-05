@@ -306,7 +306,11 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<List<MediaGroup>> getHomeObserve() {
-        return emitHome();
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            emitGroups(emitter, mBrowseService2.getHome());
+        });
     }
 
     @Override
@@ -314,9 +318,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> sections = mBrowseService2.getTrending();
-
-            emitGroups(emitter, sections);
+            emitGroups(emitter, mBrowseService2.getTrending());
         });
     }
 
@@ -336,8 +338,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            List<MediaGroup> sections = mBrowseService2.getKidsHome();
-            emitGroups(emitter, sections);
+            emitGroups(emitter, mBrowseService2.getKidsHome());
         });
     }
 
@@ -455,14 +456,6 @@ public class YouTubeContentService implements ContentService {
     @Override
     public Observable<MediaGroup> getChannelSearchObserve(String channelId, String query) {
         return RxHelper.fromNullable(() -> getChannelSearch(channelId, query));
-    }
-
-    private Observable<List<MediaGroup>> emitHome() {
-        return RxHelper.create(emitter -> {
-            checkSigned();
-
-            emitGroups(emitter, mBrowseService2.getHome());
-        });
     }
 
     //private Observable<List<MediaGroup>> emitHome() {

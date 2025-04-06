@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
@@ -36,7 +35,7 @@ internal open class BrowseService2 {
     }
 
     fun getTrending(): List<MediaGroup?>? {
-        return getBrowseRows(BrowseApiHelper.getTrendingQuery(AppClient.WEB), MediaGroup.TYPE_TRENDING, true)
+        return getBrowseRowsWeb(BrowseApiHelper.getTrendingQuery(AppClient.WEB), MediaGroup.TYPE_TRENDING, true)
     }
 
     fun getSports(): Pair<List<MediaGroup?>?, String?>? {
@@ -462,7 +461,6 @@ internal open class BrowseService2 {
     }
 
     private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS, channelId: String? = null): MediaGroupOptions {
-        val prefs = GlobalPreferences.sInstance
         val data = MediaServiceData.instance()
         val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)) ||
                 (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)) ||
@@ -488,7 +486,7 @@ internal open class BrowseService2 {
         )
     }
 
-    private fun getBrowseRows(query: String, sectionType: Int, skipAuth: Boolean = false): List<MediaGroup?>? {
+    private fun getBrowseRowsWeb(query: String, sectionType: Int, skipAuth: Boolean = false): List<MediaGroup?>? {
         val browseResult = mBrowseApi.getBrowseResult(query)
 
         return RetrofitHelper.get(browseResult, skipAuth)?.let {
@@ -545,7 +543,7 @@ internal open class BrowseService2 {
         }
     }
 
-    private fun getRecommended(): List<MediaGroup?>? {
+    private fun getRecommendedWeb(): List<MediaGroup?>? {
         val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let {

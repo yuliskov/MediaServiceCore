@@ -16,7 +16,7 @@ internal enum class AppClient(
     val clientName: String, val clientVersion: String, val userAgent: String, val referer: String?,
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null
 ) {
-    TV("TVHTML5", "7.20250212.16.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
+    TV("TVHTML5", "7.20250402.11.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBEDDED_PLAYER("WEB_EMBEDDED_PLAYER", "2.20250222.10.01", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
     ANDROID_VR("ANDROID_VR", "1.37", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),

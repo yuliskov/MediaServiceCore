@@ -138,14 +138,14 @@ internal open class BrowseService2 {
     }
 
     fun getShorts(): MediaGroup? {
-        return getShortsWeb() ?: getShortsWeb(true)
+        return getShorts(true)
     }
 
-    private fun getShortsWeb(skipAuth: Boolean = false): MediaGroup? {
+    private fun getShorts(skipAuth: Boolean = false): MediaGroup? {
         val firstResult = mBrowseApi.getReelResult(BrowseApiHelper.getReelQuery())
 
         return RetrofitHelper.get(firstResult, skipAuth) ?.let { firstItem ->
-            val result = continueWebShorts(firstItem.getContinuationKey(), skipAuth)
+            val result = continueShorts(firstItem.getContinuationKey(), skipAuth)
             result?.mediaItems?.add(0, ShortsMediaItem(null, firstItem))
 
             if (!skipAuth)
@@ -205,7 +205,7 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, createOptions(MediaGroup.TYPE_USER_PLAYLISTS)) }
     }
 
-    private fun continueWebShorts(continuationKey: String?, skipAuth: Boolean = false): MediaGroup? {
+    private fun continueShorts(continuationKey: String?, skipAuth: Boolean = false): MediaGroup? {
         if (continuationKey == null) {
             return null
         }
@@ -230,7 +230,7 @@ internal open class BrowseService2 {
     }
 
     open fun getChannelAsGrid(channelId: String?): MediaGroup? {
-        return getChannelVideosFullTV(channelId) ?: getChannelVideosFullWeb(channelId, true)
+        return getChannelVideosFullTV(channelId) ?: getChannelVideosFull(channelId, true)
     }
 
     private fun getChannelVideosFullTV(channelId: String?): MediaGroup? {
@@ -241,7 +241,7 @@ internal open class BrowseService2 {
         return getBrowseRowsTV(BrowseApiHelper.getChannelVideosQuery(AppClient.TV, channelId), MediaGroup.TYPE_CHANNEL_UPLOADS)?.first?.firstOrNull()
     }
 
-    private fun getChannelVideosFullWeb(channelId: String?, skipAuth: Boolean = false): MediaGroup? {
+    private fun getChannelVideosFull(channelId: String?, skipAuth: Boolean = false): MediaGroup? {
         if (channelId == null) {
             return null
         }
@@ -277,10 +277,10 @@ internal open class BrowseService2 {
     }
 
     fun getChannelSearch(channelId: String?, query: String?): MediaGroup? {
-        return getChannelSearchWeb(channelId, query) ?: getChannelSearchWeb(channelId, query, true)
+        return getChannelSearch(channelId, query, true)
     }
 
-    private fun getChannelSearchWeb(channelId: String?, query: String?, skipAuth: Boolean = false): MediaGroup? {
+    private fun getChannelSearch(channelId: String?, query: String?, skipAuth: Boolean = false): MediaGroup? {
         if (channelId == null || query == null) {
             return null
         }
@@ -291,10 +291,10 @@ internal open class BrowseService2 {
     }
 
     fun getChannelSorting(channelId: String?): List<MediaGroup?>? {
-        return getChannelSortingWeb(channelId) ?: getChannelSortingWeb(channelId, true)
+        return getChannelSorting(channelId, true)
     }
 
-    private fun getChannelSortingWeb(channelId: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
+    private fun getChannelSorting(channelId: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (channelId == null) {
             return null
         }
@@ -305,10 +305,10 @@ internal open class BrowseService2 {
     }
 
     open fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
-        return getChannelTV(channelId, params) ?: getChannelWeb(channelId, params, true)?.let { Pair(it, null) }
+        return getChannelTV(channelId, params) ?: getChannel(channelId, params, true)?.let { Pair(it, null) }
     }
 
-    private fun getChannelWeb(channelId: String?, params: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
+    private fun getChannel(channelId: String?, params: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (channelId == null) {
             return null
         }
@@ -376,17 +376,17 @@ internal open class BrowseService2 {
 
     fun continueGroup(group: MediaGroup?): MediaGroup? {
         return when (group) {
-            is ShortsMediaGroup -> continueWebShorts(group.nextPageKey, true)
+            is ShortsMediaGroup -> continueShorts(group.nextPageKey, true)
             is ShelfSectionMediaGroup -> continueTVGroup(group)
             is BrowseMediaGroupTV -> continueTVGroup(group)
             is WatchNexContinuationMediaGroup -> continueTVGroup(group)
-            else -> continueWebGroup(group, true)?.firstOrNull()
+            else -> continueGroup(group, true)?.firstOrNull()
         }
     }
 
     fun continueEmptyGroup(group: MediaGroup?): List<MediaGroup?>? {
         if (group?.nextPageKey != null) {
-            return continueTVGroup(group)?.let { listOf(it) } ?: continueWebGroup(group, true)
+            return continueTVGroup(group)?.let { listOf(it) } ?: continueGroup(group, true)
         } else if (group?.channelId != null) {
             return continueTab(group, true)?.let { listOf(it) }
         }
@@ -423,7 +423,7 @@ internal open class BrowseService2 {
     /**
      * NOTE: Can continue Chip or Group
      */
-    private fun continueWebGroup(group: MediaGroup?, skipAuth: Boolean = false): List<MediaGroup?>? {
+    private fun continueGroup(group: MediaGroup?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (group?.nextPageKey == null) {
             return null
         }

@@ -25,8 +25,7 @@ internal class PoTokenWebView private constructor(
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
-    var isBroken: Boolean = false
-        private set
+    private var isBroken: Boolean = false
 
     //region Initialization
     init {
@@ -240,6 +239,11 @@ internal class PoTokenWebView private constructor(
         //return Instant.now().isAfter(expirationInstant)
         return System.currentTimeMillis() > expirationMs
     }
+
+    override fun isBroken(): Boolean {
+        return isBroken
+    }
+
     //endregion
 
     //region Handling multiple emitters

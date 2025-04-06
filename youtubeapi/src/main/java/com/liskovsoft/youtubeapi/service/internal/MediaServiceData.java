@@ -11,6 +11,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
@@ -273,6 +274,10 @@ public class MediaServiceData {
 
     public boolean isPremiumFixEnabled() {
         return mIsPremiumFixEnabled;
+    }
+
+    public boolean supportsWebView() {
+        return PoTokenGate.supportsNpPot();
     }
 
     private void restoreData() {

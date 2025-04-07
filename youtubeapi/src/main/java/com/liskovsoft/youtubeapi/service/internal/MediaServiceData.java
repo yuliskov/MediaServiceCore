@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.NSigData;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
+import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 
 import java.util.UUID;
@@ -277,7 +278,7 @@ public class MediaServiceData {
     }
 
     public boolean supportsWebView() {
-        return PoTokenGate.supportsNpPot();
+        return PoTokenGate.supportsNpPot() && !PoTokenProviderImpl.isBroken();
     }
 
     private void restoreData() {

@@ -22,6 +22,7 @@ public class YouTubeCommand implements Command {
     private int mDelta;
     private int mKey = Command.KEY_UNDEFINED;
     private boolean mIsVoiceStarted;
+    private String mSubLanguageCode;
 
     public static Command from(CommandItem info) {
         if (info == null) {
@@ -120,10 +121,16 @@ public class YouTubeCommand implements Command {
                 command.mType = Command.TYPE_SUBTITLES;
                 PlaylistParams params = info.getPlaylistParams();
                 command.mVideoId = params.getVideoId();
+                String SubLanguageCode = params.getLanguageCode();
+                command.mSubLanguageCode = SubLanguageCode;
                 break;
         }
 
         return command;
+    }
+
+    public String getSubLanguageCode() {
+        return mSubLanguageCode;
     }
 
     @Override

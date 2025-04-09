@@ -36,4 +36,5 @@ public interface Command {
     int getDelta();
     int getKey();
     boolean isVoiceStarted();
+    String getSubLanguageCode();
 }

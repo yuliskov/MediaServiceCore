@@ -30,13 +30,11 @@ public class YouTubeCommand implements Command {
         }
 
         YouTubeCommand command = new YouTubeCommand();
-        PlaylistParams playlistParams;
-        RemoteParams remoteParams;
 
         switch (info.getType()) {
             case CommandItem.TYPE_SET_PLAYLIST:
                 command.mType = Command.TYPE_OPEN_VIDEO;
-                playlistParams = info.getPlaylistParams();
+                PlaylistParams playlistParams = info.getPlaylistParams();
                 command.mVideoId = playlistParams.getVideoId();
                 command.mPlaylistId = playlistParams.getPlaylistId();
                 command.mPlaylistIndex = Helpers.parseInt(playlistParams.getPlaylistIndex());
@@ -44,8 +42,8 @@ public class YouTubeCommand implements Command {
                 break;
             case CommandItem.TYPE_UPDATE_PLAYLIST:
                 command.mType = Command.TYPE_UPDATE_PLAYLIST;
-                playlistParams = info.getPlaylistParams();
-                command.mPlaylistId = playlistParams.getPlaylistId();
+                PlaylistParams playlistParams2 = info.getPlaylistParams();
+                command.mPlaylistId = playlistParams2.getPlaylistId();
                 break;
             case CommandItem.TYPE_SEEK_TO:
                 command.mType = Command.TYPE_SEEK;
@@ -78,15 +76,15 @@ public class YouTubeCommand implements Command {
                 break;
             case CommandItem.TYPE_REMOTE_CONNECTED:
                 command.mType = Command.TYPE_CONNECTED;
-                remoteParams = info.getRemoteParams();
+                RemoteParams remoteParams = info.getRemoteParams();
                 command.mDeviceName = remoteParams.getDeviceName();
                 command.mDeviceId = remoteParams.getDeviceId();
                 break;
             case CommandItem.TYPE_REMOTE_DISCONNECTED:
                 command.mType = Command.TYPE_DISCONNECTED;
-                remoteParams = info.getRemoteParams();
-                command.mDeviceName = remoteParams.getDeviceName();
-                command.mDeviceId = remoteParams.getDeviceId();
+                RemoteParams remoteParams2 = info.getRemoteParams();
+                command.mDeviceName = remoteParams2.getDeviceName();
+                command.mDeviceId = remoteParams2.getDeviceId();
                 break;
             case CommandItem.TYPE_NOOP:
                 command.mType = Command.TYPE_IDLE;
@@ -121,9 +119,9 @@ public class YouTubeCommand implements Command {
                 break;
             case CommandItem.TYPE_SUBTITLES:
                 command.mType = Command.TYPE_SUBTITLES;
-                playlistParams = info.getPlaylistParams();
-                command.mVideoId = playlistParams.getVideoId();
-                command.mSubLanguageCode = playlistParams.getLanguageCode();
+                PlaylistParams playlistParams3 = info.getPlaylistParams();
+                command.mVideoId = playlistParams3.getVideoId();
+                command.mSubLanguageCode = playlistParams3.getLanguageCode();
                 break;
         }
 

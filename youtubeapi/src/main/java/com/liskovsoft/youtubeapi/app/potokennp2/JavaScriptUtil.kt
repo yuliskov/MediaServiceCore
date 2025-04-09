@@ -17,7 +17,12 @@ internal fun parseChallengeData(rawChallengeData: String): String {
         val descrambled = descramble(scrambled.getString(1))
         JsonParser.array().from(descrambled)
     } else {
-        scrambled.getArray(1)
+        // Fixes a regression, where if the challenge data array size was one, the second element
+        // would be accessed, leading to a crash.
+        // This was introduced when porting the challenge parsing from JS to
+        // Kotlin.
+        //scrambled.getArray(1)
+        scrambled.getArray(0)
     }
 
     val messageId = challengeData.getString(0)

@@ -13,7 +13,7 @@ public class PlaylistParams {
     private String mVideoIds;
 
     @JsonPath("$.languageCode")
-    private String languageCode;
+    private String mLanguageCode;
 
     @JsonPath("$.listId")
     private String mPlaylistId;
@@ -28,7 +28,7 @@ public class PlaylistParams {
     private String mCtt;
 
     public String getLanguageCode() {
-        return languageCode;
+        return mLanguageCode;
     }
 
     public String getPlaylistId() {

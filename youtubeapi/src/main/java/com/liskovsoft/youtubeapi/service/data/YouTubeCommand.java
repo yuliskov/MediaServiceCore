@@ -30,11 +30,13 @@ public class YouTubeCommand implements Command {
         }
 
         YouTubeCommand command = new YouTubeCommand();
+        PlaylistParams playlistParams;
+        RemoteParams remoteParams;
 
         switch (info.getType()) {
             case CommandItem.TYPE_SET_PLAYLIST:
                 command.mType = Command.TYPE_OPEN_VIDEO;
-                PlaylistParams playlistParams = info.getPlaylistParams();
+                playlistParams = info.getPlaylistParams();
                 command.mVideoId = playlistParams.getVideoId();
                 command.mPlaylistId = playlistParams.getPlaylistId();
                 command.mPlaylistIndex = Helpers.parseInt(playlistParams.getPlaylistIndex());
@@ -76,7 +78,7 @@ public class YouTubeCommand implements Command {
                 break;
             case CommandItem.TYPE_REMOTE_CONNECTED:
                 command.mType = Command.TYPE_CONNECTED;
-                RemoteParams remoteParams = info.getRemoteParams();
+                remoteParams = info.getRemoteParams();
                 command.mDeviceName = remoteParams.getDeviceName();
                 command.mDeviceId = remoteParams.getDeviceId();
                 break;
@@ -119,10 +121,9 @@ public class YouTubeCommand implements Command {
                 break;
             case CommandItem.TYPE_SUBTITLES:
                 command.mType = Command.TYPE_SUBTITLES;
-                PlaylistParams params = info.getPlaylistParams();
-                command.mVideoId = params.getVideoId();
-                String SubLanguageCode = params.getLanguageCode();
-                command.mSubLanguageCode = SubLanguageCode;
+                playlistParams = info.getPlaylistParams();
+                command.mVideoId = playlistParams.getVideoId();
+                command.mSubLanguageCode = playlistParams.getLanguageCode();
                 break;
         }
 

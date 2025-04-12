@@ -11,5 +11,9 @@ import retrofit2.http.POST
 internal interface CommentsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    fun getComments(@Body commentsQuery: String?): Call<CommentsResult?>?
+    fun getComments(@Body commentsQuery: String): Call<CommentsResult?>
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/comment/perform_comment_action")
+    fun commentAction(@Body actionQuery: String): Call<Void?>
 }

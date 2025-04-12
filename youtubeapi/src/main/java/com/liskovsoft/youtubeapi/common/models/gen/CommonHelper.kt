@@ -324,7 +324,7 @@ private fun DefaultServiceEndpoint.getSubscribeEndpoint() =
 
 /////
 
-internal fun ToggledServiceEndpoint.getParams() = subscribeEndpoint?.params ?: unsubscribeEndpoint?.params
+internal fun ToggledServiceEndpoint.getParams() = subscribeEndpoint?.params ?: unsubscribeEndpoint?.params ?: performCommentActionEndpoint?.action
 
 /////
 

@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.comments
 
 import com.liskovsoft.youtubeapi.comments.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApiHelper
@@ -14,10 +15,12 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 
+private const val videoId = "unfpnIF0OMo" // THE DOR BROTHERS
+
 @RunWith(RobolectricTestRunner::class)
 class CommentsApiTest {
-    private var mApi: CommentsApi? = null
-    private var mApi2: WatchNextApi? = null
+    private lateinit var mCommentsApi: CommentsApi
+    private lateinit var mWatchNextApi: WatchNextApi
 
     @Before
     fun setUp() {
@@ -25,8 +28,11 @@ class CommentsApiTest {
         // https://github.com/robolectric/robolectric/issues/5115
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
-        mApi = RetrofitHelper.create(CommentsApi::class.java)
-        mApi2 = RetrofitHelper.create(WatchNextApi::class.java)
+        mCommentsApi = RetrofitHelper.create(CommentsApi::class.java)
+        mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
+
+        RetrofitOkHttpHelper.authHeaders.clear()
+        RetrofitOkHttpHelper.disableCompression = true
     }
 
     @Test
@@ -34,7 +40,7 @@ class CommentsApiTest {
         val commentsResult = getCommentsResult(getCommentsKey())
 
         assertNotNull("chat result not null", commentsResult)
-        assertNotNull("has actions", commentsResult?.getComments()?.isNotEmpty());
+        assertNotNull("has actions", commentsResult?.getComments()?.isNotEmpty())
     }
 
     @Test
@@ -56,19 +62,46 @@ class CommentsApiTest {
         assertNotNull("Has nested comments", nestedCommentsResult?.getComments()?.isNotEmpty())
     }
 
+    @Test
+    fun testToggleLike() {
+        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
+
+        val commentsResult = getCommentsResult(getCommentsKey())
+
+        val comments = commentsResult?.getComments()
+
+        val first = comments?.get(1)
+
+        val continuationKey = first?.getCommentItem()?.getContinuationKey()
+
+        assertNotNull("Has key", continuationKey)
+
+        val nestedComments = getCommentsResult(continuationKey)
+
+        assertNotNull("Has body", nestedComments)
+
+        val likeParams = nestedComments?.getActiveCommentItem()?.getLikeParams()
+
+        assertNotNull("Has like action id", likeParams)
+
+        val commentAction = mCommentsApi.commentAction(CommentsApiParams.getActionQuery(likeParams!!))
+
+        RetrofitHelper.getWithErrors(commentAction)
+    }
+
     private fun getCommentsResult(key: String?): CommentsResult? {
         if (key.isNullOrEmpty()) {
             return null
         }
 
         val commentsQuery = CommentsApiParams.getCommentsQuery(key)
-        val wrapper = mApi!!.getComments(commentsQuery)
+        val wrapper = mCommentsApi.getComments(commentsQuery)
         return RetrofitHelper.get(wrapper)
     }
 
     private fun getCommentsKey(): String? {
-        val watchNextResult = mApi2?.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS))
-        val watchNext = watchNextResult?.execute()?.body()
+        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS))
+        val watchNext = watchNextResult.execute().body()
         val commentsKey = watchNext?.getCommentPanel()?.getTopCommentsToken()
         return commentsKey
     }

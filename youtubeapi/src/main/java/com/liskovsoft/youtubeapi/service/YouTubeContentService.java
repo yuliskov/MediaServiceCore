@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.ContentService;
@@ -9,15 +10,16 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.rss.RssService;
 import com.liskovsoft.youtubeapi.search.SearchServiceWrapper;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BaseMediaGroup;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
@@ -33,22 +35,9 @@ import java.util.List;
 public class YouTubeContentService implements ContentService {
     private static final String TAG = YouTubeContentService.class.getSimpleName();
     private static YouTubeContentService sInstance;
-    private final YouTubeSignInService mSignInService;
-    private final ActionsService mActionsService;
-    private final SearchService mSearchService;
-    private final BrowseService mBrowseService;
-    private final BrowseService2 mBrowseService2;
-    private final WatchNextServiceWrapper mWatchNextService;
 
     private YouTubeContentService() {
         Log.d(TAG, "Starting...");
-
-        mSignInService = YouTubeSignInService.instance();
-        mActionsService = ActionsServiceWrapper.instance();
-        mSearchService = SearchServiceWrapper.instance();
-        mBrowseService = BrowseService.instance();
-        mBrowseService2 = BrowseService2Wrapper.getInstance();
-        mWatchNextService = WatchNextServiceWrapper.getInstance();
     }
 
     public static ContentService instance() {
@@ -63,7 +52,7 @@ public class YouTubeContentService implements ContentService {
     public MediaGroup getSearch(String searchText) {
         checkSigned();
 
-        SearchResult search = mSearchService.getSearch(searchText);
+        SearchResult search = getSearchService().getSearch(searchText);
         List<MediaGroup> groups = YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
         return groups != null && groups.size() > 0 ? groups.get(0) : null;
     }
@@ -72,7 +61,7 @@ public class YouTubeContentService implements ContentService {
     public MediaGroup getSearch(String searchText, int options) {
         checkSigned();
 
-        SearchResult search = mSearchService.getSearch(searchText, options);
+        SearchResult search = getSearchService().getSearch(searchText, options);
         List<MediaGroup> groups = YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
         return groups != null && groups.size() > 0 ? groups.get(0) : null;
     }
@@ -81,7 +70,7 @@ public class YouTubeContentService implements ContentService {
     public List<MediaGroup> getSearchAlt(String searchText) {
         checkSigned();
 
-        SearchResult search = mSearchService.getSearch(searchText);
+        SearchResult search = getSearchService().getSearch(searchText);
         return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
@@ -89,7 +78,7 @@ public class YouTubeContentService implements ContentService {
     public List<MediaGroup> getSearchAlt(String searchText, int options) {
         checkSigned();
 
-        SearchResult search = mSearchService.getSearch(searchText, options);
+        SearchResult search = getSearchService().getSearch(searchText, options);
         return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
@@ -117,7 +106,7 @@ public class YouTubeContentService implements ContentService {
     public List<String> getSearchTags(String searchText) {
         checkSigned();
 
-        return mSearchService.getSearchTags(searchText);
+        return getSearchService().getSearchTags(searchText);
     }
 
     @Override
@@ -131,7 +120,7 @@ public class YouTubeContentService implements ContentService {
 
         checkSigned();
 
-        return mBrowseService2.getSubscriptions();
+        return getBrowseService2().getSubscriptions();
     }
 
     @Override
@@ -155,31 +144,31 @@ public class YouTubeContentService implements ContentService {
     public MediaGroup getSubscribedChannels() {
         checkSigned();
 
-        return mBrowseService2.getSubscribedChannels();
+        return getBrowseService2().getSubscribedChannels();
     }
 
     @Override
     public MediaGroup getSubscribedChannelsByNewContent() {
         checkSigned();
 
-        //List<GridTab> subscribedChannels = mBrowseService.getSubscribedChannelsUpdate();
+        //List<GridTab> subscribedChannels = getBrowseService().getSubscribedChannelsUpdate();
         //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
 
-        return mBrowseService2.getSubscribedChannelsByNewContent();
+        return getBrowseService2().getSubscribedChannelsByNewContent();
     }
 
     @Override
     public MediaGroup getSubscribedChannelsByName() {
         checkSigned();
 
-        return mBrowseService2.getSubscribedChannelsByName();
+        return getBrowseService2().getSubscribedChannelsByName();
     }
 
     @Override
     public MediaGroup getSubscribedChannelsByLastViewed() {
         checkSigned();
 
-        return mBrowseService2.getSubscribedChannels();
+        return getBrowseService2().getSubscribedChannels();
     }
 
     @Override
@@ -202,32 +191,13 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.fromNullable(this::getSubscribedChannelsByLastViewed);
     }
 
-    //@Override
-    //public MediaGroup getRecommended() {
-    //    Log.d(TAG, "Getting recommended...");
-    //
-    //    checkSigned();
-    //
-    //    SectionTab homeTab = mBrowseService.getHome();
-    //
-    //    List<MediaGroup> groups = YouTubeMediaGroup.from(homeTab.getSections(), MediaGroup.TYPE_RECOMMENDED);
-    //
-    //    MediaGroup result = null;
-    //
-    //    if (!groups.isEmpty()) {
-    //        result = groups.get(0); // first one is recommended
-    //    }
-    //
-    //    return result != null && result.isEmpty() ? continueGroup(result) : result; // Maybe a Chip?
-    //}
-
     @Override
     public MediaGroup getRecommended() {
         Log.d(TAG, "Getting recommended...");
 
         checkSigned();
 
-        kotlin.Pair<List<MediaGroup>, String> home = mBrowseService2.getHome();
+        kotlin.Pair<List<MediaGroup>, String> home = getBrowseService2().getHome();
 
         List<MediaGroup> groups = home != null ? home.getFirst() : null;
 
@@ -245,7 +215,7 @@ public class YouTubeContentService implements ContentService {
 
         checkSigned();
 
-        return mBrowseService2.getHistory();
+        return getBrowseService2().getHistory();
     }
 
     @Override
@@ -255,14 +225,14 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public MediaGroup getGroup(String reloadPageKey) {
-        return mBrowseService2.getGroup(reloadPageKey, MediaGroup.TYPE_UNDEFINED, null);
+        return getBrowseService2().getGroup(reloadPageKey, MediaGroup.TYPE_UNDEFINED, null);
     }
 
     @Override
     public MediaGroup getGroup(MediaItem mediaItem) {
         return mediaItem.getReloadPageKey() != null ?
-                mBrowseService2.getGroup(mediaItem.getReloadPageKey(), mediaItem.getType(), mediaItem.getTitle()) :
-                mBrowseService2.getChannelAsGrid(mediaItem.getChannelId());
+                getBrowseService2().getGroup(mediaItem.getReloadPageKey(), mediaItem.getType(), mediaItem.getTitle()) :
+                getBrowseService2().getChannelAsGrid(mediaItem.getChannelId());
     }
 
     @Override
@@ -280,7 +250,7 @@ public class YouTubeContentService implements ContentService {
         checkSigned();
 
         List<MediaGroup> result = new ArrayList<>();
-        kotlin.Pair<List<MediaGroup>, String> home = mBrowseService2.getHome();
+        kotlin.Pair<List<MediaGroup>, String> home = getBrowseService2().getHome();
         List<MediaGroup> groups = home != null ? home.getFirst() : null;
 
         if (groups == null) {
@@ -291,7 +261,7 @@ public class YouTubeContentService implements ContentService {
         for (MediaGroup group : groups) {
             // Load chips
             if (group != null && group.isEmpty()) {
-                List<MediaGroup> sections = mBrowseService2.continueEmptyGroup(group);
+                List<MediaGroup> sections = getBrowseService2().continueEmptyGroup(group);
 
                 if (sections != null) {
                     result.addAll(sections);
@@ -309,7 +279,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getHome());
+            emitGroups(emitter, getBrowseService2().getHome());
         });
     }
 
@@ -318,14 +288,14 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getTrending());
+            emitGroups(emitter, getBrowseService2().getTrending());
         });
     }
 
     private MediaGroup getShorts() {
         checkSigned();
 
-        return mBrowseService2.getShorts();
+        return getBrowseService2().getShorts();
     }
 
     @Override
@@ -338,7 +308,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getKidsHome());
+            emitGroups(emitter, getBrowseService2().getKidsHome());
         });
     }
 
@@ -347,7 +317,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getSports());
+            emitGroups(emitter, getBrowseService2().getSports());
         });
     }
 
@@ -356,13 +326,13 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getLive());
+            emitGroups(emitter, getBrowseService2().getLive());
         });
     }
 
     @Override
     public Observable<MediaGroup> getMyVideosObserve() {
-        return RxHelper.fromNullable(mBrowseService2::getMyVideos);
+        return RxHelper.fromNullable(getBrowseService2()::getMyVideos);
     }
 
     @Override
@@ -370,10 +340,10 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            MediaGroup firstRow = mBrowseService2.getLikedMusic();
+            MediaGroup firstRow = getBrowseService2().getLikedMusic();
             emitGroupsPartial(emitter, Collections.singletonList(firstRow));
 
-            emitGroups(emitter, mBrowseService2.getMusic());
+            emitGroups(emitter, getBrowseService2().getMusic());
         });
     }
 
@@ -382,7 +352,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getNews());
+            emitGroups(emitter, getBrowseService2().getNews());
         });
     }
 
@@ -391,7 +361,7 @@ public class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, mBrowseService2.getGaming());
+            emitGroups(emitter, getBrowseService2().getGaming());
         });
     }
 
@@ -413,17 +383,17 @@ public class YouTubeContentService implements ContentService {
 
             // Special type of channel that could be found inside Music section (see Liked row More button)
             if (YouTubeHelper.isGridChannel(canonicalId)) {
-                MediaGroup gridChannel = mBrowseService2.getGridChannel(canonicalId);
+                MediaGroup gridChannel = getBrowseService2().getGridChannel(canonicalId);
 
                 if (gridChannel instanceof BaseMediaGroup && !gridChannel.isEmpty()) {
                     ((BaseMediaGroup) gridChannel).setTitle(title);
                     emitGroups(emitter, Collections.singletonList(gridChannel));
                 } else {
-                    kotlin.Pair<List<MediaGroup>, String> channel = mBrowseService2.getChannel(canonicalId, params);
+                    kotlin.Pair<List<MediaGroup>, String> channel = getBrowseService2().getChannel(canonicalId, params);
                     emitGroups(emitter, channel);
                 }
             } else {
-                kotlin.Pair<List<MediaGroup>, String> channel = mBrowseService2.getChannel(canonicalId, params);
+                kotlin.Pair<List<MediaGroup>, String> channel = getBrowseService2().getChannel(canonicalId, params);
                 emitGroups(emitter, channel);
             }
         });
@@ -433,7 +403,7 @@ public class YouTubeContentService implements ContentService {
     private List<MediaGroup> getChannelSorting(String channelId) {
         checkSigned();
 
-        return mBrowseService2.getChannelSorting(channelId);
+        return getBrowseService2().getChannelSorting(channelId);
     }
 
     @Override
@@ -450,37 +420,13 @@ public class YouTubeContentService implements ContentService {
     public MediaGroup getChannelSearch(String channelId, String query) {
         checkSigned();
 
-        return mBrowseService2.getChannelSearch(channelId, query);
+        return getBrowseService2().getChannelSearch(channelId, query);
     }
 
     @Override
     public Observable<MediaGroup> getChannelSearchObserve(String channelId, String query) {
         return RxHelper.fromNullable(() -> getChannelSearch(channelId, query));
     }
-
-    //private Observable<List<MediaGroup>> emitHome() {
-    //    return RxHelper.create(emitter -> {
-    //        checkSigned();
-    //
-    //        List<MediaGroup> sections = mBrowseService2.getHome();
-    //
-    //        if (sections != null && sections.size() > 5) {
-    //            emitGroups(emitter, sections);
-    //        } else {
-    //            // Fallback to old algo if user chrome page has no chips (why?)
-    //            SectionTab tab = mBrowseService.getHome();
-    //
-    //            if (tab != null && tab.getSections() != null && !tab.getSections().isEmpty()) {
-    //                tab.getSections().remove(0); // replace Recommended
-    //            }
-    //
-    //            List<MediaGroup> subGroup = sections != null && sections.size() > 2 ? sections.subList(0, 2) : sections;
-    //
-    //            emitGroupsPartial(emitter, subGroup); // get Recommended only
-    //            emitGroups(emitter, tab, MediaGroup.TYPE_HOME);
-    //        }
-    //    });
-    //}
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> result) {
         if (result == null) {
@@ -495,7 +441,7 @@ public class YouTubeContentService implements ContentService {
 
         while (groups != null && !groups.isEmpty()) {
             emitGroupsPartial(emitter, groups);
-            result = mBrowseService2.continueSectionList(nextKey, groups.get(0).getType());
+            result = getBrowseService2().continueSectionList(nextKey, groups.get(0).getType());
             groups = result != null ? result.getFirst() : null;
             nextKey = result != null ? result.getSecond() : null;
         }
@@ -537,7 +483,7 @@ public class YouTubeContentService implements ContentService {
                     collector = new ArrayList<>();
                 }
 
-                List<MediaGroup> sections = mBrowseService2.continueEmptyGroup(group);
+                List<MediaGroup> sections = getBrowseService2().continueEmptyGroup(group);
 
                 if (sections != null) {
                     emitter.onNext(sections);
@@ -551,119 +497,6 @@ public class YouTubeContentService implements ContentService {
             emitter.onNext(collector);
         }
     }
-
-    //private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionTab tab, int type) {
-    //    if (tab == null) {
-    //        String msg = String.format("emitGroups: BrowseTab of type %s is null", type);
-    //        Log.e(TAG, msg);
-    //        RxHelper.onError(emitter, msg);
-    //        return;
-    //    }
-    //
-    //    Log.d(TAG, "emitGroups: begin emitting BrowseTab of type %s...", type);
-    //
-    //    String nextPageKey = tab.getNextPageKey();
-    //    List<MediaGroup> groups = YouTubeMediaGroup.from(tab.getSections(), type);
-    //
-    //    if (groups.isEmpty()) {
-    //        String msg = "Media group is empty: " + type;
-    //        Log.e(TAG, msg);
-    //        RxHelper.onError(emitter, msg);
-    //    } else {
-    //        while (!groups.isEmpty()) {
-    //            for (MediaGroup group : groups) { // Preserve positions
-    //                if (group.isEmpty()) { // Contains Chips (nested sections)?
-    //                    group = continueGroup(group);
-    //                }
-    //
-    //                if (group != null) {
-    //                    emitter.onNext(new ArrayList<>(Collections.singletonList(group))); // convert immutable list to mutable
-    //                }
-    //            }
-    //
-    //            SectionTabContinuation continuation = mBrowseService.continueSectionTab(nextPageKey);
-    //
-    //            if (continuation != null) {
-    //                nextPageKey = continuation.getNextPageKey();
-    //                groups = YouTubeMediaGroup.from(continuation.getSections(), type);
-    //            } else {
-    //                break;
-    //            }
-    //        }
-    //
-    //        emitter.onComplete();
-    //    }
-    //}
-
-    //private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, SectionList sectionList, int type) {
-    //    if (sectionList == null) {
-    //        String msg = "emitGroups: SectionList is null";
-    //        Log.e(TAG, msg);
-    //        RxHelper.onError(emitter, msg);
-    //        return;
-    //    }
-    //
-    //    List<MediaGroup> groups = YouTubeMediaGroup.from(sectionList.getSections(), type);
-    //
-    //    if (groups.isEmpty()) {
-    //        String msg = "emitGroups: SectionList content is null";
-    //        Log.e(TAG, msg);
-    //        RxHelper.onError(emitter, msg);
-    //    } else {
-    //        emitter.onNext(groups);
-    //        emitter.onComplete();
-    //    }
-    //}
-
-    //private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, GridTab grid, int type) {
-    //    if (grid == null) {
-    //        String msg = "emitGroups: Grid is null";
-    //        Log.e(TAG, msg);
-    //        RxHelper.onError(emitter, msg);
-    //        return;
-    //    }
-    //
-    //    MediaGroup group = YouTubeMediaGroup.from(grid, type);
-    //
-    //    if (group == null) {
-    //        String msg = "emitGroups: Grid content is null";
-    //        Log.e(TAG, msg);
-    //        RxHelper.onError(emitter, msg);
-    //    } else {
-    //        emitter.onNext(Collections.singletonList(group));
-    //        emitter.onComplete();
-    //    }
-    //}
-
-    //@Override
-    //public MediaGroup continueGroup(MediaGroup mediaGroup) {
-    //    checkSigned();
-    //
-    //    Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
-    //
-    //    String nextKey = YouTubeHelper.extractNextKey(mediaGroup);
-    //
-    //    switch (mediaGroup.getType()) {
-    //        case MediaGroup.TYPE_SEARCH:
-    //            return YouTubeMediaGroup.from(
-    //                    mSearchService.continueSearch(nextKey),
-    //                    mediaGroup);
-    //        case MediaGroup.TYPE_HISTORY:
-    //        case MediaGroup.TYPE_SUBSCRIPTIONS:
-    //        case MediaGroup.TYPE_USER_PLAYLISTS:
-    //        case MediaGroup.TYPE_CHANNEL_UPLOADS:
-    //        case MediaGroup.TYPE_UNDEFINED:
-    //            return YouTubeMediaGroup.from(
-    //                    mBrowseService.continueGridTab(nextKey),
-    //                    mediaGroup
-    //            );
-    //        default:
-    //            return YouTubeMediaGroup.from(
-    //                    mBrowseService.continueSection(nextKey),
-    //                    mediaGroup
-    //            );
-    //    }
-    //}
 
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
@@ -689,7 +522,7 @@ public class YouTubeContentService implements ContentService {
         Log.d(TAG, "Continue group " + mediaGroup.getTitle() + "...");
 
         if (mediaGroup instanceof SuggestionsGroup) {
-            return mWatchNextService.continueGroup(mediaGroup);
+            return getWatchNextService().continueGroup(mediaGroup);
         }
 
         if (mediaGroup instanceof BaseMediaGroup) {
@@ -697,7 +530,7 @@ public class YouTubeContentService implements ContentService {
 
             // Fix channels with multiple empty groups (e.g. https://www.youtube.com/@RuhiCenetMedya/videos)
             for (int i = 0; i < 3; i++) {
-                group = mBrowseService2.continueGroup(group == null ? mediaGroup : group);
+                group = getBrowseService2().continueGroup(group == null ? mediaGroup : group);
 
                 if (group == null || !group.isEmpty()) {
                     break;
@@ -712,7 +545,7 @@ public class YouTubeContentService implements ContentService {
         switch (mediaGroup.getType()) {
             case MediaGroup.TYPE_SEARCH:
                 return YouTubeMediaGroup.from(
-                        mSearchService.continueSearch(nextKey),
+                        getSearchService().continueSearch(nextKey),
                         mediaGroup);
             case MediaGroup.TYPE_HISTORY:
             case MediaGroup.TYPE_SUBSCRIPTIONS:
@@ -720,12 +553,12 @@ public class YouTubeContentService implements ContentService {
             case MediaGroup.TYPE_CHANNEL_UPLOADS:
             case MediaGroup.TYPE_UNDEFINED:
                 return YouTubeMediaGroup.from(
-                        mBrowseService.continueGridTab(nextKey),
+                        getBrowseService().continueGridTab(nextKey),
                         mediaGroup
                 );
             default:
                 return YouTubeMediaGroup.from(
-                        mBrowseService.continueSection(nextKey),
+                        getBrowseService().continueSection(nextKey),
                         mediaGroup
                 );
         }
@@ -737,7 +570,7 @@ public class YouTubeContentService implements ContentService {
     }
 
     private void checkSigned() {
-        mSignInService.checkAuth();
+        getSignInService().checkAuth();
     }
 
     @Override
@@ -749,7 +582,7 @@ public class YouTubeContentService implements ContentService {
 
             if (playlists != null && playlists.getMediaItems() != null) {
                 for (MediaItem playlist : playlists.getMediaItems()) {
-                    kotlin.Pair<List<MediaGroup>, String> content = mBrowseService2.getChannel(playlist.getChannelId(), playlist.getParams());
+                    kotlin.Pair<List<MediaGroup>, String> content = getBrowseService2().getChannel(playlist.getChannelId(), playlist.getParams());
                     if (content != null && content.getFirst() != null) {
                         MediaGroup mediaGroup = content.getFirst().get(0);
                         if (mediaGroup instanceof BaseMediaGroup) {
@@ -765,33 +598,6 @@ public class YouTubeContentService implements ContentService {
         });
     }
 
-    //@Override
-    //public Observable<List<MediaGroup>> getPlaylistRowsObserve() {
-    //    return RxHelper.create(emitter -> {
-    //        checkSigned();
-    //
-    //        List<GridTab> tabs = mBrowseService.getPlaylists();
-    //
-    //        if (tabs != null && tabs.size() > 0) {
-    //            for (GridTab tab : tabs) {
-    //                GridTabContinuation tabContinuation = mBrowseService.continueGridTab(tab.getReloadPageKey());
-    //
-    //                if (tabContinuation != null) {
-    //                    ArrayList<MediaGroup> list = new ArrayList<>();
-    //                    YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_USER_PLAYLISTS);
-    //                    mediaGroup.setTitle(tab.getTitle()); // id calculated by title hashcode
-    //                    list.add(YouTubeMediaGroup.from(tabContinuation, mediaGroup));
-    //                    emitter.onNext(list);
-    //                }
-    //            }
-    //
-    //            emitter.onComplete();
-    //        } else {
-    //            RxHelper.onError(emitter, "getPlaylistsObserve: tab is null");
-    //        }
-    //    });
-    //}
-
     @Override
     public Observable<MediaGroup> getPlaylistsObserve() {
         return RxHelper.fromNullable(this::getPlaylists);
@@ -800,68 +606,56 @@ public class YouTubeContentService implements ContentService {
     private MediaGroup getPlaylists() {
         checkSigned();
 
-        return mBrowseService2.getMyPlaylists();
+        return getBrowseService2().getMyPlaylists();
     }
-
-    //@Override
-    //public Observable<MediaGroup> getEmptyPlaylistsObserve() {
-    //    return RxHelper.create(emitter -> {
-    //        checkSigned();
-    //
-    //        List<GridTab> tabs = mBrowseService.getPlaylists();
-    //
-    //        if (tabs != null && tabs.size() > 0) {
-    //            emitter.onNext(YouTubeMediaGroup.fromTabs(tabs, MediaGroup.TYPE_USER_PLAYLISTS));
-    //            emitter.onComplete();
-    //        } else {
-    //            RxHelper.onError(emitter, "getEmptyPlaylistsObserve: tab is null");
-    //        }
-    //    });
-    //}
 
     @Override
     public void enableHistory(boolean enable) {
         if (enable) {
-            mActionsService.resumeWatchHistory();
+            getActionsService().resumeWatchHistory();
         } else {
-            mActionsService.pauseWatchHistory();
+            getActionsService().pauseWatchHistory();
         }
     }
 
     @Override
     public void clearHistory() {
-        mActionsService.clearWatchHistory();
+        getActionsService().clearWatchHistory();
     }
 
     @Override
     public void clearSearchHistory() {
-        mActionsService.clearSearchHistory();
-        mSearchService.clearSearchHistory();
+        getActionsService().clearSearchHistory();
+        getSearchService().clearSearchHistory();
     }
 
-    //private Pair<List<ItemWrapper>, String> continueIfNeeded(List<ItemWrapper> items, String continuationKey) {
-    //    List<ItemWrapper> combinedItems = items;
-    //    String combinedKey = continuationKey;
-    //
-    //    for (int i = 0; i < 10; i++) {
-    //        if (combinedKey == null || (combinedItems != null && combinedItems.size() > 60)) {
-    //            break;
-    //        }
-    //
-    //        GridTabContinuation result = mBrowseService.continueGridTab(combinedKey);
-    //
-    //        if (result != null) {
-    //            List<ItemWrapper> newItems = result.getItemWrappers();
-    //            if (newItems != null) {
-    //                if (combinedItems == null) {
-    //                    combinedItems = new ArrayList<>();
-    //                }
-    //                combinedItems.addAll(newItems);
-    //            }
-    //            combinedKey = result.getNextPageKey();
-    //        }
-    //    }
-    //
-    //    return new Pair<>(combinedItems, combinedKey);
-    //}
+    @NonNull
+    private static YouTubeSignInService getSignInService() {
+        return YouTubeSignInService.instance();
+    }
+
+    @NonNull
+    private static ActionsService getActionsService() {
+        return ActionsServiceWrapper.instance();
+    }
+
+    @NonNull
+    private static SearchService getSearchService() {
+        return SearchServiceWrapper.instance();
+    }
+
+    @NonNull
+    private static BrowseService getBrowseService() {
+        return BrowseService.instance();
+    }
+
+    @NonNull
+    private static BrowseService2 getBrowseService2() {
+        return BrowseService2Wrapper.INSTANCE;
+    }
+
+    @NonNull
+    private static WatchNextService getWatchNextService() {
+        return WatchNextServiceWrapper.INSTANCE;
+    }
 }

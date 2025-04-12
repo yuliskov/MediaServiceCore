@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.NonNull;
+
 import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService;
 import com.liskovsoft.mediaserviceinterfaces.CommentsService;
 import com.liskovsoft.mediaserviceinterfaces.ContentService;
@@ -21,24 +23,11 @@ import io.reactivex.disposables.Disposable;
 public class YouTubeServiceManager implements ServiceManager {
     private static final String TAG = YouTubeServiceManager.class.getSimpleName();
     private static YouTubeServiceManager sInstance;
-    private final YouTubeSignInService mSignInManager;
-    private final YouTubeRemoteControlService mDeviceLinkManager;
-    private final ContentService mMediaGroupManager;
-    private final MediaItemService mMediaItemManager;
-    private final YouTubeLiveChatService mLiveChatService;
-    private final YouTubeCommentsService mCommentsService;
     private Disposable mRefreshCoreDataAction;
     private Disposable mRefreshPoTokenAction;
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
-
-        mSignInManager = YouTubeSignInService.instance();
-        mDeviceLinkManager = YouTubeRemoteControlService.instance();
-        mMediaGroupManager = YouTubeContentService.instance();
-        mMediaItemManager = YouTubeMediaItemService.instance();
-        mLiveChatService = YouTubeLiveChatService.instance();
-        mCommentsService = YouTubeCommentsService.instance();
     }
 
     public static ServiceManager instance() {
@@ -51,48 +40,48 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public SignInService getSignInService() {
-        return mSignInManager;
+        return getYouTubeSignInService();
     }
 
     @Override
     public RemoteControlService getRemoteControlService() {
-        return mDeviceLinkManager;
+        return getYouTubeRemoteControlService();
     }
 
     @Override
     public LiveChatService getLiveChatService() {
-        return mLiveChatService;
+        return getYouTubeLiveChatService();
     }
 
     @Override
     public CommentsService getCommentsService() {
-        return mCommentsService;
+        return getYouTubeCommentsService();
     }
 
     @Override
     public ContentService getContentService() {
-        return mMediaGroupManager;
+        return getYouTubeContentService();
     }
 
     @Override
     public MediaItemService getMediaItemService() {
-        return mMediaItemManager;
+        return getYouTubeMediaItemService();
     }
 
     @Override
     public NotificationsService getNotificationsService() {
-        return YouTubeNotificationsService.INSTANCE;
+        return getYouTubeNotificationsService();
     }
 
     @Override
     public ChannelGroupService getChannelGroupService() {
-        return ChannelGroupServiceImpl.INSTANCE;
+        return getChannelGroupServiceImpl();
     }
 
     @Override
     public void invalidateCache() {
         invalidatePlaybackCache();
-        VideoInfoService.instance().resetInfoType();
+        getVideoInfoService().resetInfoType();
     }
 
     @Override
@@ -103,23 +92,23 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void applyNoPlaybackFix() {
         //invalidatePlaybackCache();
-        YouTubeMediaItemService.instance().invalidateCache();
-        VideoInfoService.instance().switchNextFormat();
+        getYouTubeMediaItemService().invalidateCache();
+        getVideoInfoService().switchNextFormat();
     }
 
     @Override
     public void applyAntiBotFix() {
-        YouTubeMediaItemService.instance().invalidateCache();
+        getYouTubeMediaItemService().invalidateCache();
         refreshPoTokenIfNeeded();
     }
 
     @Override
     public void invalidatePlaybackCache() {
         LocaleManager.unhold();
-        YouTubeSignInService.instance().invalidateCache(); // sections infinite loading fix (request timed out fix)
-        AppService.instance().invalidateCache();
+        getYouTubeSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
+        getAppService().invalidateCache();
         //AppService.instance().invalidateVisitorData();
-        YouTubeMediaItemService.instance().invalidateCache();
+        getYouTubeMediaItemService().invalidateCache();
     }
 
     private void refreshCacheIfNeededInt() {
@@ -127,7 +116,7 @@ public class YouTubeServiceManager implements ServiceManager {
             return;
         }
 
-        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(AppService.instance()::refreshCacheIfNeeded));
+        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded));
     }
 
     private void refreshPoTokenIfNeeded() {
@@ -136,8 +125,58 @@ public class YouTubeServiceManager implements ServiceManager {
         }
 
         mRefreshPoTokenAction = RxHelper.execute(RxHelper.createLong(emitter -> {
-            AppService.instance().refreshPoTokenIfNeeded();
+            getAppService().refreshPoTokenIfNeeded();
             emitter.onComplete();
         }));
+    }
+
+    @NonNull
+    private static YouTubeSignInService getYouTubeSignInService() {
+        return YouTubeSignInService.instance();
+    }
+
+    @NonNull
+    private static YouTubeRemoteControlService getYouTubeRemoteControlService() {
+        return YouTubeRemoteControlService.instance();
+    }
+
+    @NonNull
+    private static ContentService getYouTubeContentService() {
+        return YouTubeContentService.instance();
+    }
+
+    @NonNull
+    private static YouTubeMediaItemService getYouTubeMediaItemService() {
+        return YouTubeMediaItemService.instance();
+    }
+
+    @NonNull
+    private static YouTubeLiveChatService getYouTubeLiveChatService() {
+        return YouTubeLiveChatService.instance();
+    }
+
+    @NonNull
+    private static CommentsService getYouTubeCommentsService() {
+        return YouTubeCommentsService.INSTANCE;
+    }
+
+    @NonNull
+    private static VideoInfoService getVideoInfoService() {
+        return VideoInfoService.instance();
+    }
+
+    @NonNull
+    private static AppService getAppService() {
+        return AppService.instance();
+    }
+
+    @NonNull
+    private static NotificationsService getYouTubeNotificationsService() {
+        return YouTubeNotificationsService.INSTANCE;
+    }
+
+    @NonNull
+    private static ChannelGroupService getChannelGroupServiceImpl() {
+        return ChannelGroupServiceImpl.INSTANCE;
     }
 }

@@ -9,8 +9,6 @@ import com.liskovsoft.youtubeapi.notifications.NotificationsServiceWrapper
 import io.reactivex.Observable
 
 internal object YouTubeNotificationsService: NotificationsService {
-    private val mSignInService = YouTubeSignInService.instance()
-
     override fun getNotificationItems(): MediaGroup? {
         checkSigned()
 
@@ -42,6 +40,8 @@ internal object YouTubeNotificationsService: NotificationsService {
     }
 
     private fun checkSigned() {
-        mSignInService.checkAuth()
+        getYouTubeSignInService().checkAuth()
     }
+
+    private fun getYouTubeSignInService(): YouTubeSignInService = YouTubeSignInService.instance()
 }

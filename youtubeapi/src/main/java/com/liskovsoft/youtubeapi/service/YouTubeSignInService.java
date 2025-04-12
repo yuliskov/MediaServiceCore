@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.Account;
@@ -20,14 +21,12 @@ public class YouTubeSignInService implements SignInService {
     private static final String TAG = YouTubeSignInService.class.getSimpleName();
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private static YouTubeSignInService sInstance;
-    private final AuthService mAuthService;
     private final YouTubeAccountManager mAccountManager;
     private String mCachedAuthorizationHeader;
     private String mCachedAuthorizationHeader2;
     private long mCacheUpdateTime;
 
     private YouTubeSignInService() {
-        mAuthService = AuthService.instance();
         mAccountManager = YouTubeAccountManager.instance(this);
 
         GlobalPreferences.setOnInit(() -> {
@@ -142,7 +141,7 @@ public class YouTubeSignInService implements SignInService {
         AccessToken token = null;
 
         if (refreshToken != null) {
-            token = mAuthService.getAccessToken(refreshToken);
+            token = getAuthService().getAccessToken(refreshToken);
         }
 
         return token;
@@ -174,5 +173,10 @@ public class YouTubeSignInService implements SignInService {
     @Override
     public void addOnAccountChange(OnAccountChange listener) {
         mAccountManager.addOnAccountChange(listener);
+    }
+
+    @NonNull
+    private static AuthService getAuthService() {
+        return AuthService.instance();
     }
 }

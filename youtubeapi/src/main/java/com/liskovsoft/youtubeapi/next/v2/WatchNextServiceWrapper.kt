@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata
 
-internal class WatchNextServiceWrapper : WatchNextService() {
+internal object WatchNextServiceWrapper: WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams) ?: getCachedGroup(videoId, playlistId)
     }
@@ -38,10 +38,5 @@ internal class WatchNextServiceWrapper : WatchNextService() {
         }
 
         return null
-    }
-
-    companion object {
-        @JvmStatic
-        val instance: WatchNextServiceWrapper by lazy { WatchNextServiceWrapper() }
     }
 }

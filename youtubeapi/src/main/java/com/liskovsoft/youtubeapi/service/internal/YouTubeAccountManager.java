@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange;
@@ -27,7 +28,6 @@ public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
     private boolean mStorageSynced;
-    private final AuthService mAuthService;
     private final YouTubeSignInService mSignInService;
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
     /**
@@ -88,13 +88,12 @@ public class YouTubeAccountManager {
     };
 
     private YouTubeAccountManager(YouTubeSignInService signInService) {
-        mAuthService = AuthService.instance();
         mSignInService = signInService;
     }
 
-    public static YouTubeAccountManager instance(YouTubeSignInService signInManager) {
+    public static YouTubeAccountManager instance(YouTubeSignInService signInService) {
         if (sInstance == null) {
-            sInstance = new YouTubeAccountManager(signInManager);
+            sInstance = new YouTubeAccountManager(signInService);
         }
 
         return sInstance;
@@ -102,7 +101,7 @@ public class YouTubeAccountManager {
 
     public Observable<String> signInObserve() {
         return RxHelper.createLong(emitter -> {
-            UserCode userCodeResult = mAuthService.getUserCode();
+            UserCode userCodeResult = getAuthService().getUserCode();
 
             if (userCodeResult == null) {
                 RxHelper.onError(emitter, "User code result is empty");
@@ -112,7 +111,7 @@ public class YouTubeAccountManager {
             emitter.onNext(userCodeResult.getUserCode());
 
             try {
-                RefreshToken token = mAuthService.getRefreshTokenWait(userCodeResult.getDeviceCode());
+                RefreshToken token = getAuthService().getRefreshTokenWait(userCodeResult.getDeviceCode());
 
                 persistRefreshToken(token.getRefreshToken());
 
@@ -149,7 +148,7 @@ public class YouTubeAccountManager {
         //removeAccount(tempAccount);
         mAccounts.remove(tempAccount); // multi thread fix
 
-        List<AccountInt> accountsInt = mAuthService.getAccounts(); // runs under auth header from above
+        List<AccountInt> accountsInt = getAuthService().getAccounts(); // runs under auth header from above
 
         if (accountsInt != null) {
             for (AccountInt accountInt : accountsInt) {
@@ -300,7 +299,7 @@ public class YouTubeAccountManager {
         List<Account> storedAccounts = getAccounts();
 
         if (storedAccounts != null && !storedAccounts.isEmpty()) {
-            List<AccountInt> newAccounts = mAuthService.getAccounts();
+            List<AccountInt> newAccounts = getAuthService().getAccounts();
 
             Account selectedAccount = getSelectedAccount();
 
@@ -328,5 +327,10 @@ public class YouTubeAccountManager {
                 RxHelper.runUser(() -> listener.onAccountChanged(account));
             }
         });
+    }
+
+    @NonNull
+    private static AuthService getAuthService() {
+        return AuthService.instance();
     }
 }

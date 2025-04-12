@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.rss.RssService
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 
-internal class BrowseService2Wrapper: BrowseService2() {
+internal object BrowseService2Wrapper: BrowseService2() {
     override fun getSubscriptions(): MediaGroup? {
         val subscriptions = super.getSubscriptions()
 
@@ -161,10 +161,5 @@ internal class BrowseService2Wrapper: BrowseService2() {
 
     private fun findFirst(mediaItems: List<MediaItem>?, title: String): MediaItem? {
         return Helpers.findFirst(mediaItems) { Helpers.equals(it.title, title) }
-    }
-
-    companion object {
-        @JvmStatic
-        val instance: BrowseService2Wrapper by lazy { BrowseService2Wrapper() }
     }
 }

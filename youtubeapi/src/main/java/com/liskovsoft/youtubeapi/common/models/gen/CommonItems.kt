@@ -87,6 +87,10 @@ internal data class ChannelsEndpoint(
     val params: String?
 )
 
+internal data class CommentEndpoint(
+    val action: String?
+)
+
 internal data class DefaultServiceEndpoint(
     val authDeterminedCommand: AuthDeterminedCommand?
 ) {
@@ -97,7 +101,8 @@ internal data class DefaultServiceEndpoint(
 
 internal data class ToggledServiceEndpoint(
     val subscribeEndpoint: ChannelsEndpoint?,
-    val unsubscribeEndpoint: ChannelsEndpoint?
+    val unsubscribeEndpoint: ChannelsEndpoint?,
+    val performCommentActionEndpoint: CommentEndpoint?
 )
 
 internal data class ShowEngagementPanelEndpoint(

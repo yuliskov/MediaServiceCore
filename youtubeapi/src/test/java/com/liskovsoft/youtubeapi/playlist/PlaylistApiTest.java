@@ -45,8 +45,6 @@ public class PlaylistApiTest {
 
     @Test
     public void testAddToPlaylist() throws InterruptedException {
-        Thread.sleep(10_000);
-
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 
@@ -67,8 +65,6 @@ public class PlaylistApiTest {
 
     @Test
     public void testRemoveFromPlaylist() throws InterruptedException {
-        Thread.sleep(10_000);
-
         PlaylistsResult playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         PlaylistInfoItem firstPlaylistItem = playlistsInfo.getPlaylists().get(0);
 

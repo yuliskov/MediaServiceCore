@@ -14,7 +14,6 @@ import retrofit2.Response;
 public class AppServiceInt {
     private static final String TAG = AppServiceInt.class.getSimpleName();
     private final AppApi mAppApi;
-    private MediaServiceData mData;
 
     public AppServiceInt() {
         mAppApi = RetrofitHelper.create(AppApi.class);
@@ -135,10 +134,6 @@ public class AppServiceInt {
     }
 
     protected MediaServiceData getData() {
-        if (mData == null) {
-            mData = MediaServiceData.instance();
-        }
-
-        return mData;
+        return MediaServiceData.instance();
     }
 }

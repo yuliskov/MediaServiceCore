@@ -11,7 +11,8 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 internal class PlayerDataExtractor(val playerUrl: String) {
     private val TAG = PlayerDataExtractor::class.java.simpleName
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
-    private val data = MediaServiceData.instance()
+    private val data
+        get() = MediaServiceData.instance()
     private var mNFuncCode: Pair<List<String>, String>? = null
     private var mNSigTmp: Pair<String, String?>? = null
     private var mCipherCode: String? = null

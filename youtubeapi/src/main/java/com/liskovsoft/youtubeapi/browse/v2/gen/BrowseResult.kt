@@ -3,8 +3,8 @@ package com.liskovsoft.youtubeapi.browse.v2.gen
 import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
 import com.liskovsoft.youtubeapi.common.models.gen.PlaylistItem
+import com.liskovsoft.youtubeapi.common.models.gen.ResponseContext
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
-import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 
 /**
  * Based on:
@@ -59,7 +59,8 @@ internal data class OnResponseReceivedAction(
 }
 
 internal data class GuideResult(
-    val items: List<Item?>?
+    val items: List<Item?>?,
+    val responseContext: ResponseContext?
 ) {
     data class Item(
         val guideSubscriptionsSectionRenderer: GuideSectionRenderer?,

@@ -358,3 +358,19 @@ internal fun NotificationPreferenceButton.getCurrentStateId() = subscriptionNoti
 internal fun NotificationStateItem.getTitle() = inlineMenuButton?.buttonRenderer?.text?.getText()
 internal fun NotificationStateItem.getStateId() = stateId
 internal fun NotificationStateItem.getStateParams() = inlineMenuButton?.buttonRenderer?.serviceEndpoint?.modifyChannelNotificationPreferenceEndpoint?.params
+
+//////
+
+private const val SERVICE_SUGGEST = "SUGGEST"
+private const val SERVICE_GFEEDBACK = "GFEEDBACK"
+
+private const val KEY_E = "e"
+private const val KEY_LOGGED_IN = "logged_in"
+private const val KEY_SUGGESTXP = "sugexp"
+private const val KEY_SUGGEST_TOKEN = "suggest_token"
+
+internal fun ResponseContext.getSuggestToken(): String? = serviceTrackingParams?.firstNotNullOfOrNull {
+    if (it?.service == SERVICE_SUGGEST) {
+        it.params?.firstOrNull { it?.key == KEY_SUGGEST_TOKEN }?.value
+    } else null
+}

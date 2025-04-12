@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.search;
 
+import androidx.annotation.NonNull;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
@@ -18,13 +20,9 @@ import java.util.List;
 public class SearchService {
     private static final String TAG = SearchService.class.getSimpleName();
     private final SearchApi mSearchApi;
-    private final BrowseService mBrowseService;
-    private final AppService mAppService;
 
     public SearchService() {
         mSearchApi = RetrofitHelper.create(SearchApi.class);
-        mBrowseService = BrowseService.instance();
-        mAppService = AppService.instance();
     }
 
     public SearchResult getSearch(String searchText) {
@@ -32,7 +30,7 @@ public class SearchService {
     }
 
     public SearchResult getSearch(String searchText, int options) {
-        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.getVisitorData());
+        Call<SearchResult> wrapper = mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), getAppService().getVisitorData());
         SearchResult searchResult = RetrofitHelper.get(wrapper);
 
 
@@ -72,7 +70,7 @@ public class SearchService {
         // fix empty popular searches (country and language should match or use only country)
         //language = localeManager.getLanguage();
 
-        return getSearchTags(searchText, mBrowseService.getSuggestToken(), country, language, mAppService.getVisitorData());
+        return getSearchTags(searchText, null, country, language, getAppService().getVisitorData());
     }
 
     private List<String> getSearchTags(String searchText, String suggestToken, String country, String language, String visitorId) {
@@ -98,6 +96,16 @@ public class SearchService {
     }
 
     public void clearSearchHistory() {
-        
+        // NOP
+    }
+
+    @NonNull
+    private static AppService getAppService() {
+        return AppService.instance();
+    }
+
+    @NonNull
+    private static BrowseService getBrowseService() {
+        return BrowseService.instance();
     }
 }

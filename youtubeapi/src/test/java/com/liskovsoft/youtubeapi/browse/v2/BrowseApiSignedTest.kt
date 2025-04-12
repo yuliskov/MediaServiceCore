@@ -162,6 +162,22 @@ class BrowseApiSignedTest {
         assertNotNull("Has playlist", result?.getItems())
     }
 
+    @Ignore("Doesn't work with tv")
+    @Test
+    fun testThatGuideNotEmpty() {
+        val guide = getGuide()
+
+        assertNotNull("Guide contains suggest token", guide?.getSuggestToken())
+        assertTrue("Guide contains channels", guide?.getFirstSubs()?.isNotEmpty() == true)
+        assertTrue("Guide collapse contains channels", guide?.getCollapsibleSubs()?.size ?: 0 > 20)
+    }
+
+    private fun getGuide(): GuideResult? {
+        val guideResult = mService.getGuideResult(ServiceHelper.createQueryTV(""))
+
+        return RetrofitHelper.get(guideResult)
+    }
+
     private fun checkContinuationTV(token: String?, checkNextToken: Boolean = true) {
         val continuationResult = mService.getContinuationResultTV(BrowseApiHelper.getContinuationQuery(AppClient.TV, token!!))
 

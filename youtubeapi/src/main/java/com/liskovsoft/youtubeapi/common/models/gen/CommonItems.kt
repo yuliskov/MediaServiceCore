@@ -649,3 +649,17 @@ internal data class AuthErrorResponse(
     val error: String?,
     val error_description: String?
 )
+
+internal data class ResponseContext(
+    val serviceTrackingParams: List<TrackingParam?>?
+)
+
+internal data class TrackingParam(
+    val service: String?,
+    val params: List<Param?>?
+) {
+    data class Param(
+        val key: String?,
+        val value: String?
+    )
+}

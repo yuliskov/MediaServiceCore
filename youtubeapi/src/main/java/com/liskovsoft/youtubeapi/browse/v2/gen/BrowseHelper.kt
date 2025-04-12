@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
 import com.liskovsoft.youtubeapi.common.models.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackTokens
 import com.liskovsoft.youtubeapi.common.models.gen.getSubtitle
+import com.liskovsoft.youtubeapi.common.models.gen.getSuggestToken
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
@@ -146,6 +147,7 @@ internal fun GuideResult.getFirstSubs(): List<GuideItem?>? = getSubsRoot()?.item
 internal fun GuideResult.getCollapsibleSubs(): List<GuideItem?>? =
     getSubsRoot()?.items?.firstNotNullOfOrNull { it?.guideCollapsibleEntryRenderer }?.expandableItems?.mapNotNull { it?.guideEntryRenderer }
 internal fun GuideResult.getRecommended(): List<GuideItem?>? = items?.mapNotNull { it?.guideSectionRenderer }?.getOrNull(1)?.items?.mapNotNull { it?.guideEntryRenderer }
+internal fun GuideResult.getSuggestToken(): String? = responseContext?.getSuggestToken()
 private fun GuideResult.getSubsRoot() = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }
 
 internal fun GuideItem.getBrowseId() = navigationEndpoint?.getBrowseId()

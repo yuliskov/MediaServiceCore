@@ -11,19 +11,10 @@ import java.util.List;
 import retrofit2.Call;
 
 public class PlaylistService {
-    private static PlaylistService sInstance;
     private final PlaylistApi mPlaylistManager;
 
-    protected PlaylistService() {
+    public PlaylistService() {
         mPlaylistManager = RetrofitHelper.create(PlaylistApi.class);
-    }
-
-    public static PlaylistService instance() {
-        if (sInstance == null) {
-            sInstance = new PlaylistService();
-        }
-
-        return sInstance;
     }
 
     public List<PlaylistInfo> getPlaylistsInfo(String videoId) {

@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.notifications
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.youtubeapi.common.models.gen.NotificationStateItem
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
@@ -12,20 +11,16 @@ private const val ALL = 0 // Enable notifications
 private const val PERSONALIZED = 1 // Disable notifications
 private const val NONE = 2 // Disable notifications
 
-internal object NotificationsServiceWrapper {
-    fun getItems(): MediaGroup? {
+internal object NotificationsServiceIntWrapper: NotificationsServiceInt() {
+    override fun getItems(): MediaGroup? {
         return try {
-            NotificationsServiceInt.getItems()
+            super.getItems()
         } catch (e: IllegalStateException) {
             NotificationStorage.getChannels()?.let { RssService.getFeed(*it.toTypedArray()) } ?: YouTubeMediaGroup(MediaGroup.TYPE_NOTIFICATIONS)
         }
     }
 
-    fun hideNotification(item: MediaItem?) {
-        return NotificationsServiceInt.hideNotification(item)
-    }
-
-    fun modifyNotification(notificationState: NotificationState?) {
+    override fun modifyNotification(notificationState: NotificationState?) {
         if (notificationState is NotificationStateImpl) {
             if (notificationState.index == ALL)
                 NotificationStorage.addChannel(notificationState.channelId)
@@ -34,7 +29,7 @@ internal object NotificationsServiceWrapper {
         }
 
         try {
-            NotificationsServiceInt.modifyNotification(notificationState)
+            super.modifyNotification(notificationState)
         } catch (e: IllegalStateException) {
             // Notification cannot be modified
         }

@@ -10,7 +10,8 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 
-internal class LiveChatServiceInt private constructor() {
+internal object LiveChatServiceInt {
+    private val TAG = LiveChatServiceInt::class.simpleName
     private val mApi = RetrofitHelper.create(LiveChatApi::class.java)
 
     fun openLiveChat(chatKey: String, onChatItem: OnChatItem) {
@@ -67,22 +68,5 @@ internal class LiveChatServiceInt private constructor() {
 
     interface OnChatItem {
         fun onChatItem(chatItem: ChatItem)
-    }
-
-    companion object {
-        private val TAG = LiveChatServiceInt::class.simpleName
-        private var sInstance: LiveChatServiceInt? = null
-        @JvmStatic
-        fun instance(): LiveChatServiceInt? {
-            if (sInstance == null) {
-                sInstance = LiveChatServiceInt()
-            }
-            return sInstance
-        }
-
-        @JvmStatic
-        fun unhold() {
-            sInstance = null
-        }
     }
 }

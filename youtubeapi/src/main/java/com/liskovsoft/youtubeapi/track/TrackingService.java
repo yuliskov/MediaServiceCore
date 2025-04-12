@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.track;
 
+import androidx.annotation.NonNull;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
@@ -11,11 +13,9 @@ public class TrackingService {
     private static final String TAG = TrackingService.class.getSimpleName();
     private static TrackingService sInstance;
     private final TrackingApi mTrackingApi;
-    private final AppService mAppService;
 
     private TrackingService() {
         mTrackingApi = RetrofitHelper.create(TrackingApi.class);
-        mAppService = AppService.instance();
     }
 
     public static TrackingService instance() {
@@ -36,7 +36,7 @@ public class TrackingService {
                 videoId,
                 lengthSeconds,
                 positionSec,
-                mAppService.getClientPlaybackNonce(),
+                getAppService().getClientPlaybackNonce(),
                 eventId,
                 visitorMonitoringData,
                 ofParam
@@ -95,5 +95,10 @@ public class TrackingService {
         );
 
         RetrofitHelper.get(wrapper); // execute
+    }
+
+    @NonNull
+    private static AppService getAppService() {
+        return AppService.instance();
     }
 }

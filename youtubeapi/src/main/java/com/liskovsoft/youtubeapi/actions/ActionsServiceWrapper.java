@@ -1,10 +1,6 @@
 package com.liskovsoft.youtubeapi.actions;
 
-import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt;
-import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
-
-import java.util.List;
 
 public class ActionsServiceWrapper extends ActionsService {
     private static ActionsServiceWrapper sInstance;

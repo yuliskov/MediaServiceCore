@@ -9,22 +9,22 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaItem
 
-internal object NotificationsServiceInt {
+internal open class NotificationsServiceInt {
     private val mService: NotificationsApi = RetrofitHelper.create(NotificationsApi::class.java)
 
-    fun getItems(): MediaGroup? {
+    open fun getItems(): MediaGroup? {
         val result = mService.getNotifications(NotificationsApiHelper.getNotificationsQuery())
 
         return RetrofitHelper.getWithErrors(result)?.let { NotificationsMediaGroup(it) }
     }
 
-    fun hideNotification(item: MediaItem?) {
+    open fun hideNotification(item: MediaItem?) {
         if (item is NotificationMediaItem) {
             hideNotification(item.hideNotificationToken)
         }
     }
 
-    fun modifyNotification(notificationState: NotificationState?) {
+    open fun modifyNotification(notificationState: NotificationState?) {
         if (notificationState is NotificationStateImpl) {
             notificationState.setSelected()
 

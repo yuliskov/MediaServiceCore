@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.actions;
 
+import androidx.annotation.NonNull;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
@@ -9,21 +11,10 @@ import retrofit2.Call;
 
 public class ActionsService {
     private static final String TAG = ActionsService.class.getSimpleName();
-    private static ActionsService sInstance;
     private final ActionsApi mActionsApi;
-    private final BrowseService mBrowseService;
 
-    protected ActionsService() {
+    public ActionsService() {
         mActionsApi = RetrofitHelper.create(ActionsApi.class);
-        mBrowseService = BrowseService.instance();
-    }
-
-    private static ActionsService instance() {
-        if (sInstance == null) {
-            sInstance = new ActionsService();
-        }
-
-        return sInstance;
     }
 
     public void setLike(String videoId) {
@@ -98,9 +89,14 @@ public class ActionsService {
 
     public void clearSearchHistory() {
         // Empty start suggestions fix: use anonymous search
-        boolean skipAuth = mBrowseService.getSuggestToken() == null;
+        boolean skipAuth = getBrowseService().getSuggestToken() == null;
 
         Call<Void> wrapper = mActionsApi.clearSearchHistory(ActionsApiHelper.getEmptyQuery());
         RetrofitHelper.get(wrapper, skipAuth);
+    }
+
+    @NonNull
+    private static BrowseService getBrowseService() {
+        return BrowseService.instance();
     }
 }

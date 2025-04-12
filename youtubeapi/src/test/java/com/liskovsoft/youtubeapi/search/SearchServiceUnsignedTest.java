@@ -22,7 +22,7 @@ public class SearchServiceUnsignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = SearchService.instance();
+        mService = new SearchService();
     }
 
     @Test

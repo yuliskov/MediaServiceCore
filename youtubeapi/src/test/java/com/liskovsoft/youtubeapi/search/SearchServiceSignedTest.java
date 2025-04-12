@@ -26,7 +26,7 @@ public class SearchServiceSignedTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = SearchService.instance();
+        mService = new SearchService();
 
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }

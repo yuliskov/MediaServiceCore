@@ -51,7 +51,7 @@ public class LoungeService {
     private String mPlaylistIndex;
     private String mPlaylistId;
 
-    public LoungeService() {
+    private LoungeService() {
         mBindManager = RetrofitHelper.create(BindManager.class);
         mInfoManager = RetrofitHelper.create(InfoManager.class);
         mCommandManager = RetrofitHelper.create(CommandManager.class);

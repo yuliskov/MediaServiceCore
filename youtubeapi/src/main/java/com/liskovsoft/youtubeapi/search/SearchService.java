@@ -17,27 +17,14 @@ import java.util.List;
  */
 public class SearchService {
     private static final String TAG = SearchService.class.getSimpleName();
-    private static SearchService sInstance;
     private final SearchApi mSearchApi;
     private final BrowseService mBrowseService;
     private final AppService mAppService;
 
-    protected SearchService() {
+    public SearchService() {
         mSearchApi = RetrofitHelper.create(SearchApi.class);
         mBrowseService = BrowseService.instance();
         mAppService = AppService.instance();
-    }
-
-    public static SearchService instance() {
-        if (sInstance == null) {
-            sInstance = new SearchService();
-        }
-
-        return sInstance;
-    }
-
-    public static void unhold() {
-        sInstance = null;
     }
 
     public SearchResult getSearch(String searchText) {

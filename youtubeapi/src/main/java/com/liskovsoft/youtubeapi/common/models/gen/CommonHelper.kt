@@ -319,8 +319,7 @@ private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens(
 
 internal fun DefaultServiceEndpoint.getChannelIds() = getSubscribeEndpoint()?.channelIds
 internal fun DefaultServiceEndpoint.getParams() = getSubscribeEndpoint()?.params
-private fun DefaultServiceEndpoint.getSubscribeEndpoint() =
-    authDeterminedCommand?.authenticatedCommand?.subscribeEndpoint
+private fun DefaultServiceEndpoint.getSubscribeEndpoint() = authDeterminedCommand?.authenticatedCommand?.subscribeEndpoint
 
 /////
 
@@ -329,6 +328,8 @@ internal fun ToggledServiceEndpoint.getParams() = subscribeEndpoint?.params ?: u
 /////
 
 internal fun ToggleButtonRenderer.getParams() = defaultServiceEndpoint?.getParams() ?: toggledServiceEndpoint?.getParams()
+internal fun ToggleButtonRenderer.getDefaultParams() = defaultServiceEndpoint?.getParams()
+internal fun ToggleButtonRenderer.getToggleParams() = toggledServiceEndpoint?.getParams()
 
 //////
 

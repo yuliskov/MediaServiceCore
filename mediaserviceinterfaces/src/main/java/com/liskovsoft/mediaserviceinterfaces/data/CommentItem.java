@@ -20,4 +20,5 @@ public interface CommentItem {
     String getLikeCount();
     @Nullable
     String getReplyCount();
+    boolean isEmpty();
 }

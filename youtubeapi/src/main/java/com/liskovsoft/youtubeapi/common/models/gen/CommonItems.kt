@@ -124,7 +124,7 @@ internal data class ButtonRenderer(
 internal data class ToggleButtonRenderer(
     val isToggled: Boolean?,
     val isDisabled: Boolean?,
-    val defaultServiceEndpoint: DefaultServiceEndpoint?,
+    val defaultServiceEndpoint: ToggledServiceEndpoint?,
     val toggledServiceEndpoint: ToggledServiceEndpoint?
 )
 

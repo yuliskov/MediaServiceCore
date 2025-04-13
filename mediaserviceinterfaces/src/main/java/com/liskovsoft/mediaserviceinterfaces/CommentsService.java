@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
 import io.reactivex.Observable;
 
 public interface CommentsService {
-    CommentGroup getComments(String key);
     Observable<CommentGroup> getCommentsObserve(String key);
+    Observable<Void> toggleLikeObserve(String key);
+    Observable<Void> toggleDislikeObserve(String key);
 }

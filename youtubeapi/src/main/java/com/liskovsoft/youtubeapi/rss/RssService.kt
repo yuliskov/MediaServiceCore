@@ -10,10 +10,12 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.util.concurrent.CopyOnWriteArrayList
 
 internal object RssService {
     private val mFileApi = RetrofitHelper.create(FileApi::class.java)
@@ -41,25 +43,35 @@ internal object RssService {
     }
 
     private fun fetchFeeds(vararg channelIds: String): MutableList<MediaItem> = runBlocking {
-        val items = mutableListOf<MediaItem>()
+        val items = CopyOnWriteArrayList<MediaItem>()
 
         coroutineScope { // wait for all child coroutines complete
             for (channelId in channelIds) {
                 launch {
-                    appendFeed(channelId, items)
+                    fetchFeed(channelId)?.let { items.addAll(it) }
                 }
             }
         }
 
-        return@runBlocking items
+        return@runBlocking items.toMutableList()
     }
 
-    private suspend fun appendFeed(channelId: String, items: MutableList<MediaItem>) = withContext(Dispatchers.IO) {
+    private fun fetchFeeds2(vararg channelIds: String): MutableList<MediaItem> = runBlocking {
+        val deferreds = channelIds.map { channelId ->
+            async {
+                fetchFeed(channelId)
+            }
+        }
+
+        return@runBlocking deferreds.mapNotNull { it.await() }.flatten().toMutableList()
+    }
+
+    private suspend fun fetchFeed(channelId: String): List<MediaItem>? = withContext(Dispatchers.IO) {
         val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
         rssContent?.let {
             val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
             syncWithChannel(channelId, result)
-            items.addAll(result)
+            result
         }
     }
 

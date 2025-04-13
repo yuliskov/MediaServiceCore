@@ -271,7 +271,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public float getVolumeLevel() {
         //float result = 1.0f;
-        float result = 0.3f; // live a bit too loud
+        float result = 0.4f; // live a bit too loud
 
         //if (mLoudnessDb != 0) {
         //    // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))
@@ -281,14 +281,22 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         //    result *= 0.6f; // minimize distortions
         //}
 
+        //if (mLoudnessDb != 0) {
+        //    // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))
+        //    // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(-db/20)
+        //    float normalLevel = (float) Math.pow(10.0f, -mLoudnessDb / 20.0f);
+        //    //float multiplier = 0.2f;
+        //    float multiplier = 0.3f;
+        //    result = Math.min(normalLevel, 1.5f / multiplier); // 1.5 max volume
+        //    result *= multiplier; // minimize distortions
+        //}
+
         if (mLoudnessDb != 0) {
             // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))
             // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(-db/20)
             float normalLevel = (float) Math.pow(10.0f, -mLoudnessDb / 20.0f);
-            //float multiplier = 0.2f;
-            float multiplier = 0.3f;
-            result = Math.min(normalLevel, 1.5f / multiplier); // 1.5 max volume
-            result *= multiplier; // minimize distortions
+            result = Math.min(normalLevel, 2.5f);
+            result *= 0.5f; // minimize distortions
         }
 
         return result;

@@ -29,7 +29,7 @@ internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper):
 
     private val isLikedItem by lazy { commentRenderer?.isLiked ?: false }
 
-    private val likeCountItem by lazy { commentRenderer?.voteCount?.getText()?.let { "$it ${Helpers.THUMB_UP}" } }
+    private val likeCountItem by lazy { commentRenderer?.voteCount?.getText() }
 
     override fun getId(): String? = idItem
 

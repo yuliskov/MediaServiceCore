@@ -86,7 +86,7 @@ public class SearchApiUnsignedTest extends SearchApiTestBase {
 
         TileItem item = searchResult.getItemWrappers().get(0).getTileItem();
 
-        assertTrue("Contains english localization", item.getViewCountText().contains("views") || item.getViewCountText().contains("subscribers"));
+        assertTrue("Contains english localization", item.getViewCountText().toString().contains("views") || item.getViewCountText().toString().contains("subscribers"));
 
         LocaleManager.instance().setLanguage("ru");
 
@@ -95,6 +95,6 @@ public class SearchApiUnsignedTest extends SearchApiTestBase {
 
         item = searchResult.getItemWrappers().get(0).getTileItem();
 
-        assertTrue("Contains russian localization", item.getViewCountText().contains("просмотров") || item.getViewCountText().contains("подписчиков"));
+        assertTrue("Contains russian localization", item.getViewCountText().toString().contains("просмотров") || item.getViewCountText().toString().contains("подписчиков"));
     }
 }

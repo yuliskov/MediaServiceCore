@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.auth.models.info;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
@@ -32,15 +33,15 @@ public class AccountInt {
     private List<String> mPageIdTokens;
 
     public String getName() {
-        return mName != null ? mName.getText() : null;
+        return mName != null ? Helpers.toString(mName.getText()) : null;
     }
 
     public String getEmail() {
-        return mEmail != null ? mEmail.getText() : null;
+        return mEmail != null ? Helpers.toString(mEmail.getText()) : null;
     }
 
     public String getChannelName() {
-        return mChannelName != null ? mChannelName.getText() : null;
+        return mChannelName != null ? Helpers.toString(mChannelName.getText()) : null;
     }
 
     public List<Thumbnail> getThumbnails() {

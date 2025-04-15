@@ -2,6 +2,7 @@ package com.liskovsoft.googleapi.common.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -14,7 +15,9 @@ import com.liskovsoft.googleapi.common.converters.jsonpath.typeadapter.JsonPathS
 import com.liskovsoft.googleapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import com.liskovsoft.googleapi.common.converters.querystring.converter.QueryStringConverterFactory;
 import com.liskovsoft.googleapi.common.converters.regexp.converter.RegExpConverterFactory;
+import com.liskovsoft.googleapi.common.models.gen.AuthErrorResponse;
 import com.liskovsoft.googleapi.common.models.gen.ErrorResponse;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import okhttp3.Headers;
 import okhttp3.ResponseBody;
@@ -29,6 +32,8 @@ import java.net.SocketException;
 import java.util.List;
 
 public class RetrofitHelper {
+    private static final String TAG = RetrofitHelper.class.getSimpleName();
+
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
 
@@ -172,16 +177,24 @@ public class RetrofitHelper {
             return;
         }
 
-        if (response.code() == 400 || response.code() == 403) {
+        // 428 - sign in error. The normal behavior when the app constantly pulling for the user code.
+        if (response.code() == 400 || response.code() == 403 || response.code() == 428) {
             Gson gson = new GsonBuilder().create();
             try (ResponseBody body = response.errorBody()) {
+                String errorMsg;
                 String errorData = body != null ? body.string() : null;
 
-                ErrorResponse error = errorData != null ? gson.fromJson(errorData, ErrorResponse.class) : null;
-                String errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
+                try {
+                    ErrorResponse error = errorData != null ? gson.fromJson(errorData, ErrorResponse.class) : null;
+                    errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
+                } catch (JsonSyntaxException e) {
+                    AuthErrorResponse authError = gson.fromJson(errorData, AuthErrorResponse.class);
+                    errorMsg = "AuthError: " + authError.getError();
+                }
 
                 errorMsg = errorMsg != null ? errorMsg : String.format("Unknown %s error", response.code());
 
+                Log.e(TAG, errorMsg);
                 throw new IllegalStateException(errorMsg);
             } catch (IOException e) {
                 // handle failure to read error

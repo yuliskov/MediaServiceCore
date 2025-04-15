@@ -13,13 +13,12 @@ import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
-import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test

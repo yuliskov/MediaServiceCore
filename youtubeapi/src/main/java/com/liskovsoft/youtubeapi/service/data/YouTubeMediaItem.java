@@ -21,7 +21,7 @@ public class YouTubeMediaItem implements MediaItem {
     //private static int sId;
     private int mId;
     private String mTitle;
-    private String mSecondTitle;
+    private CharSequence mSecondTitle;
     private String mVideoId;
     private String mChannelId;
     private String mPlaylistId;
@@ -168,7 +168,7 @@ public class YouTubeMediaItem implements MediaItem {
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
         video.mPercentWatched = item.getPercentWatched();
         video.mStartTimeSeconds = item.getStartTimeSeconds();
-        video.mAuthor = item.getUserName();
+        video.mAuthor = Helpers.toString(item.getUserName());
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
         video.mIsLive = item.isLive();
         video.mIsUpcoming = item.isUpcoming();
@@ -339,11 +339,11 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getSecondTitle() {
+    public CharSequence getSecondTitle() {
         return mSecondTitle;
     }
 
-    public void setSecondTitle(String secondTitle) {
+    public void setSecondTitle(CharSequence secondTitle) {
         mSecondTitle = secondTitle;
     }
 

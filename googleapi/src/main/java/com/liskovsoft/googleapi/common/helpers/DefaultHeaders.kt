@@ -52,6 +52,7 @@ object DefaultHeaders {
     const val USER_AGENT_IOS = USER_AGENT_IOS_1
 
     // Throttling! Probably, because of Chrome engine checks.
+    @Suppress("DEPRECATION")
     @JvmField
     val USER_AGENT_ATV_COMBINED =
         "Mozilla/5.0 (Linux ${Build.CPU_ABI}; Android ${Build.VERSION.RELEASE}) Cobalt/$COBALT_VER (unlike Gecko) v8/$V8_VER gles Starboard/$STARBOARD_VER, ${Build.BRAND}_ATV_${Build.HARDWARE}_0/${Build.ID} (${Build.BRAND}, ${Build.MODEL}) com.google.android.youtube.tv/$APK_VER"

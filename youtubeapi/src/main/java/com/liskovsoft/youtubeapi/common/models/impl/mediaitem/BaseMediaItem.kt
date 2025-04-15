@@ -10,7 +10,7 @@ import kotlin.math.abs
 open class BaseMediaItem : MediaItem {
     private var _titleItem: String? = null
         get() = field ?: titleItem
-    private var _secondTitleItem: String? = null
+    private var _secondTitleItem: CharSequence? = null
         get() = field ?: secondTitleItem
     private var _channelIdItem: String? = null
         get() = field ?: channelIdItem
@@ -39,11 +39,11 @@ open class BaseMediaItem : MediaItem {
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String? = null
     protected open val titleItem: String? = null
-    protected open val secondTitleItem: String? = null
-    protected open val subTitle: String? = null
+    protected open val secondTitleItem: CharSequence? = null
+    protected open val subTitle: CharSequence? = null
     protected open val userName: String? = null
     protected open val publishedTime: String? = null
-    protected open val viewCountText: String? = null
+    protected open val viewCountText: CharSequence? = null
     protected open val upcomingEventText: String? = null
     protected open val lengthText: String? = null
     protected open val cardThumbImageUrl: String? = null
@@ -103,11 +103,11 @@ open class BaseMediaItem : MediaItem {
         _titleItem = title
     }
 
-    override fun getSecondTitle(): String? {
+    override fun getSecondTitle(): CharSequence? {
         return _secondTitleItem
     }
 
-    fun setSecondTitle(details: String?) {
+    fun setSecondTitle(details: CharSequence?) {
         _secondTitleItem = details
     }
 

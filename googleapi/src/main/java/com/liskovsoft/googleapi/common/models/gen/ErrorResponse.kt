@@ -16,3 +16,8 @@ internal data class ErrorResponse(
         )
     }
 }
+
+internal data class AuthErrorResponse(
+    val error: String?,
+    val error_description: String?
+)

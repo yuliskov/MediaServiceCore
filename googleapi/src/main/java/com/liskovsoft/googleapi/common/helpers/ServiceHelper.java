@@ -219,7 +219,7 @@ public class ServiceHelper {
 
         int i = 0;
 
-        for (String item : list) {
+        for (CharSequence item : list) {
             result.append(String.format("\"%s\"", item));
 
             if (i != (list.size() - 1)) {

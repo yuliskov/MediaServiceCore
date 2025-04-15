@@ -69,12 +69,12 @@ public class VideoMetadata {
         return mTitle;
     }
 
-    public String getShortViewCount() {
+    public CharSequence getShortViewCount() {
         // On live streams short view counter is absent
         return mShortViewCount1 != null ? ServiceHelper.combineText(mShortViewCount1, mShortViewCount2) : getViewCount();
     }
 
-    public String getViewCount() {
+    public CharSequence getViewCount() {
         return ServiceHelper.combineText(mViewCount1, mViewCount2);
     }
 

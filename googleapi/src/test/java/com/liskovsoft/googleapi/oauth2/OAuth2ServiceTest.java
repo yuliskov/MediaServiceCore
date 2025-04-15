@@ -25,6 +25,7 @@ public class OAuth2ServiceTest {
 
         mService = OAuth2Service.instance();
         RetrofitOkHttpHelper.setDisableCompression(true);
+        RetrofitOkHttpHelper.getAuthHeaders().clear();
     }
 
     @Test

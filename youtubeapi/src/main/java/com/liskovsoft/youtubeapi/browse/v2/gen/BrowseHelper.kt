@@ -172,7 +172,7 @@ private fun ReelResult.getWatchEndpoint(): ReelWatchEndpoint? = replacementEndpo
 private fun ReelResult.getPlayerHeader(): ReelPlayerHeaderRenderer? = overlay?.reelPlayerOverlayRenderer?.reelPlayerHeaderSupportedRenderers?.reelPlayerHeaderRenderer
 internal fun ReelResult.getVideoId(): String? = getWatchEndpoint()?.videoId
 internal fun ReelResult.getTitle(): String? = getPlayerHeader()?.reelTitleOnClickCommand?.getTitle() ?: getVideoInfo()?.getTitle()
-internal fun ReelResult.getSubtitle(): String? = getPlayerHeader()?.reelTitleOnClickCommand?.getSubtitle() ?:
+internal fun ReelResult.getSubtitle(): CharSequence? = getPlayerHeader()?.reelTitleOnClickCommand?.getSubtitle() ?:
     YouTubeHelper.createInfo(getVideoInfo()?.getChannelName(), getVideoInfo()?.getViews(), getVideoInfo()?.getPublishDate())
 private fun ReelResult.getVideoInfo(): EngagementPanel? = engagementPanels?.firstNotNullOfOrNull { if (it?.getTitle() != null) it else null }
 private fun ReelResult.getChannelName(): String? = getPlayerHeader()?.channelTitleText?.getText()

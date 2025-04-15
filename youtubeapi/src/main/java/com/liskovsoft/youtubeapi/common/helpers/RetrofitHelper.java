@@ -199,7 +199,8 @@ public class RetrofitHelper {
             return;
         }
 
-        if (response.code() == 400 || response.code() == 403) {
+        // 428 - sign in error. The normal behavior when the app constantly pulling for the user code.
+        if (response.code() == 400 || response.code() == 403 || response.code() == 428) {
             Gson gson = new GsonBuilder().create();
             try (ResponseBody body = response.errorBody()) {
                 String errorMsg;

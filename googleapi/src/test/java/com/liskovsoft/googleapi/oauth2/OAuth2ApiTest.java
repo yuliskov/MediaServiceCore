@@ -5,9 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import com.liskovsoft.googleapi.common.helpers.RetrofitHelper;
 import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.googleapi.common.helpers.tests.TestHelpersV2;
+import com.liskovsoft.googleapi.common.helpers.tests.ApiKeys;
+import com.liskovsoft.googleapi.common.helpers.tests.TestHelpers;
 import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
 import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,16 +37,14 @@ public class OAuth2ApiTest {
         mService = RetrofitHelper.withJsonPath(OAuth2Api.class);
 
         RetrofitOkHttpHelper.setDisableCompression(true);
-        //RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpersV2.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().clear();
     }
     
     @Test
-    public void testThatUserCanUpdateAccessToken() throws IOException {
-        Call<AccessToken> wrapper = mService.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE, TestHelpersV2.REFRESH_TOKEN);
+    public void testThatUserCanUpdateAccessToken() {
+        Call<AccessToken> wrapper = mService.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE_REFRESH, ApiKeys.REFRESH_TOKEN);
 
-        Response<AccessToken> execute = wrapper.execute();
-
-        AccessToken token = execute.body();
+        AccessToken token = RetrofitHelper.getWithErrors(wrapper);
 
         assertEquals("Auth type Bearer", "Bearer", token.getTokenType());
         assertTrue("Token not null", token.getAccessToken().length() > 50);
@@ -62,8 +62,12 @@ public class OAuth2ApiTest {
 
     @Test
     public void testThatUserStillNotSignedIn() throws IOException {
-        AccessToken token = getAccessToken();
-        assertEquals("authorization_pending", token.getError());
+        try {
+            AccessToken token = getAccessToken();
+            assertTrue("This part shouldn't be executed", true);
+        } catch (IllegalStateException e) {
+            assertTrue("Waiting till the user enter the code...", Helpers.contains(e.getMessage(), "authorization_pending"));
+        }
     }
 
     //@Test
@@ -95,7 +99,6 @@ public class OAuth2ApiTest {
         System.out.println("The user code is: " + userCode.getUserCode());
 
         Call<AccessToken> token = mService.getAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, userCode.getDeviceCode(), OAuth2ApiHelper.GRANT_TYPE);
-        Response<AccessToken> response = token.execute();
-        return response.body();
+        return RetrofitHelper.getWithErrors(token);
     }
 }

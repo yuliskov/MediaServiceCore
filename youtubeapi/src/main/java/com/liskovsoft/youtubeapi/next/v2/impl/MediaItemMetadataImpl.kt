@@ -199,7 +199,7 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         return videoTitle
     }
 
-    override fun getSecondTitle(): String? {
+    override fun getSecondTitle(): CharSequence? {
         return videoSecondTitle
     }
 

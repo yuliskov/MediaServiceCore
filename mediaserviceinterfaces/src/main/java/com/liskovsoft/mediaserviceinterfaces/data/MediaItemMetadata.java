@@ -7,7 +7,7 @@ public interface MediaItemMetadata {
     int LIKE_STATUS_LIKE = 1;
     int LIKE_STATUS_DISLIKE = 2;
     String getTitle();
-    String getSecondTitle();
+    CharSequence getSecondTitle();
     String getDescription();
     String getAuthor();
     String getAuthorImageUrl();

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test

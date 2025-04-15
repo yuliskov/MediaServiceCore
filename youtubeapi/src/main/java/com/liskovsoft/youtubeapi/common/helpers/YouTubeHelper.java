@@ -66,7 +66,7 @@ public final class YouTubeHelper {
     /**
      * Additional video info such as user, published etc.
      */
-    public static @Nullable String createInfo(Object... items) {
+    public static @Nullable CharSequence createInfo(Object... items) {
         return ServiceHelper.createInfo(items);
     }
 

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.V2;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
@@ -27,7 +28,7 @@ public class Header {
     }
 
     public String getBadgeText() {
-        return mBadgeText != null ? mBadgeText.get(0).getText() : null;
+        return mBadgeText != null ? Helpers.toString(mBadgeText.get(0).getText()) : null;
     }
 
     public int getPercentWatched() {
@@ -46,6 +47,6 @@ public class Header {
     }
 
     public String getTitle() {
-        return mTitle != null ? mTitle.getText() : null;
+        return mTitle != null ? Helpers.toString(mTitle.getText()) : null;
     }
 }

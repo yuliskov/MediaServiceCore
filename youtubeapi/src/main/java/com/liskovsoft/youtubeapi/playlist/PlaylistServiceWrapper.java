@@ -53,7 +53,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
         } else { // Google api quota exceeded
             MediaItemMetadata ytMetadata = getWatchNextService().getMetadata(videoId);
             String title = ytMetadata != null ? ytMetadata.getTitle() : null;
-            String subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
+            CharSequence subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
             String badgeText = ytMetadata != null ? ytMetadata.getBadgeText() : null;
             String channelId = ytMetadata != null ? ytMetadata.getChannelId() : null;
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, null,
@@ -152,7 +152,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
         } else { // Google api quota exceeded
             MediaItemMetadata ytMetadata = getWatchNextService().getMetadata(videoId);
             String title = ytMetadata != null ? ytMetadata.getTitle() : null;
-            String subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
+            CharSequence subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
             String badgeText = ytMetadata != null ? ytMetadata.getBadgeText() : null;
             String channelId = ytMetadata != null ? ytMetadata.getChannelId() : null;
             playlistGroup.add(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText));

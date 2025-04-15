@@ -80,18 +80,14 @@ internal object RetrofitOkHttpHelper {
         }
     }
 
-    private fun applyHeaders(newHeaders: Map<String, String>, oldHeaders: Headers, builder: Request.Builder) {
+    private fun applyHeaders(newHeaders: Map<String, String?>, oldHeaders: Headers, builder: Request.Builder) {
         for (header in newHeaders) {
             if (disableCompression && header.key == "Accept-Encoding") {
                 continue
             }
 
-            if (header.value == null) { // don't remove
-                continue
-            }
-
             // Don't override existing headers
-            oldHeaders[header.key] ?: builder.header(header.key, header.value)
+            oldHeaders[header.key] ?: header.value?.let { builder.header(header.key, it) } // NOTE: don't remove null check
         }
     }
 

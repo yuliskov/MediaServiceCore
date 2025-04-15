@@ -315,7 +315,7 @@ public class VideoInfo {
     }
 
     public String getPlayabilityStatus() {
-        return ServiceHelper.createInfo(mPlayabilityReason, mPlayabilityDescription);
+        return Helpers.toString(ServiceHelper.createInfo(mPlayabilityReason, mPlayabilityDescription));
     }
 
     public String getStoryboardSpec() {
@@ -359,7 +359,7 @@ public class VideoInfo {
     }
 
     public String getPaidContentText() {
-        return mPaidContentText != null ? mPaidContentText.getText() : null;
+        return mPaidContentText != null ? Helpers.toString(mPaidContentText.getText()) : null;
     }
 
     //public boolean isValid() {

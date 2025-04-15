@@ -20,7 +20,7 @@ public interface ItemGroup {
 
     interface Item {
         String getTitle();
-        String getSubtitle();
+        CharSequence getSubtitle();
         String getIconUrl();
         @Nullable
         String getChannelId();

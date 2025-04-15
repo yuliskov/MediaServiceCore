@@ -32,7 +32,7 @@ class LiveChatApiTest {
     @Test
     fun testThatLiveChatResultIsNotEmpty() {
         val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_LIVE))
-        val watchNext = watchNextResult?.execute()?.body()
+        val watchNext = watchNextResult.execute().body()
 
         val liveChatResult = getLiveChatResult(watchNext?.getLiveChatToken())
 
@@ -43,7 +43,7 @@ class LiveChatApiTest {
     @Test
     fun testThatContinuationIsWorking() {
         val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_LIVE))
-        val watchNext = watchNextResult?.execute()?.body()
+        val watchNext = watchNextResult.execute().body()
 
         var liveChatResult = getLiveChatResult(watchNext?.getLiveChatToken())
         var timeoutMs = liveChatResult?.getContinuation()?.timeoutMs ?: -1

@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.common.helpers;
 
 import android.annotation.SuppressLint;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -137,19 +139,19 @@ public class ServiceHelper {
     /**
      * Additional video info such as user, published etc.
      */
-    public static @Nullable String createInfo(Object... items) {
+    public static @Nullable CharSequence createInfo(Object... items) {
         return combineItems(ITEMS_DIVIDER, items);
     }
 
-    public static String combineText(Object... items) {
+    public static @Nullable CharSequence combineText(Object... items) {
         return combineItems(null, items);
     }
 
     /**
      * NOTE: ADDS SPECIAL BIDI CHARS. DON'T USE THIS INSIDE JSON
      */
-    public static String combineItems(String divider, Object... items) {
-        StringBuilder result = new StringBuilder();
+    public static @Nullable CharSequence combineItems(CharSequence divider, Object... items) {
+        SpannableStringBuilder result = new SpannableStringBuilder();
 
         if (items != null) {
             for (Object item : items) {
@@ -157,9 +159,9 @@ public class ServiceHelper {
                     continue;
                 }
 
-                String strItem = item.toString();
+                CharSequence strItem = item instanceof CharSequence ? (CharSequence) item : item.toString();
 
-                if (strItem == null || strItem.isEmpty()) {
+                if (TextUtils.isEmpty(strItem)) {
                     continue;
                 }
 
@@ -174,7 +176,7 @@ public class ServiceHelper {
             }
         }
 
-        return result.length() != 0 ? result.toString() : null;
+        return result.length() != 0 ? result : null;
     }
 
     /**
@@ -267,7 +269,7 @@ public class ServiceHelper {
 
         int i = 0;
 
-        for (String item : list) {
+        for (CharSequence item : list) {
             result.append(String.format("\"%s\"", item));
 
             if (i != (list.size() - 1)) {

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search.models;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
@@ -29,7 +30,7 @@ public class SearchSection {
     private String mNextPageKey;
 
     public String getTitle() {
-        return mTitle != null ? mTitle.getText() : null;
+        return mTitle != null ? Helpers.toString(mTitle.getText()) : null;
     }
 
     public String getNextPageKey() {

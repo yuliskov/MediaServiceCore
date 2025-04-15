@@ -2,7 +2,7 @@ package com.liskovsoft.googleapi.drive3
 
 import com.liskovsoft.googleapi.common.helpers.RetrofitHelper
 import com.liskovsoft.googleapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.googleapi.common.helpers.tests.TestHelpersV2
+import com.liskovsoft.googleapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.googleapi.drive3.data.FileMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
 import okhttp3.MediaType
@@ -40,7 +40,7 @@ class DriveApiTest {
         mService = RetrofitHelper.withGson(DriveApi::class.java)
 
         RetrofitOkHttpHelper.disableCompression = true
-        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpersV2.getAuthorization()
+        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
     }
 
     @Test
@@ -105,7 +105,9 @@ class DriveApiTest {
 
     @Test
     fun testGetList() {
-        val listResult = RetrofitHelper.get(mService.getList("mimeType='text/plain' and parents in '1JfVoj74d1TBf-pAe8GxGVo0LTSWi6sNP'"))
+        // mimeType='text/plain' and parents in '13vgchf9SwZ3Szudfl8df5lpbZ59wzluK'
+        val smartTubeBackupDirId = "13vgchf9SwZ3Szudfl8df5lpbZ59wzluK"
+        val listResult = RetrofitHelper.get(mService.getList("mimeType='application/vnd.google-apps.folder' and parents in '$smartTubeBackupDirId'"))
 
         assertTrue("Has files", (listResult?.files?.size ?: 0) > 0)
     }

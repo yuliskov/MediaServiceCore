@@ -104,7 +104,7 @@ public class TileItem {
         return mMetadata != null ? mMetadata.getPublishedTime() : null;
     }
 
-    public String getViewCountText() {
+    public CharSequence getViewCountText() {
         return mMetadata != null ? mMetadata.getViewCountText() : null;
     }
 

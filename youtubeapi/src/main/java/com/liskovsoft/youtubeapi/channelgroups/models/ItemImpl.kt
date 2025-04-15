@@ -14,7 +14,7 @@ internal data class ItemImpl(
     private val title: String? = null,
     private val iconUrl: String? = null,
     private val videoId: String? = null,
-    private val subtitle: String? = null,
+    private val subtitle: CharSequence? = null,
     private val badge: String? = null,
 ): Item {
     override fun getTitle(): String? {
@@ -33,7 +33,7 @@ internal data class ItemImpl(
         return videoId
     }
 
-    override fun getSubtitle(): String? {
+    override fun getSubtitle(): CharSequence? {
         return subtitle
     }
 

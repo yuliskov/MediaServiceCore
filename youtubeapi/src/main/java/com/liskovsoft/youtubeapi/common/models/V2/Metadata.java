@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.V2;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
@@ -19,14 +20,14 @@ public class Metadata {
     private List<String> mBadgeLabels;
 
     public String getTitle() {
-        return mTitle != null ? mTitle.getText() : null;
+        return mTitle != null ? Helpers.toString(mTitle.getText()) : null;
     }
 
     public String getUserName() {
         return null; // no user name, just generic lines
     }
 
-    public String getViewCountText() {
+    public CharSequence getViewCountText() {
         return YouTubeHelper.createInfo(getViewCountText1(), getViewCountText2());
     }
 
@@ -42,11 +43,11 @@ public class Metadata {
         return mBadgeLabels;
     }
 
-    private String getViewCountText1() {
+    private CharSequence getViewCountText1() {
         return mViewsAndDateText1 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText1.toArray(new Object[0])) : null;
     }
 
-    private String getViewCountText2() {
+    private CharSequence getViewCountText2() {
         return mViewsAndDateText2 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText2.toArray(new Object[0])) : null;
     }
 }

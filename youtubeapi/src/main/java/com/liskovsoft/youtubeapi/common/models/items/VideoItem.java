@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.items;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
 
@@ -93,10 +94,10 @@ public class VideoItem {
     }
 
     public String getTitle() {
-        return mTitle != null ? mTitle.getText() : null;
+        return mTitle != null ? Helpers.toString(mTitle.getText()) : null;
     }
 
-    public String getUserName() {
+    public CharSequence getUserName() {
         return mUserName != null ? mUserName.getText() : null;
     }
 
@@ -112,16 +113,16 @@ public class VideoItem {
         return mPublishedTime;
     }
 
-    public String getViewCountText() {
+    public CharSequence getViewCountText() {
         return mViewCountText != null ? mViewCountText.getText() : null;
     }
 
-    public String getShortViewCountText() {
+    public CharSequence getShortViewCountText() {
         return mShortViewCountText != null ? mShortViewCountText.getText() : null;
     }
 
     public String getLengthText() {
-        return mLengthText != null ? mLengthText.getText() : null;
+        return mLengthText != null ? Helpers.toString(mLengthText.getText()) : null;
     }
 
     public String getLengthTextLong() {
@@ -157,7 +158,7 @@ public class VideoItem {
     }
 
     public String getBadgeText() {
-        return mBadgeText != null ? mBadgeText.getText() : null;
+        return mBadgeText != null ? Helpers.toString(mBadgeText.getText()) : null;
     }
 
     /**
@@ -170,7 +171,7 @@ public class VideoItem {
     /**
      * Example: Premieres 10/8/20, 1:00 AM
      */
-    public String getUpcomingEventText() {
+    public CharSequence getUpcomingEventText() {
         return mUpcomingEventText != null ? mUpcomingEventText.getText() : null;
     }
 

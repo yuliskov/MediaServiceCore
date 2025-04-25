@@ -81,27 +81,44 @@ internal object NSigExtractor {
     private fun extractInitNFunctionName(jsCode: String, globalVar: Pair<String?, List<String>?>): String? {
         val (varName, globalList) = globalVar
         val itemValue = globalList?.first { it.endsWith("_w8_") }
+        var funcName: String? = null
         if (itemValue != null) {
             val escapedVarName = varName?.let { Pattern.quote(it) } ?: ""
             val varIndex = globalList.indexOf(itemValue)
-            val initPattern = Pattern.compile("""(?xs)
+
+            // NOTE: order matters (first run without func Search to maintain old code compat)
+
+            funcName = findInitNFuncName(jsCode, escapedVarName, varIndex)
+
+            if (funcName == null) {
+                funcName = findInitNFuncName(jsCode, escapedVarName, varIndex, true)
+            }
+
+            if (funcName == null) {
+                Log.d(TAG, "Initial search was unable to find nsig function name")
+            }
+        }
+
+        return funcName
+    }
+
+    private fun findInitNFuncName(jsCode: String, escapedVarName: String, varIndex: Int, funcSearch: Boolean = false): String? {
+        val funcRegex = if (funcSearch) """=\s*function\s*""" else ""
+        val initPattern = Pattern.compile("""(?xs)
                     [;\n](?:
                         (function\s+)|
                         (?:var\s+)?
-                    )([a-zA-Z0-9_$]+)\s*    #(?(1)|=\s*function\s*)
+                    )([a-zA-Z0-9_$]+)\s*$funcRegex    #(?(1)|=\s*function\s*)
                     \(([a-zA-Z0-9_$]+)\)\s*\{
                     (?:(?!\}[;\n]).)+
                     \}\s*catch\(\s*[a-zA-Z0-9_$]+\s*\)\s*
                     \{\s*return\s+$escapedVarName\[$varIndex\]\s*\+\s*\3\s*\}\s*return\s+[^}]+\}[;\n]
                 """, Pattern.COMMENTS)
-            val initMatcher = initPattern.matcher(jsCode)
+        val initMatcher = initPattern.matcher(jsCode)
 
-            if (initMatcher.find() && initMatcher.groupCount() >= 2) {
-                val funcName = initMatcher.group(2)
-                return funcName
-            }
-
-            Log.d(TAG, "Initial search was unable to find nsig function name")
+        if (initMatcher.find() && initMatcher.groupCount() >= 2) {
+            val funcName = initMatcher.group(2)
+            return funcName
         }
 
         return null

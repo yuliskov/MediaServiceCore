@@ -14,6 +14,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     private val data
         get() = MediaServiceData.instance()
     private var mNFuncCode: Pair<List<String>, String>? = null
+    private var mSigFuncCode: Pair<List<String>, String>? = null
     private var mNSigTmp: Pair<String, String?>? = null
     private var mCipherCode: String? = null
     private var mCPNCode: String? = null
@@ -24,7 +25,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         restoreNFuncCode()
         restoreOtherData()
 
-        if (mNFuncCode == null || mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
+        if (mNFuncCode == null || mSigFuncCode == null || mCipherCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             val jsCode = loadPlayer()
             val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) } ?: Triple(null, null, null)
 
@@ -37,6 +38,15 @@ internal class PlayerDataExtractor(val playerUrl: String) {
                     null
                 }
             }
+            mSigFuncCode = jsCode?.let {
+                try {
+                    SigExtractor.extractSigCode(it, globalVarData)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                    Log.d(TAG, "Signature init failed: %s", e.message)
+                    null
+                }
+            }
             mCipherCode = jsCode?.let { CipherExtractor.extractCipherCode(it, globalVarData) }
             mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
             mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
@@ -46,7 +56,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
         if (mNFuncCode == null) {
             ReflectionHelper.dumpDebugInfo(NSigExtractor::class.java, loadPlayer())
-            //throw IllegalStateException("NSigExtractor: Can't obtain NSig code for $playerUrl...")
         }
     }
 
@@ -56,6 +65,12 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         val nSig = extractNSigReal(nParam)
 
         mNSigTmp = Pair(nParam, nSig)
+
+        return nSig
+    }
+
+    fun extractSig(nParam: String): String? {
+        val nSig = extractSigReal(nParam)
 
         return nSig
     }
@@ -88,6 +103,14 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return func(listOf(nParam))
     }
 
+    private fun extractSigReal(nParam: String): String? {
+        val funcCode = mSigFuncCode ?: return null
+
+        val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
+
+        return func(listOf(nParam))
+    }
+
     private fun loadPlayer(): String? {
         return RetrofitHelper.get(mFileApi.getContent(fixupPlayerUrl(playerUrl)))?.content
     }
@@ -95,7 +118,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     private fun fixupPlayerUrl(playerUrl: String): String {
         return playerUrl
             .replace("/player_ias_tce.vflset/", "/player_ias.vflset/") // See https://github.com/yt-dlp/yt-dlp/issues/12398
-            .replace("player_ias.vflset/en_US/base.js", "tv-player-ias.vflset/tv-player-ias.js")
+            //.replace("player_ias.vflset/en_US/base.js", "tv-player-ias.vflset/tv-player-ias.js") // does not contain nsig
             //.replace("20830619", "69f581a5")
     }
 

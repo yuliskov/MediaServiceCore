@@ -47,32 +47,14 @@ internal object SigExtractor {
         val argNames = data.first
         var sigCode = data.second
 
-        var (varCode, varName, _) = globalVarData
-        val globalList: List<String>? = globalVar.second
+        val (varCode, varName, _) = globalVarData
 
         if (varCode != null && varName != null) {
             Log.d(TAG, "Prepending sig function code with global array variable \"$varName\"")
             sigCode = "$varCode; $sigCode"
-        } else {
-            varName = "dlp_wins"
         }
 
-        val undefinedIdx = globalList?.indexOf("undefined") ?: -1
-        val escapedVarName = Pattern.quote(varName)
-        val escapedArgName = Pattern.quote(argNames[0])
-        val fixupPattern = Pattern.compile("""(?x)
-                ;\s*if\s*\(\s*typeof\s+[a-zA-Z0-9_$]+\s*===?\s*(?:
-                    (["\'])undefined\1|
-                    ${escapedVarName}\[${if (undefinedIdx != -1) undefinedIdx else "\\d+"}\]
-                )\s*\)\s*return\s+${escapedArgName};""", Pattern.COMMENTS)
-        val fixupMatcher = fixupPattern.matcher(sigCode)
-        val fixedCode = fixupMatcher.replaceAll(";")
-
-        if (fixedCode == sigCode) {
-            Log.d(TAG, "No typeof statement found in sig function code")
-        }
-
-        return Pair(argNames, fixedCode)
+        return Pair(argNames, sigCode)
     }
 
     private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>, nestedCount: Int = 0): Pair<List<String>, String>? {

@@ -65,6 +65,7 @@ public class MediaServiceData {
     private PlayerDataCached mPlayerData;
     private ClientDataCached mClientData;
     private NSigData mNSigData;
+    private NSigData mSigData;
     private boolean mIsMoreSubtitlesUnlocked;
     private boolean mIsPremiumFixEnabled;
 
@@ -160,6 +161,16 @@ public class MediaServiceData {
 
     public void setNSigData(NSigData nSigData) {
         mNSigData = nSigData;
+        persistData();
+    }
+
+    @Nullable
+    public NSigData getSigData() {
+        return mSigData;
+    }
+
+    public void setSigData(NSigData nSigData) {
+        mSigData = nSigData;
         persistData();
     }
 
@@ -315,6 +326,7 @@ public class MediaServiceData {
         String[] split = Helpers.splitData(cache);
 
         mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
+        mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
     }
 
     private void persistData() {
@@ -344,6 +356,6 @@ public class MediaServiceData {
 
         mCachedPrefs.setMediaServiceCache(
                 Helpers.mergeData(null, null,
-                        null, null, null, null, null, null, mNSigData));
+                        null, null, null, null, null, null, mNSigData, mSigData));
     }
 }

@@ -102,7 +102,7 @@ internal class PoToken {
             "result.toString();"
         )
 
-        val result = V8Runtime.instance().evaluate(script)
+        val result = V8Runtime.instance().evaluate(script) ?: return null
         //val result = V8Runtime.instance().evaluate(script.joinToString(""))
 
         val (postProcessFunction, payload) = result.split(RESULT_DELIM)

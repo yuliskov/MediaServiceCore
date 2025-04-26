@@ -79,14 +79,15 @@ public class AppServiceTest {
         }
     }
 
-    @Test
-    public void testCipherExtractor() {
-        for (String url : AppConstants.playerUrls) {
-            PlayerDataExtractor dataExtractor = new PlayerDataExtractor(url);
-
-            assertNotNull("Cipher found for url: " + url, dataExtractor.extractCipher());
-        }
-    }
+    //@Ignore("Removed in the newer versions")
+    //@Test
+    //public void testCipherExtractor() {
+    //    for (String url : AppConstants.playerUrls) {
+    //        PlayerDataExtractor dataExtractor = new PlayerDataExtractor(url);
+    //
+    //        assertNotNull("Cipher found for url: " + url, dataExtractor.extractCipher());
+    //    }
+    //}
 
     @Test
     public void testPlaybackNonce() {

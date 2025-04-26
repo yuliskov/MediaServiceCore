@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
+import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import java.util.regex.Pattern
@@ -7,7 +8,7 @@ import java.util.regex.Pattern
 internal object SigExtractor {
     private val TAG = SigExtractor::class.java.simpleName
     private val mSigPattern = Pattern.compile("""(?xs)
-                \b([a-zA-Z0-9_${'$'}]+)&&\(\1=([a-zA-Z0-9_${'$'}]{2,})\(decodeURIComponent\(\1\)\)""", Pattern.COMMENTS)
+                \b([a-zA-Z0-9_$]+)&&\(\1=([a-zA-Z0-9_$]{2,})\(decodeURIComponent\(\1\)\)""", Pattern.COMMENTS)
 
     /**
      * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_code
@@ -19,7 +20,9 @@ internal object SigExtractor {
 
         val funcName = extractSigFunctionName(jsCode) ?: return null
 
-        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+        //val funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+
+        return fixupGlobalObjIfNeeded(jsCode, funcName, globalVarData, globalVar)
     }
 
     /**
@@ -37,16 +40,16 @@ internal object SigExtractor {
         return null
     }
 
-    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>): Pair<List<String>, String> {
+    private fun fixupSigFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>): Pair<List<String>, String> {
         val argNames = data.first
-        var nSigCode = data.second
+        var sigCode = data.second
 
         var (varCode, varName, _) = globalVarData
         val globalList: List<String>? = globalVar.second
 
         if (varCode != null && varName != null) {
-            Log.d(TAG, "Prepending n function code with global array variable \"$varName\"")
-            nSigCode = "$varCode; $nSigCode"
+            Log.d(TAG, "Prepending sig function code with global array variable \"$varName\"")
+            sigCode = "$varCode; $sigCode"
         } else {
             varName = "dlp_wins"
         }
@@ -59,13 +62,46 @@ internal object SigExtractor {
                     (["\'])undefined\1|
                     ${escapedVarName}\[${if (undefinedIdx != -1) undefinedIdx else "\\d+"}\]
                 )\s*\)\s*return\s+${escapedArgName};""", Pattern.COMMENTS)
-        val fixupMatcher = fixupPattern.matcher(nSigCode)
+        val fixupMatcher = fixupPattern.matcher(sigCode)
         val fixedCode = fixupMatcher.replaceAll(";")
 
-        if (fixedCode == nSigCode) {
-            Log.d(TAG, "No typeof statement found in nsig function code")
+        if (fixedCode == sigCode) {
+            Log.d(TAG, "No typeof statement found in sig function code")
         }
 
         return Pair(argNames, fixedCode)
+    }
+
+    private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>, nestedCount: Int = 0): Pair<List<String>, String> {
+        var funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+
+        // Test the function works
+        try {
+            extractSig(funcCode, "5cNpZqIJ7ixNqU68Y7S")
+        } catch (error: V8ScriptExecutionException) {
+            if (nestedCount > 1)
+                return funcCode
+
+            val globalObjNamePattern = Pattern.compile("""([\w$]+) is not defined$""")
+
+            val globalObjNameMatcher = globalObjNamePattern.matcher(error.message!!)
+
+            if (globalObjNameMatcher.find() && globalObjNameMatcher.groupCount() == 1) {
+                val globalObjCode = JSInterpret.extractObjectCode(jsCode, globalObjNameMatcher.group(1)!!)
+
+                globalObjCode?.let {
+                    val (varCode, varName, varValue) = globalVarData
+                    funcCode = fixupGlobalObjIfNeeded(jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), globalVar, nestedCount + 1)
+                }
+            }
+        }
+
+        return funcCode
+    }
+
+    private fun extractSig(funcCode: Pair<List<String>, String>, signature: String): String? {
+        val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
+
+        return func(listOf(signature))
     }
 }

@@ -13,7 +13,7 @@ internal object JSInterpret {
         return { args: List<String> ->
             val fullCode =
                 "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
-            V8Runtime.instance().evaluate(fullCode)
+            V8Runtime.instance().evaluateWithErrors(fullCode)
         }
     }
 
@@ -60,8 +60,26 @@ internal object JSInterpret {
         return response
     }
 
-    fun extractObject(jsCode: String, objName: String): String? {
+    /**
+     * yt_dlp.jsinterp.JSInterpreter.extract_object
+     */
+    fun extractObjectCode(jsCode: String, objName: String): String? {
         // ([\w$]+) is not defined$
+
+        val funcNameRegex = """(?:[a-zA-Z$0-9]+|"[a-zA-Z$0-9]+"|'[a-zA-Z$}0-9]+')"""
+
+        val objPattern = Pattern.compile("""(?x)
+                (?<!\.)$objName\s*=\s*\{\s*
+                    (($funcNameRegex\s*:\s*function\s*\(.*?\)\s*\{.*?\}(?:,\s*)?)*)
+                \}\s*;
+                """, Pattern.COMMENTS)
+
+        val objMatcher = objPattern.matcher(jsCode)
+
+        if (objMatcher.find()) {
+            return objMatcher.group()
+        }
+
         return null
     }
 

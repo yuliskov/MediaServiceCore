@@ -102,13 +102,13 @@ internal object NSigExtractor {
         return funcName
     }
 
-    private fun findInitNFuncName(jsCode: String, escapedVarName: String, varIndex: Int, funcSearch: Boolean = false): String? {
-        val funcRegex = if (funcSearch) """=\s*function\s*""" else ""
+    private fun findInitNFuncName(jsCode: String, escapedVarName: String, varIndex: Int, useAltPattern: Boolean = false): String? {
+        val funcNameRegex = if (useAltPattern) """=\s*function\s*""" else ""
         val initPattern = Pattern.compile("""(?xs)
                     [;\n](?:
                         (function\s+)|
                         (?:var\s+)?
-                    )([a-zA-Z0-9_$]+)\s*$funcRegex    #(?(1)|=\s*function\s*)
+                    )([a-zA-Z0-9_$]+)\s*$funcNameRegex    #(?(1)|=\s*function\s*)
                     \(([a-zA-Z0-9_$]+)\)\s*\{
                     (?:(?!\}[;\n]).)+
                     \}\s*catch\(\s*[a-zA-Z0-9_$]+\s*\)\s*

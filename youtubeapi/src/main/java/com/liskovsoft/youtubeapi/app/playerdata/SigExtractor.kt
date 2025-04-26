@@ -5,6 +5,9 @@ import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import java.util.regex.Pattern
 
+/**
+ * yt_dlp.extractor.youtube._video.YoutubeIE._parse_sig_js
+ */
 internal object SigExtractor {
     private val TAG = SigExtractor::class.java.simpleName
     private val mSigPattern = Pattern.compile("""(?xs)
@@ -27,9 +30,7 @@ internal object SigExtractor {
     }
 
     /**
-     * yt_dlp.extractor.youtube.YoutubeIE._parse_sig_js
-     *
-     * yt-dlp\yt_dlp\extractor\_video.py
+     * yt_dlp.extractor.youtube._video.YoutubeIE._parse_sig_js
      */
     private fun extractSigFunctionName(jsCode: String): String? {
         val sigFuncMatcher = mSigPattern.matcher(jsCode)

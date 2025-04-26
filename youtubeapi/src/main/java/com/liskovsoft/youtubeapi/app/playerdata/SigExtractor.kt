@@ -19,13 +19,11 @@ internal object SigExtractor {
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
     fun extractSigCode(jsCode: String, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String>? {
-        val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
-
         val funcName = extractSigFunctionName(jsCode) ?: return null
 
-        //val funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+        //val funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData)
 
-        return fixupGlobalObjIfNeeded(jsCode, funcName, globalVarData, globalVar) ?: extractSigFunctionCodeAlt(jsCode, globalVarData)
+        return fixupGlobalObjIfNeeded(jsCode, funcName, globalVarData) ?: extractSigFunctionCodeAlt(jsCode, globalVarData)
     }
 
     /**
@@ -43,7 +41,7 @@ internal object SigExtractor {
         return null
     }
 
-    private fun fixupSigFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>): Pair<List<String>, String> {
+    private fun fixupSigFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String> {
         val argNames = data.first
         var sigCode = data.second
 
@@ -57,9 +55,9 @@ internal object SigExtractor {
         return Pair(argNames, sigCode)
     }
 
-    private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>, nestedCount: Int = 0): Pair<List<String>, String>? {
+    private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVarData: Triple<String?, String?, String?>, nestedCount: Int = 0): Pair<List<String>, String>? {
         var funcCode = try {
-            fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+            fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData)
         } catch (e: Exception) {
             return null
         }
@@ -80,7 +78,7 @@ internal object SigExtractor {
 
                 globalObjCode?.let {
                     val (varCode, varName, varValue) = globalVarData
-                    funcCode = fixupGlobalObjIfNeeded(jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), globalVar, nestedCount + 1) ?: return null
+                    funcCode = fixupGlobalObjIfNeeded(jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), nestedCount + 1) ?: return null
                 }
             }
         }

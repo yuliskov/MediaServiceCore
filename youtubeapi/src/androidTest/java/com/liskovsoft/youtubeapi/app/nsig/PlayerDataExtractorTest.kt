@@ -44,8 +44,15 @@ class PlayerDataExtractorTest {
 
     @Test
     fun testSigPlayerVersions() {
+        AppConstants.playerUrls.forEach { testSigPlayerUrl(it) }
+    }
+
+    @Test
+    fun testSomeSigPlayerVersions() {
+        testSigPlayerUrl("https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js")
+        testSigPlayerUrl("https://www.youtube.com/s/player/69f581a5/tv-player-es6.vflset/tv-player-es6.js")
+        testSigPlayerUrl("https://www.youtube.com/s/player/73381ccc/tv-player-es6.vflset/tv-player-es6.js")
         testSigPlayerUrl("https://www.youtube.com/s/player/6450230e/player_ias.vflset/en_US/base.js")
-        //AppConstants.playerUrls.forEach { testSigPlayerUrl(it) }
     }
 
     private fun testNSigPlayerUrl(url: String) {

@@ -9,6 +9,9 @@ internal object SigExtractor {
     private val TAG = SigExtractor::class.java.simpleName
     private val mSigPattern = Pattern.compile("""(?xs)
                 \b([a-zA-Z0-9_$]+)&&\(\1=([a-zA-Z0-9_$]{2,})\(decodeURIComponent\(\1\)\)""", Pattern.COMMENTS)
+    private val mSigPattern2 = Pattern.compile("""(?x)
+                ;\w+\ [$\w]+=\{[\S\s]{10,200}?[\w]\.reverse\(\)[\S\s]*?
+                function\ ([$\w]+)\(([\w])\)\{.*[\w]\.split\((?:""|[$\w]+\[\d+\])\).*;return\ [\w]\.join\((?:""|[$\w]+\[\d+\])\)\}""", Pattern.COMMENTS)
 
     /**
      * yt_dlp.extractor.youtube.YoutubeIE._extract_n_function_code
@@ -22,7 +25,7 @@ internal object SigExtractor {
 
         //val funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
 
-        return fixupGlobalObjIfNeeded(jsCode, funcName, globalVarData, globalVar)
+        return fixupGlobalObjIfNeeded(jsCode, funcName, globalVarData, globalVar) ?: extractSigFunctionCodeAlt(jsCode, globalVarData)
     }
 
     /**
@@ -72,15 +75,19 @@ internal object SigExtractor {
         return Pair(argNames, fixedCode)
     }
 
-    private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>, nestedCount: Int = 0): Pair<List<String>, String> {
-        var funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+    private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>, nestedCount: Int = 0): Pair<List<String>, String>? {
+        var funcCode = try {
+            fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+        } catch (e: Exception) {
+            return null
+        }
 
         // Test the function works
         try {
             extractSig(funcCode, "5cNpZqIJ7ixNqU68Y7S")
         } catch (error: V8ScriptExecutionException) {
             if (nestedCount > 1)
-                return funcCode
+                return null
 
             val globalObjNamePattern = Pattern.compile("""([\w$]+) is not defined$""")
 
@@ -91,12 +98,25 @@ internal object SigExtractor {
 
                 globalObjCode?.let {
                     val (varCode, varName, varValue) = globalVarData
-                    funcCode = fixupGlobalObjIfNeeded(jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), globalVar, nestedCount + 1)
+                    funcCode = fixupGlobalObjIfNeeded(jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), globalVar, nestedCount + 1) ?: return null
                 }
             }
         }
 
         return funcCode
+    }
+
+    private fun extractSigFunctionCodeAlt(jsCode: String, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String>? {
+        val cipherMatcher = mSigPattern2.matcher(jsCode)
+
+        if (cipherMatcher.find()) {
+            val fnName: String = cipherMatcher.group(1)!!
+            val fnParamName: String = cipherMatcher.group(2)!!
+            val fnBody = "${cipherMatcher.group(0)!!}; return $fnName($fnParamName);"
+            return Pair(listOf(fnParamName), "${globalVarData.first?.let { "$it;" } ?: ""} $fnBody")
+        }
+
+        return null
     }
 
     private fun extractSig(funcCode: Pair<List<String>, String>, signature: String): String? {

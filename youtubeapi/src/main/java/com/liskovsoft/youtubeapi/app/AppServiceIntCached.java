@@ -119,6 +119,7 @@ public class AppServiceIntCached extends AppServiceInt {
         mPlayerDataExtractor = null;
         mClientData = null;
         getData().setAppInfo(null);
+        getData().setSigData(null);
     }
 
     @Override

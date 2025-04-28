@@ -75,12 +75,15 @@ internal object SigExtractor {
             val globalObjNameMatcher = globalObjNamePattern.matcher(error.message!!)
 
             if (globalObjNameMatcher.find() && globalObjNameMatcher.groupCount() == 1) {
-                val globalObjCode = JSInterpret.extractObjectCode(jsCode, globalObjNameMatcher.group(1)!!)
-
-                globalObjCode?.let {
-                    val (varCode, varName, varValue) = globalVarData
-                    funcCode = fixupGlobalObjIfNeeded(jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), nestedCount + 1) ?: return null
+                val globalObjCode = try {
+                    JSInterpret.extractObjectCode(jsCode, globalObjNameMatcher.group(1)!!)
+                } catch (e: Exception) {
+                    return null
                 }
+
+                val (varCode, varName, varValue) = globalVarData
+                funcCode = fixupGlobalObjIfNeeded(
+                    jsCode, funcName, Triple("${varCode?.let { "$it;" } ?: ""} $globalObjCode", varName, varValue), nestedCount + 1) ?: return null
             }
         }
 

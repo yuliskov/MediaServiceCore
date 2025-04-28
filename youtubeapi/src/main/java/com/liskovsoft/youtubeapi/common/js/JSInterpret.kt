@@ -63,7 +63,7 @@ internal object JSInterpret {
     /**
      * yt_dlp.jsinterp.JSInterpreter.extract_object
      */
-    fun extractObjectCode(jsCode: String, objName: String): String? {
+    fun extractObjectCode(jsCode: String, objName: String): String {
         val escapedObjName = Pattern.quote(objName)
 
         val funcNameRegex = """(?:[a-zA-Z$0-9]+|"[a-zA-Z$0-9]+"|'[a-zA-Z$}0-9]+')"""
@@ -76,11 +76,11 @@ internal object JSInterpret {
 
         val objMatcher = objPattern.matcher(jsCode)
 
-        if (objMatcher.find()) {
-            return objMatcher.group()
+        if (!objMatcher.find()) {
+            throw IllegalStateException("Could not find JS function \"$objName\"")
         }
 
-        return null
+        return objMatcher.group()
     }
 
     /**

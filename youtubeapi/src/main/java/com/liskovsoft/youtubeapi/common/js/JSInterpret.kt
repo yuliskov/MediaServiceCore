@@ -64,12 +64,12 @@ internal object JSInterpret {
      * yt_dlp.jsinterp.JSInterpreter.extract_object
      */
     fun extractObjectCode(jsCode: String, objName: String): String? {
-        // ([\w$]+) is not defined$
+        val escapedObjName = Pattern.quote(objName)
 
         val funcNameRegex = """(?:[a-zA-Z$0-9]+|"[a-zA-Z$0-9]+"|'[a-zA-Z$}0-9]+')"""
 
         val objPattern = Pattern.compile("""(?x)
-                (?<!\.)$objName\s*=\s*\{\s*
+                (?<!\.)$escapedObjName\s*=\s*\{\s*
                     (($funcNameRegex\s*:\s*function\s*\(.*?\)\s*\{.*?\}(?:,\s*)?)*)
                 \}\s*;
                 """, Pattern.COMMENTS)

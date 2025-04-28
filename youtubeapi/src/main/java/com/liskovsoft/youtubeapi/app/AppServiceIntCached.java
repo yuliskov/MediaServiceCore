@@ -65,10 +65,13 @@ public class AppServiceIntCached extends AppServiceInt {
                 mPlayerDataExtractor = super.getPlayerDataExtractor(playerUrl);
                 if (mPlayerDataExtractor.validate()) {
                     getData().setAppInfo(mAppInfo);
-                } else {
+                } else if (check(getData().getAppInfo())) {
                     getData().setFailedAppInfo(mAppInfo);
                     mAppInfo = null;
                     mFallbackMode = true;
+                } else {
+                    getData().setFailedAppInfo(mAppInfo);
+                    mPlayerDataExtractor = super.getPlayerDataExtractor(AppConstants.playerUrls.get(0));
                 }
                 return mPlayerDataExtractor;
             } catch (Throwable e) { // StackOverflowError | IllegalStateException

@@ -25,7 +25,6 @@ internal class PoTokenWebView private constructor(
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
-    private var isBroken: Boolean = false
     var initError: Throwable? = null
 
     //region Initialization
@@ -57,7 +56,7 @@ internal class PoTokenWebView private constructor(
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
 
                     // TODO: not needed anymore?
-                    isBroken = true
+                    //isBroken = true
 
                     // Next line cause crashes
                     onInitializationErrorCloseAndCancel(BadWebViewException(fmt))
@@ -242,10 +241,6 @@ internal class PoTokenWebView private constructor(
         // MOD: java.time backport
         //return Instant.now().isAfter(expirationInstant)
         return System.currentTimeMillis() > expirationMs
-    }
-
-    override fun isBroken(): Boolean {
-        return isBroken
     }
 
     //endregion

@@ -21,9 +21,6 @@ internal object PoTokenProviderImpl : PoTokenProvider {
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
 
-    @JvmStatic
-    fun isBroken(): Boolean = webPoTokenGenerator?.isBroken() ?: false
-
     override fun getWebClientPoToken(videoId: String): PoTokenResult? {
         if (!webViewSupported || webViewBadImpl) {
             return null

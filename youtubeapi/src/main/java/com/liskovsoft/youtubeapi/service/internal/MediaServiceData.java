@@ -289,7 +289,7 @@ public class MediaServiceData {
     }
 
     public boolean supportsWebView() {
-        return PoTokenGate.supportsNpPot() && !PoTokenProviderImpl.isBroken();
+        return PoTokenGate.supportsNpPot();
     }
 
     private void restoreData() {

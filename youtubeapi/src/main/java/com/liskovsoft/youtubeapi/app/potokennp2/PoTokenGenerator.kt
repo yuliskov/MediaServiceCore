@@ -21,8 +21,6 @@ internal interface PoTokenGenerator : Closeable {
      */
     fun isExpired(): Boolean
 
-    fun isBroken(): Boolean
-
     interface Factory {
         /**
          * Initializes a [PoTokenGenerator] by loading the BotGuard VM, running it, and obtaining

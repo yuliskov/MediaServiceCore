@@ -41,10 +41,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     // VIDEO_INFO_TV can bypass "Sign in to confirm you're not a bot" (rare case)
     // WEB_EMBEDDED_PLAYER - the best one, with no occasional 403 errors
     // VIDEO_INFO_IOS can work without NSig. VIDEO_INFO_TV and VIDEO_INFO_EMBED are the only ones working in North America
+    // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_IOS, WEB_EMBEDDED_PLAYER, VIDEO_INFO_ANDROID, VIDEO_INFO_TV, VIDEO_INFO_EMBED
-            WEB_EMBEDDED_PLAYER, VIDEO_INFO_IOS, VIDEO_INFO_TV, VIDEO_INFO_EMBED
+            WEB_EMBEDDED_PLAYER, VIDEO_INFO_MWEB, VIDEO_INFO_IOS, VIDEO_INFO_TV, VIDEO_INFO_EMBED
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -284,7 +285,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
             if (mCachedTranslationLanguages == null || mCachedTranslationLanguages.size() < 100) {
                 mSkipAuthBlock = true;
-                VideoInfo webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                VideoInfo webInfo = null;
+                try {
+                    webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 mSkipAuthBlock = false;
                 if (webInfo != null) {
                     mCachedTranslationLanguages = webInfo.getTranslationLanguages();
@@ -393,5 +399,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private boolean isPotSupported(int videoInfoType) {
         return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
+    }
+
+    @Override
+    protected boolean isPotSupported() {
+        return isPotSupported(mVideoInfoType);
     }
 }

@@ -20,12 +20,13 @@ import java.util.concurrent.CountDownLatch
 @RequiresApi(19)
 internal class PoTokenWebView private constructor(
     context: Context,
-    private val onSuccess: () -> Unit
+    private var onInitDone: () -> Unit
 ) : PoTokenGenerator {
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
     private var isBroken: Boolean = false
+    var initError: Throwable? = null
 
     //region Initialization
     init {
@@ -55,10 +56,11 @@ internal class PoTokenWebView private constructor(
                     val fmt = "\"${m.message()}\", source: ${m.sourceId()} (${m.lineNumber()})"
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
 
-                    // Next lines cause crashes
-                    //val exception = BadWebViewException(fmt)
-                    //onInitializationErrorCloseAndCancel(exception)
+                    // TODO: not needed anymore?
                     isBroken = true
+
+                    // Next line cause crashes
+                    onInitializationErrorCloseAndCancel(BadWebViewException(fmt))
                 }
                 return super.onConsoleMessage(m)
             }
@@ -169,7 +171,7 @@ internal class PoTokenWebView private constructor(
                 "this.integrityToken = $integrityToken"
             ) {
                 Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-                onSuccess()
+                onInitDone()
             }
         }
     }
@@ -206,6 +208,8 @@ internal class PoTokenWebView private constructor(
         }
 
         latch.await()
+
+        initError?.let { throw it }
 
         return pot
     }
@@ -329,10 +333,12 @@ internal class PoTokenWebView private constructor(
      * to [generatorEmitter].
      */
     private fun onInitializationErrorCloseAndCancel(error: Throwable) {
+        initError = error
         popAllPoTokenEmitters()
         runOnMainThread {
             close()
-            throw error
+            // throw error
+            onInitDone()
         }
     }
 
@@ -374,6 +380,8 @@ internal class PoTokenWebView private constructor(
             }
 
             latch.await()
+
+            potWv.initError?.let { throw it }
 
             return potWv
         }

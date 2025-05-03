@@ -65,10 +65,9 @@ public class VideoFormat {
     private String mProjectionType;
     private String mXtags;
     @JsonPath("$.width")
-    private int mWidth;
+    private int mWidth = -1;
     @JsonPath("$.height")
-    private int mHeight;
-    private String mSize;
+    private int mHeight = -1;
     @JsonPath("$.fps")
     private int mFps;
     private String mLmt;
@@ -205,16 +204,20 @@ public class VideoFormat {
         mXtags = xtags;
     }
 
-    public String getSize() {
-        if (mSize == null && mWidth != 0 && mHeight != 0) {
-            return String.format("%sx%s", mWidth, mHeight);
-        }
-
-        return mSize;
+    public int getWidth() {
+        return mWidth;
     }
 
-    public void setSize(String size) {
-        mSize = size;
+    public void setWidth(int width) {
+        mWidth = width;
+    }
+
+    public int getHeight() {
+        return mHeight;
+    }
+
+    public void setHeight(int height) {
+        mHeight = height;
     }
 
     public int getFps() {
@@ -394,12 +397,13 @@ public class VideoFormat {
     @NonNull
     public String toString() {
         return String.format(
-                "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Size: %s, ITag: %s}",
+                "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Width: %s, Height: %s, ITag: %s}",
                 getUrl(),
                 getSourceURL(),
                 getSignature(),
                 getContentLength(),
-                getSize(),
+                getWidth(),
+                getHeight(),
                 getITag());
     }
 }

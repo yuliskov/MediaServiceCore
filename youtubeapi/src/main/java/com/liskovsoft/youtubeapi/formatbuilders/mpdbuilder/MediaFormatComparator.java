@@ -38,8 +38,8 @@ public class MediaFormatComparator implements Comparator<MediaFormat> {
         int leftItemBitrate = leftItem.getBitrate() == null ? 0 : parseInt(leftItem.getBitrate());
         int rightItemBitrate = rightItem.getBitrate() == null ? 0 : parseInt(rightItem.getBitrate());
 
-        int leftItemHeight = leftItem.getSize() == null ? 0 : parseInt(MediaFormatUtils.getHeight(leftItem));
-        int rightItemHeight = rightItem.getSize() == null ? 0 : parseInt(MediaFormatUtils.getHeight(rightItem));
+        int leftItemHeight = leftItem.getHeight();
+        int rightItemHeight = rightItem.getHeight();
 
         int delta = rightItemHeight - leftItemHeight;
 

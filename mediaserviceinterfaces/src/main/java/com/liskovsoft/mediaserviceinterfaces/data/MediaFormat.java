@@ -26,8 +26,10 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     void setProjectionType(String projectionType);
     String getXtags();
     void setXtags(String xtags);
-    String getSize();
-    void setSize(String size);
+    int getWidth();
+    void setWidth(int width);
+    int getHeight();
+    void setHeight(int height);
     String getIndex();
     void setIndex(String index);
     String getInit();

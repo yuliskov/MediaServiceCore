@@ -405,8 +405,8 @@ public class YouTubeMPDBuilder implements MPDBuilder {
 
         if (isVideo(format)) {
             // video attrs
-            attribute("", "width", MediaFormatUtils.getWidth(format));
-            attribute("", "height", MediaFormatUtils.getHeight(format));
+            attribute("", "width", String.valueOf(format.getWidth()));
+            attribute("", "height", String.valueOf(format.getHeight()));
             attribute("", "maxPlayoutRate", "1");
             attribute("", "frameRate", format.getFps());
         } else {
@@ -585,7 +585,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     }
 
     private boolean isVideo(MediaFormat item) {
-        return item.getSize() != null;
+        return item.getWidth() > 0 && item.getHeight() > 0;
     }
 
     private boolean isAudio(MediaFormat item) {

@@ -240,7 +240,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean containsDashFormats() {
-        return mDashFormats != null;
+        return mDashFormats != null && !mDashFormats.isEmpty();
     }
 
     @Override

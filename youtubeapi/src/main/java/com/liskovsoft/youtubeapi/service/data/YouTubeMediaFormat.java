@@ -21,7 +21,8 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mBitrate;
     private String mProjectionType;
     private String mXtags;
-    private String mSize;
+    private int mWidth;
+    private int mHeight;
     private String mInit;
     private String mFps;
     private String mLmt;
@@ -78,7 +79,8 @@ public class YouTubeMediaFormat implements MediaFormat {
         mediaFormat.mClen = format.getContentLength();
         String bitrate = format.getBitrate() == 0 ? "" : String.valueOf(format.getBitrate());
         mediaFormat.mBitrate = bitrate;
-        mediaFormat.mSize = format.getSize();
+        mediaFormat.mWidth = format.getWidth();
+        mediaFormat.mHeight = format.getHeight();
         String fps = format.getFps() == 0 ? "" : String.valueOf(format.getFps());
         mediaFormat.mFps = fps;
         mediaFormat.mFormat = format.getFormat();
@@ -187,13 +189,23 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     @Override
-    public String getSize() {
-        return mSize;
+    public int getWidth() {
+        return mWidth;
     }
 
     @Override
-    public void setSize(String size) {
-        mSize = size;
+    public void setWidth(int width) {
+        mWidth = width;
+    }
+
+    @Override
+    public int getHeight() {
+        return mHeight;
+    }
+
+    @Override
+    public void setHeight(int height) {
+        mHeight = height;
     }
 
     @Override
@@ -372,12 +384,13 @@ public class YouTubeMediaFormat implements MediaFormat {
     @Override
     public String toString() {
         return String.format(
-                "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Size: %s, ITag: %s}",
+                "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Width: %s, Height: %s, ITag: %s}",
                 getUrl(),
                 getSourceUrl(),
                 getSignature(),
                 getClen(),
-                getSize(),
+                getWidth(),
+                getHeight(),
                 getITag());
     }
 

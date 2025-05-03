@@ -13,38 +13,6 @@ public class MediaFormatUtils {
     public static final String MIME_MP4_VIDEO = "video/mp4";
     private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
 
-    public static String getHeight(MediaFormat format) {
-        String size = format.getSize();
-
-        if (size == null) {
-            return "";
-        }
-
-        String[] widthHeight = size.split("x");
-
-        if (widthHeight.length != 2) {
-            return "";
-        }
-
-        return widthHeight[1];
-    }
-
-    public static String getWidth(MediaFormat format) {
-        String size = format.getSize();
-
-        if (size == null) {
-            return "";
-        }
-
-        String[] widthHeight = size.split("x");
-
-        if (widthHeight.length != 2) {
-            return "";
-        }
-
-        return widthHeight[0];
-    }
-
     public static boolean isDash(MediaFormat format) {
         if (format.getITag() == null) {
             return false;

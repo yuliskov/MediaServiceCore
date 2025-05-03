@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaFormat;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -194,8 +195,8 @@ public class YouTubeMPDParser implements MPDParser {
             item.setFps(frameRate);
             String width = parser.getAttributeValue(ns, "width");
             String height = parser.getAttributeValue(ns, "height");
-            String size = String.format("%sx%s", width, height);
-            item.setSize(size);
+            item.setWidth(Helpers.parseInt(width));
+            item.setHeight(Helpers.parseInt(height));
         } else { // audio tags
             item.setAudioSamplingRate(parser.getAttributeValue(ns, "audioSamplingRate"));
         }

@@ -98,12 +98,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
         List<AdaptiveVideoFormat> adaptiveFormats = null;
         List<RegularVideoFormat> regularFormats = null;
 
-        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_DASH) || !result.containsRegularVideoInfo()) {
+        if (getData().isFormatEnabled(MediaServiceData.FORMATS_DASH) || !result.containsRegularVideoInfo()) {
             decipherFormats(result.getAdaptiveFormats());
             adaptiveFormats = result.getAdaptiveFormats();
         }
 
-        if (MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_URL) || !result.containsAdaptiveVideoInfo()) {
+        if (getData().isFormatEnabled(MediaServiceData.FORMATS_URL) || !result.containsAdaptiveVideoInfo()) {
             decipherFormats(result.getRegularFormats());
             regularFormats = result.getRegularFormats();
         }
@@ -189,7 +189,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
-        //MediaServiceData.instance().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
+        //getData().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false); // skip additional formats fetching that produce an error
         if (!mIsUnplayable && isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
             return;
         }
@@ -216,7 +216,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
-        mSkipAuth = !isAuthSupported(mVideoInfoType) || MediaServiceData.instance().isPremiumFixEnabled();
+        //mSkipAuth = !isAuthSupported(mVideoInfoType) || getData().isPremiumFixEnabled();
+        mSkipAuth = !isAuthSupported(mVideoInfoType);
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
@@ -359,7 +360,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void restoreVideoInfoType() {
-        Pair<Integer, Boolean> videoInfoType = MediaServiceData.instance().getVideoInfoType();
+        Pair<Integer, Boolean> videoInfoType = getData().getVideoInfoType();
         if (videoInfoType != null && videoInfoType.first != -1) {
             mVideoInfoType = videoInfoType.first;
             mSkipAuth = videoInfoType.second;
@@ -371,16 +372,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return;
         }
 
-        MediaServiceData data = MediaServiceData.instance();
-        data.setVideoInfoType(mVideoInfoType, mSkipAuth);
+        getData().setVideoInfoType(mVideoInfoType, mSkipAuth);
     }
 
     private static boolean shouldObtainExtendedFormats(VideoInfo result) {
-        return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
+        return getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
     }
 
     private static boolean shouldUnlockMoreSubtitles(VideoInfo videoInfo) {
-        return videoInfo != null && videoInfo.hasSubtitles() && MediaServiceData.instance().isMoreSubtitlesUnlocked();
+        return videoInfo != null && videoInfo.hasSubtitles() && getData().isMoreSubtitlesUnlocked();
     }
 
     private static boolean needMoreSubtitles(VideoInfo videoInfo) {
@@ -404,5 +404,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     @Override
     protected boolean isPotSupported() {
         return isPotSupported(mVideoInfoType);
+    }
+
+    private static MediaServiceData getData() {
+        return MediaServiceData.instance();
     }
 }

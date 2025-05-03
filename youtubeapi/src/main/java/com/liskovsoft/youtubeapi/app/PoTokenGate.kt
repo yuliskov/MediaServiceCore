@@ -37,9 +37,8 @@ internal object PoTokenGate {
     @JvmStatic
     fun updatePoToken() {
         if (supportsNpPot()) {
-            mNpPoToken = null
-            //if (npPoToken == null)
-            //    npPoToken = PoTokenProviderImpl.getWebClientPoToken("")
+            //mNpPoToken = null // only refresh
+            mNpPoToken = PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
         } else {
             PoTokenCloudService.updatePoToken()
         }

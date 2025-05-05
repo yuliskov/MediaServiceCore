@@ -35,17 +35,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static int VIDEO_INFO_TV = 3;
     private final static int VIDEO_INFO_ANDROID = 4;
     private final static int VIDEO_INFO_IOS = 5;
-    private final static int VIDEO_INFO_EMBED = 6;
-    private final static int WEB_EMBEDDED_PLAYER = 7;
+    private final static int VIDEO_INFO_TV_EMBED = 6;
+    private final static int VIDEO_INFO_WEB_EMBED = 7;
     private final static int ANDROID_VR = 8;
     // VIDEO_INFO_TV can bypass "Sign in to confirm you're not a bot" (rare case)
-    // WEB_EMBEDDED_PLAYER - the best one, with no occasional 403 errors
-    // VIDEO_INFO_IOS can work without NSig. VIDEO_INFO_TV and VIDEO_INFO_EMBED are the only ones working in North America
+    // VIDEO_INFO_WEB_EMBED - the best one, with no occasional 403 errors
+    // VIDEO_INFO_IOS can work without NSig.
+    // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static Integer[] VIDEO_INFO_TYPE_LIST = {
-            //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
-            //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_IOS, WEB_EMBEDDED_PLAYER, VIDEO_INFO_ANDROID, VIDEO_INFO_TV, VIDEO_INFO_EMBED
-            WEB_EMBEDDED_PLAYER, VIDEO_INFO_MWEB, VIDEO_INFO_IOS, VIDEO_INFO_TV, VIDEO_INFO_EMBED
+            //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_TV_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
+            //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_IOS, VIDEO_INFO_WEB_EMBED, VIDEO_INFO_ANDROID, VIDEO_INFO_TV, VIDEO_INFO_TV_EMBED
+            VIDEO_INFO_WEB_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_IOS, VIDEO_INFO_TV, VIDEO_INFO_TV_EMBED
     };
     private int mVideoInfoType = -1;
     private boolean mSkipAuth;
@@ -155,8 +156,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_WEB:
                 result = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
                 break;
-            case WEB_EMBEDDED_PLAYER:
-                result = getVideoInfo(AppClient.WEB_EMBEDDED_PLAYER, videoId, clickTrackingParams);
+            case VIDEO_INFO_WEB_EMBED:
+                result = getVideoInfo(AppClient.WEB_EMBED, videoId, clickTrackingParams);
                 break;
             case ANDROID_VR:
                 result = getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams);
@@ -171,8 +172,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
             case VIDEO_INFO_IOS:
                 result = getVideoInfo(AppClient.IOS, videoId, clickTrackingParams);
                 break;
-            case VIDEO_INFO_EMBED:
-                result = getVideoInfo(AppClient.EMBED, videoId, clickTrackingParams);
+            case VIDEO_INFO_TV_EMBED:
+                result = getVideoInfo(AppClient.TV_EMBED, videoId, clickTrackingParams);
                 break;
         }
 
@@ -317,6 +318,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports Auth. Restricted (18+) videos
+                    () -> getVideoInfo(AppClient.WEB_EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams) // Video clip blocked in current location
             );
         }
@@ -398,7 +400,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private boolean isPotSupported(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == WEB_EMBEDDED_PLAYER || videoInfoType == ANDROID_VR;
+        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == VIDEO_INFO_WEB_EMBED || videoInfoType == ANDROID_VR;
     }
 
     @Override

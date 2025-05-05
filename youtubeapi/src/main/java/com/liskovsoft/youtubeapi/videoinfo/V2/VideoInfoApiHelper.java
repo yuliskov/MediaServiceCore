@@ -85,7 +85,7 @@ public class VideoInfoApiHelper {
                     .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
                     .setPoToken(PoTokenGate.getContentPoToken(videoId))
                     .setVisitorData(PoTokenGate.getVisitorData())
-                    .setAsWebEmbedded(client == AppClient.WEB_EMBEDDED_PLAYER)
+                    .setAsWebEmbedded(client == AppClient.WEB_EMBED)
                     .build();
         }
 
@@ -98,6 +98,6 @@ public class VideoInfoApiHelper {
     }
 
     private static boolean isPotSupported(AppClient client) {
-        return client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBEDDED_PLAYER || client == AppClient.ANDROID_VR;
+        return client == AppClient.WEB || client == AppClient.MWEB || client == AppClient.WEB_EMBED || client == AppClient.ANDROID_VR;
     }
 }

@@ -368,14 +368,22 @@ internal class PoTokenWebView private constructor(
             val latch = CountDownLatch(1)
 
             lateinit var potWv: PoTokenWebView
+            var initError: Throwable? = null
 
             runOnMainThread {
-                potWv = PoTokenWebView(context) { latch.countDown() }
+                potWv = try {
+                    PoTokenWebView(context) { latch.countDown() }
+                } catch (e: Throwable) {
+                    initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
+                    latch.countDown()
+                    return@runOnMainThread
+                }
                 potWv.loadHtmlAndObtainBotguard(context)
             }
 
             latch.await()
 
+            initError?.let { throw it }
             potWv.initError?.let { throw it }
 
             return potWv

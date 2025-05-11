@@ -17,7 +17,6 @@ import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.NSigData;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
-import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 
 import java.util.UUID;
@@ -51,6 +50,7 @@ public class MediaServiceData {
     private String mScreenId;
     private String mDeviceId;
     private String mVideoInfoVersion;
+    private String mSigDataVersion;
     private int mVideoInfoType;
     private String mVisitorCookie;
     private int mEnabledFormats;
@@ -156,10 +156,15 @@ public class MediaServiceData {
 
     @Nullable
     public NSigData getNSigData() {
-        return mNSigData;
+        if (Helpers.equals(mSigDataVersion, mAppVersion)) {
+            return mNSigData;
+        }
+
+        return null;
     }
 
     public void setNSigData(NSigData nSigData) {
+        mSigDataVersion = mAppVersion;
         mNSigData = nSigData;
         persistData();
     }
@@ -320,23 +325,7 @@ public class MediaServiceData {
         mVisitorCookie = Helpers.parseStr(split, 21);
     }
 
-    private void restoreCachedData() {
-        String cache = mCachedPrefs.getMediaServiceCache();
-
-        String[] split = Helpers.splitData(cache);
-
-        mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
-        mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
-    }
-
-    private void persistData() {
-        RxHelper.disposeActions(mPersistAction);
-
-        // Improve memory usage by merging multiple persist requests
-        mPersistAction = RxHelper.runAsync(() -> { persistDataReal(); persistCachedDataReal(); }, 5_000);
-    }
-
-    private void persistDataReal() {
+    private void persistDataInt() {
         if (mGlobalPrefs == null) {
             return;
         }
@@ -349,13 +338,30 @@ public class MediaServiceData {
                         mIsPremiumFixEnabled, mVisitorCookie));
     }
 
-    private void persistCachedDataReal() {
+    private void restoreCachedData() {
+        String cache = mCachedPrefs.getMediaServiceCache();
+
+        String[] split = Helpers.splitData(cache);
+
+        mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
+        mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
+        mSigDataVersion = Helpers.parseStr(split, 10);
+    }
+
+    private void persistCachedDataInt() {
         if (mCachedPrefs == null) {
             return;
         }
 
         mCachedPrefs.setMediaServiceCache(
                 Helpers.mergeData(null, null,
-                        null, null, null, null, null, null, mNSigData, mSigData));
+                        null, null, null, null, null, null, mNSigData, mSigData, mSigDataVersion));
+    }
+
+    private void persistData() {
+        RxHelper.disposeActions(mPersistAction);
+
+        // Improve memory usage by merging multiple persist requests
+        mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); }, 5_000);
     }
 }

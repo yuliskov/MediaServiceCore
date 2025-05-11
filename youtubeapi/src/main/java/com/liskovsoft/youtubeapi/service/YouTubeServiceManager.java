@@ -80,7 +80,11 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void invalidateCache() {
-        invalidatePlaybackCache();
+        LocaleManager.unhold();
+        getYouTubeSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
+        getAppService().invalidateCache();
+        //AppService.instance().invalidateVisitorData();
+        getYouTubeMediaItemService().invalidateCache();
         getVideoInfoService().resetInfoType();
     }
 
@@ -91,7 +95,6 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void applyNoPlaybackFix() {
-        //invalidatePlaybackCache();
         getYouTubeMediaItemService().invalidateCache();
         getVideoInfoService().switchNextFormat();
     }
@@ -100,15 +103,6 @@ public class YouTubeServiceManager implements ServiceManager {
     public void applyAntiBotFix() {
         getYouTubeMediaItemService().invalidateCache();
         refreshPoTokenIfNeeded();
-    }
-
-    @Override
-    public void invalidatePlaybackCache() {
-        LocaleManager.unhold();
-        getYouTubeSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
-        getAppService().invalidateCache();
-        //AppService.instance().invalidateVisitorData();
-        getYouTubeMediaItemService().invalidateCache();
     }
 
     private void refreshCacheIfNeededInt() {

@@ -116,7 +116,8 @@ public class AppServiceIntCached extends AppServiceInt {
         mPlayerDataExtractor = null;
         mClientData = null;
         getData().setAppInfo(null);
-        getData().setSigData(null);
+        // Don't reset Player's cache. It's too heavy to recreate often.
+        // Better do it inside MediaServiceData after the update
     }
 
     @Override

@@ -7,17 +7,11 @@ import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.Chip;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.Section;
-import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
-import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
-import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
-import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
-import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.search.models.SearchSection;
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
@@ -149,16 +143,15 @@ public class YouTubeMediaGroup implements MediaGroup {
         return create(baseGroup, searchSection.getItemWrappers(), searchSection.getNextPageKey());
     }
 
-    public static MediaGroup from(SearchResultContinuation nextSearchResult, MediaGroup baseGroup) {
-        if (nextSearchResult == null || baseGroup == null) {
+    public static MediaGroup from(SearchResultContinuation continuation, MediaGroup baseGroup) {
+        if (continuation == null || baseGroup == null) {
             return null;
         }
 
         YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
         newGroup.mTitle = baseGroup.getTitle();
 
-        return create(newGroup, nextSearchResult.getTileItems(), nextSearchResult.getVideoItems(), nextSearchResult.getMusicItems(),
-                nextSearchResult.getChannelItems(), nextSearchResult.getRadioItems(), nextSearchResult.getPlaylistItems(), nextSearchResult.getNextPageKey());
+        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(Chip chip) {
@@ -303,61 +296,6 @@ public class YouTubeMediaGroup implements MediaGroup {
         baseGroup.mNextPageKey = nextPageKey;
 
         YouTubeHelper.filterIfNeeded(baseGroup);
-
-        return baseGroup;
-    }
-
-    private static YouTubeMediaGroup create(
-            YouTubeMediaGroup baseGroup,
-            List<TileItem> titleItems,
-            List<VideoItem> videoItems,
-            List<MusicItem> musicItems,
-            List<ChannelItem> channelItems,
-            List<RadioItem> radioItems,
-            List<PlaylistItem> playlistItems,
-            String nextPageKey) {
-
-        ArrayList<MediaItem> mediaItems = new ArrayList<>();
-
-        if (titleItems != null) {
-            for (TileItem item : titleItems) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (channelItems != null) {
-            for (ChannelItem item : channelItems) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (videoItems != null) {
-            for (VideoItem item : videoItems) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (musicItems != null) {
-            for (MusicItem item : musicItems) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (radioItems != null) {
-            for (RadioItem item : radioItems) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        if (playlistItems != null) {
-            for (PlaylistItem item : playlistItems) {
-                mediaItems.add(YouTubeMediaItem.from(item));
-            }
-        }
-
-        // Fix duplicated items after previous group reuse
-        baseGroup.mMediaItems = !mediaItems.isEmpty() ? mediaItems : null;
-        baseGroup.mNextPageKey = nextPageKey;
 
         return baseGroup;
     }

@@ -16,19 +16,20 @@ public class SearchApiTestBase {
     protected void checkSearchResultContinuation(SearchResultContinuation searchResult) {
         assertNotNull("Search result not null", searchResult);
         assertNotNull("Search result contains items",
-                searchResult.getVideoItems() != null ? searchResult.getVideoItems() : searchResult.getTileItems());
-        assertTrue("Search result contains more than one item",
-                searchResult.getVideoItems() != null ? searchResult.getVideoItems().size() > 2 : searchResult.getTileItems().size() > 2);
+                searchResult.getItemWrappers());
+        assertTrue("Search result contains more than one item", searchResult.getItemWrappers().size() > 2);
         assertNotNull("Search result contains next key", searchResult.getNextPageKey());
 
-        if (searchResult.getVideoItems() != null) {
-            VideoItem videoItem = searchResult.getVideoItems().get(0);
-            checkSearchResultVideoItem(videoItem);
+        ItemWrapper firstWrapper = searchResult.getItemWrappers().get(0);
+        TileItem tileItem = firstWrapper.getTileItem();
+        VideoItem videoItem = firstWrapper.getVideoItem();
+
+        if (tileItem != null) {
+            checkSearchResultTileItem(tileItem);
         }
 
-        if (searchResult.getTileItems() != null) {
-            TileItem videoItem = searchResult.getTileItems().get(0);
-            checkSearchResultTileItem(videoItem);
+        if (videoItem != null) {
+            checkSearchResultVideoItem(videoItem);
         }
     }
 

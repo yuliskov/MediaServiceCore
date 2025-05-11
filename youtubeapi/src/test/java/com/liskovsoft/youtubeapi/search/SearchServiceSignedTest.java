@@ -37,7 +37,7 @@ public class SearchServiceSignedTest {
         assertTrue("search not empty?", searchResult.getItemWrappers().size() != 0);
 
         SearchResultContinuation nextSearchResult = mService.continueSearch(searchResult.getNextPageKey());
-        assertTrue("next search not empty?", nextSearchResult.getTileItems().size() != 0);
+        assertTrue("next search not empty?", nextSearchResult.getItemWrappers().size() != 0);
     }
 
     @Test

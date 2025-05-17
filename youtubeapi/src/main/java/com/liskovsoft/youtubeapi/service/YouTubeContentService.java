@@ -500,10 +500,28 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
-        MediaGroup result = continueGroupReal(mediaGroup);
+        MediaGroup result = continueGroupChecked(mediaGroup);
 
-        if (result != null &&
-                Helpers.equals(mediaGroup.getMediaItems(), result.getMediaItems()) &&
+        if (result == null) {
+            return null;
+        }
+
+        if (result.isEmpty()) {
+            // All contents has been filtered (e.g. shorts)
+            return continueGroupChecked(result);
+        }
+
+        return result;
+    }
+
+    private MediaGroup continueGroupChecked(MediaGroup mediaGroup) {
+        MediaGroup result = continueGroupInt(mediaGroup);
+
+        if (result == null) {
+            return null;
+        }
+
+        if (Helpers.equals(mediaGroup.getMediaItems(), result.getMediaItems()) &&
                 Helpers.equals(mediaGroup.getNextPageKey(), result.getNextPageKey())) {
             // Result group is duplicate of the original. Seems that we've reached the end before. Skipping...
             return null;
@@ -512,7 +530,7 @@ public class YouTubeContentService implements ContentService {
         return result;
     }
 
-    private MediaGroup continueGroupReal(MediaGroup mediaGroup) {
+    private MediaGroup continueGroupInt(MediaGroup mediaGroup) {
         if (mediaGroup == null) {
             return null;
         }

@@ -242,7 +242,8 @@ internal data class EngagementPanel(
                  val items: List<Item?>?
             ) {
                 data class Item(
-                    val videoDescriptionHeaderRenderer: VideoDescriptionHeaderRenderer?
+                    val videoDescriptionHeaderRenderer: VideoDescriptionHeaderRenderer?,
+                    val expandableVideoDescriptionBodyRenderer: ExpandableVideoDescriptionBodyRenderer?
                 )
             }
             data class MacroMarkersListRenderer(
@@ -262,6 +263,11 @@ internal data class VideoDescriptionHeaderRenderer(
     val publishDate: TextItem,
     val channelNavigationEndpoint: NavigationEndpointItem?,
     val factoid: List<Factoid?>?
+)
+
+internal data class ExpandableVideoDescriptionBodyRenderer(
+    val descriptionBodyText: TextItem?,
+    val label: TextItem?
 )
 
 internal data class Factoid(

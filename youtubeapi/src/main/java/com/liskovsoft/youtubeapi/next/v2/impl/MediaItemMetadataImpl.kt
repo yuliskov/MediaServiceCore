@@ -90,7 +90,9 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
             }
         }
     }
-    private val videoDescription by lazy { videoMetadata?.description?.getText() ?:
+    private val videoDescription by lazy {
+        descriptionPanel?.getDescriptionText() ?:
+        videoMetadata?.description?.getText() ?:
         // Scroll to the end till we find description tile
         suggestionList?.lastOrNull()?.shelf?.getItemWrappers()?.firstOrNull()?.getDescriptionText()
     }

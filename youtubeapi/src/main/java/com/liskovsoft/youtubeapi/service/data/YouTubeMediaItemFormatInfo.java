@@ -295,7 +295,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))
             // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(-db/20)
             float normalLevel = (float) Math.pow(10.0f, -mLoudnessDb / 15.0f);
-            result = Math.min(normalLevel, 3f);
+            result = Math.min(normalLevel, 4f);
             result *= 0.3f; // minimize distortions
         }
 

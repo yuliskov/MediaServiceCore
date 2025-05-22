@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.youtubeapi.rss.RssService
@@ -73,7 +74,9 @@ internal object BrowseService2Wrapper: BrowseService2() {
         val playlistGroups = PlaylistGroupServiceImpl.getPlaylistGroups()
         if (playlistGroups.isNotEmpty()) {
             val result: MutableList<MediaItem> = mutableListOf()
+            // Pin playlists
             myPlaylists?.mediaItems?.getOrNull(0)?.let { result.add(it) } // WatchLater
+            myPlaylists?.mediaItems?.firstOrNull { it.channelId?.startsWith(AppConstants.LIKED_CHANNEL_ID) ?: false }?.let { result.add(it) } // Liked
 
             var firstIdx: Int = -1
             var firstIdxShift: Int = -1
@@ -87,7 +90,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
                         if (!result.contains(it)) {
                             result.add(it)
 
-                            if (firstIdx == -1) { // Save for later
+                            if (firstIdx == -1) { // Save idx of the first unpinned playlist (see above)
                                 firstIdx = myPlaylists.mediaItems?.indexOf(it) ?: -1
                             }
                         }

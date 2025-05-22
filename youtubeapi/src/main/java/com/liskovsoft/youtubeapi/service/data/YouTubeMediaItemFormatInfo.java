@@ -303,9 +303,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))
             // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(-db/20)
             // Low test - R.E.M. and high test - Lindemann
-            float normalLevel = (float) Math.pow(10.0f, mLoudnessDb / 50.0f);
-            // The max volume should be no more than 1.5 to minimize distortions
-            result = Math.min(normalLevel, 1.5f);
+            float normalLevel = (float) Math.pow(10.0f, mLoudnessDb / 20.0f);
+            // Calculate the result as subtract of the video volume and the max volume
+            result = 2.0f - normalLevel;
         }
 
         return result;

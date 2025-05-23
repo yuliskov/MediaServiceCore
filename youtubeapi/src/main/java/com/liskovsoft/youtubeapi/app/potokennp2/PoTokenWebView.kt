@@ -1,8 +1,10 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
 import android.content.Context
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.PowerManager
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -365,6 +367,10 @@ internal class PoTokenWebView private constructor(
         private const val JS_INTERFACE = "PoTokenWebView"
 
         override fun newPoTokenGenerator(context: Context): PoTokenGenerator {
+            if (!isThermalServiceAvailable(context)) {
+                throw BadWebViewException("ThermalService isn't available")
+            }
+
             val latch = CountDownLatch(1)
 
             lateinit var potWv: PoTokenWebView
@@ -398,6 +404,18 @@ internal class PoTokenWebView private constructor(
         ) {
             if (!Handler(Looper.getMainLooper()).post(runnable)) {
                 throw PoTokenException("Could not run on main thread")
+            }
+        }
+
+        private fun isThermalServiceAvailable(context: Context): Boolean {
+            try {
+                // Access once to test if it crashes
+                if (Build.VERSION.SDK_INT == 29) {
+                    if (context.getSystemService(Context.POWER_SERVICE) !is PowerManager) return false
+                }
+                return true
+            } catch (e: Throwable) {
+                return false
             }
         }
     }

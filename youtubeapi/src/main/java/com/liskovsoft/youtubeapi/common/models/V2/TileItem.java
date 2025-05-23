@@ -178,7 +178,27 @@ public class TileItem {
 
     @Nullable
     private String[] getBadgeStyles() {
-        return mHeader != null ? new String[] {mHeader.getBadgeStyle()} :
-                mMetadata != null && mMetadata.getBadgeStyles() != null ? mMetadata.getBadgeStyles().toArray(new String[]{}) : null;
+        String headerBadge = mHeader != null ? mHeader.getBadgeStyle() : null;
+        List<String> metadataBadge = mMetadata != null ? mMetadata.getBadgeStyles() : null;
+
+        if (headerBadge == null && metadataBadge == null) {
+            return null;
+        }
+
+        int size = (headerBadge != null ? 1 : 0) + (metadataBadge != null ? metadataBadge.size() : 0);
+        String[] result = new String[size];
+        int i = 0;
+
+        if (headerBadge != null) {
+            result[i++] = headerBadge;
+        }
+
+        if (metadataBadge != null) {
+            for (String badge : metadataBadge) {
+                result[i++] = badge;
+            }
+        }
+
+        return result;
     }
 }

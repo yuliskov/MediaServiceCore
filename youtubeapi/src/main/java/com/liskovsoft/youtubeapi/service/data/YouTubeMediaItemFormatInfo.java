@@ -271,7 +271,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public float getVolumeLevel() {
         //float result = 1.0f;
-        float result = 0.5f; // live a bit too loud
+        float result = 0.7f; // live a bit too loud
 
         //if (mLoudnessDb != 0) {
         //    // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))

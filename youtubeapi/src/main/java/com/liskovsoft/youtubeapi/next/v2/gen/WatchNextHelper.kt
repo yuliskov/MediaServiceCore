@@ -93,7 +93,7 @@ private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?
 ///////
 
 internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
-internal fun ShelfRenderer.getItemWrappers() = content?.horizontalListRenderer?.items
+internal fun ShelfRenderer.getItemWrappers() = content?.let { it.horizontalListRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.gridRenderer?.items }
 internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer

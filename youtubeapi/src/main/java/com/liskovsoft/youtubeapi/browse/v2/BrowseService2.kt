@@ -137,7 +137,7 @@ internal open class BrowseService2 {
     }
 
     fun getShorts(): MediaGroup? {
-        return getShortsWeb(true)
+        return getShortsTV() ?: getShortsWeb(true)
     }
 
     private fun getShortsWeb(skipAuth: Boolean = false): MediaGroup? {
@@ -151,6 +151,14 @@ internal open class BrowseService2 {
                 getSubscribedShortsWeb()?.let { result?.mediaItems?.addAll(0, it) }
 
             return result
+        }
+    }
+
+    private fun getShortsTV(): MediaGroup? {
+        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
+
+        return RetrofitHelper.get(browseResult)?.let {
+            it.getShortItems()?.let { SubscribedShortsMediaGroup(it) }
         }
     }
 

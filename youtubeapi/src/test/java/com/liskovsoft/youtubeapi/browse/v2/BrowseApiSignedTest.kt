@@ -54,6 +54,13 @@ class BrowseApiSignedTest {
     }
 
     @Test
+    fun testThatSubsContainShorts() {
+        val subs = getSubscriptions()
+
+        assertNotNull("Contains videos", subs?.getShortItems()?.getOrNull(0))
+    }
+
+    @Test
     fun testThatSubContainsFeedbackToken() {
         val subs = getSubscriptions()
 

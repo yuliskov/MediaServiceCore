@@ -221,6 +221,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         return mNextVideo;
     }
 
+    public void setNextVideo(MediaItem nextVideo) {
+        mNextVideo = nextVideo;
+    }
+
     @Override
     public boolean isSubscribed() {
         return mIsSubscribed;

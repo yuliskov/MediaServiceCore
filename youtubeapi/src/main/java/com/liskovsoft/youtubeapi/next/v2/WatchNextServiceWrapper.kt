@@ -9,17 +9,26 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata
 
 internal object WatchNextServiceWrapper: WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
-        return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams) ?: getCachedGroup(videoId, playlistId)
+        return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)?.let {
+            if (it.suggestions?.firstOrNull()?.mediaItems?.firstOrNull()?.playlistId != playlistId) {
+                getCachedGroup(playlistId)?.let { cached ->
+                    YouTubeMediaItemMetadata().apply {
+                        suggestions = mutableListOf()
+                        suggestions.add(cached)
+                        suggestions.addAll(it.suggestions)
+                        nextVideo = cached.mediaItems?.firstOrNull { it.videoId == videoId }
+                    }
+                } ?: it
+            } else {
+                it
+            }
+        }
     }
 
-    private fun getCachedGroup(videoId: String?, playlistId: String?): MediaItemMetadata? {
-        if (videoId != null) { // Dynamic suggestions needed
-            return null
-        }
-
+    private fun getCachedGroup(playlistId: String?): MediaGroup? {
         val group = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId)
         if (group != null && !group.isEmpty) {
-            val result = YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS).apply {
+            return YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS).apply {
                 title = group.title
                 mediaItems = group.items?.map {
                     YouTubeMediaItem().apply {
@@ -28,12 +37,10 @@ internal object WatchNextServiceWrapper: WatchNextService() {
                         cardImageUrl = it.iconUrl
                         this.videoId = it.videoId
                         channelId = it.channelId
+                        this.playlistId = playlistId
                         badgeText = it.badge
                     }
                 }
-            }
-            return YouTubeMediaItemMetadata().apply {
-                suggestions = listOf(result)
             }
         }
 

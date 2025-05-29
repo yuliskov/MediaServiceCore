@@ -153,6 +153,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
                         cardImageUrl = it.iconUrl
                         videoId = it.videoId
                         channelId = it.channelId
+                        playlistId = reloadPageKey
                         badgeText = it.badge
                     }
                 }

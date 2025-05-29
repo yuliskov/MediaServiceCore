@@ -96,9 +96,6 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
             it as ItemGroupImpl
             it.onChange = { persistData() }
         }
-
-        // Remove in the future
-        //Helpers.removeIf(mPlaylists) { it.title == "Untitled" }
     }
 
     private fun persistData() {

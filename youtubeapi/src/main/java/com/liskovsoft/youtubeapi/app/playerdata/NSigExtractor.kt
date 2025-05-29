@@ -33,22 +33,21 @@ internal object NSigExtractor {
      *
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
-    fun extractNFuncCode(jsCode: String, globalVarData: Triple<String?, String?, String?>): Pair<List<String>, String>? {
-        val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
-
+    fun extractNFuncCode(jsCode: String, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String>? {
         val funcName = extractInitNFunctionName(jsCode, globalVar) ?: extractNFunctionName1(jsCode) ?: extractNFunctionName2(jsCode) ?: return null
 
-        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData, globalVar)
+        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVar)
     }
 
-    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVarData: Triple<String?, String?, String?>, globalVar: Pair<String?, List<String>?>): Pair<List<String>, String> {
+    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String> {
         val argNames = data.first
         var nSigCode = data.second
+        
+        var varName = globalVar.first
+        val globalList = globalVar.second
+        val varCode = globalVar.third
 
-        var (varCode, varName, _) = globalVarData
-        val globalList: List<String>? = globalVar.second
-
-        if (varCode != null && varName != null) {
+        if (varName != null && globalList != null && varCode != null) {
             Log.d(TAG, "Prepending n function code with global array variable \"$varName\"")
             nSigCode = "$varCode; $nSigCode"
         } else {
@@ -78,9 +77,9 @@ internal object NSigExtractor {
      *
      * yt-dlp\yt_dlp\extractor\youtube.py
      */
-    private fun extractInitNFunctionName(jsCode: String, globalVar: Pair<String?, List<String>?>): String? {
+    private fun extractInitNFunctionName(jsCode: String, globalVar: Triple<String?, List<String>?, String?>): String? {
         val (varName, globalList) = globalVar
-        val itemValue = globalList?.first { it.endsWith("_w8_") }
+        val itemValue = globalList?.first { it.endsWith("-_w8_") }
         var funcName: String? = null
         if (itemValue != null) {
             val escapedVarName = varName?.let { Pattern.quote(it) } ?: ""

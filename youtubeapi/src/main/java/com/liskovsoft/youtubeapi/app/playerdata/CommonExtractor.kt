@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
+import com.google.gson.Gson
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.common.js.JSInterpret
 import java.util.regex.Pattern
@@ -37,10 +38,19 @@ internal object CommonExtractor {
         }
     }
 
-    fun interpretPlayerJsGlobalVar(globalVarData: Triple<String?, String?, String?>): Pair<String?, List<String>?> {
+    fun interpretPlayerJsGlobalVar(globalVarData: Triple<String?, String?, String?>): Triple<String?, List<String>?, String?> {
         val (_, varName, varValue) = globalVarData
 
-        return Pair(varName, varValue?.let { JSInterpret.interpretExpression(it) })
+        val globalList = varValue?.let { JSInterpret.interpretExpression(it) }
+
+        var varCode: String? = null
+
+        if (varName != null && globalList != null) {
+            Log.d(TAG, "Creating global array variable \"$varName\"")
+            varCode = "var $varName=${Gson().toJson(globalList)}"
+        }
+
+        return Triple(varName, globalList, varCode)
     }
 
     fun extractSignatureTimestamp(jsCode: String): String? {

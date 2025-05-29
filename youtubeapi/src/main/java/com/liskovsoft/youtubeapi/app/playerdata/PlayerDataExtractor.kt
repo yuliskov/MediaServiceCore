@@ -27,10 +27,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         if (mNFuncCode == null || mSigFuncCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             val jsCode = loadPlayer()
             val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) } ?: Triple(null, null, null)
+            val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
 
             mNFuncCode = jsCode?.let {
                 try {
-                    NSigExtractor.extractNFuncCode(it, globalVarData)
+                    NSigExtractor.extractNFuncCode(it, globalVar)
                 } catch (e: Throwable) {
                     e.printStackTrace()
                     Log.d(TAG, "NSig init failed: %s", e.message)
@@ -39,7 +40,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             }
             mSigFuncCode = jsCode?.let {
                 try {
-                    SigExtractor.extractSigCode(it, globalVarData)
+                    SigExtractor.extractSigCode(it, globalVar)
                 } catch (e: Throwable) {
                     e.printStackTrace()
                     Log.d(TAG, "Signature init failed: %s", e.message)

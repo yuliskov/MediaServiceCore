@@ -312,7 +312,7 @@ public class MediaServiceData {
         mVideoInfoType = Helpers.parseInt(split, 4, -1);
         mSkipAuth = Helpers.parseBoolean(split, 5);
         // entries here moved to the cache
-        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH);
+        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
         // null
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);

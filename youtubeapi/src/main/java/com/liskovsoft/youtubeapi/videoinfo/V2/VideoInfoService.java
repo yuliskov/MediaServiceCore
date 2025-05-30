@@ -96,21 +96,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mSkipAuthBlock = false;
 
-        List<AdaptiveVideoFormat> adaptiveFormats = null;
-        List<RegularVideoFormat> regularFormats = null;
-
-        if (getData().isFormatEnabled(MediaServiceData.FORMATS_DASH) || !result.containsRegularVideoInfo()) {
-            decipherFormats(result.getAdaptiveFormats());
-            adaptiveFormats = result.getAdaptiveFormats();
-        }
-
-        if (getData().isFormatEnabled(MediaServiceData.FORMATS_URL) || !result.containsAdaptiveVideoInfo()) {
-            decipherFormats(result.getRegularFormats());
-            regularFormats = result.getRegularFormats();
-        }
-
-        result.setAdaptiveFormats(adaptiveFormats);
-        result.setRegularFormats(regularFormats);
+        decipherFormats(result.getAdaptiveFormats());
+        decipherFormats(result.getRegularFormats());
 
         if (result.isHistoryBroken()) {
             // Only the tv client supports auth features

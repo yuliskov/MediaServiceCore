@@ -86,4 +86,5 @@ public interface MediaItemService {
     Observable<DeArrowData> getDeArrowDataObserve(String videoId);
     Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds);
     Observable<DislikeData> getDislikeDataObserve(String videoId);
+    Observable<String> getUnlocalizedTitleObserve(String videoId);
 }

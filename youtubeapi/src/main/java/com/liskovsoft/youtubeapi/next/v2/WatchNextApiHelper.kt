@@ -33,4 +33,8 @@ internal object WatchNextApiHelper {
 
         return ServiceHelper.createQueryTV(videoData)
     }
+
+    fun getUnlocalizedTitleQuery(videoId: String): String {
+        return "https://www.youtube.com/watch?v=$videoId"
+    }
 }

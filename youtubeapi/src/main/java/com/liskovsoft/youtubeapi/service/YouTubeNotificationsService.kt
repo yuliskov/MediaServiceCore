@@ -29,7 +29,7 @@ internal object YouTubeNotificationsService: NotificationsService {
     }
 
     override fun getNotificationItemsObserve(): Observable<MediaGroup> {
-        return RxHelper.fromNullable { notificationItems }
+        return RxHelper.fromCallable { notificationItems }
     }
 
     override fun hideNotificationObserve(item: MediaItem?): Observable<Void> {

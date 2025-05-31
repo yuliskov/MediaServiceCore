@@ -134,6 +134,22 @@ class WatchNextApiTest {
         assertTrue("Dislikes count bigger than zero", (dislikesResult?.dislikes ?: 0) > 0)
     }
 
+    @Test
+    fun testUnlocalizedTitleIsWorking() {
+        val wrapper = mApi.getUnlocalizedTitle("https://www.youtube.com/watch?v=KIeAtU-Toxw")
+        val unlocalizedTitleResult = RetrofitHelper.get(wrapper)
+
+        assertNotNull("Contains title", unlocalizedTitleResult?.title)
+    }
+
+    @Test
+    fun testUnlocalizedShortTitleIsWorking() {
+        val wrapper = mApi.getUnlocalizedTitle("https://www.youtube.com/shorts/SYdsEqmJs4k")
+        val unlocalizedTitleResult = RetrofitHelper.get(wrapper)
+
+        assertNotNull("Contains title", unlocalizedTitleResult?.title)
+    }
+
     private fun testBaseFields(metadata: MediaItemMetadata?) {
         assertNotNull("Contains title", metadata?.title)
         assertNotNull("Contains desc", metadata?.secondTitle)

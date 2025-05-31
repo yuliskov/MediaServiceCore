@@ -12,6 +12,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
+import com.liskovsoft.youtubeapi.next.v2.gen.UnlocalizedTitleResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getDislikeCount
@@ -89,6 +90,10 @@ internal open class WatchNextService {
         }
     }
 
+    fun getUnlocalizedTitle(videoId: String?): String? {
+        return getUnlocalizedTitleResult(videoId)?.title
+    }
+
     private fun getWatchNext(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): WatchNextResult? {
         return getWatchNext(WatchNextApiHelper.getWatchNextQuery(videoId, playlistId, playlistIndex, playlistParams))
     }
@@ -111,6 +116,16 @@ internal open class WatchNextService {
         }
 
         val wrapper = mWatchNextApi.getDislikes(videoId)
+
+        return RetrofitHelper.get(wrapper)
+    }
+
+    private fun getUnlocalizedTitleResult(videoId: String?): UnlocalizedTitleResult? {
+        if (videoId == null) {
+            return null
+        }
+
+        val wrapper = mWatchNextApi.getUnlocalizedTitle(WatchNextApiHelper.getUnlocalizedTitleQuery(videoId))
 
         return RetrofitHelper.get(wrapper)
     }

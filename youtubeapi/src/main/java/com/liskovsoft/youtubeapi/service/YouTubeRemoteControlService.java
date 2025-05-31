@@ -37,7 +37,7 @@ public class YouTubeRemoteControlService implements RemoteControlService {
 
     @Override
     public Observable<String> getPairingCodeObserve() {
-        return RxHelper.fromNullable(this::getPairingCode);
+        return RxHelper.fromCallable(this::getPairingCode);
     }
 
     @Override

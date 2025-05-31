@@ -15,13 +15,13 @@ internal interface WatchNextApiMock: WatchNextApi {
     @MockResponse(body = "next/v2/no_suggestions3.json")
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    override fun getWatchNextResult(@Body watchNextQuery: String?): Call<WatchNextResult?>
+    override fun getWatchNextResult(@Body watchNextQuery: String): Call<WatchNextResult?>
 
     @Mock
     @MockResponse(body = "next/v2/no_suggestions3.json")
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    override fun getWatchNextResult(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>
+    override fun getWatchNextResult(@Body watchNextQuery: String, @Header("X-Goog-Visitor-Id") visitorId: String): Call<WatchNextResult?>
 }
 
 internal interface WatchNextApiMock2: WatchNextApi {
@@ -29,13 +29,13 @@ internal interface WatchNextApiMock2: WatchNextApi {
     @MockResponse(body = "next/v2/no_suggestions5.json")
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    override fun getWatchNextResult(@Body watchNextQuery: String?): Call<WatchNextResult?>
+    override fun getWatchNextResult(@Body watchNextQuery: String): Call<WatchNextResult?>
 
     @Mock
     @MockResponse(body = "next/v2/no_suggestions5.json")
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    override fun getWatchNextResult(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>
+    override fun getWatchNextResult(@Body watchNextQuery: String, @Header("X-Goog-Visitor-Id") visitorId: String): Call<WatchNextResult?>
 }
 
 internal interface WatchNextApiMock3: WatchNextApi {
@@ -43,11 +43,11 @@ internal interface WatchNextApiMock3: WatchNextApi {
     @MockResponse(body = "next/v2/no_suggestions6.json")
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    override fun getWatchNextResult(@Body watchNextQuery: String?): Call<WatchNextResult?>
+    override fun getWatchNextResult(@Body watchNextQuery: String): Call<WatchNextResult?>
 
     @Mock
     @MockResponse(body = "next/v2/no_suggestions6.json")
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    override fun getWatchNextResult(@Body watchNextQuery: String?, @Header("X-Goog-Visitor-Id") visitorId: String?): Call<WatchNextResult?>
+    override fun getWatchNextResult(@Body watchNextQuery: String, @Header("X-Goog-Visitor-Id") visitorId: String): Call<WatchNextResult?>
 }

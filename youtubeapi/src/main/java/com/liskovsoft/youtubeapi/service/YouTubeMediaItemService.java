@@ -84,17 +84,17 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
-        return RxHelper.fromNullable(() -> getFormatInfo(item));
+        return RxHelper.fromCallable(() -> getFormatInfo(item));
     }
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
-        return RxHelper.fromNullable(() -> getFormatInfo(videoId));
+        return RxHelper.fromCallable(() -> getFormatInfo(videoId));
     }
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams) {
-        return RxHelper.fromNullable(() -> getFormatInfo(videoId, clickTrackingParams));
+        return RxHelper.fromCallable(() -> getFormatInfo(videoId, clickTrackingParams));
     }
 
     @Override
@@ -110,12 +110,12 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item) {
-        return RxHelper.fromNullable(() -> getStoryboard(item));
+        return RxHelper.fromCallable(() -> getStoryboard(item));
     }
 
     @Override
     public Observable<MediaItemStoryboard> getStoryboardObserve(String videoId) {
-        return RxHelper.fromNullable(() -> getStoryboard(videoId));
+        return RxHelper.fromCallable(() -> getStoryboard(videoId));
     }
 
     @Override
@@ -158,12 +158,12 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(String videoId) {
-        return RxHelper.fromNullable(() -> getMetadata(videoId));
+        return RxHelper.fromCallable(() -> getMetadata(videoId));
     }
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        return RxHelper.fromNullable(() -> getMetadata(videoId, playlistId, playlistIndex, playlistParams));
+        return RxHelper.fromCallable(() -> getMetadata(videoId, playlistId, playlistIndex, playlistParams));
     }
 
     @Override
@@ -452,17 +452,17 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId) {
-        return RxHelper.fromNullable(() -> getSponsorSegments(videoId));
+        return RxHelper.fromCallable(() -> getSponsorSegments(videoId));
     }
 
     @Override
     public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
-        return RxHelper.fromNullable(() -> getSponsorSegments(videoId, categories));
+        return RxHelper.fromCallable(() -> getSponsorSegments(videoId, categories));
     }
 
     @Override
     public Observable<DeArrowData> getDeArrowDataObserve(String videoId) {
-        return RxHelper.fromNullable(() -> getDeArrowData(videoId));
+        return RxHelper.fromCallable(() -> getDeArrowData(videoId));
     }
 
     @Override
@@ -484,7 +484,12 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<DislikeData> getDislikeDataObserve(String videoId) {
-        return RxHelper.fromNullable(() -> getWatchNextService().getDislikeData(videoId));
+        return RxHelper.fromCallable(() -> getWatchNextService().getDislikeData(videoId));
+    }
+
+    @Override
+    public Observable<String> getUnlocalizedTitleObserve(String videoId) {
+        return RxHelper.fromCallable(() -> getWatchNextService().getUnlocalizedTitle(videoId));
     }
 
     public void invalidateCache() {

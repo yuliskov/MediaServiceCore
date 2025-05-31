@@ -84,22 +84,22 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText) {
-        return RxHelper.fromNullable(() -> getSearch(searchText));
+        return RxHelper.fromCallable(() -> getSearch(searchText));
     }
 
     @Override
     public Observable<MediaGroup> getSearchObserve(String searchText, int options) {
-        return RxHelper.fromNullable(() -> getSearch(searchText, options));
+        return RxHelper.fromCallable(() -> getSearch(searchText, options));
     }
 
     @Override
     public Observable<List<MediaGroup>> getSearchAltObserve(String searchText) {
-        return RxHelper.fromNullable(() -> getSearchAlt(searchText));
+        return RxHelper.fromCallable(() -> getSearchAlt(searchText));
     }
 
     @Override
     public Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options) {
-        return RxHelper.fromNullable(() -> getSearchAlt(searchText, options));
+        return RxHelper.fromCallable(() -> getSearchAlt(searchText, options));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<List<String>> getSearchTagsObserve(String searchText) {
-        return RxHelper.fromNullable(() -> getSearchTags(searchText));
+        return RxHelper.fromCallable(() -> getSearchTags(searchText));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve() {
-        return RxHelper.fromNullable(this::getSubscriptions);
+        return RxHelper.fromCallable(this::getSubscriptions);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getSubscriptionsObserve(String... channelIds) {
-        return RxHelper.fromNullable(() -> getSubscriptions(channelIds));
+        return RxHelper.fromCallable(() -> getSubscriptions(channelIds));
     }
 
     @Override
@@ -173,22 +173,22 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannels);
+        return RxHelper.fromCallable(this::getSubscribedChannels);
     }
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsByNewContentObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsByNewContent);
+        return RxHelper.fromCallable(this::getSubscribedChannelsByNewContent);
     }
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsByNameObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsByName);
+        return RxHelper.fromCallable(this::getSubscribedChannelsByName);
     }
 
     @Override
     public Observable<MediaGroup> getSubscribedChannelsByLastViewedObserve() {
-        return RxHelper.fromNullable(this::getSubscribedChannelsByLastViewed);
+        return RxHelper.fromCallable(this::getSubscribedChannelsByLastViewed);
     }
 
     @Override
@@ -206,7 +206,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getRecommendedObserve() {
-        return RxHelper.fromNullable(this::getRecommended);
+        return RxHelper.fromCallable(this::getRecommended);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
-        return RxHelper.fromNullable(this::getHistory);
+        return RxHelper.fromCallable(this::getHistory);
     }
 
     @Override
@@ -237,12 +237,12 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
-        return RxHelper.fromNullable(() -> getGroup(mediaItem));
+        return RxHelper.fromCallable(() -> getGroup(mediaItem));
     }
 
     @Override
     public Observable<MediaGroup> getGroupObserve(String reloadPageKey) {
-        return RxHelper.fromNullable(() -> getGroup(reloadPageKey));
+        return RxHelper.fromCallable(() -> getGroup(reloadPageKey));
     }
 
     @Override
@@ -300,7 +300,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getShortsObserve() {
-        return RxHelper.fromNullable(this::getShorts);
+        return RxHelper.fromCallable(this::getShorts);
     }
 
     @Override
@@ -332,7 +332,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getMyVideosObserve() {
-        return RxHelper.fromNullable(getBrowseService2()::getMyVideos);
+        return RxHelper.fromCallable(getBrowseService2()::getMyVideos);
     }
 
     @Override
@@ -408,7 +408,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<List<MediaGroup>> getChannelSortingObserve(String channelId) {
-        return RxHelper.fromNullable(() -> getChannelSorting(channelId));
+        return RxHelper.fromCallable(() -> getChannelSorting(channelId));
     }
 
     @Override
@@ -425,7 +425,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getChannelSearchObserve(String channelId, String query) {
-        return RxHelper.fromNullable(() -> getChannelSearch(channelId, query));
+        return RxHelper.fromCallable(() -> getChannelSearch(channelId, query));
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> result) {
@@ -584,7 +584,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
-        return RxHelper.fromNullable(() -> continueGroup(mediaGroup));
+        return RxHelper.fromCallable(() -> continueGroup(mediaGroup));
     }
 
     private void checkSigned() {
@@ -618,7 +618,7 @@ public class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getPlaylistsObserve() {
-        return RxHelper.fromNullable(this::getPlaylists);
+        return RxHelper.fromCallable(this::getPlaylists);
     }
 
     private MediaGroup getPlaylists() {

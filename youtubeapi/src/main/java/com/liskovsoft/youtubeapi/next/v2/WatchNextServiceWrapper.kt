@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
@@ -12,11 +13,19 @@ internal object WatchNextServiceWrapper: WatchNextService() {
         return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)?.let {
             if (playlistId != null && it.suggestions?.firstOrNull()?.mediaItems?.firstOrNull()?.playlistId != playlistId) {
                 getCachedGroup(playlistId)?.let { cached ->
+                    val currentIdx = cached.mediaItems?.indexOfFirst { it.videoId == videoId } ?: -1
                     YouTubeMediaItemMetadata().apply {
                         suggestions = mutableListOf()
                         suggestions.add(cached)
                         suggestions.addAll(it.suggestions)
-                        nextVideo = cached.mediaItems?.firstOrNull { it.videoId == videoId }
+                        nextVideo = cached.mediaItems?.getOrNull(currentIdx + 1 )
+                        playlistInfo = object: PlaylistInfo {
+                            override fun getTitle() = cached.title
+                            override fun getPlaylistId() = playlistId
+                            override fun isSelected() = false
+                            override fun getSize() = cached.mediaItems?.size ?: -1
+                            override fun getCurrentIndex() = currentIdx
+                        }
                     }
                 } ?: it
             } else {

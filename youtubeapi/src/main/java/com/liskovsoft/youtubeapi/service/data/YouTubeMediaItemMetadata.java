@@ -42,6 +42,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private List<MediaGroup> mSuggestions;
     private boolean mIsLive;
     private boolean mIsUpcoming;
+    private PlaylistInfo mPlaylistInfo;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
         if (watchNextResult == null) {
@@ -281,7 +282,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
     @Override
     public PlaylistInfo getPlaylistInfo() {
-        return null;
+        return mPlaylistInfo;
+    }
+
+    public void setPlaylistInfo(PlaylistInfo playlistInfo) {
+        mPlaylistInfo = playlistInfo;
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemMetadata
 internal object WatchNextServiceWrapper: WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)?.let {
-            if (it.suggestions?.firstOrNull()?.mediaItems?.firstOrNull()?.playlistId != playlistId) {
+            if (playlistId != null && it.suggestions?.firstOrNull()?.mediaItems?.firstOrNull()?.playlistId != playlistId) {
                 getCachedGroup(playlistId)?.let { cached ->
                     YouTubeMediaItemMetadata().apply {
                         suggestions = mutableListOf()

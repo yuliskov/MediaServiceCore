@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
@@ -81,12 +80,14 @@ internal object BrowseService2Wrapper: BrowseService2() {
             var firstIdx: Int = -1
             var firstIdxShift: Int = -1
 
-            playlistGroups.forEach {
+            playlistGroups.forEach { group ->
                 firstIdxShift++
                 // Replace local pl with matched remote one
                 if (myPlaylists?.mediaItems?.isNotEmpty() == true) {
-                    // Can't match by playlistId because we have only reloadPageKey
-                    findFirst(myPlaylists.mediaItems, it.title)?.let {
+                    myPlaylists.mediaItems?.firstOrNull {
+                        // Can't match only by playlistId because we have only reloadPageKey
+                        it.title == group.title || it.playlistId == group.id
+                    }?.let {
                         if (!result.contains(it)) {
                             result.add(it)
 
@@ -100,12 +101,12 @@ internal object BrowseService2Wrapper: BrowseService2() {
 
                 // Add remained local playlists
                 result.add(YouTubeMediaItem().apply {
-                    title = it.title
-                    cardImageUrl = it.items?.firstOrNull()?.iconUrl ?: it.iconUrl
-                    playlistId = it.id
-                    channelId = it.id
-                    //reloadPageKey = it.id
-                    badgeText = it.badge ?: "${it.items.size} videos"
+                    title = group.title
+                    cardImageUrl = group.items?.firstOrNull()?.iconUrl ?: group.iconUrl
+                    playlistId = group.id
+                    channelId = group.id
+                    //reloadPageKey = group.id
+                    badgeText = group.badge ?: "${group.items.size} videos"
                 })
             }
 
@@ -130,15 +131,15 @@ internal object BrowseService2Wrapper: BrowseService2() {
     }
 
     override fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {
-        return getCachedGroup(reloadPageKey, type) ?: super.getGroup(reloadPageKey, type, title)
+        return super.getGroup(reloadPageKey, type, title) ?: getCachedGroup(reloadPageKey, type)
     }
 
     override fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
-        return getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS)?.let { Pair(listOf(it), null) } ?: super.getChannel(channelId, params)
+        return super.getChannel(channelId, params) ?: getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS)?.let { Pair(listOf(it), null) }
     }
 
     override fun getChannelAsGrid(channelId: String?): MediaGroup? {
-        return getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS) ?: super.getChannelAsGrid(channelId)
+        return super.getChannelAsGrid(channelId) ?: getCachedGroup(channelId, MediaGroup.TYPE_CHANNEL_UPLOADS)
     }
 
     private fun getCachedGroup(reloadPageKey: String?, type: Int): MediaGroup? {
@@ -161,9 +162,5 @@ internal object BrowseService2Wrapper: BrowseService2() {
         }
 
         return null
-    }
-
-    private fun findFirst(mediaItems: List<MediaItem>?, title: String): MediaItem? {
-        return Helpers.findFirst(mediaItems) { Helpers.equals(it.title, title) }
     }
 }

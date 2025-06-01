@@ -167,9 +167,17 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         return mTitle;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
     @Override
     public CharSequence getSecondTitle() {
         return mSecondTitle;
+    }
+
+    public void setSecondTitle(CharSequence secondTitle) {
+        mSecondTitle = secondTitle;
     }
 
     @Override
@@ -215,6 +223,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public String getVideoId() {
         return mVideoId;
+    }
+
+    public void setVideoId(String videoId) {
+        mVideoId = videoId;
     }
 
     @Override

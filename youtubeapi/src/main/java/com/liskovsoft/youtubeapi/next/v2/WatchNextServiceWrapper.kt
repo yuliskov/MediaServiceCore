@@ -12,27 +12,34 @@ internal object WatchNextServiceWrapper: WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)?.let {
             if (playlistId != null && it.suggestions?.firstOrNull()?.mediaItems?.firstOrNull()?.playlistId != playlistId) {
-                getCachedGroup(playlistId)?.let { cached ->
-                    val currentIdx = cached.mediaItems?.indexOfFirst { it.videoId == videoId } ?: -1
-                    YouTubeMediaItemMetadata().apply {
-                        suggestions = mutableListOf()
-                        suggestions.add(cached)
-                        suggestions.addAll(it.suggestions)
-                        nextVideo = cached.mediaItems?.getOrNull(currentIdx + 1 )
-                        playlistInfo = object: PlaylistInfo {
-                            override fun getTitle() = cached.title
-                            override fun getPlaylistId() = playlistId
-                            override fun isSelected() = false
-                            override fun getSize() = cached.mediaItems?.size ?: -1
-                            override fun getCurrentIndex() = currentIdx
-                        }
-                    }
-                } ?: it
+                transformMetadata(it, videoId, playlistId, playlistIndex)
             } else {
                 it
             }
-        }
+        } ?: transformMetadata(null, videoId, playlistId, playlistIndex)
     }
+
+    private fun transformMetadata(metadata: MediaItemMetadata?, videoId: String?, playlistId: String?, playlistIndex: Int) =
+        getCachedGroup(playlistId)?.let { cached ->
+            val currentIdx = cached.mediaItems?.indexOfFirst { it.videoId == videoId }.takeIf { it != -1 } ?: playlistIndex
+            val currentItem = cached.mediaItems?.getOrNull(currentIdx)
+            YouTubeMediaItemMetadata().apply {
+                this.videoId = currentItem?.videoId
+                title = currentItem?.title
+                secondTitle = currentItem?.secondTitle
+                suggestions = mutableListOf()
+                suggestions.add(cached)
+                metadata?.suggestions?.let { suggestions.addAll(it) }
+                nextVideo = cached.mediaItems?.getOrNull(currentIdx + 1)
+                playlistInfo = object : PlaylistInfo {
+                    override fun getTitle() = cached.title
+                    override fun getPlaylistId() = playlistId
+                    override fun isSelected() = false
+                    override fun getSize() = cached.mediaItems?.size ?: -1
+                    override fun getCurrentIndex() = currentIdx
+                }
+            }
+        } ?: metadata
 
     private fun getCachedGroup(playlistId: String?): MediaGroup? {
         val group = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId)

@@ -90,10 +90,6 @@ internal object NSigExtractor {
             funcName = findInitNFuncName(jsCode, escapedVarName, varIndex)
 
             if (funcName == null) {
-                funcName = findInitNFuncName(jsCode, escapedVarName, varIndex, true)
-            }
-
-            if (funcName == null) {
                 Log.d(TAG, "Initial search was unable to find nsig function name")
             }
         }
@@ -101,7 +97,34 @@ internal object NSigExtractor {
         return funcName
     }
 
-    private fun findInitNFuncName(jsCode: String, escapedVarName: String, varIndex: Int, useAltPattern: Boolean = false): String? {
+    private fun findInitNFuncName(jsCode: String, escapedVarName: String, varIndex: Int): String? {
+        val initPattern = Pattern.compile("""(?x)
+                    \{\s*return\s+$escapedVarName\[$varIndex\]\s*\+\s*([a-zA-Z0-9_$]+)\s*\}
+                """)
+        val initMatcher = initPattern.matcher(jsCode)
+
+        if (initMatcher.find() && initMatcher.groupCount() >= 1) {
+            val argName = initMatcher.group(1) ?: return null
+
+            val initPattern2 = Pattern.compile("""(?x)
+                    \{\s*\)${argName.reversed()}\(\s*
+                    (?:
+                        ([a-zA-Z0-9_$]+)\s*noitcnuf\s*
+                        |noitcnuf\s*=\s*([a-zA-Z0-9_$]+)(?:\s+rav)?
+                    )[;\n]
+                """)
+
+            val iniMatcher2 = initPattern2.matcher(jsCode.substring(0, initMatcher.start() + 1).reversed()) // substring not inclusive
+
+            if (iniMatcher2.find() && iniMatcher2.groupCount() >= 2) {
+                return (iniMatcher2.group(1) ?: iniMatcher2.group(2)).reversed()
+            }
+        }
+
+        return null
+    }
+
+    private fun findInitNFuncNameOld(jsCode: String, escapedVarName: String, varIndex: Int, useAltPattern: Boolean = false): String? {
         val funcNameRegex = if (useAltPattern) """=\s*function\s*""" else ""
         val initPattern = Pattern.compile("""(?xs)
                     [;\n](?:

@@ -81,7 +81,8 @@ class PlayerDataExtractorTest {
 
     private fun testCPNPlayerUrl(url: String) {
         // TODO: remove replace hack
-        val extractor = PlayerDataExtractor(url.replace("player_ias.vflset/en_US/base.js", "tv-player-es6.vflset/tv-player-es6.js"))
+        //val extractor = PlayerDataExtractor(url.replace("player_ias.vflset/en_US/base.js", "tv-player-es6.vflset/tv-player-es6.js"))
+        val extractor = PlayerDataExtractor(url)
 
         val cpn = extractor.createClientPlaybackNonce()
         assertNotNull("CPN not null for url $url", cpn)

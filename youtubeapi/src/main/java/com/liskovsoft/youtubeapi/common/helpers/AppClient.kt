@@ -13,27 +13,28 @@ private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted vid
 private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
 
 /**
- * https://github.com/yt-dlp/yt-dlp/blob/0feec6dc131f488428bf881519e7c69766fbb9ae/yt_dlp/extractor/youtube/_base.py#L41
+ * https://github.com/gamer191/yt-dlp/blob/3ad3676e585d144c16a2c5945eb6e422fb918d44/yt_dlp/extractor/youtube/_base.py#L41
  */
 internal enum class AppClient(
-    val clientName: String, val clientVersion: String, val userAgent: String, val referer: String?,
+    val clientName: String, val clientVersion: String, val innerTubeName: Int, val userAgent: String, val referer: String?,
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null
 ) {
-    TV("TVHTML5", "7.20250402.11.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
+    TV("TVHTML5", "7.20250402.11.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
+    TV_SIMPLE("TVHTML5_SIMPLY", "1.0", 75, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
-    WEB_EMBED("WEB_EMBEDDED_PLAYER", "2.20250222.10.01", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    ANDROID_VR("ANDROID_VR", "1.37", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    WEB("WEB", "2.20250222.10.01", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    MWEB("MWEB", "2.20250213.05.00", userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com/"),
+    WEB_EMBED("WEB_EMBEDDED_PLAYER", "2.20250222.10.01", 56, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+    ANDROID_VR("ANDROID_VR", "1.37", 28, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+    WEB("WEB", "2.20250222.10.01", 1, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+    MWEB("MWEB", "2.20250213.05.00", 2, userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com/"),
     // Request contains an invalid argument.
-    WEB_CREATOR("WEB_CREATOR", "1.20220726.00.00", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    WEB_REMIX("WEB_REMIX", "1.20240819.01.00", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com/"),
-    KIDS("TVHTML5_KIDS", "3.20231113.03.00", userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv/kids"),
-    TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/",
+    WEB_CREATOR("WEB_CREATOR", "1.20220726.00.00", 62, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+    WEB_REMIX("WEB_REMIX", "1.20240819.01.00", 67, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com/"),
+    KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv/kids"),
+    TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", 85, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/",
         clientScreen = CLIENT_SCREEN_EMBED),
-    ANDROID("ANDROID", "19.26.37", userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
+    ANDROID("ANDROID", "19.26.37", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
         postData = String.format(POST_DATA_ANDROID, 30)),
-    IOS("IOS", "19.29.1", userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null,
+    IOS("IOS", "19.29.1", 5, userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null,
         postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90"));
 
     val browseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent, (postData ?: "") + POST_DATA_BROWSE) }

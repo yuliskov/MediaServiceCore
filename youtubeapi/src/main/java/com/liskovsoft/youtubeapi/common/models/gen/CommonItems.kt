@@ -49,7 +49,8 @@ internal data class NavigationEndpointItem(
                                     ) {
                                         data class Item(
                                             val toggleButtonRenderer: ToggleButtonRenderer?,
-                                            val subscribeButtonRenderer: SubscribeButtonRenderer?
+                                            val subscribeButtonRenderer: SubscribeButtonRenderer?,
+                                            val compactLinkRenderer: CompactLinkRenderer?
                                         )
                                     }
 
@@ -137,6 +138,10 @@ internal data class SubscribeButtonRenderer(
     val serviceEndpoints: List<DefaultServiceEndpoint?>?,
     val notificationPreferenceButton: NotificationPreferenceButton?,
     val onSubscribeEndpoints: List<ToggledServiceEndpoint?>?
+)
+
+internal data class CompactLinkRenderer(
+    val serviceEndpoint: ServiceEndpoint?
 )
 
 internal data class MusicPlayButtonRenderer(
@@ -394,38 +399,38 @@ internal data class ShortsItem(
 
 internal data class OnTap(
     val innertubeCommand: InnertubeCommand?
+)
+
+internal data class InnertubeCommand(
+    val reelWatchEndpoint: ReelWatchEndpoint?,
+    val watchEndpoint: WatchEndpointItem?,
+    val showSheetCommand: ShowSheetCommand?,
+    val feedbackEndpoint: FeedbackEndpoint?
 ) {
-    data class InnertubeCommand(
-        val reelWatchEndpoint: ReelWatchEndpoint?,
-        val watchEndpoint: WatchEndpointItem?,
-        val showSheetCommand: ShowSheetCommand?,
-        val feedbackEndpoint: FeedbackEndpoint?
+    data class ShowSheetCommand(
+        val panelLoadingStrategy: PanelLoadingStrategy?
     ) {
-        data class ShowSheetCommand(
-            val panelLoadingStrategy: PanelLoadingStrategy?
+        data class PanelLoadingStrategy(
+            val inlineContent: InlineContent?
         ) {
-            data class PanelLoadingStrategy(
-                val inlineContent: InlineContent?
+            data class InlineContent(
+                val sheetViewModel: SheetViewModel?
             ) {
-                data class InlineContent(
-                    val sheetViewModel: SheetViewModel?
+                data class SheetViewModel(
+                    val content: Content?
                 ) {
-                    data class SheetViewModel(
-                        val content: Content?
+                    data class Content(
+                        val listViewModel: ListViewModel?
                     ) {
-                        data class Content(
-                            val listViewModel: ListViewModel?
+                        data class ListViewModel(
+                            val listItems: List<ListItem?>?
                         ) {
-                            data class ListViewModel(
-                                val listItems: List<ListItem?>?
+                            data class ListItem(
+                                val listItemViewModel: ListItemViewModel?
                             ) {
-                                data class ListItem(
-                                    val listItemViewModel: ListItemViewModel?
-                                ) {
-                                    data class ListItemViewModel(
-                                        val rendererContext: RendererContext?
-                                    )
-                                }
+                                data class ListItemViewModel(
+                                    val rendererContext: RendererContext?
+                                )
                             }
                         }
                     }
@@ -552,20 +557,24 @@ internal data class MenuItem(
     data class MenuServiceItemRenderer(
         val text: TextItem?,
         val icon: IconItem?,
-        val serviceEndpoint: ServiceEndpoint?
-    ) {
-        data class ServiceEndpoint(
-            val feedbackEndpoint: FeedbackEndpoint?,
-            val recordNotificationInteractionsEndpoint: RecordNotificationInteractionsEndpoint?
-        ) {
-            data class RecordNotificationInteractionsEndpoint(
-                val serializedInteractionsRequest: String?
-            )
-        }
-    }
-
+        val serviceEndpoint: ServiceEndpoint?,
+        val command: NavigationEndpointItem?
+    )
     data class MenuNavigationItemRenderer(
         val navigationEndpoint: NavigationEndpointItem?
+    )
+}
+
+internal data class ServiceEndpoint(
+    val feedbackEndpoint: FeedbackEndpoint?,
+    val recordNotificationInteractionsEndpoint: RecordNotificationInteractionsEndpoint?,
+    val commandExecutorCommand: CommandExecutorCommand?
+) {
+    data class RecordNotificationInteractionsEndpoint(
+        val serializedInteractionsRequest: String?
+    )
+    data class CommandExecutorCommand(
+        val commands: List<InnertubeCommand>?
     )
 }
 

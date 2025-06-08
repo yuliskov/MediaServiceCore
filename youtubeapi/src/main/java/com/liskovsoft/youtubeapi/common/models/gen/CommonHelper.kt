@@ -47,21 +47,28 @@ internal fun ThumbnailItem.Thumbnail.getUrl(): String? {
 
 internal fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
 internal fun NavigationEndpointItem.getBrowseParams() = browseEndpoint?.params
-internal fun NavigationEndpointItem.getOverlayToggleButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
-internal fun NavigationEndpointItem.getOverlaySubscribeButton() = getContent()?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
+internal fun NavigationEndpointItem.getOverlayToggleButton() = getOverlayItems()?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
+internal fun NavigationEndpointItem.getOverlaySubscribeButton() = getOverlayItems()?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
 internal fun NavigationEndpointItem.isSubscribed() = getOverlaySubscribeButton()?.subscribed
-internal fun NavigationEndpointItem.getContinuations() = getContent()?.itemSectionRenderer?.continuations ?: getEngagementPanel()?.content?.sectionListRenderer?.contents?.firstOrNull()?.itemSectionRenderer?.continuations
-internal fun NavigationEndpointItem.getTitle() = getHeader()?.overlayPanelHeaderRenderer?.title?.getText()
-internal fun NavigationEndpointItem.getSubtitle() = getHeader()?.overlayPanelHeaderRenderer?.subtitle?.getText()
+internal fun NavigationEndpointItem.getContinuations() = getOverlayContent()?.itemSectionRenderer?.continuations
+    ?: getEngagementContents()?.firstOrNull()?.itemSectionRenderer?.continuations
+internal fun NavigationEndpointItem.getTitle() = getOverlayHeader()?.title?.getText()
+internal fun NavigationEndpointItem.getSubtitle() = getOverlayHeader()?.subtitle?.getText()
 internal fun NavigationEndpointItem.getStartTimeSeconds() = watchEndpoint?.startTimeSeconds
 internal fun NavigationEndpointItem.getVideoId() = watchEndpoint?.videoId ?: reelWatchEndpoint?.videoId
 internal fun NavigationEndpointItem.getPlaylistId() = watchEndpoint?.playlistId ?: watchPlaylistEndpoint?.playlistId
 internal fun NavigationEndpointItem.getIndex() = watchEndpoint?.index
+internal fun NavigationEndpointItem.getFeedbackToken() =
+    getOverlayItems()?.firstNotNullOfOrNull {
+        it?.compactLinkRenderer?.serviceEndpoint?.commandExecutorCommand?.commands?.firstNotNullOfOrNull { it.feedbackEndpoint?.feedbackToken }
+    }
 private fun NavigationEndpointItem.getOverlayPanel() = openPopupAction?.popup?.overlaySectionRenderer?.overlay
     ?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer
 private fun NavigationEndpointItem.getEngagementPanel() = showEngagementPanelEndpoint?.engagementPanel?.engagementPanelSectionListRenderer
-private fun NavigationEndpointItem.getContent() = getOverlayPanel()?.content
-private fun NavigationEndpointItem.getHeader() = getOverlayPanel()?.header
+private fun NavigationEndpointItem.getOverlayContent() = getOverlayPanel()?.content
+private fun NavigationEndpointItem.getOverlayHeader() = getOverlayPanel()?.header?.overlayPanelHeaderRenderer
+private fun NavigationEndpointItem.getOverlayItems() = getOverlayContent()?.overlayPanelItemListRenderer?.items
+private fun NavigationEndpointItem.getEngagementContents() = getEngagementPanel()?.content?.sectionListRenderer?.contents
 
 ////////
 
@@ -347,6 +354,7 @@ internal fun IconItem.getType() = iconType
 
 internal fun MenuItem.getIconType() = menuServiceItemRenderer?.icon?.getType()
 internal fun MenuItem.getFeedbackToken() = menuServiceItemRenderer?.serviceEndpoint?.feedbackEndpoint?.feedbackToken
+    ?: menuServiceItemRenderer?.command?.getFeedbackToken()
 internal fun MenuItem.getNotificationToken() = menuServiceItemRenderer?.serviceEndpoint?.recordNotificationInteractionsEndpoint?.serializedInteractionsRequest
 internal fun MenuItem.getBrowseId() = menuNavigationItemRenderer?.navigationEndpoint?.getBrowseId()
 internal fun MenuItem.getPlaylistId() = menuNavigationItemRenderer?.navigationEndpoint?.getPlaylistId()

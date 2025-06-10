@@ -228,7 +228,7 @@ public class YouTubeAccountManager {
             }
         }
 
-        notifyListeners();
+        //notifyListeners();
     }
 
     private void setAccountManagerData(String data) {

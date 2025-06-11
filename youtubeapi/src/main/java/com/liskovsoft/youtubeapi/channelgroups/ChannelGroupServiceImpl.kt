@@ -123,7 +123,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
             }
         }
 
-        return result.toTypedArray()
+        return result.toTypedArray().ifEmpty { null }
     }
 
     override fun isEmpty(): Boolean {

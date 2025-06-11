@@ -16,7 +16,7 @@ internal object NotificationsServiceIntWrapper: NotificationsServiceInt() {
         return try {
             super.getItems()
         } catch (e: IllegalStateException) {
-            NotificationStorage.getChannels()?.let { RssService.getFeed(*it.toTypedArray()) } ?: YouTubeMediaGroup(MediaGroup.TYPE_NOTIFICATIONS)
+            NotificationStorage.getChannels()?.let { RssService.getFeed(*it.toTypedArray(), type = MediaGroup.TYPE_NOTIFICATIONS) }
         }
     }
 

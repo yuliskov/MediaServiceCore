@@ -22,12 +22,13 @@ internal object RssService {
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
 
     @JvmStatic
-    fun getFeed(vararg channelIds: String): MediaGroup? {
+    @JvmOverloads
+    fun getFeed(vararg channelIds: String, type: Int = -1): MediaGroup? {
         val items = fetchFeedsSafe(*channelIds) ?: return null
 
         items.sortByDescending { it.publishedDate }
 
-        return YouTubeMediaGroup(-1).apply {
+        return YouTubeMediaGroup(type).apply {
             mediaItems = items
         }
     }

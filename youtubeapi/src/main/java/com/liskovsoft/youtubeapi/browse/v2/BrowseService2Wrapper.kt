@@ -16,7 +16,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
         if (subscriptions == null || subscriptions.isEmpty) {
             val channelIds = ChannelGroupServiceImpl.getSubscribedChannelIds()
 
-            return channelIds?.let { RssService.getFeed(*it) }
+            return channelIds?.let { RssService.getFeed(*it, type = MediaGroup.TYPE_SUBSCRIPTIONS) }
         }
 
         return subscriptions

@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
-import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
+import com.liskovsoft.youtubeapi.common.models.gen.getParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackTokens
 import com.liskovsoft.youtubeapi.common.models.gen.getSubtitle
 import com.liskovsoft.youtubeapi.common.models.gen.getSuggestToken
@@ -63,7 +63,7 @@ internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.fi
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getContinuationKey(): String? = content?.tvSurfaceContentRenderer?.continuation?.getContinuationKey()
-internal fun TabRenderer.getBrowseParams(): String? = endpoint?.getBrowseParams()
+internal fun TabRenderer.getParams(): String? = endpoint?.getParams()
 internal fun TabRenderer.getThumbnails(): ThumbnailItem? = thumbnail
 internal fun TabRenderer.hasNewContent(): Boolean = presentationStyle?.style == TAB_STYLE_NEW_CONTENT
 internal fun TabRenderer.getShelves(): List<ItemSectionRenderer?>? = getListContents()?.mapNotNull { it?.itemSectionRenderer }
@@ -112,7 +112,7 @@ internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let {
     (it.gridRenderer ?: it.shelfRenderer?.content?.gridRenderer)?.getNextPageKey()
 }
 internal fun ItemSectionRenderer.getBrowseId() = getShelfRenderer()?.endpoint?.getBrowseId()
-internal fun ItemSectionRenderer.getBrowseParams() = getShelfRenderer()?.endpoint?.getBrowseParams()
+internal fun ItemSectionRenderer.getParams() = getShelfRenderer()?.endpoint?.getParams()
 private fun ItemSectionRenderer.getContents() = contents?.lastOrNull() // TODO: which part of Subscriptions should I get? (the first one usually SHORTS)
 private fun ItemSectionRenderer.getShelfRenderer() = contents?.firstNotNullOfOrNull { it?.shelfRenderer }
 private fun ItemSectionRenderer.getGridRenderer() = contents?.firstNotNullOfOrNull { it?.gridRenderer }
@@ -151,7 +151,7 @@ internal fun GuideResult.getSuggestToken(): String? = responseContext?.getSugges
 private fun GuideResult.getSubsRoot() = items?.firstNotNullOfOrNull { it?.guideSubscriptionsSectionRenderer }
 
 internal fun GuideItem.getBrowseId() = navigationEndpoint?.getBrowseId()
-internal fun GuideItem.getBrowseParams() = navigationEndpoint?.getBrowseParams()
+internal fun GuideItem.getParams() = navigationEndpoint?.getParams()
 internal fun GuideItem.getThumbnails() = thumbnail
 internal fun GuideItem.getTitle() = formattedTitle?.getText()
 internal fun GuideItem.hasNewContent() = presentationStyle == GUIDE_STYLE_NEW_CONTENT
@@ -164,7 +164,7 @@ internal fun BrowseResultKids.getRootSection(): AnchoredSectionRenderer? = getSe
 internal fun AnchoredSectionRenderer.getItems(): List<ItemWrapper?>? = content?.sectionListRenderer?.contents?.getOrNull(0)?.itemSectionRenderer?.contents
 internal fun AnchoredSectionRenderer.getTitle(): String? = title
 internal fun AnchoredSectionRenderer.getBrowseId(): String? = navigationEndpoint?.getBrowseId()
-internal fun AnchoredSectionRenderer.getBrowseParams(): String? = navigationEndpoint?.getBrowseParams()
+internal fun AnchoredSectionRenderer.getParams(): String? = navigationEndpoint?.getParams()
 
 //////
 
@@ -193,7 +193,7 @@ internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
 private const val SUBSCRIPTIONS_BROWSE_ID = "FEsubscriptions"
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
-    ?.sortedByDescending { it?.shelfRenderer?.endpoint?.getBrowseParams()?.let {
+    ?.sortedByDescending { it?.shelfRenderer?.endpoint?.getParams()?.let {
         // Move Live, Past Streams and Videos to the top
         Helpers.startsWithAny(it,"EgZ2aWRlb3MYAyACOAJwA", "EgZ2aWRlb3MYAyAAcA", "EgZ2aWRlb3MYAyACOARwA")
     } ?: false }

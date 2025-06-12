@@ -119,7 +119,9 @@ internal data class ButtonContentWrapper(
 
 internal data class ButtonRenderer(
     val isDisabled: Boolean?,
-    val text: TextItem?
+    val text: TextItem?,
+    val icon: IconItem?,
+    val navigationEndpoint: NavigationEndpointItem?
 )
 
 internal data class ToggleButtonRenderer(

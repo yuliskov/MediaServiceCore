@@ -239,6 +239,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     }
 
     @Override
+    public MediaItem getShuffleVideo() {
+        return null;
+    }
+
+    @Override
     public boolean isSubscribed() {
         return mIsSubscribed;
     }

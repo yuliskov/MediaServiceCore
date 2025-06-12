@@ -61,8 +61,8 @@ internal open class BrowseService2 {
             val result = mutableListOf<MediaGroup?>()
             it.getRootSection()?.let { result.add(KidsSectionMediaGroup(it, createOptions(MediaGroup.TYPE_KIDS_HOME))) }
             it.getSections()?.forEach {
-                if (it?.getItems() == null && it?.getBrowseParams() != null) {
-                    val kidsResultNested = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(it.getBrowseParams()!!))
+                if (it?.getItems() == null && it?.getParams() != null) {
+                    val kidsResultNested = mBrowseApi.getBrowseResultKids(BrowseApiHelper.getKidsHomeQuery(it.getParams()!!))
                     RetrofitHelper.get(kidsResultNested)?.getRootSection()?.let {
                         result.add(KidsSectionMediaGroup(it, createOptions(MediaGroup.TYPE_KIDS_HOME)))
                     }

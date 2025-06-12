@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NextMediaItem
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShuffleMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.notifications.NotificationStateImplWrapper
 
@@ -26,9 +27,6 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     }
     private val videoMetadata by lazy {
         watchNextResult.getVideoMetadata()
-    }
-    private val nextVideoItem by lazy {
-        watchNextResult.getNextVideoItem()
     }
     private val commentsPanel by lazy {
         watchNextResult.getCommentPanel()
@@ -55,7 +53,10 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         watchNextResult.getVideoDetails()
     }
     private val nextMediaItem by lazy {
-        nextVideoItem?.let { NextMediaItem(it) }
+        watchNextResult.getNextVideoItem()?.let { NextMediaItem(it) }
+    }
+    private val shuffleMediaItem by lazy {
+        watchNextResult.getShuffleVideoItem()?.let { ShuffleMediaItem(it) }
     }
     var isSubscribedOverrideItem: Boolean? = null
     private val isSubscribedItem by lazy {
@@ -231,6 +232,10 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
 
     override fun getNextVideo(): MediaItem? {
         return nextMediaItem
+    }
+
+    override fun getShuffleVideo(): MediaItem? {
+        return shuffleMediaItem
     }
 
     override fun isSubscribed(): Boolean {

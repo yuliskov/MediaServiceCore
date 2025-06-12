@@ -61,22 +61,9 @@ internal data class WatchNextResult(
                     val replayVideoRenderer: ItemWrapper?
                 ) {
                     data class Set(
+                        val autoplayVideoRenderer: NextVideoRenderer?,
                         val nextVideoRenderer: NextVideoRenderer?
-                    ) {
-                        data class NextVideoRenderer(
-                            val maybeHistoryEndpointRenderer: NextVideoItem?,
-                            val autoplayEndpointRenderer: NextVideoItem?,
-                            val autoplayVideoWrapperRenderer: AutoplayVideoWrapperRenderer?
-                        ) {
-                            data class AutoplayVideoWrapperRenderer(
-                                val primaryEndpointRenderer: PrimaryEndpointRenderer?
-                            ) {
-                                data class PrimaryEndpointRenderer(
-                                    val autoplayEndpointRenderer: NextVideoItem?
-                                )
-                            }
-                        }
-                    }
+                    )
                 }
             }
 

@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
-import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
+import com.liskovsoft.youtubeapi.common.models.gen.getParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.gen.getTitle
@@ -201,7 +201,7 @@ class BrowseApiUnsignedTest {
 
         val firstTab = home?.getTabs()?.get(0)
 
-        assertNotNull("Tab has param", firstTab?.getBrowseParams())
+        assertNotNull("Tab has param", firstTab?.getParams())
     }
 
     @Test
@@ -296,7 +296,7 @@ class BrowseApiUnsignedTest {
             if (tab!!.content != null) {
                 assertTrue("Root tab contains videos", (tab.getItems()?.size ?: 0) > 10)
             } else {
-                val tabContent = getTrendingTab(tab.endpoint?.getBrowseParams())
+                val tabContent = getTrendingTab(tab.endpoint?.getParams())
 
                 assertTrue("Next tab contains videos", (tabContent?.getItems()?.size ?: 0) > 10)
             }

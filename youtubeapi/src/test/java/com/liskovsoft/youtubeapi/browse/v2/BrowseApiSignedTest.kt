@@ -134,7 +134,7 @@ class BrowseApiSignedTest {
 
         kidsHome?.getSections()?.forEach {
             if (it?.getItems() == null) {
-                val home = getKidsHome(it?.getBrowseParams())
+                val home = getKidsHome(it?.getParams())
                 assertNotNull("Section not empty", home?.getRootSection()?.getItems())
             }
         }

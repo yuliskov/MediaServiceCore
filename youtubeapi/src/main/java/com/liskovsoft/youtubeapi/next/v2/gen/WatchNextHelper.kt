@@ -21,6 +21,7 @@ internal fun VideoOwnerItem.getShortSubscriberCount() = subscribeButton?.subscri
 
 private const val MARKER_TYPE_HEATMAP = "MARKER_TYPE_HEATMAP"
 private const val MARKER_TYPE_CHAPTERS = "MARKER_TYPE_CHAPTERS"
+private const val ICON_TYPE_SHUFFLE = "SHUFFLE"
 
 private fun WatchNextResult.getWatchNextResults() = contents?.singleColumnWatchNextResults
 private fun WatchNextResult.getPlayerOverlays() = playerOverlays?.playerOverlayRenderer
@@ -28,8 +29,11 @@ internal fun WatchNextResult.getSuggestedSections() = getWatchNextResults()?.piv
 internal fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results?.contents?.getOrNull(0)?.
     itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
 
-internal fun WatchNextResult.getNextVideoItem() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)?.
-    nextVideoRenderer?.let { it.maybeHistoryEndpointRenderer ?: it.autoplayEndpointRenderer ?: it.autoplayVideoWrapperRenderer?.primaryEndpointRenderer?.autoplayEndpointRenderer }
+internal fun WatchNextResult.getNextVideoItem() = getAutoplaySet()?.nextVideoRenderer?.getNextVideoItem()
+internal fun WatchNextResult.getAutoplayVideoItem() = getAutoplaySet()?.autoplayVideoRenderer?.getNextVideoItem()
+internal fun WatchNextResult.getShuffleVideoItem() =
+    getWatchNextResults()?.pivot?.sectionListRenderer?.contents?.firstOrNull()
+        ?.shelfRenderer?.headerRenderer?.shelfHeaderRenderer?.buttons?.firstOrNull { it?.buttonRenderer?.icon?.iconType == ICON_TYPE_SHUFFLE }?.buttonRenderer?.navigationEndpoint
 
 internal fun WatchNextResult.getVideoDetails() = getReplayItemWrapper()?.pivotVideoRenderer
 internal fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer
@@ -43,6 +47,7 @@ internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlaye
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNull { it?.isDescriptionSection() == true }
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true
+private fun WatchNextResult.getAutoplaySet() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents }
@@ -188,4 +193,8 @@ private fun EngagementPanel.getDescriptionItems() = engagementPanelSectionListRe
 internal fun Factoid.getValue(): String? = factoidRenderer?.value?.getText()
 internal fun Factoid.getLabel(): String? = factoidRenderer?.label?.getText()
 internal fun Factoid.getAccessibilityText(): String? = factoidRenderer?.accessibilityText
+
+///////
+
+internal fun NextVideoRenderer.getNextVideoItem() = maybeHistoryEndpointRenderer ?: autoplayEndpointRenderer ?: autoplayVideoWrapperRenderer?.primaryEndpointRenderer?.autoplayEndpointRenderer
 

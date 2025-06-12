@@ -42,7 +42,8 @@ internal data class ShelfRenderer(
     ) {
         data class ShelfHeaderRenderer(
                 val title: TextItem?,
-                val avatarLockup: AvatarLockup?
+                val avatarLockup: AvatarLockup?,
+                val buttons: List<ButtonContentWrapper?>?
         ) {
             data class AvatarLockup(
                 val avatarLockupRenderer: AvatarLockupRenderer?
@@ -338,3 +339,17 @@ internal data class Marker(
 )
 
 //////////
+
+internal data class NextVideoRenderer(
+    val maybeHistoryEndpointRenderer: NextVideoItem?,
+    val autoplayEndpointRenderer: NextVideoItem?,
+    val autoplayVideoWrapperRenderer: AutoplayVideoWrapperRenderer?
+) {
+    data class AutoplayVideoWrapperRenderer(
+        val primaryEndpointRenderer: PrimaryEndpointRenderer?
+    ) {
+        data class PrimaryEndpointRenderer(
+            val autoplayEndpointRenderer: NextVideoItem?
+        )
+    }
+}

@@ -55,6 +55,15 @@ internal class NextMediaItem(private val nextVideoItem: NextVideoItem): BaseMedi
     override val playlistParamsItem by lazy { nextVideoItem.getParams() }
 }
 
+internal class ShuffleMediaItem(private val navigationEndpointItem: NavigationEndpointItem): BaseMediaItem() {
+    override val videoIdItem by lazy { navigationEndpointItem.getVideoId() }
+    override val channelIdItem: String? = null
+    override val titleItem by lazy { navigationEndpointItem.getTitle() }
+    override val playlistIdItem by lazy { navigationEndpointItem.getPlaylistId() }
+    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
+    override val playlistParamsItem by lazy { navigationEndpointItem.getParams() }
+}
+
 internal class GuideMediaItem(private val guideItem: GuideItem): BaseMediaItem() {
     override val titleItem by lazy { guideItem.getTitle() }
     override val channelIdItem by lazy { guideItem.getBrowseId() }

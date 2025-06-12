@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
-import com.liskovsoft.youtubeapi.common.models.gen.getBrowseParams
+import com.liskovsoft.youtubeapi.common.models.gen.getParams
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.GuideMediaItem
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaItem
@@ -103,7 +103,7 @@ internal data class ItemSectionMediaGroup(
     override fun getNextPageKeyInt(): String? = if (fixContinuation) null else itemSectionRenderer.getContinuationToken()
     override fun getTitleInt(): String? = itemSectionRenderer.getTitle()
     override fun getChannelIdInt(): String? = itemSectionRenderer.getBrowseId()
-    override fun getParamsInt(): String? = itemSectionRenderer.getBrowseParams()
+    override fun getParamsInt(): String? = itemSectionRenderer.getParams()
 }
 
 internal data class TabMediaGroup(
@@ -114,7 +114,7 @@ internal data class TabMediaGroup(
     override fun getNextPageKeyInt(): String? = tabRenderer.getContinuationToken()
     override fun getTitleInt(): String? = tabRenderer.getTitle()
     override fun getChannelIdInt(): String? = tabRenderer.endpoint?.getBrowseId()
-    override fun getParamsInt(): String? = tabRenderer.endpoint?.getBrowseParams()
+    override fun getParamsInt(): String? = tabRenderer.endpoint?.getParams()
 }
 
 internal data class KidsSectionMediaGroup(
@@ -203,7 +203,7 @@ internal data class RecommendedMediaGroup(
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = guideItem.getTitle()
     override fun getChannelIdInt(): String? = guideItem.getBrowseId()
-    override fun getParamsInt(): String? = guideItem.getBrowseParams()
+    override fun getParamsInt(): String? = guideItem.getParams()
 }
 
 internal data class ShortsMediaGroup(

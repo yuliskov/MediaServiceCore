@@ -46,7 +46,7 @@ internal fun ThumbnailItem.Thumbnail.getUrl(): String? {
 ////////
 
 internal fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
-internal fun NavigationEndpointItem.getBrowseParams() = browseEndpoint?.params
+internal fun NavigationEndpointItem.getParams() = browseEndpoint?.params ?: watchEndpoint?.params
 internal fun NavigationEndpointItem.getOverlayToggleButton() = getOverlayItems()?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
 internal fun NavigationEndpointItem.getOverlaySubscribeButton() = getOverlayItems()?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
 internal fun NavigationEndpointItem.isSubscribed() = getOverlaySubscribeButton()?.subscribed

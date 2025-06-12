@@ -18,6 +18,7 @@ public interface MediaItemMetadata {
     String getPublishedDate();
     String getVideoId();
     MediaItem getNextVideo();
+    MediaItem getShuffleVideo();
     boolean isSubscribed();
     boolean isLive();
     String getLiveChatKey();

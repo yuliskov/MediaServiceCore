@@ -53,13 +53,13 @@ internal object PoTokenProviderImpl : PoTokenProvider {
 
         val (poTokenGenerator, visitorData, streamingPot, hasBeenRecreated) =
             synchronized(WebPoTokenGenLock) {
-                val shouldRecreate = webPoTokenGenerator == null || forceRecreate ||
-                    webPoTokenGenerator!!.isExpired()
+                val shouldRecreate = webPoTokenGenerator == null || webPoTokenVisitorData == null || webPoTokenStreamingPot == null ||
+                   forceRecreate || webPoTokenGenerator!!.isExpired()
 
                 if (shouldRecreate) {
                     // MOD: my visitor data
                     //webPoTokenVisitorData = AppService.instance().visitorData
-                    webPoTokenVisitorData = VisitorService.getVisitorData() ?: throw IllegalStateException("Visitor data is null")
+                    webPoTokenVisitorData = VisitorService.getVisitorData()
 
                     // close the current webPoTokenGenerator on the main thread
                     webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }

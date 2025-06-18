@@ -408,14 +408,23 @@ internal class PoTokenWebView private constructor(
         }
 
         private fun isThermalServiceAvailable(context: Context): Boolean {
-            try {
-                // Access once to test if it crashes
-                if (Build.VERSION.SDK_INT == 29) {
-                    if (context.getSystemService(Context.POWER_SERVICE) !is PowerManager) return false
-                }
+            // Only Android 10 has the issue
+            if (Build.VERSION.SDK_INT != 29)
                 return true
-            } catch (e: Throwable) {
-                return false
+
+            val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
+
+            val listener = PowerManager.OnThermalStatusChangedListener {
+                // NOP
+            }
+
+            return try {
+                powerService.addThermalStatusListener(listener)
+                true
+            } catch (e: Exception) {
+                false
+            } finally {
+                powerService.removeThermalStatusListener(listener)
             }
         }
     }

@@ -54,6 +54,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private float mLoudnessDb;
     private boolean mContainsDashVideoFormats;
     private boolean mIsHistoryBroken;
+    private boolean mIsBotCheckError;
     private String mPaidContentText;
 
     private YouTubeMediaItemFormatInfo() {
@@ -110,6 +111,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
         formatInfo.mIsHistoryBroken = videoInfo.isHistoryBroken();
+        formatInfo.mIsBotCheckError = videoInfo.isUnknownRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
         formatInfo.mStartTimestamp = videoInfo.getStartTimestamp();
@@ -358,6 +360,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public boolean isHistoryBroken() {
         return mIsHistoryBroken;
+    }
+
+    @Override
+    public boolean isBotCheckError() {
+        return mIsBotCheckError;
     }
 
     @Override

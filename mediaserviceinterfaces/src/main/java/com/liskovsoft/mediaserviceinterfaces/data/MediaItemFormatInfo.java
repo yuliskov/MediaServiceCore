@@ -42,6 +42,7 @@ public interface MediaItemFormatInfo {
     MediaItemStoryboard createStoryboard();
     boolean isUnplayable();
     boolean isHistoryBroken();
+    boolean isBotCheckError();
     String getPlayabilityStatus();
     boolean isStreamSeekable();
     /**

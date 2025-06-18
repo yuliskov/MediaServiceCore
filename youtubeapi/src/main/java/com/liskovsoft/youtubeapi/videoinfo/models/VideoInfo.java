@@ -404,7 +404,7 @@ public class VideoInfo {
     }
 
     public boolean isHistoryBroken() {
-        return mIsHistoryBroken || isUnknownRestricted();
+        return mIsHistoryBroken;
     }
 
     private void parseTrackingParams() {

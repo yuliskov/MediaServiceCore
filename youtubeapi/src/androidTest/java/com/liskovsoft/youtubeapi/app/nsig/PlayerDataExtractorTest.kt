@@ -37,23 +37,8 @@ class PlayerDataExtractorTest {
     }
 
     @Test
-    fun testSomeNSigPlayerVersions() {
-        testNSigPlayerUrl("https://www.youtube.com/s/player/643afba4/tv-player-es6.vflset/tv-player-es6.js")
-        testNSigPlayerUrl("https://www.youtube.com/s/player/73381ccc/tv-player-es6.vflset/tv-player-es6.js")
-    }
-
-    @Test
     fun testSigPlayerVersions() {
         AppConstants.playerUrls.forEach { testSigPlayerUrl(it) }
-    }
-
-    @Test
-    fun testSomeSigPlayerVersions() {
-        testSigPlayerUrl("https://www.youtube.com/s/player/8102da6c/tv-player-es6.vflset/tv-player-es6.js")
-        testSigPlayerUrl("https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js")
-        testSigPlayerUrl("https://www.youtube.com/s/player/69f581a5/tv-player-es6.vflset/tv-player-es6.js")
-        testSigPlayerUrl("https://www.youtube.com/s/player/73381ccc/tv-player-es6.vflset/tv-player-es6.js")
-        testSigPlayerUrl("https://www.youtube.com/s/player/6450230e/player_ias.vflset/en_US/base.js")
     }
 
     @Test
@@ -80,8 +65,6 @@ class PlayerDataExtractorTest {
     }
 
     private fun testCPNPlayerUrl(url: String) {
-        // TODO: remove replace hack
-        //val extractor = PlayerDataExtractor(url.replace("player_ias.vflset/en_US/base.js", "tv-player-es6.vflset/tv-player-es6.js"))
         val extractor = PlayerDataExtractor(url)
 
         val cpn = extractor.createClientPlaybackNonce()

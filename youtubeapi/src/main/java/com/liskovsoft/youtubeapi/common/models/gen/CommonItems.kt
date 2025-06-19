@@ -577,6 +577,7 @@ internal data class ServiceEndpoint(
     )
     data class CommandExecutorCommand(
         // WARN: don't merge ExecutorCommand with InnertubeCommand: Android 4 StackOverflowError
+        // The node InnertubeCommand recursively reference itself
         val commands: List<ExecutorCommand>?
     )
 }

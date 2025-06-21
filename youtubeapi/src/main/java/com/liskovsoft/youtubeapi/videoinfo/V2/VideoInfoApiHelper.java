@@ -10,9 +10,10 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class VideoInfoApiHelper {
+    // For isInlinePlaybackNoAd see https://iter.ca/post/yt-adblock/
     private static final String CHECK_PARAMS =
             "\"playbackContext\":{\"contentPlaybackContext\":{\"html5Preference\":\"HTML5_PREF_WANTS\"," +
-            "\"lactMilliseconds\":\"60000\"," +
+            "\"lactMilliseconds\":\"60000\",\"isInlinePlaybackNoAd\":true," +
             "\"signatureTimestamp\":%s}}";
 
     private static final String CONTENT_POT_WEB =

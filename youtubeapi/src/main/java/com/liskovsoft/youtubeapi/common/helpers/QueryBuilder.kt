@@ -137,12 +137,14 @@ internal class QueryBuilder(val client: AppClient) {
     }
 
     private fun createCheckParamsChunk(): String? {
+        // For isInlinePlaybackNoAd see https://iter.ca/post/yt-adblock/
         return signatureTimestamp?.let {
             """
                 "playbackContext": {
                     "contentPlaybackContext": {
                         "html5Preference": "HTML5_PREF_WANTS",
                         "lactMilliseconds": 60000,
+                        "isInlinePlaybackNoAd": true,
                         "signatureTimestamp": $it
                     }
                 },

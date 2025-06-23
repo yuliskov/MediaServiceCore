@@ -69,7 +69,9 @@ public class VideoInfo {
     @JsonPath("$.playabilityStatus.errorScreen.playerErrorMessageRenderer.subreason")
     private TextItem mPlayabilityDescription;
 
-    @JsonPath("$.storyboards.playerStoryboardSpecRenderer.spec")
+    @JsonPath({"$.storyboards.playerStoryboardSpecRenderer.spec",
+               "$.storyboards.playerLiveStoryboardSpecRenderer.spec",
+    })
     private String mStoryboardSpec;
 
     @JsonPath("$.playabilityStatus.errorScreen.playerLegacyDesktopYpcTrailerRenderer.trailerVideoId")

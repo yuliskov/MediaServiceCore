@@ -40,9 +40,44 @@ public class YouTubeStoryParser {
 
     private Storyboard parseStoryboardSpec(String spec) {
         // EX: https:\/\/i.ytimg.com\/sb\/Pk2oW4SDDxY\/storyboard3_L$L\/$N.jpg|48#27#100#10#10#0#default#vpw4l5h3xmm2AkCT6nMZbvFIyJw|80#45#90#10#10#2000#M$M#hCWDvBSbgeV52mPYmOHjgdLFI1o|160#90#90#5#5#2000#M$M#ys1MKEnwYXA1QAcFiugAA_cZ81Q
+        // Live EX: https://i.ytimg.com/sb/CFsd4UxzpLo/storyboard_live_90_3x3_b1/M$M.jpg?rs=AOn4CLAa9egpicnNt15TtgKW270vNRy5Bw#159#90#3#3
         String[] sections = spec.split(SECTION_DELIM);
-        String baseUrl = sections[0];
+
+        if (sections.length == 1) {
+            return parseLiveStoryboard(spec, sections);
+        } else {
+            return parseRegularStoryboard(spec, sections);
+        }
+    }
+
+    // Live EX: https://i.ytimg.com/sb/CFsd4UxzpLo/storyboard_live_90_3x3_b1/M$M.jpg?rs=AOn4CLAa9egpicnNt15TtgKW270vNRy5Bw#159#90#3#3
+    private Storyboard parseLiveStoryboard(String spec, String[] sections) {
         Storyboard storyboard = new Storyboard();
+        String[] sizes = sections[0].split(SPEC_DELIM);
+        if (sizes.length != 5) {
+            Log.e(TAG, "Error inside spec: " + spec);
+            return null;
+        }
+
+        String baseUrl = sizes[0];
+        storyboard.mBaseUrl = baseUrl;
+
+        Size size = new Size();
+        size.mWidth = Integer.parseInt(sizes[1]);
+        size.mHeight = Integer.parseInt(sizes[2]);
+        size.mColsCount = Integer.parseInt(sizes[3]);
+        size.mRowsCount = Integer.parseInt(sizes[4]);
+        size.mDurationEachMS = 1_000; // default?
+
+        storyboard.mSizes.add(size);
+
+        return storyboard;
+    }
+
+    // EX: https:\/\/i.ytimg.com\/sb\/Pk2oW4SDDxY\/storyboard3_L$L\/$N.jpg|48#27#100#10#10#0#default#vpw4l5h3xmm2AkCT6nMZbvFIyJw|80#45#90#10#10#2000#M$M#hCWDvBSbgeV52mPYmOHjgdLFI1o|160#90#90#5#5#2000#M$M#ys1MKEnwYXA1QAcFiugAA_cZ81Q
+    private Storyboard parseRegularStoryboard(String spec, String[] sections) {
+        Storyboard storyboard = new Storyboard();
+        String baseUrl = sections[0];
         storyboard.mBaseUrl = baseUrl;
 
         for (int i = 1; i < sections.length; i++) {
@@ -53,12 +88,12 @@ public class YouTubeStoryParser {
             }
 
             Size size = new Size();
-            size.mWidth = Integer.valueOf(sizes[0]);
-            size.mHeight = Integer.valueOf(sizes[1]);
-            size.mQuality = Integer.valueOf(sizes[2]);
-            size.mColsCount = Integer.valueOf(sizes[3]);
-            size.mRowsCount = Integer.valueOf(sizes[4]);
-            size.mDurationEachMS = Integer.valueOf(sizes[5]);
+            size.mWidth = Integer.parseInt(sizes[0]);
+            size.mHeight = Integer.parseInt(sizes[1]);
+            size.mQuality = Integer.parseInt(sizes[2]);
+            size.mColsCount = Integer.parseInt(sizes[3]);
+            size.mRowsCount = Integer.parseInt(sizes[4]);
+            size.mDurationEachMS = Integer.parseInt(sizes[5]);
             size.mImageName = sizes[6];
             size.mSignature = sizes[7];
 
@@ -91,7 +126,9 @@ public class YouTubeStoryParser {
             //Log.d(TAG, "Found best size: %s", bestSize);
 
             link = link.replace(INDEX_VAR, String.valueOf(bestIdx));
-            link = link.replace(IMG_NAME_VAR, bestSize.mImageName);
+            if (bestSize.mImageName != null) {
+                link = link.replace(IMG_NAME_VAR, bestSize.mImageName);
+            }
             link = link.replace(IMG_NUM_VAR, String.valueOf(imgNum));
 
             if (link.contains("?")) {

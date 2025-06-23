@@ -223,9 +223,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
-        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client != null ? client.getUserAgent() : null);
+        Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
 
-        return getVideoInfo(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
+        return getVideoInfo(wrapper, !client.isAuthSupported() || mSkipAuthBlock);
     }
 
     private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper, boolean skipAuth) {
@@ -246,7 +246,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfoHls getVideoInfoHls(AppClient client, String videoInfoQuery) {
         Call<VideoInfoHls> wrapper = mVideoInfoApi.getVideoInfoHls(videoInfoQuery, mAppService.getVisitorData());
 
-        return RetrofitHelper.get(wrapper, !isAuthSupported(client) || mSkipAuthBlock);
+        return RetrofitHelper.get(wrapper, !client.isAuthSupported() || mSkipAuthBlock);
     }
 
     private void applyFixesIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
@@ -383,11 +383,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static boolean isAuthSupported(int videoInfoType) {
         // Only TV can work with auth
         return videoInfoType == VIDEO_INFO_TV;
-    }
-
-    private static boolean isAuthSupported(AppClient client) {
-        // Only TV can work with auth
-        return client == AppClient.TV;
     }
 
     private boolean isPotSupported(int videoInfoType) {

@@ -72,7 +72,7 @@ public class YouTubeStoryParser {
         size.mHeight = Integer.parseInt(sizes[2]);
         size.mColsCount = Integer.parseInt(sizes[3]);
         size.mRowsCount = Integer.parseInt(sizes[4]);
-        size.mDurationEachMS = mSegmentDurationUs != 0 ? mSegmentDurationUs / 1_000 : 100;
+        size.mDurationEachMS = mSegmentDurationUs / 1_000;
 
         storyboard.mSizes.add(size);
 

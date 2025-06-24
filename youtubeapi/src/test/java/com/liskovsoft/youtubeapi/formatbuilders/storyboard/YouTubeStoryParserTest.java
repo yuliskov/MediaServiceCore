@@ -33,7 +33,9 @@ public class YouTubeStoryParserTest {
 
     @Test
     public void testLiveVideoSB() {
-        YouTubeStoryParser.Storyboard storyboard = YouTubeStoryParser.from(LIVE_VIDEO_SB).extractStory();
+        YouTubeStoryParser storyParser = YouTubeStoryParser.from(LIVE_VIDEO_SB);
+        storyParser.setSegmentDurationUs(1_000_000);
+        YouTubeStoryParser.Storyboard storyboard = storyParser.extractStory();
 
         assertNotNull("Has group size", storyboard.getGroupSize());
         assertTrue("Has group duration", storyboard.getGroupDurationMS() > 0);

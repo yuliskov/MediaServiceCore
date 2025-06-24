@@ -18,6 +18,7 @@ import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 @RequiresApi(19)
 internal class PoTokenWebView private constructor(
@@ -387,7 +388,7 @@ internal class PoTokenWebView private constructor(
                 potWv.loadHtmlAndObtainBotguard(context)
             }
 
-            latch.await()
+            latch.await(20, TimeUnit.SECONDS)
 
             initError?.let { throw it }
             potWv.initError?.let { throw it }

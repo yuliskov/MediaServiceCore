@@ -9,6 +9,8 @@ import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 @RequiresApi(19)
 internal object PoTokenProviderImpl : PoTokenProvider {
@@ -61,8 +63,20 @@ internal object PoTokenProviderImpl : PoTokenProvider {
                     //webPoTokenVisitorData = AppService.instance().visitorData
                     webPoTokenVisitorData = VisitorService.getVisitorData()
 
+                    val latch = if (webPoTokenGenerator != null) CountDownLatch(1) else null
+
                     // close the current webPoTokenGenerator on the main thread
-                    webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }
+                    webPoTokenGenerator?.let {
+                        Handler(Looper.getMainLooper()).post {
+                            try {
+                                it.close()
+                            } finally {
+                                latch?.countDown()
+                            }
+                        }
+                    }
+
+                    latch?.await(3, TimeUnit.SECONDS)
 
                     // create a new webPoTokenGenerator
                     webPoTokenGenerator = PoTokenWebView

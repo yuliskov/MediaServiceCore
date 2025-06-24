@@ -347,7 +347,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             return null;
         }
 
-        Storyboard storyboard = YouTubeStoryParser.from(mStoryboardSpec).extractStory();
+        YouTubeStoryParser storyParser = YouTubeStoryParser.from(mStoryboardSpec);
+        storyParser.setSegmentDurationUs(getSegmentDurationUs());
+        Storyboard storyboard = storyParser.extractStory();
 
         return YouTubeMediaItemStoryboard.from(storyboard);
     }

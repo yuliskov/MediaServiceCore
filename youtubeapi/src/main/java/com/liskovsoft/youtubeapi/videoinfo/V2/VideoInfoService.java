@@ -382,7 +382,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static boolean isAuthSupported(int videoInfoType) {
         // Only TV can work with auth
-        return videoInfoType == VIDEO_INFO_TV;
+        return videoInfoType == VIDEO_INFO_TV || videoInfoType == VIDEO_INFO_TV_EMBED;
     }
 
     private boolean isPotSupported(int videoInfoType) {

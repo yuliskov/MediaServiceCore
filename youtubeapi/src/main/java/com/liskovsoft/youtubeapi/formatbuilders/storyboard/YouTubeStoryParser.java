@@ -15,14 +15,15 @@ public class YouTubeStoryParser {
     private static final String TAG = YouTubeStoryParser.class.getSimpleName();
     private static final String SPEC_DELIM = "#";
     private static final String SECTION_DELIM = "\\|";
-    private String mSpec;
+    private final String mSpec;
+    private int mSegmentDurationUs;
 
     /**
      * Extracts storyboard (timeline thumbnails) from the <em>get_video_info</em> file
      * <br/>
      * @param spec specification e.g. <code>https:\/\/i.ytimg.com\/sb\/Pk2oW4SDDxY\/storyboard3_L$L\/$N.jpg|48#27#100#10#10#0#default#vpw4l5h3xmm2AkCT6nMZbvFIyJw|80#45#90#10#10#2000#M$M#hCWDvBSbgeV52mPYmOHjgdLFI1o|160#90#90#5#5#2000#M$M#ys1MKEnwYXA1QAcFiugAA_cZ81Q</code>
      */
-    public YouTubeStoryParser(String spec) {
+    private YouTubeStoryParser(String spec) {
         mSpec = spec;
     }
 
@@ -36,6 +37,10 @@ public class YouTubeStoryParser {
         }
 
         return parseStoryboardSpec(mSpec);
+    }
+
+    public void setSegmentDurationUs(int segmentDurationUs) {
+        mSegmentDurationUs = segmentDurationUs;
     }
 
     private Storyboard parseStoryboardSpec(String spec) {
@@ -67,7 +72,7 @@ public class YouTubeStoryParser {
         size.mHeight = Integer.parseInt(sizes[2]);
         size.mColsCount = Integer.parseInt(sizes[3]);
         size.mRowsCount = Integer.parseInt(sizes[4]);
-        size.mDurationEachMS = 1_000; // default?
+        size.mDurationEachMS = mSegmentDurationUs != 0 ? mSegmentDurationUs / 1_000 : 100;
 
         storyboard.mSizes.add(size);
 
@@ -131,13 +136,15 @@ public class YouTubeStoryParser {
             }
             link = link.replace(IMG_NUM_VAR, String.valueOf(imgNum));
 
-            if (link.contains("?")) {
-                link += "&";
-            } else {
-                link += "?";
-            }
+            if (bestSize.mSignature != null) {
+                if (link.contains("?")) {
+                    link += "&";
+                } else {
+                    link += "?";
+                }
 
-            link += SIGNATURE_PARAM + "=" + bestSize.mSignature;
+                link += SIGNATURE_PARAM + "=" + bestSize.mSignature;
+            }
 
             return link;
         }

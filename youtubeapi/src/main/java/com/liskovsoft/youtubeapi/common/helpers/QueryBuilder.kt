@@ -137,10 +137,24 @@ internal class QueryBuilder(val client: AppClient) {
     }
 
     private fun createCheckParamsChunk(): String? {
-        // For isInlinePlaybackNoAd see https://iter.ca/post/yt-adblock/
+        // adPlaybackContext https://github.com/yt-dlp/yt-dlp/commit/ff6f94041aeee19c5559e1c1cd693960a1c1dd14
+        // isInlinePlaybackNoAd https://iter.ca/post/yt-adblock/
+        //     "playbackContext": {
+        //        "adPlaybackContext": {
+        //            "pyv": true,
+        //            "adType": "AD_TYPE_INSTREAM"
+        //        },
+        //        "contentPlaybackContext": {
+        //            "isInlinePlaybackNoAd": true,
+        //        }
+        //    },
         return signatureTimestamp?.let {
             """
                 "playbackContext": {
+                    "adPlaybackContext": {
+                        "pyv": true,
+                        "adType": "AD_TYPE_INSTREAM"
+                    },
                     "contentPlaybackContext": {
                         "html5Preference": "HTML5_PREF_WANTS",
                         "lactMilliseconds": 60000,

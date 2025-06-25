@@ -9,12 +9,15 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 
+// A badge before the image
 private const val BADGE_STYLE_LIVE = "LIVE"
 private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_SHORTS = "SHORTS"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
-private const val BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
-private const val OLD_BADGE_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
+// A badge before the subtitle
+private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
+private const val STATUS_STYLE_QUALITY = "BADGE_STYLE_TYPE_SIMPLE"
+private const val STATUS_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
 
 ///////////
 
@@ -114,12 +117,12 @@ internal fun VideoItem.getChannelId() =
     menu?.getBrowseId()
 internal fun VideoItem.getPlaylistId() = navigationEndpoint?.getPlaylistId()
 internal fun VideoItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
-internal fun VideoItem.isLive(): Boolean = OLD_BADGE_STYLE_LIVE == getOldBadgeStyle() || BADGE_STYLE_LIVE == getBadgeStyle()
+internal fun VideoItem.isLive(): Boolean = STATUS_STYLE_LIVE == getStatusStyle() || BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle()
-internal fun VideoItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
+internal fun VideoItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle()
 internal fun VideoItem.getFeedbackTokens() = menu?.getFeedbackTokens()
-private fun VideoItem.getOldBadgeStyle() = badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
+private fun VideoItem.getStatusStyle() = badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
 private fun VideoItem.getBadgeStyle() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 
 ////////////
@@ -196,12 +199,14 @@ internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
 internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationKey()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
-internal fun TileItem.isMovie() = BADGE_STYLE_MOVIE == getBadgeStyle()
-internal fun TileItem.isShorts() = getBadgeStyle() == BADGE_STYLE_SHORTS || getBadgeStyle() == TILE_STYLE_SHORTS
+internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle()
+internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE_STYLE_SHORTS == getTileStyle()
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
-private fun TileItem.Metadata.getBadgeStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
+private fun TileItem.Metadata.getStatusStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 private fun TileItem.getMenu() = menu ?: onLongPressCommand?.showMenuCommand?.menu
-private fun TileItem.getBadgeStyle() = header?.getBadgeStyle() ?: metadata?.getBadgeStyle() ?: style
+private fun TileItem.getTileStyle() = style
+private fun TileItem.getBadgeStyle() = header?.getBadgeStyle()
+private fun TileItem.getStatusStyle() = metadata?.getStatusStyle()
 
 ////////////
 
@@ -237,7 +242,6 @@ internal fun LockupItem.getPlaylistId() = getWatchEndpoint()?.playlistId
 internal fun LockupItem.getThumbnails() = getThumbnailView()?.image
 internal fun LockupItem.getBadgeText() = getBadge()?.text
 internal fun LockupItem.isLive() = BADGE_STYLE_LIVE == getBadge()?.badgeStyle
-internal fun LockupItem.isMovie() = BADGE_STYLE_MOVIE == getBadge()?.badgeStyle
 internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent }
 // The video without a badge, probably Watch again
@@ -314,7 +318,7 @@ internal fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getM
 internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
 internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: getLockupItem()?.isLive()
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming()
-internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie() ?: getLockupItem()?.isMovie()
+internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie()
 internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()

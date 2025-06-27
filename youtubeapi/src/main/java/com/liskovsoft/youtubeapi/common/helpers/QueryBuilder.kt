@@ -151,10 +151,6 @@ internal class QueryBuilder(val client: AppClient) {
         return signatureTimestamp?.let {
             """
                 "playbackContext": {
-                    "adPlaybackContext": {
-                        "pyv": true,
-                        "adType": "AD_TYPE_INSTREAM"
-                    },
                     "contentPlaybackContext": {
                         "html5Preference": "HTML5_PREF_WANTS",
                         "lactMilliseconds": 60000,

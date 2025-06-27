@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.app
 
-import android.annotation.TargetApi
 import android.os.Build.VERSION
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
@@ -10,8 +9,7 @@ import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
 internal object PoTokenGate {
     private var mNpPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
-
-    @TargetApi(19)
+    
     @JvmStatic
     fun getContentPoToken(videoId: String): String? {
         if (mNpPoToken?.videoId == videoId) {
@@ -54,7 +52,6 @@ internal object PoTokenGate {
 
     private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && DeviceHelpers.isTCL() // "TCL TV - Harman"
 
-    @TargetApi(19)
     @JvmStatic
     fun resetCache(): Boolean {
         if (System.currentTimeMillis() < mCacheResetTimeMs)

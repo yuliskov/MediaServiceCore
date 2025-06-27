@@ -32,15 +32,15 @@ internal class QueryBuilder(val client: AppClient) {
              {
                 "context": {
                      ${createClientChunk()}
-                     ${createClickTrackingChunk() ?: ""}
+                     ${createClickTrackingChunk()}
                      ${createUserChunk()}
-                     ${createWebEmbeddedChunk() ?: ""}
+                     ${createWebEmbeddedChunk()}
                 },
                 "racyCheckOk": true,
                 "contentCheckOk": true,
-                ${createCheckParamsChunk() ?: ""}
-                ${createPotChunk() ?: ""}
-                ${createVideoIdChunk() ?: ""}
+                ${createCheckParamsChunk()}
+                ${createPotChunk()}
+                ${createVideoIdChunk()}
              }
         """
 
@@ -59,7 +59,7 @@ internal class QueryBuilder(val client: AppClient) {
             "clientScreen": "${client.clientScreen}",
             "userAgent": "${client.userAgent}",
         """
-        val postVars = client.postData
+        val postVars = client.postData ?: ""
         val browseVars = if (requireNotNull(type) == PostDataType.Browse)
             """
                 "tvAppInfo": { 
@@ -70,42 +70,42 @@ internal class QueryBuilder(val client: AppClient) {
                 "webpSupport": false,
                 "animatedWebpSupport": true,
             """ // Include Shorts: "browserName":"Cobalt"
-            else null
+            else ""
         val regionVars = """
             "acceptLanguage": "${requireNotNull(acceptLanguage)}",
             "acceptRegion": "${requireNotNull(acceptRegion)}",
             "utcOffsetMinutes": "${requireNotNull(utcOffsetMinutes)}",
         """
-        val visitorVar = visitorData?.let { """ "visitorData": "$visitorData" """ }
+        val visitorVar = visitorData?.let { """ "visitorData": "$visitorData" """ } ?: ""
         return """
              "client": {
                 $clientVars
-                ${postVars ?: ""}
-                ${browseVars ?: ""}
+                $postVars
+                $browseVars
                 $regionVars
-                ${visitorVar ?: ""}
+                $visitorVar
              },
         """
     }
 
-    private fun createClickTrackingChunk(): String? {
+    private fun createClickTrackingChunk(): String {
         return clickTrackingParams?.let {
             """
                 "clickTracking": {
                     "clickTrackingParams": "$it"
                 },
             """
-        }
+        } ?: ""
     }
 
-    private fun createWebEmbeddedChunk(): String? {
+    private fun createWebEmbeddedChunk(): String {
         return if (isWebEmbedded)
             """
                 "thirdParty": {
                     "embedUrl": "https://www.youtube.com/embed/${requireNotNull(videoId)}"
                 },
             """
-           else null
+           else ""
     }
 
     private fun createUserChunk(): String {
@@ -117,26 +117,34 @@ internal class QueryBuilder(val client: AppClient) {
         """
     }
 
-    private fun createPotChunk(): String? {
+    private fun createPotChunk(): String {
         return poToken?.let {
             """
                "serviceIntegrityDimensions": {
                     "poToken": "$it"
                }, 
             """
-        }
+        } ?: ""
     }
 
-    private fun createVideoIdChunk(): String? {
+    private fun createVideoIdChunk(): String {
         return videoId?.let {
             """
                 "videoId": "$it",
-                "cpn": "${requireNotNull(cpn)}",
+                ${createCPNChunk()}
             """
-        }
+        } ?: ""
     }
 
-    private fun createCheckParamsChunk(): String? {
+    private fun createCPNChunk(): String {
+        return cpn?.let {
+            """
+                "cpn": "$it",
+            """
+        } ?: ""
+    }
+
+    private fun createCheckParamsChunk(): String {
         // adPlaybackContext https://github.com/yt-dlp/yt-dlp/commit/ff6f94041aeee19c5559e1c1cd693960a1c1dd14
         // isInlinePlaybackNoAd https://iter.ca/post/yt-adblock/
         //     "playbackContext": {
@@ -159,6 +167,6 @@ internal class QueryBuilder(val client: AppClient) {
                     }
                 },
             """
-        }
+        } ?: ""
     }
 }

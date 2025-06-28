@@ -22,6 +22,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 import java.util.UUID;
 
 import io.reactivex.disposables.Disposable;
+import kotlin.Triple;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
@@ -50,7 +51,7 @@ public class MediaServiceData {
     private String mScreenId;
     private String mDeviceId;
     private String mVideoInfoVersion;
-    private String mSigDataVersion;
+    private String mPlayerExtractorVersion;
     private int mVideoInfoType;
     private String mVisitorCookie;
     private int mEnabledFormats;
@@ -154,28 +155,19 @@ public class MediaServiceData {
         persistData();
     }
 
-    @Nullable
-    public NSigData getNSigData() {
-        if (Helpers.equals(mSigDataVersion, mAppVersion)) {
-            return mNSigData;
+    public Triple<NSigData, NSigData, PlayerDataCached> getPlayerExtractorData() {
+        if (Helpers.equals(mPlayerExtractorVersion, mAppVersion)) {
+            return new Triple<>(mNSigData, mSigData, mPlayerData);
         }
 
-        return null;
+        return new Triple<>(null, null, null);
     }
 
-    public void setNSigData(NSigData nSigData) {
-        mSigDataVersion = mAppVersion;
+    public void setPlayerExtractorData(NSigData nSigData, NSigData sigData, PlayerDataCached playerData) {
+        mPlayerExtractorVersion = mAppVersion;
         mNSigData = nSigData;
-        persistData();
-    }
-
-    @Nullable
-    public NSigData getSigData() {
-        return mSigData;
-    }
-
-    public void setSigData(NSigData nSigData) {
-        mSigData = nSigData;
+        mSigData = sigData;
+        mPlayerData = playerData;
         persistData();
     }
 
@@ -249,16 +241,6 @@ public class MediaServiceData {
 
     public void setFailedAppInfo(AppInfoCached appInfo) {
         mFailedAppInfo = appInfo;
-    }
-
-    public PlayerDataCached getPlayerData() {
-        return mPlayerData;
-    }
-
-    public void setPlayerData(PlayerDataCached playerData) {
-        mPlayerData = playerData;
-
-        persistData();
     }
 
     public ClientDataCached getClientData() {
@@ -345,7 +327,7 @@ public class MediaServiceData {
 
         mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
         mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
-        mSigDataVersion = Helpers.parseStr(split, 10);
+        mPlayerExtractorVersion = Helpers.parseStr(split, 10);
     }
 
     private void persistCachedDataInt() {
@@ -355,7 +337,7 @@ public class MediaServiceData {
 
         mCachedPrefs.setMediaServiceCache(
                 Helpers.mergeData(null, null,
-                        null, null, null, null, null, null, mNSigData, mSigData, mSigDataVersion));
+                        null, null, null, null, null, null, mNSigData, mSigData, mPlayerExtractorVersion));
     }
 
     private void persistData() {

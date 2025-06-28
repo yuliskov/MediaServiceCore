@@ -21,8 +21,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     init {
         // Get the code from the cache
-        restoreNFuncCode()
-        restoreOtherData()
+        restoreAllData()
 
         if (mNFuncCode == null || mSigFuncCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             val jsCode = loadPlayer()
@@ -120,28 +119,24 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     private fun persistAllData() {
         if (mNFuncCode != null && mSigFuncCode != null && mCPNCode != null && mSignatureTimestamp != null) {
-            mNFuncCode?.let { data.nSigData = NSigData(playerUrl, it.first, it.second) }
-            mSigFuncCode?.let { data.sigData = NSigData(playerUrl, it.first, it.second) }
-            data.playerData = PlayerDataCached(playerUrl, mCPNCode, null, null, mSignatureTimestamp)
+            data.setPlayerExtractorData(
+                mNFuncCode?.let { NSigData(playerUrl, it.first, it.second) },
+                mSigFuncCode?.let { NSigData(playerUrl, it.first, it.second) },
+                PlayerDataCached(playerUrl, mCPNCode, null, null, mSignatureTimestamp)
+            )
         }
     }
 
-    private fun restoreNFuncCode() {
-        val nSigData = data.nSigData
+    private fun restoreAllData() {
+        val (nSigData, sigData, playerData) = data.playerExtractorData
 
         if (nSigData?.nFuncPlayerUrl == playerUrl) {
             mNFuncCode = Pair(nSigData.nFuncParams, nSigData.nFuncCode)
         }
 
-        val sigData = data.sigData
-
         if (sigData?.nFuncPlayerUrl == playerUrl) {
             mSigFuncCode = Pair(sigData.nFuncParams, sigData.nFuncCode)
         }
-    }
-
-    private fun restoreOtherData() {
-        val playerData = data.playerData
 
         if (playerData?.playerUrl == playerUrl) {
             mCPNCode = playerData.clientPlaybackNonceFunction

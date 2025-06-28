@@ -67,7 +67,7 @@ internal object SigExtractor {
         try {
             extractSig(funcCode, "5cNpZqIJ7ixNqU68Y7S")
         } catch (error: V8ScriptExecutionException) {
-            if (nestedCount > 1)
+            if (nestedCount > 2)
                 return null
 
             val globalObjNamePattern = Pattern.compile("""([\w$]+) is not defined$""")

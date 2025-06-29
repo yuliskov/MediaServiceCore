@@ -26,7 +26,7 @@ internal object SigExtractor {
 
         //val funcCode = fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVarData)
 
-        return fixupGlobalObjIfNeeded(jsCode, funcName, globalVar) ?: extractSigFunctionCodeAlt(jsCode, globalVar)
+        return fixupGlobalObjIfNeeded(jsCode, JSInterpret.extractFunctionCode(jsCode, funcName), globalVar) ?: extractSigFunctionCodeAlt(jsCode, globalVar)
     }
 
     /**
@@ -42,9 +42,9 @@ internal object SigExtractor {
         return null
     }
 
-    private fun fixupSigFunctionCode(data: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String> {
-        val argNames = data.first
-        var sigCode = data.second
+    private fun fixupSigFunctionCode(funcCode: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String> {
+        val argNames = funcCode.first
+        var sigCode = funcCode.second
 
         val (varName, globalList, varCode) = globalVar
 
@@ -56,18 +56,18 @@ internal object SigExtractor {
         return Pair(argNames, sigCode)
     }
 
-    private fun fixupGlobalObjIfNeeded(jsCode: String, funcName: String, globalVar: Triple<String?, List<String>?, String?>, nestedCount: Int = 0): Pair<List<String>, String>? {
-        var funcCode = try {
-            fixupSigFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVar)
+    private fun fixupGlobalObjIfNeeded(jsCode: String, funcCode: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>, nestedCount: Int = 0): Pair<List<String>, String>? {
+        var fixedFuncCode = try {
+            fixupSigFunctionCode(funcCode, globalVar)
         } catch (e: Exception) {
             return null
         }
 
         // Test the function works
         try {
-            extractSig(funcCode, "5cNpZqIJ7ixNqU68Y7S")
+            extractSig(fixedFuncCode, "5cNpZqIJ7ixNqU68Y7S")
         } catch (error: V8ScriptExecutionException) {
-            if (nestedCount > 2)
+            if (nestedCount > 1)
                 return null
 
             val globalObjNamePattern = Pattern.compile("""([\w$]+) is not defined$""")
@@ -82,12 +82,12 @@ internal object SigExtractor {
                 }
                 
                 val (varName, globalList, varCode) = globalVar
-                funcCode = fixupGlobalObjIfNeeded(
-                    jsCode, funcName, Triple(varName, globalList, "${varCode?.let { "$it;" } ?: ""} $globalObjCode"), nestedCount + 1) ?: return null
+                fixedFuncCode = fixupGlobalObjIfNeeded(
+                    jsCode, funcCode, Triple(varName, globalList, "${varCode?.let { "$it;" } ?: ""} $globalObjCode"), nestedCount + 1) ?: return null
             }
         }
 
-        return funcCode
+        return fixedFuncCode
     }
 
     private fun extractSigFunctionCodeAlt(jsCode: String, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String>? {

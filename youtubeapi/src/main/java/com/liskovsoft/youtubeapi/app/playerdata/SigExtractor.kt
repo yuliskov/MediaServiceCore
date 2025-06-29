@@ -57,11 +57,7 @@ internal object SigExtractor {
     }
 
     private fun fixupGlobalObjIfNeeded(jsCode: String, funcCode: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>, nestedCount: Int = 0): Pair<List<String>, String>? {
-        var fixedFuncCode = try {
-            fixupSigFunctionCode(funcCode, globalVar)
-        } catch (e: Exception) {
-            return null
-        }
+        var fixedFuncCode = fixupSigFunctionCode(funcCode, globalVar)
 
         // Test the function works
         try {

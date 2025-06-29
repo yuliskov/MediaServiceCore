@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
+import com.eclipsesource.v8.V8ScriptExecutionException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.liskovsoft.sharedutils.mylogger.Log
@@ -36,13 +37,14 @@ internal object NSigExtractor {
     fun extractNFuncCode(jsCode: String, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String>? {
         val funcName = extractInitNFunctionName(jsCode, globalVar) ?: extractNFunctionName1(jsCode) ?: extractNFunctionName2(jsCode) ?: return null
 
-        return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVar)
+        //return fixupNFunctionCode(JSInterpret.extractFunctionCode(jsCode, funcName), globalVar)
+        return fixupGlobalObjIfNeeded(JSInterpret.extractFunctionCode(jsCode, funcName), globalVar)
     }
 
-    private fun fixupNFunctionCode(data: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String> {
-        val argNames = data.first
-        var nSigCode = data.second
-        
+    private fun fixupNFunctionCode(funcCode: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String> {
+        val argNames = funcCode.first
+        var nSigCode = funcCode.second
+
         var varName = globalVar.first
         val globalList = globalVar.second
         val varCode = globalVar.third
@@ -70,6 +72,19 @@ internal object NSigExtractor {
         }
 
         return Pair(argNames, fixedCode)
+    }
+
+    private fun fixupGlobalObjIfNeeded(funcCode: Pair<List<String>, String>, globalVar: Triple<String?, List<String>?, String?>): Pair<List<String>, String>? {
+        val fixedFuncCode = fixupNFunctionCode(funcCode, globalVar)
+
+        // Test the function works
+        try {
+            extractNSig(fixedFuncCode, "5cNpZqIJ7ixNqU68Y7S")
+        } catch (error: V8ScriptExecutionException) {
+            return null
+        }
+
+        return fixedFuncCode
     }
 
     /**
@@ -191,5 +206,11 @@ internal object NSigExtractor {
         }
 
         return null
+    }
+
+    private fun extractNSig(funcCode: Pair<List<String>, String>, signature: String): String? {
+        val func = JSInterpret.extractFunctionFromCode(funcCode.first, funcCode.second)
+
+        return func(listOf(signature))
     }
 }

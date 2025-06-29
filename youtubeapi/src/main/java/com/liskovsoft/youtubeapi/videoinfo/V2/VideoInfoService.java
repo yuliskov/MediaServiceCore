@@ -386,7 +386,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private boolean isPotSupported(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == VIDEO_INFO_WEB_EMBED || videoInfoType == ANDROID_VR;
+        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == VIDEO_INFO_WEB_EMBED || videoInfoType == ANDROID_VR ||
+                videoInfoType == VIDEO_INFO_IOS;
     }
 
     @Override

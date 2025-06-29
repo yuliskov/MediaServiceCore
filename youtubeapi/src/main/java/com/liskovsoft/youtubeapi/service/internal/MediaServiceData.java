@@ -51,7 +51,6 @@ public class MediaServiceData {
     private String mScreenId;
     private String mDeviceId;
     private String mVideoInfoVersion;
-    private String mPlayerExtractorVersion;
     private int mVideoInfoType;
     private String mVisitorCookie;
     private int mEnabledFormats;
@@ -156,15 +155,10 @@ public class MediaServiceData {
     }
 
     public Triple<NSigData, NSigData, PlayerDataCached> getPlayerExtractorData() {
-        if (Helpers.equals(mPlayerExtractorVersion, mAppVersion)) {
-            return new Triple<>(mNSigData, mSigData, mPlayerData);
-        }
-
-        return new Triple<>(null, null, null);
+        return new Triple<>(mNSigData, mSigData, mPlayerData);
     }
 
     public void setPlayerExtractorData(NSigData nSigData, NSigData sigData, PlayerDataCached playerData) {
-        mPlayerExtractorVersion = mAppVersion;
         mNSigData = nSigData;
         mSigData = sigData;
         mPlayerData = playerData;
@@ -327,7 +321,7 @@ public class MediaServiceData {
 
         mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
         mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
-        mPlayerExtractorVersion = Helpers.parseStr(split, 10);
+        //mPlayerExtractorVersion = Helpers.parseStr(split, 10);
     }
 
     private void persistCachedDataInt() {
@@ -337,7 +331,7 @@ public class MediaServiceData {
 
         mCachedPrefs.setMediaServiceCache(
                 Helpers.mergeData(null, null,
-                        null, null, null, null, null, null, mNSigData, mSigData, mPlayerExtractorVersion));
+                        null, null, null, null, null, null, mNSigData, mSigData, null));
     }
 
     private void persistData() {

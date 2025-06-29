@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
+import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.youtubeapi.common.api.FileApi
@@ -22,34 +23,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     init {
         // Get the code from the cache
         restoreAllData()
+        checkAllData()
 
         if (mNFuncCode == null || mSigFuncCode == null || mCPNCode == null || mSignatureTimestamp == null) {
-            val jsCode = loadPlayer()
-            val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) } ?: Triple(null, null, null)
-            val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
-
-            mNFuncCode = jsCode?.let {
-                try {
-                    NSigExtractor.extractNFuncCode(it, globalVar)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                    Log.d(TAG, "NSig init failed: %s", e.message)
-                    null
-                }
-            }
-            mSigFuncCode = jsCode?.let {
-                try {
-                    SigExtractor.extractSigCode(it, globalVar)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                    Log.d(TAG, "Signature init failed: %s", e.message)
-                    null
-                }
-            }
-            //mCipherCode = jsCode?.let { CipherExtractor.extractCipherCode(it, globalVarData) }
-            mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
-            mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
-
+            fetchAllData()
+            checkAllData()
             persistAllData()
         }
 
@@ -75,7 +53,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     fun decipherItems(items: List<String?>): List<String?>? {
-        //return mCipherCode?.let { CipherExtractor.decipherItems(items, it) }
         return mSigFuncCode?.let { items.map { it?.let { extractSig(it) } } }
     }
 
@@ -117,6 +94,33 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             .replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validates cpn
     }
 
+    private fun fetchAllData() {
+        val jsCode = loadPlayer()
+        val globalVarData = jsCode?.let { CommonExtractor.extractPlayerJsGlobalVar(it) } ?: Triple(null, null, null)
+        val globalVar = CommonExtractor.interpretPlayerJsGlobalVar(globalVarData)
+
+        mNFuncCode = jsCode?.let {
+            try {
+                NSigExtractor.extractNFuncCode(it, globalVar)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                Log.d(TAG, "NSig init failed: %s", e.message)
+                null
+            }
+        }
+        mSigFuncCode = jsCode?.let {
+            try {
+                SigExtractor.extractSigCode(it, globalVar)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                Log.d(TAG, "Signature init failed: %s", e.message)
+                null
+            }
+        }
+        mCPNCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
+        mSignatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
+    }
+
     private fun persistAllData() {
         if (mNFuncCode != null && mSigFuncCode != null && mCPNCode != null && mSignatureTimestamp != null) {
             data.setPlayerExtractorData(
@@ -141,6 +145,19 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         if (playerData?.playerUrl == playerUrl) {
             mCPNCode = playerData.clientPlaybackNonceFunction
             mSignatureTimestamp = playerData.signatureTimestamp
+        }
+    }
+
+    private fun checkAllData() {
+        mNFuncCode?.let {
+            try {
+                val param = "5cNpZqIJ7ixNqU68Y7S"
+                val result = extractNSigReal(param)
+                if (result == null || param == result)
+                    mNFuncCode = null
+            } catch (error: V8ScriptExecutionException) {
+                mNFuncCode = null
+            }
         }
     }
 }

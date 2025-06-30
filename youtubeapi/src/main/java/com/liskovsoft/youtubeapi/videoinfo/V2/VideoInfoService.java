@@ -17,8 +17,6 @@ import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
 import com.liskovsoft.youtubeapi.videoinfo.models.TranslationLanguage;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
-import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
-import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,26 +27,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    private final static int VIDEO_INFO_INITIAL = 0;
-    private final static int VIDEO_INFO_WEB = 1;
-    private final static int VIDEO_INFO_MWEB = 2;
-    private final static int VIDEO_INFO_TV = 3;
-    private final static int VIDEO_INFO_ANDROID = 4;
-    private final static int VIDEO_INFO_IOS = 5;
-    private final static int VIDEO_INFO_TV_EMBED = 6;
-    private final static int VIDEO_INFO_WEB_EMBED = 7;
-    private final static int ANDROID_VR = 8;
     // VIDEO_INFO_TV can bypass "Sign in to confirm you're not a bot" (rare case)
     // VIDEO_INFO_WEB_EMBED - the best one, with no occasional 403 errors
     // VIDEO_INFO_IOS can work without NSig.
     // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
-    private final static Integer[] VIDEO_INFO_TYPE_LIST = {
+    private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_TV_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
             //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_IOS, VIDEO_INFO_WEB_EMBED, VIDEO_INFO_ANDROID, VIDEO_INFO_TV, VIDEO_INFO_TV_EMBED
-            VIDEO_INFO_WEB_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_IOS, VIDEO_INFO_TV, VIDEO_INFO_TV_EMBED
+            AppClient.WEB_EMBED, AppClient.MWEB, AppClient.IOS, AppClient.TV, AppClient.TV_EMBED
     };
-    private int mVideoInfoType = -1;
+    @Nullable
+    private AppClient mVideoInfoType = null;
     private boolean mSkipAuth;
     private boolean mSkipAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
@@ -101,15 +91,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         if (result.isHistoryBroken()) {
             // Only the tv client supports auth features
-            result.sync(getVideoInfo(VIDEO_INFO_TV, videoId, clickTrackingParams));
+            result.sync(getVideoInfo(AppClient.TV, videoId, clickTrackingParams));
         }
 
         return result;
     }
 
     private VideoInfo firstNonNull(String videoId, String clickTrackingParams) {
-        final int beginType = Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
-        int nextType = beginType;
+        final AppClient beginType = Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
+        AppClient nextType = beginType;
         VideoInfo result;
 
         do {
@@ -124,51 +114,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getVideoInfo(mVideoInfoType, videoId, clickTrackingParams);
     }
 
-    private VideoInfo getVideoInfo(int type, String videoId, String clickTrackingParams) {
-        VideoInfo result = null;
-
-        switch (type) {
-            case VIDEO_INFO_INITIAL:
-                result = InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
-                if (result != null) {
-                    //VideoInfo syncInfo = getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
-                    //result.sync(syncInfo);
-                    break;
-                }
-            case VIDEO_INFO_TV:
-                // Doesn't contain dash manifest url and hls link
-                // Support viewing private (user) videos
-                result = getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_WEB:
-                result = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_WEB_EMBED:
-                result = getVideoInfo(AppClient.WEB_EMBED, videoId, clickTrackingParams);
-                break;
-            case ANDROID_VR:
-                result = getVideoInfo(AppClient.ANDROID_VR, videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_MWEB:
-                result = getVideoInfo(AppClient.MWEB, videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_ANDROID:
-                // Doesn't contain dash manifest url
-                result = getVideoInfo(AppClient.ANDROID, videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_IOS:
-                result = getVideoInfo(AppClient.IOS, videoId, clickTrackingParams);
-                break;
-            case VIDEO_INFO_TV_EMBED:
-                result = getVideoInfo(AppClient.TV_EMBED, videoId, clickTrackingParams);
-                break;
-        }
-
-        return result;
-    }
-
     private void initVideoInfo() {
-        if (mVideoInfoType != -1) {
+        if (mVideoInfoType != null) {
             return;
         }
 
@@ -177,7 +124,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
-        if (!mIsUnplayable && isPotSupported(mVideoInfoType) && PoTokenGate.resetCache()) {
+        if (!mIsUnplayable && isPotSupported() && PoTokenGate.resetCache()) {
             return;
         }
         if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
@@ -195,24 +142,27 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void resetData() {
-        mVideoInfoType = -1;
+        mVideoInfoType = null;
         mSkipAuth = false;
         nextVideoInfo();
     }
 
     private void nextVideoInfo() {
         // The same format but without auth may behave better
-        if (mVideoInfoType != -1 && !mSkipAuth) {
+        if (mVideoInfoType != null && !mSkipAuth) {
             mSkipAuth = true;
             return;
         }
 
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
-        //mSkipAuth = !isAuthSupported(mVideoInfoType) || getData().isPremiumFixEnabled();
-        mSkipAuth = !isAuthSupported(mVideoInfoType);
+        mSkipAuth = !isAuthSupported();
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
+        if (client == AppClient.INITIAL) {
+            return InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
+        }
+
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
         return getVideoInfo(client, videoInfoQuery);
     }
@@ -338,7 +288,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfo getFirstPlayableByType(String videoId, String clickTrackingParams) {
         VideoInfo result = null;
 
-        for (int type : VIDEO_INFO_TYPE_LIST) {
+        for (AppClient type : VIDEO_INFO_TYPE_LIST) {
             mSkipAuthBlock = true;
             VideoInfo videoInfo = getVideoInfo(type, videoId, clickTrackingParams);
             mSkipAuthBlock = false;
@@ -355,7 +305,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private void restoreVideoInfoType() {
         Pair<Integer, Boolean> videoInfoType = getData().getVideoInfoType();
         if (videoInfoType != null && videoInfoType.first != -1) {
-            mVideoInfoType = videoInfoType.first;
+            mVideoInfoType = videoInfoType.first < AppClient.values().length ? AppClient.values()[videoInfoType.first] : VIDEO_INFO_TYPE_LIST[0];
             mSkipAuth = videoInfoType.second;
         }
     }
@@ -365,7 +315,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return;
         }
 
-        getData().setVideoInfoType(mVideoInfoType, mSkipAuth);
+        getData().setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1, mSkipAuth);
     }
 
     private static boolean shouldObtainExtendedFormats(VideoInfo result) {
@@ -380,19 +330,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return videoInfo != null && videoInfo.hasSubtitles() && (videoInfo.getTranslationLanguages() == null || videoInfo.getTranslationLanguages().size() < 100);
     }
 
-    private static boolean isAuthSupported(int videoInfoType) {
-        // Only TV can work with auth
-        return videoInfoType == VIDEO_INFO_TV || videoInfoType == VIDEO_INFO_TV_EMBED;
-    }
-
-    private boolean isPotSupported(int videoInfoType) {
-        return videoInfoType == VIDEO_INFO_WEB || videoInfoType == VIDEO_INFO_MWEB  || videoInfoType == VIDEO_INFO_WEB_EMBED || videoInfoType == ANDROID_VR ||
-                videoInfoType == VIDEO_INFO_IOS;
-    }
-
     @Override
     protected boolean isPotSupported() {
-        return isPotSupported(mVideoInfoType);
+        return mVideoInfoType != null && mVideoInfoType.isPotSupported();
+    }
+
+    private boolean isAuthSupported() {
+        return mVideoInfoType != null && mVideoInfoType.isAuthSupported();
     }
 
     private static MediaServiceData getData() {

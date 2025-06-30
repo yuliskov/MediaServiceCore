@@ -35,11 +35,15 @@ internal enum class AppClient(
     ANDROID("ANDROID", "19.26.37", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
         postData = String.format(POST_DATA_ANDROID, 30)),
     IOS("IOS", "19.29.1", 5, userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null,
-        postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90"));
+        postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90")),
+    INITIAL(TV);
+
+    constructor(baseClient: AppClient): this(baseClient.clientName, baseClient.clientVersion, baseClient.innerTubeName, baseClient.userAgent,
+        baseClient.referer, baseClient.clientScreen, baseClient.params, baseClient.postData)
 
     val browseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent, (postData ?: "") + POST_DATA_BROWSE) }
     val playerTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent, (postData ?: "")) }
 
     fun isAuthSupported() = this == TV || this == TV_EMBED // NOTE: TV_SIMPLE doesn't support auth
-    fun isPotSupported() = this == WEB || this == MWEB || this == WEB_EMBED || this == ANDROID_VR || this == IOS
+    fun isPotSupported() = this == WEB || this == MWEB || this == WEB_EMBED || this == ANDROID_VR
 }

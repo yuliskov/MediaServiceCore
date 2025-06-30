@@ -68,8 +68,10 @@ public class AppServiceIntCached extends AppServiceInt {
                     getData().setAppInfo(mAppInfo);
                 } else {
                     getData().setFailedAppInfo(mAppInfo);
-                    mAppInfo = null;
-                    mFallbackMode = true;
+                    if (check(getData().getAppInfo())) { // can restore?
+                        mAppInfo = null;
+                        mFallbackMode = true;
+                    }
                 }
                 return mPlayerDataExtractor;
             } catch (Throwable e) { // StackOverflowError | IllegalStateException

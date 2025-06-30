@@ -71,6 +71,8 @@ public class AppServiceIntCached extends AppServiceInt {
                     if (check(getData().getAppInfo())) { // can restore?
                         mAppInfo = null;
                         mFallbackMode = true;
+                    } else {
+                        mPlayerDataExtractor = super.getPlayerDataExtractor(AppConstants.playerUrls.get(0));
                     }
                 }
                 return mPlayerDataExtractor;

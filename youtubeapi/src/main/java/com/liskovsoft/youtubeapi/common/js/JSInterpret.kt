@@ -69,7 +69,7 @@ internal object JSInterpret {
         val funcNameRegex = """(?:[a-zA-Z$0-9]+|"[a-zA-Z$0-9]+"|'[a-zA-Z$}0-9]+')"""
 
         val objPattern = Pattern.compile("""(?x)
-                (?<!\.)$escapedObjName\s*=\s*\{\s*
+                (?<![a-zA-Z$0-9.])$escapedObjName\s*=\s*\{\s*
                     (($funcNameRegex\s*:\s*function\s*\(.*?\)\s*\{.*?\}(?:,\s*)?)*)
                 \}\s*;
                 """, Pattern.COMMENTS)

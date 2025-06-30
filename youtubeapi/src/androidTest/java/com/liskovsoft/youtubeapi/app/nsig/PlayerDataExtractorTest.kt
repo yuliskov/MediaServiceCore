@@ -46,6 +46,11 @@ class PlayerDataExtractorTest {
         AppConstants.playerUrls.forEach { testCPNPlayerUrl(it) }
     }
 
+    @Test
+    fun testTimestampPlayerVersions() {
+        AppConstants.playerUrls.forEach { testTimestampPlayerUrl(it) }
+    }
+
     private fun testNSigPlayerUrl(url: String) {
         val extractor = PlayerDataExtractor(url)
 
@@ -69,5 +74,12 @@ class PlayerDataExtractorTest {
 
         val cpn = extractor.createClientPlaybackNonce()
         assertNotNull("CPN not null for url $url", cpn)
+    }
+
+    private fun testTimestampPlayerUrl(url: String) {
+        val extractor = PlayerDataExtractor(url)
+
+        val timestamp = extractor.getSignatureTimestamp()
+        assertNotNull("Timestamp not null for url $url", timestamp)
     }
 }

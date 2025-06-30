@@ -29,6 +29,7 @@ public class AppServiceIntCached extends AppServiceInt {
             mAppInfo = getData().getAppInfo();
             mAppInfoUpdateTimeMs = System.currentTimeMillis();
             // Reset dependent objects
+            mPlayerDataExtractor = null;
             mClientData = null;
             return mAppInfo;
         }

@@ -23,7 +23,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     init {
         // Get the code from the cache
         restoreAllData()
-        checkAllData()
+        //checkAllData()
 
         if (mNFuncCode == null || mSigFuncCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             fetchAllData()

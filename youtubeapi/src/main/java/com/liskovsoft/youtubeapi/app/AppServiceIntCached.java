@@ -24,12 +24,6 @@ public class AppServiceIntCached extends AppServiceInt {
             return mAppInfo;
         }
 
-        if (check(getData().getAppInfo()) && System.currentTimeMillis() - getData().getAppInfo().getCreationTimeMs() < CACHE_REFRESH_PERIOD_MS) {
-            mAppInfo = getData().getAppInfo();
-            mAppInfoUpdateTimeMs = getData().getAppInfo().getCreationTimeMs();
-            return mAppInfo;
-        }
-
         Log.d(TAG, "updateAppInfoData");
 
         AppInfo appInfo = super.getAppInfo(userAgent);
@@ -55,18 +49,18 @@ public class AppServiceIntCached extends AppServiceInt {
                         getData().setAppInfo(mAppInfo);
                     }
                 } else {
-                    restorePlayerData();
+                    restoreSafePlayerVersion();
                 }
             } catch (Throwable e) { // StackOverflowError | IllegalStateException
                 e.printStackTrace();
-                restorePlayerData();
+                restoreSafePlayerVersion();
             }
 
             return mPlayerDataExtractor;
         }
     }
 
-    private void restorePlayerData() {
+    private void restoreSafePlayerVersion() {
         getData().setFailedAppInfo(mAppInfo);
         if (check(getData().getAppInfo())) { // can restore?
             mPlayerDataExtractor = super.getPlayerDataExtractor(getData().getAppInfo().getPlayerUrl());
@@ -103,12 +97,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     public void invalidateCache() {
-        if (getData().getFailedAppInfo() != null) {
-            return;
-        }
-
         mAppInfo = null;
-        getData().setAppInfo(null);
         // Don't reset Player's cache. It's too heavy to recreate often.
         // Better do it inside MediaServiceData after the update
     }

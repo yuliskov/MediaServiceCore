@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.models;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 
@@ -41,5 +42,17 @@ public class AppInfo {
 
     public String getVisitorData() {
         return mVisitorData;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AppInfo) {
+            AppInfo target = (AppInfo) obj;
+            return Helpers.equals(getPlayerUrl(), target.getPlayerUrl()) &&
+                    Helpers.equals(getClientUrl(), target.getClientUrl()) &&
+                    Helpers.equals(getVisitorData(), target.getVisitorData());
+        }
+
+        return super.equals(obj);
     }
 }

@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import android.content.Context;
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
@@ -222,9 +223,14 @@ public class MediaServiceData {
         return mAppInfo;
     }
 
-    public void setAppInfo(AppInfoCached appInfo) {
-        mAppInfo = appInfo;
+    public void setAppInfo(@NonNull AppInfoCached appInfo) {
         mFailedAppInfo = null;
+
+        if (Helpers.equals(mAppInfo, appInfo)) {
+            return;
+        }
+
+        mAppInfo = appInfo;
 
         persistData();
     }

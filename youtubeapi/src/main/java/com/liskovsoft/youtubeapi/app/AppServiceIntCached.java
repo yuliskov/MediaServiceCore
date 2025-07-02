@@ -37,7 +37,7 @@ public class AppServiceIntCached extends AppServiceInt {
     @Override
     public PlayerDataExtractor getPlayerDataExtractor(String playerUrl) {
         synchronized (mPlayerSync) {
-            if (mPlayerDataExtractor != null && Helpers.equals(mPlayerDataExtractor.getPlayerUrl(), playerUrl)) {
+            if (mPlayerDataExtractor != null && Helpers.equalsAny(playerUrl, mPlayerDataExtractor.getPlayerUrl(), getFailedPlayerUrl())) {
                 return mPlayerDataExtractor;
             }
 
@@ -71,7 +71,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     protected synchronized ClientData getClientData(String clientUrl) {
-        if (mClientData != null && Helpers.equals(mClientData.getClientUrl(), clientUrl)) {
+        if (mClientData != null && Helpers.equalsAny(clientUrl, mClientData.getClientUrl(), getFailedClientUrl())) {
             return mClientData;
         }
 
@@ -115,5 +115,13 @@ public class AppServiceIntCached extends AppServiceInt {
 
     private boolean check(ClientDataCached clientData) {
         return clientData != null && clientData.validate();
+    }
+
+    private String getFailedPlayerUrl() {
+        return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getPlayerUrl() : null;
+    }
+
+    private String getFailedClientUrl() {
+        return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getClientUrl() : null;
     }
 }

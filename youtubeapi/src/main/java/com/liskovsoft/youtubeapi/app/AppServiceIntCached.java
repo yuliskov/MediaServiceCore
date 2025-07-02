@@ -71,13 +71,13 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     protected synchronized ClientData getClientData(String clientUrl) {
-        if (mClientData != null && Helpers.equalsAny(clientUrl, mClientData.getClientUrl(), getFailedClientUrl())) {
+        if (mClientData != null && Helpers.equals(clientUrl, mClientData.getClientUrl())) {
             return mClientData;
         }
 
         ClientDataCached clientDataCached = getData().getClientData();
 
-        if (clientDataCached != null && Helpers.equals(clientDataCached.getClientUrl(), clientUrl)) {
+        if (clientDataCached != null && Helpers.equals(clientUrl, clientDataCached.getClientUrl())) {
             mClientData = clientDataCached;
             return mClientData;
         }
@@ -119,9 +119,5 @@ public class AppServiceIntCached extends AppServiceInt {
 
     private String getFailedPlayerUrl() {
         return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getPlayerUrl() : null;
-    }
-
-    private String getFailedClientUrl() {
-        return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getClientUrl() : null;
     }
 }

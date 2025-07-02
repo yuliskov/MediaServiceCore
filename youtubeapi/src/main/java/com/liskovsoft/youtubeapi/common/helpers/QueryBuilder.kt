@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common.helpers
 
 internal enum class PostDataType { Default, Player, Browse }
 
-internal class QueryBuilder(val client: AppClient) {
+internal class QueryBuilder(private val client: AppClient) {
     private var type: PostDataType? = null
     private var acceptLanguage: String? = null
     private var acceptRegion: String? = null
@@ -13,7 +13,7 @@ internal class QueryBuilder(val client: AppClient) {
     private var clickTrackingParams: String? = null
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
-    private var isWebEmbedded: Boolean = false
+    private val isWebEmbedded: Boolean = client == AppClient.WEB_EMBED
 
     fun setType(type: PostDataType) = apply { this.type = type }
     fun setLanguage(lang: String?) = apply { acceptLanguage = lang }
@@ -25,7 +25,6 @@ internal class QueryBuilder(val client: AppClient) {
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
     fun setVisitorData(visitorData: String?) = apply { this.visitorData = visitorData }
-    fun setAsWebEmbedded(isWebEmbedded: Boolean) = apply { this.isWebEmbedded = isWebEmbedded }
 
     fun build(): String {
         val json = """
@@ -132,6 +131,7 @@ internal class QueryBuilder(val client: AppClient) {
             """
                 "videoId": "$it",
                 ${createCPNChunk()}
+                ${createParamsChunk()}
             """
         } ?: ""
     }
@@ -140,6 +140,14 @@ internal class QueryBuilder(val client: AppClient) {
         return cpn?.let {
             """
                 "cpn": "$it",
+            """
+        } ?: ""
+    }
+
+    private fun createParamsChunk(): String {
+        return client.params?.let {
+            """
+                "params": "$it",
             """
         } ?: ""
     }

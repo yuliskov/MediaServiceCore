@@ -86,7 +86,6 @@ public class VideoInfoApiHelper {
                     .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
                     .setPoToken(PoTokenGate.getContentPoToken(videoId))
                     .setVisitorData(PoTokenGate.getVisitorData())
-                    .setAsWebEmbedded(client == AppClient.WEB_EMBED)
                     .build();
         }
 

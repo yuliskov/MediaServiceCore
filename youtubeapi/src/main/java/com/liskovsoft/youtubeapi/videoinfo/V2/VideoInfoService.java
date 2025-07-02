@@ -305,8 +305,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private void restoreVideoInfoType() {
         Pair<Integer, Boolean> videoInfoType = getData().getVideoInfoType();
         if (videoInfoType != null && videoInfoType.first != -1) {
-            mVideoInfoType = videoInfoType.first < AppClient.values().length ? AppClient.values()[videoInfoType.first] : VIDEO_INFO_TYPE_LIST[0];
+            mVideoInfoType = videoInfoType.first < AppClient.values().length ? AppClient.values()[videoInfoType.first] : null;
             mSkipAuth = videoInfoType.second;
+            if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType)) {
+                mVideoInfoType = VIDEO_INFO_TYPE_LIST[0];
+                getData().setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1, mSkipAuth);
+            }
         }
     }
 

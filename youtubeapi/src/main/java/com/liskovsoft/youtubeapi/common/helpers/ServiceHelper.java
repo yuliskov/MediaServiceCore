@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.text.BidiFormatter;
 
@@ -100,7 +99,7 @@ public class ServiceHelper {
     }
 
     public static String createQueryKids(String data) {
-        return createQuery(AppClient.KIDS.getBrowseTemplate(), data);
+        return createQuery(AppClient.TV_KIDS.getBrowseTemplate(), data);
     }
 
     public static String createQueryRemix(String data) {

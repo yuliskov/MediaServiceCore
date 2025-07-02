@@ -19,21 +19,35 @@ internal enum class AppClient(
     val clientName: String, val clientVersion: String, val innerTubeName: Int, val userAgent: String, val referer: String?,
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null
 ) {
-    TV("TVHTML5", "7.20250402.11.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
-    TV_SIMPLE("TVHTML5_SIMPLY", "1.0", 75, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv"),
+    // 8AEB - premium formats?
+    TV("TVHTML5", "7.20250402.11.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV,
+        referer = "https://www.youtube.com/tv", params = "8AEB"),
+    TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", 85, userAgent = DefaultHeaders.USER_AGENT_TV,
+        referer = "https://www.youtube.com/tv", clientScreen = CLIENT_SCREEN_EMBED),
+    // Can't use authorization
+    TV_SIMPLE("TVHTML5_SIMPLY", "1.0", 75, userAgent = DefaultHeaders.USER_AGENT_TV,
+        referer = "https://www.youtube.com/tv"),
+    TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV,
+        referer = "https://www.youtube.com/tv/kids"),
+    WEB("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_WEB,
+        referer = "https://www.youtube.com/"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
-    WEB_EMBED("WEB_EMBEDDED_PLAYER", "2.20250222.10.01", 56, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    ANDROID_VR("ANDROID_VR", "1.37", 28, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    WEB("WEB", "2.20250222.10.01", 1, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    MWEB("MWEB", "2.20250213.05.00", 2, userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com/"),
+    WEB_EMBED("WEB_EMBEDDED_PLAYER", "1.20250310.01.00", 56, userAgent = DefaultHeaders.USER_AGENT_WEB,
+        referer = "https://www.youtube.com/"),
     // Request contains an invalid argument.
-    WEB_CREATOR("WEB_CREATOR", "1.20220726.00.00", 62, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    WEB_REMIX("WEB_REMIX", "1.20240819.01.00", 67, userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com/"),
-    KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv/kids"),
-    TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", 85, userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv",
-        clientScreen = CLIENT_SCREEN_EMBED),
-    ANDROID("ANDROID", "19.26.37", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
-        postData = String.format(POST_DATA_ANDROID, 30)),
+    WEB_CREATOR("WEB_CREATOR", "1.20220726.00.00", 62, userAgent = DefaultHeaders.USER_AGENT_WEB,
+        referer = "https://www.youtube.com/"),
+    WEB_REMIX("WEB_REMIX", "1.20240819.01.00", 67, userAgent = DefaultHeaders.USER_AGENT_WEB,
+        referer = "https://music.youtube.com/"),
+    // 8AEB - premium formats?
+    WEB_SAFARI("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_SAFARI,
+        referer = "https://www.youtube.com/", params = "8AEB"),
+    MWEB("MWEB", "2.20250213.05.00", 2, userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB,
+        referer = "https://m.youtube.com/"),
+    ANDROID("ANDROID", "19.26.37", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID,
+        referer = null, postData = String.format(POST_DATA_ANDROID, 30)),
+    ANDROID_VR("ANDROID_VR", "1.37", 28, userAgent = DefaultHeaders.USER_AGENT_WEB,
+        referer = "https://www.youtube.com/"),
     IOS("IOS", "19.29.1", 5, userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null,
         postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90")),
     INITIAL(TV);

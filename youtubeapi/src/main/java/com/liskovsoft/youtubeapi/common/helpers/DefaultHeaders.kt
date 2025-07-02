@@ -54,6 +54,7 @@ object DefaultHeaders {
     private const val USER_AGENT_ANDROID_1 = "com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip"
     private const val USER_AGENT_IOS_1 = "com.google.ios.youtube/17.33.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)"
     private const val USER_AGENT_IOS_2 = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
+    const val USER_AGENT_SAFARI = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15,gzip(gfe)"
 
     //const val USER_AGENT_TV = USER_AGENT_SAMSUNG_3 // no buffering
     //const val USER_AGENT_TV = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)

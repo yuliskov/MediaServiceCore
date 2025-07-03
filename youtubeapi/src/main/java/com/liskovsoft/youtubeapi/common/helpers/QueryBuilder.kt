@@ -2,6 +2,9 @@ package com.liskovsoft.youtubeapi.common.helpers
 
 internal enum class PostDataType { Default, Player, Browse }
 
+// Use protobuf to bypass geo blocking
+private const val GEO_PARAMS: String = "CgIQBg%3D%3D"
+
 internal class QueryBuilder(private val client: AppClient) {
     private var type: PostDataType? = null
     private var acceptLanguage: String? = null
@@ -14,6 +17,7 @@ internal class QueryBuilder(private val client: AppClient) {
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
     private val isWebEmbedded: Boolean = client == AppClient.WEB_EMBED
+    private var isGeoFixEnabled: Boolean = false
 
     fun setType(type: PostDataType) = apply { this.type = type }
     fun setLanguage(lang: String?) = apply { acceptLanguage = lang }
@@ -25,6 +29,7 @@ internal class QueryBuilder(private val client: AppClient) {
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
     fun setVisitorData(visitorData: String?) = apply { this.visitorData = visitorData }
+    fun enableGeoFix(enableGeoFix: Boolean) = apply { isGeoFixEnabled = enableGeoFix }
 
     fun build(): String {
         val json = """
@@ -145,7 +150,8 @@ internal class QueryBuilder(private val client: AppClient) {
     }
 
     private fun createParamsChunk(): String {
-        return client.params?.let {
+        val params = if (isGeoFixEnabled) GEO_PARAMS else client.params
+        return params?.let {
             """
                 "params": "$it",
             """

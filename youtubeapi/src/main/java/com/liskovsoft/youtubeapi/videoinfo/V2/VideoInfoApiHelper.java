@@ -6,7 +6,6 @@ import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder;
 import com.liskovsoft.youtubeapi.common.helpers.PostDataType;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
 
 public class VideoInfoApiHelper {
@@ -43,14 +42,21 @@ public class VideoInfoApiHelper {
     //private static final String PROTOBUF_VAL_ANDROID = "\"params\":\"8AEB\"";
 
     public static String getVideoInfoQuery(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client, videoId, clickTrackingParams);
+        return createCheckedQuery(client, videoId, clickTrackingParams, false);
     }
+
+    ///**
+    // * NOTE: Should use protobuf to bypass geo blocking.
+    // */
+    //public static String getVideoInfoQueryGeo(AppClient client, String videoId, String clickTrackingParams) {
+    //    return createCheckedQuery(client, videoId, clickTrackingParams, THROTTLE_QUERY);
+    //}
 
     /**
      * NOTE: Should use protobuf to bypass geo blocking.
      */
     public static String getVideoInfoQueryGeo(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client, videoId, clickTrackingParams, THROTTLE_QUERY);
+        return createCheckedQuery(client, videoId, clickTrackingParams, true);
     }
 
     /**
@@ -66,34 +72,54 @@ public class VideoInfoApiHelper {
         return originUrl + "&alr=no&headm=3&rn=1&rbuf=0"; // alr=yes is bugged
     }
 
-    private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client, videoId, clickTrackingParams, null);
-    }
+    //private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams) {
+    //    return createCheckedQuery(client, videoId, clickTrackingParams, null);
+    //}
 
-    private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
+    private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, boolean enableGeoFix) {
         // Important: use only for the clients that don't support auth.
         // Otherwise, google suggestions and history won't work (visitor data bug)
-        if (client.isPotSupported() && PoTokenGate.supportsNpPot()) {
-            LocaleManager localeManager = LocaleManager.instance();
-            return new QueryBuilder(client)
-                    .setType(PostDataType.Player)
-                    .setLanguage(localeManager.getLanguage())
-                    .setCountry(localeManager.getCountry())
-                    .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
-                    .setVideoId(videoId)
-                    .setClickTrackingParams(clickTrackingParams)
-                    .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce()) // get it somewhere else?
-                    .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
-                    .setPoToken(PoTokenGate.getContentPoToken(videoId))
-                    .setVisitorData(PoTokenGate.getVisitorData())
-                    .build();
-        }
-
-        String template = client.getPlayerTemplate();
-        String videoIdParams = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
-        String checkParams = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
-
-        clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
-        return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, videoIdParams, query));
+        boolean isPotSupported = client.isPotSupported() && PoTokenGate.supportsNpPot();
+        LocaleManager localeManager = LocaleManager.instance();
+        return new QueryBuilder(client)
+                .setType(PostDataType.Player)
+                .setLanguage(localeManager.getLanguage())
+                .setCountry(localeManager.getCountry())
+                .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
+                .setVideoId(videoId)
+                .setClickTrackingParams(clickTrackingParams)
+                .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce()) // get it somewhere else?
+                .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
+                .setPoToken(isPotSupported ? PoTokenGate.getContentPoToken(videoId) : null)
+                .setVisitorData(isPotSupported ? PoTokenGate.getVisitorData() : AppService.instance().getVisitorData())
+                .enableGeoFix(enableGeoFix) // may broke other functionality
+                .build();
     }
+
+    //private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, String query) {
+    //    // Important: use only for the clients that don't support auth.
+    //    // Otherwise, google suggestions and history won't work (visitor data bug)
+    //    if (client.isPotSupported() && PoTokenGate.supportsNpPot()) {
+    //        LocaleManager localeManager = LocaleManager.instance();
+    //        return new QueryBuilder(client)
+    //                .setType(PostDataType.Player)
+    //                .setLanguage(localeManager.getLanguage())
+    //                .setCountry(localeManager.getCountry())
+    //                .setUtcOffsetMinutes(localeManager.getUtcOffsetMinutes())
+    //                .setVideoId(videoId)
+    //                .setClickTrackingParams(clickTrackingParams)
+    //                .setClientPlaybackNonce(AppService.instance().getClientPlaybackNonce()) // get it somewhere else?
+    //                .setSignatureTimestamp(Helpers.parseInt(AppService.instance().getSignatureTimestamp())) // get it somewhere else?
+    //                .setPoToken(PoTokenGate.getContentPoToken(videoId))
+    //                .setVisitorData(PoTokenGate.getVisitorData())
+    //                .build();
+    //    }
+    //
+    //    String template = client.getPlayerTemplate();
+    //    String videoIdParams = String.format(VIDEO_ID, videoId, AppService.instance().getClientPlaybackNonce());
+    //    String checkParams = String.format(CHECK_PARAMS, AppService.instance().getSignatureTimestamp());
+    //
+    //    clickTrackingParams = clickTrackingParams != null ? String.format(CLICK_TRACKING, clickTrackingParams) : "";
+    //    return ServiceHelper.createQuery(template, clickTrackingParams, Helpers.join(",", checkParams, videoIdParams, query));
+    //}
 }

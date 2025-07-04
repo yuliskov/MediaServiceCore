@@ -23,7 +23,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     init {
         // Get the code from the cache
         restoreAllData()
-        //checkAllData()
+        checkAllData()
 
         if (mNFuncCode == null || mSigFuncCode == null || mCPNCode == null || mSignatureTimestamp == null) {
             fetchAllData()
@@ -153,10 +153,31 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             try {
                 val param = "5cNpZqIJ7ixNqU68Y7S"
                 val result = extractNSigReal(param)
-                if (result == null || param == result)
+                if (result == null || result == param)
                     mNFuncCode = null
             } catch (error: V8ScriptExecutionException) {
                 mNFuncCode = null
+            }
+        }
+
+        mSigFuncCode?.let {
+            try {
+                val param = "5cNpZqIJ7ixNqU68Y7S"
+                val result = extractSigReal(param)
+                if (result == null || result == param)
+                    mSigFuncCode = null
+            } catch (error: V8ScriptExecutionException) {
+                mSigFuncCode = null
+            }
+        }
+
+        mCPNCode?.let {
+            try {
+                val result = createClientPlaybackNonce()
+                if (result == null)
+                    mCPNCode = null
+            } catch (error: V8ScriptExecutionException) {
+                mCPNCode = null
             }
         }
     }

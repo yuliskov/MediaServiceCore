@@ -154,14 +154,14 @@ public abstract class VideoInfoServiceBase {
         return RetrofitHelper.get(mDashInfoApi.getDashInfoContent(url));
     }
 
-    private Headers getDashInfoHeaders(String url) {
+    private DashInfoHeaders getDashInfoHeaders(String url) {
         if (url == null) {
             return null;
         }
 
         // Range doesn't work???
         //return RetrofitHelper.getHeaders(mFileApi.getHeaders(url + SMALL_RANGE));
-        return RetrofitHelper.getHeaders(mFileApi.getHeaders(url));
+        return new DashInfoHeaders(RetrofitHelper.getHeaders(mFileApi.getHeaders(url)));
     }
 
     protected DashInfo getDashInfo(VideoInfo videoInfo) {
@@ -169,14 +169,21 @@ public abstract class VideoInfoServiceBase {
             return null;
         }
 
-        return getAudioDashInfo(videoInfo);
+        DashInfo info = getCumulativeDashInfo(videoInfo);
+
+        // Do retry. Sometimes the previous try failed?
+        if (info == null || info.getSegmentDurationUs() <= 0 || info.getStartTimeMs() <= 0 || info.getStartSegmentNum() < 0) {
+            info = getCumulativeDashInfo(videoInfo);
+        }
+
+        return info;
     }
 
-    private DashInfo getAudioDashInfo(VideoInfo videoInfo) {
+    private DashInfo getCumulativeDashInfo(VideoInfo videoInfo) {
         AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
 
         try {
-            return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
+            return getDashInfoHeaders(format.getUrl());
         } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
             try {
                 return getDashInfoUrl(format.getUrl());
@@ -184,35 +191,6 @@ public abstract class VideoInfoServiceBase {
                 // Empty results received. Url isn't available or something like that
                 return getDashInfoContent(format.getUrl());
             }
-        }
-    }
-
-    //private DashInfo getAudioDashInfo(VideoInfo videoInfo) {
-    //    try {
-    //        AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-    //        return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
-    //    } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
-    //        return null;
-    //    }
-    //}
-
-    //private DashInfo getAudioDashInfo2(VideoInfo videoInfo) {
-    //    AdaptiveVideoFormat format = getSmallestAudio(videoInfo);
-    //
-    //    try {
-    //        return getDashInfoUrl(format.getUrl());
-    //    } catch (ArithmeticException | NumberFormatException ex) {
-    //        // Empty results received. Url isn't available or something like that
-    //        return getDashInfoContent(format.getUrl());
-    //    }
-    //}
-
-    private DashInfo getVideoDashInfo(VideoInfo videoInfo) {
-        try {
-            AdaptiveVideoFormat format = getSmallestVideo(videoInfo);
-            return new DashInfoHeaders(getDashInfoHeaders(format.getUrl()));
-        } catch (ArithmeticException | NumberFormatException | IllegalStateException ex) {
-            return null;
         }
     }
 

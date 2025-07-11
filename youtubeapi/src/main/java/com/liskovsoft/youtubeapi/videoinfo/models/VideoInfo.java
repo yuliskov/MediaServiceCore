@@ -16,11 +16,13 @@ public class VideoInfo {
     private static final String PARAM_EVENT_ID = "ei";
     private static final String PARAM_VM = "vm";
     private static final String PARAM_OF = "of";
+    private static final String STATUS_OK = "OK";
     private static final String STATUS_UNPLAYABLE = "UNPLAYABLE";
     private static final String STATUS_ERROR = "ERROR";
     private static final String STATUS_OFFLINE = "LIVE_STREAM_OFFLINE";
     private static final String STATUS_LOGIN_REQUIRED = "LOGIN_REQUIRED";
     private static final String STATUS_AGE_CHECK_REQUIRED = "AGE_CHECK_REQUIRED";
+    private static final String STATUS_AGE_VERIFICATION_REQUIRED = "AGE_VERIFICATION_REQUIRED";
     private static final String STATUS_CONTENT_CHECK_REQUIRED = "CONTENT_CHECK_REQUIRED";
     private static final Pattern tagPattern = Pattern.compile("\\(.*\\)$");
 

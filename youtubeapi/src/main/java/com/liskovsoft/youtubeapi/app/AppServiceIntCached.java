@@ -65,7 +65,21 @@ public class AppServiceIntCached extends AppServiceInt {
         if (check(getData().getAppInfo())) { // can restore?
             mPlayerDataExtractor = super.getPlayerDataExtractor(getData().getAppInfo().getPlayerUrl());
         } else {
-            mPlayerDataExtractor = super.getPlayerDataExtractor(AppConstants.playerUrls.get(0));
+            int counter = 0;
+
+            for (String url : AppConstants.playerUrls) {
+                mPlayerDataExtractor = super.getPlayerDataExtractor(url);
+
+                // Do validate. Sometimes even the safe version may not work on some users.
+                if (mPlayerDataExtractor != null && mPlayerDataExtractor.validate()) {
+                    break;
+                }
+
+                counter++;
+                if (counter > 3) {
+                    break;
+                }
+            }
         }
     }
 

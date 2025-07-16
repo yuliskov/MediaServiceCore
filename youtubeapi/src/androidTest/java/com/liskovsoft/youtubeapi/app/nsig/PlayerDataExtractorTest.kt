@@ -27,8 +27,9 @@ class PlayerDataExtractorTest {
 
     @Test
     fun testExtractNSig() {
-        val extractor = PlayerDataExtractor(getPlayerUrl())
-        assertNotNull("NSig not null", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
+        val playerUrl = getPlayerUrl()
+        val extractor = PlayerDataExtractor(playerUrl)
+        assertNotNull("NSig not null for $playerUrl", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
     }
 
     @Test

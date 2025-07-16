@@ -94,8 +94,8 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         // tv url: https://www.youtube.com/s/player/69b31e11/tv-player-es6-tce.vflset/tv-player-es6-tce.js
         // web url: https://www.youtube.com/s/player/e12fbea4/player_ias_tce.vflset/en_US/base.js
         return playerUrl
-            .replace("-tce", "") // tce tv url
-            .replace("_tce", "") // tce web url
+            .replace("-tce", "") // global helper functions, tv url
+            .replace("_tce", "") // global helper functions, web url
             .replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validates cpn
     }
 

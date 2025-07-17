@@ -34,7 +34,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
             ?.let { if (it.isEmpty()) null else it }
             ?.let { if (filter.invoke(it)) null else it }
             ?.let { WrapperMediaItem(it).let {
-                if (YouTubeHelper.isEmpty(it)) null else it }?.apply { playlistIndex = index } }
+                if (YouTubeHelper.isEmpty(it) || (options.removeShorts && it.isShorts)) null else it }?.apply { playlistIndex = index } }
         }?.let {
             // Move Watch Later to the top
             if (options.groupType != MediaGroup.TYPE_USER_PLAYLISTS)

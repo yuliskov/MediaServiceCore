@@ -68,4 +68,5 @@ object DefaultHeaders {
     val APP_USER_AGENT = USER_AGENT_TV // no buffering
 
     const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
+    const val REFERER = "https://www.youtube.com/tv"
 }

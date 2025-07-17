@@ -86,6 +86,13 @@ public class ServiceHelper {
         return createQuery(AppClient.TV.getBrowseTemplate(), data);
     }
 
+    /**
+     * Contains live chat key
+     */
+    public static String createQueryTV2(String data) {
+        return createQuery(AppClient.TV2.getBrowseTemplate(), data);
+    }
+
     public static String createQueryWeb(String data) {
         return createQuery(AppClient.WEB.getBrowseTemplate(), data);
     }

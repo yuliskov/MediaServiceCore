@@ -292,15 +292,20 @@ public class YouTubeContentService implements ContentService {
         });
     }
 
-    private MediaGroup getShorts() {
-        checkSigned();
-
-        return getBrowseService2().getShorts();
-    }
-
     @Override
     public Observable<MediaGroup> getShortsObserve() {
-        return RxHelper.fromCallable(this::getShorts);
+        return RxHelper.create(emitter -> {
+            checkSigned();
+
+            MediaGroup shorts = getBrowseService2().getShorts();
+
+            if (shorts != null && shorts.getNextPageKey() != null) {
+                emitGroups(emitter, shorts);
+            } else {
+                emitGroupsPartial(emitter, shorts);
+                emitGroups(emitter, getBrowseService2().getShorts2());
+            }
+        });
     }
 
     @Override
@@ -451,7 +456,7 @@ public class YouTubeContentService implements ContentService {
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
-            String msg = "emitGroups2: groups are null or empty";
+            String msg = "emitGroups: groups are null or empty";
             Log.e(TAG, msg);
             RxHelper.onError(emitter, msg);
             return;
@@ -496,6 +501,29 @@ public class YouTubeContentService implements ContentService {
         if (!collector.isEmpty()) {
             emitter.onNext(collector);
         }
+    }
+
+    private void emitGroups(ObservableEmitter<MediaGroup> emitter, MediaGroup groups) {
+        if (groups == null) {
+            String msg = "emitGroups: groups are null or empty";
+            Log.e(TAG, msg);
+            RxHelper.onError(emitter, msg);
+            return;
+        }
+
+        emitGroupsPartial(emitter, groups);
+
+        emitter.onComplete();
+    }
+
+    private void emitGroupsPartial(ObservableEmitter<MediaGroup> emitter, MediaGroup groups) {
+        if (groups == null) {
+            return;
+        }
+
+        Log.d(TAG, "emitGroups: begin emitting group of type %s...", groups.getType());
+
+        emitter.onNext(groups);
     }
 
     @Override

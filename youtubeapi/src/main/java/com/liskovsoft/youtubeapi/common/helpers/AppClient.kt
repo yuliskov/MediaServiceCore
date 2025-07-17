@@ -5,7 +5,11 @@ private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\
         "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
         "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 // Include Shorts: "browserName":"Cobalt"
+// Merge Shorts with Subscriptions: TV_APP_QUALITY_LIMITED_ANIMATION
+// Separate Shorts from Subscriptions: TV_APP_QUALITY_FULL_ANIMATION
 private const val POST_DATA_BROWSE =
+    "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"browserName\":\"Cobalt\",\"webpSupport\":false,\"animatedWebpSupport\":true,"
+private const val POST_DATA_BROWSE2 =
     "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"browserName\":\"Cobalt\",\"webpSupport\":false,\"animatedWebpSupport\":true,"
 private const val POST_DATA_IOS = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
@@ -17,11 +21,12 @@ private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not al
  */
 internal enum class AppClient(
     val clientName: String, val clientVersion: String, val innerTubeName: Int, val userAgent: String, val referer: String?,
-    val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null
+    val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null, val postDataBrowse: String = POST_DATA_BROWSE
 ) {
     // 8AEB - premium formats?
-    TV("TVHTML5", "7.20250402.11.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV,
+    TV("TVHTML5", "7.20250714.16.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv", params = "8AEB"),
+    TV2(TV, postDataBrowse = POST_DATA_BROWSE2),
     TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", 85, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv", clientScreen = CLIENT_SCREEN_EMBED),
     // Can't use authorization
@@ -52,10 +57,11 @@ internal enum class AppClient(
         postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90")),
     INITIAL(TV);
 
-    constructor(baseClient: AppClient): this(baseClient.clientName, baseClient.clientVersion, baseClient.innerTubeName, baseClient.userAgent,
-        baseClient.referer, baseClient.clientScreen, baseClient.params, baseClient.postData)
+    constructor(baseClient: AppClient, postData: String? = null, postDataBrowse: String? = null): this(baseClient.clientName, baseClient.clientVersion,
+        baseClient.innerTubeName, baseClient.userAgent, baseClient.referer, baseClient.clientScreen, baseClient.params,
+        postData ?: baseClient.postData, postDataBrowse ?: baseClient.postDataBrowse)
 
-    val browseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent, (postData ?: "") + POST_DATA_BROWSE) }
+    val browseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent, (postData ?: "") + postDataBrowse) }
     val playerTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent, (postData ?: "")) }
 
     fun isAuthSupported() = this == TV || this == TV_EMBED // NOTE: TV_SIMPLE doesn't support auth

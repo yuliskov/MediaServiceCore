@@ -24,6 +24,7 @@ public final class YouTubeHelper {
      */
     public static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
     private static final int SHORTS_LEN_MS = 61_000;
+    private static final int SHORTS_LEN_MAX_MS = 3 * 60_000;
     private static final String CHANNEL_KEY = "channel";
     private static final String CHANNEL_ALT_KEY = "c";
     private static final String HYPHEN_SIGN = "\u2010";
@@ -118,24 +119,34 @@ public final class YouTubeHelper {
                         return false;
                     }
 
-                    return (isHideShortsEnabled && isShort(mediaItem)) || (isHideUpcomingEnabled && mediaItem.isUpcoming()) ||
+                    return (isHideShortsEnabled && isShorts(mediaItem)) || (isHideUpcomingEnabled && mediaItem.isUpcoming()) ||
                             (isHideStreamsEnabled && mediaItem.isLive()) || (isHideMixesEnabled && isMix(mediaItem));
                 });
             }
         }
     }
 
-    public static boolean isShort(MediaItem mediaItem) {
+    private static boolean isShorts(MediaItem mediaItem) {
+        if (mediaItem == null) {
+            return false;
+        }
+
+        return mediaItem.isShorts() || isShortsLegacy(mediaItem);
+    }
+
+    public static boolean isShortsLegacy(MediaItem mediaItem) {
         if (mediaItem == null || mediaItem.getTitle() == null) {
             return false;
         }
 
         String title = mediaItem.getTitle().toLowerCase();
 
-        //long lengthMs = mediaItem.getDurationMs();
-        //boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
-        //return isShortLength || mediaItem.isShorts() || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
-        return mediaItem.isShorts() || title.contains("#short") || title.contains("#shorts") || title.contains("#tiktok");
+        long lengthMs = mediaItem.getDurationMs();
+
+        boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
+        boolean isShortMaxLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MAX_MS && title.contains("#");
+
+        return isShortLength || isShortMaxLength;
     }
 
     public static boolean isMix(MediaItem mediaItem) {

@@ -41,7 +41,7 @@ internal object RetrofitOkHttpHelper {
 
     private val apiHeaders = mapOf(
         "User-Agent" to DefaultHeaders.APP_USER_AGENT,
-        "Referer" to "https://www.youtube.com/tv"
+        "Referer" to DefaultHeaders.REFERER
     )
 
     private val apiPrefixes = arrayOf(

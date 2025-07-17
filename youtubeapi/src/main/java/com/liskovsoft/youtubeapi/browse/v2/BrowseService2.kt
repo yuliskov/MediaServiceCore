@@ -31,7 +31,7 @@ internal open class BrowseService2 {
         //
         //return Pair(rows, null)
 
-        return getBrowseRowsTV(BrowseApiHelper.getHomeQuery(AppClient.TV), MediaGroup.TYPE_HOME)
+        return getBrowseRowsTV(BrowseApiHelper.getHomeQuery(AppClient.TV2), MediaGroup.TYPE_HOME)
     }
 
     fun getTrending(): List<MediaGroup?>? {
@@ -137,7 +137,11 @@ internal open class BrowseService2 {
     }
 
     fun getShorts(): MediaGroup? {
-        return getShortsTV() ?: getShortsWeb(true)
+        return getShortsTV()
+    }
+
+    fun getShorts2(): MediaGroup? {
+        return getShortsWeb(true)
     }
 
     private fun getShortsWeb(skipAuth: Boolean = false): MediaGroup? {

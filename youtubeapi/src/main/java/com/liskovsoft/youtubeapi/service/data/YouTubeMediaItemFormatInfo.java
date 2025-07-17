@@ -307,7 +307,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
             float normalLevel = (float) Math.pow(10.0f, mLoudnessDb / 20.0f);
             if (normalLevel > 1.95) { // don't normalize?
                 // System of a Down - Lonely Day
-                normalLevel = 1.0f;
+                //normalLevel = 1.0f;
+                normalLevel = 1.5f;
             }
             // Calculate the result as subtract of the video volume and the max volume
             result = 2.0f - normalLevel;

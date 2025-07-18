@@ -90,7 +90,7 @@ public class ServiceHelper {
      * Contains live chat key
      */
     public static String createQueryTV2(String data) {
-        return createQuery(AppClient.TV2.getBrowseTemplate(), data);
+        return createQuery(AppClient.TV_LEGACY.getBrowseTemplate(), data);
     }
 
     public static String createQueryWeb(String data) {

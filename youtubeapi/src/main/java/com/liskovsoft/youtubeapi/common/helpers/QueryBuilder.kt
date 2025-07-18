@@ -62,18 +62,12 @@ internal class QueryBuilder(private val client: AppClient) {
             "clientVersion": "${client.clientVersion}",
             "clientScreen": "${client.clientScreen}",
             "userAgent": "${client.userAgent}",
+            "browserName": "${client.browserName}",
+            "browserVersion": "${client.browserVersion}",
         """
         val postVars = client.postData ?: ""
         val browseVars = if (requireNotNull(type) == PostDataType.Browse)
-            """
-                "tvAppInfo": { 
-                    "appQuality": "TV_APP_QUALITY_FULL_ANIMATION",
-                    "zylonLeftNav": true
-                },
-                "browserName": "Cobalt",
-                "webpSupport": false,
-                "animatedWebpSupport": true,
-            """ // Include Shorts: "browserName":"Cobalt"
+                client.postDataBrowse ?: ""
             else ""
         val regionVars = """
             "acceptLanguage": "${requireNotNull(acceptLanguage)}",

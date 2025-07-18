@@ -120,7 +120,14 @@ public class YouTubeContentService implements ContentService {
 
         checkSigned();
 
-        return getBrowseService2().getSubscriptions();
+        MediaGroup subscriptions = getBrowseService2().getSubscriptions();
+
+        // TEMP fix. Subs not fully populated.
+        if (subscriptions != null && subscriptions.getMediaItems() != null && subscriptions.getMediaItems().size() == 3) {
+            return getBrowseService2().getSubscriptions2();
+        }
+
+        return subscriptions;
     }
 
     @Override

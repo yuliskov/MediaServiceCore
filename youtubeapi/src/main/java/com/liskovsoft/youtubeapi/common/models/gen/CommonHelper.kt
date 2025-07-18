@@ -15,7 +15,7 @@ private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_SHORTS = "SHORTS"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 // A badge before the subtitle
-private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC"
+private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC" // This mark sometimes present on regular videos (e.g. fundraiser)
 private const val STATUS_STYLE_QUALITY = "BADGE_STYLE_TYPE_SIMPLE"
 private const val STATUS_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
 
@@ -120,7 +120,7 @@ internal fun VideoItem.getPlaylistIndex() = navigationEndpoint?.getIndex()
 internal fun VideoItem.isLive(): Boolean = STATUS_STYLE_LIVE == getStatusStyle() || BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun VideoItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun VideoItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle()
-internal fun VideoItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle()
+internal fun VideoItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle() && getVideoId() == null
 internal fun VideoItem.getFeedbackTokens() = menu?.getFeedbackTokens()
 private fun VideoItem.getStatusStyle() = badges?.firstNotNullOfOrNull { it?.metadataBadgeRenderer?.style }
 private fun VideoItem.getBadgeStyle() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
@@ -199,7 +199,7 @@ internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
 internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationKey()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
-internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle()
+internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle() && getVideoId() == null // a movie has browseId instead of videoId
 internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE_STYLE_SHORTS == getTileStyle()
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 private fun TileItem.Metadata.getStatusStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }

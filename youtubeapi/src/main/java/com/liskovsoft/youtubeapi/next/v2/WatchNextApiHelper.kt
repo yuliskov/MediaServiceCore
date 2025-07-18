@@ -31,7 +31,7 @@ internal object WatchNextApiHelper {
             videoData += String.format(",\"params\":\"%s\"", playlistParams)
         }
 
-        return ServiceHelper.createQueryTV2(videoData)
+        return ServiceHelper.createQueryTV(videoData)
     }
 
     fun getUnlocalizedTitleQuery(videoId: String): String {

@@ -15,7 +15,7 @@ private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_SHORTS = "SHORTS"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 // A badge before the subtitle
-private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC" // This mark sometimes present on regular videos (e.g. fundraiser)
+private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC" // This mark sometimes presents on regular videos (e.g. fundraiser mark)
 private const val STATUS_STYLE_QUALITY = "BADGE_STYLE_TYPE_SIMPLE"
 private const val STATUS_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
 

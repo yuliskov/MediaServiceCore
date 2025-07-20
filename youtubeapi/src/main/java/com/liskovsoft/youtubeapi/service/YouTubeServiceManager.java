@@ -24,7 +24,6 @@ public class YouTubeServiceManager implements ServiceManager {
     private static final String TAG = YouTubeServiceManager.class.getSimpleName();
     private static YouTubeServiceManager sInstance;
     private Disposable mRefreshCoreDataAction;
-    private Disposable mRefreshPoTokenAction;
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
@@ -99,29 +98,12 @@ public class YouTubeServiceManager implements ServiceManager {
         getVideoInfoService().switchNextFormat();
     }
 
-    //@Override
-    //public void applyAntiBotFix() {
-    //    getYouTubeMediaItemService().invalidateCache();
-    //    refreshPoTokenIfNeeded();
-    //}
-
     private void refreshCacheIfNeededInt() {
         if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
             return;
         }
 
         mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded));
-    }
-
-    private void refreshPoTokenIfNeeded() {
-        if (RxHelper.isAnyActionRunning(mRefreshPoTokenAction)) {
-            return;
-        }
-
-        mRefreshPoTokenAction = RxHelper.execute(RxHelper.createLong(emitter -> {
-            getAppService().refreshPoTokenIfNeeded();
-            emitter.onComplete();
-        }));
     }
 
     @NonNull

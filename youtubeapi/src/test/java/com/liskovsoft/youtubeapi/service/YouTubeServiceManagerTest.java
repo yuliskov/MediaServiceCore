@@ -36,11 +36,11 @@ public class YouTubeServiceManagerTest {
      */
     @Test
     public void testThatSearchNotEmpty() {
-        MediaGroup mediaGroup = mService.getContentService().getSearch("hello world");
+        List<MediaGroup> mediaGroup = mService.getContentService().getSearch("hello world");
 
         List<MediaItem> list = new ArrayList<>();
 
-        MediaItem mediaItem = mediaGroup.getMediaItems().get(0);
+        MediaItem mediaItem = mediaGroup.get(0).getMediaItems().get(0);
         list.add(mediaItem);
         assertNotNull(mediaItem);
 

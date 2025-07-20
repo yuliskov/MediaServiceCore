@@ -49,25 +49,7 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public MediaGroup getSearch(String searchText) {
-        checkSigned();
-
-        SearchResult search = getSearchService().getSearch(searchText);
-        List<MediaGroup> groups = YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
-        return groups != null && groups.size() > 0 ? groups.get(0) : null;
-    }
-
-    @Override
-    public MediaGroup getSearch(String searchText, int options) {
-        checkSigned();
-
-        SearchResult search = getSearchService().getSearch(searchText, options);
-        List<MediaGroup> groups = YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
-        return groups != null && groups.size() > 0 ? groups.get(0) : null;
-    }
-
-    @Override
-    public List<MediaGroup> getSearchAlt(String searchText) {
+    public List<MediaGroup> getSearch(String searchText) {
         checkSigned();
 
         SearchResult search = getSearchService().getSearch(searchText);
@@ -75,7 +57,7 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public List<MediaGroup> getSearchAlt(String searchText, int options) {
+    public List<MediaGroup> getSearch(String searchText, int options) {
         checkSigned();
 
         SearchResult search = getSearchService().getSearch(searchText, options);
@@ -83,23 +65,13 @@ public class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public Observable<MediaGroup> getSearchObserve(String searchText) {
+    public Observable<List<MediaGroup>> getSearchObserve(String searchText) {
         return RxHelper.fromCallable(() -> getSearch(searchText));
     }
 
     @Override
-    public Observable<MediaGroup> getSearchObserve(String searchText, int options) {
+    public Observable<List<MediaGroup>> getSearchObserve(String searchText, int options) {
         return RxHelper.fromCallable(() -> getSearch(searchText, options));
-    }
-
-    @Override
-    public Observable<List<MediaGroup>> getSearchAltObserve(String searchText) {
-        return RxHelper.fromCallable(() -> getSearchAlt(searchText));
-    }
-
-    @Override
-    public Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options) {
-        return RxHelper.fromCallable(() -> getSearchAlt(searchText, options));
     }
 
     @Override

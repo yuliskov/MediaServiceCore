@@ -7,10 +7,8 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public interface ContentService {
-    MediaGroup getSearch(String searchText);
-    MediaGroup getSearch(String searchText, int options);
-    List<MediaGroup> getSearchAlt(String searchText);
-    List<MediaGroup> getSearchAlt(String searchText, int options);
+    List<MediaGroup> getSearch(String searchText);
+    List<MediaGroup> getSearch(String searchText, int options);
     List<String> getSearchTags(String searchText);
     MediaGroup getSubscriptions();
     MediaGroup getSubscriptions(String... channelIds);
@@ -36,10 +34,8 @@ public interface ContentService {
     void clearSearchHistory();
 
     // RxJava interfaces
-    Observable<MediaGroup> getSearchObserve(String searchText);
-    Observable<MediaGroup> getSearchObserve(String searchText, int options);
-    Observable<List<MediaGroup>> getSearchAltObserve(String searchText);
-    Observable<List<MediaGroup>> getSearchAltObserve(String searchText, int options);
+    Observable<List<MediaGroup>> getSearchObserve(String searchText);
+    Observable<List<MediaGroup>> getSearchObserve(String searchText, int options);
     Observable<List<String>> getSearchTagsObserve(String searchText);
     Observable<MediaGroup> getSubscriptionsObserve();
     Observable<MediaGroup> getSubscriptionsObserve(String... channelIds);

@@ -431,9 +431,10 @@ public class VideoInfo {
                 CaptionTrack originTrack = findOriginTrack(mCaptionTracks);
                 String tag = Helpers.runMultiMatcher(originTrack.getName(), tagPattern);
                 for (TranslationLanguage language : mTranslationLanguages) {
-                    if (!Helpers.equals(originTrack.getLanguageCode(), language.getLanguageCode())) {
-                        mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));
-                    }
+                    //if (!Helpers.equals(originTrack.getLanguageCode(), language.getLanguageCode())) {
+                    //    mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));
+                    //}
+                    mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));
                 }
             }
         }

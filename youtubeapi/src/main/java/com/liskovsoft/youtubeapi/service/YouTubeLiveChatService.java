@@ -6,7 +6,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.chat.LiveChatServiceInt;
 import io.reactivex.Observable;
 
-public class YouTubeLiveChatService implements LiveChatService {
+class YouTubeLiveChatService implements LiveChatService {
     private static YouTubeLiveChatService sInstance;
     private final LiveChatServiceInt mLiveChatServiceInt;
 

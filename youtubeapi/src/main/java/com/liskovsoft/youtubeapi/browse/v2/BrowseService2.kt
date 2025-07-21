@@ -34,6 +34,10 @@ internal open class BrowseService2 {
         return getBrowseRowsTV(BrowseApiHelper.getHomeQuery(AppClient.TV), MediaGroup.TYPE_HOME)
     }
 
+    fun getHomeLegacy(): Pair<List<MediaGroup?>?, String?>? {
+        return getBrowseRowsTV(BrowseApiHelper.getHomeQuery(AppClient.TV_LEGACY), MediaGroup.TYPE_HOME)
+    }
+
     fun getTrending(): List<MediaGroup?>? {
         return getBrowseRowsWeb(BrowseApiHelper.getTrendingQuery(AppClient.WEB), MediaGroup.TYPE_TRENDING, true)
     }
@@ -77,8 +81,8 @@ internal open class BrowseService2 {
         return getSubscriptionsTV()
     }
 
-    fun getSubscriptions2(): MediaGroup? {
-        return getSubscriptionsTV(true)
+    fun getSubscriptionsLegacy(): MediaGroup? {
+        return getSubscriptionsTV(legacyUI = true)
     }
 
     private fun getSubscriptionsWeb(): MediaGroup? {
@@ -104,21 +108,29 @@ internal open class BrowseService2 {
         return getSubscribedChannelsTV() ?: getSubscribedChannelsWeb()
     }
 
+    open fun getSubscribedChannelsLegacy(): MediaGroup? {
+        return getSubscribedChannelsTV(legacyUI = true) ?: getSubscribedChannelsWeb()
+    }
+
     private fun getSubscribedChannelsWeb(): MediaGroup? {
         val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let { GuideMediaGroup(it, createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
 
-    private fun getSubscribedChannelsTV(sortByName: Boolean = false): MediaGroup? {
+    private fun getSubscribedChannelsTV(sortByName: Boolean = false, legacyUI: Boolean = false): MediaGroup? {
         val options = createOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)
-        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(if (!options.removeShorts) AppClient.TV_LEGACY else AppClient.TV))
+        val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(if (legacyUI || !options.removeShorts) AppClient.TV_LEGACY else AppClient.TV))
 
         return RetrofitHelper.get(browseResult)?.let { it.getTabs()?.let { ChannelListMediaGroup(it, options, if (sortByName) SORT_BY_NAME else SORT_DEFAULT) } }
     }
 
     open fun getSubscribedChannelsByName(): MediaGroup? {
-        return getSubscribedChannelsTV(true) ?: getSubscribedChannelsByNameWeb()
+        return getSubscribedChannelsTV(sortByName = true) ?: getSubscribedChannelsByNameWeb()
+    }
+
+    open fun getSubscribedChannelsByNameLegacy(): MediaGroup? {
+        return getSubscribedChannelsTV(sortByName = true, legacyUI = true) ?: getSubscribedChannelsByNameWeb()
     }
 
     private fun getSubscribedChannelsByNameWeb(): MediaGroup? {

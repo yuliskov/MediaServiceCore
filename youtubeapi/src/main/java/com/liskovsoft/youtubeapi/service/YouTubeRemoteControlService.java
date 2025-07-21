@@ -8,7 +8,7 @@ import com.liskovsoft.youtubeapi.lounge.LoungeService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
-public class YouTubeRemoteControlService implements RemoteControlService {
+class YouTubeRemoteControlService implements RemoteControlService {
     private static final String TAG = YouTubeRemoteControlService.class.getSimpleName();
     private static YouTubeRemoteControlService sInstance;
     private final LoungeService mLoungeService;

@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class YouTubeContentService implements ContentService {
+class YouTubeContentService implements ContentService {
     private static final String TAG = YouTubeContentService.class.getSimpleName();
     private static YouTubeContentService sInstance;
 
@@ -96,7 +96,7 @@ public class YouTubeContentService implements ContentService {
 
         // TEMP fix. Subs not fully populated.
         if (subscriptions != null && subscriptions.getMediaItems() != null && subscriptions.getMediaItems().size() == 3) {
-            return getBrowseService2().getSubscriptions2();
+            return getBrowseService2().getSubscriptionsLegacy();
         }
 
         return subscriptions;

@@ -124,14 +124,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
+        // First, try to reset pot cache
         if (!mIsUnplayable && isPotSupported() && PoTokenGate.resetCache()) {
             return;
         }
-        if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
-            // Skip additional formats fetching that could produce an error
-            getData().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false);
-            return;
-        }
+        // Then, try to switch the client
         nextVideoInfo();
         persistVideoInfoType();
     }

@@ -128,7 +128,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
         if (!mIsUnplayable && isPotSupported() && PoTokenGate.resetCache()) {
             return;
         }
-        // Then, try to switch the client
+        // Then, try to disable Premium
+        if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
+            // Skip additional formats fetching that could produce an error
+            getData().enableFormat(MediaServiceData.FORMATS_EXTENDED_HLS, false);
+            return;
+        }
+        // And last, try to switch the client
         nextVideoInfo();
         persistVideoInfoType();
     }

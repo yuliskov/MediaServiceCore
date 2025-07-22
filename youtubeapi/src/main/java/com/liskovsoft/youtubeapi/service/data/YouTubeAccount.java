@@ -183,21 +183,4 @@ public class YouTubeAccount implements Account {
             mPageIdToken = originAccount.getPageIdToken();
         }
     }
-
-    //public void merge(Account account) {
-    //    YouTubeAccount youTubeAccount = (YouTubeAccount) account;
-    //
-    //    if (Helpers.equals(getPageIdToken(), youTubeAccount.getPageIdToken()) && Helpers.equals(getRefreshToken2(), youTubeAccount.getRefreshToken2())) {
-    //        return;
-    //    }
-    //
-    //    if (getPageIdToken() != null) {
-    //        mRefreshToken2 = Helpers.firstNonNull(youTubeAccount.getRefreshToken2(), youTubeAccount.getRefreshToken());
-    //        mEmail = youTubeAccount.getEmail();
-    //    } else {
-    //        mRefreshToken2 = mRefreshToken;
-    //        mRefreshToken = youTubeAccount.getRefreshToken();
-    //        mPageIdToken = youTubeAccount.getPageIdToken();
-    //    }
-    //}
 }

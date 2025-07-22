@@ -34,32 +34,6 @@ public class YouTubeAccountManager {
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
     private final List<Account> mAccounts = new CopyOnWriteArrayList<Account>() {
-        //@Override
-        //public boolean add(Account account) {
-        //    if (account == null) {
-        //        return false;
-        //    }
-        //
-        //    merge(account);
-        //
-        //    // Don't remove these lines or you won't be able to enter to the account.
-        //    while (contains(account)) {
-        //        remove(account);
-        //    }
-        //
-        //    return super.add(account);
-        //}
-        //
-        //private void merge(Account account) {
-        //    int index = indexOf(account);
-        //
-        //    if (index != -1) {
-        //        Account matched = get(index);
-        //        ((YouTubeAccount) account).merge(matched);
-        //        remove(matched);
-        //    }
-        //}
-
         @Override
         public boolean add(Account account) {
             if (account == null) {

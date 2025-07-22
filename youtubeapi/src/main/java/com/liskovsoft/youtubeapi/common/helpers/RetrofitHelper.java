@@ -8,6 +8,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.common.converters.gson.WithGson;
 import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory;
@@ -27,6 +28,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.ErrorResponse;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -156,7 +158,7 @@ public class RetrofitHelper {
     }
 
     /**
-     * Get cookie pair: cookieName=cookieValue
+     * Get cookie pair as a string: cookieName=cookieValue
      */
     public static <T> String getCookie(Response<T> response, String cookieName) {
         if (response == null) {
@@ -172,6 +174,25 @@ public class RetrofitHelper {
         }
 
         return null;
+    }
+
+    /**
+     * Get cookie pairs as a colon delimited string: cookieName=cookieValue; cookieName=cookieValue
+     */
+    public static <T> String getCookies(Response<T> response) {
+        if (response == null) {
+            return null;
+        }
+
+        List<String> result = new ArrayList<>();
+
+        List<String> cookies = response.headers().values("Set-Cookie");
+
+        for (String cookie : cookies) {
+            result.add(cookie.split(";")[0]);
+        }
+
+        return result.isEmpty() ? null : Helpers.join("; ", result.toArray(new CharSequence[0]));
     }
 
     public static <T> T create(Class<T> clazz) {

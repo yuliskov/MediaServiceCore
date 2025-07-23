@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
 
 private const val ITEM_DELIM = "&sgi;"
 private const val LIST_DELIM = "&sga;"
+private const val MAX_GROUP_ITEMS = 100 // Limit the result. Unlimited has veeery long loading and often crashing.
 
 internal data class ItemGroupImpl(
     //private val id: String = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE).toString(),
@@ -33,7 +34,8 @@ internal data class ItemGroupImpl(
     }
 
     override fun getItems(): List<Item> {
-        return items
+        // NOTE: Limit the result. Unlimited has veeery long loading and often crashing.
+        return items.take(MAX_GROUP_ITEMS)
     }
 
     override fun getBadge(): String? {

@@ -179,8 +179,12 @@ public class YouTubeAccount implements Account {
             mEmail = originAccount.getEmail();
         } else { // origin has a new type, make it main
             mRefreshToken2 = mRefreshToken;
-            mRefreshToken = originAccount.getRefreshToken();
-            mPageIdToken = originAccount.getPageIdToken();
+            if (originAccount.getRefreshToken() != null) {
+                mRefreshToken = originAccount.getRefreshToken();
+            }
+            if (originAccount.getPageIdToken() != null) {
+                mPageIdToken = originAccount.getPageIdToken();
+            }
         }
     }
 }

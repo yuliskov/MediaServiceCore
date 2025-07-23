@@ -56,6 +56,7 @@ public class YouTubeAccountManager {
                     remove(account);
                 }
 
+                // Do merge after the remove not before!!!
                 ((YouTubeAccount) account).merge(matched);
             }
         }

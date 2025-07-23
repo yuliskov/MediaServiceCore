@@ -12,11 +12,15 @@ internal data class NavigationEndpointItem(
     val reelWatchEndpoint: ReelWatchEndpoint?,
     val watchPlaylistEndpoint: WatchEndpointItem?,
     val openPopupAction: PopupActionItem?,
-    val showEngagementPanelEndpoint: ShowEngagementPanelEndpoint?
+    val showEngagementPanelEndpoint: ShowEngagementPanelEndpoint?,
+    val searchEndpoint: SearchEndpoint?
 ) {
     data class BrowseEndpoint(
         val browseId: String?,
         val params: String?
+    )
+    data class SearchEndpoint(
+        val query: String?
     )
     data class PopupActionItem(
         val popup: Popup?
@@ -236,38 +240,7 @@ internal data class TileItem(
 ) {
     data class Metadata(
         val tileMetadataRenderer: TileMetadataRenderer?
-    ) {
-        data class TileMetadataRenderer(
-            val title: TextItem?,
-            val lines: List<Line?>?
-        ) {
-            data class Line(
-                val lineRenderer: LineRenderer?
-            ) {
-                data class LineRenderer(
-                    val items: List<Item?>?
-                ) {
-                    data class Item(
-                        val lineItemRenderer: LineItemRenderer?
-                    ) {
-                        data class LineItemRenderer(
-                            val text: TextItem?,
-                            val badge: Badge?
-                        ) {
-                            data class Badge(
-                                val metadataBadgeRenderer: MetadataBadgeRenderer?
-                            ) {
-                                data class MetadataBadgeRenderer(
-                                    val style: String?,
-                                    val label: String?
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    )
 
     data class Header(
         val tileHeaderRenderer: TileHeaderRenderer?,
@@ -301,6 +274,37 @@ internal data class TileItem(
         data class ShowMenuCommand(
             val menu: MenuWrapper?
         )
+    }
+}
+
+internal data class TileMetadataRenderer(
+    val title: TextItem?,
+    val lines: List<Line?>?
+) {
+    data class Line(
+        val lineRenderer: LineRenderer?
+    ) {
+        data class LineRenderer(
+            val items: List<Item?>?
+        ) {
+            data class Item(
+                val lineItemRenderer: LineItemRenderer?
+            ) {
+                data class LineItemRenderer(
+                    val text: TextItem?,
+                    val badge: Badge?
+                ) {
+                    data class Badge(
+                        val metadataBadgeRenderer: MetadataBadgeRenderer?
+                    ) {
+                        data class MetadataBadgeRenderer(
+                            val style: String?,
+                            val label: String?
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -601,7 +605,7 @@ internal data class RichThumbnailItem(
 internal data class ThumbnailOverlayItem(
     val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
     val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?,
-    val tileMetadataRenderer: TileItem.Metadata.TileMetadataRenderer?,
+    val tileMetadataRenderer: TileMetadataRenderer?,
 ) {
     data class ThumbnailOverlayTimeStatusRenderer(
         val text: TextItem?,

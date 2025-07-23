@@ -64,6 +64,7 @@ open class BaseMediaItem : MediaItem {
     protected open val startTimeSecondsItem: Int? = null
     protected open val hasNewContentItem: Boolean? = null
     protected open val hasUploadsItem: Boolean? = null
+    protected open val searchQueryItem: String? = null
 
     protected companion object {
         //var sId: Int = 0
@@ -120,7 +121,7 @@ open class BaseMediaItem : MediaItem {
     }
 
     override fun getPublishedDate(): Long {
-        return 0
+        return -1
     }
 
     override fun getCardImageUrl(): String? {
@@ -233,6 +234,10 @@ open class BaseMediaItem : MediaItem {
 
     override fun getClickTrackingParams(): String? {
         return null
+    }
+
+    override fun getSearchQuery(): String? {
+        return searchQueryItem
     }
 
     // Fake params

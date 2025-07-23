@@ -72,6 +72,7 @@ private fun NavigationEndpointItem.getOverlayContent() = getOverlayPanel()?.cont
 private fun NavigationEndpointItem.getOverlayHeader() = getOverlayPanel()?.header?.overlayPanelHeaderRenderer
 private fun NavigationEndpointItem.getOverlayItems() = getOverlayContent()?.overlayPanelItemListRenderer?.items
 private fun NavigationEndpointItem.getEngagementContents() = getEngagementPanel()?.content?.sectionListRenderer?.contents
+private fun NavigationEndpointItem.getQuery() = searchEndpoint?.query
 
 ////////
 
@@ -164,12 +165,17 @@ internal fun RadioItem.isUpcoming() = false
 
 ///////////
 
+// 'tileRenderer.style' values:
 private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
 private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
 private const val TILE_CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
 private const val TILE_CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
+private const val TILE_CONTENT_TYPE_EDU = "TILE_CONTENT_TYPE_EDU" // a search query tile in Home section
 
+// 'tileRenderer.contentType' values:
+private const val TILE_STYLE_DEFAULT = "TILE_STYLE_YTLR_DEFAULT"
 private const val TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS"
+private const val TILE_STYLE_QUERY = "TILE_STYLE_YTLR_EDU" // a search query tile in Home section
 
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
     ?: header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.tileMetadataRenderer?.title?.getText() }
@@ -201,6 +207,7 @@ internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle() && getVideoId() == null // a movie has browseId instead of videoId
 internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE_STYLE_SHORTS == getTileStyle()
+internal fun TileItem.getQuery() = onSelectCommand?.getQuery()
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 private fun TileItem.Metadata.getStatusStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 private fun TileItem.getMenu() = menu ?: onLongPressCommand?.showMenuCommand?.menu
@@ -325,6 +332,7 @@ internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuation
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)
 internal fun ItemWrapper.getFeedbackToken2() = getFeedbackTokens()?.getOrNull(1)
 internal fun ItemWrapper.isEmpty() = getLockupItem()?.isEmpty() ?: false
+internal fun ItemWrapper.getQuery() = getTileItem()?.getQuery()
 private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens() ?: getLockupItem()?.getFeedbackTokens()
 
 /////

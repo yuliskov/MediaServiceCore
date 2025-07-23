@@ -564,6 +564,11 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     @Override
+    public String getSearchQuery() {
+        return null;
+    }
+
+    @Override
     public void sync(MediaItemMetadata metadata) {
         if (metadata == null) {
             return;

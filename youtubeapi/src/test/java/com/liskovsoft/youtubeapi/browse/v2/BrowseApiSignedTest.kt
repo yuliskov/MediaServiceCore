@@ -84,6 +84,13 @@ class BrowseApiSignedTest {
     }
 
     @Test
+    fun testThatTVHomeContinuationMockNotEmpty() {
+        val home = getHomeContinuationMock()
+
+        assertNotNull("Home not empty", home?.getShelves()?.get(3)?.getItems()?.get(2))
+    }
+
+    @Test
     fun testThatHomeNotEmpty() {
         val home = getHome()
 
@@ -208,6 +215,12 @@ class BrowseApiSignedTest {
 
     private fun getHomeMock(): BrowseResultTV? {
         val homeResult = mMockService.getBrowseResultTV(BrowseApiHelper.getHomeQuery(AppClient.TV))
+
+        return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getHomeContinuationMock(): WatchNextResultContinuation? {
+        val homeResult = mMockService.getContinuationResultTV(BrowseApiHelper.getHomeQuery(AppClient.TV))
 
         return RetrofitHelper.get(homeResult)
     }

@@ -170,16 +170,15 @@ public final class YouTubeHelper {
         return url;
     }
 
-    //public boolean isEmpty() {
-    //    return mTitle == null && mCardImageUrl == null;
-    //}
-
+    /**
+     * Exclude an items like Refresh button etc
+     */
     public static boolean isEmpty(MediaItem item) {
         if (item == null) {
             return true;
         }
 
-        return Helpers.allNulls(item.getVideoId(), item.getPlaylistId(), item.getReloadPageKey(), item.getParams(), item.getChannelId());
+        return Helpers.allNulls(item.getVideoId(), item.getPlaylistId(), item.getReloadPageKey(), item.getParams(), item.getChannelId(), item.getSearchQuery());
     }
 
     public static int hashCodeAny(MediaItem item) {

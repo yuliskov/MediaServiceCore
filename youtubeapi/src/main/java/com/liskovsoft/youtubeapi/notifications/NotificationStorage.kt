@@ -5,7 +5,6 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServicePrefs
 
 internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
     private const val NOTIFICATION_DATA = "notification_data"
-    private const val MAX_CHANNELS = 100 // Limit the result. Unlimited has veeery long loading and often crashing.
     private val channels: MutableSet<String> = mutableSetOf()
 
     init {
@@ -28,8 +27,7 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
     }
 
     fun getChannels(): Set<String>? {
-        // NOTE: Limit the result. Unlimited has veeery long loading and often crashing.
-        return channels.take(MAX_CHANNELS).toSet().ifEmpty { null }
+        return channels.ifEmpty { null }
     }
 
     fun contains(channelId: String?): Boolean {

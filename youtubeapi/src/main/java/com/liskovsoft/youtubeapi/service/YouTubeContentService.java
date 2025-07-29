@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.rss.RssService;
 import com.liskovsoft.youtubeapi.search.SearchServiceWrapper;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -27,7 +28,6 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
-import kotlin.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,7 +99,9 @@ class YouTubeContentService implements ContentService {
         if (subscriptions != null && subscriptions.getMediaItems() != null && subscriptions.getMediaItems().size() <= 3) {
             MediaGroup continuation = continueGroup(subscriptions);
             if (continuation == null || continuation.getMediaItems() == null || continuation.getMediaItems().isEmpty()) {
-                return getBrowseService2().getSubscriptionsLegacy();
+                if (MediaServiceData.instance() != null)
+                    MediaServiceData.instance().enableLegacyUI(true);
+                return getBrowseService2().getSubscriptions();
             }
         }
 
@@ -262,15 +264,7 @@ class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            Pair<List<MediaGroup>, String> home = getBrowseService2().getHome();
-
-            // TEMP fix. Home first row is not fully populated.
-            if (home != null && home.getFirst() != null && !home.getFirst().isEmpty() && home.getFirst().get(0).getMediaItems() != null
-                    && home.getFirst().get(0).getMediaItems().size() <= 3) {
-                home = getBrowseService2().getHomeLegacy();
-            }
-
-            emitGroups(emitter, home);
+            emitGroups(emitter, getBrowseService2().getHome());
         });
     }
 

@@ -115,12 +115,11 @@ public class YouTubeAccountManager {
         YouTubeAccount tempAccount = YouTubeAccount.fromToken(refreshToken);
         addAccount(tempAccount);
 
-        // Use initial account to create auth header
+        // Use initial account to create auth header and fetch the accounts below
         mSignInService.invalidateCache();
         mSignInService.checkAuth();
 
         // Remove initial account (with only refresh key)
-        //removeAccount(tempAccount);
         mAccounts.remove(tempAccount); // multi thread fix
 
         List<AccountInt> accountsInt = getAuthService().getAccounts(); // runs under auth header from above
@@ -140,8 +139,6 @@ public class YouTubeAccountManager {
 
         persistAccounts();
         onAccountChanged();
-
-        Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
 
     private void addAccount(Account newAccount) {

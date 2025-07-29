@@ -175,10 +175,13 @@ public class YouTubeAccount implements Account {
             if (mRefreshToken2 == null)
                 mRefreshToken2 = originAccount.getRefreshToken2();
         } else if (getPageIdToken() != null) { // origin has old type, make it second (old type used to the search suggestions)
-            mRefreshToken2 = Helpers.firstNonNull(originAccount.getRefreshToken2(), originAccount.getRefreshToken());
+            if (mRefreshToken == null)
+                mRefreshToken = originAccount.getRefreshToken();
+            if (mRefreshToken2 == null)
+                mRefreshToken2 = Helpers.firstNonNull(originAccount.getRefreshToken2(), originAccount.getRefreshToken());
             mEmail = originAccount.getEmail();
-        } else { // origin has a new type, make it main
-            mRefreshToken2 = mRefreshToken;
+        } else if (mRefreshToken == null) { // origin has a new type, make it main
+            //mRefreshToken2 = mRefreshToken;
             if (originAccount.getRefreshToken() != null) {
                 mRefreshToken = originAccount.getRefreshToken();
             }

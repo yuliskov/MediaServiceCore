@@ -68,7 +68,7 @@ public class MediaServiceData {
     private NSigData mNSigData;
     private NSigData mSigData;
     private boolean mIsMoreSubtitlesUnlocked;
-    private boolean mIsPremiumFixEnabled;
+    private boolean mIsLegacyUIEnabled;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -253,6 +253,10 @@ public class MediaServiceData {
         persistData();
     }
 
+    public boolean isMoreSubtitlesUnlocked() {
+        return mIsMoreSubtitlesUnlocked;
+    }
+
     public void unlockMoreSubtitles(boolean unlock) {
         mIsMoreSubtitlesUnlocked = unlock;
         persistData();
@@ -260,23 +264,18 @@ public class MediaServiceData {
         YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
-    public boolean isMoreSubtitlesUnlocked() {
-        return mIsMoreSubtitlesUnlocked;
-    }
-
-    public void enablePremiumFix(boolean enable) {
-        mIsPremiumFixEnabled = enable;
-        persistData();
-
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
-    }
-
-    public boolean isPremiumFixEnabled() {
-        return mIsPremiumFixEnabled;
-    }
-
     public boolean supportsWebView() {
         return PoTokenGate.supportsNpPot();
+    }
+
+    public boolean isLegacyUIEnabled() {
+        return mIsLegacyUIEnabled;
+    }
+
+    public void enableLegacyUI(boolean enable) {
+        mIsLegacyUIEnabled = enable;
+
+        persistData();
     }
 
     private void restoreData() {
@@ -303,8 +302,9 @@ public class MediaServiceData {
         mHiddenContent = Helpers.parseInt(split, 18,
                 CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME | CONTENT_UPCOMING_SUBSCRIPTIONS);
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
-        mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
+        //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);
+        mIsLegacyUIEnabled = Helpers.parseBoolean(split, 22);
     }
 
     private void persistDataInt() {
@@ -317,7 +317,7 @@ public class MediaServiceData {
                         mVideoInfoType, mSkipAuth, null, null, null, null,
                         null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
-                        mIsPremiumFixEnabled, mVisitorCookie));
+                        null, mVisitorCookie, mIsLegacyUIEnabled));
     }
 
     private void restoreCachedData() {

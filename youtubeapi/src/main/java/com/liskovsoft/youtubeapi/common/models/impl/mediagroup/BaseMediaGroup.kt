@@ -11,14 +11,15 @@ internal data class MediaGroupOptions(val removeShorts: Boolean = false,
                              val removeLive: Boolean = false,
                              val removeUpcoming: Boolean = false,
                              val removeWatched: Boolean = false,
-                             val groupType: Int)
+                             val groupType: Int,
+                             val enableLegacyUI: Boolean = false)
 
 internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
-        (options.removeShorts && it.isShorts() == true) ||
-        (options.removeLive && it.isLive() == true) ||
-        (options.removeUpcoming && it.isUpcoming() == true) ||
-        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && it.isLive() == false)
+        (options.removeShorts && if (options.enableLegacyUI) it.isShortsLegacy() else it.isShorts()) ||
+        (options.removeLive && it.isLive()) ||
+        (options.removeUpcoming && it.isUpcoming()) ||
+        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive())
     }
     private var _titleItem: String? = null
         get() = field ?: titleItem

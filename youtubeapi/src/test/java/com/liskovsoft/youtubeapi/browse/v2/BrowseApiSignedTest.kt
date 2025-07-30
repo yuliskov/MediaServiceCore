@@ -3,15 +3,18 @@ package com.liskovsoft.youtubeapi.browse.v2
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.browse.v2.mock.BrowseApiMock
+import com.liskovsoft.youtubeapi.browse.v2.mock.BrowseApiMock2
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.ShelfSectionMediaGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
@@ -33,6 +36,7 @@ class BrowseApiSignedTest {
      */
     private lateinit var mService: BrowseApi
     private lateinit var mMockService: BrowseApi
+    private lateinit var mMockService2: BrowseApi
 
     @Before
     fun setUp() {
@@ -42,6 +46,7 @@ class BrowseApiSignedTest {
         ShadowLog.stream = System.out // catch Log class output
         mService = RetrofitHelper.create(BrowseApi::class.java)
         mMockService = MockUtils.mockWithGson(BrowseApiMock::class.java)
+        mMockService2 = MockUtils.mockWithGson(BrowseApiMock2::class.java)
         RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
         RetrofitOkHttpHelper.disableCompression = true
     }
@@ -84,10 +89,54 @@ class BrowseApiSignedTest {
     }
 
     @Test
+    fun testThatTVHome2MockNotEmpty() {
+        val home = getHome2Mock()
+
+        assertNotNull("Home not empty", home?.getShelves()?.get(2)?.getItems()?.get(1))
+    }
+
+    @Test
+    fun testThatTVHome2MockHasAllContent() {
+        val home = getHome2Mock()
+
+        val rowsOptions = createOptions(MediaGroup.TYPE_HOME)
+
+        home?.getShelves()?.forEachIndexed { index, element ->
+            val group = ShelfSectionMediaGroup(element!!, rowsOptions)
+            assertTrue("Group $index not empty", !YouTubeHelper.isEmpty(group.mediaItems?.last()))
+            if (index == 0) {
+                assertTrue("Recommended contains more than two items", (group.mediaItems?.size ?: 0) > 5)
+            }
+        }
+    }
+
+    @Test
     fun testThatTVHomeContinuationMockNotEmpty() {
         val home = getHomeContinuationMock()
 
         assertNotNull("Home not empty", home?.getShelves()?.get(3)?.getItems()?.get(2))
+    }
+
+    @Test
+    fun testThatTVHome2ContinuationMockNotEmpty() {
+        val home = getHome2ContinuationMock()
+
+        val rowsOptions = createOptions(MediaGroup.TYPE_HOME)
+
+        home?.getShelves()?.forEachIndexed { index, element ->
+            val group = ShelfSectionMediaGroup(element!!, rowsOptions)
+            assertTrue("Group $index not empty", !YouTubeHelper.isEmpty(group.mediaItems?.last()))
+            if (index == 2) {
+                assertTrue("Top channels you watch contains more than two items", (group.mediaItems?.size ?: 0) > 5)
+            }
+        }
+    }
+
+    @Test
+    fun testThatTVHome2ContinuationHasAllContent() {
+        val home = getHome2ContinuationMock()
+
+        assertNotNull("Home not empty", home?.getShelves()?.get(3)?.getItems()?.get(1))
     }
 
     @Test
@@ -219,8 +268,20 @@ class BrowseApiSignedTest {
         return RetrofitHelper.get(homeResult)
     }
 
+    private fun getHome2Mock(): BrowseResultTV? {
+        val homeResult = mMockService2.getBrowseResultTV(BrowseApiHelper.getHomeQuery(AppClient.TV))
+
+        return RetrofitHelper.get(homeResult)
+    }
+
     private fun getHomeContinuationMock(): WatchNextResultContinuation? {
         val homeResult = mMockService.getContinuationResultTV(BrowseApiHelper.getHomeQuery(AppClient.TV))
+
+        return RetrofitHelper.get(homeResult)
+    }
+
+    private fun getHome2ContinuationMock(): WatchNextResultContinuation? {
+        val homeResult = mMockService2.getContinuationResultTV(BrowseApiHelper.getHomeQuery(AppClient.TV))
 
         return RetrofitHelper.get(homeResult)
     }

@@ -6,13 +6,6 @@ import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 
-internal data class MediaGroupOptions(val removeShorts: Boolean = false,
-                             val removeLive: Boolean = false,
-                             val removeUpcoming: Boolean = false,
-                             val removeWatched: Boolean = false,
-                             val groupType: Int,
-                             val enableLegacyUI: Boolean = false)
-
 internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
         it.isEmpty() ||

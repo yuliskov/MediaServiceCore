@@ -228,7 +228,7 @@ internal data class NotificationsMediaGroup(
 
 internal data class SubscribedShortsMediaGroup(
     private val items: List<ItemWrapper?>
-): BaseMediaGroup(MediaGroupOptions(groupType = MediaGroup.TYPE_SUBSCRIPTIONS)) {
+): BaseMediaGroup(MediaGroupOptions(groupType = MediaGroup.TYPE_SHORTS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?> = items
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null

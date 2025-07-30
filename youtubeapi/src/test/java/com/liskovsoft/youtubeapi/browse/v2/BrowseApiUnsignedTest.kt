@@ -16,7 +16,6 @@ import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
-import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -32,7 +31,6 @@ class BrowseApiUnsignedTest {
      * Authorization should be updated each hour
      */
     private lateinit var mService: BrowseApi
-    private lateinit var mMockService: BrowseApi
 
     @Before
     fun setUp() {
@@ -41,7 +39,6 @@ class BrowseApiUnsignedTest {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS")
         ShadowLog.stream = System.out // catch Log class output
         mService = RetrofitHelper.create(BrowseApi::class.java)
-        mMockService = MockUtils.mockWithGson(BrowseApiMock::class.java)
         RetrofitOkHttpHelper.authHeaders.clear()
         RetrofitOkHttpHelper.disableCompression = true
     }

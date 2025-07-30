@@ -43,14 +43,17 @@ public class PlaylistServiceWrapper extends PlaylistService {
         createCachedPlaylist(playlistName, videoId);
     }
 
-    private static void createCachedPlaylist(String playlistName, String videoId) {
+    private static void createCachedPlaylist(String playlistName, @Nullable String videoId) {
         MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedItem;
 
-        if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
+        if (videoId == null) {
+            ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, null, Collections.emptyList());
+            PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
+        } else if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, cachedVideo.getCardImageUrl(),
                     Collections.singletonList(ItemImpl.fromMediaItem(cachedVideo)));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
-        } else { // Google api quota exceeded
+        } else {
             MediaItemMetadata ytMetadata = getWatchNextService().getMetadata(videoId);
             String title = ytMetadata != null ? ytMetadata.getTitle() : null;
             CharSequence subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;

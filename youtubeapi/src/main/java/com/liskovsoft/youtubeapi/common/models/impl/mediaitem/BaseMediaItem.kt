@@ -34,7 +34,7 @@ open class BaseMediaItem : MediaItem {
     // TODO: time conversion doesn't take into account locale specific delimiters
     private val durationMsItem by lazy { ServiceHelper.timeTextToMillis(lengthText ?: badgeTextItem) }
 
-    protected open val reloadPageKeyItem: String? = null // TODO: override in the subclasses
+    protected open val reloadPageKeyItem: String? = null
     protected open val badgeTextItem: String? = null
     protected open val typeItem: Int = MediaItem.TYPE_VIDEO
     protected open val videoIdItem: String? = null

@@ -28,6 +28,7 @@ import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
+import kotlin.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,8 +100,8 @@ class YouTubeContentService implements ContentService {
         if (subscriptions != null && subscriptions.getMediaItems() != null && subscriptions.getMediaItems().size() <= 3) {
             MediaGroup continuation = continueGroup(subscriptions);
             if (continuation == null || continuation.getMediaItems() == null || continuation.getMediaItems().isEmpty()) {
-                if (MediaServiceData.instance() != null)
-                    MediaServiceData.instance().enableLegacyUI(true);
+                if (getMediaServiceData() != null)
+                    getMediaServiceData().enableLegacyUI(true);
                 return getBrowseService2().getSubscriptions();
             }
         }
@@ -264,7 +265,17 @@ class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroups(emitter, getBrowseService2().getHome());
+            Pair<List<MediaGroup>, String> home = getBrowseService2().getHome();
+
+            // TEMP fix. Home first row is not fully populated.
+            if (home != null && home.getFirst() != null && !home.getFirst().isEmpty() && home.getFirst().get(0).getMediaItems() != null
+                    && home.getFirst().get(0).getMediaItems().size() <= 3) {
+                if (getMediaServiceData() != null)
+                    getMediaServiceData().enableLegacyUI(true);
+                home = getBrowseService2().getHome();
+            }
+
+            emitGroups(emitter, home);
         });
     }
 
@@ -688,5 +699,10 @@ class YouTubeContentService implements ContentService {
     @NonNull
     private static WatchNextService getWatchNextService() {
         return WatchNextServiceWrapper.INSTANCE;
+    }
+
+    @Nullable
+    private static MediaServiceData getMediaServiceData() {
+        return MediaServiceData.instance();
     }
 }

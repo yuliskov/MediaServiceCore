@@ -426,7 +426,7 @@ internal open class BrowseService2 {
 
         return RetrofitHelper.get(continuationResult)?.let {
             val result = mutableListOf<MediaGroup?>()
-            it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, options)) }
+            it.getShelves()?.forEach { if (it != null) addOrMerge(result, ShelfSectionMediaGroup(it, options)) }
             Pair(result, it.getNextPageKey())
         }
     }
@@ -508,7 +508,7 @@ internal open class BrowseService2 {
 
         return RetrofitHelper.get(browseResult)?.let {
             val result = mutableListOf<MediaGroup?>()
-            it.getShelves()?.forEach { if (it?.getTitle() != null) addOrMerge(result, ShelfSectionMediaGroup(it, rowsOptions)) }
+            it.getShelves()?.forEach { if (it != null) addOrMerge(result, ShelfSectionMediaGroup(it, rowsOptions)) }
 
             if (result.isEmpty()) // playlist
                 addOrMerge(result, BrowseMediaGroupTV(it, gridOptions))

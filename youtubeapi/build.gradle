@@ -56,7 +56,6 @@ dependencies {
     implementation project(':commons-io-2.8.0') // My Android 4.3 fix
     implementation project(':sharedutils')
     implementation project(':mediaserviceinterfaces')
-    implementation project(':googleapi')
 
     implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
     implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion

@@ -122,7 +122,7 @@ public class ServiceHelper {
     }
 
     public static String createQuery(AppClient client, String data1, String data2) {
-        return createQuery(client.getPlayerTemplate(), data1, data2);
+        return createQuery(client.getBaseTemplate(), data1, data2);
     }
 
     public static String createQuery(String postTemplate, String data1, String data2) {

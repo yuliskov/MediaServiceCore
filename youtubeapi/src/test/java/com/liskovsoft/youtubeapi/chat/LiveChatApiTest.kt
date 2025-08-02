@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.chat
 import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
 import com.liskovsoft.youtubeapi.chat.gen.getActions
 import com.liskovsoft.youtubeapi.chat.gen.getContinuation
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
@@ -31,7 +32,7 @@ class LiveChatApiTest {
 
     @Test
     fun testThatLiveChatResultIsNotEmpty() {
-        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_LIVE))
+        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(AppClient.TV, TestHelpers.VIDEO_ID_LIVE))
         val watchNext = watchNextResult.execute().body()
 
         val liveChatResult = getLiveChatResult(watchNext?.getLiveChatToken())
@@ -42,7 +43,7 @@ class LiveChatApiTest {
 
     @Test
     fun testThatContinuationIsWorking() {
-        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_LIVE))
+        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(AppClient.TV, TestHelpers.VIDEO_ID_LIVE))
         val watchNext = watchNextResult.execute().body()
 
         var liveChatResult = getLiveChatResult(watchNext?.getLiveChatToken())

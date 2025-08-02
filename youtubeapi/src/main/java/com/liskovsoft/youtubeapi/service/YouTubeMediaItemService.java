@@ -120,24 +120,16 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public MediaItemMetadata getMetadata(MediaItem item) {
-        return getMetadataV2(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getParams());
+        return getMetadata(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getParams());
     }
 
     @Override
     public MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        return getMetadataV2(videoId, playlistId, playlistIndex, playlistParams);
-    }
-
-    private MediaItemMetadata getMetadataV2(String videoId, String playlistId, int playlistIndex, String playlistParams) {
         return getWatchNextService().getMetadata(videoId, playlistId, playlistIndex, playlistParams);
     }
 
     @Override
     public MediaItemMetadata getMetadata(String videoId) {
-        return getMetadataIntV2(videoId);
-    }
-
-    private MediaItemMetadata getMetadataIntV2(String videoId) {
         return getWatchNextService().getMetadata(videoId);
     }
 

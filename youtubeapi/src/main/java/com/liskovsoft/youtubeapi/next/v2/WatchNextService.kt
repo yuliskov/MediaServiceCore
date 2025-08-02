@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.UnlocalizedTitleResult
@@ -95,7 +96,7 @@ internal open class WatchNextService {
     }
 
     private fun getWatchNext(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): WatchNextResult? {
-        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(videoId, playlistId, playlistIndex, playlistParams))
+        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(MediaGroupOptions.create().clientTV, videoId, playlistId, playlistIndex, playlistParams))
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {

@@ -4,6 +4,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
@@ -164,13 +165,13 @@ class WatchNextApiTest {
     private fun getMediaItemMetadataUnsigned() = mWatchNextService.getMetadata(TestHelpers.VIDEO_ID_CAPTIONS)
 
     private fun getWatchNextResult(): WatchNextResult? {
-        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS)
+        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(AppClient.TV, TestHelpers.VIDEO_ID_CAPTIONS)
         val wrapper = mApi.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }
 
     private fun getMockedWatchNextResult(): WatchNextResult? {
-        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS)
+        val watchNextQuery = WatchNextApiHelper.getWatchNextQuery(AppClient.TV, TestHelpers.VIDEO_ID_CAPTIONS)
         val wrapper = mApiMock.getWatchNextResult(watchNextQuery)
         return RetrofitHelper.get(wrapper)
     }

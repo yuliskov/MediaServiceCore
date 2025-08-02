@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.comments
 
 import com.liskovsoft.youtubeapi.comments.gen.*
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
 import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
@@ -100,7 +101,7 @@ class CommentsApiTest {
     }
 
     private fun getCommentsKey(): String? {
-        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(TestHelpers.VIDEO_ID_CAPTIONS))
+        val watchNextResult = mWatchNextApi.getWatchNextResult(WatchNextApiHelper.getWatchNextQuery(AppClient.TV, TestHelpers.VIDEO_ID_CAPTIONS))
         val watchNext = watchNextResult.execute().body()
         val commentsKey = watchNext?.getCommentPanel()?.getTopCommentsToken()
         return commentsKey

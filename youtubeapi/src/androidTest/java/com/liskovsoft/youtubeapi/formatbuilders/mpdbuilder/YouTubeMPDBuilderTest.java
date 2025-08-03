@@ -6,8 +6,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 
 import org.junit.After;

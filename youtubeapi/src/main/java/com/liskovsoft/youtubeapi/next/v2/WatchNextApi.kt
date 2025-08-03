@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2
 
-import com.liskovsoft.youtubeapi.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.youtubeapi.next.v2.gen.DislikesResult
 import com.liskovsoft.youtubeapi.next.v2.gen.UnlocalizedTitleResult
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult

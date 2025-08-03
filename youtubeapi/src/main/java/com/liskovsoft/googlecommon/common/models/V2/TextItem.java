@@ -2,6 +2,7 @@ package com.liskovsoft.googlecommon.common.models.V2;
 
 import androidx.annotation.NonNull;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 
@@ -18,13 +19,13 @@ public class TextItem {
     @JsonPath("$.simpleText")
     private String mFullText;
 
-    public String getText() {
+    public CharSequence getText() {
         return ServiceHelper.combineText(mText1, mText2, mText3, mFullText);
     }
 
     @NonNull
     @Override
     public String toString() {
-        return getText();
+        return Helpers.toString(getText());
     }
 }

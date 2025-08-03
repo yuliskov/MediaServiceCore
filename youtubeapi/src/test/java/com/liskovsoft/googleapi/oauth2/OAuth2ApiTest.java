@@ -6,9 +6,8 @@ import static org.junit.Assert.assertTrue;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.helpers.tests.ApiKeys;
-import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
-import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
-import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import org.junit.Before;
@@ -34,7 +33,7 @@ public class OAuth2ApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mService = RetrofitHelper.withJsonPath(OAuth2Api.class);
+        mService = RetrofitHelper.create(OAuth2Api.class);
 
         RetrofitOkHttpHelper.setDisableCompression(true);
         RetrofitOkHttpHelper.getAuthHeaders().clear();

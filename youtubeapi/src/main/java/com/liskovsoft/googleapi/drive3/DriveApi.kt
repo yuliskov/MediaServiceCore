@@ -3,6 +3,7 @@ package com.liskovsoft.googleapi.drive3
 import com.liskovsoft.googleapi.drive3.data.FileMetadata
 import com.liskovsoft.googleapi.drive3.data.GeneratedIds
 import com.liskovsoft.googleapi.drive3.data.ListResult
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -20,6 +21,7 @@ import retrofit2.http.Query
 /**
  * https://developers.google.com/drive/api/reference/rest/v3
  */
+@WithGson
 internal interface DriveApi {
     /**
      * Metadata: https://developers.google.com/drive/api/reference/rest/v3/files#File

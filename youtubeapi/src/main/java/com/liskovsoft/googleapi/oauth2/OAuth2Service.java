@@ -1,8 +1,8 @@
 package com.liskovsoft.googleapi.oauth2;
 
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
-import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import retrofit2.Call;
@@ -15,7 +15,7 @@ public class OAuth2Service {
     private static final long REFRESH_TOKEN_ATTEMPT_INTERVAL_MS = 5_000;
 
     private OAuth2Service() {
-        mOAuth2Api = RetrofitHelper.withJsonPath(OAuth2Api.class);
+        mOAuth2Api = RetrofitHelper.create(OAuth2Api.class);
     }
 
     public static OAuth2Service instance() {

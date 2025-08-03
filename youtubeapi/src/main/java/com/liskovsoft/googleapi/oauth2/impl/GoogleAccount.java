@@ -2,10 +2,10 @@ package com.liskovsoft.googleapi.oauth2.impl;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.googleapi.oauth2.models.info.AccountInt;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 
 public class GoogleAccount implements Account {
     private int mId;
@@ -24,7 +24,7 @@ public class GoogleAccount implements Account {
         
         account.mName = accountInt.getName();
         account.mEmail = accountInt.getEmail();
-        account.mImageUrl = ServiceHelper.findOptimalResThumbnailUrl(accountInt.getThumbnails());
+        account.mImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(accountInt.getThumbnails());
         account.mIsSelected = accountInt.isSelected();
         account.mHasChannel = accountInt.hasChannel();
         account.mPageIdToken = accountInt.getPageIdToken();
@@ -53,7 +53,7 @@ public class GoogleAccount implements Account {
         account.mChannelName = Helpers.parseStr(split, 8);
         account.mRefreshToken2 = Helpers.parseStr(split, 9);
 
-        account.mImageUrl = ServiceHelper.avatarBlockFix(account.mImageUrl);
+        account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
         return account;
     }

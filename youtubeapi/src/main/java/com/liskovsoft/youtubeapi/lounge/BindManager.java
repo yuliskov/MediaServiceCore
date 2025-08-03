@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp;
+import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp;
 import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import retrofit2.Call;

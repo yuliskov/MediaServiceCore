@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.lounge.models.info;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class TokenInfo {
     @JsonPath("$.screenId")

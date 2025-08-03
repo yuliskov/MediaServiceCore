@@ -8,7 +8,7 @@ import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.converter.JsonPathRequestBodyConverter;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.converter.JsonPathResponseBodyConverter;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
-
+import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

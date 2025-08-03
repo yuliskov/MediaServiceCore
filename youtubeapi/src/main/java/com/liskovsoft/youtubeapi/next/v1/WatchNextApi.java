@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v1;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
 import retrofit2.Call;

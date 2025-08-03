@@ -11,7 +11,7 @@ import java.io.InputStream
 
 internal object DriveServiceInt {
     private const val FILE_MIME_TYPE = "text/plain"
-    private val mDriveApi = RetrofitHelper.withGson(DriveApi::class.java)
+    private val mDriveApi = RetrofitHelper.create(DriveApi::class.java)
     private val mSignInService = GoogleSignInService.instance()
 
     @JvmStatic

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.dearrow
 
-import com.liskovsoft.youtubeapi.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.youtubeapi.dearrow.data.BrandingList
 import okhttp3.ResponseBody
 import retrofit2.Call

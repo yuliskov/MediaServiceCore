@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
 import retrofit2.Call;
 import retrofit2.http.Body;

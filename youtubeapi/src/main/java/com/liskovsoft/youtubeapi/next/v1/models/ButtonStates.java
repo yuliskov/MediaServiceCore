@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v1.models;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
 
 import java.util.List;
 

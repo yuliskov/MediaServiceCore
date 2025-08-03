@@ -1,12 +1,15 @@
 package com.liskovsoft.googlecommon.common.helpers;
 
-import androidx.annotation.Nullable;
+import android.annotation.SuppressLint;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 
-import com.liskovsoft.googlecommon.app.AppConstants;
-import com.liskovsoft.googlecommon.common.locale.LocaleManager;
-import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
+import androidx.annotation.Nullable;
+import androidx.core.text.BidiFormatter;
+
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.googlecommon.app.AppConstants;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -14,16 +17,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServiceHelper {
-    /**
-     * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
-     */
-    private static final int OPTIMAL_RES_THUMBNAIL_INDEX = 3;
     private static final String BULLET_SYMBOL = "\u2022";
     private static final String ITEMS_DIVIDER = " " + BULLET_SYMBOL + " ";
     private static final String TIME_TEXT_DELIM = ":";
+    // Regex to extract hours, minutes, and seconds
+    private static final Pattern sIsoDurationPattern = Pattern.compile("PT(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?");
 
     public static String videoIdToFullUrl(String videoId) {
         if (videoId == null) {
@@ -47,7 +51,7 @@ public class ServiceHelper {
      * @param lengthText video length
      * @return length in milliseconds
      */
-    public static int timeTextToMillis(String lengthText) {
+    public static long timeTextToMillis(String lengthText) {
         if (lengthText == null || lengthText.contains(",")) {
             return -1;
         }
@@ -60,7 +64,7 @@ public class ServiceHelper {
         int minutes = Helpers.parseInt(timeParts, length - 2, 0);
         int seconds = Helpers.parseInt(timeParts, length - 1, 0);
 
-        return (int) (TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds));
+        return TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds);
     }
 
     public static String millisToTimeText(long millis) {
@@ -72,59 +76,47 @@ public class ServiceHelper {
                 String.format(Locale.US, "%d%s%02d", minutes, TIME_TEXT_DELIM, seconds);
     }
 
-    public static String createQueryTV_UA(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, null, data, "uk", "UA");
-    }
-
-    public static String createQueryTV(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_TV, data);
-    }
-
-    public static String createQueryWeb(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_WEB, data);
-    }
-
-    public static String createQueryMWeb(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_MWEB, data);
-    }
-
-    public static String createQueryAndroid(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_ANDROID, data);
-    }
-
-    public static String createQueryKids(String data) {
-        return createQuery(AppConstants.JSON_POST_DATA_TEMPLATE_KIDS, data);
-    }
-
-    public static String createQuery(String postTemplate, String data) {
-        return createQuery(postTemplate, null, data, null, null);
-    }
-
-    public static String createQuery(String postTemplate, String data1, String data2) {
-        return createQuery(postTemplate, data1, data2, null, null);
-    }
-
-    private static String createQuery(String postTemplate, String data1, String data2, String language, String country) {
-        LocaleManager localeManager = LocaleManager.instance();
-        if (language == null) {
-            language = localeManager.getLanguage();
-        }
-        if (country == null) {
-            country = localeManager.getCountry();
-        }
-        return String.format(postTemplate, language, country,
-                localeManager.getUtcOffsetMinutes(), null, data1 != null ? data1 : "", data2); // appService.getVisitorId()
-    }
-
     /**
      * Additional video info such as user, published etc.
      */
-    public static @Nullable String itemsToInfo(Object... items) {
-        return Helpers.combineItems(ITEMS_DIVIDER, items);
+    public static @Nullable CharSequence createInfo(Object... items) {
+        return combineItems(ITEMS_DIVIDER, items);
     }
 
-    public static String combineText(Object... items) {
-        return Helpers.combineItems(null, items);
+    public static @Nullable CharSequence combineText(Object... items) {
+        return combineItems(null, items);
+    }
+
+    /**
+     * NOTE: ADDS SPECIAL BIDI CHARS. DON'T USE THIS INSIDE JSON
+     */
+    public static @Nullable CharSequence combineItems(CharSequence divider, Object... items) {
+        SpannableStringBuilder result = new SpannableStringBuilder();
+
+        if (items != null) {
+            for (Object item : items) {
+                if (item == null) {
+                    continue;
+                }
+
+                CharSequence strItem = item instanceof CharSequence ? (CharSequence) item : item.toString();
+
+                if (TextUtils.isEmpty(strItem)) {
+                    continue;
+                }
+
+                // Fix mixed RTL and LTR content
+                strItem = BidiFormatter.getInstance().unicodeWrap(strItem);
+
+                if (divider == null || result.length() == 0) {
+                    result.append(strItem);
+                } else {
+                    result.append(divider).append(strItem);
+                }
+            }
+        }
+
+        return result.length() != 0 ? result : null;
     }
 
     /**
@@ -284,50 +276,47 @@ public class ServiceHelper {
             return new DecimalFormat("#,##0").format(numValue);
         }
     }
-
-    /**
-     * Find optimal thumbnail for tv screen<br/>
-     * For Kotlin counterpart see: com.liskovsoft.googlecommon.common.models.gen.CommonHelperKt#getOptimalResThumbnailUrl(ThumbnailItem)
-     */
-    public static String findOptimalResThumbnailUrl(List<Thumbnail> thumbnails) {
-        if (thumbnails == null) {
+    
+    @SuppressLint("DefaultLocale")
+    public static String convertIsoDurationToHHMMSS(String duration) {
+        if (duration == null) {
             return null;
         }
 
-        int size = thumbnails.size();
+        Matcher matcher = sIsoDurationPattern.matcher(duration);
 
-        if (size == 0) {
-            return null;
+        if (matcher.matches()) {
+            // Extract hours, minutes, and seconds (default to 0 if null)
+            String hours = matcher.group(1) != null ? matcher.group(1) : "0";
+            String minutes = matcher.group(2) != null ? matcher.group(2) : "0";
+            String seconds = matcher.group(3) != null ? matcher.group(3) : "0";
+
+            // Parse integers
+            int hoursInt = Integer.parseInt(hours);
+            int minutesInt = Integer.parseInt(minutes);
+            int secondsInt = Integer.parseInt(seconds);
+
+            // Build the duration string dynamically
+            if (hoursInt > 0) {
+                return String.format("%d:%02d:%02d", hoursInt, minutesInt, secondsInt);
+            } else {
+                return String.format("%d:%02d", minutesInt, secondsInt);
+            }
         }
 
-        return thumbnails.get(size > OPTIMAL_RES_THUMBNAIL_INDEX ? OPTIMAL_RES_THUMBNAIL_INDEX : size - 1).getUrl();
+        return null;
     }
 
-    /**
-     * For Kotlin counterpart see: com.liskovsoft.youtubeapi.common.models.gen.CommonHelperKt#getHighResThumbnailUrl(ThumbnailItem)
-     */
-    public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
-        if (thumbnails == null) {
-            return null;
+    public static String generateRandomId(int length) {
+        String charPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder randomId = new StringBuilder(length);
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(charPool.length());
+            randomId.append(charPool.charAt(index));
         }
 
-        int size = thumbnails.size();
-
-        if (size == 0) {
-            return null;
-        }
-
-        return thumbnails.get(size - 1).getUrl();
-    }
-
-    /**
-     * Avatar blocking fix
-     */
-    public static String avatarBlockFix(String url) {
-        if (url != null) {
-            url = url.replaceFirst("^https://yt3.ggpht.com", "https://yt4.ggpht.com");
-        }
-
-        return url;
+        return randomId.toString();
     }
 }

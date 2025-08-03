@@ -37,10 +37,10 @@ class DriveApiTest {
 
         ShadowLog.stream = System.out // catch Log class output
 
-        mService = RetrofitHelper.withGson(DriveApi::class.java)
+        mService = RetrofitHelper.create(DriveApi::class.java)
 
         RetrofitOkHttpHelper.disableCompression = true
-        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getAuthorization()
+        RetrofitOkHttpHelper.authHeaders["Authorization"] = TestHelpers.getOAuth2Authorization()
     }
 
     @Test

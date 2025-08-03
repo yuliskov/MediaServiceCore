@@ -4,8 +4,8 @@ import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
 import com.liskovsoft.youtubeapi.chat.gen.getActions
 import com.liskovsoft.youtubeapi.chat.gen.getContinuation
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApiHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getLiveChatToken

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 
 public class DashInfoUrl implements DashInfo {
     private static final int MAX_DURATION_MS = 24 * 60 * 60 * 1_000;

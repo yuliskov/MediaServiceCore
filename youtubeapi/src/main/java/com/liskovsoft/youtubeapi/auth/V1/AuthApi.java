@@ -1,10 +1,10 @@
 package com.liskovsoft.youtubeapi.auth.V1;
 
-import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
-import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
-import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
-import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;

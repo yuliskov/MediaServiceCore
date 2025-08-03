@@ -5,8 +5,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
@@ -100,7 +100,7 @@ internal open class BrowseService2 {
 
     private fun getSubscribedChannelsWeb(): MediaGroup? {
         val options = MediaGroupOptions.create(MediaGroup.TYPE_CHANNEL_UPLOADS)
-        val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
+        val guideResult = mBrowseApi.getGuideResult(PostDataHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let { GuideMediaGroup(it, options) }
     }
@@ -118,7 +118,7 @@ internal open class BrowseService2 {
 
     private fun getSubscribedChannelsByNameWeb(): MediaGroup? {
         val options = MediaGroupOptions.create(MediaGroup.TYPE_CHANNEL_UPLOADS)
-        val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
+        val guideResult = mBrowseApi.getGuideResult(PostDataHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let { GuideMediaGroup(it, options, SORT_BY_NAME) }
     }
@@ -539,7 +539,7 @@ internal open class BrowseService2 {
 
     private fun getRecommendedWeb(): List<MediaGroup?>? {
         val options = MediaGroupOptions.create(MediaGroup.TYPE_HOME)
-        val guideResult = mBrowseApi.getGuideResult(ServiceHelper.createQueryWeb(""))
+        val guideResult = mBrowseApi.getGuideResult(PostDataHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)?.let {
             val result = mutableListOf<MediaGroup?>()

@@ -2,7 +2,6 @@ package com.liskovsoft.googlecommon.common.converters.querystring.converter;
 
 import android.util.Log;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;

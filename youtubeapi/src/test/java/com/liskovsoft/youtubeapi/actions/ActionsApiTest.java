@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

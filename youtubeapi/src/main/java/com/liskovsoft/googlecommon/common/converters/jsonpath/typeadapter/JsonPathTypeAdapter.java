@@ -6,10 +6,10 @@ import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.PathNotFoundException;
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.googlecommon.common.helpers.ReflectionHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.helpers.ReflectionHelper;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;

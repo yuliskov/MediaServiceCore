@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.feedback.models;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class FeedbackResponse {
     @JsonPath("$.feedbackResponses[0].isProcessed")

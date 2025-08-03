@@ -2,7 +2,7 @@ package com.liskovsoft.googleapi.oauth2.manager;
 
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googleapi.oauth2.impl.GoogleAccount;
-import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
 import com.liskovsoft.sharedutils.mylogger.Log;
 

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.playerdata
 
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.mylogger.Log
-import com.liskovsoft.youtubeapi.common.js.JSInterpret
+import com.liskovsoft.googlecommon.common.js.JSInterpret
 import java.util.regex.Pattern
 
 /**

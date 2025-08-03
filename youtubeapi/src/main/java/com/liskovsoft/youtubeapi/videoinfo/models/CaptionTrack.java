@@ -3,8 +3,8 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.models.V2.TextItem;
 
 public class CaptionTrack {
     private static final String MIME_TYPE_VTT = "text/vtt";

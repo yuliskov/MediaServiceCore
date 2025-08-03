@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v1.models;
 
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.Chip;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;

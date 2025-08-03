@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
+
 private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
         "\"clientScreen\":\"%s\",\"userAgent\":\"%s\",\"browserName\":\"%s\",\"browserVersion\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
         "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +

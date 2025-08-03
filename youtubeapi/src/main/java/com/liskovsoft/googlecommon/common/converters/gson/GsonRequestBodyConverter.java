@@ -15,19 +15,15 @@
  */
 package com.liskovsoft.googlecommon.common.converters.gson;
 
-import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonWriter;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okio.Buffer;
-import retrofit2.Converter;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.charset.Charset;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Converter;
 
 final class GsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
   private static final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");

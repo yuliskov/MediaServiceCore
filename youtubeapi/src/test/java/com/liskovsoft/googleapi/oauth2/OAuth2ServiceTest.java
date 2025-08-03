@@ -3,7 +3,7 @@ package com.liskovsoft.googleapi.oauth2;
 import static org.junit.Assert.assertTrue;
 
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 
 import org.junit.Before;
 import org.junit.Test;

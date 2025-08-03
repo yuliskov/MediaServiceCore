@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.rss
 
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test

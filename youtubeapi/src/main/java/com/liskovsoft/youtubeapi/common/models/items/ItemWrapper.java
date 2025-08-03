@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.items;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 
 public class ItemWrapper {

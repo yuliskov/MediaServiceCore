@@ -5,7 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 
 private const val ITEM_DELIM = "&ci;"
 

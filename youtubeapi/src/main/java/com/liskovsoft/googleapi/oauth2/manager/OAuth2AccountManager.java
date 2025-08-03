@@ -2,8 +2,8 @@ package com.liskovsoft.googleapi.oauth2.manager;
 
 import com.liskovsoft.googleapi.oauth2.OAuth2Service;
 import com.liskovsoft.googleapi.oauth2.impl.GoogleAccount;
-import com.liskovsoft.googleapi.oauth2.models.auth.AccessToken;
-import com.liskovsoft.googleapi.oauth2.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
 import com.liskovsoft.mediaserviceinterfaces.oauth.data.SignInCode;
 import com.liskovsoft.sharedutils.helpers.Helpers;

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.lounge.models.bind;
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 
 public class PairingCode {
     @RegExp(".*")

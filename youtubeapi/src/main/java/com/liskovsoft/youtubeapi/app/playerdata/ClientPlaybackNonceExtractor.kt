@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.common.js.V8Runtime
+import com.liskovsoft.googlecommon.common.js.V8Runtime
 import java.util.regex.Pattern
 
 internal object ClientPlaybackNonceExtractor {

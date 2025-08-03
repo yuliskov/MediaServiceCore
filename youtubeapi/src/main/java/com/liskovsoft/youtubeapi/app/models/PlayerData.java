@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.app.models;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.converters.FieldNullable;
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.converters.FieldNullable;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 
 import java.util.regex.Pattern;
 

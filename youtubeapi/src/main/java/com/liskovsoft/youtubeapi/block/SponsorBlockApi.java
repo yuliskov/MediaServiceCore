@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.block;
 
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

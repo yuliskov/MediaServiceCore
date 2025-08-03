@@ -8,17 +8,29 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson;
 import com.liskovsoft.googlecommon.common.converters.gson.GsonConverterFactory;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPathSkip;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.converter.JsonPathSkipConverterFactory;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.googlecommon.common.converters.querystring.WithQueryString;
 import com.liskovsoft.googlecommon.common.converters.querystring.converter.QueryStringConverterFactory;
+import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp;
 import com.liskovsoft.googlecommon.common.converters.regexp.converter.RegExpConverterFactory;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.models.gen.AuthErrorResponse;
 import com.liskovsoft.googlecommon.common.models.gen.ErrorResponse;
-import com.liskovsoft.sharedutils.mylogger.Log;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Headers;
 import okhttp3.ResponseBody;
@@ -27,52 +39,68 @@ import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketException;
-import java.util.List;
-
 public class RetrofitHelper {
     private static final String TAG = RetrofitHelper.class.getSimpleName();
-
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
 
-    public static <T> T withGson(Class<T> clazz) {
+    private static <T> T withGson(Class<T> clazz) {
         return buildRetrofit(GsonConverterFactory.create()).create(clazz);
     }
 
-    public static <T> T withJsonPath(Class<T> clazz) {
+    private static <T> T withJsonPath(Class<T> clazz) {
         return buildRetrofit(JsonPathConverterFactory.create()).create(clazz);
     }
 
     /**
      * Skips first line of the response
      */
-    public static <T> T withJsonPathSkip(Class<T> clazz) {
+    private static <T> T withJsonPathSkip(Class<T> clazz) {
         return buildRetrofit(JsonPathSkipConverterFactory.create()).create(clazz);
     }
 
-    public static <T> T withQueryString(Class<T> clazz) {
+    private static <T> T withQueryString(Class<T> clazz) {
         return buildRetrofit(QueryStringConverterFactory.create()).create(clazz);
     }
 
-    public static <T> T withRegExp(Class<T> clazz) {
+    private static <T> T withRegExp(Class<T> clazz) {
         return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
     }
+
+    //public static <T> T get(Call<T> wrapper) {
+    //    Response<T> response = getResponse(wrapper);
+    //
+    //    //handleResponseErrors(response);
+    //
+    //    return response != null ? response.body() : null;
+    //}
 
     public static <T> T get(Call<T> wrapper) {
         return get(wrapper, false);
     }
 
-    public static <T> T getWithErrors(Call<T> wrapper) {
-        return get(wrapper, true);
+    public static <T> T get(Call<T> wrapper, boolean skipAuth) {
+        return get(wrapper, skipAuth, false);
     }
 
-    public static <T> T get(Call<T> wrapper, boolean withErrors) {
+    public static <T> T getWithErrors(Call<T> wrapper) {
+        return getWithErrors(wrapper, false);
+    }
+
+    public static <T> T getWithErrors(Call<T> wrapper, boolean skipAuth) {
+        return get(wrapper, skipAuth, true);
+    }
+
+    private static <T> T get(Call<T> wrapper, boolean skipAuth, boolean withErrors) {
+        if (skipAuth) {
+            RetrofitOkHttpHelper.addAuthSkip(wrapper.request());
+        }
+
         Response<T> response = getResponse(wrapper);
 
         if (withErrors) {
+            // NOTE: Be careful. Best suited for transaction like methods (e.g. authentication).
+            // Don't use it with BrowseService (invalid response) and others.
             handleResponseErrors(response);
         }
 
@@ -89,21 +117,14 @@ public class RetrofitHelper {
         try {
             return wrapper.execute();
         } catch (ConnectException e) {
-            // ConnectException - server is down or address is banned
-            // Usually happen on sites like returnyoutubedislikeapi.com
-            // We could skip it safe?
+            // ConnectException - server is down or address is banned (returnyoutubedislikeapi.com)
             e.printStackTrace();
-        } catch (SocketException e) {
-            // SocketException - no internet
-            // ConnectException - server is down or address is banned
-            //wrapper.cancel(); // fix background running when RxJava object is disposed?
-            e.printStackTrace();
-            throw new IllegalStateException(e); // notify caller about network condition
         } catch (IOException e) {
+            // SocketException - no internet
             // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
-            // Don't rethrow!!! These exceptions cannot be caught inside RxJava!!! Thread died!!!
             e.printStackTrace();
+            throw new IllegalStateException(e); // notify caller about network condition
         }
 
         return null;
@@ -138,7 +159,7 @@ public class RetrofitHelper {
     }
 
     /**
-     * Get cookie pair: cookieName=cookieValue
+     * Get cookie pair as a string: cookieName=cookieValue
      */
     public static <T> String getCookie(Response<T> response, String cookieName) {
         if (response == null) {
@@ -156,21 +177,43 @@ public class RetrofitHelper {
         return null;
     }
 
-    private static <T> void handleErrors(Response<T> response) {
-        if (response == null || response.body() != null) {
-            return;
+    /**
+     * Get cookie pairs as a colon delimited string: cookieName=cookieValue; cookieName=cookieValue
+     */
+    public static <T> String getCookies(Response<T> response) {
+        if (response == null) {
+            return null;
         }
 
-        if (response.code() == 400 || response.code() == 409) { // not exists or already exists
-            try (ResponseBody body = response.errorBody()) {
-                Gson gson = new GsonBuilder().create();
-                ErrorResponse error = body != null ? gson.fromJson(body.string(), ErrorResponse.class) : null;
-                String message = error != null && error.getError() != null ? error.getError().getMessage() : String.format("Unknown %s error", response.code());
-                throw new IllegalStateException(message);
-            } catch (IOException e) {
-                // handle failure to read error
+        List<String> result = new ArrayList<>();
+
+        List<String> cookies = response.headers().values("Set-Cookie");
+
+        for (String cookie : cookies) {
+            result.add(cookie.split(";")[0]);
+        }
+
+        return result.isEmpty() ? null : Helpers.join("; ", result.toArray(new CharSequence[0]));
+    }
+
+    public static <T> T create(Class<T> clazz) {
+        Annotation[] annotations = clazz.getAnnotations();
+
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof WithRegExp) {
+                return withRegExp(clazz);
+            } else if (annotation instanceof WithJsonPath) {
+                return withJsonPath(clazz);
+            } else if (annotation instanceof WithJsonPathSkip) {
+                return withJsonPathSkip(clazz);
+            } else if (annotation instanceof WithQueryString) {
+                return withQueryString(clazz);
+            } else if (annotation instanceof WithGson) {
+                return withGson(clazz);
             }
         }
+
+        throw new IllegalStateException("RetrofitHelper: unknown class: " + clazz.getName());
     }
 
     private static <T> void handleResponseErrors(Response<T> response) {

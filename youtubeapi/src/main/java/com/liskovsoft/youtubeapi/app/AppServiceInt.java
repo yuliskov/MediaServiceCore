@@ -4,8 +4,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
-import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import retrofit2.Call;

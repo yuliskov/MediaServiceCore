@@ -2,10 +2,10 @@ package com.liskovsoft.youtubeapi.videoinfo;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers;
-import com.liskovsoft.youtubeapi.common.locale.LocaleManager;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
+import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;

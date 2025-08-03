@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.app.potoken
 import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 internal class Challenge {
     data class Result(val messageId: String?,

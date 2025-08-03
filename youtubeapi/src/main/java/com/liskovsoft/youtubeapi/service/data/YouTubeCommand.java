@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.RemoteParams;
 import com.liskovsoft.youtubeapi.lounge.models.commands.SeekToParams;

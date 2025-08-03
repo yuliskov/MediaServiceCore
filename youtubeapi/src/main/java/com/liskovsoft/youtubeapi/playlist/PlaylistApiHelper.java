@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.playlist;
 
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 
 public class PlaylistApiHelper {
     private static final String PLAYLISTS_INFO_QUERY = "\"videoIds\":[\"%s\"]";
@@ -19,42 +19,42 @@ public class PlaylistApiHelper {
 
     public static String getPlaylistsInfoQuery(String videoId) {
         String queryTemplate = String.format(PLAYLISTS_INFO_QUERY, videoId);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return PostDataHelper.createQueryTV(queryTemplate);
     }
 
     public static String getAddToPlaylistQuery(String playlistId, String videoId) {
         String queryTemplate = String.format(ADD_TO_PLAYLISTS_QUERY, playlistId, videoId);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return PostDataHelper.createQueryTV(queryTemplate);
     }
 
     public static String getRemoveFromPlaylistsQuery(String playlistId, String videoId) {
         String queryTemplate = String.format(REMOVE_FROM_PLAYLISTS_QUERY, playlistId, videoId);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return PostDataHelper.createQueryTV(queryTemplate);
     }
 
     public static String getRenamePlaylistsQuery(String playlistId, String newName) {
         String queryTemplate = String.format(RENAME_PLAYLISTS_QUERY, playlistId, newName);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return PostDataHelper.createQueryTV(queryTemplate);
     }
 
     public static String getPlaylistOrderQuery(String playlistId, int playlistOrder) {
         String queryTemplate = String.format(PLAYLIST_ORDER_QUERY, playlistId, playlistOrder);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return PostDataHelper.createQueryTV(queryTemplate);
     }
 
     public static String getSaveRemoveForeignPlaylistQuery(String playlistId) {
         String queryTemplate = String.format(SAVE_REMOVE_PLAYLIST_QUERY, playlistId);
-        return ServiceHelper.createQueryTV(queryTemplate);
+        return PostDataHelper.createQueryTV(queryTemplate);
     }
 
     public static String getCreatePlaylistQuery(String playlistName, String videoId) {
         String queryTemplate = videoId == null ?
                 String.format(CREATE_PLAYLIST_QUERY, playlistName) : String.format(CREATE_PLAYLIST_AND_ADD_QUERY, playlistName, videoId);
-        return ServiceHelper.createQueryWeb(queryTemplate);
+        return PostDataHelper.createQueryWeb(queryTemplate);
     }
 
     public static String getRemovePlaylistQuery(String playlistName) {
         String queryTemplate = String.format(DELETE_PLAYLIST_QUERY, playlistName);
-        return ServiceHelper.createQueryWeb(queryTemplate);
+        return PostDataHelper.createQueryWeb(queryTemplate);
     }
 }

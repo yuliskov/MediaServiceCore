@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.common.helpers
 
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.AppService
-import com.liskovsoft.youtubeapi.common.locale.LocaleManager
+import com.liskovsoft.googlecommon.common.locale.LocaleManager
 
 internal enum class PostDataType { Base, Browse }
 

@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.notifications.gen.*
 

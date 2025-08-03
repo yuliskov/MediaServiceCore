@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.auth.V1;
 
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 
 public class AuthApiHelper {
     private static final String APP_SCOPE = "https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube-paid-content";
@@ -20,6 +20,6 @@ public class AuthApiHelper {
     }
 
     public static String getAccountsListQuery() {
-        return ServiceHelper.createQueryTV("\"accountReadMask\":{\"returnOwner\":true}");
+        return PostDataHelper.createQueryTV("\"accountReadMask\":{\"returnOwner\":true}");
     }
 }

@@ -18,8 +18,6 @@ package com.liskovsoft.googlecommon.common.converters.gson;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
-import com.liskovsoft.googlecommon.common.converters.gson.GsonRequestBodyConverter;
-import com.liskovsoft.googlecommon.common.converters.gson.GsonResponseBodyConverter;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

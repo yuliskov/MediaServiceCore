@@ -1,12 +1,11 @@
 package com.liskovsoft.googlecommon.common.helpers;
 
 import android.content.Context;
-
-import com.liskovsoft.googlecommon.common.converters.FieldNullable;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.googlecommon.common.converters.FieldNullable;
 
 import java.io.File;
 import java.io.InputStream;
@@ -74,7 +73,7 @@ public class ReflectionHelper {
 
     public static void dumpDebugInfo(Class<?> type, InputStream content) {
         // Thread probably has been interrupted. Do skip.
-        if (content == null) {
+        if (content == null || !GlobalPreferences.isInitialized()) {
             return;
         }
 

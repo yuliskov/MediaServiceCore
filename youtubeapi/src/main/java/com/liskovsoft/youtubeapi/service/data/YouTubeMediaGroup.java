@@ -13,7 +13,7 @@ import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
 import com.liskovsoft.youtubeapi.search.models.SearchSection;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 import java.util.ArrayList;
 import java.util.List;

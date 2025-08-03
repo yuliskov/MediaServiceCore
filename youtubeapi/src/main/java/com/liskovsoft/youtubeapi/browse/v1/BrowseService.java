@@ -12,8 +12,8 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionList;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTab;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabContinuation;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.SectionTabList;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import retrofit2.Call;
 
 import java.util.ArrayList;

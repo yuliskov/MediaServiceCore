@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.chat.gen.LiveChatResult
 import com.liskovsoft.youtubeapi.chat.gen.getActions
 import com.liskovsoft.youtubeapi.chat.gen.getContinuation
 import com.liskovsoft.youtubeapi.chat.impl.ChatItemImpl
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 

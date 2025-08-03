@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.block;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import retrofit2.Call;
 
 import java.util.Set;

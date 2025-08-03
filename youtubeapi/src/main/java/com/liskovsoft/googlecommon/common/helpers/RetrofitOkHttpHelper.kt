@@ -6,13 +6,15 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.okhttp.OkHttpCommons
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.googlecommon.app.AppConstants
+import com.liskovsoft.youtubeapi.app.AppService
+import com.liskovsoft.youtubeapi.search.SearchApi
 import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
 internal object RetrofitOkHttpHelper {
-    private var skipAuthNums: Int = 0;
+    private val authSkipList = mutableListOf<Request>()
 
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()
@@ -27,15 +29,19 @@ internal object RetrofitOkHttpHelper {
     var disableCompression: Boolean = false
 
     @JvmStatic
-    fun skipAuth() {
-        skipAuthNums++
+    fun addAuthSkip(request: Request) {
+        if (!authSkipList.contains(request))
+            authSkipList.add(request)
     }
 
-    private val headers = mapOf(
-        "User-Agent" to DefaultHeaders.APP_USER_AGENT,
+    private val commonHeaders = mapOf(
         // Enable compression in production
         "Accept-Encoding" to DefaultHeaders.ACCEPT_ENCODING,
-        "Referer" to "https://www.youtube.com/tv"
+    )
+
+    private val apiHeaders = mapOf(
+        "User-Agent" to DefaultHeaders.APP_USER_AGENT,
+        "Referer" to DefaultHeaders.REFERER
     )
 
     private val apiPrefixes = arrayOf(
@@ -61,18 +67,31 @@ internal object RetrofitOkHttpHelper {
             val headers = request.headers()
             val requestBuilder = request.newBuilder()
 
-            applyHeaders(RetrofitOkHttpHelper.headers, headers, requestBuilder)
+            applyHeaders(this.commonHeaders, headers, requestBuilder)
 
             val url = request.url().toString()
 
             if (Helpers.startsWithAny(url, *apiPrefixes)) {
-                if (authHeaders.isEmpty() || skipAuthNums > 0) {
-                    if (skipAuthNums > 0) skipAuthNums--
+                val doSkipAuth = authSkipList.remove(request)
+
+                // Empty Home fix (anonymous user) and improve Recommendations for everyone
+                headers["X-Goog-Visitor-Id"] ?: AppService.instance().visitorData?.let { requestBuilder.header("X-Goog-Visitor-Id", it) }
+
+                if (doSkipAuth) // visitor generation fix
+                    requestBuilder.removeHeader("X-Goog-Visitor-Id")
+
+                applyHeaders(this.apiHeaders, headers, requestBuilder)
+
+                if (authHeaders.isEmpty() || doSkipAuth) {
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false"), request, requestBuilder)
                 } else {
                     applyQueryKeys(mapOf("prettyPrint" to "false"), request, requestBuilder)
                     // Fix suggestions on non branded accounts
-                    applyHeaders(authHeaders, headers, requestBuilder)
+                    if (url.startsWith(SearchApi.TAGS_URL) && authHeaders2.isNotEmpty()) {
+                        applyHeaders(authHeaders2, headers, requestBuilder)
+                    } else {
+                        applyHeaders(authHeaders, headers, requestBuilder)
+                    }
                 }
             }
 

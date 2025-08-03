@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.next.v2.mock
 
 import co.infinum.retromock.Retromock
 import com.liskovsoft.sharedutils.TestHelpers
-import com.liskovsoft.youtubeapi.common.converters.gson.GsonConverterFactory
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.converters.gson.GsonConverterFactory
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 object MockUtils {
     fun <T> mockWithGson(clazz: Class<T>): T {

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.app.models;
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 
 /**
  * Data contained inside m=base js file (modern clients) or m=main js file (Cobalt/Legacy)<br/>

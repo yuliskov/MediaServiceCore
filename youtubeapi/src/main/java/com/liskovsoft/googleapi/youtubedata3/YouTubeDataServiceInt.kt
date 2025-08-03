@@ -6,8 +6,8 @@ import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadata
 import com.liskovsoft.googleapi.youtubedata3.impl.ItemMetadataImpl
 import retrofit2.Call
 
-object YouTubeDataServiceInt {
-    private val mYouTubeDataApi = RetrofitHelper.withGson(YouTubeDataApi::class.java)
+internal object YouTubeDataServiceInt {
+    private val mYouTubeDataApi = RetrofitHelper.create(YouTubeDataApi::class.java)
     private const val MAX_SIZE = 50
 
     @JvmStatic

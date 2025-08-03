@@ -5,14 +5,55 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
+import android.util.Log
 
 internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): MediaGroup {
+	companion object {
+		private const val DUPLICATE_TAG = "DuplicateFilter"
+		private val sGlobalSeenVideoIds = mutableSetOf<String>()
+		private var sCurrentTabType = -1
+	}
+
+	private fun shouldFilterDuplicate(item: ItemWrapper): Boolean {
+		// Check if we should skip filtering for recommended sections
+		val shouldSkipFiltering = options.removeDuplicatesExcludeRecommended &&
+			getTitle()?.lowercase()?.contains("recommended") == true
+
+		if (shouldSkipFiltering) {
+			return false // Don't filter duplicates in recommended sections
+		}
+
+		val currentTabType = options.groupType
+
+		// Clear cached video IDs when switching to a different tab
+		if (sCurrentTabType != currentTabType) {
+			Log.d(DUPLICATE_TAG, "Tab type changed from $sCurrentTabType to $currentTabType, clearing ${sGlobalSeenVideoIds.size} seen IDs")
+			sGlobalSeenVideoIds.clear()
+			sCurrentTabType = currentTabType
+		}
+
+		val videoId = item.getVideoId()
+		if (videoId == null) {
+			return false // Don't filter items without video IDs
+		}
+
+		if (sGlobalSeenVideoIds.contains(videoId)) {
+			Log.d(DUPLICATE_TAG, "Filtering duplicate video: $videoId from group '${getTitle()}'")
+			return true // Filter out duplicate
+		} else {
+			sGlobalSeenVideoIds.add(videoId)
+			Log.d(DUPLICATE_TAG, "Adding new video: $videoId from group '${getTitle()}'")
+			return false // Keep unique video
+		}
+	}
     private val filter: ((ItemWrapper) -> Boolean) = {
         it.isEmpty() ||
         (options.removeShorts && if (options.enableLegacyUI) it.isShortsLegacy() else it.isShorts()) ||
         (options.removeLive && it.isLive()) ||
         (options.removeUpcoming && it.isUpcoming()) ||
-        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive())
+        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive()) ||
+        (options.removeDuplicates && shouldFilterDuplicate(it)) ||
+        (options.removeMixes && it.isMix())
     }
     private var _titleItem: String? = null
         get() = field ?: titleItem

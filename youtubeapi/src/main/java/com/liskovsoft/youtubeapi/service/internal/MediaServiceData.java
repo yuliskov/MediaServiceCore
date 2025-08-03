@@ -47,6 +47,8 @@ public class MediaServiceData {
     public static final int CONTENT_UPCOMING_SUBSCRIPTIONS = 1 << 11;
     public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
     public static final int CONTENT_SHORTS_CHANNEL = 1 << 13;
+    public static final int CONTENT_DUPLICATES = 1 << 14;
+    public static final int CONTENT_DUPLICATES_EXCLUDE_RECOMMENDED = 1 << 15;
     private static MediaServiceData sInstance;
     private String mAppVersion;
     private String mScreenId;

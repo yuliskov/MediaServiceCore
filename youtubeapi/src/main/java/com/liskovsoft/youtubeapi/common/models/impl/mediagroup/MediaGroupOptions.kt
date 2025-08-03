@@ -9,6 +9,9 @@ internal data class MediaGroupOptions(val removeShorts: Boolean = false,
                                       val removeLive: Boolean = false,
                                       val removeUpcoming: Boolean = false,
                                       val removeWatched: Boolean = false,
+                                      val removeDuplicates: Boolean = false,
+                                      val removeDuplicatesExcludeRecommended: Boolean = false,
+                                      val removeMixes: Boolean = false,
                                       val groupType: Int,
                                       val enableLegacyUI: Boolean = false) {
     val clientTV by lazy { if (enableLegacyUI) AppClient.TV_LEGACY else AppClient.TV }
@@ -30,6 +33,9 @@ internal data class MediaGroupOptions(val removeShorts: Boolean = false,
             val removeWatched = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME)) ||
                     (channelId == AppConstants.WATCH_LATER_CHANNEL_ID && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
+            val removeDuplicates = data.isContentHidden(MediaServiceData.CONTENT_DUPLICATES)
+            val removeDuplicatesExcludeRecommended = data.isContentHidden(MediaServiceData.CONTENT_DUPLICATES_EXCLUDE_RECOMMENDED)
+            val removeMixes = data.isContentHidden(MediaServiceData.CONTENT_MIXES)
             val enableLegacyUI = data.isLegacyUIEnabled || !removeShorts // the modern ui doesn't contains shorts
 
             return MediaGroupOptions(
@@ -37,6 +43,9 @@ internal data class MediaGroupOptions(val removeShorts: Boolean = false,
                 removeLive,
                 removeUpcoming,
                 removeWatched,
+                removeDuplicates,
+                removeDuplicatesExcludeRecommended,
+                removeMixes,
                 groupType,
                 enableLegacyUI
             )

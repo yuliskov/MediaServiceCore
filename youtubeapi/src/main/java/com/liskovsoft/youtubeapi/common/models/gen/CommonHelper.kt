@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
@@ -330,6 +331,7 @@ internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusic
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie() ?: false
 internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
 internal fun ItemWrapper.isShortsLegacy() = getTileItem()?.isShortsLegacy() ?: false
+internal fun ItemWrapper.isMix() = YouTubeHelper.isMix(WrapperMediaItem(this))
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)

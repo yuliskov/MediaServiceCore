@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.notifications
 
-import com.liskovsoft.youtubeapi.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import retrofit2.Call
 import retrofit2.http.Body

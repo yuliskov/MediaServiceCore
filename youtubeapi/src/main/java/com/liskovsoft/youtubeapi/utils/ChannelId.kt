@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.utils
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.RegExp
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp
 
 internal class ChannelId {
     /**

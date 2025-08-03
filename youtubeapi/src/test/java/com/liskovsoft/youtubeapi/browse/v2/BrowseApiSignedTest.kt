@@ -5,11 +5,11 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.browse.v2.mock.BrowseApiMock
 import com.liskovsoft.youtubeapi.browse.v2.mock.BrowseApiMock2
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
@@ -233,7 +233,7 @@ class BrowseApiSignedTest {
     }
 
     private fun getGuide(): GuideResult? {
-        val guideResult = mService.getGuideResult(ServiceHelper.createQueryTV(""))
+        val guideResult = mService.getGuideResult(PostDataHelper.createQueryTV(""))
 
         return RetrofitHelper.get(guideResult)
     }

@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
-import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;

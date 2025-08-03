@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.utils
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp
+import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V1;
 
 import com.liskovsoft.youtubeapi.app.AppConstants;
-import com.liskovsoft.youtubeapi.common.converters.querystring.WithQueryString;
+import com.liskovsoft.googlecommon.common.converters.querystring.WithQueryString;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import retrofit2.Call;
 import retrofit2.http.GET;

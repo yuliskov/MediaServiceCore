@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.browse.v1.models.grid;
 
 import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
-import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
+import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
 
 import java.util.List;
 

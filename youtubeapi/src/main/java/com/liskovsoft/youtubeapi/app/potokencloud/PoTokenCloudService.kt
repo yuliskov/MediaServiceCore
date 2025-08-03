@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.potokencloud
 
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.AppService
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking

@@ -5,10 +5,10 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResult
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import com.liskovsoft.youtubeapi.next.v2.mock.WatchNextApiMock

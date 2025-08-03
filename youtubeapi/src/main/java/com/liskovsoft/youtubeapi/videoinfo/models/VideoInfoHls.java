@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class VideoInfoHls {
     @JsonPath("$.streamingData.hlsManifestUrl")

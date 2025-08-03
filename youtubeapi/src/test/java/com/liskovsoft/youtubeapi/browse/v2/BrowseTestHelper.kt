@@ -6,8 +6,8 @@ import org.junit.Assert.assertNotNull
 object BrowseTestHelper {
     fun checkMediaItem(mediaItem: MediaItem) {
         assertNotNull(mediaItem.title)
-        assertNotNull(mediaItem.secondTitle)
-        assertNotNull(mediaItem.videoId)
+        assertNotNull(mediaItem.cardImageUrl)
+        assertNotNull(mediaItem.videoId ?: mediaItem.playlistId)
     }
 
     fun checkGuideMediaItem(mediaItem: MediaItem) {

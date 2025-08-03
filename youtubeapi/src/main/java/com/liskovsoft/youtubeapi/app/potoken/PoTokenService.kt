@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.app.potoken
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.liskovsoft.youtubeapi.app.AppService
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 internal object PoTokenService {
     private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"

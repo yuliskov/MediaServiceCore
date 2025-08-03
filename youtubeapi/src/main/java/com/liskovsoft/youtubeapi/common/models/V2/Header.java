@@ -1,8 +1,9 @@
 package com.liskovsoft.youtubeapi.common.models.V2;
 
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.models.V2.TextItem;
+import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.items.Thumbnail;
 
 import java.util.List;
 

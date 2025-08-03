@@ -15,7 +15,7 @@ import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoOwner;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResult;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 import java.util.ArrayList;
 import java.util.List;

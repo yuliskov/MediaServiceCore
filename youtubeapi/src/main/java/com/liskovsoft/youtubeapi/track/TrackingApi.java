@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.track;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import retrofit2.Call;
 import retrofit2.http.GET;

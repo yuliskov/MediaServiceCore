@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.feedback;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;

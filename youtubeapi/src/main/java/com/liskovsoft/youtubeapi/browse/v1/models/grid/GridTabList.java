@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.browse.v1.models.grid;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 import java.util.Collections;
 import java.util.List;

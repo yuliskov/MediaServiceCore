@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.comments.gen.getLikeParams
 import com.liskovsoft.youtubeapi.comments.gen.getActiveCommentItem
 import com.liskovsoft.youtubeapi.comments.gen.getUnLikeParams
 import com.liskovsoft.youtubeapi.comments.impl.CommentGroupImpl
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 internal object CommentsServiceInt {
     private val mApi = RetrofitHelper.create(CommentsApi::class.java)

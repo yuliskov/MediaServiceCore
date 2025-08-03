@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.feedback;
 
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
 import retrofit2.Call;
 

@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.models.V2.TextItem;
 
 public class TranslationLanguage {
     @JsonPath("$.languageCode")

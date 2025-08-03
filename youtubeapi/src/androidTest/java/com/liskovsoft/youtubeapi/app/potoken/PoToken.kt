@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.app.potoken
 
 import com.google.gson.JsonElement
 import com.liskovsoft.sharedutils.TestHelpers
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.js.V8Runtime
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.js.V8Runtime
 
 internal class PoToken {
     data class Arguments(val privateScript: String?,

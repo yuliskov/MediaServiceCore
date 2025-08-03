@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.utils
 
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 internal object UtilsService {
     private val mUtilsApi = RetrofitHelper.create(UtilsApi::class.java)

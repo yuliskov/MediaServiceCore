@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.comments
 
 import com.liskovsoft.youtubeapi.comments.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApi
 import com.liskovsoft.youtubeapi.next.v2.WatchNextApiHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getCommentPanel

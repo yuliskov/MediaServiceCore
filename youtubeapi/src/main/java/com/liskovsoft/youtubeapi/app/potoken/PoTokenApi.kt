@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.app.potoken
 
 import com.google.gson.JsonElement
-import com.liskovsoft.youtubeapi.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers

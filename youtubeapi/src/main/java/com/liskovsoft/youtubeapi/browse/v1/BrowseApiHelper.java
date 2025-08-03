@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v1;
 
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 
 public class BrowseApiHelper {
     private static final String HOME = "\"browseId\":\"default\"";
@@ -25,35 +25,35 @@ public class BrowseApiHelper {
     //private static final String MUSIC = "\"browseId\":\"FEtopics\",\"params\":\"-gIFbXVzaWM%3D\"";
 
     public static String getHomeQuery() {
-        return ServiceHelper.createQueryTV(HOME);
+        return PostDataHelper.createQueryTV(HOME);
     }
 
     public static String getSubscriptionsQuery() {
-        return ServiceHelper.createQueryTV(SUBSCRIPTIONS);
+        return PostDataHelper.createQueryTV(SUBSCRIPTIONS);
     }
 
     public static String getMyLibraryQuery() {
-        return ServiceHelper.createQueryTV(MY_LIBRARY);
+        return PostDataHelper.createQueryTV(MY_LIBRARY);
     }
 
     public static String getHistoryQuery() {
-        return ServiceHelper.createQueryTV(HISTORY);
+        return PostDataHelper.createQueryTV(HISTORY);
     }
 
     public static String getGamingQuery() {
-        return ServiceHelper.createQueryTV(GAMING);
+        return PostDataHelper.createQueryTV(GAMING);
     }
 
     public static String getNewsQuery() {
-        return ServiceHelper.createQueryTV(NEWS);
+        return PostDataHelper.createQueryTV(NEWS);
     }
 
     public static String getNewsQueryUA() {
-        return ServiceHelper.createQueryTV_UA(NEWS);
+        return PostDataHelper.createQueryTV_UA(NEWS);
     }
 
     public static String getMusicQuery() {
-        return ServiceHelper.createQueryTV(MUSIC);
+        return PostDataHelper.createQueryTV(MUSIC);
     }
 
     public static String getChannelQuery(String channelId) {
@@ -62,7 +62,7 @@ public class BrowseApiHelper {
 
     public static String getChannelQuery(String channelId, String params) {
         String channelTemplate = params != null ? String.format(CHANNEL_FULL, channelId, params) : String.format(CHANNEL, channelId);
-        return ServiceHelper.createQueryTV(channelTemplate);
+        return PostDataHelper.createQueryTV(channelTemplate);
     }
 
     /**
@@ -72,11 +72,11 @@ public class BrowseApiHelper {
      */
     public static String getContinuationQuery(String nextPageKey) {
         String continuation = String.format(CONTINUATION, nextPageKey);
-        return ServiceHelper.createQueryTV(continuation);
+        return PostDataHelper.createQueryTV(continuation);
     }
 
     public static String getGuideQuery() {
-        return ServiceHelper.createQueryTV("");
+        return PostDataHelper.createQueryTV("");
     }
 
     public static boolean isGridChannel(String channelId) {

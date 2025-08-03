@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 
 import retrofit2.Call;
 

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 
 /**
  * V8-windows not exists fix
@@ -13,6 +13,6 @@ public class VideoInfoApiTestHelper {
     public static String getVideoInfoQuery(String videoId) {
         String videoIdTemplate = String.format(VIDEO_ID, videoId);
         String checkParamsTemplate = String.format(CHECK_PARAMS, "18795");
-        return ServiceHelper.createQueryTV(checkParamsTemplate + "," + videoIdTemplate);
+        return PostDataHelper.createQueryTV(checkParamsTemplate + "," + videoIdTemplate);
     }
 }

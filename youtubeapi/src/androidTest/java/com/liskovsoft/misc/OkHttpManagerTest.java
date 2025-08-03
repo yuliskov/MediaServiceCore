@@ -18,12 +18,10 @@ import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.Route;
 
 public class OkHttpManagerTest {
     private static final String TAG = OkHttpManagerTest.class.getSimpleName();

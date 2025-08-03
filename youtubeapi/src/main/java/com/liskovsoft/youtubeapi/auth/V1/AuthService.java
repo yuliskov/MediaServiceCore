@@ -2,12 +2,12 @@ package com.liskovsoft.youtubeapi.auth.V1;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.auth.models.auth.AccessToken;
-import com.liskovsoft.youtubeapi.auth.models.auth.RefreshToken;
-import com.liskovsoft.youtubeapi.auth.models.auth.UserCode;
-import com.liskovsoft.youtubeapi.auth.models.info.AccountInt;
-import com.liskovsoft.youtubeapi.auth.models.info.AccountsList;
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 

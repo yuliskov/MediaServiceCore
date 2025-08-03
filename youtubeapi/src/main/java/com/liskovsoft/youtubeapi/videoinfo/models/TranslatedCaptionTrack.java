@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 public class TranslatedCaptionTrack extends CaptionTrack {
     public final static String TRANSLATE_MARKER = "*";

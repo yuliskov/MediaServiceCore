@@ -2,12 +2,11 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
-import com.liskovsoft.youtubeapi.browse.v2.mock.BrowseApiMock
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import com.liskovsoft.youtubeapi.common.models.gen.getParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
@@ -245,16 +244,16 @@ class BrowseApiUnsignedTest {
 
     @Test
     fun testThatChannelVideosNotEmpty() {
-        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
+        val channelId = "UCkjot4p29KLU0pwc0srHeGg" // Till Lindemann all videos
 
         val videos = getChannelVideos(channelId)
 
-        assertTrue("Playlist not empty", videos?.getItems()?.size ?: 0 > 0)
+        assertTrue("Playlist not empty", (videos?.getItems()?.size ?: 0) > 0)
     }
 
     @Test
     fun testThatChannelVideosHasContinuation() {
-        val channelId = "VLPLHxc_q5EHiHQX3VxMaUDOdM8NMSTyRjkZ"
+        val channelId = "UCkjot4p29KLU0pwc0srHeGg" // Till Lindemann all videos
 
         val videos = getChannelVideos(channelId)
 
@@ -349,7 +348,7 @@ class BrowseApiUnsignedTest {
         //assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
     }
 
-    private fun checkContinuationWeb(token: String?, checkNextToken: Boolean = true) {
+    private fun checkContinuationWeb(token: String?, checkNextToken: Boolean = false) {
         val continuationResult = mService.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, token!!))
 
         val continuation = RetrofitHelper.get(continuationResult)
@@ -398,15 +397,15 @@ class BrowseApiUnsignedTest {
     }
 
     private fun getChannelVideos(channelId: String?): BrowseResult? {
-        val homeResult = mService.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId!!))
+        val result = mService.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId!!))
 
-        return RetrofitHelper.get(homeResult)
+        return RetrofitHelper.get(result)
     }
 
     private fun getChannelLive(channelId: String?): BrowseResult? {
-        val homeResult = mService.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId!!))
+        val result = mService.getBrowseResult(BrowseApiHelper.getChannelLiveQuery(AppClient.WEB, channelId!!))
 
-        return RetrofitHelper.get(homeResult)
+        return RetrofitHelper.get(result)
     }
 
     private fun getChannelHome(channelId: String?): BrowseResult? {
@@ -428,7 +427,7 @@ class BrowseApiUnsignedTest {
     }
 
     private fun getGuide(): GuideResult? {
-        val guideResult = mService.getGuideResult(ServiceHelper.createQueryWeb(""))
+        val guideResult = mService.getGuideResult(PostDataHelper.createQueryWeb(""))
 
         return RetrofitHelper.get(guideResult)
     }

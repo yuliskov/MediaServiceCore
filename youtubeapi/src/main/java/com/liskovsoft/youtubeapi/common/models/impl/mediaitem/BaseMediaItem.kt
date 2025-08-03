@@ -3,8 +3,8 @@ package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import kotlin.math.abs
 
 open class BaseMediaItem : MediaItem {

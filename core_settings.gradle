@@ -4,7 +4,6 @@ def rootDir = gradle.ext.mediaServiceCoreRoot
 gradle.ext.sharedModulesRoot = new File(rootDir, '../SharedModules').exists() ? new File(rootDir, '../SharedModules') : new File(rootDir, './SharedModules')
 apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
-include ':mediaserviceinterfaces', ':youtubeapi', ':googleapi'
+include ':mediaserviceinterfaces', ':youtubeapi'
 project(':mediaserviceinterfaces').projectDir = new File(rootDir, 'mediaserviceinterfaces')
 project(':youtubeapi').projectDir = new File(rootDir, 'youtubeapi')
-project(':googleapi').projectDir = new File(rootDir, 'googleapi')

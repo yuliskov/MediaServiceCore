@@ -1,11 +1,11 @@
 package com.liskovsoft.youtubeapi.videoinfo
 
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.common.api.FileApi
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathConverterFactory
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.converter.JsonPathResponseBodyConverter
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.js.JSInterpret
+import com.liskovsoft.googlecommon.common.api.FileApi
+import com.liskovsoft.googlecommon.common.converters.jsonpath.converter.JsonPathConverterFactory
+import com.liskovsoft.googlecommon.common.converters.jsonpath.converter.JsonPathResponseBodyConverter
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.js.JSInterpret
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo
 import java.util.regex.Pattern
 

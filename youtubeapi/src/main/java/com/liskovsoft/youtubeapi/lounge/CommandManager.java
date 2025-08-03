@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPathSkip;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPathSkip;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
 import retrofit2.Call;
 import retrofit2.http.Field;

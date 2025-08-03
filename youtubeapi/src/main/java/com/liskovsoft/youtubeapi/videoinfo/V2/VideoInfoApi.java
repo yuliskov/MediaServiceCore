@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
-import com.liskovsoft.youtubeapi.common.helpers.DefaultHeaders;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
 import retrofit2.Call;

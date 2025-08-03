@@ -22,7 +22,7 @@ import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BaseMediaGroup;
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.search.SearchService;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;

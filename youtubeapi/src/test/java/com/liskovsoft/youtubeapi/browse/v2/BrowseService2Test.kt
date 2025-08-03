@@ -1,7 +1,8 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.common.helpers.tests.TestHelpers
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
@@ -41,7 +42,7 @@ class BrowseService2Test {
 
         val home = sections?.first?.get(0)
 
-        val mediaItem = home?.mediaItems?.get(0)
+        val mediaItem = home?.mediaItems?.first { !YouTubeHelper.isEmpty(it) } // skip ad cards
 
         assertTrue("Home row contains token 1", mediaItem?.feedbackToken != null)
         assertTrue("Home row contains token 2", mediaItem?.feedbackToken2 != null)

@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.auth.V2;
 
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 public class AuthApiHelper {
@@ -13,7 +13,7 @@ public class AuthApiHelper {
     private static final String MODEL_NAME = "ytlr::";
 
     public static String getAccountsListQuery() {
-        return ServiceHelper.createQueryTV("\"accountReadMask\":{\"returnOwner\":true,\"returnBrandAccounts\":true,\"returnPersonaAccounts\":false}");
+        return PostDataHelper.createQueryTV("\"accountReadMask\":{\"returnOwner\":true,\"returnBrandAccounts\":true,\"returnPersonaAccounts\":false}");
     }
 
     public static String getUserCodeQuery(String clientId) {

@@ -10,9 +10,9 @@ import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.gen.GrayJayGroup
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
-import com.liskovsoft.youtubeapi.common.api.FileApi
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.api.FileApi
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import java.io.File
 
 internal object GrayJayService: GroupImportService {

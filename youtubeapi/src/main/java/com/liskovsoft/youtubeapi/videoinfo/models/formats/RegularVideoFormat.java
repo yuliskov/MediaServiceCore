@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class RegularVideoFormat extends VideoFormat {
     @JsonPath("$.audioQuality")

@@ -5,8 +5,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper
-import com.liskovsoft.youtubeapi.common.api.FileApi
-import com.liskovsoft.youtubeapi.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.api.FileApi
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 import kotlinx.coroutines.Dispatchers

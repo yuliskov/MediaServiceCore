@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.search.models;
 
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 

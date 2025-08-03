@@ -1,13 +1,13 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
-import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
 import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 
 // A badge before the image

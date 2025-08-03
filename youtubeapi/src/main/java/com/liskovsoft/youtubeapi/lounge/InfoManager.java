@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import com.liskovsoft.youtubeapi.lounge.models.info.PlaylistInfo;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
-import com.liskovsoft.youtubeapi.common.helpers.ServiceHelper
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 
 internal object BrowseApiHelper {
     private const val CHANNEL = "\"browseId\":\"%s\""
@@ -40,69 +40,69 @@ internal object BrowseApiHelper {
     private const val CONTINUATION = "\"continuation\":\"%s\""
 
     fun getHomeQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, HOME_TV)
+        return PostDataHelper.createQuery(client.browseTemplate, HOME_TV)
     }
 
     fun getTrendingQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, TRENDING)
+        return PostDataHelper.createQuery(client.browseTemplate, TRENDING)
     }
 
     fun getChannelQuery(client: AppClient, channelId: String, params: String? = null): String {
         val channelTemplate =
             if (params != null) String.format(CHANNEL_FULL, channelId, params) else String.format(CHANNEL, channelId)
-        return ServiceHelper.createQuery(client.browseTemplate, channelTemplate)
+        return PostDataHelper.createQuery(client.browseTemplate, channelTemplate)
     }
 
     fun getChannelHomeQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_HOME, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_HOME, channelId))
     }
 
     fun getChannelVideosQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_VIDEOS, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_VIDEOS, channelId))
     }
 
     fun getChannelShortsQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_SHORTS, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_SHORTS, channelId))
     }
 
     fun getChannelLiveQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_LIVE, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_LIVE, channelId))
     }
 
     fun getChannelPlaylistsQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_PLAYLISTS, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_PLAYLISTS, channelId))
     }
 
     fun getChannelReleasesQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_RELEASES, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_RELEASES, channelId))
     }
 
     fun getChannelCommunityQuery(client: AppClient, channelId: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_COMMUNITY, channelId))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_COMMUNITY, channelId))
     }
 
     fun getChannelSearchQuery(client: AppClient, channelId: String, query: String): String {
-        return ServiceHelper.createQuery(client.browseTemplate, String.format(CHANNEL_SEARCH, channelId, query))
+        return PostDataHelper.createQuery(client.browseTemplate, String.format(CHANNEL_SEARCH, channelId, query))
     }
 
     fun getKidsHomeQuery(): String {
-        return ServiceHelper.createQueryKids(KIDS_HOME)
+        return PostDataHelper.createQueryKids(KIDS_HOME)
     }
 
     fun getKidsHomeQuery(params: String): String {
-        return ServiceHelper.createQueryKids(String.format(KIDS_HOME_PARAMS, params))
+        return PostDataHelper.createQueryKids(String.format(KIDS_HOME_PARAMS, params))
     }
 
     fun getReelQuery(): String {
-        return ServiceHelper.createQueryWeb(REEL)
+        return PostDataHelper.createQueryWeb(REEL)
     }
 
     fun getMusicQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, MUSIC)
+        return PostDataHelper.createQuery(client.browseTemplate, MUSIC)
     }
 
     fun getLikedMusicQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, LIKED_MUSIC)
+        return PostDataHelper.createQuery(client.browseTemplate, LIKED_MUSIC)
     }
 
     fun getLikedMusicContinuation(client: AppClient): String {
@@ -110,58 +110,58 @@ internal object BrowseApiHelper {
     }
 
     fun getNewMusicAlbumsQuery(): String {
-        return ServiceHelper.createQueryRemix(NEW_MUSIC_ALBUMS)
+        return PostDataHelper.createQueryRemix(NEW_MUSIC_ALBUMS)
     }
 
     fun getNewMusicVideosQuery(): String {
-        return ServiceHelper.createQueryRemix(NEW_MUSIC_VIDEOS)
+        return PostDataHelper.createQueryRemix(NEW_MUSIC_VIDEOS)
     }
 
     fun getNewsQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, NEWS)
+        return PostDataHelper.createQuery(client.browseTemplate, NEWS)
     }
 
     fun getGamingQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, GAMING)
+        return PostDataHelper.createQuery(client.browseTemplate, GAMING)
     }
 
     fun getMyLibraryQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, MY_LIBRARY)
+        return PostDataHelper.createQuery(client.browseTemplate, MY_LIBRARY)
     }
 
     fun getReelDetailsQuery(client: AppClient, videoId: String, params: String): String {
         val details = String.format(REEL_DETAILS, params, videoId)
-        return ServiceHelper.createQuery(client.browseTemplate, details)
+        return PostDataHelper.createQuery(client.browseTemplate, details)
     }
 
     fun getReelContinuationQuery(client: AppClient, sequenceParams: String): String {
         val continuation = String.format(REEL_CONTINUATION, sequenceParams)
-        return ServiceHelper.createQuery(client.browseTemplate, continuation)
+        return PostDataHelper.createQuery(client.browseTemplate, continuation)
     }
 
     fun getReelContinuation2Query(client: AppClient, nextPageKey: String): String {
         val continuation = String.format(CONTINUATION, nextPageKey)
-        return ServiceHelper.createQuery(client.browseTemplate, continuation)
+        return PostDataHelper.createQuery(client.browseTemplate, continuation)
     }
 
     fun getSubscriptionsQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, SUBSCRIPTIONS)
+        return PostDataHelper.createQuery(client.browseTemplate, SUBSCRIPTIONS)
     }
 
     fun getSportsQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, SPORTS)
+        return PostDataHelper.createQuery(client.browseTemplate, SPORTS)
     }
 
     fun getLiveQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, LIVE)
+        return PostDataHelper.createQuery(client.browseTemplate, LIVE)
     }
 
     fun getMyVideosQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, MY_VIDEOS)
+        return PostDataHelper.createQuery(client.browseTemplate, MY_VIDEOS)
     }
 
     fun getMoviesQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, MOVIES)
+        return PostDataHelper.createQuery(client.browseTemplate, MOVIES)
     }
 
     /**
@@ -171,10 +171,10 @@ internal object BrowseApiHelper {
      */
     fun getContinuationQuery(client: AppClient, nextPageKey: String): String {
         val continuation = String.format(CONTINUATION, nextPageKey)
-        return ServiceHelper.createQuery(client.browseTemplate, continuation)
+        return PostDataHelper.createQuery(client.browseTemplate, continuation)
     }
 
     fun getMyPlaylistQuery(client: AppClient): String {
-        return ServiceHelper.createQuery(client.browseTemplate, MY_PLAYLISTS)
+        return PostDataHelper.createQuery(client.browseTemplate, MY_PLAYLISTS)
     }
 }

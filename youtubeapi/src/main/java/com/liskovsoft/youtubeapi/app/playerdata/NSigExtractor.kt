@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.app.playerdata
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.liskovsoft.sharedutils.mylogger.Log
-import com.liskovsoft.youtubeapi.common.js.JSInterpret
+import com.liskovsoft.googlecommon.common.js.JSInterpret
 import java.util.regex.Pattern
 
 internal object NSigExtractor {

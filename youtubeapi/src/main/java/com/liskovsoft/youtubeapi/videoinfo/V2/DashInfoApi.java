@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import com.liskovsoft.youtubeapi.common.converters.regexp.WithRegExp;
+import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 

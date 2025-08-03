@@ -2,8 +2,8 @@ package com.liskovsoft.youtubeapi.browse.v1.models.sections.v2;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.Section;
-import com.liskovsoft.youtubeapi.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.youtubeapi.common.models.V2.TextItem;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.models.V2.TextItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;

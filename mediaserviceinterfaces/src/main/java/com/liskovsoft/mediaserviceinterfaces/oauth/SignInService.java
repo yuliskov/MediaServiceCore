@@ -1,8 +1,5 @@
 package com.liskovsoft.mediaserviceinterfaces.oauth;
 
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.SignInCode;
-
 import java.util.List;
 
 import io.reactivex.Observable;

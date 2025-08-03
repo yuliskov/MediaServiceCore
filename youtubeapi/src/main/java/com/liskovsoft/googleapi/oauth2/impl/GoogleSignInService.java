@@ -4,8 +4,8 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.mediaserviceinterfaces.oauth.SignInService;
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.SignInCode;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.SignInCode;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import java.util.List;

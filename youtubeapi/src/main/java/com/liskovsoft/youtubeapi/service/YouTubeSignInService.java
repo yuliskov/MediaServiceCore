@@ -3,14 +3,14 @@ package com.liskovsoft.youtubeapi.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
-import com.liskovsoft.mediaserviceinterfaces.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
+import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeAccountManager;
 import io.reactivex.Observable;
 
@@ -58,7 +58,8 @@ public class YouTubeSignInService implements SignInService {
     }
 
     private synchronized void updateAuthHeadersIfNeeded() {
-        if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
+        if (mCachedAuthorizationHeader != null && Helpers.equals(mCachedAuthorizationHeader, RetrofitOkHttpHelper.getAuthHeaders().get("Authorization"))
+                && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
             return;
         }
 

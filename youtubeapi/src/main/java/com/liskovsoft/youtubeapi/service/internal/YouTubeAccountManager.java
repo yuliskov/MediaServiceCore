@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange;
-import com.liskovsoft.mediaserviceinterfaces.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -16,7 +16,7 @@ import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
+import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
 import io.reactivex.Observable;

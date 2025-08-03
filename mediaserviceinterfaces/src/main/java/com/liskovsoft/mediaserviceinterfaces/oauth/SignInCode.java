@@ -1,4 +1,4 @@
-package com.liskovsoft.mediaserviceinterfaces.oauth.data;
+package com.liskovsoft.mediaserviceinterfaces.oauth;
 
 public interface SignInCode {
     String getSignInCode();

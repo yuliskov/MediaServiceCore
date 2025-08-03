@@ -2,11 +2,11 @@ package com.liskovsoft.youtubeapi.search;
 
 import android.text.TextUtils;
 
-import com.liskovsoft.mediaserviceinterfaces.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-import com.liskovsoft.youtubeapi.service.data.YouTubeAccount;
+import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 
 import java.util.List;
 

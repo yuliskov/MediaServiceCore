@@ -1,6 +1,6 @@
 package com.liskovsoft.mediaserviceinterfaces;
 
-import com.liskovsoft.mediaserviceinterfaces.data.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import io.reactivex.Observable;
 
 import java.util.List;

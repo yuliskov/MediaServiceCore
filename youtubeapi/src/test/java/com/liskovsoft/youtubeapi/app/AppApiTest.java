@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -32,6 +33,7 @@ public class AppApiTest {
         assertTrue("Player url should ends with js", playerUrl.endsWith(".js"));
     }
 
+    @Ignore("Robolectric doesn't support loading native libraries (*.so)")
     @Test
     public void testThatDecipherFunctionIsValid() {
         String playerUrl = mAppServiceInt.getPlayerUrl();

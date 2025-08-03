@@ -1,9 +1,10 @@
 package com.liskovsoft.googleapi.oauth2.manager;
 
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
-import com.liskovsoft.googleapi.oauth2.impl.GoogleAccount;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
+import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.Map;
@@ -13,29 +14,34 @@ public abstract class OAuth2AccountManagerBase {
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private String mCachedAuthorizationHeader;
     private String mCachedAuthorizationHeader2;
-    private long mLastUpdateTime;
+    private long mCacheUpdateTime;
 
     protected abstract Account getSelectedAccount();
     protected abstract AccessToken obtainAccessToken(String refreshToken);
 
     public void checkAuth() {
-        updateAuthHeaders();
+        updateAuthHeadersIfNeeded();
     }
 
-    protected void updateAuthHeaders() {
-        if (mCachedAuthorizationHeader != null && System.currentTimeMillis() - mLastUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
+    protected void updateAuthHeadersIfNeeded() {
+        if (mCachedAuthorizationHeader != null && Helpers.equals(mCachedAuthorizationHeader, RetrofitOkHttpHelper.getAuthHeaders().get("Authorization"))
+                && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
             return;
         }
 
+        updateAuthHeaders();
+
+        mCacheUpdateTime = System.currentTimeMillis();
+    }
+
+    private void updateAuthHeaders() {
         Account account = getSelectedAccount();
-        String refreshToken = account != null ? ((GoogleAccount) account).getRefreshToken() : null;
-        String refreshToken2 = account != null ? ((GoogleAccount) account).getRefreshToken2() : null;
+        String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
+        String refreshToken2 = account != null ? ((YouTubeAccount) account).getRefreshToken2() : null;
         // get or create authorization on fly
         mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
         mCachedAuthorizationHeader2 = createAuthorizationHeader(refreshToken2);
         syncWithRetrofit();
-
-        mLastUpdateTime = System.currentTimeMillis();
     }
 
     /**
@@ -44,7 +50,7 @@ public abstract class OAuth2AccountManagerBase {
     public void setAuthorizationHeader(String authorizationHeader) {
         mCachedAuthorizationHeader = authorizationHeader;
         mCachedAuthorizationHeader2 = null;
-        mLastUpdateTime = System.currentTimeMillis();
+        mCacheUpdateTime = System.currentTimeMillis();
 
         syncWithRetrofit();
     }
@@ -73,6 +79,10 @@ public abstract class OAuth2AccountManagerBase {
     }
 
     private void syncWithRetrofit() {
+        if (Helpers.isJUnitTest()) {
+            return;
+        }
+
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
         Map<String, String> headers2 = RetrofitOkHttpHelper.getAuthHeaders2();
         headers.clear();
@@ -80,7 +90,7 @@ public abstract class OAuth2AccountManagerBase {
 
         if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((GoogleAccount) getSelectedAccount()).getPageIdToken();
+            String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
             if (pageIdToken != null) {
                 headers2.put("Authorization", mCachedAuthorizationHeader2);
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.

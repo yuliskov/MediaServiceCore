@@ -1,11 +1,11 @@
 package com.liskovsoft.googleapi.oauth2.manager;
 
 import com.liskovsoft.googleapi.oauth2.OAuth2Service;
-import com.liskovsoft.googleapi.oauth2.impl.GoogleAccount;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.Account;
-import com.liskovsoft.mediaserviceinterfaces.oauth.data.SignInCode;
+import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.SignInCode;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -45,7 +45,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
 
             if (index != -1) {
                 Account matched = get(index);
-                ((GoogleAccount) account).merge(matched);
+                ((YouTubeAccount) account).merge(matched);
                 remove(matched);
             }
         }
@@ -57,7 +57,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         GlobalPreferences.setOnInit(() -> {
             init();
             try {
-                updateAuthHeaders();
+                updateAuthHeadersIfNeeded();
             } catch (Exception e) {
                 // Host not found
                 e.printStackTrace();
@@ -144,7 +144,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         }
 
         // Create initial account (with only refresh key)
-        GoogleAccount tempAccount = GoogleAccount.fromToken(refreshToken);
+        YouTubeAccount tempAccount = YouTubeAccount.fromToken(refreshToken);
         addAccount(tempAccount);
 
         //// Use initial account to create auth header
@@ -174,7 +174,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
     private void addAccount(Account newAccount) {
         if (newAccount.isSelected()) {
             for (Account account : mAccounts) {
-                ((GoogleAccount) account).setSelected(false);
+                ((YouTubeAccount) account).setSelected(false);
             }
         }
 
@@ -189,7 +189,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         }
 
         for (Account account : mAccounts) {
-            ((GoogleAccount) account).setSelected(newAccount != null && newAccount.equals(account));
+            ((YouTubeAccount) account).setSelected(newAccount != null && newAccount.equals(account));
         }
 
         persistAccounts();
@@ -232,7 +232,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
             mAccounts.clear();
 
             for (String spec : split) {
-                mAccounts.add(GoogleAccount.from(spec));
+                mAccounts.add(YouTubeAccount.from(spec));
             }
         }
 

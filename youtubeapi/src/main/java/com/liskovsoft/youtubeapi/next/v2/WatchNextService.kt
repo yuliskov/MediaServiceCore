@@ -96,7 +96,8 @@ internal open class WatchNextService {
     }
 
     private fun getWatchNext(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): WatchNextResult? {
-        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(MediaGroupOptions.create().clientTV, videoId, playlistId, playlistIndex, playlistParams))
+        return getWatchNext(WatchNextApiHelper.getWatchNextQuery(
+            MediaGroupOptions.create(MediaGroup.TYPE_SUGGESTIONS).clientTV, videoId, playlistId, playlistIndex, playlistParams))
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {

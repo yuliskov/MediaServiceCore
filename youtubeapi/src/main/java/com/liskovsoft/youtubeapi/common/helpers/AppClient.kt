@@ -8,9 +8,9 @@ private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\
         "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 // Merge Shorts with Subscriptions: TV_APP_QUALITY_LIMITED_ANIMATION
 // Separate Shorts from Subscriptions: TV_APP_QUALITY_FULL_ANIMATION
-private const val POST_DATA_BROWSE =
+private const val POST_DATA_BROWSE_TV =
     "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
-private const val POST_DATA_BROWSE_LEGACY =
+private const val POST_DATA_BROWSE_TV_LEGACY =
     "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 private const val POST_DATA_IOS = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
@@ -26,15 +26,15 @@ internal enum class AppClient(
 ) {
     // 8AEB - premium formats?
     TV("TVHTML5", "7.20250714.16.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV,
-        referer = "https://www.youtube.com/tv", params = "8AEB", postDataBrowse = POST_DATA_BROWSE),
-    TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_LEGACY),
+        referer = "https://www.youtube.com/tv", params = "8AEB", postDataBrowse = POST_DATA_BROWSE_TV),
+    TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_TV_LEGACY),
     TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", 85, userAgent = DefaultHeaders.USER_AGENT_TV,
-        referer = "https://www.youtube.com/tv", clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE),
+        referer = "https://www.youtube.com/tv", clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),
     // Can't use authorization
     TV_SIMPLE("TVHTML5_SIMPLY", "1.0", 75, userAgent = DefaultHeaders.USER_AGENT_TV,
-        referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE),
+        referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
     TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV,
-        referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE),
+        referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE_TV),
     WEB("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_WEB,
         referer = "https://www.youtube.com/", params = "8AEB"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
@@ -49,7 +49,7 @@ internal enum class AppClient(
     WEB_SAFARI("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_SAFARI,
         referer = "https://www.youtube.com/", params = "8AEB"),
     MWEB("MWEB", "2.20250213.05.00", 2, userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB,
-        referer = "https://m.youtube.com/"),
+        referer = "https://m.youtube.com/", params = "8AEB"),
     ANDROID("ANDROID", "19.26.37", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID,
         referer = null, postData = String.format(POST_DATA_ANDROID, 30)),
     ANDROID_VR("ANDROID_VR", "1.37", 28, userAgent = DefaultHeaders.USER_AGENT_WEB,

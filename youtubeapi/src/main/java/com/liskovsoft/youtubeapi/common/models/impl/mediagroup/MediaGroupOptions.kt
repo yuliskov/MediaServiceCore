@@ -14,7 +14,7 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
     val clientTV by lazy { if (enableLegacyUI) AppClient.TV_LEGACY else AppClient.TV }
 
     companion object {
-        fun create(groupType: Int = MediaGroup.TYPE_UNDEFINED, channelId: String? = null): MediaGroupOptions {
+        fun create(groupType: Int, channelId: String? = null): MediaGroupOptions {
             val data = MediaServiceData.instance()
             val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)) ||
@@ -31,7 +31,8 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME)) ||
                     (channelId == AppConstants.WATCH_LATER_CHANNEL_ID && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
             val isGridSection = MediaGroup.TYPE_SUBSCRIPTIONS == groupType || MediaGroup.TYPE_HISTORY == groupType || MediaGroup.TYPE_CHANNEL_UPLOADS == groupType
-            val enableLegacyUI = data.isLegacyUIEnabled || (!removeShorts && isGridSection) // the modern grid ui contains shorts on a separate row
+            val isBrowseSection = groupType != MediaGroup.TYPE_SUGGESTIONS // legacy suggestions ui doesn't have chapters
+            val enableLegacyUI = (data.isLegacyUIEnabled && isBrowseSection) || (!removeShorts && isGridSection) // the modern grid ui contains shorts on a separate row
 
             return MediaGroupOptions(
                 removeShorts,

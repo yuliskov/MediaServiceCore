@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 @RequiresApi(19)
 internal object PoTokenProviderImpl : PoTokenProvider {
     val TAG = PoTokenProviderImpl::class.simpleName
-    private val webViewSupported by lazy { DeviceHelpers.supportsWebView() }
+    private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
 
     private object WebPoTokenGenLock

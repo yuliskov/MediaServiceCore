@@ -113,17 +113,12 @@ public class MediaServiceData {
         return sInstance;
     }
 
-    public void setScreenId(String screenId) {
-        mScreenId = screenId;
-        persistData();
-    }
-
     public String getScreenId() {
         return mScreenId;
     }
 
-    public void setDeviceId(String deviceId) {
-        mDeviceId = deviceId;
+    public void setScreenId(String screenId) {
+        mScreenId = screenId;
         persistData();
     }
 
@@ -137,6 +132,11 @@ public class MediaServiceData {
         }
 
         return mDeviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        mDeviceId = deviceId;
+        persistData();
     }
 
     public Pair<Integer, Boolean> getVideoInfoType() {
@@ -174,7 +174,15 @@ public class MediaServiceData {
         persistData();
     }
 
-    public void enableFormat(int formats, boolean enable) {
+    public boolean isFormatEnabled(int formats) {
+        if (mEnabledFormats == FORMATS_NONE) {
+            setFormatEnabled(FORMATS_DASH | FORMATS_URL, true);
+        }
+
+        return (mEnabledFormats & formats) == formats;
+    }
+
+    public void setFormatEnabled(int formats, boolean enable) {
         if (enable) {
             mEnabledFormats |= formats;
         } else {
@@ -186,15 +194,11 @@ public class MediaServiceData {
         YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
-    public boolean isFormatEnabled(int formats) {
-        if (mEnabledFormats == FORMATS_NONE) {
-            enableFormat(FORMATS_DASH | FORMATS_URL, true);
-        }
-
-        return (mEnabledFormats & formats) == formats;
+    public boolean isContentHidden(int content) {
+        return (mHiddenContent & content) == content;
     }
 
-    public void hideContent(int content, boolean hide) {
+    public void setContentHidden(int content, boolean hide) {
         if (hide) {
             mHiddenContent |= content;
         } else {
@@ -202,10 +206,6 @@ public class MediaServiceData {
         }
 
         persistData();
-    }
-
-    public boolean isContentHidden(int content) {
-        return (mHiddenContent & content) == content;
     }
 
     public PoTokenResponse getPoToken() {
@@ -256,15 +256,15 @@ public class MediaServiceData {
         return mIsMoreSubtitlesUnlocked;
     }
 
-    public void unlockMoreSubtitles(boolean unlock) {
+    public void setMoreSubtitlesUnlocked(boolean unlock) {
         mIsMoreSubtitlesUnlocked = unlock;
         persistData();
 
         YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
-    public boolean supportsWebView() {
-        return PoTokenGate.supportsNpPot();
+    public boolean isNpPotSupported() {
+        return PoTokenGate.isNpPotSupported();
     }
 
     public boolean isLegacyUIEnabled() {

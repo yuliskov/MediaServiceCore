@@ -16,7 +16,7 @@ internal object PoTokenGate {
             return mNpPoToken?.playerRequestPoToken
         }
 
-        mNpPoToken = if (supportsNpPot())
+        mNpPoToken = if (isNpPotSupported())
             PoTokenProviderImpl.getWebClientPoToken(videoId)
         else null
 
@@ -25,7 +25,7 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun getSessionPoToken(): String? {
-        return if (supportsNpPot()) {
+        return if (isNpPotSupported()) {
             if (mNpPoToken == null)
                 mNpPoToken = PoTokenProviderImpl.getWebClientPoToken("")
             mNpPoToken?.streamingDataPoToken
@@ -34,7 +34,7 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun updatePoToken() {
-        if (supportsNpPot()) {
+        if (isNpPotSupported()) {
             //mNpPoToken = null // only refresh
             mNpPoToken = PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
         } else {
@@ -48,7 +48,7 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun supportsNpPot() = VERSION.SDK_INT >= 19 && DeviceHelpers.supportsWebView() && !isWebViewBroken()
+    fun isNpPotSupported() = VERSION.SDK_INT >= 19 && DeviceHelpers.isWebViewSupported() && !isWebViewBroken()
 
     private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && DeviceHelpers.isTCL() // "TCL TV - Harman"
 
@@ -57,7 +57,7 @@ internal object PoTokenGate {
         if (System.currentTimeMillis() < mCacheResetTimeMs)
             return false
 
-        if (supportsNpPot()) {
+        if (isNpPotSupported()) {
             mNpPoToken = null
             //PoTokenProviderImpl.resetCache()
         } else

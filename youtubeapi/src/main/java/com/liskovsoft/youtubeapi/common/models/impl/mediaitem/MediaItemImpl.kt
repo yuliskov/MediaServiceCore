@@ -35,7 +35,7 @@ internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMedia
     override val isMovieItem by lazy { itemWrapper.isMovie() }
     override val feedbackTokenItem by lazy { itemWrapper.getFeedbackToken() }
     override val feedbackTokenItem2 by lazy { itemWrapper.getFeedbackToken2() }
-    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
+    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) }
     override val percentWatchedItem by lazy { itemWrapper.getPercentWatched() }
     override val startTimeSecondsItem by lazy { itemWrapper.getStartTimeSeconds() }
     override val searchQueryItem by lazy { itemWrapper.getQuery() }

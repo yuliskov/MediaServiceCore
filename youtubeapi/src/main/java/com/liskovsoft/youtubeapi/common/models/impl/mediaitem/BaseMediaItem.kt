@@ -28,6 +28,8 @@ open class BaseMediaItem : MediaItem {
         get() = field ?: playlistIndexItem
     private var _paramsItem: String? = null
         get() = field ?: playlistParamsItem
+    private var _isShortsItem: Boolean? = null
+        get() = field ?: isShortsItem
 
     //private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
     private val _id by lazy { hashCode() }
@@ -185,7 +187,11 @@ open class BaseMediaItem : MediaItem {
     }
 
     override fun isShorts(): Boolean {
-        return isShortsItem ?: false
+        return _isShortsItem ?: false
+    }
+
+    fun setShorts(isShorts: Boolean) {
+        _isShortsItem = isShorts
     }
 
     override fun isMovie(): Boolean {

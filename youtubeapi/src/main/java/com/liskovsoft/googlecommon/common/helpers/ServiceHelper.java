@@ -29,6 +29,7 @@ public class ServiceHelper {
     // Regex to extract hours, minutes, and seconds
     private static final Pattern sIsoDurationPattern = Pattern.compile("PT(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?");
 
+    @Nullable
     public static String videoIdToFullUrl(String videoId) {
         if (videoId == null) {
             return null;

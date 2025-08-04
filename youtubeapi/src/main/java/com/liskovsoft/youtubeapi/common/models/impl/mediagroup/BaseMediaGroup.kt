@@ -26,7 +26,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
     protected open val mediaItemList: List<MediaItem?>? by lazy { getItemWrappersInt()
         ?.mapIndexedNotNull { index, it -> it
             ?.let { if (filter.invoke(it)) null else it }
-            ?.let { WrapperMediaItem(it).apply { playlistIndex = index } }
+            ?.let { WrapperMediaItem(it).apply { playlistIndex = index; if (options.enableLegacyUI) isShorts = it.isShortsLegacy() } }
         }?.let {
             // Move Watch Later to the top
             if (options.groupType != MediaGroup.TYPE_USER_PLAYLISTS)

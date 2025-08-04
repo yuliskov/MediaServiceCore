@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.app.AppConstants
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
-internal data class MediaGroupOptions(val removeShorts: Boolean = false,
+internal class MediaGroupOptions private constructor(val removeShorts: Boolean = false,
                                       val removeLive: Boolean = false,
                                       val removeUpcoming: Boolean = false,
                                       val removeWatched: Boolean = false,
@@ -14,7 +14,7 @@ internal data class MediaGroupOptions(val removeShorts: Boolean = false,
     val clientTV by lazy { if (enableLegacyUI) AppClient.TV_LEGACY else AppClient.TV }
 
     companion object {
-        fun create(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS, channelId: String? = null): MediaGroupOptions {
+        fun create(groupType: Int = MediaGroup.TYPE_UNDEFINED, channelId: String? = null): MediaGroupOptions {
             val data = MediaServiceData.instance()
             val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)) ||
@@ -30,7 +30,8 @@ internal data class MediaGroupOptions(val removeShorts: Boolean = false,
             val removeWatched = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME)) ||
                     (channelId == AppConstants.WATCH_LATER_CHANNEL_ID && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
-            val enableLegacyUI = data.isLegacyUIEnabled || !removeShorts // the modern ui doesn't contains shorts
+            val isGridSection = MediaGroup.TYPE_SUBSCRIPTIONS == groupType || MediaGroup.TYPE_HISTORY == groupType || MediaGroup.TYPE_CHANNEL_UPLOADS == groupType
+            val enableLegacyUI = data.isLegacyUIEnabled || (!removeShorts && isGridSection) // the modern grid ui contains shorts on a separate row
 
             return MediaGroupOptions(
                 removeShorts,

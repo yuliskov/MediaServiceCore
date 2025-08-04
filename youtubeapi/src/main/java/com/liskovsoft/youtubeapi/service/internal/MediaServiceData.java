@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -272,7 +271,7 @@ public class MediaServiceData {
         return mIsLegacyUIEnabled;
     }
 
-    public void enableLegacyUI(boolean enable) {
+    public void setLegacyUIEnabled(boolean enable) {
         mIsLegacyUIEnabled = enable;
 
         persistData();

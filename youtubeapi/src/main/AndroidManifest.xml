@@ -2,6 +2,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.liskovsoft.youtubeapi">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- WebViewUtils -->
+    <uses-feature android:name="android.hardware.usb.host" />
 
     <!-- NOTE: use older api -->
     <uses-sdk tools:overrideLibrary="

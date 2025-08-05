@@ -1,10 +1,8 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
 import android.content.Context
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.os.PowerManager
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -368,8 +366,12 @@ internal class PoTokenWebView private constructor(
         private const val JS_INTERFACE = "PoTokenWebView"
 
         override fun newPoTokenGenerator(context: Context): PoTokenGenerator {
-            if (!isThermalServiceAvailable(context)) {
+            if (hasThermalServiceBug(context)) {
                 throw BadWebViewException("ThermalService isn't available")
+            }
+
+            if (hasUsbServiceBug(context)) {
+                throw BadWebViewException("Usb service isn't available")
             }
 
             val latch = CountDownLatch(1)
@@ -405,27 +407,6 @@ internal class PoTokenWebView private constructor(
         ) {
             if (!Handler(Looper.getMainLooper()).post(runnable)) {
                 throw PoTokenException("Could not run on main thread")
-            }
-        }
-
-        private fun isThermalServiceAvailable(context: Context): Boolean {
-            // Only Android 10 has the issue
-            if (Build.VERSION.SDK_INT != 29)
-                return true
-
-            val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
-
-            val listener = PowerManager.OnThermalStatusChangedListener {
-                // NOP
-            }
-
-            return try {
-                powerService.addThermalStatusListener(listener)
-                true
-            } catch (e: Exception) {
-                false
-            } finally {
-                powerService.removeThermalStatusListener(listener)
             }
         }
     }

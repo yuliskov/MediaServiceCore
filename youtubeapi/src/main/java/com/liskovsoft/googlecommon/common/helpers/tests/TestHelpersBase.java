@@ -35,6 +35,8 @@ public class TestHelpersBase {
 
     // American Pie
     public static final String VIDEO_ID_MUSIC_2 = "X4RDB-mMDJg";
+    
+    public static final String VIDEO_ID_KIDS = "mosPaiR-nrs";
 
     // GECID.com
     public static final String CHANNEL_ID = "UC3PyIqYQ7lw7YKHRLqIvXlw";

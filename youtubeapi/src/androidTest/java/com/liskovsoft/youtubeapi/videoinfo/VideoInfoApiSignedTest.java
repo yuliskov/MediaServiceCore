@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Call;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -41,26 +40,45 @@ public class VideoInfoApiSignedTest {
         mLocaleManager = LocaleManager.instance();
         RetrofitOkHttpHelper.setDisableCompression(true);
         RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
+        RetrofitOkHttpHelper.getAuthHeaders().put("X-Goog-Pageid", TestHelpers.getPageIdToken());
     }
 
     @Test
-    public void testThatAgeRestrictedVideoContainsRequiredFields() throws IOException {
-        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfoRestricted(TestHelpers.VIDEO_ID_AGE_RESTRICTED));
+    public void testThatAgeRestrictedVideoContainsRequiredFields() {
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(AppClient.TV, TestHelpers.VIDEO_ID_AGE_RESTRICTED));
     }
 
     @Test
-    public void testThatUnavailableVideoContainsRequiredFields() throws IOException {
-        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_UNAVAILABLE));
+    public void testThatUnavailableVideoContainsRequiredFields() {
+        testThatNonLiveVideoInfoContainsRequiredFields(getVideoInfo(AppClient.TV, TestHelpers.VIDEO_ID_UNAVAILABLE));
     }
 
     @Test
-    public void testThatLiveVideoContainsSpecificFields()  throws IOException {
-        testThatLiveVideoContainsSpecificFields(getVideoInfo(TestHelpers.VIDEO_ID_LIVE));
+    public void testThatLiveVideoContainsSpecificFields()  {
+        testThatLiveVideoContainsSpecificFields(getVideoInfo(AppClient.TV, TestHelpers.VIDEO_ID_LIVE));
     }
 
     @Test
-    public void testThatVideoWithCaptionsContainsRequiredFields() throws IOException {
-        testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(TestHelpers.VIDEO_ID_CAPTIONS));
+    public void testThatVideoWithCaptionsContainsRequiredFields() {
+        testThatVideoWithCaptionsContainsRequiredFields(getVideoInfo(AppClient.TV, TestHelpers.VIDEO_ID_CAPTIONS));
+    }
+
+    @Test
+    public void initialResponseTest() {
+        testThatVideoInfoContainsRequiredFields(InitialResponse.getVideoInfo(TestHelpers.VIDEO_ID_MUSIC_2, false));
+    }
+
+    @Test
+    public void testThatClientsHaveNonEmptyResponses() {
+        for (AppClient client : AppClient.values()) {
+            if (client.isPlayerQueryBroken()) {
+                continue;
+            }
+
+            VideoInfo result = getVideoInfo(client, TestHelpers.VIDEO_ID_KIDS);
+            assertTrue("Result not null for client " + client.name(), result != null && !result.isUnplayable());
+            testThatVideoInfoContainsRequiredFields(result);
+        }
     }
 
     private void testThatLiveVideoContainsSpecificFields(VideoInfo result) {
@@ -110,13 +128,12 @@ public class VideoInfoApiSignedTest {
         assertNotNull("Contains vm tracking param", result.getVisitorMonitoringData());
     }
 
-    private VideoInfo getVideoInfoRestricted(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.TV, videoId, null), mAppService.getVisitorData(), AppClient.TV.getUserAgent());
-        return wrapper.execute().body();
-    }
+    private VideoInfo getVideoInfo(AppClient client, String videoId) {
+        if (client == AppClient.INITIAL) {
+            return InitialResponse.getVideoInfo(videoId, !client.isAuthSupported());
+        }
 
-    private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.TV, videoId, null), mAppService.getVisitorData(), AppClient.TV.getUserAgent());
-        return wrapper.execute().body();
+        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(client, videoId, null), mAppService.getVisitorData(), client.getUserAgent());
+        return RetrofitHelper.get(wrapper, !client.isAuthSupported());
     }
 }

@@ -305,7 +305,7 @@ class BrowseApiSignedTest {
     }
 
     private fun createOptions(groupType: Int = MediaGroup.TYPE_SUBSCRIPTIONS): MediaGroupOptions {
-        return MediaGroupOptions(
+        return MediaGroupOptions.create(
             groupType = groupType
         )
     }

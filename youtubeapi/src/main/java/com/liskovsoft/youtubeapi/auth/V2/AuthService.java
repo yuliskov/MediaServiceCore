@@ -109,6 +109,9 @@ public class AuthService {
         }
     }
 
+    /**
+     * NOTE: Requires the auth header to be set before the call
+     */
     @Nullable
     public List<AccountInt> getAccounts() {
         Call<AccountsList> wrapper = mAuthApi.getAccountsList(AuthApiHelper.getAccountsListQuery());

@@ -141,8 +141,9 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onJsInitializationError(error: String) {
-        Log.e(TAG, "Initialization error from JavaScript: $error")
-        onInitializationErrorCloseAndCancel(buildExceptionForJsError(error))
+        val msg = "onJsInitializationError: $error"
+        Log.e(TAG, msg)
+        onInitializationErrorCloseAndCancel(buildExceptionForJsError(msg))
     }
 
     /**
@@ -220,9 +221,9 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onObtainPoTokenError(identifier: String, error: String) {
-        Log.e(TAG, "obtainPoToken error from JavaScript: $error")
-        //throw buildExceptionForJsError(error)
-        onInitializationErrorCloseAndCancel(buildExceptionForJsError(error))
+        val msg = "onObtainPoTokenError: $error"
+        Log.e(TAG, msg)
+        onInitializationErrorCloseAndCancel(buildExceptionForJsError(msg))
     }
 
     /**

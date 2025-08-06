@@ -9,6 +9,10 @@ public class TestHelpers extends TestHelpersBase {
     private static String mAuthorization; // type: Bearer
     private static String mOAuth2Authorization; // type: Bearer
 
+    public static String getPageIdToken() {
+        return "102307470137119736718";
+    }
+
     public static String getAuthorization() {
         if (mAuthorization != null) {
             return mAuthorization;

@@ -11,14 +11,6 @@ import retrofit2.http.POST
 
 @WithGson
 internal interface BrowseApi {
-    //@Headers(
-    //    "Content-Type: application/json"
-    //)
-    //@POST("https://www.youtube.com/youtubei/v1/browse")
-    //fun getBrowseResult(@Body browseQuery: String?,
-    //                    @Header("User-Agent") userAgent: String = DefaultHeaders.USER_AGENT_WEB,
-    //                    @Header("Referer") referer: String? = "https://www.youtube.com/"): Call<BrowseResult?>
-
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,

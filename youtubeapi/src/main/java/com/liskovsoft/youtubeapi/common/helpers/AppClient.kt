@@ -26,7 +26,7 @@ internal enum class AppClient(
 ) {
     // 8AEB - premium formats?
     TV("TVHTML5", "7.20250714.16.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV,
-        referer = "https://www.youtube.com/tv", params = "8AEB", postDataBrowse = POST_DATA_BROWSE_TV),
+        referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
     TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_TV_LEGACY),
     TV_EMBED("TVHTML5_SIMPLY_EMBEDDED_PLAYER", "2.0", 85, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv", clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),

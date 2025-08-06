@@ -70,7 +70,7 @@ internal enum class AppClient(
     val baseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent,
         browserName, browserVersion, (postData ?: "")) }
 
-    fun isAuthSupported() = this == TV || this == TV_EMBED // NOTE: TV_SIMPLE doesn't support auth
+    fun isAuthSupported() = this == TV || this == TV_LEGACY || this == TV_EMBED || this == TV_KIDS // NOTE: TV_SIMPLE doesn't support auth
     fun isPotSupported() = this == WEB || this == MWEB || this == WEB_EMBED || this == ANDROID_VR
 
     private fun extractBrowserInfo(userAgent: String): Pair<String, String> {

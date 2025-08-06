@@ -89,7 +89,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         decipherFormats(result.getAdaptiveFormats());
         decipherFormats(result.getRegularFormats());
 
-        if (result.isHistoryBroken()) {
+        if (result.isHistoryBroken() && !result.isUnplayable()) {
             // Only the tv client supports auth features
             result.sync(getVideoInfo(AppClient.TV, videoId, clickTrackingParams));
         }

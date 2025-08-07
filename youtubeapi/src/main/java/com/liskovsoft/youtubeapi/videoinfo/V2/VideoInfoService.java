@@ -14,6 +14,7 @@ import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.InitialResponse;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
+import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.TranslationLanguage;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
@@ -137,6 +138,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
         // And last, try to switch the client
         nextVideoInfo();
         persistVideoInfoType();
+    }
+
+    public void switchNextSubtitle() {
+        CaptionTrack.sFormat = Helpers.getNextValue(CaptionTrack.sFormat, CaptionTrack.CaptionFormat.values());
     }
 
     public void resetInfoType() {

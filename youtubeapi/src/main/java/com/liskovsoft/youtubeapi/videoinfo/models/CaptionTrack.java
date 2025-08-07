@@ -28,7 +28,7 @@ public class CaptionTrack {
     }
     
     private static final String TYPE_ASR = "asr";
-    private static final CaptionFormat sFormat = CaptionFormat.TTML;
+    public static CaptionFormat sFormat = CaptionFormat.TTML;
 
     /**
      * Example: "https://www.youtube.com/api/timedtext?caps=&key=yt…&sparams=caps%2Cv%2Cxorp%2Cexpire&lang=en&name=en"

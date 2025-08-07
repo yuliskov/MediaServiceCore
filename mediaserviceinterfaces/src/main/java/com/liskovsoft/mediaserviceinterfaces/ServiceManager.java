@@ -10,6 +10,7 @@ public interface ServiceManager {
     NotificationsService getNotificationsService();
     ChannelGroupService getChannelGroupService();
     void invalidateCache();
+    void invalidateMediaItemCache();
     void refreshCacheIfNeeded();
     void applyNoPlaybackFix();
 }

@@ -88,6 +88,11 @@ public class YouTubeServiceManager implements ServiceManager {
     }
 
     @Override
+    public void invalidateMediaItemCache() {
+        getYouTubeMediaItemService().invalidateCache();
+    }
+
+    @Override
     public void refreshCacheIfNeeded() {
         refreshCacheIfNeededInt();
     }

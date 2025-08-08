@@ -77,7 +77,7 @@ public class YouTubeMediaItemService implements MediaItemService {
 
         YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
-        saveInCache(formatInfo);
+        saveInCache(formatInfo, clickTrackingParams);
 
         return formatInfo;
     }
@@ -175,6 +175,9 @@ public class YouTubeMediaItemService implements MediaItemService {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
             return;
         }
+
+        // Improve the performance by fetching the auth data right before the history update
+        fetchAuthDataIfNeeded(formatInfo);
 
         getTrackingService().updateWatchTime(
                 formatInfo.getVideoId(), positionSec, Helpers.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
@@ -495,8 +498,12 @@ public class YouTubeMediaItemService implements MediaItemService {
                 mCachedFormatInfo.isCacheActual();
     }
 
-    private void saveInCache(YouTubeMediaItemFormatInfo formatInfo) {
+    private void saveInCache(YouTubeMediaItemFormatInfo formatInfo, String clickTrackingParams) {
         mCachedFormatInfo = formatInfo;
+
+        if (formatInfo != null) {
+            formatInfo.setClickTrackingParams(clickTrackingParams);
+        }
     }
 
     private void checkSigned() {
@@ -541,5 +548,16 @@ public class YouTubeMediaItemService implements MediaItemService {
     @NonNull
     private static WatchNextService getWatchNextService() {
         return WatchNextServiceWrapper.INSTANCE;
+    }
+
+    private static void fetchAuthDataIfNeeded(YouTubeMediaItemFormatInfo formatInfo) {
+        if (formatInfo == null) {
+            return;
+        }
+
+        if (formatInfo.isHistoryBroken() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
+            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams());
+            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
+        }
     }
 }

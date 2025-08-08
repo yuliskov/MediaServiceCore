@@ -62,6 +62,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public VideoInfo getVideoInfo(String videoId, String clickTrackingParams) {
+        if (videoId == null) {
+            return null;
+        }
+
         initVideoInfo();
 
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
@@ -90,12 +94,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
         decipherFormats(result.getAdaptiveFormats());
         decipherFormats(result.getRegularFormats());
 
-        if (result.isHistoryBroken() && !result.isUnplayable()) {
-            // Only the tv client supports auth features
-            result.sync(getVideoInfo(AppClient.TV, videoId, clickTrackingParams));
+        return result;
+    }
+
+    public VideoInfo getAuthVideoInfo(String videoId, String clickTrackingParams) {
+        if (videoId == null) {
+            return null;
         }
 
-        return result;
+        mSkipAuthBlock = false;
+
+        // Only the tv client supports auth features
+        return getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
     }
 
     private VideoInfo firstNonNull(String videoId, String clickTrackingParams) {
@@ -125,11 +135,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
-        // First, try to reset pot cache
+        // Try to reset pot cache for the last video
         if (!mIsUnplayable && isPotSupported() && PoTokenGate.resetCache()) {
             return;
         }
-        // Then, try to disable Premium
+        // The Premium is likely broken
         if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
             // Skip additional formats fetching that could produce an error
             getData().setFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS, false);

@@ -173,37 +173,16 @@ public class VideoInfo {
         return mEventId;
     }
 
-    /**
-     * Intended to merge signed and unsigned infos (no-playback fix)
-     */
-    public void setEventId(String eventId) {
-        mEventId = eventId;
-    }
-
     public String getVisitorMonitoringData() {
         parseTrackingParams();
 
         return mVisitorMonitoringData;
     }
 
-    /**
-     * Intended to merge signed and unsigned infos (no-playback fix)
-     */
-    public void setVisitorMonitoringData(String visitorMonitoringData) {
-        mVisitorMonitoringData = visitorMonitoringData;
-    }
-
     public String getOfParam() {
         parseTrackingParams();
 
         return mOfParam;
-    }
-
-    /**
-     * Intended to merge signed and unsigned infos (no-playback fix)
-     */
-    public void setOfParam(String ofParam) {
-        mOfParam = ofParam;
     }
 
     public String getPlaybackUrl() {
@@ -366,15 +345,6 @@ public class VideoInfo {
         return mPaidContentText != null ? Helpers.toString(mPaidContentText.getText()) : null;
     }
 
-    //public boolean isValid() {
-    //    if (STATUS_OFFLINE.equals(mPlayabilityStatus)) {
-    //        return true;
-    //    }
-    //
-    //    // Check that history data is present
-    //    return getEventId() != null && getVisitorMonitoringData() != null;
-    //}
-
     /**
      * Sync live data
      */
@@ -390,16 +360,19 @@ public class VideoInfo {
     }
 
     /**
-     * Sync history data
+     * Sync history data<br/>
+     * Intended to merge signed and unsigned infos (no-playback fix)
      */
     public void sync(VideoInfo videoInfo) {
         if (videoInfo == null || Helpers.anyNull(videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam())) {
             return;
         }
 
-        setEventId(videoInfo.getEventId());
-        setVisitorMonitoringData(videoInfo.getVisitorMonitoringData());
-        setOfParam(videoInfo.getOfParam());
+        // Intended to merge signed and unsigned infos (no-playback fix)
+        mEventId = videoInfo.getEventId();
+        mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
+        mOfParam = videoInfo.getOfParam();
+        
         setHistoryBroken(false);
     }
 

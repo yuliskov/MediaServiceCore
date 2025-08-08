@@ -59,7 +59,6 @@ internal object PoTokenGate {
 
         if (isNpPotSupported()) {
             mNpPoToken = null
-            //PoTokenProviderImpl.resetCache()
         } else
             PoTokenCloudService.resetCache()
 

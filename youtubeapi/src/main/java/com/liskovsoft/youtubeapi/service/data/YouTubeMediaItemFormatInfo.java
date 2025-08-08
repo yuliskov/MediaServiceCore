@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder;
@@ -44,7 +45,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mStoryboardSpec;
     private boolean mIsUnplayable;
     private String mPlayabilityStatus;
-    private final long mCreatedTimeMs;
     private String mStartTimestamp;
     private String mUploadDate;
     private long mStartTimeMs;
@@ -56,9 +56,10 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsHistoryBroken;
     private boolean mIsBotCheckError;
     private String mPaidContentText;
+    private String mClickTrackingParams;
 
     private YouTubeMediaItemFormatInfo() {
-        mCreatedTimeMs = System.currentTimeMillis();
+        
     }
 
     public static YouTubeMediaItemFormatInfo from(VideoInfo videoInfo) {
@@ -155,8 +156,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     public String getLengthSeconds() {
         return mLengthSeconds;
     }
-
-    @Override
+    
     public void setLengthSeconds(String lengthSeconds) {
         mLengthSeconds = lengthSeconds;
     }
@@ -167,18 +167,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
-    @Override
     public String getAuthor() {
         return mAuthor;
-    }
-
-    @Override
-    public void setAuthor(String author) {
-        mAuthor = author;
     }
 
     @Override
@@ -187,18 +177,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public void setViewCount(String viewCount) {
-        mViewCount = viewCount;
-    }
-
-    @Override
     public String getDescription() {
         return mDescription;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        mDescription = description;
     }
 
     @Override
@@ -207,18 +187,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public void setVideoId(String videoId) {
-        mVideoId = videoId;
-    }
-
-    @Override
     public String getChannelId() {
         return mChannelId;
-    }
-
-    @Override
-    public void setChannelId(String channelId) {
-        mChannelId = channelId;
     }
 
     @Override
@@ -360,7 +330,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mIsUnplayable;
     }
 
-    @Override
     public boolean isHistoryBroken() {
         return mIsHistoryBroken;
     }
@@ -422,6 +391,14 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mOfParam;
     }
 
+    public String getClickTrackingParams() {
+        return mClickTrackingParams;
+    }
+
+    public void setClickTrackingParams(String clickTrackingParams) {
+        mClickTrackingParams = clickTrackingParams;
+    }
+
     /**
      * Format is used between multiple functions. Do a little cache.
      */
@@ -431,11 +408,23 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         // Check app cipher first. It's not robust check (cipher may be updated not by us).
         // So, also check internal cache state.
         // Future translations (no media) should be polled constantly.
-        //return containsMedia() && isCreatedRecently() && AppService.instance().isCacheActual();
         return containsMedia() && AppService.instance().isPlayerCacheActual();
     }
 
-    private boolean isCreatedRecently() {
-        return !isLive() || System.currentTimeMillis() - mCreatedTimeMs < 60 * 1_000;
+    /**
+     * Sync history data<br/>
+     * Intended to merge signed and unsigned infos (no-playback fix)
+     */
+    public void sync(YouTubeMediaItemFormatInfo formatInfo) {
+        if (formatInfo == null || Helpers.anyNull(formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam())) {
+            return;
+        }
+
+        // Intended to merge signed and unsigned infos (no-playback fix)
+        mEventId = formatInfo.getEventId();
+        mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
+        mOfParam = formatInfo.getOfParam();
+
+        mIsHistoryBroken = false;
     }
 }

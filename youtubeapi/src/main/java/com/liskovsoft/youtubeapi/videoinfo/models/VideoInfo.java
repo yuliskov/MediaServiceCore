@@ -32,6 +32,9 @@ public class VideoInfo {
     @JsonPath("$.streamingData.adaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mAdaptiveFormats;
 
+    @JsonPath("$.streamingData.serverAbrStreamingUrl")
+    private String mAbrStreamingUrl; // The purpose?
+
     //@JsonPath("$.playabilityStatus.paygatedQualitiesMetadata.restrictedAdaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mRestrictedFormats;
 
@@ -107,16 +110,8 @@ public class VideoInfo {
         return mAdaptiveFormats;
     }
 
-    public void setAdaptiveFormats(List<AdaptiveVideoFormat> formats) {
-        mAdaptiveFormats = formats;
-    }
-
     public List<RegularVideoFormat> getRegularFormats() {
         return mRegularFormats;
-    }
-
-    public void setRegularFormats(List<RegularVideoFormat> formats) {
-        mRegularFormats = formats;
     }
 
     public List<AdaptiveVideoFormat> getRestrictedFormats() {
@@ -198,7 +193,7 @@ public class VideoInfo {
     }
 
     public boolean isUnplayable() {
-        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted();
+        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted() || isEmpty();
     }
 
     /**
@@ -404,9 +399,6 @@ public class VideoInfo {
                 CaptionTrack originTrack = findOriginTrack(mCaptionTracks);
                 String tag = Helpers.runMultiMatcher(originTrack.getName(), tagPattern);
                 for (TranslationLanguage language : mTranslationLanguages) {
-                    //if (!Helpers.equals(originTrack.getLanguageCode(), language.getLanguageCode())) {
-                    //    mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));
-                    //}
                     mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language, tag));
                 }
             }
@@ -430,5 +422,22 @@ public class VideoInfo {
 
     private boolean isAdaptiveFullHD() {
         return getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
+    }
+
+    public boolean isEmpty() {
+        if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty()) {
+            return false;
+        }
+
+        boolean isAllEmpty = true;
+
+        for (AdaptiveVideoFormat format : mAdaptiveFormats) {
+            if (format != null && !format.isEmpty()) {
+                isAllEmpty = false;
+                break;
+            }
+        }
+
+        return isAllEmpty;
     }
 }

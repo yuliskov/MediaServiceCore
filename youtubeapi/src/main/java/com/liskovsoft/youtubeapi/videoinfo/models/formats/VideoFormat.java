@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 
 import androidx.annotation.NonNull;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
@@ -405,5 +406,9 @@ public class VideoFormat {
                 getWidth(),
                 getHeight(),
                 getITag());
+    }
+
+    public boolean isEmpty() {
+        return Helpers.allNulls(mUrl, mCipher, mSignatureCipher);
     }
 }

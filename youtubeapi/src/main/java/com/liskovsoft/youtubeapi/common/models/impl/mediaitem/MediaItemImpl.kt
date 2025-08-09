@@ -35,7 +35,6 @@ internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMedia
     override val isMovieItem by lazy { itemWrapper.isMovie() }
     override val feedbackTokenItem by lazy { itemWrapper.getFeedbackToken() }
     override val feedbackTokenItem2 by lazy { itemWrapper.getFeedbackToken2() }
-    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) }
     override val percentWatchedItem by lazy { itemWrapper.getPercentWatched() }
     override val startTimeSecondsItem by lazy { itemWrapper.getStartTimeSeconds() }
     override val searchQueryItem by lazy { itemWrapper.getQuery() }
@@ -52,7 +51,6 @@ internal class NextMediaItem(private val nextVideoItem: NextVideoItem): BaseMedi
     override val backgroundThumbImageUrl by lazy { nextVideoItem.getThumbnails()?.getHighResThumbnailUrl() }
     override val playlistIdItem by lazy { nextVideoItem.getPlaylistId() }
     override val playlistIndexItem by lazy { nextVideoItem.getPlaylistIndex() }
-    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
     override val playlistParamsItem by lazy { nextVideoItem.getParams() }
 }
 
@@ -61,7 +59,6 @@ internal class ShuffleMediaItem(private val navigationEndpointItem: NavigationEn
     override val channelIdItem: String? = null
     override val titleItem by lazy { navigationEndpointItem.getTitle() }
     override val playlistIdItem by lazy { navigationEndpointItem.getPlaylistId() }
-    override val mediaUrl by lazy { ServiceHelper.videoIdToFullUrl(videoIdItem) ?: null }
     override val playlistParamsItem by lazy { navigationEndpointItem.getParams() }
 }
 

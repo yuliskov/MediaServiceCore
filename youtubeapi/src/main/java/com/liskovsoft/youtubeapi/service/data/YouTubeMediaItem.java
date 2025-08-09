@@ -25,8 +25,6 @@ public class YouTubeMediaItem implements MediaItem {
     private String mVideoId;
     private String mChannelId;
     private String mPlaylistId;
-    private String mMediaUrl;
-    private String mChannelUrl;
     private String mCardImageUrl;
     private String mBackgroundImageUrl;
     private String mContentType;
@@ -122,8 +120,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mParams = item.getPlaylistParams();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
-        video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale's specific delimiters
         video.mLengthText = item.getBadgeText();
         video.mBadgeText = item.getBadgeText();
@@ -161,8 +157,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
-        video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
         video.mLengthText = item.getLengthText() != null ? item.getLengthText() : item.getBadgeText();
         video.mBadgeText = item.getBadgeText() != null ? item.getBadgeText() : item.getLengthText();
@@ -195,8 +189,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistIndex();
         video.mChannelId = item.getChannelId();
-        video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
-        video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
         // TODO: time conversion doesn't take into account locale specific delimiters
         video.mLengthText = item.getLengthText();
         video.mBadgeText = item.getLengthText();
@@ -218,7 +210,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mCardImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(item.getThumbnails());
         video.mBackgroundImageUrl = YouTubeHelper.findHighResThumbnailUrl(item.getThumbnails());
         video.mChannelId = item.getChannelId();
-        video.mChannelUrl = ServiceHelper.channelIdToFullUrl(item.getChannelId());
 
         addCommonProps(video);
 
@@ -283,7 +274,6 @@ public class YouTubeMediaItem implements MediaItem {
         video.mVideoId = item.getVideoId();
         video.mPlaylistId = item.getPlaylistId();
         video.mPlaylistIndex = item.getPlaylistItemIndex();
-        video.mMediaUrl = ServiceHelper.videoIdToFullUrl(item.getVideoId());
         addCommonProps(video);
 
         return video;
@@ -364,11 +354,6 @@ public class YouTubeMediaItem implements MediaItem {
     @Override
     public String getBackgroundImageUrl() {
         return mBackgroundImageUrl;
-    }
-
-    @Override
-    public String getVideoUrl() {
-        return mMediaUrl;
     }
 
     @Override
@@ -465,11 +450,6 @@ public class YouTubeMediaItem implements MediaItem {
 
     public void setChannelId(String channelId) {
         mChannelId = channelId;
-    }
-
-    @Override
-    public String getChannelUrl() {
-        return mChannelUrl;
     }
 
     @Override

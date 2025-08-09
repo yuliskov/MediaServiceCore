@@ -38,7 +38,6 @@ public interface MediaItem {
      * Additional video info such as user, published etc.
      */
     CharSequence getSecondTitle();
-    String getVideoUrl();
     String getVideoId();
     /**
      * Mime content type.<br/>
@@ -57,7 +56,6 @@ public interface MediaItem {
     int getWidth();
     int getHeight();
     String getChannelId();
-    String getChannelUrl();
     String getVideoPreviewUrl();
     /**
      * Num of audio channels.<br/>

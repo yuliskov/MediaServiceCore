@@ -56,7 +56,7 @@ internal enum class AppClient(
         referer = "https://www.youtube.com/"),
     IOS("IOS", "19.29.1", 5, userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null,
         postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90")),
-    INITIAL(TV);
+    INITIAL(WEB);
 
     constructor(baseClient: AppClient, postData: String? = null, postDataBrowse: String? = null): this(baseClient.clientName, baseClient.clientVersion,
         baseClient.innerTubeName, baseClient.userAgent, baseClient.referer, baseClient.clientScreen, baseClient.params,
@@ -72,7 +72,7 @@ internal enum class AppClient(
 
     fun isAuthSupported() = this == TV || this == TV_LEGACY || this == TV_EMBED || this == TV_KIDS // NOTE: TV_SIMPLE doesn't support auth
     fun isPotSupported() = this == WEB || this == MWEB || this == WEB_EMBED
-    fun isPlayerQueryBroken() = this == WEB_CREATOR || this == WEB_REMIX || this == ANDROID_VR // TODO: Try to fix them?
+    fun isPlayerQueryBroken() = this == INITIAL || this == WEB || this == WEB_CREATOR || this == WEB_REMIX || this == WEB_SAFARI || this == ANDROID_VR // TODO: Try to fix them?
 
     private fun extractBrowserInfo(userAgent: String): Pair<String, String> {
         // Include Shorts: "browserName":"Cobalt"

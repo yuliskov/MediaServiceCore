@@ -191,6 +191,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
+        if (client.isPlayerQueryBroken()) {
+            return null;
+        }
+
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
 
         return getVideoInfo(wrapper, !client.isAuthSupported() || mSkipAuthBlock);

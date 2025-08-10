@@ -33,7 +33,7 @@ public class VideoInfo {
     private List<AdaptiveVideoFormat> mAdaptiveFormats;
 
     @JsonPath("$.streamingData.serverAbrStreamingUrl")
-    private String mAbrStreamingUrl; // The purpose?
+    private String mServerAbrStreamingUrl; // SABR format url
 
     //@JsonPath("$.playabilityStatus.paygatedQualitiesMetadata.restrictedAdaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mRestrictedFormats;

@@ -8,8 +8,6 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     // Common
     String getUrl();
     void setUrl(String url);
-    String getSignatureCipher();
-    void setSignatureCipher(String s);
     String getMimeType();
     void setMimeType(String mimeType);
     String getITag();

@@ -13,7 +13,6 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mIndex;
     private String mIndexRange;
     private String mUrl;
-    private String mSignatureCipher;
     private String mMimeType;
     private String mITag;
     private boolean mIsDrc;
@@ -71,7 +70,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
 
         mediaFormat.mUrl = format.getUrl();
-        mediaFormat.mSignatureCipher = format.getSParam();
         mediaFormat.mMimeType = format.getMimeType();
         String iTag = format.getITag() == 0 ? "" : String.valueOf(format.getITag());
         mediaFormat.mITag = iTag;
@@ -106,16 +104,6 @@ public class YouTubeMediaFormat implements MediaFormat {
     @Override
     public void setUrl(String url) {
         mUrl = url;
-    }
-
-    @Override
-    public String getSignatureCipher() {
-        return mSignatureCipher;
-    }
-
-    @Override
-    public void setSignatureCipher(String cipher) {
-        mSignatureCipher = cipher;
     }
 
     @Override

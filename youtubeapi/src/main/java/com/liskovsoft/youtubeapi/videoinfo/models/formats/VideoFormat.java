@@ -114,9 +114,13 @@ public class VideoFormat {
         mUrl = url;
     }
 
-    public String getSignatureCipher() {
+    public String getSParam() {
         parseCipher();
         return mExtractedCipher;
+    }
+
+    private String getSignature() {
+        return mRealSignature;
     }
 
     public void setSignature(String signature) {
@@ -133,20 +137,16 @@ public class VideoFormat {
         }
     }
 
-    public void setClientVersion(String clientVersion) {
-        setParam(PARAM_CVER, clientVersion);
-    }
-
-    public String getSignature() {
-        return mRealSignature;
-    }
-
-    public String getThrottleCipher() {
+    public String getNParam() {
         return getParam(THROTTLE_PARAM);
     }
 
-    public void setThrottleCipher(String throttleCipher) {
+    public void setNSignature(String throttleCipher) {
         setParam(THROTTLE_PARAM, throttleCipher);
+    }
+
+    public void setClientVersion(String clientVersion) {
+        setParam(PARAM_CVER, clientVersion);
     }
 
     public void setCpn(String cpn) {

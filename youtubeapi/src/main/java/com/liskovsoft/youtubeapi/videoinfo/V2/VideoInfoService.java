@@ -85,14 +85,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         result = retryIfNeeded(result, videoId, clickTrackingParams);
 
-        mSkipAuthBlock = result.isHistoryBroken();
+        mSkipAuthBlock = result.isAnonymous();
 
         applyFixesIfNeeded(result, videoId, clickTrackingParams);
 
         mSkipAuthBlock = false;
 
-        decipherFormats(result.getAdaptiveFormats());
-        decipherFormats(result.getRegularFormats());
+        decipherFormats(result);
 
         return result;
     }
@@ -204,7 +203,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         VideoInfo videoInfo = RetrofitHelper.get(wrapper, skipAuth);
 
         if (videoInfo != null && skipAuth) {
-            videoInfo.setHistoryBroken(true);
+            videoInfo.setAnonymous(true);
         }
 
         return videoInfo;

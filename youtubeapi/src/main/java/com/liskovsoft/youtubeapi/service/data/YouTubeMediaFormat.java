@@ -71,7 +71,7 @@ public class YouTubeMediaFormat implements MediaFormat {
         YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
 
         mediaFormat.mUrl = format.getUrl();
-        mediaFormat.mSignatureCipher = format.getSignatureCipher();
+        mediaFormat.mSignatureCipher = format.getSParam();
         mediaFormat.mMimeType = format.getMimeType();
         String iTag = format.getITag() == 0 ? "" : String.valueOf(format.getITag());
         mediaFormat.mITag = iTag;

@@ -104,7 +104,7 @@ public class VideoInfo {
     private int mSegmentDurationUs;
     private boolean mIsStreamSeekable;
     private List<CaptionTrack> mMergedCaptionTracks;
-    private boolean mIsHistoryBroken;
+    private boolean mIsAnonymous;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -354,29 +354,12 @@ public class VideoInfo {
         mIsStreamSeekable = dashInfo.isSeekable();
     }
 
-    /**
-     * Sync history data<br/>
-     * Intended to merge signed and unsigned infos (no-playback fix)
-     */
-    public void sync(VideoInfo videoInfo) {
-        if (videoInfo == null || Helpers.anyNull(videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam())) {
-            return;
-        }
-
-        // Intended to merge signed and unsigned infos (no-playback fix)
-        mEventId = videoInfo.getEventId();
-        mVisitorMonitoringData = videoInfo.getVisitorMonitoringData();
-        mOfParam = videoInfo.getOfParam();
-        
-        setHistoryBroken(false);
+    public void setAnonymous(boolean isBroken) {
+        mIsAnonymous = isBroken;
     }
 
-    public void setHistoryBroken(boolean isBroken) {
-        mIsHistoryBroken = isBroken;
-    }
-
-    public boolean isHistoryBroken() {
-        return mIsHistoryBroken;
+    public boolean isAnonymous() {
+        return mIsAnonymous;
     }
 
     private void parseTrackingParams() {

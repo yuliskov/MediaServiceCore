@@ -15,7 +15,6 @@ import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
-import okhttp3.Headers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +37,26 @@ public abstract class VideoInfoServiceBase {
         return false;
     }
 
-    protected void decipherFormats(List<? extends VideoFormat> formats) {
+    protected void decipherFormats(VideoInfo videoInfo) {
+        // Apply SABR fixes
+
+        // Process params
+        decipherFormats(videoInfo.getAdaptiveFormats());
+        decipherFormats(videoInfo.getRegularFormats());
+    }
+
+    private void decipherFormats(List<? extends VideoFormat> formats) {
         if (formats == null) {
             return;
         }
 
-        List<String> ciphered = extractCipheredStrings(formats);
-        List<String> deciphered = mAppService.decipher(ciphered);
-        applyDecipheredStrings(formats, deciphered);
+        List<String> sParams = extractSParams(formats);
+        List<String> signatures = mAppService.extractSig(sParams);
+        applySignatures(formats, signatures);
 
-        List<String> throttled = extractThrottledStrings(formats);
-        List<String> throttleFixed = mAppService.fixThrottling(throttled);
-        applyThrottleFixedStrings(formats, throttleFixed);
+        List<String> nParams = extractNParams(formats);
+        List<String> nSignatures = mAppService.extractNSig(nParams);
+        applyNSignatures(formats, nSignatures);
 
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
@@ -59,35 +66,35 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    private static List<String> extractCipheredStrings(List<? extends VideoFormat> formats) {
+    private static List<String> extractSParams(List<? extends VideoFormat> formats) {
         List<String> result = new ArrayList<>();
 
         for (VideoFormat format : formats) {
-            result.add(format.getSignatureCipher());
+            result.add(format.getSParam());
         }
 
         return result;
     }
 
-    private static void applyDecipheredStrings(List<? extends VideoFormat> formats, List<String> deciphered) {
-        if (deciphered == null) {
+    private static void applySignatures(List<? extends VideoFormat> formats, List<String> signatures) {
+        if (signatures == null) {
             return;
         }
 
-        if (deciphered.size() != formats.size()) {
-            throw new IllegalStateException("Sizes of formats and deciphered strings should match!");
+        if (signatures.size() != formats.size()) {
+            throw new IllegalStateException("Sizes of formats and signatures should match!");
         }
 
         for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setSignature(deciphered.get(i));
+            formats.get(i).setSignature(signatures.get(i));
         }
     }
 
-    private static List<String> extractThrottledStrings(List<? extends VideoFormat> formats) {
+    private static List<String> extractNParams(List<? extends VideoFormat> formats) {
         List<String> result = new ArrayList<>();
 
         for (VideoFormat format : formats) {
-            result.add(format.getThrottleCipher());
+            result.add(format.getNParam());
             // All throttled strings has same values
             break;
         }
@@ -95,16 +102,16 @@ public abstract class VideoInfoServiceBase {
         return result;
     }
 
-    private static void applyThrottleFixedStrings(List<? extends VideoFormat> formats, List<String> throttleFixed) {
-        if (throttleFixed == null || throttleFixed.isEmpty()) {
+    private static void applyNSignatures(List<? extends VideoFormat> formats, List<String> nSignatures) {
+        if (nSignatures == null || nSignatures.isEmpty()) {
             return;
         }
 
         // All throttled strings has same values
-        boolean sameSize = throttleFixed.size() == formats.size();
+        boolean sameSize = nSignatures.size() == formats.size();
 
         for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setThrottleCipher(throttleFixed.get(sameSize ? i : 0));
+            formats.get(i).setNSignature(nSignatures.get(sameSize ? i : 0));
         }
     }
 
@@ -199,8 +206,8 @@ public abstract class VideoInfoServiceBase {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
-        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
+        format.setSignature(mAppService.extractSig(format.getSParam()));
+        format.setNSignature(mAppService.extractNSig(format.getNParam()));
         return format;
     }
 
@@ -209,8 +216,8 @@ public abstract class VideoInfoServiceBase {
         AdaptiveVideoFormat format = Helpers.findLast(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isVideo(item.getMimeType())); // smallest format
 
-        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
+        format.setSignature(mAppService.extractSig(format.getSParam()));
+        format.setNSignature(mAppService.extractNSig(format.getNParam()));
         return format;
     }
 
@@ -219,8 +226,8 @@ public abstract class VideoInfoServiceBase {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isVideo(item.getMimeType())); // first is largest
 
-        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
+        format.setSignature(mAppService.extractSig(format.getSParam()));
+        format.setNSignature(mAppService.extractNSig(format.getNParam()));
         return format;
     }
 }

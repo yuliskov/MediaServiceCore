@@ -53,7 +53,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mHasExtendedHlsFormats;
     private float mLoudnessDb;
     private boolean mContainsDashVideoFormats;
-    private boolean mIsHistoryBroken;
+    private boolean mIsAnonymous;
     private boolean mIsBotCheckError;
     private String mPaidContentText;
     private String mClickTrackingParams;
@@ -111,7 +111,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         // END Tracking params
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
-        formatInfo.mIsHistoryBroken = videoInfo.isHistoryBroken();
+        formatInfo.mIsAnonymous = videoInfo.isAnonymous();
         formatInfo.mIsBotCheckError = videoInfo.isUnknownRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
@@ -330,8 +330,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mIsUnplayable;
     }
 
-    public boolean isHistoryBroken() {
-        return mIsHistoryBroken;
+    public boolean isAnonymous() {
+        return mIsAnonymous;
     }
 
     @Override
@@ -417,6 +417,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
      */
     public void sync(YouTubeMediaItemFormatInfo formatInfo) {
         if (formatInfo == null || Helpers.anyNull(formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam())) {
+            mIsAnonymous = false;
             return;
         }
 
@@ -425,6 +426,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
         mOfParam = formatInfo.getOfParam();
 
-        mIsHistoryBroken = false;
+        mIsAnonymous = false;
     }
 }

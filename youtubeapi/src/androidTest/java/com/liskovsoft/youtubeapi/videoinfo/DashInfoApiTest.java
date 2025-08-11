@@ -118,8 +118,8 @@ public class DashInfoApiTest {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
-        format.setSignature(mAppService.decipher(format.getSignatureCipher()));
-        format.setThrottleCipher(mAppService.fixThrottling(format.getThrottleCipher()));
+        format.setSignature(mAppService.extractSig(format.getSParam()));
+        format.setNSignature(mAppService.extractNSig(format.getNParam()));
 
         return format;
     }

@@ -27,58 +27,61 @@ public class AppService {
         return sInstance;
     }
 
-    public String decipher(String ciphered) {
-        if (ciphered == null) {
+    /**
+     * Extracts signature used in music videos
+     */
+    public String extractSig(String sParam) {
+        if (sParam == null) {
             return null;
         }
 
-        return decipher(Collections.singletonList(ciphered)).get(0);
+        return extractSig(Collections.singletonList(sParam)).get(0);
     }
 
     /**
-     * Decipher strings using js code
+     * Extracts signature used in music videos
      */
-    public List<String> decipher(List<String> ciphered) {
+    public List<String> extractSig(List<String> sParams) {
         if (mAppServiceInt.getPlayerDataExtractor() == null) {
             return null;
         }
 
-        return mAppServiceInt.getPlayerDataExtractor().decipherItems(ciphered);
+        return mAppServiceInt.getPlayerDataExtractor().extractSig(sParams);
     }
 
-    public List<String> fixThrottling(List<String> throttledList) {
-        if (Helpers.allNulls(throttledList)) {
+    public String extractNSig(String nParam) {
+        if (nParam == null || mAppServiceInt.getPlayerDataExtractor() == null) {
+            return null;
+        }
+
+        return mAppServiceInt.getPlayerDataExtractor().extractNSig(nParam);
+    }
+
+    public List<String> extractNSig(List<String> nParams) {
+        if (Helpers.allNulls(nParams)) {
             return null;
         }
 
         List<String> result = new ArrayList<>();
 
-        String previousThrottled = null;
-        String previousThrottleFixResult = null;
+        String previousNParam = null;
+        String previousNSig = null;
 
-        for (String throttled : throttledList) {
-            if (Helpers.equals(throttled, previousThrottled)) {
-                result.add(previousThrottleFixResult);
+        for (String nParam : nParams) {
+            if (Helpers.equals(nParam, previousNParam)) {
+                result.add(previousNSig);
                 continue;
             }
 
-            String throttleFixResult = fixThrottling(throttled);
+            String nSig = extractNSig(nParam);
 
-            result.add(throttleFixResult);
+            result.add(nSig);
 
-            previousThrottled = throttled;
-            previousThrottleFixResult = throttleFixResult;
+            previousNParam = nParam;
+            previousNSig = nSig;
         }
 
         return result;
-    }
-
-    public String fixThrottling(String throttled) {
-        if (throttled == null || mAppServiceInt.getPlayerDataExtractor() == null) {
-            return null;
-        }
-
-        return mAppServiceInt.getPlayerDataExtractor().extractNSig(throttled);
     }
 
     public void resetClientPlaybackNonce() {

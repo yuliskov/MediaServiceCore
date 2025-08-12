@@ -114,6 +114,19 @@ public class VideoFormat {
         mUrl = url;
     }
 
+    public void setSabrUrl(String url) {
+        mUrl = url;
+
+        // Doesn't work (403 error)
+        //UrlQueryString urlQuery = getUrlQuery();
+        //
+        //if (urlQuery != null) {
+        //    urlQuery.set("itag", getITag());
+        //    urlQuery.set("aitags", "133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C278%2C394%2C395%2C396%2C397%2C398%2C399");
+        //    urlQuery.set("mime", getMimeType());
+        //}
+    }
+
     public String getSParam() {
         parseCipher();
         return mExtractedCipher;

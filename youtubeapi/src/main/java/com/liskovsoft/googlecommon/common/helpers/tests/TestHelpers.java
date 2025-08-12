@@ -5,6 +5,8 @@ import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
 
+import okhttp3.Response;
+
 public class TestHelpers extends TestHelpersBase {
     private static String mAuthorization; // type: Bearer
     private static String mOAuth2Authorization; // type: Bearer
@@ -55,6 +57,7 @@ public class TestHelpers extends TestHelpersBase {
 
     public static boolean urlExists(String url) {
         // disable profiler because it could cause out of memory error
-        return OkHttpManager.instance(false).doHeadRequest(url) != null;
+        Response response = OkHttpManager.instance(false).doHeadRequest(url);
+        return response != null && response.isSuccessful();
     }
 }

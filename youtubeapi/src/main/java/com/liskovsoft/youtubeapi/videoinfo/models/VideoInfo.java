@@ -32,9 +32,6 @@ public class VideoInfo {
     @JsonPath("$.streamingData.adaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mAdaptiveFormats;
 
-    @JsonPath("$.streamingData.serverAbrStreamingUrl")
-    private String mServerAbrStreamingUrl; // SABR format url
-
     //@JsonPath("$.playabilityStatus.paygatedQualitiesMetadata.restrictedAdaptiveFormats[*]")
     private List<AdaptiveVideoFormat> mRestrictedFormats;
 
@@ -93,6 +90,9 @@ public class VideoInfo {
 
     @JsonPath("$.paidContentOverlay.paidContentOverlayRenderer.text")
     private TextItem mPaidContentText;
+
+    @JsonPath("$.streamingData.serverAbrStreamingUrl")
+    private String mServerAbrStreamingUrl; // SABR format url
 
     // Values used in tracking actions
     private String mEventId;
@@ -338,6 +338,10 @@ public class VideoInfo {
 
     public String getPaidContentText() {
         return mPaidContentText != null ? Helpers.toString(mPaidContentText.getText()) : null;
+    }
+
+    public String getServerAbrStreamingUrl() {
+        return mServerAbrStreamingUrl;
     }
 
     /**

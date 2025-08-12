@@ -13,8 +13,6 @@ import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -29,13 +27,11 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 
-public class DashInfoApiTest {
+public class DashInfoApiTest extends BaseVideoInfoApiTest {
     private static final String SEQ_NUM = "X-Sequence-Num";
     private static final String STREAM_DUR_MS = "X-Head-Time-Millis";
     private static final String LAST_SEG_TIME_MS = "X-Walltime-Ms";
     private DashInfoApi mDashService;
-    private VideoInfoApi mVideoInfoService;
-    private AppService mAppService;
     private FileApi mFileService;
     // Make response smaller
     private final String SMALL_RANGE = "&range=0-200";
@@ -45,15 +41,10 @@ public class DashInfoApiTest {
         // Fix temp video url ban
         //Thread.sleep(3_000);
 
-        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
+        initBase();
 
         mDashService = RetrofitHelper.create(DashInfoApi.class);
-
-        mVideoInfoService = RetrofitHelper.create(VideoInfoApi.class);
-
         mFileService = RetrofitHelper.create(FileApi.class);
-        
-        mAppService = AppService.instance();
 
         RetrofitOkHttpHelper.getAuthHeaders().clear();
     }
@@ -71,7 +62,7 @@ public class DashInfoApiTest {
 
     @Test
     public void testDashInfoUrlNotEmpty() throws IOException {
-        VideoInfo videoInfo = getVideoInfo(TestHelpers.VIDEO_ID_LIVE);
+        VideoInfo videoInfo = getVideoInfo(AppClient.WEB, TestHelpers.VIDEO_ID_LIVE);
         Call<DashInfoUrl> dashInfoWrapper = mDashService.getDashInfoUrl(videoInfo.getDashManifestUrl());
 
         DashInfoUrl dashInfo = dashInfoWrapper.execute().body();
@@ -84,7 +75,7 @@ public class DashInfoApiTest {
     @Ignore("Don't work anymore. Why?")
     @Test
     public void testDashInfoContentNotEmpty() throws IOException {
-        VideoInfo videoInfo = getVideoInfo(TestHelpers.VIDEO_ID_LIVE);
+        VideoInfo videoInfo = getVideoInfo(AppClient.WEB, TestHelpers.VIDEO_ID_LIVE);
         Call<DashInfoContent> dashInfoWrapper = mDashService.getDashInfoContent(getSmallestAudio(videoInfo).getUrl());
 
         DashInfoContent dashInfo = dashInfoWrapper.execute().body();
@@ -95,7 +86,7 @@ public class DashInfoApiTest {
 
     @Test
     public void testDashInfoHeadersNotEmpty() throws IOException {
-        VideoInfo videoInfo = getVideoInfo(TestHelpers.VIDEO_ID_LIVE);
+        VideoInfo videoInfo = getVideoInfo(AppClient.WEB, TestHelpers.VIDEO_ID_LIVE);
         Call<Void> headersWrapper = mFileService.getHeaders(getSmallestAudio(videoInfo).getUrl());
 
         Headers headers = headersWrapper.execute().headers();
@@ -106,21 +97,5 @@ public class DashInfoApiTest {
         assertTrue("last segment num not null", lastSegmentNum > 0);
         assertTrue("stream duration not null", streamDurationMs > 0);
         assertTrue("last segment time not null", lastSegmentTimeMs > 0);
-    }
-
-    private VideoInfo getVideoInfo(String videoId) throws IOException {
-        Call<VideoInfo> wrapper = mVideoInfoService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(AppClient.WEB, videoId, null));
-        return wrapper.execute().body();
-    }
-
-    @NonNull
-    private AdaptiveVideoFormat getSmallestAudio(VideoInfo videoInfo) {
-        AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
-                item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
-
-        format.setSignature(mAppService.extractSig(format.getSParam()));
-        format.setNSignature(mAppService.extractNSig(format.getNParam()));
-
-        return format;
     }
 }

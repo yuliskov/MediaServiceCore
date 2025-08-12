@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.videoinfo.v3.gen
+package com.liskovsoft.youtubeapi.videoinfo.kt.gen
 
 internal data class VideoInfoResult(
     val streamingData: StreamingData?

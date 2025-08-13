@@ -7,6 +7,7 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 
 import org.junit.Before;
 import org.junit.Rule;

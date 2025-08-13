@@ -9,7 +9,7 @@ import androidx.core.text.BidiFormatter;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.googlecommon.app.AppConstants;
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

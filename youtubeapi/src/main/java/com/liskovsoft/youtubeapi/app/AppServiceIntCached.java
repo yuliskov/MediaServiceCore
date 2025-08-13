@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 
 public class AppServiceIntCached extends AppServiceInt {

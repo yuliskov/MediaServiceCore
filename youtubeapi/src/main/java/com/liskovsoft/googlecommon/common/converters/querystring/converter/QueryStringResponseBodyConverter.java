@@ -3,7 +3,7 @@ package com.liskovsoft.googlecommon.common.converters.querystring.converter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
-import com.liskovsoft.googlecommon.app.AppConstants;
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

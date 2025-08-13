@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsig
 
 import android.Manifest
 import androidx.test.rule.GrantPermissionRule
-import com.liskovsoft.youtubeapi.app.AppConstants
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import com.liskovsoft.youtubeapi.app.AppServiceInt
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor
 import org.junit.Assert.assertNotEquals

@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeOtfSegmentParser.OtfSegment;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaFormat;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 
 import org.xmlpull.v1.XmlSerializer;
@@ -712,7 +713,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         return false;
     }
 
-    private void fixOTF(MediaFormat mediaItem) {
+    private void fixOTF(YouTubeMediaFormat mediaItem) {
         if (mediaItem.isOtf()) {
             if (mediaItem.getUrl() != null) {
                 // exo: fix 404 code

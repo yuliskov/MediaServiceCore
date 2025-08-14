@@ -38,11 +38,22 @@ public abstract class VideoInfoServiceBase {
     }
 
     protected void decipherFormats(VideoInfo videoInfo) {
-        // Apply SABR fixes
+        applySabrFixes(videoInfo.getAdaptiveFormats(), videoInfo.getServerAbrStreamingUrl());
 
         // Process params
         decipherFormats(videoInfo.getAdaptiveFormats());
         decipherFormats(videoInfo.getRegularFormats());
+    }
+
+    private void applySabrFixes(List<? extends VideoFormat> formats, String serverAbrStreamingUrl) {
+        if (serverAbrStreamingUrl != null) {
+            for (VideoFormat format : formats) {
+                if (!format.isEmpty()) {
+                    break;
+                }
+                format.setSabrUrl(serverAbrStreamingUrl);
+            }
+        }
     }
 
     private void decipherFormats(List<? extends VideoFormat> formats) {

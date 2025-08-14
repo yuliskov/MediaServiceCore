@@ -113,9 +113,7 @@ abstract class BaseVideoInfoApiTest {
     private void applySabrFixes(List<? extends VideoFormat> formats, String serverAbrStreamingUrl) {
         if (serverAbrStreamingUrl != null) {
             for (VideoFormat format : formats) {
-                if (format.getUrl() == null) {
-                    format.setSabrUrl(serverAbrStreamingUrl);
-                }
+                format.setSabrUrl(serverAbrStreamingUrl);
             }
         }
     }

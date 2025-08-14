@@ -103,6 +103,7 @@ public class VideoFormat {
     private String mExtractedCipher;
     @JsonPath("$.isDrc")
     private boolean mIsDrc;
+    private boolean mIsSabr;
 
     public String getUrl() {
         parseCipher();
@@ -115,7 +116,12 @@ public class VideoFormat {
     }
 
     public void setSabrUrl(String url) {
+        if (!isEmpty()) {
+            return; // A dash format. Keep as is.
+        }
+
         mUrl = url;
+        mIsSabr = true;
 
         // Doesn't work (403 error)
         //UrlQueryString urlQuery = getUrlQuery();
@@ -423,5 +429,9 @@ public class VideoFormat {
 
     public boolean isEmpty() {
         return Helpers.allNulls(mUrl, mCipher, mSignatureCipher);
+    }
+
+    public boolean isSabr() {
+        return mIsSabr;
     }
 }

@@ -411,9 +411,9 @@ public class VideoInfo {
         return getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
     }
 
-    public boolean isEmpty() {
+    private boolean isEmpty() {
         if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty()) {
-            return false;
+            return true;
         }
 
         boolean isAllEmpty = true;

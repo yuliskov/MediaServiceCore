@@ -54,7 +54,8 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun resetCache(): Boolean {
-        if (System.currentTimeMillis() < mCacheResetTimeMs)
+        val currentTimeMs = System.currentTimeMillis()
+        if (currentTimeMs < mCacheResetTimeMs)
             return false
 
         if (isNpPotSupported()) {
@@ -62,7 +63,7 @@ internal object PoTokenGate {
         } else
             PoTokenCloudService.resetCache()
 
-        mCacheResetTimeMs = System.currentTimeMillis() + 60_000
+        mCacheResetTimeMs = currentTimeMs + 60_000
 
         return true
     }

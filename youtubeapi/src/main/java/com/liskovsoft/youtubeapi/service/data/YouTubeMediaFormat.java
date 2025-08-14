@@ -43,7 +43,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     public static MediaFormat from(AdaptiveVideoFormat format) {
         YouTubeMediaFormat mediaFormat = createBaseFormat(format);
 
-        mediaFormat.mFormatType = FORMAT_TYPE_DASH;
+        mediaFormat.mFormatType = format.isSabr() ? FORMAT_TYPE_SABR : FORMAT_TYPE_DASH;
 
         mediaFormat.mIndex = format.getIndex();
 

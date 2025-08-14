@@ -36,7 +36,7 @@ class PoTokenNPApiTest {
         val mediaItemDetails: MediaItemFormatInfo =
             YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(videoIdMusic)
 
-        val url = mediaItemDetails.dashFormats[0].url
+        val url = mediaItemDetails.adaptiveFormats[0].url
 
         val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(videoIdMusic)
 

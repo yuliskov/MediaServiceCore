@@ -37,7 +37,6 @@ public interface MediaFormat extends Comparable<MediaFormat> {
 
     // Other/Regular
     String getQuality();
-    boolean belongsToType(String type);
     String getSignature();
     String getAudioSamplingRate();
     String getSourceUrl();

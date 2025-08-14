@@ -87,9 +87,9 @@ public class YouTubeMPDBuilderTest {
         MediaItemFormatInfo mediaItemDetails = mService.getMediaItemService().getFormatInfo(videoId);
 
         assertNotNull("Format info not empty", mediaItemDetails);
-        assertTrue("Format list not empty", mediaItemDetails.getDashFormats().size() > 0);
+        assertTrue("Format list not empty", mediaItemDetails.getAdaptiveFormats().size() > 0);
 
-        String url = mediaItemDetails.getDashFormats().get(0).getUrl();
+        String url = mediaItemDetails.getAdaptiveFormats().get(0).getUrl();
 
         assertTrue("Video url is not empty", url != null);
         assertTrue("Video url is working", TestHelpers.urlExists(url));

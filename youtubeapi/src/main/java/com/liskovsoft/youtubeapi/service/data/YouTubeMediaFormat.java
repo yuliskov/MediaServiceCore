@@ -237,11 +237,6 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     @Override
-    public boolean belongsToType(String type) {
-        return false;
-    }
-
-    @Override
     public String getSignature() {
         return null;
     }

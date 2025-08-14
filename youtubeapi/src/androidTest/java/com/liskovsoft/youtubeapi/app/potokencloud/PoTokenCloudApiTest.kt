@@ -130,7 +130,7 @@ internal class PoTokenCloudApiTest {
         val mediaItemDetails: MediaItemFormatInfo =
             YouTubeServiceManager.instance().getMediaItemService().getFormatInfo(TestHelpers.VIDEO_ID_MUSIC_2)
 
-        val url = mediaItemDetails.dashFormats[0].url
+        val url = mediaItemDetails.adaptiveFormats[0].url
 
         assertTrue("Video url is working", TestHelpers.urlExists("$url&pot=${poToken?.poToken}"))
     }

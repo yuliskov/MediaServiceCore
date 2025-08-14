@@ -34,7 +34,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsLiveContent;
     private boolean mIsLowLatencyLiveStream;
     private boolean mIsStreamSeekable;
-    private List<MediaFormat> mDashFormats;
+    private List<MediaFormat> mAdaptiveFormats;
     private List<MediaFormat> mUrlFormats;
     private List<MediaSubtitle> mSubtitles;
     private String mDashManifestUrl;
@@ -52,7 +52,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private int mSegmentDurationUs;
     private boolean mHasExtendedHlsFormats;
     private float mLoudnessDb;
-    private boolean mContainsDashVideoFormats;
+    private boolean mContainsAdaptiveVideoFormats;
     private boolean mIsAnonymous;
     private boolean mIsBotCheckError;
     private String mPaidContentText;
@@ -70,12 +70,12 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         YouTubeMediaItemFormatInfo formatInfo = new YouTubeMediaItemFormatInfo();
 
         if (videoInfo.getAdaptiveFormats() != null) {
-            formatInfo.mContainsDashVideoFormats = videoInfo.containsAdaptiveVideoInfo();
+            formatInfo.mContainsAdaptiveVideoFormats = videoInfo.containsAdaptiveVideoInfo();
 
-            formatInfo.mDashFormats = new ArrayList<>();
+            formatInfo.mAdaptiveFormats = new ArrayList<>();
 
             for (AdaptiveVideoFormat format : videoInfo.getAdaptiveFormats()) {
-                formatInfo.mDashFormats.add(YouTubeMediaFormat.from(format));
+                formatInfo.mAdaptiveFormats.add(YouTubeMediaFormat.from(format));
             }
         }
 
@@ -138,8 +138,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public List<MediaFormat> getDashFormats() {
-        return mDashFormats;
+    public List<MediaFormat> getAdaptiveFormats() {
+        return mAdaptiveFormats;
     }
 
     @Override
@@ -207,17 +207,21 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean containsMedia() {
-        return containsDashUrl() || containsHlsUrl() || containsDashVideoFormats() || containsUrlFormats();
+        return containsDashUrl() || containsHlsUrl() || containsAdaptiveVideoFormats() || containsUrlFormats();
+    }
+
+    @Override
+    public boolean containsSabrFormats() {
+        return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_SABR;
     }
 
     @Override
     public boolean containsDashFormats() {
-        return mDashFormats != null && !mDashFormats.isEmpty();
+        return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_DASH;
     }
-
-    @Override
-    public boolean containsDashVideoFormats() {
-        return mContainsDashVideoFormats;
+    
+    private boolean containsAdaptiveVideoFormats() {
+        return mContainsAdaptiveVideoFormats;
     }
 
     @Override

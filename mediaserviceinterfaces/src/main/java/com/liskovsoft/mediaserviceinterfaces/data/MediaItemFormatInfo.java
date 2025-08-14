@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface MediaItemFormatInfo {
-    List<MediaFormat> getDashFormats();
+    List<MediaFormat> getAdaptiveFormats();
     List<MediaFormat> getUrlFormats();
     List<MediaSubtitle> getSubtitles();
     String getHlsManifestUrl();
@@ -22,8 +22,8 @@ public interface MediaItemFormatInfo {
     boolean isLive();
     boolean isLiveContent();
     boolean containsMedia();
+    boolean containsSabrFormats();
     boolean containsDashFormats();
-    boolean containsDashVideoFormats();
     boolean containsHlsUrl();
     boolean containsDashUrl();
     boolean containsUrlFormats();

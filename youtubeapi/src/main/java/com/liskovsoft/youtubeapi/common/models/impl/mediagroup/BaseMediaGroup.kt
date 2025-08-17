@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.impl.mediagroup
 
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants
@@ -9,10 +10,13 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): MediaGroup {
     private val filter: ((ItemWrapper) -> Boolean) = {
         it.isEmpty() ||
-        (options.removeShorts && if (options.enableLegacyUI) it.isShortsLegacy() else it.isShorts()) ||
+        (options.removeShorts && it.isShorts()) ||
         (options.removeLive && it.isLive()) ||
         (options.removeUpcoming && it.isUpcoming()) ||
         (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive())
+    }
+    private val legacyFilter: ((WrapperMediaItem) -> Boolean) = {
+        options.removeShorts && if (options.enableLegacyUI) YouTubeHelper.isShortsLegacy(it) else false
     }
     private var _titleItem: String? = null
         get() = field ?: titleItem
@@ -26,7 +30,8 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
     protected open val mediaItemList: List<MediaItem?>? by lazy { getItemWrappersInt()
         ?.mapIndexedNotNull { index, it -> it
             ?.let { if (filter.invoke(it)) null else it }
-            ?.let { WrapperMediaItem(it).apply { playlistIndex = index; if (options.enableLegacyUI) isShorts = it.isShortsLegacy() } }
+            ?.let { WrapperMediaItem(it).apply { playlistIndex = index } }
+            ?.let { if (legacyFilter.invoke(it)) null else it }
         }?.let {
             // Move Watch Later to the top
             if (options.groupType != MediaGroup.TYPE_USER_PLAYLISTS)

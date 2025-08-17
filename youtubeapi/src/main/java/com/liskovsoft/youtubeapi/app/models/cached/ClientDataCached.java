@@ -22,7 +22,7 @@ public class ClientDataCached extends ClientData {
             return null;
         }
 
-        String[] split = Helpers.split(DELIM, spec);
+        String[] split = Helpers.split(spec, DELIM);
 
         return new ClientDataCached(Helpers.parseStr(split, 0), Helpers.parseStr(split, 1), Helpers.parseStr(split, 2));
     }

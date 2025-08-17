@@ -63,7 +63,7 @@ internal data class ItemImpl(
             if (spec == null)
                 return null
 
-            val split = Helpers.split(ITEM_DELIM, spec)
+            val split = Helpers.split(spec, ITEM_DELIM)
 
             val title = Helpers.parseStr(split, 0)
             val groupIconUrl = Helpers.parseStr(split, 1)

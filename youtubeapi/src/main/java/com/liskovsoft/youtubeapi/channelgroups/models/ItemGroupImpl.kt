@@ -93,7 +93,7 @@ internal data class ItemGroupImpl(
             if (spec == null)
                 return null
 
-            val split = Helpers.split(ITEM_DELIM, spec)
+            val split = Helpers.split(spec, ITEM_DELIM)
 
             val id = Helpers.parseStr(split, 0) ?: return null
             val title = Helpers.parseStr(split, 1) ?: return null

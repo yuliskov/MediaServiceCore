@@ -22,7 +22,7 @@ public class AppInfoCached extends AppInfo {
             return null;
         }
 
-        String[] split = Helpers.split(DELIM, spec);
+        String[] split = Helpers.split(spec, DELIM);
 
         String playerUrl = Helpers.parseStr(split, 0);
         String clientUrl = Helpers.parseStr(split, 1);

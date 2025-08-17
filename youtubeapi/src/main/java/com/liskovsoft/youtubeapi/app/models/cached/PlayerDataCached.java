@@ -30,7 +30,7 @@ public class PlayerDataCached extends PlayerData {
             return null;
         }
 
-        String[] split = Helpers.split(DELIM, spec);
+        String[] split = Helpers.split(spec, DELIM);
 
         return new PlayerDataCached(
                 Helpers.parseStr(split, 0),

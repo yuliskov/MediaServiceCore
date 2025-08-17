@@ -144,10 +144,26 @@ public final class YouTubeHelper {
 
         long lengthMs = mediaItem.getDurationMs();
 
-        boolean isShortLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
-        boolean isShortMaxLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MAX_MS && title.contains("#");
+        boolean isShortsLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
 
-        return isShortLength || isShortMaxLength;
+        if (isShortsLength) {
+            return true;
+        }
+
+        boolean isShortsMaxLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MAX_MS && title.contains("#");
+
+        if (isShortsMaxLength) {
+            return true;
+        }
+
+        String imageUrl = mediaItem.getCardImageUrl();
+        boolean isShortsUrl = imageUrl != null && (imageUrl.contains("-AG2CIACgA-") || imageUrl.contains("-oaymwEmCIAFEOAD8quKqQMa8AEB-AHOBYAC"));
+
+        if (isShortsUrl) {
+            return true;
+        }
+
+        return false;
     }
 
     public static boolean isMix(MediaItem mediaItem) {

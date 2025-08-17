@@ -19,7 +19,7 @@ internal data class NSigData(
             if (spec == null)
                 return null
 
-            val split = Helpers.split(DELIM, spec)
+            val split = Helpers.split(spec, DELIM)
 
             val nFuncPlayerUrl = Helpers.parseStr(split, 0) ?: return null
             val nFuncParams = Helpers.parseStrList(split, 1).ifEmpty { return null }

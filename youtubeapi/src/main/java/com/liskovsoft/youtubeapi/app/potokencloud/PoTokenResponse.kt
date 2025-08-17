@@ -21,7 +21,7 @@ internal data class PoTokenResponse(
             if (spec == null)
                 return null
 
-            val split = Helpers.split(DELIM, spec)
+            val split = Helpers.split(spec, DELIM)
 
             val visitorData = Helpers.parseStr(split, 0)
             val placeholderPoToken = Helpers.parseStr(split, 1)

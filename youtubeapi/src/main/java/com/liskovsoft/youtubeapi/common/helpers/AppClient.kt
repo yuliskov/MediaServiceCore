@@ -35,8 +35,9 @@ internal enum class AppClient(
         referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
     TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE_TV),
+    // 8AEB2AMB - web client premium formats?
     WEB("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_WEB,
-        referer = "https://www.youtube.com/", params = "8AEB2AMB"), // 8AEB2AMB - premium formats?
+        referer = "https://www.youtube.com/"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBED("WEB_EMBEDDED_PLAYER", "1.20250310.01.00", 56, userAgent = DefaultHeaders.USER_AGENT_WEB,
         referer = "https://www.youtube.com/"),
@@ -45,11 +46,10 @@ internal enum class AppClient(
         referer = "https://www.youtube.com/"),
     WEB_REMIX("WEB_REMIX", "1.20240819.01.00", 67, userAgent = DefaultHeaders.USER_AGENT_WEB,
         referer = "https://music.youtube.com/"),
-    // 8AEB2AMB - premium formats?
     WEB_SAFARI("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_SAFARI,
-        referer = "https://www.youtube.com/", params = "8AEB2AMB"),
+        referer = "https://www.youtube.com/"),
     MWEB("MWEB", "2.20250213.05.00", 2, userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB,
-        referer = "https://m.youtube.com/", params = "8AEB2AMB"),
+        referer = "https://m.youtube.com/"),
     ANDROID("ANDROID", "19.26.37", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID,
         referer = null, postData = String.format(POST_DATA_ANDROID, 30)),
     ANDROID_VR("ANDROID_VR", "1.37", 28, userAgent = DefaultHeaders.USER_AGENT_WEB,

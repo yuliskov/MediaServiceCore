@@ -99,9 +99,10 @@ class YouTubeContentService implements ContentService {
         if (subscriptions != null && subscriptions.getMediaItems() != null && subscriptions.getMediaItems().size() <= 5) {
             MediaGroup continuation = continueGroup(subscriptions);
             if (continuation == null || continuation.getMediaItems() == null || continuation.getMediaItems().isEmpty()) {
-                if (getMediaServiceData() != null)
+                if (getMediaServiceData() != null) {
                     getMediaServiceData().setLegacyUIEnabled(true);
-                return getBrowseService2().getSubscriptions();
+                    return getBrowseService2().getSubscriptions();
+                }
             }
         }
 

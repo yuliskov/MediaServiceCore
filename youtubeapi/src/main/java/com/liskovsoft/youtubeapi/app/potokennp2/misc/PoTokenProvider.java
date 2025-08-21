@@ -119,4 +119,6 @@ public interface PoTokenProvider {
     PoTokenResult getIosClientPoToken(String videoId);
 
     boolean isExpired();
+
+    boolean isPotSupported();
 }

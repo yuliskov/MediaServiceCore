@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.app
 
-import android.os.Build.VERSION
-import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
@@ -12,11 +10,11 @@ internal object PoTokenGate {
     
     @JvmStatic
     fun getContentPoToken(videoId: String): String? {
-        if (mNpPoToken?.videoId == videoId && !isExpired()) {
+        if (mNpPoToken?.videoId == videoId && !PoTokenProviderImpl.isExpired) {
             return mNpPoToken?.playerRequestPoToken
         }
 
-        mNpPoToken = if (isNpPotSupported())
+        mNpPoToken = if (PoTokenProviderImpl.isPotSupported)
             PoTokenProviderImpl.getWebClientPoToken(videoId)
         else null
 
@@ -25,7 +23,7 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun getSessionPoToken(): String? {
-        return if (isNpPotSupported()) {
+        return if (PoTokenProviderImpl.isPotSupported) {
             if (mNpPoToken == null)
                 mNpPoToken = PoTokenProviderImpl.getWebClientPoToken("")
             mNpPoToken?.streamingDataPoToken
@@ -34,7 +32,7 @@ internal object PoTokenGate {
 
     @JvmStatic
     fun updatePoToken() {
-        if (isNpPotSupported()) {
+        if (PoTokenProviderImpl.isPotSupported) {
             //mNpPoToken = null // only refresh
             mNpPoToken = PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
         } else {
@@ -48,12 +46,10 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun isNpPotSupported() = VERSION.SDK_INT >= 19 && isWebViewSupported
+    fun isPotSupported() = PoTokenProviderImpl.isPotSupported
 
     @JvmStatic
-    fun isExpired() = isNpPotSupported() && PoTokenProviderImpl.isExpired
-
-    private val isWebViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
+    fun isExpired() = PoTokenProviderImpl.isExpired
 
     @JvmStatic
     fun resetCache(): Boolean {
@@ -61,7 +57,7 @@ internal object PoTokenGate {
         if (currentTimeMs < mCacheResetTimeMs)
             return false
 
-        if (isNpPotSupported()) {
+        if (PoTokenProviderImpl.isPotSupported) {
             mNpPoToken = null
         } else
             PoTokenCloudService.resetCache()

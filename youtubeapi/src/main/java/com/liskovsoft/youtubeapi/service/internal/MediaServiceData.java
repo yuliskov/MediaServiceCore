@@ -263,8 +263,8 @@ public class MediaServiceData {
         YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
-    public boolean isNpPotSupported() {
-        return PoTokenGate.isNpPotSupported();
+    public boolean isPotSupported() {
+        return PoTokenGate.isPotSupported();
     }
 
     public boolean isLegacyUIEnabled() {

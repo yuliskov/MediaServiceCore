@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
+import android.os.Build.VERSION
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
 import android.os.Handler
@@ -12,7 +13,6 @@ import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@RequiresApi(19)
 internal object PoTokenProviderImpl : PoTokenProvider {
     val TAG = PoTokenProviderImpl::class.simpleName
     private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
@@ -22,9 +22,9 @@ internal object PoTokenProviderImpl : PoTokenProvider {
     private var webPoTokenVisitorData: String? = null
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
-
+    
     override fun getWebClientPoToken(videoId: String): PoTokenResult? {
-        if (!webViewSupported || webViewBadImpl) {
+        if (VERSION.SDK_INT < 19 || !isPotSupported) {
             return null
         }
 
@@ -49,6 +49,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
      * case the current [webPoTokenGenerator] threw an error last time
      * [PoTokenGenerator.generatePoToken] was called
      */
+    @RequiresApi(19)
     private fun getWebClientPoToken(videoId: String, forceRecreate: Boolean): PoTokenResult {
         // just a helper class since Kotlin does not have builtin support for 4-tuples
         data class Quadruple<T1, T2, T3, T4>(val t1: T1, val t2: T2, val t3: T3, val t4: T4)
@@ -130,7 +131,9 @@ internal object PoTokenProviderImpl : PoTokenProvider {
 
     override fun getIosClientPoToken(videoId: String): PoTokenResult? = null
 
-    override fun isExpired() = webPoTokenGenerator?.isExpired() ?: false
+    override fun isExpired() = isPotSupported && webPoTokenGenerator?.isExpired() ?: true
+
+    override fun isPotSupported() = VERSION.SDK_INT >= 19 && webViewSupported && !webViewBadImpl
 
     fun resetCache() {
         webPoTokenGenerator = null

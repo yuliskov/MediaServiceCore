@@ -12,7 +12,7 @@ internal object PoTokenGate {
     
     @JvmStatic
     fun getContentPoToken(videoId: String): String? {
-        if (mNpPoToken?.videoId == videoId) {
+        if (mNpPoToken?.videoId == videoId && !isExpired()) {
             return mNpPoToken?.playerRequestPoToken
         }
 
@@ -48,9 +48,12 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun isNpPotSupported() = VERSION.SDK_INT >= 19 && DeviceHelpers.isWebViewSupported() && !isWebViewBroken()
+    fun isNpPotSupported() = VERSION.SDK_INT >= 19 && isWebViewSupported
 
-    private fun isWebViewBroken(): Boolean = VERSION.SDK_INT == 19 && DeviceHelpers.isTCL() // "TCL TV - Harman"
+    @JvmStatic
+    fun isExpired() = isNpPotSupported() && PoTokenProviderImpl.isExpired
+
+    private val isWebViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
 
     @JvmStatic
     fun resetCache(): Boolean {

@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.app.potokennp2.misc;
 
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenProvider;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;

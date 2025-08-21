@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.app.potokennp2.misc;
 
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult;
-
 import javax.annotation.Nullable;
 
 /**
@@ -34,7 +32,7 @@ import javax.annotation.Nullable;
 public interface PoTokenProvider {
 
     /**
-     * Get a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the desktop website, a.k.a. the WEB InnerTube client.
+     * Get a {@link PoTokenResult} specific to the desktop website, a.k.a. the WEB InnerTube client.
      *
      * <p>
      * To be generated and valid, {@code poToken}s from this client must be generated using Google's
@@ -48,13 +46,13 @@ public interface PoTokenProvider {
      * - one for the streaming URLs, using a visitor data for logged-out users as the minter value.
      * </p>
      *
-     * @return a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the WEB InnerTube client
+     * @return a {@link PoTokenResult} specific to the WEB InnerTube client
      */
     @Nullable
-    com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult getWebClientPoToken(String videoId);
+    PoTokenResult getWebClientPoToken(String videoId);
 
     /**
-     * Get a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the web embeds, a.k.a. the WEB_EMBEDDED_PLAYER
+     * Get a {@link PoTokenResult} specific to the web embeds, a.k.a. the WEB_EMBEDDED_PLAYER
      * InnerTube client.
      *
      * <p>
@@ -69,13 +67,13 @@ public interface PoTokenProvider {
      * logged-out users. {@code poToken}s do not seem to be mandatory for now on this client.
      * </p>
      *
-     * @return a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the WEB_EMBEDDED_PLAYER InnerTube client
+     * @return a {@link PoTokenResult} specific to the WEB_EMBEDDED_PLAYER InnerTube client
      */
     @Nullable
-    com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult getWebEmbedClientPoToken(String videoId);
+    PoTokenResult getWebEmbedClientPoToken(String videoId);
 
     /**
-     * Get a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the Android app, a.k.a. the ANDROID InnerTube client.
+     * Get a {@link PoTokenResult} specific to the Android app, a.k.a. the ANDROID InnerTube client.
      *
      * <p>
      * Implementation details are not known, the app uses DroidGuard, a downloaded native virtual
@@ -95,13 +93,13 @@ public interface PoTokenProvider {
      * HLS manifest URL should work without {@code poToken}s.
      * </p>
      *
-     * @return a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the ANDROID InnerTube client
+     * @return a {@link PoTokenResult} specific to the ANDROID InnerTube client
      */
     @Nullable
-    com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult getAndroidClientPoToken(String videoId);
+    PoTokenResult getAndroidClientPoToken(String videoId);
 
     /**
-     * Get a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the iOS app, a.k.a. the IOS InnerTube client.
+     * Get a {@link PoTokenResult} specific to the iOS app, a.k.a. the IOS InnerTube client.
      *
      * <p>
      * Implementation details are not known, the app seem to use something called iosGuard which
@@ -115,8 +113,10 @@ public interface PoTokenProvider {
      * {@code poToken}.
      * </p>
      *
-     * @return a {@link com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult} specific to the IOS InnerTube client
+     * @return a {@link PoTokenResult} specific to the IOS InnerTube client
      */
     @Nullable
     PoTokenResult getIosClientPoToken(String videoId);
+
+    boolean isExpired();
 }

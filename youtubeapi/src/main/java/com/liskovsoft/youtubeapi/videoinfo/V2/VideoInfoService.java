@@ -34,9 +34,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            //VIDEO_INFO_TV, VIDEO_INFO_IOS, VIDEO_INFO_TV_EMBED, VIDEO_INFO_MWEB, VIDEO_INFO_ANDROID, VIDEO_INFO_INITIAL, VIDEO_INFO_WEB
-            //VIDEO_INFO_WEB, VIDEO_INFO_MWEB, VIDEO_INFO_INITIAL, VIDEO_INFO_IOS, VIDEO_INFO_WEB_EMBED, VIDEO_INFO_ANDROID, VIDEO_INFO_TV, VIDEO_INFO_TV_EMBED
-            AppClient.WEB_EMBED, AppClient.MWEB, AppClient.IOS, AppClient.TV, AppClient.TV_EMBED
+            AppClient.WEB_EMBED,
+            AppClient.IOS,
+            AppClient.TV,
+            AppClient.TV_EMBED, // single audio language
+            AppClient.MWEB, // single audio language
     };
     @Nullable
     private AppClient mVideoInfoType = null;

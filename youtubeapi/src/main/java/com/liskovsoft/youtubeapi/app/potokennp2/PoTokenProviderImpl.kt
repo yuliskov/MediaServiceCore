@@ -130,6 +130,8 @@ internal object PoTokenProviderImpl : PoTokenProvider {
 
     override fun getIosClientPoToken(videoId: String): PoTokenResult? = null
 
+    override fun isExpired() = webPoTokenGenerator?.isExpired() ?: false
+
     fun resetCache() {
         webPoTokenGenerator = null
     }

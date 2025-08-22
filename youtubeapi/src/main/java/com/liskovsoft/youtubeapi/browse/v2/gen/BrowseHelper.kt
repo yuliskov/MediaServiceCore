@@ -21,6 +21,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
 import com.liskovsoft.youtubeapi.next.v2.gen.getPublishDate
 import com.liskovsoft.youtubeapi.next.v2.gen.getTitle
 import com.liskovsoft.youtubeapi.next.v2.gen.getViews
+import com.liskovsoft.youtubeapi.next.v2.gen.containsShorts
 
 /**
  *  Always renders first tab
@@ -99,23 +100,16 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 /////
 
-internal fun ItemSectionRenderer.getTitle(): String? = getShelfRenderer()?.title?.getText()
-internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.let {
-    it.shelfRenderer?.getItemWrappers() ?:
-    it.playlistVideoListRenderer?.contents ?:
-    it.gridRenderer?.items ?:
-    it.videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
-}
-internal fun ItemSectionRenderer.getShortItems(): List<ItemWrapper?>? = getShelfRenderer()?.getItemWrappers()
-internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.let {
-    it.playlistVideoListRenderer?.getNextPageKey() ?:
-    (it.gridRenderer ?: it.shelfRenderer?.content?.gridRenderer)?.getNextPageKey()
-}
-internal fun ItemSectionRenderer.getBrowseId() = getShelfRenderer()?.endpoint?.getBrowseId()
-internal fun ItemSectionRenderer.getParams() = getShelfRenderer()?.endpoint?.getParams()
-private fun ItemSectionRenderer.getContents() = contents?.lastOrNull() // TODO: which part of Subscriptions should I get? (the first one usually SHORTS)
-private fun ItemSectionRenderer.getShelfRenderer() = contents?.firstNotNullOfOrNull { it?.shelfRenderer }
-private fun ItemSectionRenderer.getGridRenderer() = contents?.firstNotNullOfOrNull { it?.gridRenderer }
+internal fun ItemSectionRenderer.getTitle(): String? = getFirstShelfRenderer()?.title?.getText()
+internal fun ItemSectionRenderer.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun ItemSectionRenderer.getShortItems(): List<ItemWrapper?>? =
+    getContents()?.firstNotNullOfOrNull { if (it?.shelfRenderer?.containsShorts() == true) it.shelfRenderer.getItemWrappers() else null }
+internal fun ItemSectionRenderer.getContinuationToken() = getContents()?.lastOrNull()?.getNextPageKey() ?: continuations?.getContinuationKey()
+internal fun ItemSectionRenderer.getBrowseId() = getFirstShelfRenderer()?.endpoint?.getBrowseId()
+internal fun ItemSectionRenderer.getParams() = getFirstShelfRenderer()?.endpoint?.getParams()
+private fun ItemSectionRenderer.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
+private fun ItemSectionRenderer.getFirstShelfRenderer() = contents?.firstNotNullOfOrNull { it?.shelfRenderer }
+private fun ItemSectionRenderer.getFirstGridRenderer() = contents?.firstNotNullOfOrNull { it?.gridRenderer }
 
 /////
 
@@ -209,10 +203,22 @@ internal fun BrowseResultTV.getContinuationToken(): String? = getSubscriptionsTa
     ?: getShelves()?.getOrNull(0)?.getNextPageKey()
 // Get tabs, e.g. Subscriptions section with a channel list (first one is All)
 internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs?.mapNotNull { it.tabRenderer ?: it.expandableTabRenderer }
-internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
-internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers() ?: gridRenderer?.items
-internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey() ?: gridRenderer?.getNextPageKey()
 private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
 private fun BrowseResultTV.getSections() = contents?.tvBrowseRenderer?.content?.tvSecondaryNavRenderer?.sections
 private fun BrowseResultTV.getSubscriptionsTab() = getTabs()?.firstOrNull { it.getBrowseId() == SUBSCRIPTIONS_BROWSE_ID } ?: getTabs()?.getOrNull(0)
+
+///////////
+
+internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
+internal fun Shelf.getItems(): List<ItemWrapper?>? =
+    shelfRenderer?.getItemWrappers() ?:
+    gridRenderer?.items ?:
+    playlistVideoListRenderer?.contents ?:
+    videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
+internal fun Shelf.getNextPageKey(): String? =
+    shelfRenderer?.getNextPageKey() ?:
+    (gridRenderer ?: shelfRenderer?.content?.gridRenderer)?.getNextPageKey() ?:
+    playlistVideoListRenderer?.getNextPageKey()
+
+///////////
 

@@ -78,7 +78,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
                 return null
             }
 
-            val newGroup = SuggestionsGroup(ShelfRenderer(null, null, null, null))
+            val newGroup = SuggestionsGroup(ShelfRenderer(null, null, null, null, null))
 
             val mediaItems = ArrayList<MediaItem>()
 

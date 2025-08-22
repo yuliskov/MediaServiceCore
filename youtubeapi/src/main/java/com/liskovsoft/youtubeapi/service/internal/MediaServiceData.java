@@ -303,7 +303,7 @@ public class MediaServiceData {
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);
-        mIsLegacyUIEnabled = Helpers.parseBoolean(split, 22);
+        mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
     }
 
     private void persistDataInt() {
@@ -316,7 +316,7 @@ public class MediaServiceData {
                         mVideoInfoType, mSkipAuth, null, null, null, null,
                         null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
-                        null, mVisitorCookie, mIsLegacyUIEnabled));
+                        null, mVisitorCookie, null, mIsLegacyUIEnabled));
     }
 
     private void restoreCachedData() {

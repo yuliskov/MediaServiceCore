@@ -11,9 +11,9 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-internal interface BrowseApiMock2: BrowseApi {
+internal interface SubscriptionsApiMock: BrowseApi {
     @Mock
-    @MockResponse(body = "browse/tv/browse2.0_2025.07.30.json")
+    @MockResponse(body = "browse/tv/2025.08.22_subscriptions.json")
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
@@ -23,7 +23,7 @@ internal interface BrowseApiMock2: BrowseApi {
     override fun getBrowseResultTV(browseQuery: String?): Call<BrowseResultTV?>
 
     @Mock
-    @MockResponse(body = "browse/tv/browse2.0_continuation_2025.07.30.json")
+    @MockResponse(body = "browse/tv/2025.08.22_subscriptions_continuation.json")
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_TV,

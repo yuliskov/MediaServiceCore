@@ -11,7 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-internal interface BrowseApiMock: BrowseApi {
+internal interface HomeApiMock: BrowseApi {
     @Mock
     @MockResponse(body = "browse/tv/2025.04.06_home.json")
     @Headers(

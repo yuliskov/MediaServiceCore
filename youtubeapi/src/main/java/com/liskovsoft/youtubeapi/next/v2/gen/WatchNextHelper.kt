@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.gen
 import com.liskovsoft.youtubeapi.browse.v2.gen.GridRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.PlaylistVideoListRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
+import com.liskovsoft.youtubeapi.browse.v2.gen.getItems
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
 //////
@@ -50,15 +51,19 @@ internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpt
 private fun WatchNextResult.getAutoplaySet() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
-internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents }
-internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey()
-    ?: getSectionContinuation()?.continuations?.getContinuationKey()
+internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents } ?:
+    getSectionContinuation()?.contents?.flatMap { it?.getItems() ?: emptyList() }
+internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey() ?:
+    getSectionContinuation()?.continuations?.getContinuationKey()
 internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.contents
-private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation
-    ?: continuationContents?.gridContinuation ?: continuationContents?.playlistVideoListContinuation
-    ?: continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer
+private fun WatchNextResultContinuation.getContinuation() =
+    continuationContents?.horizontalListContinuation ?:
+    continuationContents?.gridContinuation ?:
+    continuationContents?.playlistVideoListContinuation ?:
+    continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer
 private fun WatchNextResultContinuation.getSectionContinuation() =
-    continuationContents?.sectionListContinuation ?: continuationContents?.tvSurfaceContentContinuation?.content?.sectionListRenderer
+    continuationContents?.sectionListContinuation ?:
+    continuationContents?.tvSurfaceContentContinuation?.content?.sectionListRenderer
 
 ///////
 
@@ -81,12 +86,13 @@ internal fun VideoMetadataRenderer.getPercentWatched() = thumbnailOverlays?.firs
 
 ////////
 
-const val TYPE_CHANNEL = "TRANSPORT_CONTROLS_BUTTON_TYPE_CHANNEL_BUTTON"
-const val TYPE_SKIP_PREVIOUS = "TRANSPORT_CONTROLS_BUTTON_TYPE_SKIP_PREVIOUS"
-const val TYPE_SKIP_NEXT = "TRANSPORT_CONTROLS_BUTTON_TYPE_SKIP_NEXT"
-const val TYPE_LIKE = "TRANSPORT_CONTROLS_BUTTON_TYPE_LIKE_BUTTON"
-const val TYPE_DISLIKE = "TRANSPORT_CONTROLS_BUTTON_TYPE_DISLIKE_BUTTON"
-const val TYPE_ADD_TO_PLAYLIST = "TRANSPORT_CONTROLS_BUTTON_TYPE_ADD_TO_PLAYLIST"
+private const val TYPE_CHANNEL = "TRANSPORT_CONTROLS_BUTTON_TYPE_CHANNEL_BUTTON"
+private const val TYPE_SKIP_PREVIOUS = "TRANSPORT_CONTROLS_BUTTON_TYPE_SKIP_PREVIOUS"
+private const val TYPE_SKIP_NEXT = "TRANSPORT_CONTROLS_BUTTON_TYPE_SKIP_NEXT"
+private const val TYPE_LIKE = "TRANSPORT_CONTROLS_BUTTON_TYPE_LIKE_BUTTON"
+private const val TYPE_DISLIKE = "TRANSPORT_CONTROLS_BUTTON_TYPE_DISLIKE_BUTTON"
+private const val TYPE_ADD_TO_PLAYLIST = "TRANSPORT_CONTROLS_BUTTON_TYPE_ADD_TO_PLAYLIST"
+private const val TVHTML5_SHELF_RENDERER_TYPE_SHORTS = "TVHTML5_SHELF_RENDERER_TYPE_SHORTS"
 
 internal fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_LIKE)?.toggleButtonRenderer?.isToggled
 internal fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_DISLIKE)?.toggleButtonRenderer?.isToggled
@@ -101,6 +107,7 @@ internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.g
 internal fun ShelfRenderer.getItemWrappers() = content?.let { it.horizontalListRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.gridRenderer?.items }
 internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
+internal fun ShelfRenderer.containsShorts() = tvhtml5ShelfRendererType == TVHTML5_SHELF_RENDERER_TYPE_SHORTS
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
 
 ///////

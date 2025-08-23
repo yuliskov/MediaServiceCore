@@ -565,7 +565,8 @@ internal open class BrowseService2 {
         var combinedItems: List<ItemWrapper?>? = items
         var combinedKey: String? = continuationKey
         for (i in 0 until 10) {
-            if (combinedKey == null || (combinedItems?.size ?: 0) > 20)
+            // NOTE: bigger max value help moving live videos to the top (e.g. sorting)
+            if (combinedKey == null || (combinedItems?.size ?: 0) > 60)
                 break
 
             val result =

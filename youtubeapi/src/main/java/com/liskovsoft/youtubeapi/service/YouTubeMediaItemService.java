@@ -560,13 +560,13 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
-        if (shouldBeSynced(formatInfo)) {
+        if (shouldBeSynced(formatInfo) && !formatInfo.isSynced()) {
             VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams());
             formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
         }
     }
 
     private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
-        return (formatInfo.isAnonymous() && !formatInfo.isSynced()) && !formatInfo.isUnplayable() && getSignInService().isSigned();
+        return formatInfo.isAnonymous() && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 }

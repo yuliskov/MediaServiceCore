@@ -321,10 +321,10 @@ internal open class BrowseService2 {
     }
 
     open fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
-        return getChannelTV(channelId, params) ?: getChannelWeb(channelId, params, true)?.let { Pair(it, null) }
+        return getChannelTV(channelId, params) ?: getChannelWeb(channelId, true)?.let { Pair(it, null) }
     }
 
-    private fun getChannelWeb(channelId: String?, params: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
+    private fun getChannelWeb(channelId: String?, skipAuth: Boolean = false): List<MediaGroup?>? {
         if (channelId == null) {
             return null
         }

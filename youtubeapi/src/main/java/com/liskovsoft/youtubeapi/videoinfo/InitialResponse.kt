@@ -12,6 +12,7 @@ import java.util.regex.Pattern
 internal object InitialResponse {
     private val YT_INITIAL_PLAYER_RESPONSE_RE: Pattern = Pattern.compile("""ytInitialPlayerResponse\s*=""")
 
+    @Suppress("UNCHECKED_CAST")
     @JvmStatic
     fun getVideoInfo(videoId: String, skipAuth: Boolean = false): VideoInfo? {
         val fileApi = RetrofitHelper.create(FileApi::class.java)

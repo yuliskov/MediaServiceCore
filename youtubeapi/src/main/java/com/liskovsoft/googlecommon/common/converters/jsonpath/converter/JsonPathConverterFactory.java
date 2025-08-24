@@ -1,5 +1,8 @@
 package com.liskovsoft.googlecommon.common.converters.jsonpath.converter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
@@ -44,17 +47,17 @@ public final class JsonPathConverterFactory extends Converter.Factory {
     }
 
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-                                                            Annotation[] annotations,
-                                                            Retrofit retrofit) {
+    public Converter<ResponseBody, ?> responseBodyConverter(@NonNull Type type,
+                                                            @Nullable Annotation[] annotations,
+                                                            @Nullable Retrofit retrofit) {
         return new JsonPathResponseBodyConverter<>(new JsonPathTypeAdapter<>(mParser, type));
     }
 
     @Override
-    public Converter<?, RequestBody> requestBodyConverter(Type type,
-                                                          Annotation[] parameterAnnotations,
-                                                          Annotation[] methodAnnotations,
-                                                          Retrofit retrofit) {
+    public Converter<?, RequestBody> requestBodyConverter(@NonNull Type type,
+                                                          @Nullable Annotation[] parameterAnnotations,
+                                                          @Nullable Annotation[] methodAnnotations,
+                                                          @Nullable Retrofit retrofit) {
         return new JsonPathRequestBodyConverter<>(new JsonPathTypeAdapter<>(mParser, type));
     }
 }

@@ -1,6 +1,7 @@
 package com.liskovsoft.googlecommon.common.helpers
 
 import android.os.Build
+import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 
 object DefaultHeaders {
     private const val COBALT_VER = "23.lts.2.309559-gold"
@@ -44,7 +45,7 @@ object DefaultHeaders {
         "Mozilla/5.0 (Linux armeabi-v7a; Android 7.1.2) Cobalt/23.lts.2.309559-gold (unlike Gecko) v8/8.8.278.8-jit gles Starboard/14, Amazon_ATV_mt8695_0/NS6294 (Amazon, AFTMM) com.google.android.youtube.tv/3.02.006"
     // Throttling! Probably, because of Chrome engine checks.
     private val USER_AGENT_ATV_COMBINED =
-        "Mozilla/5.0 (Linux ${Build.CPU_ABI}; Android ${Build.VERSION.RELEASE}) Cobalt/$COBALT_VER (unlike Gecko) v8/$V8_VER gles Starboard/$STARBOARD_VER, ${Build.BRAND}_ATV_${Build.HARDWARE}_0/${Build.ID} (${Build.BRAND}, ${Build.MODEL}) com.google.android.youtube.tv/$APK_VER"
+        "Mozilla/5.0 (Linux ${DeviceHelpers.getPrimaryAbi()}; Android ${Build.VERSION.RELEASE}) Cobalt/$COBALT_VER (unlike Gecko) v8/$V8_VER gles Starboard/$STARBOARD_VER, ${Build.BRAND}_ATV_${Build.HARDWARE}_0/${Build.ID} (${Build.BRAND}, ${Build.MODEL}) com.google.android.youtube.tv/$APK_VER"
 
     /// END TV Clients
 

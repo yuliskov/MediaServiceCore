@@ -221,7 +221,7 @@ internal class PoTokenWebView private constructor(
      */
     @JavascriptInterface
     fun onObtainPoTokenError(identifier: String, error: String) {
-        val msg = "onObtainPoTokenError: $error"
+        val msg = "onObtainPoTokenError: identifier=$identifier error=$error"
         Log.e(TAG, msg)
         onInitializationErrorCloseAndCancel(buildExceptionForJsError(msg))
     }

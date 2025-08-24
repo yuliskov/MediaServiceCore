@@ -55,6 +55,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private float mLoudnessDb;
     private boolean mContainsAdaptiveVideoFormats;
     private boolean mIsAnonymous;
+    private boolean mIsSynced;
     private boolean mIsBotCheckError;
     private String mPaidContentText;
     private String mClickTrackingParams;
@@ -339,6 +340,10 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mIsAnonymous;
     }
 
+    public boolean isSynced() {
+        return mIsSynced;
+    }
+
     @Override
     public boolean isBotCheckError() {
         return mIsBotCheckError;
@@ -421,8 +426,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
      * Intended to merge signed and unsigned infos (no-playback fix)
      */
     public void sync(YouTubeMediaItemFormatInfo formatInfo) {
+        mIsSynced = true;
+
         if (formatInfo == null || Helpers.anyNull(formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam())) {
-            mIsAnonymous = false;
             return;
         }
 
@@ -430,7 +436,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mEventId = formatInfo.getEventId();
         mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
         mOfParam = formatInfo.getOfParam();
-
-        mIsAnonymous = false;
+        mIsAnonymous = formatInfo.isAnonymous();
     }
 }

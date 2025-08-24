@@ -180,6 +180,10 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
+        if (shouldBeSynced(formatInfo)) {
+            throw new IllegalStateException("Update history error: the format should be synced first");
+        }
+
         getTrackingService().updateWatchTime(
                 formatInfo.getVideoId(), positionSec, Helpers.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
                 formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam());
@@ -556,9 +560,13 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
-        if (formatInfo.isAnonymous() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
+        if (shouldBeSynced(formatInfo)) {
             VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams());
             formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
         }
+    }
+
+    private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
+        return (formatInfo.isAnonymous() && !formatInfo.isSynced()) && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 }

@@ -27,9 +27,10 @@ import com.liskovsoft.youtubeapi.next.v2.gen.containsShorts
  *  Always renders first tab
  */
 internal fun BrowseResult.getItems(): List<ItemWrapper?>? = getRootTab()?.getItems()
-internal fun BrowseResult.getLiveItems(): List<ItemWrapper?>? = getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isLive() }
+internal fun BrowseResult.getLiveItems(): List<ItemWrapper?>? =
+    getItems()?.filter { it?.isLive() == true || it?.isUpcoming() == true }?.sortedByDescending { it?.isLive() }
 internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
-    getItems()?.filter { it?.isLive() == false && it.isUpcoming() == false }?.let { if (maxItems > 0) it.take(maxItems) else it }
+    getItems()?.filter { it != null && !it.isLive() && !it.isUpcoming() }?.let { if (maxItems > 0) it.take(maxItems) else it }
 internal fun BrowseResult.getShortItems(): List<ItemWrapper?>? = getRootTab()?.getShortItems()
 internal fun BrowseResult.getShelves(): List<ItemSectionRenderer?>? = getRootTab()?.getShelves()
 internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
@@ -42,7 +43,8 @@ internal fun BrowseResult.getChips(): List<ChipCloudChipRenderer?>? = getRootTab
  *  
  *  First tab on HOME page has no title. Use first chip instead.
  */
-internal fun BrowseResult.getTitle(): String? = getRootTab()?.title ?: (header?.playlistHeaderRenderer ?: header?.musicHeaderRenderer)?.getTitle() ?: getChips()?.getOrNull(0)?.getTitle()
+internal fun BrowseResult.getTitle(): String? =
+    getRootTab()?.title ?: (header?.playlistHeaderRenderer ?: header?.musicHeaderRenderer)?.getTitle() ?: getChips()?.getOrNull(0)?.getTitle()
 internal fun BrowseResult.isPlaylist(): Boolean = header?.playlistHeaderRenderer != null
 internal fun BrowseResult.isHome(): Boolean = getTabs()?.getOrNull(0)?.getItems() != null
 internal fun BrowseResult.getRedirectBrowseId(): String? = onResponseReceivedActions?.firstNotNullOfOrNull { it?.navigateAction?.endpoint?.getBrowseId() }
@@ -52,15 +54,13 @@ private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it
 
 private const val TAB_STYLE_NEW_CONTENT = "NEW_CONTENT"
 
-internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() } ?:
-    getGridContents()?.mapNotNull { it?.getItem() } ?: getTVGrid()?.items ?: getTVList()?.getItems()
+internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() }
+    ?: getGridContents()?.mapNotNull { it?.getItem() } ?: getTVGrid()?.items ?: getTVList()?.getItems()
 internal fun TabRenderer.getShortItems(): List<ItemWrapper?>? = getGridContents()?.flatMap { it?.getItems() ?: emptyList() } ?: getTVList()?.getShortItems()
-internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull {
-        it?.getContinuationToken()
-    } ?:
-    getGridContents()?.lastOrNull()?.getContinuationToken() ?:
-    getTVGrid()?.continuations?.getContinuationKey() ?:
-    getTVList()?.getContinuationToken()
+internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull { it?.getContinuationToken() }
+    ?: getGridContents()?.lastOrNull()?.getContinuationToken()
+    ?: getTVGrid()?.continuations?.getContinuationKey()
+    ?: getTVList()?.getContinuationToken()
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getContinuationKey(): String? = content?.tvSurfaceContentRenderer?.continuation?.getContinuationKey()
@@ -81,15 +81,14 @@ internal fun TabRenderer.getTVList() = content?.tvSurfaceContentRenderer?.conten
 private const val CONTINUATION_HEADER = "RELOAD_CONTINUATION_SLOT_HEADER" // channel sorting continuation header
 
 internal fun ContinuationResult.getItems(): List<ItemWrapper?>? = getContinuations()?.flatMap { it?.getItems() ?: listOfNotNull(it?.getItem()) }
-internal fun ContinuationResult.getContinuationToken(): String? = getContinuations()?.firstNotNullOfOrNull {
-        it?.getContinuationToken()
-    } ?:
-    getContinuations()?.lastOrNull()?.getContinuationToken()
+internal fun ContinuationResult.getContinuationToken(): String? =
+    getContinuations()?.firstNotNullOfOrNull { it?.getContinuationToken() }
+    ?: getContinuations()?.lastOrNull()?.getContinuationToken()
 internal fun ContinuationResult.getSections(): List<RichSectionRenderer?>? = getContinuations()?.mapNotNull { it?.richSectionRenderer }
 private fun ContinuationResult.getContinuations() = onResponseReceivedActions?.firstNotNullOfOrNull {
-        it?.appendContinuationItemsAction?.continuationItems ?: it?.reloadContinuationItemsCommand?.let { if (it.slot != CONTINUATION_HEADER) it.continuationItems else null }
+        it?.appendContinuationItemsAction?.continuationItems
+            ?: it?.reloadContinuationItemsCommand?.let { if (it.slot != CONTINUATION_HEADER) it.continuationItems else null }
     }
-
 
 /////
 
@@ -210,15 +209,13 @@ private fun BrowseResultTV.getSubscriptionsTab() = getTabs()?.firstOrNull { it.g
 ///////////
 
 internal fun Shelf.getTitle(): String? = shelfRenderer?.getTitle()
-internal fun Shelf.getItems(): List<ItemWrapper?>? =
-    shelfRenderer?.getItemWrappers() ?:
-    gridRenderer?.items ?:
-    playlistVideoListRenderer?.contents ?:
-    videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
-internal fun Shelf.getNextPageKey(): String? =
-    shelfRenderer?.getNextPageKey() ?:
-    (gridRenderer ?: shelfRenderer?.content?.gridRenderer)?.getNextPageKey() ?:
-    playlistVideoListRenderer?.getNextPageKey()
+internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrappers()
+    ?: gridRenderer?.items
+    ?: playlistVideoListRenderer?.contents
+    ?: videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
+internal fun Shelf.getNextPageKey(): String? = shelfRenderer?.getNextPageKey()
+    ?: (gridRenderer ?: shelfRenderer?.content?.gridRenderer)?.getNextPageKey()
+    ?: playlistVideoListRenderer?.getNextPageKey()
 
 ///////////
 

@@ -8,14 +8,16 @@ import com.liskovsoft.youtubeapi.common.models.gen.*
 
 //////
 
-internal fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed ?:
-    navigationEndpoint?.getOverlayToggleButton()?.isToggled ?: navigationEndpoint?.getOverlaySubscribeButton()?.subscribed
+internal fun VideoOwnerItem.isSubscribed() = subscriptionButton?.subscribed ?: subscribed ?: subscribeButton?.subscribeButtonRenderer?.subscribed
+    ?: navigationEndpoint?.getOverlayToggleButton()?.isToggled ?: navigationEndpoint?.getOverlaySubscribeButton()?.subscribed
 internal fun VideoOwnerItem.getChannelId() = navigationEndpoint?.getBrowseId() ?: subscribeButton?.subscribeButtonRenderer?.channelId
 internal fun VideoOwnerItem.getThumbnails() = thumbnail
 internal fun VideoOwnerItem.getParams() =
-    navigationEndpoint?.getOverlayToggleButton()?.getParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams() ?: subscribeButton?.subscribeButtonRenderer?.getParams()
+    navigationEndpoint?.getOverlayToggleButton()?.getParams() ?: navigationEndpoint?.getOverlaySubscribeButton()?.getParams()
+    ?: subscribeButton?.subscribeButtonRenderer?.getParams()
 internal fun VideoOwnerItem.getNotificationPreference() = subscribeButton?.subscribeButtonRenderer?.notificationPreferenceButton
-internal fun VideoOwnerItem.getSubscriberCount() = subscriberCountText?.getText() ?: subscribeButton?.subscribeButtonRenderer?.longSubscriberCountText?.getText()
+internal fun VideoOwnerItem.getSubscriberCount() = subscriberCountText?.getText()
+    ?: subscribeButton?.subscribeButtonRenderer?.longSubscriberCountText?.getText()
 internal fun VideoOwnerItem.getShortSubscriberCount() = subscribeButton?.subscribeButtonRenderer?.shortSubscriberCountText?.getText()
 
 /////
@@ -26,25 +28,29 @@ private const val ICON_TYPE_SHUFFLE = "SHUFFLE"
 
 private fun WatchNextResult.getWatchNextResults() = contents?.singleColumnWatchNextResults
 private fun WatchNextResult.getPlayerOverlays() = playerOverlays?.playerOverlayRenderer
-internal fun WatchNextResult.getSuggestedSections() = getWatchNextResults()?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.mapNotNull { it?.shelfRenderer }
-internal fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results?.contents?.getOrNull(0)?.
-    itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
+internal fun WatchNextResult.getSuggestedSections() =
+    getWatchNextResults()?.pivot?.let { it.pivot ?: it.sectionListRenderer }?.contents?.mapNotNull { it?.shelfRenderer }
+internal fun WatchNextResult.getVideoMetadata() = getWatchNextResults()?.results?.results?.contents?.getOrNull(0)
+    ?.itemSectionRenderer?.contents?.map { it?.videoMetadataRenderer ?: it?.musicWatchMetadataRenderer }?.firstOrNull()
 
 internal fun WatchNextResult.getNextVideoItem() = getAutoplaySet()?.nextVideoRenderer?.getNextVideoItem()
 internal fun WatchNextResult.getAutoplayVideoItem() = getAutoplaySet()?.autoplayVideoRenderer?.getNextVideoItem()
 internal fun WatchNextResult.getShuffleVideoItem() =
-    getWatchNextResults()?.pivot?.sectionListRenderer?.contents?.firstOrNull()
-        ?.shelfRenderer?.headerRenderer?.shelfHeaderRenderer?.buttons?.firstOrNull { it?.buttonRenderer?.icon?.iconType == ICON_TYPE_SHUFFLE }?.buttonRenderer?.navigationEndpoint
+    getWatchNextResults()?.pivot?.sectionListRenderer?.contents
+        ?.firstOrNull()?.shelfRenderer?.headerRenderer?.shelfHeaderRenderer?.buttons
+        ?.firstOrNull { it?.buttonRenderer?.icon?.iconType == ICON_TYPE_SHUFFLE }?.buttonRenderer?.navigationEndpoint
 
 internal fun WatchNextResult.getVideoDetails() = getReplayItemWrapper()?.pivotVideoRenderer
 internal fun WatchNextResult.getReplayItemWrapper() = getWatchNextResults()?.autoplay?.autoplay?.replayVideoRenderer
 internal fun WatchNextResult.getButtonStateItem() = transportControls?.transportControlsRenderer
-internal fun WatchNextResult.getLiveChatToken() = getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
+internal fun WatchNextResult.getLiveChatToken() =
+    getWatchNextResults()?.conversationBar?.liveChatRenderer?.continuations?.getOrNull(0)?.reloadContinuationData?.continuation
 internal fun WatchNextResult.getPlaylistInfo() = getWatchNextResults()?.playlist?.playlist
-internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer?.
-    playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters ?:
-    engagementPanels?.firstNotNullOfOrNull { it?.engagementPanelSectionListRenderer?.content?.macroMarkersListRenderer?.contents } ?:
-    frameworkUpdates?.entityBatchUpdate?.mutations?.firstNotNullOfOrNull { it?.payload?.macroMarkersListEntity?.markersList?.takeIf { it.markerType == MARKER_TYPE_CHAPTERS }?.markers }
+internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer
+    ?.playerBar?.multiMarkersPlayerBarRenderer?.markersMap?.firstOrNull()?.value?.chapters
+    ?: engagementPanels?.firstNotNullOfOrNull { it?.engagementPanelSectionListRenderer?.content?.macroMarkersListRenderer?.contents }
+    ?: frameworkUpdates?.entityBatchUpdate?.mutations
+        ?.firstNotNullOfOrNull { it?.payload?.macroMarkersListEntity?.markersList?.takeIf { it.markerType == MARKER_TYPE_CHAPTERS }?.markers }
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNull { it?.isDescriptionSection() == true }
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true
@@ -56,14 +62,12 @@ internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getCo
 internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey() ?:
     getSectionContinuation()?.continuations?.getContinuationKey()
 internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.contents
-private fun WatchNextResultContinuation.getContinuation() =
-    continuationContents?.horizontalListContinuation ?:
-    continuationContents?.gridContinuation ?:
-    continuationContents?.playlistVideoListContinuation ?:
-    continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer
-private fun WatchNextResultContinuation.getSectionContinuation() =
-    continuationContents?.sectionListContinuation ?:
-    continuationContents?.tvSurfaceContentContinuation?.content?.sectionListRenderer
+private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation
+    ?: continuationContents?.gridContinuation
+    ?: continuationContents?.playlistVideoListContinuation
+    ?: continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer
+private fun WatchNextResultContinuation.getSectionContinuation() = continuationContents?.sectionListContinuation
+    ?: continuationContents?.tvSurfaceContentContinuation?.content?.sectionListRenderer
 
 ///////
 
@@ -82,7 +86,8 @@ internal fun VideoMetadataRenderer.getLikeStatus() = likeStatus ?: likeButton?.l
 internal fun VideoMetadataRenderer.getLikeCount() = likeStatus ?: likeButton?.likeButtonRenderer?.likeCountText?.getText()
 internal fun VideoMetadataRenderer.getLikeCountInt() = likeButton?.likeButtonRenderer?.likeCount
 internal fun VideoMetadataRenderer.isUpcoming() = badges?.firstNotNullOfOrNull { it?.upcomingEventBadge?.label?.getText() }?.let { true } ?: false
-internal fun VideoMetadataRenderer.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
+internal fun VideoMetadataRenderer.getPercentWatched() =
+    thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayResumePlaybackRenderer?.percentDurationWatched } ?: 0
 
 ////////
 
@@ -95,7 +100,8 @@ private const val TYPE_ADD_TO_PLAYLIST = "TRANSPORT_CONTROLS_BUTTON_TYPE_ADD_TO_
 private const val TVHTML5_SHELF_RENDERER_TYPE_SHORTS = "TVHTML5_SHELF_RENDERER_TYPE_SHORTS"
 
 internal fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_LIKE)?.toggleButtonRenderer?.isToggled
-internal fun ButtonStateItem.isDislikeToggled() = dislikeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_DISLIKE)?.toggleButtonRenderer?.isToggled
+internal fun ButtonStateItem.isDislikeToggled() =
+    dislikeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_DISLIKE)?.toggleButtonRenderer?.isToggled
 internal fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
 internal fun ButtonStateItem.getChannelId() = getChannelOwner()?.getChannelId()
 internal fun ButtonStateItem.getChannelOwner() = channelButton?.videoOwnerRenderer ?: getButton(TYPE_CHANNEL)?.videoOwnerRenderer
@@ -104,7 +110,8 @@ private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?
 ///////
 
 internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
-internal fun ShelfRenderer.getItemWrappers() = content?.let { it.horizontalListRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.gridRenderer?.items }
+internal fun ShelfRenderer.getItemWrappers() =
+    content?.let { it.horizontalListRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.gridRenderer?.items }
 internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 internal fun ShelfRenderer.containsShorts() = tvhtml5ShelfRendererType == TVHTML5_SHELF_RENDERER_TYPE_SHORTS
@@ -141,7 +148,8 @@ internal fun NextVideoItem.getParams() = endpoint?.watchEndpoint?.params
 
 internal fun ChapterItemWrapper.getTitle() = chapterRenderer?.getTitle() ?: macroMarkersListItemRenderer?.getTitle() ?: title?.toString()
 internal fun ChapterItemWrapper.getStartTimeMs() = chapterRenderer?.getStartTimeMs() ?: macroMarkersListItemRenderer?.getStartTimeMs() ?: startMillis?.toLong()
-internal fun ChapterItemWrapper.getThumbnailUrl() = chapterRenderer?.getThumbnailUrl() ?: macroMarkersListItemRenderer?.getThumbnailUrl() ?: thumbnailDetails?.getOptimalResThumbnailUrl()
+internal fun ChapterItemWrapper.getThumbnailUrl() =
+    chapterRenderer?.getThumbnailUrl() ?: macroMarkersListItemRenderer?.getThumbnailUrl() ?: thumbnailDetails?.getOptimalResThumbnailUrl()
 
 /////// Chapters V1
 
@@ -203,5 +211,6 @@ internal fun Factoid.getAccessibilityText(): String? = factoidRenderer?.accessib
 
 ///////
 
-internal fun NextVideoRenderer.getNextVideoItem() = maybeHistoryEndpointRenderer ?: autoplayEndpointRenderer ?: autoplayVideoWrapperRenderer?.primaryEndpointRenderer?.autoplayEndpointRenderer
+internal fun NextVideoRenderer.getNextVideoItem() =
+    maybeHistoryEndpointRenderer ?: autoplayEndpointRenderer ?: autoplayVideoWrapperRenderer?.primaryEndpointRenderer?.autoplayEndpointRenderer
 

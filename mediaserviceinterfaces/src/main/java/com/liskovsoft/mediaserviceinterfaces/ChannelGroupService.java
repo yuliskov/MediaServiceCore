@@ -15,7 +15,7 @@ public interface ChannelGroupService {
     void removeChannelGroup(ItemGroup group);
     ItemGroup createChannelGroup(String title, String iconUrl, List<Item> channels);
     void renameChannelGroup(ItemGroup channelGroup, String title);
-    Item createChannel(String title, String iconUrl, String channelId);
+    Item createChannel(String channelId, String title, String iconUrl);
     ItemGroup findChannelGroupById(String channelGroupId);
     ItemGroup findChannelGroupByTitle(String title);
     String[] findChannelIdsForGroup(String channelGroupId);

@@ -28,5 +28,6 @@ public interface ItemGroup {
         String getVideoId();
         @Nullable
         String getBadge();
+        int getLikeCount();
     }
 }

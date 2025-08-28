@@ -16,6 +16,7 @@ internal data class ItemImpl(
     private val videoId: String? = null,
     private val subtitle: CharSequence? = null,
     private val badge: String? = null,
+    private val likeCount: Int = -1,
 ): Item {
     override fun getTitle(): String? {
         return title
@@ -41,8 +42,12 @@ internal data class ItemImpl(
         return badge
     }
 
+    override fun getLikeCount(): Int {
+        return likeCount
+    }
+
     override fun toString(): String {
-        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle, badge)
+        return Helpers.merge(ITEM_DELIM, title, iconUrl, channelId, videoId, subtitle, badge, likeCount)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -71,12 +76,13 @@ internal data class ItemImpl(
             val videoId = Helpers.parseStr(split, 3)
             val subtitle = Helpers.parseStr(split, 4)
             val badge = Helpers.parseStr(split, 5)
+            val likeCount = Helpers.parseInt(split, 6, -1)
 
             if (channelId == null && videoId == null) {
                 return null
             }
 
-            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle, badge)
+            return ItemImpl(channelId, title, groupIconUrl, videoId, subtitle, badge, likeCount)
         }
 
         @JvmStatic

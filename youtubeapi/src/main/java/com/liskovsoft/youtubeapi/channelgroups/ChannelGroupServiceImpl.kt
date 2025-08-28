@@ -19,8 +19,10 @@ import java.io.File
 
 internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener,
     ChannelGroupService {
-    private const val SUBSCRIPTION_GROUP_ID: String = "1000"
-    private const val SUBSCRIPTION_GROUP_NAME: String = "Subscriptions"
+    private const val SUBSCRIPTIONS_GROUP_ID: String = "1000"
+    private const val SUBSCRIPTIONS_GROUP_NAME: String = "Subscriptions"
+    private const val NOTIFICATIONS_GROUP_ID: String = "1001"
+    private const val NOTIFICATIONS_GROUP_NAME: String = "Notifications"
     private const val CHANNEL_GROUP_DATA = "channel_group_data"
     private val mImportServices = listOf(PocketTubeService, GrayJayService, NewPipeService)
     private lateinit var mChannelGroups: MutableList<ItemGroup>
@@ -37,7 +39,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     override fun getChannelGroups(): List<ItemGroup> {
-        return mChannelGroups.filter { it.id != SUBSCRIPTION_GROUP_ID }
+        return mChannelGroups.filter { it.id != SUBSCRIPTIONS_GROUP_ID && it.id != NOTIFICATIONS_GROUP_ID }
     }
 
     override fun addChannelGroup(group: ItemGroup) {
@@ -87,18 +89,19 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     //}
 
     fun getSubscribedChannelGroup(): ItemGroup {
-        return findChannelGroupById(SUBSCRIPTION_GROUP_ID) ?: initSubscriptions()
-    }
-
-    private fun initSubscriptions(): ItemGroup {
-        val group = ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, mutableListOf())
-        addChannelGroup(group)
-
-        return group
+        return findOrInitGroup(SUBSCRIPTIONS_GROUP_ID, SUBSCRIPTIONS_GROUP_NAME)
     }
 
     fun getSubscribedChannelIds(): Array<String>? {
-        return findChannelIdsForGroup(SUBSCRIPTION_GROUP_ID)
+        return findChannelIdsForGroup(SUBSCRIPTIONS_GROUP_ID)
+    }
+
+    fun getNotificationChannelGroup(): ItemGroup {
+        return findOrInitGroup(NOTIFICATIONS_GROUP_ID, NOTIFICATIONS_GROUP_NAME)
+    }
+
+    fun getNotificationChannelIds(): Array<String>? {
+        return findChannelIdsForGroup(NOTIFICATIONS_GROUP_ID)
     }
 
     override fun findChannelIdsForGroup(channelGroupId: String?): Array<String>? {
@@ -146,7 +149,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         addChannelGroup(ItemGroupImpl(itemGroup.id, title, itemGroup.iconUrl, itemGroup.items))
     }
 
-    override fun createChannel(title: String?, iconUrl: String?, channelId: String): Item {
+    override fun createChannel(channelId: String, title: String?, iconUrl: String?): Item {
         return ItemImpl(channelId = channelId, title = title, iconUrl = iconUrl)
     }
 
@@ -220,7 +223,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     fun isSubscribed(channelId: String): Boolean {
-        val group: ItemGroup? = findChannelGroupById(SUBSCRIPTION_GROUP_ID)
+        val group: ItemGroup? = findChannelGroupById(SUBSCRIPTIONS_GROUP_ID)
 
         return group?.contains(channelId) ?: false
     }
@@ -243,5 +246,16 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     private fun persistDataReal() {
         MediaServicePrefs.setData(CHANNEL_GROUP_DATA, Helpers.mergeData(mChannelGroups))
+    }
+
+    private fun findOrInitGroup(id: String, title: String): ItemGroup {
+        return findChannelGroupById(id) ?: initGroup(id, title)
+    }
+
+    private fun initGroup(id: String, title: String): ItemGroup {
+        val group = ItemGroupImpl(id, title, null, mutableListOf())
+        addChannelGroup(group)
+
+        return group
     }
 }

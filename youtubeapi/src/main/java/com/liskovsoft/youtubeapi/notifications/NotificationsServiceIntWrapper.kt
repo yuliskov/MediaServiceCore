@@ -5,7 +5,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.youtubeapi.common.models.gen.NotificationStateItem
 import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import com.liskovsoft.youtubeapi.rss.RssService
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 
 private const val ALL = 0 // Enable notifications
 private const val PERSONALIZED = 1 // Disable notifications

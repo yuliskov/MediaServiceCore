@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.youtubeapi.notifications.NotificationStorage;
 
 public class ActionsServiceWrapper extends ActionsService {
     private static ActionsServiceWrapper sInstance;
@@ -23,6 +24,21 @@ public class ActionsServiceWrapper extends ActionsService {
     @Override
     public void unsubscribe(String channelId) {
         super.unsubscribe(channelId);
+
         ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
+    }
+
+    @Override
+    public void setLike(String videoId) {
+        super.setLike(videoId);
+
+        NotificationStorage.setLike(true);
+    }
+
+    @Override
+    public void removeLike(String videoId) {
+        super.removeLike(videoId);
+
+        NotificationStorage.setLike(false);
     }
 }

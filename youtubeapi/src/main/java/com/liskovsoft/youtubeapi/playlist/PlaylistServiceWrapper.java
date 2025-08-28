@@ -60,7 +60,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
             String badgeText = ytMetadata != null ? ytMetadata.getBadgeText() : null;
             String channelId = ytMetadata != null ? ytMetadata.getChannelId() : null;
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, null,
-                    Collections.singletonList(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText)));
+                    Collections.singletonList(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText, -1)));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
         }
     }
@@ -158,7 +158,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
             CharSequence subtitle = ytMetadata != null ? ytMetadata.getSecondTitle() : null;
             String badgeText = ytMetadata != null ? ytMetadata.getBadgeText() : null;
             String channelId = ytMetadata != null ? ytMetadata.getChannelId() : null;
-            playlistGroup.add(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText));
+            playlistGroup.add(new ItemImpl(channelId, title, null, videoId, subtitle, badgeText, -1));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
         }
     }

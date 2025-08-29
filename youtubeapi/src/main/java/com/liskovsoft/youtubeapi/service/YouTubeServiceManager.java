@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService;
 import com.liskovsoft.mediaserviceinterfaces.CommentsService;
@@ -16,6 +17,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
 import io.reactivex.disposables.Disposable;
@@ -85,6 +87,9 @@ public class YouTubeServiceManager implements ServiceManager {
         //AppService.instance().invalidateVisitorData();
         getYouTubeMediaItemService().invalidateCache();
         getVideoInfoService().resetInfoType();
+
+        if (getMediaServiceData() != null)
+            getMediaServiceData().persistNow();
     }
 
     @Override
@@ -93,7 +98,7 @@ public class YouTubeServiceManager implements ServiceManager {
     }
 
     @Override
-    public void applyPlaybackFix() {
+    public void applyNoPlaybackFix() {
         getYouTubeMediaItemService().invalidateCache();
         getVideoInfoService().switchNextFormat();
     }
@@ -160,5 +165,10 @@ public class YouTubeServiceManager implements ServiceManager {
     @NonNull
     private static ChannelGroupService getChannelGroupServiceImpl() {
         return ChannelGroupServiceImpl.INSTANCE;
+    }
+
+    @Nullable
+    private static MediaServiceData getMediaServiceData() {
+        return MediaServiceData.instance();
     }
 }

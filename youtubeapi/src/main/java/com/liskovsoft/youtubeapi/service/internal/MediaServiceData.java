@@ -345,4 +345,10 @@ public class MediaServiceData {
         // Improve memory usage by merging multiple persist requests
         mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); }, 5_000);
     }
+
+    public void persistNow() {
+        RxHelper.disposeActions(mPersistAction);
+
+        mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); });
+    }
 }

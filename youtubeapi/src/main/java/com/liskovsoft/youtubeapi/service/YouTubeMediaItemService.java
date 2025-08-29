@@ -70,8 +70,8 @@ public class YouTubeMediaItemService implements MediaItemService {
         YouTubeMediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
 
         if (cachedFormatInfo != null) {
-            // Improve the performance by fetching the hitory data on the second run
-            syncWithAuthFormatIfNeeded(cachedFormatInfo);
+            // Improve the performance by fetching the history data on the second run
+            //syncWithAuthFormatIfNeeded(cachedFormatInfo);
             return cachedFormatInfo;
         }
 
@@ -179,6 +179,9 @@ public class YouTubeMediaItemService implements MediaItemService {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
             return;
         }
+
+        // Improve the performance by fetching the history data on the second run
+        syncWithAuthFormatIfNeeded(formatInfo);
 
         if (shouldBeSynced(formatInfo)) {
             throw new IllegalStateException("Update history error: the format should be synced first");

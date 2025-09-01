@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
@@ -22,8 +23,10 @@ import io.reactivex.Observable;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
+    private static final String TAG = YouTubeMediaItemFormatInfo.class.getSimpleName();
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
@@ -59,6 +62,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsBotCheckError;
     private String mPaidContentText;
     private String mClickTrackingParams;
+    private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
+    private static final Pattern durationPattern2 = Pattern.compile("/dur/([^/]*)");
 
     private YouTubeMediaItemFormatInfo() {
         
@@ -156,11 +161,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public String getLengthSeconds() {
+        ensureLengthIsSet();
+
         return mLengthSeconds;
-    }
-    
-    public void setLengthSeconds(String lengthSeconds) {
-        mLengthSeconds = lengthSeconds;
     }
 
     @Override
@@ -437,5 +440,64 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
         mOfParam = formatInfo.getOfParam();
         mIsAnonymous = formatInfo.isAnonymous();
+    }
+
+    /**
+     * MPD file is not valid without duration
+     */
+    private void ensureLengthIsSet() {
+        if (mLengthSeconds != null) {
+            return;
+        }
+
+        // try to get duration from video url
+        mLengthSeconds = extractDurationFromTrack();
+    }
+
+    /**
+     * Extracts time from video url (if present).
+     * Url examples:
+     * <br/>
+     * "http://example.com?dur=544.99&key=val&key2=val2"
+     * <br/>
+     * "http://example.com/dur/544.99/key/val/key2/val2"
+     *
+     * @return duration as string
+     */
+    private String extractDurationFromTrack() {
+        if (mAdaptiveFormats == null && mUrlFormats == null) {
+            return null;
+        }
+
+        String url = null;
+        // mMP4Videos
+        List<MediaFormat> videos = mAdaptiveFormats != null ? mAdaptiveFormats : mUrlFormats;
+        for (MediaFormat item : videos) {
+            url = item.getUrl();
+            break; // get first item
+        }
+        String result = Helpers.runMultiMatcher(url, durationPattern1, durationPattern2);
+
+        if (result == null) {
+            //throw new IllegalStateException("Videos in the list doesn't have a duration. Content: " + mMP4Videos);
+            Log.e(TAG, "Videos in the list doesn't have a duration. Content: " + videos);
+        }
+
+        return result;
+    }
+
+    /**
+     * Apply the fix right after creation of a MediaFormat
+     */
+    private void fixOTF(YouTubeMediaFormat mediaItem) {
+        if (mediaItem.isOtf()) {
+            if (mediaItem.getUrl() != null) {
+                // exo: fix 404 code
+                mediaItem.setUrl(mediaItem.getUrl() + "&sq=7");
+                //mediaItem.setInit("0-740");
+                //mediaItem.setIndex("741-2296");
+                //mediaItem.setClen("105557711");
+            }
+        }
     }
 }

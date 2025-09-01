@@ -5,13 +5,10 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeOtfSegmentParser.OtfSegment;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaFormat;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -24,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 /**
  * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
@@ -34,7 +30,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = YouTubeMPDBuilder.class.getSimpleName();
     private static final int MAX_DURATION_SEC = 48 * 60 * 60;
-    private final YouTubeMediaItemFormatInfo mInfo;
+    private final MediaItemFormatInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
@@ -46,10 +42,8 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     private final YouTubeOtfSegmentParser mSegmentParser;
     private String mLimitVideoCodec;
     private String mLimitAudioCodec;
-    private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
-    private static final Pattern durationPattern2 = Pattern.compile("/dur/([^/]*)");
 
-    private YouTubeMPDBuilder(YouTubeMediaItemFormatInfo info) {
+    private YouTubeMPDBuilder(MediaItemFormatInfo info) {
         mInfo = info;
         MediaFormatComparator comp = new MediaFormatComparator();
         mMP4Videos = new TreeSet<>(comp);
@@ -62,7 +56,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         initXmlSerializer();
     }
 
-    public static MPDBuilder from(YouTubeMediaItemFormatInfo formatInfo) {
+    public static MPDBuilder from(MediaItemFormatInfo formatInfo) {
         MPDBuilder builder = new YouTubeMPDBuilder(formatInfo);
 
         if (formatInfo.containsDashFormats()) {
@@ -604,26 +598,6 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     }
 
     /**
-     * Extracts time from video url (if present).
-     * Url examples:
-     * <br/>
-     * "http://example.com?dur=544.99&key=val&key2=val2"
-     * <br/>
-     * "http://example.com/dur/544.99/key/val/key2/val2"
-     *
-     * @return duration as string
-     */
-    private String extractDurationFromTrack() {
-        String url = null;
-        for (MediaFormat item : mMP4Videos) {
-            url = item.getUrl();
-            break; // get first item
-        }
-        String res = Helpers.runMultiMatcher(url, durationPattern1, durationPattern2);
-        return res;
-    }
-
-    /**
      * Ensures that required fields are set. If no, initialize them or throw an exception.
      * <br/>
      * Required fields are:
@@ -644,20 +618,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
             return false;
         }
 
-        if (mInfo.getLengthSeconds() != null) {
-            return true;
-        }
-
-        // try to get duration from video url
-        String len = extractDurationFromTrack();
-
-        if (len == null) {
-            //throw new IllegalStateException("Videos in the list doesn't have a duration. Content: " + mMP4Videos);
-            Log.e(TAG, "Videos in the list doesn't have a duration. Content: " + mMP4Videos);
+        if (mInfo.getLengthSeconds() == null) {
+            Log.e(TAG, "FormatInfo doesn't contain duration");
             return false;
         }
-
-        mInfo.setLengthSeconds(len);
+        
         return true;
     }
 
@@ -711,18 +676,6 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         }
 
         return false;
-    }
-
-    private void fixOTF(YouTubeMediaFormat mediaItem) {
-        if (mediaItem.isOtf()) {
-            if (mediaItem.getUrl() != null) {
-                // exo: fix 404 code
-                mediaItem.setUrl(mediaItem.getUrl() + "&sq=7");
-                //mediaItem.setInit("0-740");
-                //mediaItem.setIndex("741-2296");
-                //mediaItem.setClen("105557711");
-            }
-        }
     }
 
     /**

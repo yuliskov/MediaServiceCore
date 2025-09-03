@@ -41,4 +41,18 @@ public class ActionsServiceWrapper extends ActionsService {
 
         NotificationStorage.setLike(false);
     }
+
+    @Override
+    public void setDislike(String videoId) {
+        super.setDislike(videoId);
+
+        NotificationStorage.setLike(false);
+    }
+
+    @Override
+    public void removeDislike(String videoId) {
+        super.removeDislike(videoId);
+
+        NotificationStorage.setLike(true);
+    }
 }

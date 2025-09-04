@@ -45,15 +45,20 @@ public class TrackingService {
 
     private void updateWatchTimeFull(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
                                  String eventId, String visitorMonitoringData, String ofParam) {
-
-        Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
-
         // Mark video as full watched if less than couple minutes remains
         boolean isVideoAlmostWatched = lengthSec - positionSec < 3 * 60;
+
         if (isVideoAlmostWatched) {
-            updateWatchTimeShort(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            updateWatchTimeShort(videoId, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
             return;
         }
+
+        updateWatchTimeLong(videoId, lengthSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+    }
+
+    private void updateWatchTimeLong(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
+                                     String eventId, String visitorMonitoringData, String ofParam) {
+        Log.d(TAG, String.format("Updating watch time long... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
                 videoId,
@@ -76,8 +81,7 @@ public class TrackingService {
 
     private void updateWatchTimeShort(String videoId, float lengthSec, float positionSec, String clientPlaybackNonce,
                                  String eventId, String visitorMonitoringData, String ofParam) {
-
-        Log.d(TAG, String.format("Updating watch time... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
+        Log.d(TAG, String.format("Updating watch time short... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecordShort(
                 videoId,

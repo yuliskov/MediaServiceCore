@@ -6,6 +6,7 @@ public interface MediaItemStoryboard {
     String getGroupUrl(int imgNum);
     interface Size {
         int getDurationEachMS();
+        int getStartNum();
         int getWidth();
         int getHeight();
         int getRowCount();

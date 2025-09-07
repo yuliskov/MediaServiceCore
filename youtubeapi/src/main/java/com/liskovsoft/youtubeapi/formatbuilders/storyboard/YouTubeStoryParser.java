@@ -17,6 +17,7 @@ public class YouTubeStoryParser {
     private static final String SECTION_DELIM = "\\|";
     private final String mSpec;
     private int mSegmentDurationUs;
+    private int mStartSegmentNum;
 
     /**
      * Extracts storyboard (timeline thumbnails) from the <em>get_video_info</em> file
@@ -41,6 +42,10 @@ public class YouTubeStoryParser {
 
     public void setSegmentDurationUs(int segmentDurationUs) {
         mSegmentDurationUs = segmentDurationUs;
+    }
+
+    public void setStartSegmentNum(int startSegmentNum) {
+        mStartSegmentNum = startSegmentNum;
     }
 
     private Storyboard parseStoryboardSpec(String spec) {
@@ -73,6 +78,7 @@ public class YouTubeStoryParser {
         size.mColsCount = Integer.parseInt(sizes[3]);
         size.mRowsCount = Integer.parseInt(sizes[4]);
         size.mDurationEachMS = mSegmentDurationUs / 1_000;
+        size.mStartNum = mStartSegmentNum;
 
         storyboard.mSizes.add(size);
 
@@ -206,6 +212,7 @@ public class YouTubeStoryParser {
         private int mColsCount;
         private int mRowsCount;
         private int mDurationEachMS; // duration of each thumbnail
+        private int mStartNum;
         private String mImageName;
         private String mSignature;
 
@@ -215,6 +222,10 @@ public class YouTubeStoryParser {
          */
         public int getDurationEachMS() {
             return mDurationEachMS;
+        }
+
+        public int getStartNum() {
+            return mStartNum;
         }
 
         public int getWidth() {

@@ -35,7 +35,7 @@ public class YouTubeMediaItemStoryboard implements MediaItemStoryboard {
 
     @Override
     public String getGroupUrl(int imgNum) {
-        return mStoryboard.getGroupUrl(imgNum);
+        return mStoryboard.getGroupUrl(imgNum + mSize.getStartNum());
     }
 
     public static class Size implements MediaItemStoryboard.Size {
@@ -48,6 +48,11 @@ public class YouTubeMediaItemStoryboard implements MediaItemStoryboard {
         @Override
         public int getDurationEachMS() {
             return mSize.getDurationEachMS();
+        }
+
+        @Override
+        public int getStartNum() {
+            return mSize.getStartNum();
         }
 
         @Override

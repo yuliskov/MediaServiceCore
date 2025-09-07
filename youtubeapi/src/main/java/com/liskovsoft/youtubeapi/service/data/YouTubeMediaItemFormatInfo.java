@@ -329,6 +329,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
         YouTubeStoryParser storyParser = YouTubeStoryParser.from(mStoryboardSpec);
         storyParser.setSegmentDurationUs(getSegmentDurationUs());
+        // TODO: need to calculate real segment shift for 60 hrs streams (e.g. euronews live)
+        storyParser.setStartSegmentNum(getStartSegmentNum());
         Storyboard storyboard = storyParser.extractStory();
 
         return YouTubeMediaItemStoryboard.from(storyboard);

@@ -548,7 +548,6 @@ public class YouTubeMediaItem implements MediaItem {
         return null;
     }
 
-    @Override
     public void sync(MediaItemMetadata metadata) {
         if (metadata == null) {
             return;

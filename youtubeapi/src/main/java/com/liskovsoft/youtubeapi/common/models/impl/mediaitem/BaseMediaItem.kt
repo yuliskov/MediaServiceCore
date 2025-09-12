@@ -269,7 +269,7 @@ open class BaseMediaItem : MediaItem {
 
     // End Fake params
 
-    override fun sync(metadata: MediaItemMetadata?) {
+    fun sync(metadata: MediaItemMetadata?) {
         if (metadata == null) {
             return
         }

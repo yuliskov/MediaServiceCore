@@ -19,6 +19,7 @@ import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.BaseMediaItem;
 import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
@@ -26,6 +27,7 @@ import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistServiceWrapper;
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.track.TrackingService;
@@ -143,7 +145,7 @@ public class YouTubeMediaItemService implements MediaItemService {
             MediaItemMetadata metadata = getMetadata(item);
 
             if (metadata != null) {
-                item.sync(metadata);
+                syncItem(item, metadata);
                 emitter.onNext(metadata);
                 emitter.onComplete();
             } else {
@@ -571,5 +573,13 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
         return formatInfo.isAnonymous() && !formatInfo.isUnplayable() && getSignInService().isSigned();
+    }
+
+    private static void syncItem(MediaItem item, MediaItemMetadata metadata) {
+        if (item instanceof BaseMediaItem) {
+            ((BaseMediaItem) item).sync(metadata);
+        } else if (item instanceof YouTubeMediaItem) {
+            ((YouTubeMediaItem) item).sync(metadata);
+        }
     }
 }

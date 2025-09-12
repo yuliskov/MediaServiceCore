@@ -82,5 +82,4 @@ public interface MediaItem {
     boolean hasUploads();
     String getClickTrackingParams();
     String getSearchQuery();
-    void sync(MediaItemMetadata metadata);
 }

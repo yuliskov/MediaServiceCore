@@ -61,8 +61,7 @@ public class TrackingService {
         Log.d(TAG, String.format("Updating watch time long... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec));
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
-                videoId,
-                lengthSec, positionSec, positionSec,
+                videoId, lengthSec, positionSec, positionSec,
                 clientPlaybackNonce,
                 eventId,
                 visitorMonitoringData,
@@ -73,7 +72,10 @@ public class TrackingService {
 
         wrapper = mTrackingApi.updateWatchTime(
                 videoId, lengthSec, positionSec, positionSec,
-                clientPlaybackNonce, eventId
+                clientPlaybackNonce,
+                eventId,
+                visitorMonitoringData,
+                ofParam
         );
 
         RetrofitHelper.get(wrapper); // execute
@@ -95,7 +97,10 @@ public class TrackingService {
 
         wrapper = mTrackingApi.updateWatchTimeShort(
                 videoId, positionSec, positionSec,
-                clientPlaybackNonce, eventId
+                clientPlaybackNonce,
+                eventId,
+                visitorMonitoringData,
+                ofParam
         );
 
         RetrofitHelper.get(wrapper); // execute

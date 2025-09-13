@@ -128,7 +128,7 @@ public class TrackingApiTest {
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTime(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
-                positionSec, playbackNonce, videoInfo.getEventId());
+                positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam());
 
         return wrapper.execute();
     }
@@ -138,7 +138,7 @@ public class TrackingApiTest {
         VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTimeShort(
-                videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId());
+                videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam());
 
         return wrapper.execute();
     }

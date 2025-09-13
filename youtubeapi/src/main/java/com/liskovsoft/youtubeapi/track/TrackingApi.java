@@ -55,7 +55,9 @@ public interface TrackingApi {
             @Query("st") float jumpFromToSec,            // e.g. 0,119.405 or 119.405
             @Query("et") float jumpFromToSecAlt,         // e.g. 0,119.405 or 119.405
             @Query("cpn") String clientPlaybackNonce,    // Client Playback Nonce, unique hash code for each query (see AppService)
-            @Query("ei") String eventId                  // Event Id, ei param from get_video_info
+            @Query("ei") String eventId,                 // Event Id, ei param from get_video_info
+            @Query("vm") String vm,                      // Visitor Monitoring?, vm param from get_video_info
+            @Query("of") String of                       // New param. Mandatory.
     );
 
     /**
@@ -71,6 +73,8 @@ public interface TrackingApi {
             @Query("st") float jumpFromToSec,            // e.g. 0,119.405 or 119.405
             @Query("et") float jumpFromToSecAlt,         // e.g. 0,119.405 or 119.405
             @Query("cpn") String clientPlaybackNonce,    // Client Playback Nonce, unique hash code for each query (see AppService)
-            @Query("ei") String eventId                  // Event Id, ei param from get_video_info
+            @Query("ei") String eventId,                 // Event Id, ei param from get_video_info
+            @Query("vm") String vm,                      // Visitor Monitoring?, vm param from get_video_info
+            @Query("of") String of                       // New param. Mandatory.
     );
 }

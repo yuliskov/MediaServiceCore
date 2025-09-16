@@ -39,7 +39,7 @@ public class TrackingService {
         updateWatchTimeFull(
                 videoId,
                 lengthSeconds,
-                getOldPositionSec(videoId),
+                getOldPositionSec(videoId, positionSec),
                 positionSec,
                 getAppService().getClientPlaybackNonce(),
                 eventId,
@@ -68,17 +68,17 @@ public class TrackingService {
         //}
 
         if (needNewRecord(videoId)) {
-            createWatchRecordLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
         }
         updateWatchTimeLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
     }
 
-    private void createWatchRecordLong(String videoId, float lengthSec, float oldPositionSec, float positionSec, String clientPlaybackNonce,
+    private void createWatchRecordLong(String videoId, float lengthSec, float watchStartSec, String clientPlaybackNonce,
                                      String eventId, String visitorMonitoringData, String ofParam) {
-        Log.d(TAG, "Creating watch record long... Video Id: %s, length: %s, position: %s", videoId, lengthSec, positionSec);
+        Log.d(TAG, "Creating watch record long... Video Id: %s, length: %s, start position: %s", videoId, lengthSec, watchStartSec);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
-                videoId, lengthSec, oldPositionSec, positionSec,
+                videoId, lengthSec, watchStartSec,
                 clientPlaybackNonce,
                 eventId,
                 visitorMonitoringData,
@@ -142,7 +142,7 @@ public class TrackingService {
         return mPosition == null || !Helpers.equals(mPosition.first, videoId);
     }
 
-    private float getOldPositionSec(String videoId) {
-        return mPosition != null && Helpers.equals(mPosition.first, videoId) ? mPosition.second : 0;
+    private float getOldPositionSec(String videoId, float positionSec) {
+        return mPosition != null && Helpers.equals(mPosition.first, videoId) ? mPosition.second : positionSec < 3 * 60 ? 0 : positionSec;
     }
 }

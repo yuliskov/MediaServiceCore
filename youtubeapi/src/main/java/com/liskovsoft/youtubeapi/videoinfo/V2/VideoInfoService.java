@@ -282,6 +282,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports auth. Fixes "please sign in" bug!
+                    () -> getVideoInfo(AppClient.TV_EMBED, videoId, clickTrackingParams), // Supports auth. Fixes "please sign in" bug!
                     () -> getVideoInfo(AppClient.WEB_EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams) // Video clip blocked in current location
             );

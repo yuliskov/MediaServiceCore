@@ -49,6 +49,7 @@ internal object RetrofitOkHttpHelper {
         "https://www.googleapis.com/drive/v3",
         "https://m.youtube.com/youtubei/v1/",
         "https://www.youtube.com/youtubei/v1/",
+        "https://youtubei.googleapis.com/youtubei/v1",
         "https://www.youtube.com/api/stats/",
         "https://clients1.google.com/complete/"
     )

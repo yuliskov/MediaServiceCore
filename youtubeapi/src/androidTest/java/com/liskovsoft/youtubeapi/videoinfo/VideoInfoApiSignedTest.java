@@ -50,7 +50,7 @@ public class VideoInfoApiSignedTest extends BaseVideoInfoApiTest {
     @Test
     public void testThatClientsHaveNonEmptyResponses() {
         for (AppClient client : AppClient.values()) {
-            if (client.isPlayerQueryBroken()) {
+            if (client.isSabrResponse()) {
                 continue;
             }
 

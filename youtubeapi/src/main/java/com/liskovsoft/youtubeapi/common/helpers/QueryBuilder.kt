@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.googlecommon.common.locale.LocaleManager
 
-internal enum class PostDataType { Base, Browse }
+internal enum class PostDataType { Player, Browse }
 
 // Use protobuf to bypass geo blocking
 private const val GEO_PARAMS: String = "CgIQBg%3D%3D"
@@ -12,7 +12,7 @@ private const val GEO_PARAMS: String = "CgIQBg%3D%3D"
 internal class QueryBuilder(private val client: AppClient) {
     private val localeManager by lazy { LocaleManager.instance() }
     private val appService by lazy { AppService.instance() }
-    private var type: PostDataType = PostDataType.Base
+    private var type: PostDataType = PostDataType.Player
     private var acceptLanguage: String? = null
     private var acceptRegion: String? = null
     private var utcOffsetMinutes: Int? = null
@@ -78,9 +78,7 @@ internal class QueryBuilder(private val client: AppClient) {
                      ${createUserChunk()}
                      ${createWebEmbeddedChunk()}
                 },
-                "racyCheckOk": true,
-                "contentCheckOk": true,
-                ${createCheckParamsChunk()}
+                ${createTimestampChunk()}
                 ${createPotChunk()}
                 ${createVideoDataChunk()}
              }
@@ -164,7 +162,9 @@ internal class QueryBuilder(private val client: AppClient) {
     }
 
     private fun createVideoDataChunk(): String {
-        return """
+        val data = """
+                    "racyCheckOk": true,
+                    "contentCheckOk": true,
                     ${createVideoIdChunk()}
                     ${createBrowseIdChunk()}
                     ${createContinuationIdChunk()}
@@ -172,6 +172,14 @@ internal class QueryBuilder(private val client: AppClient) {
                     ${createCPNChunk()}
                     ${createParamsChunk()}
                 """
+        return if (client == AppClient.ANDROID_REEL)
+            """
+               "playerRequest": {
+                    $data
+               }, 
+            """
+        else
+            data
     }
 
     private fun createVideoIdChunk(): String {
@@ -225,7 +233,7 @@ internal class QueryBuilder(private val client: AppClient) {
         } ?: ""
     }
 
-    private fun createCheckParamsChunk(): String {
+    private fun createTimestampChunk(): String {
         // adPlaybackContext https://github.com/yt-dlp/yt-dlp/commit/ff6f94041aeee19c5559e1c1cd693960a1c1dd14
         // isInlinePlaybackNoAd https://iter.ca/post/yt-adblock/
         //     "playbackContext": {
@@ -251,6 +259,6 @@ internal class QueryBuilder(private val client: AppClient) {
         } ?: ""
     }
 
-    private fun playerDataCheck() = videoId != null && type == PostDataType.Base
+    private fun playerDataCheck() = videoId != null && type == PostDataType.Player
     private fun browseDataCheck() = type == PostDataType.Browse
 }

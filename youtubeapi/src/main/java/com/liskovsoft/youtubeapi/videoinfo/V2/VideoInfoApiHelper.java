@@ -19,11 +19,11 @@ public class VideoInfoApiHelper {
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, boolean enableGeoFix) {
         // Important: use only for the clients that don't support auth.
         // Otherwise, google suggestions and history won't work (visitor data bug)
-        boolean isPotSupported = client.isPotSupported() && PoTokenGate.isPotSupported();
+        boolean isPotSupported = client.isPotSupported() && PoTokenGate.isWebPotSupported();
         return new QueryBuilder(client)
                 .setVideoId(videoId)
                 .setClickTrackingParams(clickTrackingParams)
-                .setPoToken(isPotSupported ? PoTokenGate.getContentPoToken(videoId) : null)
+                .setPoToken(isPotSupported ? PoTokenGate.getWebContentPoToken(videoId) : null)
                 .setVisitorData(isPotSupported ? PoTokenGate.getVisitorData() : null)
                 .enableGeoFix(enableGeoFix) // may broke other functionality
                 .build();

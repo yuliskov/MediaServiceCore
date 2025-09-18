@@ -264,7 +264,7 @@ public class MediaServiceData {
     }
 
     public boolean isPotSupported() {
-        return PoTokenGate.isPotSupported();
+        return PoTokenGate.isWebPotSupported();
     }
 
     public boolean isLegacyUIEnabled() {

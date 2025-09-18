@@ -358,8 +358,8 @@ public class VideoInfo {
         mIsStreamSeekable = dashInfo.isSeekable();
     }
 
-    public void setAnonymous(boolean isBroken) {
-        mIsAnonymous = isBroken;
+    public void setAnonymous(boolean isAnonymous) {
+        mIsAnonymous = isAnonymous;
     }
 
     public boolean isAnonymous() {

@@ -35,8 +35,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            AppClient.WEB_EMBED,
             AppClient.ANDROID_REEL, // doesn't require pot
+            AppClient.WEB_EMBED,
             AppClient.IOS,
             AppClient.TV,
             AppClient.TV_EMBED, // single audio language
@@ -185,7 +185,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
-        return client.isReelPlayer() ? getVideoInfoReel(client, videoInfoQuery) : getVideoInfo(client, videoInfoQuery);
+        return getVideoInfo(client, videoInfoQuery);
     }
 
     private VideoInfo getVideoInfoGeo(AppClient client, String videoId, String clickTrackingParams) {
@@ -194,23 +194,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
-        if (client.isSabrResponse()) {
-            return null;
+        boolean skipAuth = !client.isAuthSupported() || mSkipAuthBlock;
+
+        if (client.isReelPlayer()) {
+            Call<VideoInfoReel> wrapper = mVideoInfoApi.getVideoInfoReel(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
+            return getVideoInfoReel(wrapper, skipAuth);
         }
 
         Call<VideoInfo> wrapper = mVideoInfoApi.getVideoInfo(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
-
-        return getVideoInfo(wrapper, !client.isAuthSupported() || mSkipAuthBlock);
-    }
-
-    private VideoInfo getVideoInfoReel(AppClient client, String videoInfoQuery) {
-        if (client.isSabrResponse()) {
-            return null;
-        }
-
-        Call<VideoInfoReel> wrapper = mVideoInfoApi.getVideoInfoReel(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
-
-        return getVideoInfoReel(wrapper, !client.isAuthSupported() || mSkipAuthBlock);
+        return getVideoInfo(wrapper, skipAuth);
     }
 
     private @Nullable VideoInfo getVideoInfo(Call<VideoInfo> wrapper, boolean skipAuth) {
@@ -220,9 +212,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        if (skipAuth) {
-            videoInfo.setAnonymous(true);
-        }
+        videoInfo.setAnonymous(skipAuth);
 
         return videoInfo;
     }
@@ -234,9 +224,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        if (skipAuth) {
-            videoInfo.getVideoInfo().setAnonymous(true);
-        }
+        videoInfo.getVideoInfo().setAnonymous(skipAuth);
 
         return videoInfo.getVideoInfo();
     }

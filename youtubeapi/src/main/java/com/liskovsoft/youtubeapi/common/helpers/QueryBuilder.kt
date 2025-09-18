@@ -172,7 +172,7 @@ internal class QueryBuilder(private val client: AppClient) {
                     ${createCPNChunk()}
                     ${createParamsChunk()}
                 """
-        return if (client == AppClient.ANDROID_REEL)
+        return if (client.isReelPlayer())
             """
                "playerRequest": {
                     $data

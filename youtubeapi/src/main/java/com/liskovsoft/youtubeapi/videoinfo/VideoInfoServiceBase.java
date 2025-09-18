@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.api.FileApi;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
@@ -33,7 +34,7 @@ public abstract class VideoInfoServiceBase {
         mFileApi = RetrofitHelper.create(FileApi.class);
     }
 
-    protected boolean isPotSupported() {
+    protected boolean isWebPotRequired() {
         return false;
     }
 
@@ -72,8 +73,8 @@ public abstract class VideoInfoServiceBase {
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
 
-        if (isPotSupported()) {
-            applyPoToken(formats, mAppService.getSessionPoToken());
+        if (isWebPotRequired()) {
+            applyPoToken(formats, PoTokenGate.getSessionPoToken());
         }
     }
 

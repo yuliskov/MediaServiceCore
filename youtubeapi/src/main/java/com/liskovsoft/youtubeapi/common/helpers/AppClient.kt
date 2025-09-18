@@ -72,8 +72,9 @@ internal enum class AppClient(
         browserName, browserVersion, (postData ?: "")) }
 
     fun isAuthSupported() = this == TV || this == TV_LEGACY || this == TV_EMBED || this == TV_KIDS // NOTE: TV_SIMPLE doesn't support auth
-    fun isPotSupported() = this == WEB || this == MWEB || this == WEB_EMBED
-    fun isPlaybackBroken() = this == INITIAL || this == WEB || this == WEB_CREATOR || this == WEB_REMIX || this == WEB_SAFARI || this == ANDROID_VR // TODO: implement SABR
+    fun isWebPotRequired() = this == WEB || this == MWEB || this == WEB_EMBED
+    // TODO: remove after implement SABR
+    fun isPlaybackBroken() = this == INITIAL || this == WEB || this == WEB_CREATOR || this == WEB_REMIX || this == WEB_SAFARI || this == ANDROID_VR
     fun isReelPlayer() = this == ANDROID_REEL
 
     private fun extractBrowserInfo(userAgent: String): Pair<String, String> {

@@ -106,10 +106,6 @@ public class AppService {
         return mClientPlaybackNonce;
     }
 
-    public String getSessionPoToken() {
-        return PoTokenGate.getSessionPoToken();
-    }
-
     /**
      * Constant used in {@link AuthApi}
      */
@@ -142,20 +138,12 @@ public class AppService {
         return mAppServiceInt.getVisitorData();
     }
 
-    private void updatePoTokenData() {
-        PoTokenGate.updatePoToken();
-    }
-
     public void invalidateCache() {
         mAppServiceInt.invalidateCache();
     }
 
     public void refreshCacheIfNeeded() {
         mAppServiceInt.refreshCacheIfNeeded();
-    }
-
-    public void refreshPoTokenIfNeeded() {
-        updatePoTokenData();
     }
 
     /**

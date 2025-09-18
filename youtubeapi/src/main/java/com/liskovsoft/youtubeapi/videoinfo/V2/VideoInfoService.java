@@ -139,7 +139,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         // Try to reset pot cache for the last video
-        if (!mIsUnplayable && isPotSupported() && PoTokenGate.resetCache()) {
+        if (!mIsUnplayable && isWebPotRequired() && PoTokenGate.resetCache()) {
             return;
         }
         // The Premium is likely broken
@@ -377,8 +377,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     @Override
-    protected boolean isPotSupported() {
-        return mVideoInfoType != null && mVideoInfoType.isPotSupported();
+    protected boolean isWebPotRequired() {
+        return mVideoInfoType != null && mVideoInfoType.isWebPotRequired();
     }
 
     private boolean isAuthSupported() {

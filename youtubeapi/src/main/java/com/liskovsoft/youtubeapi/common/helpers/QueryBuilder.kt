@@ -81,6 +81,7 @@ internal class QueryBuilder(private val client: AppClient) {
                 ${createTimestampChunk()}
                 ${createPotChunk()}
                 ${createVideoDataChunk()}
+                ${createBrowseDataChunk()}
              }
         """
 
@@ -98,11 +99,15 @@ internal class QueryBuilder(private val client: AppClient) {
             "clientVersion": "${client.clientVersion}",
             "clientScreen": "${client.clientScreen}",
             "userAgent": "${client.userAgent}",
-            "browserName": "${client.browserName}",
-            "browserVersion": "${client.browserVersion}",
         """
+        val browserVars = if (client.browserName != null && client.browserVersion != null)
+            """
+                "browserName": "${client.browserName}",
+                "browserVersion": "${client.browserVersion}",
+            """
+            else ""
         val postVars = client.postData ?: ""
-        val browseVars = if (requireNotNull(type) == PostDataType.Browse)
+        val postBrowseVars = if (requireNotNull(type) == PostDataType.Browse)
                 client.postDataBrowse ?: ""
             else ""
         val regionVars = """
@@ -114,8 +119,9 @@ internal class QueryBuilder(private val client: AppClient) {
         return """
              "client": {
                 $clientVars
+                $browserVars
                 $postVars
-                $browseVars
+                $postBrowseVars
                 $regionVars
                 $visitorVar
              },
@@ -166,20 +172,27 @@ internal class QueryBuilder(private val client: AppClient) {
                     "racyCheckOk": true,
                     "contentCheckOk": true,
                     ${createVideoIdChunk()}
+                    ${createCPNChunk()}
+                """
+        return if (client.isReelPlayer)
+            """
+                "playerRequest": {
+                    $data
+                },
+            """
+        else
+            """
+                $data
+            """
+    }
+
+    private fun createBrowseDataChunk(): String {
+        return """
                     ${createBrowseIdChunk()}
                     ${createContinuationIdChunk()}
                     ${createPlaylistIdChunk()}
-                    ${createCPNChunk()}
                     ${createParamsChunk()}
                 """
-        return if (client.isReelPlayer())
-            """
-               "playerRequest": {
-                    $data
-               }, 
-            """
-        else
-            data
     }
 
     private fun createVideoIdChunk(): String {

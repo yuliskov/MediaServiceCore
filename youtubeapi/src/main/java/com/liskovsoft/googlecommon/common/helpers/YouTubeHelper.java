@@ -2,6 +2,7 @@ package com.liskovsoft.googlecommon.common.helpers;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
@@ -261,5 +262,21 @@ public final class YouTubeHelper {
         //return Helpers.equalsAny(channelId, LIKED_MUSIC_BROWSE_ID, SUBSCRIBED_MUSIC_BROWSE_ID, PLAYED_MUSIC_BROWSE_ID);
         // NOTE: user channel starts with 'UC'
         return channelId != null && channelId.startsWith("FE");
+    }
+
+    /**
+     * Try to generate a {@code t} parameter, sent by mobile clients as a query of the player
+     * request.
+     *
+     * <p>
+     * Some researches needs to be done to know how this parameter, unique at each request, is
+     * generated.
+     * </p>
+     *
+     * @return a 12 characters string to try to reproduce the {@code} parameter
+     */
+    @NonNull
+    public static String generateTParameter() {
+        return RandomStringFromAlphabetGenerator.generate(12);
     }
 }

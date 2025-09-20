@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class TranslatedCaptionTrack extends CaptionTrack {
     public final static String TRANSLATE_MARKER = "*";
@@ -16,6 +17,11 @@ public class TranslatedCaptionTrack extends CaptionTrack {
 
     @Override
     public String getBaseUrl() {
+        // Don't try to translate the same lang or you'll get a mess
+        if (Helpers.equals(mOriginTrack.getLanguageCode(), mLanguage.getLanguageCode())) {
+            return mOriginTrack.getBaseUrl();
+        }
+
         return mOriginTrack.getBaseUrl() + "&tlang=" + mLanguage.getLanguageCode();
     }
 

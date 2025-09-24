@@ -4,6 +4,8 @@ internal object AppConstants {
     @JvmField
     val playerUrls = listOf(
         // NOTE: tv player should be in the top (ias ones may not validate correctly)
+        "https://www.youtube.com/s/player/0004de42/tv-player-ias.vflset/tv-player-ias.js",
+        "https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js", // not working (sig/nsig error)
         "https://www.youtube.com/s/player/9f49a55a/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/010fbc8d/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/69b31e11/tv-player-es6-tcc.vflset/tv-player-es6-tcc.js", // 503 error
@@ -46,6 +48,7 @@ internal object AppConstants {
         "https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js",
     )
+
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
     private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
 

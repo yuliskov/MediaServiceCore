@@ -4,7 +4,6 @@ import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.googlecommon.common.api.FileApi
-import com.liskovsoft.googlecommon.common.helpers.ReflectionHelper
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.googlecommon.common.js.JSInterpret
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
@@ -29,10 +28,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             fetchAllData()
             checkAllData()
             persistAllData()
-        }
-
-        if (mNFuncCode == null) {
-            ReflectionHelper.dumpDebugInfo(NSigExtractor::class.java, loadPlayer())
         }
     }
 

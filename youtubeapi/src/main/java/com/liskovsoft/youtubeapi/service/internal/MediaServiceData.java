@@ -47,10 +47,9 @@ public class MediaServiceData {
     public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
     public static final int CONTENT_SHORTS_CHANNEL = 1 << 13;
     private static MediaServiceData sInstance;
-    private String mAppVersion;
     private String mScreenId;
     private String mDeviceId;
-    private String mVideoInfoVersion;
+    private String mOldAppVersion;
     private int mVideoInfoType;
     private String mVisitorCookie;
     private int mEnabledFormats;
@@ -139,16 +138,12 @@ public class MediaServiceData {
         persistData();
     }
 
+    @NonNull
     public Pair<Integer, Boolean> getVideoInfoType() {
-        if (Helpers.equals(mVideoInfoVersion, mAppVersion)) {
-            return new Pair<>(mVideoInfoType, mSkipAuth);
-        }
-
-        return null;
+        return new Pair<>(mVideoInfoType, mSkipAuth);
     }
 
     public void setVideoInfoType(int videoInfoType, boolean skipAuth) {
-        mVideoInfoVersion = mAppVersion;
         mVideoInfoType = videoInfoType;
         mSkipAuth = skipAuth;
         persistData();
@@ -239,7 +234,13 @@ public class MediaServiceData {
     }
 
     public void setFailedAppInfo(AppInfoCached appInfo) {
+        if (Helpers.equals(mFailedAppInfo, appInfo)) {
+            return;
+        }
+
         mFailedAppInfo = appInfo;
+
+        persistData();
     }
 
     public ClientDataCached getClientData() {
@@ -282,13 +283,13 @@ public class MediaServiceData {
 
         String[] split = Helpers.splitData(data);
 
-        mAppVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
+        String appVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
 
         // null for ScreenItem
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
         //String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
-        mVideoInfoVersion = Helpers.parseStr(split, 3);
+        mOldAppVersion = Helpers.parseStr(split, 3);
         mVideoInfoType = Helpers.parseInt(split, 4, -1);
         mSkipAuth = Helpers.parseBoolean(split, 5);
         // entries here moved to the cache
@@ -304,19 +305,15 @@ public class MediaServiceData {
         //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);
         mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
-    }
+        mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);
 
-    private void persistDataInt() {
-        if (mGlobalPrefs == null) {
-            return;
+        boolean isAppUpdated = mOldAppVersion != null && !Helpers.equals(mOldAppVersion, appVersion);
+
+        if (isAppUpdated) {
+            resetSensitiveData();
         }
 
-        mGlobalPrefs.setMediaServiceData(
-                Helpers.mergeData(null, mScreenId, mDeviceId, mVideoInfoVersion,
-                        mVideoInfoType, mSkipAuth, null, null, null, null,
-                        null, mEnabledFormats, null, null, mPoToken, mAppInfo,
-                        mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
-                        null, mVisitorCookie, null, mIsLegacyUIEnabled));
+        mOldAppVersion = appVersion;
     }
 
     private void restoreCachedData() {
@@ -327,6 +324,19 @@ public class MediaServiceData {
         mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
         mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
         //mPlayerExtractorVersion = Helpers.parseStr(split, 10);
+    }
+
+    private void persistDataInt() {
+        if (mGlobalPrefs == null) {
+            return;
+        }
+
+        mGlobalPrefs.setMediaServiceData(
+                Helpers.mergeData(null, mScreenId, mDeviceId, mOldAppVersion,
+                        mVideoInfoType, mSkipAuth, null, null, null, null,
+                        null, mEnabledFormats, null, null, mPoToken, mAppInfo,
+                        mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
+                        null, mVisitorCookie, null, mIsLegacyUIEnabled, mFailedAppInfo));
     }
 
     private void persistCachedDataInt() {
@@ -350,5 +360,11 @@ public class MediaServiceData {
         RxHelper.disposeActions(mPersistAction);
 
         mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); });
+    }
+
+    private void resetSensitiveData() {
+        mVideoInfoType = -1;
+        mSkipAuth = false;
+        mFailedAppInfo = null;
     }
 }

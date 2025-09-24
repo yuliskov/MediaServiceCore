@@ -50,6 +50,16 @@ class PlayerDataExtractorTest {
     }
 
     @Test
+    fun testSingleNSigPlayerVersion() {
+        testNSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-es6.vflset/tv-player-es6.js")
+    }
+
+    @Test
+    fun testSingleSigPlayerVersion() {
+        testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-es6.vflset/tv-player-es6.js")
+    }
+
+    @Test
     fun testCPNPlayerVersions() {
         AppConstants.playerUrls.forEach { testCPNPlayerUrl(it) }
     }

@@ -35,8 +35,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            AppClient.ANDROID_REEL, // doesn't require pot
             AppClient.WEB_EMBED,
+            AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.IOS,
             AppClient.TV,
             AppClient.TV_EMBED, // single audio language
@@ -346,7 +346,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private void restoreVideoInfoType() {
         Pair<Integer, Boolean> videoInfoType = getData().getVideoInfoType();
-        if (videoInfoType != null && videoInfoType.first != -1) {
+        if (videoInfoType.first != -1) {
             mVideoInfoType = videoInfoType.first < AppClient.values().length ? AppClient.values()[videoInfoType.first] : null;
             mSkipAuth = videoInfoType.second;
             if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType)) {

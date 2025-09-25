@@ -1,10 +1,8 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.provider
 
-import com.liskovsoft.googlecommon.common.api.FileApi
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YTInfoExtractor
 
 internal abstract class JsChallengeProvider {
-    private val fileApi = RetrofitHelper.create(FileApi::class.java)
     protected abstract val supportedTypes: List<JsChallengeType>
 
     private fun validateRequest(request: JsChallengeRequest) {
@@ -36,12 +34,8 @@ internal abstract class JsChallengeProvider {
     protected abstract fun realBulkSolve(validatedRequests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse>
 
     protected fun getPlayer(videoId: String, playerUrl: String): String? {
-        return loadPlayer(playerUrl)
-    }
-
-    private fun loadPlayer(playerUrl: String): String? {
         return try {
-            RetrofitHelper.get(fileApi.getContent(playerUrl))?.content
+            YTInfoExtractor.loadPlayer(playerUrl)
         } catch (e: Exception) {
             throw JsChallengeProviderError("Failed to load player for JS challenge: $playerUrl", e)
         }

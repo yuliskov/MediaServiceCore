@@ -44,7 +44,8 @@ public class AppServiceIntCached extends AppServiceInt {
 
             YouTubeMediaItemService.instance().invalidateCache();
             try {
-                mPlayerDataExtractor = Helpers.equals(playerUrl, getFailedPlayerUrl())
+                boolean forceBackupUrl = AppConstants.playerUrls.get(0).contains("0004de42"); // temp fix
+                mPlayerDataExtractor = forceBackupUrl || Helpers.equals(playerUrl, getFailedPlayerUrl())
                         ? null : super.getPlayerDataExtractor(playerUrl);
                 if (mPlayerDataExtractor != null && mPlayerDataExtractor.validate()) {
                     if (check(mAppInfo)) {
@@ -64,10 +65,14 @@ public class AppServiceIntCached extends AppServiceInt {
 
     private void restoreSafePlayerVersion() {
         getData().setFailedAppInfo(mAppInfo);
+
         if (check(getData().getAppInfo())) { // can restore?
             mPlayerDataExtractor = super.getPlayerDataExtractor(getData().getAppInfo().getPlayerUrl());
-        } else {
+        }
+
+        if (mPlayerDataExtractor == null || !mPlayerDataExtractor.validate()) {
             mPlayerDataExtractor = super.getPlayerDataExtractor(AppConstants.playerUrls.get(0));
+            getData().setAppInfo(null); // bad app info?
         }
     }
 

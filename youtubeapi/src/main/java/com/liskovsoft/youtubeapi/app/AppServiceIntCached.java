@@ -46,7 +46,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
             boolean forceBackupUrl = AppConstants.playerUrls.get(0).contains("0004de42"); // temp fix
 
-            mPlayerDataExtractor = firstValidExtractor(
+            firstValidExtractor(
                     forceBackupUrl || Helpers.equals(playerUrl, getFailedPlayerUrl()) ? null : playerUrl,
                     check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,
                     AppConstants.playerUrls.get(0)
@@ -108,8 +108,7 @@ public class AppServiceIntCached extends AppServiceInt {
         return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getPlayerUrl() : null;
     }
 
-    private PlayerDataExtractor firstValidExtractor(String... playerUrls) {
-        PlayerDataExtractor result = null;
+    private void firstValidExtractor(String... playerUrls) {
         int idx = -1;
         final int MAIN = 0;
         final int DATA = 1;
@@ -121,9 +120,9 @@ public class AppServiceIntCached extends AppServiceInt {
                 continue;
             }
 
-            result = super.getPlayerDataExtractor(url);
+            mPlayerDataExtractor = super.getPlayerDataExtractor(url);
 
-            if (result.validate()) {
+            if (mPlayerDataExtractor.validate()) {
                 switch (idx) {
                     case MAIN:
                         if (check(mAppInfo)) {
@@ -142,7 +141,5 @@ public class AppServiceIntCached extends AppServiceInt {
                 break;
             }
         }
-
-        return result;
     }
 }

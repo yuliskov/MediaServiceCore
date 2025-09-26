@@ -43,36 +43,16 @@ public class AppServiceIntCached extends AppServiceInt {
             }
 
             YouTubeMediaItemService.instance().invalidateCache();
-            try {
-                boolean forceBackupUrl = AppConstants.playerUrls.get(0).contains("0004de42"); // temp fix
-                mPlayerDataExtractor = forceBackupUrl || Helpers.equals(playerUrl, getFailedPlayerUrl())
-                        ? null : super.getPlayerDataExtractor(playerUrl);
-                if (mPlayerDataExtractor != null && mPlayerDataExtractor.validate()) {
-                    if (check(mAppInfo)) {
-                        getData().setAppInfo(mAppInfo);
-                    }
-                } else {
-                    restoreSafePlayerVersion();
-                }
-            } catch (Throwable e) { // StackOverflowError | IllegalStateException
-                e.printStackTrace();
-                restoreSafePlayerVersion();
-            }
+
+            boolean forceBackupUrl = AppConstants.playerUrls.get(0).contains("0004de42"); // temp fix
+
+            mPlayerDataExtractor = firstValidExtractor(
+                    forceBackupUrl || Helpers.equals(playerUrl, getFailedPlayerUrl()) ? null : playerUrl,
+                    check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,
+                    AppConstants.playerUrls.get(0)
+            );
 
             return mPlayerDataExtractor;
-        }
-    }
-
-    private void restoreSafePlayerVersion() {
-        getData().setFailedAppInfo(mAppInfo);
-
-        if (check(getData().getAppInfo())) { // can restore?
-            mPlayerDataExtractor = super.getPlayerDataExtractor(getData().getAppInfo().getPlayerUrl());
-        }
-
-        if (mPlayerDataExtractor == null || !mPlayerDataExtractor.validate()) {
-            mPlayerDataExtractor = super.getPlayerDataExtractor(AppConstants.playerUrls.get(0));
-            getData().setAppInfo(null); // bad app info?
         }
     }
 
@@ -126,5 +106,43 @@ public class AppServiceIntCached extends AppServiceInt {
 
     private String getFailedPlayerUrl() {
         return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getPlayerUrl() : null;
+    }
+
+    private PlayerDataExtractor firstValidExtractor(String... playerUrls) {
+        PlayerDataExtractor result = null;
+        int idx = -1;
+        final int MAIN = 0;
+        final int DATA = 1;
+        final int FALLBACK = 2;
+
+        for (String url : playerUrls) {
+            idx++;
+            if (url == null) {
+                continue;
+            }
+
+            result = super.getPlayerDataExtractor(url);
+
+            if (result.validate()) {
+                switch (idx) {
+                    case MAIN:
+                        if (check(mAppInfo)) {
+                            getData().setAppInfo(mAppInfo);
+                        }
+                        break;
+                    case DATA:
+                        getData().setFailedAppInfo(mAppInfo);
+                        break;
+                    case FALLBACK:
+                        getData().setFailedAppInfo(mAppInfo);
+                        getData().setAppInfo(null);
+                        break;
+                }
+
+                break;
+            }
+        }
+
+        return result;
     }
 }

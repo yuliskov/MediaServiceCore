@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
 import com.liskovsoft.googlecommon.common.api.FileApi
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.app.nsigsolver.provider.IEContentProviderError
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.InfoExtractorError
 import kotlinx.coroutines.delay
 
 internal abstract class InfoExtractor {
@@ -14,11 +14,13 @@ internal abstract class InfoExtractor {
         while (true) {
             try {
                 val content = RetrofitHelper.get(fileApi.getContent(url))?.content
-                return content ?: throw IEContentProviderError(errorMsg ?: "Empty content received for the $url")
+                return content ?: throw InfoExtractorError(
+                    "Empty content received for the $url".let { msg -> errorMsg?.let { "$it: $msg" } ?: msg }
+                )
             } catch (e: Exception) {
                 tryCount++
                 if (tryCount >= tries)
-                    throw e
+                    throw InfoExtractorError("Can't load the $url".let { msg -> errorMsg?.let { "$it: $msg" } ?: msg }, e)
                 if (timeoutMs > 0)
                     delay(timeoutMs)
             }

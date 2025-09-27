@@ -18,7 +18,7 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
 
     private val jcpGuideUrl = "https://github.com/yt-dlp/yt-dlp/wiki/YouTube-JS-Challenges"
     private val repository = "yt-dlp/yt-dlp-jsc-deno"
-    private val supportedVersion = "0.0.1"
+    protected val supportedVersion = "0.0.1"
 
     override val supportedTypes = listOf(JsChallengeType.N, JsChallengeType.SIG)
 

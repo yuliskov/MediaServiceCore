@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
 import kotlinx.coroutines.runBlocking
 
-internal object YTInfoExtractor: InfoExtractor() {
+internal object YouTubeInfoExtractor: InfoExtractor() {
     val cache: Cache = Cache()
 
     // TODO: implement caching to the local storage

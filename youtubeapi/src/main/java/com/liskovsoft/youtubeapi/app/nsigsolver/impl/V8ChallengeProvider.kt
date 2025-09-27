@@ -24,7 +24,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
             return null
         // V8-specific lib scripts that uses Deno NPM imports
         val code = loadScript(v8NpmLibFilename, "Failed to read v8 challenge solver lib script")
-        return Script(scriptType, ScriptVariant.V8_NPM, ScriptSource.BUILTIN, supportedVersion, code)
+        return Script(scriptType, ScriptVariant.V8_NPM, ScriptSource.BUILTIN, scriptVersion, code)
     }
 
     override fun runJsRuntime(stdin: String): String {

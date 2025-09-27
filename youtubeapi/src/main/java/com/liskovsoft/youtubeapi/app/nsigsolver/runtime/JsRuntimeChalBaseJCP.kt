@@ -136,7 +136,7 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
         throw JsChallengeProviderRejectedRequest("No usable challenge solver ${scriptType.value} script available")
     }
 
-    private fun iterScriptSources(): Sequence<Pair<ScriptSource, (scriptType: ScriptType) -> Script?>> = sequence {
+    protected open fun iterScriptSources(): Sequence<Pair<ScriptSource, (scriptType: ScriptType) -> Script?>> = sequence {
         yieldAll(listOf(
             //Pair(ScriptSource.CACHE, cachedSource),
             //Pair(ScriptSource.BUILTIN, builtinSource),

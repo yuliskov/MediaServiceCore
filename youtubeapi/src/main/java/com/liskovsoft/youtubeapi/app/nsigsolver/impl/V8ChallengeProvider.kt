@@ -1,6 +1,8 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.impl
 
+import com.liskovsoft.googlecommon.common.js.V8Runtime
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderError
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.JsRuntimeChalBaseJCP
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.Script
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptSource
@@ -9,11 +11,11 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptVariant
 
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
-    private val v8NpmLibFilename = listOf("meriyah.bundle.js", "astring.bundle.js")
+    private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah.bundle.min.js", "${libPrefix}astring.bundle.min.js")
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
-            if (source == ScriptSource.WEB)
+            if (source == ScriptSource.WEB || source == ScriptSource.BUILTIN)
                 yield(Pair(ScriptSource.BUILTIN, ::v8NpmSource))
             yield(Pair(source, func))
         }
@@ -32,6 +34,6 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun runV8(stdin: String): String {
-        TODO("Not yet implemented")
+        return V8Runtime.instance().evaluate(stdin) ?: throw JsChallengeProviderError("V8 error: empty response")
     }
 }

@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.runtime
 
+import androidx.test.platform.app.InstrumentationRegistry
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeOutput
@@ -8,6 +10,7 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeResponse
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
 internal class ChallengeProviderTest {
@@ -73,6 +76,11 @@ internal class ChallengeProviderTest {
             )))
         }
         responses
+    }
+
+    @Before
+    fun setUp() {
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().context)
     }
 
     @Test

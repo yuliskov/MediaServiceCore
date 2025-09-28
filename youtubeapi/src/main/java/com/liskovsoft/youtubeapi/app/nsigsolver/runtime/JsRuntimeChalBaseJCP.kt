@@ -22,10 +22,11 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
     private val repository = "yt-dlp/ejs"
     override val supportedTypes = listOf(JsChallengeType.N, JsChallengeType.SIG)
     protected val scriptVersion = "0.0.1"
+    protected val libPrefix = "nsigsolver/"
 
     private val scriptFilenames = mapOf(
-        ScriptType.LIB to "yt.solver.lib.js",
-        ScriptType.CORE to "yt.solver.core.js"
+        ScriptType.LIB to "${libPrefix}yt.solver.lib.js",
+        ScriptType.CORE to "${libPrefix}yt.solver.core.js"
     )
 
     private val minScriptFilenames = mapOf(
@@ -84,7 +85,8 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
         val jsonRequests = requests.map { request ->
             mapOf(
                 // TODO: i despise nsig name
-                "type" to if (request.type.value == "n") "nsig" else request.type.value,
+                //"type" to if (request.type.value == "n") "nsig" else request.type.value,
+                "type" to request.type.value,
                 "challenges" to request.input.challenges
             )
         }
@@ -106,9 +108,8 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
         val jsonData = gson.toJson(data)
         return """
         ${libScript.code}
-        const { astring, meriyah } = lib;
         ${coreScript.code}
-        console.log(JSON.stringify(jsc($jsonData)));
+        JSON.stringify(jsc($jsonData));
         """
     }
 

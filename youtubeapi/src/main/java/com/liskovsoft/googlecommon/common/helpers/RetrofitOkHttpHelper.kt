@@ -3,7 +3,7 @@ package com.liskovsoft.googlecommon.common.helpers
 import com.google.net.cronet.okhttptransport.CronetInterceptor
 import com.liskovsoft.sharedutils.cronet.CronetManager
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.sharedutils.okhttp.OkHttpCommons
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import com.liskovsoft.youtubeapi.app.AppService
@@ -56,10 +56,17 @@ internal object RetrofitOkHttpHelper {
 
     private val tParamSuffixes = listOf("/browse", "/next", "/reel", "/playlist")
 
+    //private fun createClient(): OkHttpClient {
+    //    val builder = OkHttpClient.Builder()
+    //    addCommonHeaders(builder)
+    //    OkHttpCommons.setupBuilder(builder)
+    //    //addCronetInterceptor(builder)
+    //    return builder.build()
+    //}
+
     private fun createClient(): OkHttpClient {
-        val builder = OkHttpClient.Builder()
+        val builder = OkHttpManager.instance().client.newBuilder()
         addCommonHeaders(builder)
-        OkHttpCommons.setupBuilder(builder)
         //addCronetInterceptor(builder)
         return builder.build()
     }

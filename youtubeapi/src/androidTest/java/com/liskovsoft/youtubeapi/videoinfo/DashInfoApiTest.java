@@ -1,31 +1,25 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
-import androidx.annotation.NonNull;
-import androidx.test.platform.app.InstrumentationRegistry;
+import static org.junit.Assert.assertTrue;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.api.FileApi;
-import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
-import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
-import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
-import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
-import okhttp3.Headers;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import retrofit2.Call;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import okhttp3.Headers;
+import retrofit2.Call;
 
 public class DashInfoApiTest extends BaseVideoInfoApiTest {
     private static final String SEQ_NUM = "X-Sequence-Num";

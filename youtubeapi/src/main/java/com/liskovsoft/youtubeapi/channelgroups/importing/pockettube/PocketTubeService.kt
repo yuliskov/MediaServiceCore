@@ -8,17 +8,12 @@ import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl
-import com.liskovsoft.googlecommon.common.api.FileApi
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import java.io.File
 
 internal object PocketTubeService: GroupImportService {
-    private val mFileService = RetrofitHelper.create(FileApi::class.java)
-
     override fun importGroups(url: Uri): List<ItemGroup>? {
-        val content = mFileService.getContent(url.toString())
-
-        val pocketTubeContent = RetrofitHelper.get(content)?.content ?: return null
+        val pocketTubeContent = YouTubeInfoExtractor.downloadWebpageSilent(url.toString()) ?: return null
 
         return parseGroups(pocketTubeContent)
     }

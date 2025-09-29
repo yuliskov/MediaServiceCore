@@ -6,7 +6,7 @@ internal open class ScriptLoaderError(message: String, cause: Exception? = null)
 
 internal fun loadScript(filename: String, errorMsg: String? = null): String {
     val context = AppService.instance().context ?:
-        throw ScriptLoaderError("Context isn't available".let { msg -> errorMsg?.let { "$it: $msg" } ?: msg })
+        throw ScriptLoaderError(formatError(errorMsg, "Context isn't available"))
 
     return context.assets.open(filename).bufferedReader()
         .use { it.readText() }
@@ -19,3 +19,5 @@ internal fun loadScript(filenames: List<String>, errorMsg: String? = null): Stri
         }
     }
 }
+
+internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg

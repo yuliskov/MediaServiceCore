@@ -3,14 +3,12 @@ package com.liskovsoft.youtubeapi.app.playerdata
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
-import com.liskovsoft.googlecommon.common.api.FileApi
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.googlecommon.common.js.JSInterpret
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 internal class PlayerDataExtractor(val playerUrl: String) {
     private val TAG = PlayerDataExtractor::class.java.simpleName
-    private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private val data
         get() = MediaServiceData.instance()
     private var mNFuncCode: Pair<List<String>, String>? = null
@@ -80,7 +78,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     private fun loadPlayer(): String? {
-        return RetrofitHelper.get(mFileApi.getContent(fixupPlayerUrl(playerUrl)))?.content
+        return YouTubeInfoExtractor.loadPlayerSilent(fixupPlayerUrl(playerUrl))
     }
 
     private fun fixupPlayerUrl(playerUrl: String): String {

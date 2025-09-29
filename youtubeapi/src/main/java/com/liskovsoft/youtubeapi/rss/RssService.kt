@@ -5,8 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper
-import com.liskovsoft.googlecommon.common.api.FileApi
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +17,6 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.CopyOnWriteArrayList
 
 internal object RssService {
-    private val mFileApi = RetrofitHelper.create(FileApi::class.java)
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
     private const val MAX_ITEMS = 100 // NOTE: Limit the result. Unlimited has veeery long loading and often crashing.
 
@@ -69,11 +67,14 @@ internal object RssService {
     }
 
     private suspend fun fetchFeed(channelId: String): List<MediaItem>? = withContext(Dispatchers.IO) {
-        val rssContent = RetrofitHelper.get(mFileApi.getContent(RSS_URL + channelId))?.content
-        rssContent?.let {
+        try {
+            val rssContent = YouTubeInfoExtractor.downloadWebpage(RSS_URL + channelId)
             val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
             syncWithChannel(channelId, result)
             result
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 

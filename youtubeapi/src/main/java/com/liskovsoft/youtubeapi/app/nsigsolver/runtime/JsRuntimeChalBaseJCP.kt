@@ -34,7 +34,7 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
         ScriptType.CORE to "yt.solver.core.min.js"
     )
 
-    abstract fun runJsRuntime(stdin: String): String
+    protected abstract fun runJsRuntime(stdin: String): String
 
     override fun realBulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
         val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
@@ -107,9 +107,15 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
         val gson = Gson()
         val jsonData = gson.toJson(data)
         return """
+        JSON.stringify(jsc($jsonData));
+        """
+    }
+
+    protected fun constructCommonStdin(): String {
+        return """
         ${libScript.code}
         ${coreScript.code}
-        JSON.stringify(jsc($jsonData));
+        "";
         """
     }
 

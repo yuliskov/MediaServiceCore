@@ -403,6 +403,7 @@ public class VideoFormat {
     }
 
     private UrlQueryString getUrlQuery() {
+        parseCipher();
         if (mUrl == null) {
             return null;
         }

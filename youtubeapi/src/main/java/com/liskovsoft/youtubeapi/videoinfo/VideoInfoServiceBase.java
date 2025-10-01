@@ -20,6 +20,8 @@ import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Pair;
+
 public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
     private final DashInfoApi mDashInfoApi;
@@ -42,8 +44,12 @@ public abstract class VideoInfoServiceBase {
         applySabrFixes(videoInfo.getAdaptiveFormats(), videoInfo.getServerAbrStreamingUrl());
 
         // Process params
-        decipherFormats(videoInfo.getAdaptiveFormats());
-        decipherFormats(videoInfo.getRegularFormats());
+        //decipherFormats(videoInfo.getAdaptiveFormats());
+        //decipherFormats(videoInfo.getRegularFormats());
+
+        List<VideoFormat> formatList = new ArrayList<>(videoInfo.getAdaptiveFormats());
+        formatList.addAll(videoInfo.getRegularFormats());
+        decipherFormats(formatList);
     }
 
     private void applySabrFixes(List<? extends VideoFormat> formats, String serverAbrStreamingUrl) {
@@ -62,13 +68,21 @@ public abstract class VideoInfoServiceBase {
             return;
         }
 
-        List<String> sParams = extractSParams(formats);
-        List<String> signatures = mAppService.extractSig(sParams);
-        applySignatures(formats, signatures);
+        //List<String> nParams = extractNParams(formats);
+        //List<String> sParams = extractSParams(formats);
 
-        List<String> nParams = extractNParams(formats);
-        List<String> nSignatures = mAppService.extractNSig(nParams);
-        applyNSignatures(formats, nSignatures);
+        Pair<List<String>, List<String>> result = mAppService.bulkSigExtract(extractNParams(formats), extractSParams(formats));
+
+        if (result != null) {
+            //List<String> nSignatures = mAppService.extractNSig(nParams);
+            //List<String> signatures = mAppService.extractSig(sParams);
+
+            List<String> nSignatures = result.getFirst();
+            List<String> signatures = result.getSecond();
+
+            applyNSignatures(formats, nSignatures);
+            applySignatures(formats, signatures);
+        }
 
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
@@ -108,7 +122,7 @@ public abstract class VideoInfoServiceBase {
         for (VideoFormat format : formats) {
             result.add(format.getNParam());
             // All throttled strings has same values
-            break;
+            //break;
         }
 
         return result;

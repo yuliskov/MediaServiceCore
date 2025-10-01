@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.playerdata
 
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
@@ -16,7 +17,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         get() = MediaServiceData.instance()
     private var nFuncCode: Boolean = false
     private var sigFuncCode: Boolean = false
-    private var nSigTmp: Pair<String, String?>? = null
+    private var nSigTmp: Pair<String?, String?>? = null
     private var cpnCode: String? = null
     private var signatureTimestamp: String? = null
     private val fixedPlayerUrl by lazy {
@@ -46,6 +47,9 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     fun extractNSig(nParam: String): String? {
+        if (!nFuncCode)
+            return null
+
         if (nSigTmp?.first == nParam) return nSigTmp?.second
 
         val nSig = extractNSigReal(nParam)
@@ -65,6 +69,22 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return extractSigReal(sParams.filterNotNull())
     }
 
+    fun bulkSigExtract(nParams: List<String?>?, sParams: List<String?>?): Pair<List<String?>?, List<String?>?> {
+        if (Helpers.allNulls(nParams, sParams)) {
+            return Pair(null, null)
+        }
+
+        val nCached: List<String?>? = null
+        val sCached: List<String?>? = null
+
+        val response = bulkSigExtractReal(
+            if (nFuncCode) nParams else null,
+            if (sigFuncCode) sParams else null
+        )
+
+        return Pair(nCached ?: response.first, sCached ?: response.second)
+    }
+
     fun createClientPlaybackNonce(): String? {
         return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateTParameter()
     }
@@ -80,17 +100,42 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     private fun extractNSigReal(nParam: String): String? {
-        val result = V8ChallengeProvider.bulkSolve(
-            listOf(JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(nParam)))))
-
-        return result.toList().firstOrNull()?.response?.output?.results?.get(nParam)
+        return bulkSigExtractReal(listOf(nParam), null).first?.firstOrNull()
     }
 
     private fun extractSigReal(sParam: List<String>): List<String?>? {
-        val result = V8ChallengeProvider.bulkSolve(
-            listOf(JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, sParam))))
+        return bulkSigExtractReal(null, sParam).second
+    }
 
-        return result.toList().firstOrNull()?.response?.output?.results?.values?.toList()
+    private fun bulkSigExtractReal(nParams: List<String?>?, sParams: List<String?>?): Pair<List<String?>?, List<String?>?> {
+        if (Helpers.allNulls(nParams, sParams)) {
+            return Pair(null, null)
+        }
+
+        val nRequest = nParams?.filterNotNull()?.distinct()?.takeIf { it.isNotEmpty() }?.let {
+            JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, it))
+        }
+
+        val sRequest = sParams?.filterNotNull()?.distinct()?.takeIf { it.isNotEmpty() }?.let {
+            JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, it))
+        }
+
+        val result = V8ChallengeProvider.bulkSolve(listOfNotNull(nRequest, sRequest))
+
+        var nProcessed: List<String?>? = null
+        var sProcessed: List<String?>? = null
+
+        for (item in result) {
+            when (item.response?.type) {
+                JsChallengeType.N ->
+                    nProcessed = nParams?.map { item.response.output.results[it] }
+                JsChallengeType.SIG ->
+                    sProcessed = sParams?.map { item.response.output.results[it] }
+                else -> {}
+            }
+        }
+
+        return Pair(nProcessed, sProcessed)
     }
 
     private fun loadPlayer(): String? {

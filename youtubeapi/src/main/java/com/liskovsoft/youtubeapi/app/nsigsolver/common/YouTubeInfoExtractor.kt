@@ -4,10 +4,20 @@ import kotlinx.coroutines.runBlocking
 
 internal object YouTubeInfoExtractor: InfoExtractor() {
     val cache: Cache = Cache()
+    private var playerCache: Pair<String, String>? = null
 
     // TODO: implement caching to the local storage
     fun loadPlayer(playerUrl: String): String = runBlocking {
-        return@runBlocking downloadWebpage(playerUrl)
+        playerCache?.let {
+            if (it.first == playerUrl)
+                return@runBlocking it.second
+        }
+
+        val webPage = downloadWebpage(playerUrl)
+
+        playerCache = Pair(playerUrl, webPage)
+
+        return@runBlocking webPage
     }
 
     fun loadPlayerSilent(playerUrl: String): String? {

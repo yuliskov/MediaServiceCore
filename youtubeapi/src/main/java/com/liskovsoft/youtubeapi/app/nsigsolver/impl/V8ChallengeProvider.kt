@@ -38,13 +38,17 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun runV8(stdin: String): String {
-        try {
-            v8Runtime?.locker?.acquire()
-            return v8Runtime?.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
-        } catch (e: V8ScriptExecutionException) {
-            throw JsChallengeProviderError("V8 runtime error", e)
-        } finally {
-            v8Runtime?.locker?.release()
+        val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
+
+        synchronized(runtime) {
+            try {
+                runtime.locker?.acquire()
+                return runtime.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+            } catch (e: V8ScriptExecutionException) {
+                throw JsChallengeProviderError("V8 runtime error", e)
+            } finally {
+                runtime.locker?.release()
+            }
         }
     }
 

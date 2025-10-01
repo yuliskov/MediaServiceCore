@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import kotlin.Pair;
+
 public class AppService {
     private static AppService sInstance;
     private final AppServiceInt mAppServiceInt;
@@ -55,6 +57,14 @@ public class AppService {
         }
 
         return mAppServiceInt.getPlayerDataExtractor().extractNSig(nParam);
+    }
+
+    public Pair<List<String>, List<String>> bulkSigExtract(List<String> nParams, List<String> sParams) {
+        if (Helpers.allNulls(nParams, sParams) || mAppServiceInt.getPlayerDataExtractor() == null) {
+            return null;
+        }
+
+        return mAppServiceInt.getPlayerDataExtractor().bulkSigExtract(nParams, sParams);
     }
 
     public List<String> extractNSig(List<String> nParams) {

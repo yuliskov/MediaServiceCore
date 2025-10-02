@@ -95,7 +95,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mSkipAuthBlock = false;
 
-        decipherFormats(result);
+        transformFormats(result);
 
         return result;
     }
@@ -243,11 +243,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private void applyFixesIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
         if (result == null || result.isUnplayable()) {
             return;
-        }
-
-        if (result.isLive()) {
-            Log.d(TAG, "Enable seeking support on live streams...");
-            result.sync(getDashInfo(result));
         }
 
         if (shouldObtainExtendedFormats(result) || result.isStoryboardBroken()) {

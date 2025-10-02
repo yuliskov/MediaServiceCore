@@ -40,7 +40,7 @@ public class VideoInfoServiceUnsigned extends VideoInfoServiceBase {
         }
 
         if (result != null) {
-            decipherFormats(result);
+            transformFormats(result);
         } else {
             Log.e(TAG, "Can't get video info for videoId " + videoId);
         }

@@ -93,16 +93,12 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         var nProcessed: List<String?>? = null
         var sProcessed: List<String?>? = null
 
-        val nRequest = nParams?.filterNotNull()?.distinct()?.takeIf { it.isNotEmpty() }?.let {
-            if (nFuncCode)
-                JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, it))
-            else null
+        val nRequest = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
+            JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, it))
         }
 
-        val sRequest = sParams?.filterNotNull()?.distinct()?.takeIf { it.isNotEmpty() }?.let {
-            if (sFuncCode)
-                JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, it))
-            else null
+        val sRequest = sParams?.takeIf { sFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
+            JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, it))
         }
 
         val result = V8ChallengeProvider.bulkSolve(listOfNotNull(nRequest, sRequest))

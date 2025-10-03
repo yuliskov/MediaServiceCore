@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app;
 
 import android.content.Context;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -174,7 +174,7 @@ public class AppService {
         return mAppServiceInt.isPlayerCacheActual();
     }
 
-    @Nullable
+    @NonNull
     public Context getContext() {
         Context context = GlobalPreferences.isInitialized() ? GlobalPreferences.sInstance.getContext() : null;
 

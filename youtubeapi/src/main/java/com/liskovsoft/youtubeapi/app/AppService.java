@@ -2,6 +2,8 @@ package com.liskovsoft.youtubeapi.app;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
@@ -172,7 +174,14 @@ public class AppService {
         return mAppServiceInt.isPlayerCacheActual();
     }
 
+    @Nullable
     public Context getContext() {
-        return GlobalPreferences.isInitialized() ? GlobalPreferences.sInstance.getContext() : null;
+        Context context = GlobalPreferences.isInitialized() ? GlobalPreferences.sInstance.getContext() : null;
+
+        if (context == null) {
+            throw new IllegalStateException("The Context isn't initialized yet");
+        }
+
+        return context;
     }
 }

@@ -3,21 +3,10 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.common
 import kotlinx.coroutines.runBlocking
 
 internal object YouTubeInfoExtractor: InfoExtractor() {
-    val cache: Cache = Cache()
-    private var playerCache: Pair<String, String>? = null
+    val cache: CacheService = CacheService
 
-    // TODO: implement caching to the local storage
     fun loadPlayer(playerUrl: String): String = runBlocking {
-        playerCache?.let {
-            if (it.first == playerUrl)
-                return@runBlocking it.second
-        }
-
-        val webPage = downloadWebpage(playerUrl)
-
-        playerCache = Pair(playerUrl, webPage)
-
-        return@runBlocking webPage
+        return@runBlocking downloadWebpage(playerUrl)
     }
 
     fun loadPlayerSilent(playerUrl: String): String? {

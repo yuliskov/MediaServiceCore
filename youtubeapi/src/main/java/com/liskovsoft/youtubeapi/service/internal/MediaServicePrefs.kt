@@ -3,14 +3,13 @@ package com.liskovsoft.youtubeapi.service.internal
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account
 import com.liskovsoft.sharedutils.misc.WeakHashSet
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
+import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
 private const val PREF_NAME = "yt_service_prefs"
 
-@Suppress("StaticFieldLeak")
-internal object MediaServicePrefs: SharedPreferencesBase(GlobalPreferences.sInstance.context, PREF_NAME), OnAccountChange {
+internal object MediaServicePrefs: SharedPreferencesBase(AppService.instance().context, PREF_NAME), OnAccountChange {
     private const val ANONYMOUS_PROFILE_NAME = "anonymous"
     private val mListeners = WeakHashSet<ProfileChangeListener>()
     private lateinit var mProfileName: String

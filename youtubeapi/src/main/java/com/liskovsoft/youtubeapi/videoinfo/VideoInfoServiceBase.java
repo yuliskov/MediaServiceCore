@@ -88,7 +88,7 @@ public abstract class VideoInfoServiceBase {
         //applyAdditionalStrings(formats);
 
         if (isWebPotRequired()) {
-            applyPoToken(formats, PoTokenGate.getSessionPoToken());
+            applySessionPoToken(formats, PoTokenGate.getWebSessionPoToken());
         }
     }
 
@@ -141,7 +141,7 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    private static void applyPoToken(List<? extends VideoFormat> formats, String poToken) {
+    private static void applySessionPoToken(List<? extends VideoFormat> formats, String poToken) {
         if (poToken == null) {
             return;
         }

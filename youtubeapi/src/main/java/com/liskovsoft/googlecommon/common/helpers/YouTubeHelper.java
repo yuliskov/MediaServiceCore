@@ -279,4 +279,13 @@ public final class YouTubeHelper {
     public static String generateTParameter() {
         return RandomStringFromAlphabetGenerator.generate(12);
     }
+
+    /**
+     * NOTE: Unique per video info instance<br/>
+     * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
+     */
+    @NonNull
+    public static String generateCPNParameter() {
+        return RandomStringFromAlphabetGenerator.generate(16);
+    }
 }

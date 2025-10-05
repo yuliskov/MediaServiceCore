@@ -22,7 +22,7 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun getSessionPoToken(): String? {
+    fun getWebSessionPoToken(): String? {
         return if (PoTokenProviderImpl.isWebPotSupported) {
             if (mWebPoToken == null)
                 mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("")

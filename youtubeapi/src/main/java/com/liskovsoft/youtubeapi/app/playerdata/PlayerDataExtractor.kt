@@ -64,7 +64,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     fun createClientPlaybackNonce(): String? {
-        return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateTParameter()
+        return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateCPNParameter()
     }
 
     fun getSignatureTimestamp(): String? {

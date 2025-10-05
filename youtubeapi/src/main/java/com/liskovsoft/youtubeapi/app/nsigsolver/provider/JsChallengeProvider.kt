@@ -34,7 +34,7 @@ internal abstract class JsChallengeProvider {
      */
     protected abstract fun realBulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse>
 
-    protected fun getPlayer(videoId: String?, playerUrl: String): String {
+    protected fun getPlayer(playerUrl: String): String {
         return try {
             ie.loadPlayer(playerUrl)
         } catch (e: Exception) {

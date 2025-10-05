@@ -2,14 +2,21 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
 import com.liskovsoft.youtubeapi.app.AppService
 
-internal open class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)
+internal class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)
 
 internal fun loadScript(filename: String, errorMsg: String? = null): String {
-    val context = AppService.instance().context ?:
-        throw ScriptLoaderError(formatError(errorMsg, "Context isn't available"))
+    val context = try {
+        AppService.instance().context
+    } catch (e: Exception) {
+        throw ScriptLoaderError(formatError(errorMsg, "Context isn't available"), e)
+    }
 
-    return context.assets.open(filename).bufferedReader()
-        .use { it.readText() }
+    try {
+        return context.assets.open(filename).bufferedReader()
+            .use { it.readText() }
+    } catch (e: Exception) {
+        throw ScriptLoaderError(formatError(errorMsg, "Error reading file: $filename"), e)
+    }
 }
 
 internal fun loadScript(filenames: List<String>, errorMsg: String? = null): String {

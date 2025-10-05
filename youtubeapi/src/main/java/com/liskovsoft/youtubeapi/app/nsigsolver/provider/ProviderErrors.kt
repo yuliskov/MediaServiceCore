@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.provider
 
-internal open class InfoExtractorError(message: String, cause: Exception? = null): Exception(message, cause)
+internal class InfoExtractorError(message: String, cause: Exception? = null): Exception(message, cause)
 
 internal open class ContentProviderError(message: String, cause: Exception? = null): Exception(message, cause)
 

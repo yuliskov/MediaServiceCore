@@ -46,8 +46,7 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
             val cached = if (player != null) {
                 true
             } else {
-                val videoId = groupedRequests.firstOrNull()?.videoId
-                player = getPlayer(videoId, playerUrl)
+                player = getPlayer(playerUrl)
                 false
             }
 

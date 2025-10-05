@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoReel;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
@@ -85,6 +86,11 @@ abstract class BaseVideoInfoApiTest {
     protected VideoInfo getVideoInfo(AppClient client, String videoId) {
         if (client == AppClient.INITIAL) {
             return InitialResponse.getVideoInfo(videoId, !client.isAuthSupported());
+        }
+
+        if (client == AppClient.ANDROID_REEL) {
+            Call<VideoInfoReel> wrapper = mService.getVideoInfoReel(VideoInfoApiHelper.getVideoInfoQuery(client, videoId, null), mAppService.getVisitorData(), client.getUserAgent());
+            return RetrofitHelper.get(wrapper, !client.isAuthSupported()).getVideoInfo();
         }
 
         Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(client, videoId, null), mAppService.getVisitorData(), client.getUserAgent());

@@ -266,6 +266,10 @@ internal class QueryBuilder(private val client: AppClient) {
                         "lactMilliseconds": 60000,
                         "isInlinePlaybackNoAd": true,
                         "signatureTimestamp": $it
+                    },
+                    "devicePlaybackCapabilities": {
+                        "supportsVp9Encoding": true,
+                        "supportXhr": ${ !Helpers.equalsAny(client, AppClient.TV, AppClient.TV_SIMPLY) }
                     }
                 },
             """

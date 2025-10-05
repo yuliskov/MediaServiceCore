@@ -44,6 +44,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     };
     @Nullable
     private AppClient mVideoInfoType = null;
+    @Nullable
+    private AppClient mRecentInfoType = null;
     private boolean mSkipAuth;
     private boolean mSkipAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
@@ -176,7 +178,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
-        mSkipAuth = !isAuthSupported();
+        mSkipAuth = !isAuthSupported(mVideoInfoType);
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
@@ -195,6 +197,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
         boolean skipAuth = !client.isAuthSupported() || mSkipAuthBlock;
+        mRecentInfoType = client;
 
         if (client.isReelPlayer()) {
             Call<VideoInfoReel> wrapper = mVideoInfoApi.getVideoInfoReel(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
@@ -374,11 +377,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     @Override
     protected boolean isWebPotRequired() {
-        return mVideoInfoType != null && mVideoInfoType.isWebPotRequired();
+        return mRecentInfoType != null && mRecentInfoType.isWebPotRequired();
     }
 
-    private boolean isAuthSupported() {
-        return mVideoInfoType != null && mVideoInfoType.isAuthSupported();
+    private static boolean isAuthSupported(AppClient client) {
+        return client != null && client.isAuthSupported();
     }
 
     private static MediaServiceData getData() {

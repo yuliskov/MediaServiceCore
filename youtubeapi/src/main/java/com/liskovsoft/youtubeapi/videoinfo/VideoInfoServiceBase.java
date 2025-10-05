@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
-import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
@@ -16,7 +15,6 @@ import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoHeaders;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
-import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.VideoFormat;
 
 import java.util.ArrayList;

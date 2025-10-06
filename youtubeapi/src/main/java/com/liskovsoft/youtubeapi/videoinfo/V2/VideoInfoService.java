@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.videoinfo.V2;
 
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -114,7 +115,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo firstNonNull(String videoId, String clickTrackingParams) {
-        final AppClient beginType = Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
+        final AppClient beginType = getDefaultClient();
         AppClient nextType = beginType;
         VideoInfo result;
 
@@ -141,7 +142,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextFormat() {
         // Try to reset pot cache for the last video
-        if (!mIsUnplayable && isWebPotRequired() && PoTokenGate.resetCache()) {
+        if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) {
             return;
         }
         // The Premium is likely broken
@@ -299,6 +300,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getFirstPlayable(
                     () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports auth. Fixes "please sign in" bug!
                     () -> getVideoInfo(AppClient.TV_SIMPLY, videoId, clickTrackingParams), // Fixes "bot check error" bug?
+                    () -> getVideoInfo(AppClient.WEB_SAFARI, videoId, clickTrackingParams), // Fixes "bot check error" bug?
                     () -> getVideoInfo(AppClient.ANDROID_REEL, videoId, clickTrackingParams), // Fixes "bot check error" bug?
                     () -> getVideoInfo(AppClient.WEB_EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams) // Video clip blocked in current location
@@ -376,8 +378,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     @Override
-    protected boolean isWebPotRequired() {
-        return mRecentInfoType != null && mRecentInfoType.isWebPotRequired();
+    protected AppClient getClient() {
+        return mRecentInfoType != null ? mRecentInfoType : getDefaultClient();
     }
 
     private static boolean isAuthSupported(AppClient client) {
@@ -386,5 +388,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private static MediaServiceData getData() {
         return MediaServiceData.instance();
+    }
+
+    @NonNull
+    private AppClient getDefaultClient() {
+        return mVideoInfoType != null && Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
     }
 }

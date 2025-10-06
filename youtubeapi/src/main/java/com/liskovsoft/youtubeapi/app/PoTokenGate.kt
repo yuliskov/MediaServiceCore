@@ -3,13 +3,13 @@ package com.liskovsoft.youtubeapi.app
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
 internal object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
-    
-    @JvmStatic
-    fun getWebContentPoToken(videoId: String): String? {
+
+    private fun getWebContentPoToken(videoId: String): String? {
         if (mWebPoToken?.videoId == videoId && !PoTokenProviderImpl.isWebPotExpired) {
             return mWebPoToken?.playerRequestPoToken
         }
@@ -21,17 +21,15 @@ internal object PoTokenGate {
         return mWebPoToken?.playerRequestPoToken
     }
 
-    @JvmStatic
-    fun getWebSessionPoToken(): String? {
+    private fun getWebSessionPoToken(): String? {
         return if (PoTokenProviderImpl.isWebPotSupported) {
             if (mWebPoToken == null)
                 mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("")
             mWebPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
-
-    @JvmStatic
-    fun updatePoToken() {
+    
+    private fun updatePoToken() {
         if (PoTokenProviderImpl.isWebPotSupported) {
             //mNpPoToken = null // only refresh
             mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
@@ -41,8 +39,20 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun getVisitorData(): String? {
-        return mWebPoToken?.visitorData
+    @JvmOverloads
+    fun getPoToken(client: AppClient, videoId: String? = null): String? {
+        return when {
+            client.isWebPotRequired -> if (videoId != null) getWebContentPoToken(videoId) else getWebSessionPoToken()
+            else -> null
+        }
+    }
+
+    @JvmStatic
+    fun getVisitorData(client: AppClient): String? {
+        return when {
+            client.isWebPotRequired -> getWebVisitorData()
+            else -> null
+        }
     }
 
     @JvmStatic
@@ -52,7 +62,18 @@ internal object PoTokenGate {
     fun isWebPotExpired() = PoTokenProviderImpl.isWebPotExpired
 
     @JvmStatic
-    fun resetCache(): Boolean {
+    fun resetCache(client: AppClient): Boolean {
+        return when {
+            client.isWebPotRequired -> resetWebCache()
+            else -> false
+        }
+    }
+
+    fun getWebVisitorData(): String? {
+        return mWebPoToken?.visitorData
+    }
+
+    private fun resetWebCache(): Boolean {
         val currentTimeMs = System.currentTimeMillis()
         if (currentTimeMs < mCacheResetTimeMs)
             return false

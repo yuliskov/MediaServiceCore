@@ -22,8 +22,8 @@ public class VideoInfoApiHelper {
         return new QueryBuilder(client)
                 .setVideoId(videoId)
                 .setClickTrackingParams(clickTrackingParams)
-                .setPoToken(client.isWebPotRequired() ? PoTokenGate.getWebContentPoToken(videoId) : null)
-                .setVisitorData(client.isWebPotRequired() ? PoTokenGate.getVisitorData() : null)
+                .setPoToken(PoTokenGate.getPoToken(client))
+                .setVisitorData(PoTokenGate.getVisitorData(client))
                 .enableGeoFix(enableGeoFix) // may broke other functionality
                 .build();
     }

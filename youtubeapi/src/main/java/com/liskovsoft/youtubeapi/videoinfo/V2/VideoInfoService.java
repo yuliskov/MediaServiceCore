@@ -183,6 +183,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
+        if (client.isPlaybackBroken()) {
+            return null;
+        }
+
         if (client == AppClient.INITIAL) {
             return InitialResponse.getVideoInfo(videoId, mSkipAuthBlock);
         }
@@ -192,6 +196,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfoGeo(AppClient client, String videoId, String clickTrackingParams) {
+        if (client.isPlaybackBroken()) {
+            return null;
+        }
+
         String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQueryGeo(client, videoId, clickTrackingParams);
         return getVideoInfo(client, videoInfoQuery);
     }
@@ -298,11 +306,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
             result = getVideoInfo(AppClient.TV, videoInfo.getTrailerVideoId(), clickTrackingParams);
         } else if (videoInfo.isUnplayable()) {
             result = getFirstPlayable(
-                    () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports auth. Fixes "please sign in" bug!
-                    () -> getVideoInfo(AppClient.TV_SIMPLY, videoId, clickTrackingParams), // Fixes "bot check error" bug?
-                    () -> getVideoInfo(AppClient.WEB_SAFARI, videoId, clickTrackingParams), // Fixes "bot check error" bug?
-                    () -> getVideoInfo(AppClient.ANDROID_REEL, videoId, clickTrackingParams), // Fixes "bot check error" bug?
                     () -> getVideoInfo(AppClient.WEB_EMBED, videoId, clickTrackingParams), // Restricted (18+) videos
+                    () -> getVideoInfo(AppClient.ANDROID_REEL, videoId, clickTrackingParams), // Fixes "bot check error" bug?
+                    () -> getVideoInfo(AppClient.WEB_SAFARI, videoId, clickTrackingParams), // Fixes "bot check error" bug?
+                    () -> getVideoInfo(AppClient.TV_SIMPLY, videoId, clickTrackingParams), // Fixes "bot check error" bug?
+                    () -> getVideoInfo(AppClient.TV, videoId, clickTrackingParams), // Supports auth. Fixes "please sign in" bug!
                     () -> getVideoInfoGeo(AppClient.WEB, videoId, clickTrackingParams) // Video clip blocked in current location
             );
         }

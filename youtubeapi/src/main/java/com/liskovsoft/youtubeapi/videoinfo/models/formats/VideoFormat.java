@@ -116,7 +116,7 @@ public class VideoFormat {
     }
 
     public void setSabrUrl(String url) {
-        if (!isEmpty()) {
+        if (!isBroken()) {
             return; // A dash format. Keep as is.
         }
 
@@ -428,7 +428,10 @@ public class VideoFormat {
                 getITag());
     }
 
-    public boolean isEmpty() {
+    /**
+     * TODO: to be removed. Temp SABR fix
+     */
+    public boolean isBroken() {
         return Helpers.allNulls(mUrl, mCipher, mSignatureCipher);
     }
 

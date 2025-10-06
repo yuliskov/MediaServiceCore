@@ -193,7 +193,7 @@ public class VideoInfo {
     }
 
     public boolean isUnplayable() {
-        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted() || checkAllFormatsEmpty();
+        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted();
     }
 
     /**
@@ -411,20 +411,23 @@ public class VideoInfo {
         return getAdaptiveFormats() != null && !getAdaptiveFormats().isEmpty() && "1080p".equals(getAdaptiveFormats().get(0).getQualityLabel());
     }
 
-    private boolean checkAllFormatsEmpty() {
+    /**
+     * TODO: to be removed. Temp SABR fix
+     */
+    private boolean isAdaptiveFormatsBroken() {
         if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty()) {
             return false;
         }
 
-        boolean isAllEmpty = true;
+        boolean allBroken = true;
 
         for (AdaptiveVideoFormat format : mAdaptiveFormats) {
-            if (format != null && !format.isEmpty()) {
-                isAllEmpty = false;
+            if (format != null && !format.isBroken()) {
+                allBroken = false;
                 break;
             }
         }
 
-        return isAllEmpty;
+        return allBroken;
     }
 }

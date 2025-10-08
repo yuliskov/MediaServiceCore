@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.app.AppServiceInt
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -37,8 +38,14 @@ class PlayerDataExtractorTest {
     @Test
     fun testExtractNSig() {
         val playerUrl = getPlayerUrl()
+        testPlayerExtractorValid(playerUrl)
+        testPlayerExtractorValid(AppConstants.playerUrls.first())
+    }
+
+    private fun testPlayerExtractorValid(playerUrl: String) {
         val extractor = PlayerDataExtractor(playerUrl)
         assertNotNull("NSig not null for $playerUrl", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
+        assertTrue("PlayerExtractor validated", extractor.validate())
     }
 
     @Test
@@ -62,6 +69,7 @@ class PlayerDataExtractorTest {
 
     @Test
     fun testSingleNSigPlayerVersion() {
+        testNSigPlayerUrl("https://www.youtube.com/s/player/17ad44a3/tv-player-es6.vflset/tv-player-es6.js")
         //testNSigPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-es6.vflset/tv-player-es6.js")
         testNSigPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-ias.vflset/tv-player-ias.js")
 
@@ -71,6 +79,7 @@ class PlayerDataExtractorTest {
 
     @Test
     fun testSingleSigPlayerVersion() {
+        testSigPlayerUrl("https://www.youtube.com/s/player/17ad44a3/tv-player-es6.vflset/tv-player-es6.js")
         testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js")
         //testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-es6.vflset/tv-player-es6.js")
     }

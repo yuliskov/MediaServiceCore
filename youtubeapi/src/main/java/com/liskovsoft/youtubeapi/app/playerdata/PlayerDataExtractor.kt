@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.app.playerdata
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
@@ -36,11 +35,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         // Get the code from the cache
         restoreAllData()
         checkSigData()
-        checkAllData()
+        checkCpnData()
 
         if (cpnCode == null || signatureTimestamp == null) {
             fetchAllData()
-            checkAllData()
+            checkCpnData()
             persistAllData()
         }
     }
@@ -128,25 +127,23 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     private fun persistAllData() {
-        if (cpnCode != null && signatureTimestamp != null) {
-            data.setPlayerExtractorData(
-                null,
-                null,
-                PlayerDataCached(playerUrl, cpnCode, null, null, signatureTimestamp)
-            )
+        if (validate()) {
+            data.playerExtractorCache = PlayerExtractorCache(playerUrl, cpnCode, signatureTimestamp)
         }
     }
 
     private fun restoreAllData() {
-        val (_, _, playerData) = data.playerExtractorData
+        val playerCache = data.playerExtractorCache
 
-        if (playerData?.playerUrl == playerUrl) {
-            cpnCode = playerData.clientPlaybackNonceFunction
-            signatureTimestamp = playerData.signatureTimestamp
+        if (playerCache?.playerUrl == playerUrl) {
+            cpnCode = playerCache.cpnCode
+            signatureTimestamp = playerCache.signatureTimestamp
+            nFuncCode = true
+            sFuncCode = true
         }
     }
 
-    private fun checkAllData() {
+    private fun checkCpnData() {
         cpnCode?.let {
             try {
                 val result = createClientPlaybackNonce()
@@ -159,6 +156,10 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     private fun checkSigData() {
+        if (nFuncCode && sFuncCode) {
+            return
+        }
+
         try {
             val param = "5cNpZqIJ7ixNqU68Y7S"
             val result = V8ChallengeProvider.bulkSolve(

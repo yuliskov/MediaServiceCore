@@ -1,66 +1,49 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
-import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.youtubeapi.app.AppService
 
-private const val PREF_NAME = "yt_cache_service"
-private const val KEY_DELIM = "%KEY%"
-private const val FIELD_DELIM = "%FIELD%"
-private const val UNKNOWN = "UNKNOWN"
-
-internal open class CacheError(message: String, cause: Exception? = null): Exception(message, cause)
-
 internal data class CachedData(
     val code: String,
-    val version: String = UNKNOWN,
-    val variant: String = UNKNOWN
-) {
-    override fun toString(): String {
-        return Helpers.merge(FIELD_DELIM, code, version, variant)
-    }
+    val version: String? = null,
+    val variant: String? = null
+)
 
-    companion object {
-        fun fromString(data: String): CachedData {
-            val split = Helpers.split(data, FIELD_DELIM)
-
-            val code = Helpers.parseStr(split, 0)
-                ?: throw CacheError("Cannot restore CachedData item. At least 'code' field should be set")
-            val version = Helpers.parseStr(split, 1) ?: UNKNOWN
-            val variant = Helpers.parseStr(split, 2) ?: UNKNOWN
-
-            return CachedData(code, version, variant)
-        }
-    }
-}
-
-internal object CacheService: SharedPreferencesBase(AppService.instance().context, PREF_NAME) {
-    private val storage: MutableMap<String, MutableMap<String, CachedData?>> = mutableMapOf()
+internal object CacheService {
+    private const val PREF_NAME = "yt_cache_service"
+    private const val KEY_DELIM = "%KEY%"
 
     fun load(section: String, key: String): CachedData? {
-        if (!storage.contains(section))
-            storage[section] = mutableMapOf()
-
-        if (storage[section]?.let { !it.contains(key) } ?: false)
-            storage[section]?.put(key, loadFromStorage(section, key))
-
-        return storage[section]?.get(key)
+        return loadFromStorage(section, key)
     }
 
     fun store(section: String, key: String, content: CachedData) {
-        val sectionStorage = storage[section] ?: mutableMapOf<String, CachedData?>().also { storage[section] = it }
-        sectionStorage[key] = content
-
         persistToStorage(section, key, content)
     }
 
     private fun loadFromStorage(section: String, key: String): CachedData? {
-        val data = getString("$section$KEY_DELIM$key", null)
+        // Use standalone prefs per section to preserve RAM
+        val prefs = SharedPreferencesBase(AppService.instance().context, getPrefsName(section))
 
-        return data?.let { CachedData.fromString(it) }
+        val code: String? = prefs.getString(getCodeKey(key), null)
+        val version: String? = prefs.getString(getVersionKey(key), null)
+        val variant: String? = prefs.getString(getVariantKey(key), null)
+
+        return code?.let { CachedData(it, version, variant) }
     }
 
     private fun persistToStorage(section: String, key: String, content: CachedData) {
-        putString("$section$KEY_DELIM$key", content.toString())
+        // Use standalone prefs per section to preserve RAM
+        val prefs = SharedPreferencesBase(AppService.instance().context, getPrefsName(section))
+
+        prefs.clear() // free some RAM (one value per file)
+        prefs.putString(getCodeKey(key), content.code)
+        prefs.putString(getVersionKey(key), content.version)
+        prefs.putString(getVariantKey(key), content.variant)
     }
+
+    private fun getCodeKey(key: String) = "$key${KEY_DELIM}code"
+    private fun getVersionKey(key: String) = "$key${KEY_DELIM}version"
+    private fun getVariantKey(key: String) = "$key${KEY_DELIM}variant"
+    private fun getPrefsName(section: String) = "$PREF_NAME$KEY_DELIM$section"
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -16,6 +17,7 @@ import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.NSigData;
+import com.liskovsoft.youtubeapi.app.playerdata.PlayerExtractorCache;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 
@@ -62,6 +64,7 @@ public class MediaServiceData {
     private AppInfoCached mAppInfo;
     private AppInfoCached mFailedAppInfo;
     private PlayerDataCached mPlayerData;
+    private PlayerExtractorCache mPlayerExtractorCache;
     private ClientDataCached mClientData;
     private NSigData mNSigData;
     private NSigData mSigData;
@@ -157,6 +160,16 @@ public class MediaServiceData {
         mNSigData = nSigData;
         mSigData = sigData;
         mPlayerData = playerData;
+        persistData();
+    }
+
+    @Nullable
+    public PlayerExtractorCache getPlayerExtractorCache() {
+        return mPlayerExtractorCache;
+    }
+
+    public void setPlayerExtractorCache(PlayerExtractorCache playerCache) {
+        mPlayerExtractorCache = playerCache;
         persistData();
     }
 
@@ -326,6 +339,7 @@ public class MediaServiceData {
         mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
         mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
         //mPlayerExtractorVersion = Helpers.parseStr(split, 10);
+        mPlayerExtractorCache = Helpers.parseItem(split, 11, PlayerExtractorCache::fromString);
     }
 
     private void persistDataInt() {
@@ -347,8 +361,8 @@ public class MediaServiceData {
         }
 
         mCachedPrefs.setMediaServiceCache(
-                Helpers.mergeData(null, null,
-                        null, null, null, null, null, null, mNSigData, mSigData, null));
+                Helpers.mergeData(null, null, null, null, null, null,
+                        null, null, mNSigData, mSigData, null, mPlayerExtractorCache));
     }
 
     private void persistData() {

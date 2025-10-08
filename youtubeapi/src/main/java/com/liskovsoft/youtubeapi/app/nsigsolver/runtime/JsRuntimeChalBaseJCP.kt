@@ -154,7 +154,8 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
 
     private fun cachedSource(scriptType: ScriptType): Script? {
         val data = ie.cache.load(cacheSection, scriptType.value) ?: return null
-        return Script(scriptType, ScriptVariant.valueOf(data.variant), ScriptSource.CACHE, data.version, data.code)
+        return Script(scriptType,
+            ScriptVariant.valueOf(data.variant ?: "unknown"), ScriptSource.CACHE, data.version ?: "unknown", data.code)
     }
 
     private fun builtinSource(scriptType: ScriptType): Script? {

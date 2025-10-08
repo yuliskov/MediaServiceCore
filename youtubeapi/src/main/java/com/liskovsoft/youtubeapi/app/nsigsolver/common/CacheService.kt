@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.youtubeapi.app.AppService
+import java.lang.ref.WeakReference
 
 internal class CacheError(message: String, cause: Exception? = null): Exception(message, cause)
 
@@ -12,8 +13,9 @@ internal data class CachedData(
 )
 
 internal object CacheService {
-    private const val PREF_NAME = "yt_cache_service"
+    private const val PREF_NAME = "yt_cache_service2"
     private const val KEY_DELIM = "%KEY%"
+    private val prefs: MutableMap<String, WeakReference<SharedPreferencesBase>> = mutableMapOf()
 
     fun load(section: String, key: String): CachedData? {
         return loadFromStorage(section, key)
@@ -24,8 +26,7 @@ internal object CacheService {
     }
 
     private fun loadFromStorage(section: String, key: String): CachedData? {
-        // Use standalone prefs per section to preserve RAM
-        val prefs = SharedPreferencesBase(AppService.instance().context, getPrefsName(section))
+        val prefs = getSharedPrefs(getPrefsName(section))
 
         val code: String? = prefs.getString(getCodeKey(key), null)
         val version: String? = prefs.getString(getVersionKey(key), null)
@@ -35,13 +36,20 @@ internal object CacheService {
     }
 
     private fun persistToStorage(section: String, key: String, content: CachedData) {
-        // Use standalone prefs per section to preserve RAM
-        val prefs = SharedPreferencesBase(AppService.instance().context, getPrefsName(section))
+        val prefs = getSharedPrefs(getPrefsName(section))
 
         prefs.clear() // free some RAM (one value per file)
         prefs.putString(getCodeKey(key), content.code)
         prefs.putString(getVersionKey(key), content.version)
         prefs.putString(getVariantKey(key), content.variant)
+    }
+
+    private fun getSharedPrefs(name: String): SharedPreferencesBase {
+        // Use standalone prefs per section to preserve RAM
+        return prefs[name]?.get() ?: SharedPreferencesBase(AppService.instance().context, name)
+            .also {
+                prefs[name] = WeakReference(it)
+            }
     }
 
     private fun getCodeKey(key: String) = "$key${KEY_DELIM}code"

@@ -3,6 +3,8 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.common
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.youtubeapi.app.AppService
 
+internal class CacheError(message: String, cause: Exception? = null): Exception(message, cause)
+
 internal data class CachedData(
     val code: String,
     val version: String? = null,
@@ -45,5 +47,8 @@ internal object CacheService {
     private fun getCodeKey(key: String) = "$key${KEY_DELIM}code"
     private fun getVersionKey(key: String) = "$key${KEY_DELIM}version"
     private fun getVariantKey(key: String) = "$key${KEY_DELIM}variant"
-    private fun getPrefsName(section: String) = "$PREF_NAME$KEY_DELIM$section"
+    private fun getPrefsName(section: String) =
+        if (section.contains("/"))
+            throw CacheError("Slashes aren't allowed inside the pref name: $section")
+        else "$PREF_NAME$KEY_DELIM$section"
 }

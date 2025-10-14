@@ -132,6 +132,7 @@ public class AppServiceInt {
     public void refreshCacheIfNeeded() {
         getAppInfoData();
         getClientData();
+        getPlayerDataExtractor();
     }
 
     protected MediaServiceData getData() {

@@ -157,6 +157,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     private fun checkSigData() {
         if (nFuncCode && sFuncCode) {
+            V8ChallengeProvider.warmup() // enable hot start
             return
         }
 

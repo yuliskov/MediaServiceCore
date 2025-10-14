@@ -59,17 +59,18 @@ public class TrackingService {
             positionSec = lengthSec;
         }
 
-        //if (isVideoAlmostWatched) {
-        //    if (needNewRecord(videoId)) {
-        //        createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        //    }
-        //    updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        //    return;
-        //}
+        if (isVideoAlmostWatched) {
+            if (needNewRecord(videoId)) {
+                createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            }
+            updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            return;
+        }
 
         if (needNewRecord(videoId)) {
             createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
         }
+
         updateWatchTimeLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
     }
 

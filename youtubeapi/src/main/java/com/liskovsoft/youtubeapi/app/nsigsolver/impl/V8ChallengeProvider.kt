@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.impl
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
+import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderError
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.JsRuntimeChalBaseJCP
@@ -9,12 +10,13 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.Script
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptSource
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptType
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptVariant
-import java.lang.ref.WeakReference
+import io.reactivex.disposables.Disposable
 
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
     private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah.bundle.min.js", "${libPrefix}astring.bundle.min.js")
-    private var v8Runtime: WeakReference<V8> = WeakReference(null)
+    private var v8Runtime: V8? = null
+    private var releaseV8: Disposable? = null
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
@@ -39,7 +41,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun runV8(stdin: String): String {
-        val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
+        val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
 
         synchronized(runtime) {
             try {
@@ -54,14 +56,17 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     fun warmup() {
-        if (v8Runtime.get() == null) {
-            v8Runtime = WeakReference(V8.createV8Runtime())
+        if (v8Runtime == null) {
+            v8Runtime = V8.createV8Runtime()
             runV8(constructCommonStdin()) // ignore the result, just warm up
         }
+
+        //RxHelper.disposeActions(releaseV8)
+        //releaseV8 = RxHelper.runAsync(::shutdown, 180_000)
     }
 
     fun shutdown() {
-        v8Runtime.get()?.release(false)
-        // v8Runtime = null
+        v8Runtime?.release(false)
+        v8Runtime = null
     }
 }

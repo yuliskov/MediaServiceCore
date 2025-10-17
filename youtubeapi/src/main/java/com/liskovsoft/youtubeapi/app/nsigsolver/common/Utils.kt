@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
+import com.eclipsesource.v8.V8
 import com.liskovsoft.youtubeapi.app.AppService
 
 internal class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)
@@ -28,3 +29,12 @@ internal fun loadScript(filenames: List<String>, errorMsg: String? = null): Stri
 }
 
 internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
+
+internal inline fun <T> V8.withLock(block: (V8) -> T): T {
+    locker.acquire()
+    try {
+        return block(this)
+    } finally {
+        locker.release()
+    }
+}

@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.impl
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.withLock
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderError
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.JsRuntimeChalBaseJCP
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.Script
@@ -39,46 +40,39 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun runV8(stdin: String): String {
-        val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
-
         synchronized(v8Lock) {
+            val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
             try {
-                runtime.locker.acquire()
-                return runtime.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+                return runtime.withLock {
+                    it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+                }
             } catch (e: V8ScriptExecutionException) {
                 if (e.message?.contains("Invalid or unexpected token") ?: false)
                     ie.cache.clear(cacheSection) // cached data broken?
                 throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
-            } finally {
-                if (runtime.locker.hasLock())
-                    runtime.locker.release()
             }
         }
     }
     
     fun warmup() {
-        if (v8Runtime != null)
-            return
-
         synchronized(v8Lock) {
+            if (v8Runtime != null)
+                return
             v8Runtime = V8.createV8Runtime()
-            runV8(constructCommonStdin()) // ignore the result, just warm up
         }
+        runV8(constructCommonStdin()) // ignore the result, just warm up
     }
 
     fun shutdown() {
-        val runtime = v8Runtime ?: return
-
         synchronized(v8Lock) {
-            try {
-                runtime.locker.acquire() // Fix: Invalid V8 thread access: the locker has been released!
-                runtime.release(false)
-            } finally {
-                if (runtime.locker.hasLock())
-                    runtime.locker.release()
+            val runtime = v8Runtime ?: return
+
+            // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
+            runtime.withLock {
+                it.release(false)
             }
+            v8Runtime = null
         }
-        v8Runtime = null
     }
 
     fun forceRecreate() {

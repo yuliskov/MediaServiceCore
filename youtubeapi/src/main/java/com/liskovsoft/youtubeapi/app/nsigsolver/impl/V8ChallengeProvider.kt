@@ -14,6 +14,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
     private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah.bundle.min.js", "${libPrefix}astring.bundle.min.js")
     private var v8Runtime: V8? = null
+    private val v8Lock = Any()
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
@@ -40,7 +41,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private fun runV8(stdin: String): String {
         val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
 
-        synchronized(runtime) {
+        synchronized(v8Lock) {
             try {
                 runtime.locker.acquire()
                 return runtime.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
@@ -54,9 +55,12 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
             }
         }
     }
-
+    
     fun warmup() {
-        if (v8Runtime == null) {
+        if (v8Runtime != null)
+            return
+
+        synchronized(v8Lock) {
             v8Runtime = V8.createV8Runtime()
             runV8(constructCommonStdin()) // ignore the result, just warm up
         }
@@ -65,10 +69,9 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     fun shutdown() {
         val runtime = v8Runtime ?: return
 
-        // Fix: Invalid V8 thread access: the locker has been released!
-        synchronized(runtime) {
+        synchronized(v8Lock) {
             try {
-                runtime.locker.acquire()
+                runtime.locker.acquire() // Fix: Invalid V8 thread access: the locker has been released!
                 runtime.release(false)
             } finally {
                 if (runtime.locker.hasLock())

@@ -86,14 +86,12 @@ internal class ChallengeProviderTest {
 
     @Test
     fun testNonEmptyResponse() {
-        V8ChallengeProvider.warmup()
         val actual = V8ChallengeProvider.bulkSolve(tests).toList()
         assertEquals(responses, actual)
     }
 
     @Test
     fun testSingleNRequest() {
-        V8ChallengeProvider.warmup()
         val result = V8ChallengeProvider.bulkSolve(listOf(tests.first())).toList()
         assertTrue("not empty", result.isNotEmpty())
     }

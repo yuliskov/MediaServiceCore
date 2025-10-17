@@ -30,8 +30,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     init {
-        V8ChallengeProvider.warmup()
-
         // Get the code from the cache
         restoreAllData()
         checkSigData()

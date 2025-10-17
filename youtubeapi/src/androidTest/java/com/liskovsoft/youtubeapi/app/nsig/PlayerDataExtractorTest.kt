@@ -39,7 +39,7 @@ class PlayerDataExtractorTest {
     fun testExtractNSig() {
         val playerUrl = getPlayerUrl()
         testPlayerExtractorValid(playerUrl)
-        testPlayerExtractorValid(AppConstants.playerUrls.first())
+        testPlayerExtractorValid(getTestingUrls().first())
     }
 
     private fun testPlayerExtractorValid(playerUrl: String) {
@@ -54,17 +54,25 @@ class PlayerDataExtractorTest {
 
         mAppServiceInt.getPlayerDataExtractor(playerUrl).validate()
     }
-
-    @Ignore("Temporary not supported")
+    
     @Test
     fun testNSigPlayerVersions() {
-        AppConstants.playerUrls.forEach { testNSigPlayerUrl(it) }
+        getTestingUrls().forEach { testNSigPlayerUrl(it) }
     }
-
-    @Ignore("Temporary not supported")
+    
     @Test
     fun testSigPlayerVersions() {
-        AppConstants.playerUrls.forEach { testSigPlayerUrl(it) }
+        getTestingUrls().forEach { testSigPlayerUrl(it) }
+    }
+
+    @Test
+    fun testCPNPlayerVersions() {
+        getTestingUrls().forEach { testCPNPlayerUrl(it) }
+    }
+
+    @Test
+    fun testTimestampPlayerVersions() {
+        getTestingUrls().forEach { testTimestampPlayerUrl(it) }
     }
 
     @Test
@@ -82,18 +90,6 @@ class PlayerDataExtractorTest {
         testSigPlayerUrl("https://www.youtube.com/s/player/17ad44a3/tv-player-es6.vflset/tv-player-es6.js")
         testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js")
         //testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-es6.vflset/tv-player-es6.js")
-    }
-
-    @Ignore("Temporary not supported")
-    @Test
-    fun testCPNPlayerVersions() {
-        AppConstants.playerUrls.forEach { testCPNPlayerUrl(it) }
-    }
-
-    @Ignore("Temporary not supported")
-    @Test
-    fun testTimestampPlayerVersions() {
-        AppConstants.playerUrls.forEach { testTimestampPlayerUrl(it) }
     }
 
     @Test
@@ -145,4 +141,6 @@ class PlayerDataExtractorTest {
         val timestamp = extractor.getSignatureTimestamp()
         assertNotNull("Timestamp not null for url $url", timestamp)
     }
+
+    private fun getTestingUrls(): List<String> = AppConstants.playerUrls.take(5) // do limit to avoid OOM
 }

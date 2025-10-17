@@ -16,7 +16,7 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 
 internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
     private val tag = JsRuntimeChalBaseJCP::class.simpleName
-    private val cacheSection = "challenge-solver"
+    protected val cacheSection = "challenge-solver"
 
     private val jcpGuideUrl = "https://github.com/yt-dlp/yt-dlp/wiki/YouTube-JS-Challenges"
     private val repository = "yt-dlp/ejs"

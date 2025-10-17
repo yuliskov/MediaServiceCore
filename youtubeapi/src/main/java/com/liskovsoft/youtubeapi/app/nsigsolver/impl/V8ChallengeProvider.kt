@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.impl
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
-import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderError
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.JsRuntimeChalBaseJCP
@@ -10,13 +9,11 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.Script
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptSource
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptType
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptVariant
-import io.reactivex.disposables.Disposable
 
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
     private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah.bundle.min.js", "${libPrefix}astring.bundle.min.js")
     private var v8Runtime: V8? = null
-    private var releaseV8: Disposable? = null
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
@@ -45,12 +42,15 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
         synchronized(runtime) {
             try {
-                runtime.locker?.acquire()
+                runtime.locker.acquire()
                 return runtime.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
             } catch (e: V8ScriptExecutionException) {
-                throw JsChallengeProviderError("V8 runtime error", e)
+                if (e.message?.contains("Invalid or unexpected token") ?: false)
+                    ie.cache.clear(cacheSection) // cached data broken?
+                throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
             } finally {
-                runtime.locker?.release()
+                if (runtime.locker.hasLock())
+                    runtime.locker.release()
             }
         }
     }
@@ -60,13 +60,26 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
             v8Runtime = V8.createV8Runtime()
             runV8(constructCommonStdin()) // ignore the result, just warm up
         }
-
-        //RxHelper.disposeActions(releaseV8)
-        //releaseV8 = RxHelper.runAsync(::shutdown, 180_000)
     }
 
     fun shutdown() {
-        v8Runtime?.release(false)
+        val runtime = v8Runtime ?: return
+
+        // Fix: Invalid V8 thread access: the locker has been released!
+        synchronized(runtime) {
+            try {
+                runtime.locker.acquire()
+                runtime.release(false)
+            } finally {
+                if (runtime.locker.hasLock())
+                    runtime.locker.release()
+            }
+        }
         v8Runtime = null
+    }
+
+    fun forceRecreate() {
+        shutdown()
+        warmup()
     }
 }

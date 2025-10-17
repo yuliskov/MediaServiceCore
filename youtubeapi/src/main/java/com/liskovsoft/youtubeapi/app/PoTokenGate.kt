@@ -5,6 +5,22 @@ import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
+private enum class PoTokenType {
+    /**
+     * A poToken generated from videoId.
+     *
+     * Used in player requests.
+      */
+    CONTENT,
+
+    /**
+     * A generic poToken.
+     *
+     * Used in SABR requests.
+     */
+    SESSION
+}
+
 internal object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1

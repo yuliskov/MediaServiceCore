@@ -25,6 +25,11 @@ internal object CacheService {
         persistToStorage(section, key, content)
     }
 
+    fun clear(section: String) {
+        val prefs = getSharedPrefs(getPrefsName(section))
+        prefs.clear()
+    }
+
     private fun loadFromStorage(section: String, key: String): CachedData? {
         val prefs = getSharedPrefs(getPrefsName(section))
 

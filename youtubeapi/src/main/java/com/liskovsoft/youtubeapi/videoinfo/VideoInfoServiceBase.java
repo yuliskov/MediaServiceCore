@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.api.FileApi;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
@@ -26,8 +27,6 @@ public abstract class VideoInfoServiceBase {
     private final DashInfoApi mDashInfoApi;
     private final FileApi mFileApi;
     protected final AppService mAppService;
-    // Make response smaller
-    private final String SMALL_RANGE = "&range=0-200";
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
@@ -86,7 +85,7 @@ public abstract class VideoInfoServiceBase {
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
 
-        //applySessionPoToken(formats, PoTokenGate.getPoToken(getClient()));
+        applySessionPoToken(formats, PoTokenGate.getPoToken(getClient()));
     }
 
     private static List<String> extractSParams(List<? extends VideoFormat> formats) {

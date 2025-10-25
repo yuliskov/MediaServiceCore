@@ -59,7 +59,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mContainsAdaptiveVideoFormats;
     private boolean mIsAnonymous;
     private boolean mIsSynced;
-    private boolean mIsBotCheckError;
+    private boolean mIsUnknownError;
     private String mPaidContentText;
     private String mClickTrackingParams;
     private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
@@ -119,7 +119,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
         formatInfo.mIsAnonymous = videoInfo.isAnonymous();
-        formatInfo.mIsBotCheckError = videoInfo.isUnknownRestricted();
+        formatInfo.mIsUnknownError = videoInfo.isUnknownRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
         formatInfo.mStartTimestamp = videoInfo.getStartTimestamp();
@@ -350,8 +350,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public boolean isBotCheckError() {
-        return mIsBotCheckError;
+    public boolean isUnknownError() {
+        return mIsUnknownError;
     }
 
     @Override

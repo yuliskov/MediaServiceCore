@@ -99,7 +99,7 @@ internal object RetrofitOkHttpHelper {
                         request, requestBuilder)
                 } else {
                     applyQueryKeys(mapOf("prettyPrint" to "false", "t" to tParam), request, requestBuilder)
-                    // Fix suggestions on non branded accounts
+                    // Fix search suggestions on non branded accounts
                     if (url.startsWith(SearchApi.TAGS_URL) && authHeaders2.isNotEmpty()) {
                         applyHeaders(authHeaders2, headers, requestBuilder)
                     } else {

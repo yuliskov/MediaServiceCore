@@ -39,7 +39,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
 
             val idx = it.indexOfFirst { it.channelId == AppConstants.WATCH_LATER_CHANNEL_ID }
 
-            if (idx == -1)
+            if (idx == -1 || idx >= it.size)
                 return@let it
 
             val mutable = it.toMutableList()

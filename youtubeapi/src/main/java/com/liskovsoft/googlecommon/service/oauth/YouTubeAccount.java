@@ -54,6 +54,10 @@ public class YouTubeAccount implements Account {
 
         account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
+        if (account.mRefreshToken == null) { // the account is broken
+            return null;
+        }
+
         return account;
     }
 

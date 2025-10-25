@@ -96,6 +96,7 @@ internal object PoTokenGate {
 
         if (PoTokenProviderImpl.isWebPotSupported) {
             mWebPoToken = null
+            PoTokenProviderImpl.resetCache()
         } else
             PoTokenCloudService.resetCache()
 

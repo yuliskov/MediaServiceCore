@@ -163,6 +163,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public void resetInfoType() {
         resetData();
         persistVideoInfoType();
+        PoTokenGate.resetCache(getClient());
     }
 
     private void resetData() {

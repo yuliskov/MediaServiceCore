@@ -23,7 +23,6 @@ public class YouTubeSignInService implements SignInService {
     private static YouTubeSignInService sInstance;
     private final YouTubeAccountManager mAccountManager;
     private String mCachedAuthorizationHeader;
-    private String mCachedAuthorizationHeader2;
     private long mCacheUpdateTime;
 
     private YouTubeSignInService() {
@@ -71,10 +70,8 @@ public class YouTubeSignInService implements SignInService {
     private void updateAuthHeaders() {
         Account account = mAccountManager.getSelectedAccount();
         String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
-        String refreshToken2 = account != null ? ((YouTubeAccount) account).getRefreshToken2() : null;
         // get or create authorization on fly
         mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
-        mCachedAuthorizationHeader2 = createAuthorizationHeader(refreshToken2);
         syncWithRetrofit();
         mAccountManager.syncStorage();
     }
@@ -154,9 +151,7 @@ public class YouTubeSignInService implements SignInService {
         }
 
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        Map<String, String> headers2 = RetrofitOkHttpHelper.getAuthHeaders2();
         headers.clear();
-        headers2.clear();
 
         Account selectedAccount = getSelectedAccount();
 
@@ -164,7 +159,6 @@ public class YouTubeSignInService implements SignInService {
             headers.put("Authorization", mCachedAuthorizationHeader);
             String pageIdToken = ((YouTubeAccount) selectedAccount).getPageIdToken();
             if (pageIdToken != null) {
-                headers2.put("Authorization", mCachedAuthorizationHeader2);
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
                 headers.put("X-Goog-Pageid", pageIdToken);
             }

@@ -70,10 +70,10 @@ public class SearchService {
         // fix empty popular searches (country and language should match or use only country)
         //language = localeManager.getLanguage();
 
-        return getSearchTags(searchText, null, country, language, getAppService().getVisitorData());
+        return getSearchTags(searchText, null, country, language);
     }
 
-    private List<String> getSearchTags(String searchText, String suggestToken, String country, String language, String visitorId) {
+    private List<String> getSearchTags(String searchText, String suggestToken, String country, String language) {
         if (searchText == null) {
             searchText = "";
         }
@@ -83,8 +83,7 @@ public class SearchService {
                         searchText,
                         suggestToken,
                         country,
-                        language,
-                        visitorId
+                        language
                 );
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 

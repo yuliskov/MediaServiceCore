@@ -13,7 +13,6 @@ public abstract class OAuth2AccountManagerBase {
     private static final String TAG = OAuth2AccountManagerBase.class.getSimpleName();
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
     private String mCachedAuthorizationHeader;
-    private String mCachedAuthorizationHeader2;
     private long mCacheUpdateTime;
 
     protected abstract Account getSelectedAccount();
@@ -37,10 +36,8 @@ public abstract class OAuth2AccountManagerBase {
     private void updateAuthHeaders() {
         Account account = getSelectedAccount();
         String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
-        String refreshToken2 = account != null ? ((YouTubeAccount) account).getRefreshToken2() : null;
         // get or create authorization on fly
         mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
-        mCachedAuthorizationHeader2 = createAuthorizationHeader(refreshToken2);
         syncWithRetrofit();
     }
 
@@ -49,7 +46,6 @@ public abstract class OAuth2AccountManagerBase {
      */
     public void setAuthorizationHeader(String authorizationHeader) {
         mCachedAuthorizationHeader = authorizationHeader;
-        mCachedAuthorizationHeader2 = null;
         mCacheUpdateTime = System.currentTimeMillis();
 
         syncWithRetrofit();
@@ -84,15 +80,12 @@ public abstract class OAuth2AccountManagerBase {
         }
 
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        Map<String, String> headers2 = RetrofitOkHttpHelper.getAuthHeaders2();
         headers.clear();
-        headers2.clear();
 
         if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);
             String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
             if (pageIdToken != null) {
-                headers2.put("Authorization", mCachedAuthorizationHeader2);
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
                 headers.put("X-Goog-Pageid", pageIdToken);
             }

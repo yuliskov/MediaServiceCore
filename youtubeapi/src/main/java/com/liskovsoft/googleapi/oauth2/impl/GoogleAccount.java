@@ -37,7 +37,7 @@ public class GoogleAccount implements Account {
             return null;
         }
 
-        String[] split = Helpers.splitDataLegacy(spec);
+        String[] split = Helpers.splitData(spec);
 
         GoogleAccount account = new GoogleAccount();
 

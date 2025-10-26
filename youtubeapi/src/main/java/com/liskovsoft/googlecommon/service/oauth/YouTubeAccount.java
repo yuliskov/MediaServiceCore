@@ -13,7 +13,6 @@ public class YouTubeAccount implements Account {
     private String mImageUrl;
     private boolean mIsSelected;
     private String mRefreshToken;
-    private String mRefreshToken2;
     private boolean mHasChannel;
     private String mPageIdToken;
     private String mChannelName;
@@ -37,7 +36,7 @@ public class YouTubeAccount implements Account {
             return null;
         }
 
-        String[] split = Helpers.splitDataLegacy(spec);
+        String[] split = Helpers.splitData(spec);
 
         YouTubeAccount account = new YouTubeAccount();
 
@@ -50,7 +49,6 @@ public class YouTubeAccount implements Account {
         account.mHasChannel = Helpers.parseBoolean(split, 6, true);
         account.mPageIdToken = Helpers.parseStr(split, 7);
         account.mChannelName = Helpers.parseStr(split, 8);
-        account.mRefreshToken2 = Helpers.parseStr(split, 9);
 
         account.mImageUrl = YouTubeHelper.avatarBlockFix(account.mImageUrl);
 
@@ -73,7 +71,7 @@ public class YouTubeAccount implements Account {
     @NonNull
     @Override
     public String toString() {
-        return Helpers.mergeData(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName, mRefreshToken2);
+        return Helpers.mergeData(mId, mName, mImageUrl, mIsSelected, mRefreshToken, mEmail, mHasChannel, mPageIdToken, mChannelName);
     }
 
     @Override
@@ -158,14 +156,6 @@ public class YouTubeAccount implements Account {
         return mPageIdToken;
     }
 
-    public String getRefreshToken2() {
-        return mRefreshToken2;
-    }
-
-    public boolean isSearchBroken() {
-        return mRefreshToken2 == null && mEmail == null;
-    }
-
     public void merge(Account account) {
         if (!equals(account)) {
             return;
@@ -173,25 +163,14 @@ public class YouTubeAccount implements Account {
 
         YouTubeAccount originAccount = (YouTubeAccount) account;
 
-        if (Helpers.equals(getPageIdToken(), originAccount.getPageIdToken())) { // same account types
-            if (mRefreshToken == null)
-                mRefreshToken = originAccount.getRefreshToken();
-            if (mRefreshToken2 == null)
-                mRefreshToken2 = originAccount.getRefreshToken2();
-        } else if (getPageIdToken() != null) { // origin has old type, make it second (old type used to the search suggestions)
-            if (mRefreshToken == null)
-                mRefreshToken = originAccount.getRefreshToken();
-            if (mRefreshToken2 == null)
-                mRefreshToken2 = Helpers.firstNonNull(originAccount.getRefreshToken2(), originAccount.getRefreshToken());
+        if (mRefreshToken == null) {
+            mRefreshToken = originAccount.getRefreshToken();
+        }
+        if (mPageIdToken == null) {
+            mPageIdToken = originAccount.getPageIdToken();
+        }
+        if (mEmail == null) {
             mEmail = originAccount.getEmail();
-        } else if (mRefreshToken == null) { // origin has a new type, make it main
-            //mRefreshToken2 = mRefreshToken;
-            if (originAccount.getRefreshToken() != null) {
-                mRefreshToken = originAccount.getRefreshToken();
-            }
-            if (originAccount.getPageIdToken() != null) {
-                mPageIdToken = originAccount.getPageIdToken();
-            }
         }
     }
 }

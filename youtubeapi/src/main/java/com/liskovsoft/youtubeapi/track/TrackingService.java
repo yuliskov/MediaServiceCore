@@ -62,17 +62,16 @@ public class TrackingService {
         }
 
         if (isVideoAlmostWatched) {
-            if (needNewRecord(videoId)) {
-                createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-            }
-            updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-            return;
+            positionSec = lengthSec;
         }
 
-        if (needNewRecord(videoId)) {
-            createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        }
-
+        //if (isVideoAlmostWatched) {
+        //    createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+        //    updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+        //    return;
+        //}
+        
+        createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
         updateWatchTimeLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
     }
 
@@ -142,18 +141,18 @@ public class TrackingService {
     }
 
     private boolean needNewRecord(String videoId) {
-        return !isSameVideo(videoId);
+        return !containsRecord(videoId);
     }
 
     private float getOldPositionSec(String videoId, float positionSec) {
-        return isSameVideo(videoId) ? mPosition.second : positionSec < THRESHOLD_SEC ? 0 : positionSec;
+        return containsRecord(videoId) ? mPosition.second : positionSec < THRESHOLD_SEC ? 0 : positionSec;
     }
 
     private boolean previouslyAlmostWatched(String videoId, float lengthSec) {
-        return isSameVideo(videoId) && lengthSec - mPosition.second < THRESHOLD_SEC;
+        return containsRecord(videoId) && lengthSec - mPosition.second < THRESHOLD_SEC;
     }
 
-    private boolean isSameVideo(String videoId) {
+    private boolean containsRecord(String videoId) {
         return mPosition != null && Helpers.equals(mPosition.first, videoId);
     }
 }

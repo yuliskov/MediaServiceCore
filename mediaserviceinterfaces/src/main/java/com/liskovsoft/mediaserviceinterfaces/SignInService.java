@@ -15,6 +15,7 @@ public interface SignInService {
     void addOnAccountChange(OnAccountChange listener);
     void selectAccount(Account account);
     void removeAccount(Account account);
+    String printDebugInfo();
 
     // RxJava interfaces
     /**

@@ -109,6 +109,29 @@ public class YouTubeSignInService implements SignInService {
         mAccountManager.removeAccount(account);
     }
 
+    @Override
+    public String printDebugInfo() {
+        int size = getAccounts().size();
+        String name = "none";
+        String header = "none";
+        String token = "none";
+
+        if (mCachedAuthorizationHeader != null) {
+            header = "ok";
+        }
+
+        Account account = getSelectedAccount();
+
+        if (account instanceof YouTubeAccount) {
+            name = account.getName();
+            if (((YouTubeAccount) account).getRefreshToken() != null) {
+                token = "ok";
+            }
+        }
+
+        return String.format("size=%s;name=%s;header=%s;token=%s", size, name, header, token);
+    }
+
     /**
      * Authorization should be updated periodically (see expire_in field in response)
      */

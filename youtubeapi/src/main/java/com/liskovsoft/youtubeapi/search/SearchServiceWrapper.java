@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
 import java.util.List;
@@ -17,14 +18,14 @@ public class SearchServiceWrapper extends SearchService {
 
     @Override
     public SearchResult getSearch(String searchText) {
-        SearchTagStorage.saveTag(searchText);
+        saveTagIfNeeded(searchText);
 
         return super.getSearch(searchText);
     }
 
     @Override
     public SearchResult getSearch(String searchText, int options) {
-        SearchTagStorage.saveTag(searchText);
+        saveTagIfNeeded(searchText);
 
         return super.getSearch(searchText, options);
     }
@@ -34,7 +35,7 @@ public class SearchServiceWrapper extends SearchService {
         List<String> result = super.getSearchTags(searchText);
 
         if (result == null || result.isEmpty()) {
-            return SearchTagStorage.getTags();
+            return getTagsIfNeeded();
         }
 
         return result;
@@ -43,5 +44,19 @@ public class SearchServiceWrapper extends SearchService {
     @Override
     public void clearSearchHistory() {
         SearchTagStorage.clear();
+    }
+
+    private List<String> getTagsIfNeeded() {
+        if (GlobalPreferences.sInstance != null) {
+            return SearchTagStorage.getTags();
+        }
+
+        return null;
+    }
+
+    private void saveTagIfNeeded(String searchText) {
+        if (GlobalPreferences.sInstance != null) {
+            SearchTagStorage.saveTag(searchText);
+        }
     }
 }

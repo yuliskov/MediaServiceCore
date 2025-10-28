@@ -111,7 +111,6 @@ public class YouTubeSignInService implements SignInService {
 
     @Override
     public String printDebugInfo() {
-        int size = getAccounts().size();
         String name = "none";
         String header = "none";
         String token = "none";
@@ -129,7 +128,7 @@ public class YouTubeSignInService implements SignInService {
             }
         }
 
-        return String.format("size=%s;name=%s;header=%s;token=%s", size, name, header, token);
+        return String.format("name=%s;header=%s;token=%s", name, header, token);
     }
 
     /**

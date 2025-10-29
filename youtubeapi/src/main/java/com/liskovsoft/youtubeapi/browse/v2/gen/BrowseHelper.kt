@@ -22,6 +22,11 @@ import com.liskovsoft.youtubeapi.next.v2.gen.getPublishDate
 import com.liskovsoft.youtubeapi.next.v2.gen.getTitle
 import com.liskovsoft.youtubeapi.next.v2.gen.getViews
 import com.liskovsoft.youtubeapi.next.v2.gen.containsShorts
+import com.liskovsoft.youtubeapi.next.v2.gen.getChips
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
+import com.liskovsoft.youtubeapi.next.v2.gen.getItems
+import com.liskovsoft.youtubeapi.next.v2.gen.getSections
+import com.liskovsoft.youtubeapi.next.v2.gen.getShortItems
 
 /**
  *  Always renders first tab
@@ -54,27 +59,27 @@ private fun BrowseResult.getRootTab() = getTabs()?.firstNotNullOfOrNull { if (it
 
 private const val TAB_STYLE_NEW_CONTENT = "NEW_CONTENT"
 
-internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListContents()?.flatMap { it?.getItems() ?: emptyList() }
-    ?: getGridContents()?.mapNotNull { it?.getItem() } ?: getTVGrid()?.items ?: getTVList()?.getItems()
-internal fun TabRenderer.getShortItems(): List<ItemWrapper?>? = getGridContents()?.flatMap { it?.getItems() ?: emptyList() } ?: getTVList()?.getShortItems()
-internal fun TabRenderer.getContinuationToken(): String? = getListContents()?.firstNotNullOfOrNull { it?.getContinuationToken() }
-    ?: getGridContents()?.lastOrNull()?.getContinuationToken()
-    ?: getTVGrid()?.continuations?.getContinuationKey()
-    ?: getTVList()?.getContinuationToken()
+internal fun TabRenderer.getItems(): List<ItemWrapper?>? = getListRenderer()?.getItems()
+    ?: getGridRenderer()?.getItems() ?: getTVGridRenderer()?.getItems() ?: getTVListRenderer()?.getItems()
+internal fun TabRenderer.getShortItems(): List<ItemWrapper?>? = getGridRenderer()?.getShortItems() ?: getTVListRenderer()?.getShortItems()
+internal fun TabRenderer.getContinuationToken(): String? = getListRenderer()?.getContinuationToken()
+    ?: getGridRenderer()?.getContinuationToken()
+    ?: getTVGridRenderer()?.getContinuationToken()
+    ?: getTVListRenderer()?.getContinuationToken()
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
 internal fun TabRenderer.getContinuationKey(): String? = content?.tvSurfaceContentRenderer?.continuation?.getContinuationKey()
 internal fun TabRenderer.getParams(): String? = endpoint?.getParams()
 internal fun TabRenderer.getThumbnails(): ThumbnailItem? = thumbnail
 internal fun TabRenderer.hasNewContent(): Boolean = presentationStyle?.style == TAB_STYLE_NEW_CONTENT
-internal fun TabRenderer.getShelves(): List<ItemSectionRenderer?>? = getListContents()?.mapNotNull { it?.itemSectionRenderer }
-internal fun TabRenderer.getSections(): List<RichSectionRenderer?>? = getGridContents()?.mapNotNull { it?.richSectionRenderer }
-internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipContents()?.mapNotNull { it?.chipCloudChipRenderer }
-private fun TabRenderer.getListContents() = content?.sectionListRenderer?.contents
-private fun TabRenderer.getGridContents() = content?.richGridRenderer?.contents
-private fun TabRenderer.getChipContents() = content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
-private fun TabRenderer.getTVGrid() = content?.tvSurfaceContentRenderer?.content?.gridRenderer
-internal fun TabRenderer.getTVList() = content?.tvSurfaceContentRenderer?.content?.sectionListRenderer
+internal fun TabRenderer.getShelves(): List<ItemSectionRenderer?>? = getListRenderer()?.getShelves()
+internal fun TabRenderer.getSections(): List<RichSectionRenderer?>? = getGridRenderer()?.getSections()
+internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipRenderer()?.getChips()
+private fun TabRenderer.getListRenderer() = content?.sectionListRenderer
+private fun TabRenderer.getGridRenderer() = content?.richGridRenderer
+private fun TabRenderer.getChipRenderer() = content?.richGridRenderer?.header?.feedFilterChipBarRenderer
+private fun TabRenderer.getTVGridRenderer() = content?.tvSurfaceContentRenderer?.content?.gridRenderer
+internal fun TabRenderer.getTVListRenderer() = content?.tvSurfaceContentRenderer?.content?.sectionListRenderer
 
 /////
 
@@ -109,6 +114,13 @@ internal fun ItemSectionRenderer.getParams() = getFirstShelfRenderer()?.endpoint
 private fun ItemSectionRenderer.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
 private fun ItemSectionRenderer.getFirstShelfRenderer() = contents?.firstNotNullOfOrNull { it?.shelfRenderer }
 private fun ItemSectionRenderer.getFirstGridRenderer() = contents?.firstNotNullOfOrNull { it?.gridRenderer }
+
+/////
+
+internal fun SectionListRenderer.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun SectionListRenderer.getShelves(): List<ItemSectionRenderer?>? = getContents()?.mapNotNull { it?.itemSectionRenderer }
+internal fun SectionListRenderer.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull { it?.getContinuationToken() }
+private fun SectionListRenderer.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
 
 /////
 

@@ -27,29 +27,30 @@ internal data class TabRenderer(
         val sectionListRenderer: SectionListRenderer?,
         val richGridRenderer: RichGridRenderer?,
         val tvSurfaceContentRenderer: TvSurfaceContentRenderer?
-    ) {
-        data class SectionListRenderer(
-            val contents: List<SectionWrapper?>?
-        )
-        data class RichGridRenderer(
-            val contents: List<SectionWrapper?>?,
-            val header: Header?
-        ) {
-            data class Header(
-                val feedFilterChipBarRenderer: FeedFilterChipBarRenderer?
-            ) {
-                data class FeedFilterChipBarRenderer(
-                    val contents: List<Content?>?
-                ) {
-                    data class Content(
-                        val chipCloudChipRenderer: ChipCloudChipRenderer?
-                    )
-                }
-            }
-        }
-    }
+    )
     data class PresentationStyle(
         val style: String?
+    )
+}
+
+internal data class SectionListRenderer(
+    val contents: List<SectionWrapper?>?
+)
+
+internal data class RichGridRenderer(
+    val contents: List<SectionWrapper?>?,
+    val header: Header?
+) {
+    data class Header(
+        val feedFilterChipBarRenderer: FeedFilterChipBarRenderer?
+    )
+}
+
+internal data class FeedFilterChipBarRenderer(
+    val contents: List<Content?>?
+) {
+    data class Content(
+        val chipCloudChipRenderer: ChipCloudChipRenderer?
     )
 }
 

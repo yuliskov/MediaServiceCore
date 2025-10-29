@@ -14,7 +14,7 @@ public interface TrackingApi {
      * Minimal watch record url:<br/>
      * https://www.youtube.com/api/stats/playback?ns=yt&cpn=gTdSeB6WpIvUxxnP&docid=AgqZaq_IQ8k&ver=2&cmt=71.572&ei=90Q5X5-bOIGZ7ATGuabYAQ&final=1&len=671.0&vm=CAEQARgEKiB1bnk3SDdPbWtzNlMtcXhfMFlWdjc2Sk5sTm13V19JWjoyQUdiNlo4UDVweWd4ZjMxY1F0S3dmVTdHM2ZYUjJ1Yk02ZjQ3Z3B1c3A4U1lzX0lMbXc
      */
-    @GET("https://www.youtube.com/api/stats/playback?ns=yt&ver=2&final=1")
+    @GET("https://www.youtube.com/api/stats/playback?ns=yt&ver=2")
     Call<WatchTimeEmptyResult> createWatchRecord(
             @Query("docid") String videoId,              // Video Id
             @Query("len") float lengthSec,               // e.g. 526.91
@@ -47,7 +47,7 @@ public interface TrackingApi {
      * Minimal watch time url:<br/>
      * https://www.youtube.com/api/stats/watchtime?ns=yt&cpn=gTdSeB6WpIvUxxnP&docid=AgqZaq_IQ8k&ver=2&cmt=71.572&ei=90Q5X5-bOIGZ7ATGuabYAQ&final=1&len=671.0&st=71.572&et=71.572
      */
-    @GET("https://www.youtube.com/api/stats/watchtime?ns=yt&ver=2&final=1")
+    @GET("https://www.youtube.com/api/stats/watchtime?ns=yt&ver=2")
     Call<WatchTimeEmptyResult> updateWatchTime(
             @Query("docid") String videoId,              // Video Id
             @Query("len") float lengthSec,               // e.g. 526.91

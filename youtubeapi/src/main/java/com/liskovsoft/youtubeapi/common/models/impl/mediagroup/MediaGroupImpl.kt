@@ -34,13 +34,11 @@ internal data class BrowseMediaGroup(
 internal data class BrowseMediaGroupTV(
     private val browseResult: BrowseResultTV,
     private val options: MediaGroupOptions,
-    private val liveResult: BrowseResult? = null,
     private val overrideItems: List<ItemWrapper?>? = null,
     private val overrideKey: String? = null
 ): BaseMediaGroup(options) {
-    override fun getItemWrappersInt(): List<ItemWrapper?> =
-        overrideItems?.sortedByDescending { it?.isLive() ?: false }
-            ?: listOfNotNull(liveResult?.getLiveItems(), browseResult.getItems()).flatten()
+    override fun getItemWrappersInt(): List<ItemWrapper?>? =
+        overrideItems?.sortedByDescending { it?.isLive() ?: false } ?: browseResult.getItems()
     override fun getNextPageKeyInt(): String? = if (overrideItems != null) overrideKey else browseResult.getContinuationToken()
     override fun getTitleInt(): String? = null
 }

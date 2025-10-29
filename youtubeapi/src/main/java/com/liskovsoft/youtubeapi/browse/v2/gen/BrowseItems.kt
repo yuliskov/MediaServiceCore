@@ -5,7 +5,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.ShelfRenderer
 
 internal data class SectionWrapper(
-    val itemSectionRenderer: ItemSectionRenderer?,
+    val itemSectionRenderer: ShelfListWrapper?,
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
     val continuationItemRenderer: ContinuationItemRenderer?,
@@ -78,7 +78,7 @@ internal data class TvSurfaceContentRenderer(
     val continuation: ContinuationItem?
 ) {
     data class Content(
-        val sectionListRenderer: ItemSectionRenderer?,
+        val sectionListRenderer: ShelfListWrapper?,
         val gridRenderer: GridRenderer?, // TV
         val twoColumnRenderer: TwoColumnRenderer? // TV
     )
@@ -113,7 +113,7 @@ internal data class TvSecondaryNavRenderer(
 }
 
 // Subscriptions, Sports
-internal data class ItemSectionRenderer(
+internal data class ShelfListWrapper(
     val contents: List<Shelf?>?,
     val continuations: List<ContinuationItem?>?
 )

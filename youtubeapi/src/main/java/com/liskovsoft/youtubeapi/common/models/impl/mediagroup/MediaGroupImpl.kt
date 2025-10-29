@@ -92,7 +92,7 @@ internal data class ShelfSectionMediaGroup(
 }
 
 internal data class ItemSectionMediaGroup(
-    private val itemSectionRenderer: ItemSectionRenderer,
+    private val itemSectionRenderer: ShelfListWrapper,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     // Fix row continuation (no next key but has channel) by reporting empty content (will be continued as a chip). Example https://www.youtube.com/@hdtvtest

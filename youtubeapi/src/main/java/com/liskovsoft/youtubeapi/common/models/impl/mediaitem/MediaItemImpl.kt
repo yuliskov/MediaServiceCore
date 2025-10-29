@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
@@ -73,7 +72,7 @@ internal class GuideMediaItem(private val guideItem: GuideItem): BaseMediaItem()
 
 internal class TabMediaItem(private val tabItem: TabRenderer, private val groupType: Int): BaseMediaItem() {
     override val titleItem by lazy { tabItem.getTitle() }
-    override val reloadPageKeyItem by lazy { tabItem.getContinuationKey() }
+    override val reloadPageKeyItem by lazy { tabItem.getReloadToken() }
     //override val channelIdItem by lazy { tabItem.getBrowseId() }
     //override val playlistParamsItem by lazy { tabItem.getBrowseParams() }
     override val cardThumbImageUrl by lazy { tabItem.getThumbnails()?.getOptimalResThumbnailUrl() }

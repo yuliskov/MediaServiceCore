@@ -168,10 +168,10 @@ internal fun Marker.getThumbnailUrl(): String? = thumbnailDetails?.getOptimalRes
 ///////
 
 internal fun ContinuationItem.getContinuationToken(): String? =
-    nextContinuationData?.continuation ?: nextRadioContinuationData?.continuation ?: reloadContinuationData?.continuation
+    nextContinuationData?.continuation ?: nextRadioContinuationData?.continuation
+internal fun ContinuationItem.getReloadToken(): String? = reloadContinuationData?.continuation
 internal fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()
 
-//internal fun List<ContinuationItem?>.getContinuationKey(): String? = firstOrNull()?.getContinuationKey()
 internal fun List<ContinuationItem?>.getContinuationToken(): String? = firstNotNullOfOrNull { it?.getContinuationToken() }
 
 ///////

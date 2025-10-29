@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaI
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.TabMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
-import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import com.liskovsoft.youtubeapi.notifications.gen.getItems
@@ -68,7 +68,7 @@ internal data class WatchNexContinuationMediaGroup(
     private val overrideKey: String? = null
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = overrideItems?.sortedByDescending { it?.isLive() ?: false } ?: continuation.getItems() ?: getLastShelf()?.getItems()
-    override fun getNextPageKeyInt(): String? = if (overrideItems != null) overrideKey else continuation.getNextPageKey() ?: getLastShelf()?.getNextPageKey()
+    override fun getNextPageKeyInt(): String? = if (overrideItems != null) overrideKey else continuation.getContinuationKey() ?: getLastShelf()?.getContinuationKey()
     override fun getTitleInt(): String? = null
     private fun getLastShelf() = continuation.getShelves()?.lastOrNull() // Get main content of Channels section and skip SHORTS
 }
@@ -87,7 +87,7 @@ internal data class ShelfSectionMediaGroup(
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = shelf.getItems()
-    override fun getNextPageKeyInt(): String? = shelf.getNextPageKey()
+    override fun getNextPageKeyInt(): String? = shelf.getContinuationKey()
     override fun getTitleInt(): String? = shelf.getTitle()
 }
 

@@ -10,7 +10,7 @@ import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
-import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
 
 internal open class BrowseService2 {
@@ -427,7 +427,7 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(continuationResult)?.let {
             val result = mutableListOf<MediaGroup?>()
             it.getShelves()?.forEach { if (it != null) addOrMerge(result, ShelfSectionMediaGroup(it, options)) }
-            Pair(result, it.getNextPageKey())
+            Pair(result, it.getContinuationKey())
         }
     }
 
@@ -476,7 +476,7 @@ internal open class BrowseService2 {
 
         return RetrofitHelper.get(continuationResult)?.let {
             // Prepare to move LIVE items to the top. Multiple results should be combined first.
-            val (overrideItems, overrideKey) = if (continueIfNeeded) continueIfNeededTV(it.getItems(), it.getNextPageKey(), options) else Pair(null, null)
+            val (overrideItems, overrideKey) = if (continueIfNeeded) continueIfNeededTV(it.getItems(), it.getContinuationKey(), options) else Pair(null, null)
 
             WatchNexContinuationMediaGroup(it, options, overrideItems = overrideItems, overrideKey = overrideKey).apply { title = group.title }
         }
@@ -577,7 +577,7 @@ internal open class BrowseService2 {
             RetrofitHelper.get(result)?.let {
                 combinedItems = (combinedItems ?: emptyList()) + (it.getItems() ?: emptyList())
                 //combinedItems = (combinedItems.orEmpty() + it.getItems().orEmpty()).distinct() // remove duplicates
-                combinedKey = it.getNextPageKey()
+                combinedKey = it.getContinuationKey()
             }
         }
 

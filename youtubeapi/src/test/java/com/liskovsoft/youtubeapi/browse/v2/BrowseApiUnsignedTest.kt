@@ -14,7 +14,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
-import com.liskovsoft.youtubeapi.next.v2.gen.getNextPageKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -140,7 +140,7 @@ class BrowseApiUnsignedTest {
         val sports = getSports()
 
         // recommended
-        val nextPageKey = sports?.getShelves()?.getOrNull(1)?.getNextPageKey()
+        val nextPageKey = sports?.getShelves()?.getOrNull(1)?.getContinuationKey()
 
         checkContinuationTV(nextPageKey, true)
     }
@@ -368,7 +368,7 @@ class BrowseApiUnsignedTest {
         assertNotNull("Contains items", continuation?.getItems()?.getOrNull(0))
 
         if (checkNextToken) {
-            assertNotNull("Contains next token", continuation?.getNextPageKey())
+            assertNotNull("Contains next token", continuation?.getContinuationKey())
         }
     }
 

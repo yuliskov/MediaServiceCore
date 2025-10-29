@@ -22,7 +22,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
     private val titleItem by lazy { shelf.getTitle() }
     private val mediaItemList by lazy { (shelves?.flatMap { it.getItemWrappers() ?: emptyList() } ?: shelf.getItemWrappers())
         ?.mapIndexed { index, it -> it?.let { WrapperMediaItem(it).apply { playlistIndex = index } } } }
-    private val nextPageKeyVal by lazy { shelf.getNextPageKey() }
+    private val nextPageKeyVal by lazy { shelf.getContinuationKey() }
 
     override fun getType(): Int {
         return MediaGroup.TYPE_SUGGESTIONS;
@@ -104,7 +104,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
 
             // Fix duplicated items after previous group reuse
             newGroup.mediaItems = if (mediaItems.isNotEmpty()) mediaItems else null
-            val nextKey = continuation.getNextPageKey()
+            val nextKey = continuation.getContinuationKey()
             newGroup.nextPageKey = nextKey
             newGroup.title = baseGroup.title
 

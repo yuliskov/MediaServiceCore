@@ -58,7 +58,7 @@ private fun WatchNextResult.getAutoplaySet() = getWatchNextResults()?.autoplay?.
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
 internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents } ?:
     getSectionContinuation()?.contents?.flatMap { it?.getItems() ?: emptyList() }
-internal fun WatchNextResultContinuation.getNextPageKey(): String? = getContinuation()?.continuations?.getContinuationKey() ?:
+internal fun WatchNextResultContinuation.getContinuationKey(): String? = getContinuation()?.continuations?.getContinuationKey() ?:
     getSectionContinuation()?.continuations?.getContinuationKey()
 internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.contents
 private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation
@@ -111,14 +111,14 @@ private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?
 internal fun ShelfRenderer.getTitle() = title?.getText() ?: getShelf()?.title?.getText() ?: getShelf()?.avatarLockup?.avatarLockupRenderer?.title?.getText()
 internal fun ShelfRenderer.getItemWrappers() =
     content?.let { it.horizontalListRenderer?.items ?: it.expandedShelfContentsRenderer?.items ?: it.gridRenderer?.items }
-internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
+internal fun ShelfRenderer.getContinuationKey() = content?.horizontalListRenderer?.continuations?.getContinuationKey()
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 internal fun ShelfRenderer.containsShorts() = tvhtml5ShelfRendererType == TVHTML5_SHELF_RENDERER_TYPE_SHORTS
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
 
 ///////
 
-internal fun PlaylistVideoListRenderer.getNextPageKey() = continuations?.firstOrNull()?.getContinuationKey() ?: contents?.lastOrNull()?.getContinuationToken()
+internal fun PlaylistVideoListRenderer.getContinuationKey() = continuations?.firstOrNull()?.getContinuationKey() ?: contents?.lastOrNull()?.getContinuationToken()
 
 ////////
 

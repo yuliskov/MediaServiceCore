@@ -1,14 +1,7 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
-import com.liskovsoft.youtubeapi.browse.v2.gen.ChipCloudChipRenderer
-import com.liskovsoft.youtubeapi.browse.v2.gen.FeedFilterChipBarRenderer
-import com.liskovsoft.youtubeapi.browse.v2.gen.GridRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.PlaylistVideoListRenderer
-import com.liskovsoft.youtubeapi.browse.v2.gen.RichGridRenderer
-import com.liskovsoft.youtubeapi.browse.v2.gen.RichSectionRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
-import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
-import com.liskovsoft.youtubeapi.browse.v2.gen.getItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.getItems
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
@@ -122,25 +115,6 @@ internal fun ShelfRenderer.getNextPageKey() = content?.horizontalListRenderer?.c
 internal fun ShelfRenderer.getChipItems() = headerRenderer?.chipCloudRenderer?.chips
 internal fun ShelfRenderer.containsShorts() = tvhtml5ShelfRendererType == TVHTML5_SHELF_RENDERER_TYPE_SHORTS
 private fun ShelfRenderer.getShelf() = headerRenderer?.shelfHeaderRenderer
-
-///////
-
-internal fun GridRenderer.getNextPageKey() = continuations?.firstOrNull()?.getContinuationKey() ?: items?.lastOrNull()?.getContinuationToken()
-internal fun GridRenderer.getItems(): List<ItemWrapper?>? = items
-internal fun GridRenderer.getContinuationToken(): String? = continuations?.getContinuationKey()
-
-///////
-
-internal fun RichGridRenderer.getItems(): List<ItemWrapper?>? = getContents()?.mapNotNull { it?.getItem() }
-internal fun RichGridRenderer.getContinuationToken(): String? = getContents()?.lastOrNull()?.getContinuationToken()
-internal fun RichGridRenderer.getShortItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
-internal fun RichGridRenderer.getSections(): List<RichSectionRenderer?>? = getContents()?.mapNotNull { it?.richSectionRenderer }
-private fun RichGridRenderer.getContents() = contents
-
-///////
-
-internal fun FeedFilterChipBarRenderer.getChips(): List<ChipCloudChipRenderer?>? = getContents()?.mapNotNull { it?.chipCloudChipRenderer }
-private fun FeedFilterChipBarRenderer.getContents() = contents
 
 ///////
 

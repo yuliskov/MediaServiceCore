@@ -5,6 +5,7 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 import com.liskovsoft.youtubeapi.common.models.gen.getBrowseId
+import com.liskovsoft.youtubeapi.common.models.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.common.models.gen.getParams
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackTokens
 import com.liskovsoft.youtubeapi.common.models.gen.getSubtitle
@@ -22,11 +23,6 @@ import com.liskovsoft.youtubeapi.next.v2.gen.getPublishDate
 import com.liskovsoft.youtubeapi.next.v2.gen.getTitle
 import com.liskovsoft.youtubeapi.next.v2.gen.getViews
 import com.liskovsoft.youtubeapi.next.v2.gen.containsShorts
-import com.liskovsoft.youtubeapi.next.v2.gen.getChips
-import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
-import com.liskovsoft.youtubeapi.next.v2.gen.getItems
-import com.liskovsoft.youtubeapi.next.v2.gen.getSections
-import com.liskovsoft.youtubeapi.next.v2.gen.getShortItems
 
 /**
  *  Always renders first tab
@@ -121,6 +117,25 @@ internal fun SectionListRenderer.getItems(): List<ItemWrapper?>? = getContents()
 internal fun SectionListRenderer.getShelves(): List<ItemSectionRenderer?>? = getContents()?.mapNotNull { it?.itemSectionRenderer }
 internal fun SectionListRenderer.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull { it?.getContinuationToken() }
 private fun SectionListRenderer.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
+
+///////
+
+internal fun GridRenderer.getNextPageKey() = continuations?.firstOrNull()?.getContinuationKey() ?: items?.lastOrNull()?.getContinuationToken()
+internal fun GridRenderer.getItems(): List<ItemWrapper?>? = items
+internal fun GridRenderer.getContinuationToken(): String? = continuations?.getContinuationKey()
+
+///////
+
+internal fun RichGridRenderer.getItems(): List<ItemWrapper?>? = getContents()?.mapNotNull { it?.getItem() }
+internal fun RichGridRenderer.getContinuationToken(): String? = getContents()?.lastOrNull()?.getContinuationToken()
+internal fun RichGridRenderer.getShortItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun RichGridRenderer.getSections(): List<RichSectionRenderer?>? = getContents()?.mapNotNull { it?.richSectionRenderer }
+private fun RichGridRenderer.getContents() = contents
+
+///////
+
+internal fun FeedFilterChipBarRenderer.getChips(): List<ChipCloudChipRenderer?>? = getContents()?.mapNotNull { it?.chipCloudChipRenderer }
+private fun FeedFilterChipBarRenderer.getContents() = contents
 
 /////
 

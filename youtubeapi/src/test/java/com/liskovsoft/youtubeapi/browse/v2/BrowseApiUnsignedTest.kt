@@ -14,7 +14,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getTitle
 import com.liskovsoft.youtubeapi.common.models.gen.isLive
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
-import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -140,7 +140,7 @@ class BrowseApiUnsignedTest {
         val sports = getSports()
 
         // recommended
-        val nextPageKey = sports?.getShelves()?.getOrNull(1)?.getContinuationKey()
+        val nextPageKey = sports?.getShelves()?.getOrNull(1)?.getContinuationToken()
 
         checkContinuationTV(nextPageKey, true)
     }
@@ -165,11 +165,11 @@ class BrowseApiUnsignedTest {
     fun testThatReelDetailsNotEmpty() {
         val reels = getReel()
 
-        val continuation = getReelContinuation(reels?.getContinuationKey())
+        val continuation = getReelContinuation(reels?.getContinuationToken())
 
         testReelContinuation(continuation)
 
-        val next = getReelContinuation(continuation?.getContinuationKey())
+        val next = getReelContinuation(continuation?.getContinuationToken())
 
         testReelContinuation(next)
     }
@@ -320,7 +320,7 @@ class BrowseApiUnsignedTest {
         val firstEntry = continuation?.getItems()?.getOrNull(0)
         val details = getReelDetails(firstEntry?.videoId, firstEntry?.params)
 
-        assertNotNull("Contains continuation", continuation?.getContinuationKey())
+        assertNotNull("Contains continuation", continuation?.getContinuationToken())
 
         testReelWatchEndpoint(firstEntry)
         testReelResult(details)
@@ -332,7 +332,7 @@ class BrowseApiUnsignedTest {
         assertNotNull("Contains thumbs", details?.getThumbnails())
         assertNotNull("Contains title", details?.getTitle())
         assertNotNull("Contains subtitle", details?.getSubtitle())
-        assertNotNull("Contains continuation", details?.getContinuationKey())
+        assertNotNull("Contains continuation", details?.getContinuationToken())
         //assertNotNull("Contains feedback", details?.getFeedbackTokens()?.firstOrNull())
     }
 
@@ -368,7 +368,7 @@ class BrowseApiUnsignedTest {
         assertNotNull("Contains items", continuation?.getItems()?.getOrNull(0))
 
         if (checkNextToken) {
-            assertNotNull("Contains next token", continuation?.getContinuationKey())
+            assertNotNull("Contains next token", continuation?.getContinuationToken())
         }
     }
 

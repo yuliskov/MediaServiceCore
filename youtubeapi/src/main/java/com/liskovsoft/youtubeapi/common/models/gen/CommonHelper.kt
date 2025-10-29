@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
 import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
-import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 
 // A badge before the image
 private const val BADGE_STYLE_LIVE = "LIVE"
@@ -203,7 +203,7 @@ internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
-internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationKey()
+internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations()?.getContinuationToken()
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle() && getVideoId() == null // a movie has browseId instead of videoId
 internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE_STYLE_SHORTS == getTileStyle()

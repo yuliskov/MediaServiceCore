@@ -18,7 +18,7 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.ShelfSectionMediaGroup
 import com.liskovsoft.youtubeapi.next.v2.gen.WatchNextResultContinuation
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
-import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationKey
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
 import com.liskovsoft.youtubeapi.next.v2.mock.MockUtils
 import org.junit.Assert.assertNotNull
@@ -97,7 +97,7 @@ class BrowseApiSignedTest {
         val continuation = getSubscriptionsMockContinuation()
 
         assertTrue("Contains more than 3 items", (continuation?.getItems()?.size ?: 0) > 3)
-        assertNotNull("Contains continuation token", continuation?.getContinuationKey())
+        assertNotNull("Contains continuation token", continuation?.getContinuationToken())
     }
 
     @Test
@@ -272,7 +272,7 @@ class BrowseApiSignedTest {
         assertNotNull("Contains items", (continuation?.getItems() ?: continuation?.getShelves()?.get(0)?.getItems())?.getOrNull(0))
 
         if (checkNextToken) {
-            assertNotNull("Contains next token", continuation?.getContinuationKey())
+            assertNotNull("Contains next token", continuation?.getContinuationToken())
         }
     }
 

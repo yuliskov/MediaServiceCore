@@ -33,7 +33,7 @@ internal fun BrowseResult.getLiveItems(): List<ItemWrapper?>? =
 internal fun BrowseResult.getPastLiveItems(maxItems: Int = -1): List<ItemWrapper?>? =
     getItems()?.filter { it != null && !it.isLive() && !it.isUpcoming() }?.let { if (maxItems > 0) it.take(maxItems) else it }
 internal fun BrowseResult.getShortItems(): List<ItemWrapper?>? = getRootTab()?.getShortItems()
-internal fun BrowseResult.getShelves(): List<ShelfListWrapper?>? = getRootTab()?.getShelves()
+internal fun BrowseResult.getNestedShelves(): List<ShelfListWrapper?>? = getRootTab()?.getNestedShelves()
 internal fun BrowseResult.getContinuationToken(): String? = getRootTab()?.getContinuationToken()
 internal fun BrowseResult.getTabs(): List<TabRenderer?>? = (contents?.twoColumnBrowseResultsRenderer ?: contents?.singleColumnBrowseResultsRenderer)
     ?.tabs?.mapNotNull { it?.tabRenderer ?: it?.expandableTabRenderer }
@@ -68,7 +68,7 @@ internal fun TabRenderer.getReloadToken(): String? = content?.tvSurfaceContentRe
 internal fun TabRenderer.getParams(): String? = endpoint?.getParams()
 internal fun TabRenderer.getThumbnails(): ThumbnailItem? = thumbnail
 internal fun TabRenderer.hasNewContent(): Boolean = presentationStyle?.style == TAB_STYLE_NEW_CONTENT
-internal fun TabRenderer.getShelves(): List<ShelfListWrapper?>? = getListRenderer()?.getShelves()
+internal fun TabRenderer.getNestedShelves(): List<ShelfListWrapper?>? = getListRenderer()?.getNestedShelves()
 internal fun TabRenderer.getSections(): List<RichSectionRenderer?>? = getGridRenderer()?.getSections()
 internal fun TabRenderer.getChips(): List<ChipCloudChipRenderer?>? = getChipRenderer()?.getChips()
 private fun TabRenderer.getListRenderer() = content?.sectionListRenderer
@@ -114,7 +114,7 @@ private fun ShelfListWrapper.getFirstGridRenderer() = contents?.firstNotNullOfOr
 /////
 
 internal fun SectionListRenderer.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
-internal fun SectionListRenderer.getShelves(): List<ShelfListWrapper?>? = getContents()?.mapNotNull { it?.itemSectionRenderer }
+internal fun SectionListRenderer.getNestedShelves(): List<ShelfListWrapper?>? = getContents()?.mapNotNull { it?.itemSectionRenderer }
 internal fun SectionListRenderer.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull { it?.getContinuationToken() }
 private fun SectionListRenderer.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
 

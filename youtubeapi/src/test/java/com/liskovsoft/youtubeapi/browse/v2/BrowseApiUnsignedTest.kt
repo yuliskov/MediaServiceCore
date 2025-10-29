@@ -227,7 +227,7 @@ class BrowseApiUnsignedTest {
     fun testThatChannelHomeTabNotEmpty() {
         val result = getChannelHome(TestHelpers.CHANNEL_ID_2)
 
-        val firstShelve = result?.getShelves()?.get(0)
+        val firstShelve = result?.getNestedShelves()?.get(0)
         assertNotNull("Contains title", firstShelve?.getTitle())
         assertNotNull("Contains nested items", firstShelve?.getItems())
     }

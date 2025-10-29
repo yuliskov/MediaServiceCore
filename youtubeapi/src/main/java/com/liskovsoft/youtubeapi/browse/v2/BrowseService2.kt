@@ -351,7 +351,7 @@ internal open class BrowseService2 {
 
         shortTab?.let { result.add(it) } // move Shorts tab lower
 
-        homeResult?.let { it.getShelves()?.forEach {
+        homeResult?.let { it.getNestedShelves()?.forEach {
             val title = it?.getTitle()
             if (it != null && result.firstOrNull { it.title == title } == null) // only unique rows
                 result.add(ItemSectionMediaGroup(it, if (title == null) uploadOptions else channelOptions)) } } // playlists don't have a title

@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.next.v2.gen
 
 import com.liskovsoft.youtubeapi.browse.v2.gen.GridRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.SectionWrapper
+import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
 internal data class NextVideoItem(
@@ -87,6 +88,26 @@ internal data class ChipItem(
         }
     }
 }
+
+internal data class GridContinuationWrapper(
+    val items: List<ItemWrapper?>?,
+    val contents: List<ItemWrapper?>?, // TV
+    val continuations: List<ContinuationItem?>?
+)
+
+internal data class TvSurfaceContentContinuation(
+    val content: Content?
+) {
+    data class Content(
+        val gridRenderer: GridContinuationWrapper?,
+        val sectionListRenderer: SectionListContinuation?
+    )
+}
+
+internal data class SectionListContinuation(
+    val contents: List<Shelf?>?,
+    val continuations: List<ContinuationItem?>?
+)
 
 internal data class ContinuationItem(
     val reloadContinuationData: ReloadContinuationData?,

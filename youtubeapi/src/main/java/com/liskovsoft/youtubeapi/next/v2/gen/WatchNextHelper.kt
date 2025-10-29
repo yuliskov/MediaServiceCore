@@ -55,18 +55,31 @@ internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNu
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true
 private fun WatchNextResult.getAutoplaySet() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)
 
+///////
+
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
-internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getContinuation()?.let { it.items ?: it.contents } ?:
-    getSectionContinuation()?.contents?.flatMap { it?.getItems() ?: emptyList() }
-internal fun WatchNextResultContinuation.getContinuationToken(): String? = getContinuation()?.continuations?.getContinuationToken() ?:
-    getSectionContinuation()?.continuations?.getContinuationToken()
-internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.contents
-private fun WatchNextResultContinuation.getContinuation() = continuationContents?.horizontalListContinuation
+internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getSectionContinuation()?.getItems()
+    ?: getGridContinuation()?.getItems()
+internal fun WatchNextResultContinuation.getContinuationToken(): String? = getSectionContinuation()?.getContinuationToken()
+    ?: getGridContinuation()?.getContinuationToken()
+internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.getShelves()
+private fun WatchNextResultContinuation.getGridContinuation() = continuationContents?.horizontalListContinuation
     ?: continuationContents?.gridContinuation
     ?: continuationContents?.playlistVideoListContinuation
     ?: continuationContents?.tvSurfaceContentContinuation?.content?.gridRenderer
 private fun WatchNextResultContinuation.getSectionContinuation() = continuationContents?.sectionListContinuation
     ?: continuationContents?.tvSurfaceContentContinuation?.content?.sectionListRenderer
+
+///////
+
+internal fun SectionListContinuation.getItems(): List<ItemWrapper?>? = getShelves()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun SectionListContinuation.getContinuationToken(): String? = continuations?.getContinuationToken()
+internal fun SectionListContinuation.getShelves(): List<Shelf?>? = contents
+
+///////
+
+internal fun GridContinuationWrapper.getItems(): List<ItemWrapper?>? = items ?: contents
+internal fun GridContinuationWrapper.getContinuationToken(): String? = continuations?.getContinuationToken()
 
 ///////
 

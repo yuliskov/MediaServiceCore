@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.track;
 
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 public class TrackingApiTest {
     private AppService mAppService;
     private TrackingApi mTrackingApi;
@@ -30,6 +33,7 @@ public class TrackingApiTest {
 
     @Before
     public void setUp() {
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mTrackingApi = RetrofitHelper.create(TrackingApi.class);
         mAppService = AppService.instance();
         mVideoInfoService = VideoInfoService.instance();
@@ -113,7 +117,7 @@ public class TrackingApiTest {
 
     private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null);
+        VideoInfo videoInfo = mVideoInfoService.getAuthVideoInfo(videoId, null);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,
@@ -124,7 +128,7 @@ public class TrackingApiTest {
 
     private Response<WatchTimeEmptyResult> updateWatchTime(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null);
+        VideoInfo videoInfo = mVideoInfoService.getAuthVideoInfo(videoId, null);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTime(
                 videoId, Float.parseFloat(videoInfo.getVideoDetails().getLengthSeconds()), positionSec,

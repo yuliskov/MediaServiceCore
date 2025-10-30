@@ -22,7 +22,6 @@ import com.liskovsoft.youtubeapi.next.v2.gen.getPublishDate
 import com.liskovsoft.youtubeapi.next.v2.gen.getTitle
 import com.liskovsoft.youtubeapi.next.v2.gen.getViews
 import com.liskovsoft.youtubeapi.next.v2.gen.containsShorts
-import com.liskovsoft.youtubeapi.next.v2.gen.getReloadToken
 
 /**
  *  Always renders first tab
@@ -64,7 +63,7 @@ internal fun TabRenderer.getContinuationToken(): String? = getListRenderer()?.ge
     ?: getTVListRenderer()?.getContinuationToken()
 internal fun TabRenderer.getTitle(): String? = title
 internal fun TabRenderer.getBrowseId(): String? = endpoint?.getBrowseId()
-internal fun TabRenderer.getReloadToken(): String? = content?.tvSurfaceContentRenderer?.continuation?.getReloadToken()
+internal fun TabRenderer.getReloadToken(): String? = content?.tvSurfaceContentRenderer?.continuation?.getContinuationToken()
 internal fun TabRenderer.getParams(): String? = endpoint?.getParams()
 internal fun TabRenderer.getThumbnails(): ThumbnailItem? = thumbnail
 internal fun TabRenderer.hasNewContent(): Boolean = presentationStyle?.style == TAB_STYLE_NEW_CONTENT

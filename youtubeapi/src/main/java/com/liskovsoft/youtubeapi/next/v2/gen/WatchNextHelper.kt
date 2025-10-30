@@ -58,10 +58,10 @@ private fun WatchNextResult.getAutoplaySet() = getWatchNextResults()?.autoplay?.
 ///////
 
 internal fun WatchNextResultContinuation.isEmpty(): Boolean = getItems() == null
-internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getSectionContinuation()?.getItems()
-    ?: getGridContinuation()?.getItems()
-internal fun WatchNextResultContinuation.getContinuationToken(): String? = getSectionContinuation()?.getContinuationToken()
-    ?: getGridContinuation()?.getContinuationToken()
+internal fun WatchNextResultContinuation.getItems(): List<ItemWrapper?>? = getGridContinuation()?.getItems()
+    ?: getSectionContinuation()?.getItems()
+internal fun WatchNextResultContinuation.getContinuationToken(): String? = getGridContinuation()?.getContinuationToken()
+    ?: getSectionContinuation()?.getContinuationToken()
 internal fun WatchNextResultContinuation.getShelves(): List<Shelf?>? = getSectionContinuation()?.getShelves()
 private fun WatchNextResultContinuation.getGridContinuation() = continuationContents?.horizontalListContinuation
     ?: continuationContents?.gridContinuation
@@ -181,8 +181,7 @@ internal fun Marker.getThumbnailUrl(): String? = thumbnailDetails?.getOptimalRes
 ///////
 
 internal fun ContinuationItem.getContinuationToken(): String? =
-    nextContinuationData?.continuation ?: nextRadioContinuationData?.continuation
-internal fun ContinuationItem.getReloadToken(): String? = reloadContinuationData?.continuation
+    nextContinuationData?.continuation ?: nextRadioContinuationData?.continuation ?: reloadContinuationData?.continuation
 internal fun ContinuationItem.getLabel(): String? = nextContinuationData?.label?.getText()
 
 internal fun List<ContinuationItem?>.getContinuationToken(): String? = firstNotNullOfOrNull { it?.getContinuationToken() }

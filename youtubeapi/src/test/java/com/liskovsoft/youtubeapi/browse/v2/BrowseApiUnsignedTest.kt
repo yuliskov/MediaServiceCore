@@ -282,6 +282,7 @@ class BrowseApiUnsignedTest {
         //assertNotNull("Has title", videos?.getTitle())
     }
 
+    @Ignore("Trending was removed by YouTube")
     @Test
     fun testThatTrendingNotEmpty() {
         val trending = getTrending()

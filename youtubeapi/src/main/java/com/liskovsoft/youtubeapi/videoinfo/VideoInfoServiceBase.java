@@ -85,7 +85,7 @@ public abstract class VideoInfoServiceBase {
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
 
-        //applySessionPoToken(formats, PoTokenGate.getPoToken(getClient()));
+        applySessionPoToken(formats, PoTokenGate.getPoToken(getClient()));
     }
 
     private static List<String> extractSParams(List<? extends VideoFormat> formats) {

@@ -100,7 +100,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
 
     private fun persistData() {
         RxHelper.disposeActions(mPersistAction)
-        mPersistAction = RxHelper.runAsync({ persistDataReal() }, PERSIST_DELAY_MS)
+        mPersistAction = RxHelper.runAsync(::persistDataReal, PERSIST_DELAY_MS)
     }
 
     private fun persistDataReal() {

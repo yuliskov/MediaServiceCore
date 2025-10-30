@@ -38,9 +38,14 @@ internal data class BrowseMediaGroupTV(
     private val overrideKey: String? = null
 ): BaseMediaGroup(options) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? =
-        overrideItems?.sortedByDescending { it?.isLive() ?: false } ?: browseResult.getItems()
+        //overrideItems?.sortedByDescending { it?.isLive() ?: false } ?: browseResult.getItems()
+        overrideItems?.let { putLiveBeforeOthers(it) } ?: browseResult.getItems()
     override fun getNextPageKeyInt(): String? = if (overrideItems != null) overrideKey else browseResult.getContinuationToken()
     override fun getTitleInt(): String? = null
+    private fun putLiveBeforeOthers(items: List<ItemWrapper?>): List<ItemWrapper?> {
+        val (live, others) = items.partition { it?.isLive() == true }
+        return live + others
+    }
 }
 
 internal data class LiveMediaGroup(

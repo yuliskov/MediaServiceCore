@@ -241,7 +241,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     fun persistData() {
         RxHelper.disposeActions(mPersistAction)
-        mPersistAction = RxHelper.runAsync({ persistDataReal() }, 5_000)
+        mPersistAction = RxHelper.runAsync(::persistDataReal, 5_000)
     }
 
     private fun persistDataReal() {

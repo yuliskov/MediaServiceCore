@@ -100,9 +100,10 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 /////
 
 internal fun ShelfListWrapper.getTitle(): String? = getFirstShelfRenderer()?.title?.getText()
-internal fun ShelfListWrapper.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun ShelfListWrapper.getItems(): List<ItemWrapper?>? =
+    getContents()?.flatMap { it?.let { if (it.getTitle() == null) it.getItems() else null } ?: emptyList() } // Merge only related rows. Such rows has empty title.
 internal fun ShelfListWrapper.getShortItems(): List<ItemWrapper?>? =
-    getContents()?.firstNotNullOfOrNull { if (it?.shelfRenderer?.containsShorts() == true) it.shelfRenderer.getItemWrappers() else null }
+    getContents()?.firstNotNullOfOrNull { if (it?.containsShorts() == true) it.getItems() else null }
 internal fun ShelfListWrapper.getContinuationToken() = getContents()?.lastOrNull()?.getContinuationToken() ?: continuations?.getContinuationToken()
 internal fun ShelfListWrapper.getBrowseId() = getFirstShelfRenderer()?.endpoint?.getBrowseId()
 internal fun ShelfListWrapper.getParams() = getFirstShelfRenderer()?.endpoint?.getParams()
@@ -241,6 +242,7 @@ internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrapp
 internal fun Shelf.getContinuationToken(): String? = shelfRenderer?.getContinuationToken()
     ?: (gridRenderer ?: shelfRenderer?.content?.gridRenderer)?.getContinuationToken()
     ?: playlistVideoListRenderer?.getContinuationToken()
+internal fun Shelf.containsShorts(): Boolean = shelfRenderer?.containsShorts() == true
 
 ///////////
 

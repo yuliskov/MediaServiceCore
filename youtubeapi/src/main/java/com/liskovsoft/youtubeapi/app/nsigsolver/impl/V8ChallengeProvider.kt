@@ -41,7 +41,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
         val result = runV8(stdin)
 
-        shutdownIfNeeded()
+        //shutdownIfNeeded()
 
         return result
     }

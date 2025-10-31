@@ -101,7 +101,8 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 internal fun ShelfListWrapper.getTitle(): String? = getFirstShelfRenderer()?.title?.getText()
 internal fun ShelfListWrapper.getItems(): List<ItemWrapper?>? =
-    getContents()?.flatMap { it?.let { if (it.getTitle() == null) it.getItems() else null } ?: emptyList() } // Merge only related rows. Such rows has empty title.
+    // Skip special rows like "Most relevant", "Shorts". Such rows always have a title.
+    getContents()?.flatMap { it?.takeIf { it.getTitle() == null }?.getItems() ?: emptyList() }
 internal fun ShelfListWrapper.getShortItems(): List<ItemWrapper?>? =
     getContents()?.firstNotNullOfOrNull { if (it?.containsShorts() == true) it.getItems() else null }
 internal fun ShelfListWrapper.getContinuationToken() = getContents()?.lastOrNull()?.getContinuationToken() ?: continuations?.getContinuationToken()

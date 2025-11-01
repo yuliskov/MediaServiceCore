@@ -54,7 +54,7 @@ public class VideoInfoApiSignedTest extends BaseVideoInfoApiTest {
                 continue;
             }
 
-            VideoInfo result = getVideoInfo(client, TestHelpers.VIDEO_ID_KIDS);
+            VideoInfo result = getVideoInfo(client, TestHelpers.VIDEO_ID_CARTOON);
             assertTrue("Result not null for client " + client.name(), result != null && !result.isUnplayable());
             testThatVideoInfoContainsRequiredFields(result);
         }

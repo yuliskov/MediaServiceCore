@@ -27,7 +27,6 @@ internal class QueryBuilder(private val client: AppClient) {
     private var params: String? = null
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
-    private val isWebEmbedded: Boolean = client == AppClient.WEB_EMBED
     private var isGeoFixEnabled: Boolean = false
 
     fun setType(type: PostDataType) = apply { this.type = type }
@@ -139,7 +138,7 @@ internal class QueryBuilder(private val client: AppClient) {
     }
 
     private fun createWebEmbeddedChunk(): String {
-        return if (isWebEmbedded)
+        return if (client.isEmbedded)
             """
                 "thirdParty": {
                     "embedUrl": "https://www.youtube.com/embed/${requireNotNull(videoId)}"

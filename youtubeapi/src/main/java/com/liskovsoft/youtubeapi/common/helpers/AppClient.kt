@@ -14,7 +14,8 @@ private const val POST_DATA_BROWSE_TV =
 private const val POST_DATA_BROWSE_TV_LEGACY =
     "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 private const val POST_DATA_IOS = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
-private const val POST_DATA_ANDROID = "\"androidSdkVersion\":\"%s\","
+private const val POST_DATA_ANDROID_OS = "\"osName\":\"Android\",\"osVersion\":\"%s\","
+private const val POST_DATA_ANDROID_SDK = "\"androidSdkVersion\":\"%s\","
 private const val POST_DATA_BROWSER = "\"browserName\":\"%s\",\"browserVersion\":\"%s\","
 private const val CLIENT_SCREEN_WATCH = "WATCH" // won't play 18+ restricted videos
 private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not all video embeddable, and no descriptions
@@ -52,8 +53,9 @@ internal enum class AppClient(
         referer = "https://www.youtube.com/"),
     MWEB("MWEB", "2.20250213.05.00", 2, userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB,
         referer = "https://m.youtube.com/"),
-    ANDROID("ANDROID", "19.28.35", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID,
-        referer = null, postData = String.format(POST_DATA_ANDROID, 35)),
+    ANDROID("ANDROID", "20.10.38", 3, userAgent = DefaultHeaders.USER_AGENT_ANDROID,
+        referer = null, postData = String.format(POST_DATA_ANDROID_SDK, 30) + String.format(POST_DATA_ANDROID_OS, 11)),
+    ANDROID_SDK_LESS(baseClient = ANDROID, postData = String.format(POST_DATA_ANDROID_OS, 11)),
     ANDROID_REEL(ANDROID),
     ANDROID_VR("ANDROID_VR", "1.37", 28, userAgent = DefaultHeaders.USER_AGENT_WEB,
         referer = "https://www.youtube.com/"),
@@ -78,8 +80,9 @@ internal enum class AppClient(
     val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS) } // NOTE: TV_SIMPLY doesn't support auth
     val isWebPotRequired by lazy { Helpers.equalsAny(this, WEB, MWEB, WEB_EMBED) }
     // TODO: remove after implement SABR
-    val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR, TV_EMBED) }
+    val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR) }
     val isReelPlayer by lazy { Helpers.equalsAny(this, ANDROID_REEL) }
+    val isEmbedded by lazy { Helpers.equalsAny(this, WEB_EMBED, TV_EMBED) }
     private val isBrowserClient by lazy { !Helpers.equalsAny(this, ANDROID, ANDROID_VR, ANDROID_REEL, IOS) }
 
     private fun extractBrowserInfo(userAgent: String): Pair<String, String> {

@@ -115,15 +115,19 @@ class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public MediaGroup getSubscriptions(String... channelIds) {
+    public MediaGroup getRssFeed(String... channelIds) {
+        if (channelIds == null) {
+            return null;
+        }
+
         checkSigned();
 
         return RssService.getFeed(channelIds);
     }
 
     @Override
-    public Observable<MediaGroup> getSubscriptionsObserve(String... channelIds) {
-        return RxHelper.fromCallable(() -> getSubscriptions(channelIds));
+    public Observable<MediaGroup> getRssFeedObserve(String... channelIds) {
+        return RxHelper.fromCallable(() -> getRssFeed(channelIds));
     }
 
     @Override

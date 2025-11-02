@@ -136,6 +136,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
     override fun isWebPotSupported() = VERSION.SDK_INT >= 19 && webViewSupported && !webViewBadImpl
 
     fun resetCache() {
-        webPoTokenGenerator = null
+        webPoTokenVisitorData = null
+        webPoTokenStreamingPot = null
     }
 }

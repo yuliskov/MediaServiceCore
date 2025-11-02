@@ -11,7 +11,7 @@ public interface ContentService {
     List<MediaGroup> getSearch(String searchText, int options);
     List<String> getSearchTags(String searchText);
     MediaGroup getSubscriptions();
-    MediaGroup getSubscriptions(String... channelIds);
+    MediaGroup getRssFeed(String... channelIds);
     /**
      * NOTE: recommended is a part of Home
      */
@@ -38,7 +38,7 @@ public interface ContentService {
     Observable<List<MediaGroup>> getSearchObserve(String searchText, int options);
     Observable<List<String>> getSearchTagsObserve(String searchText);
     Observable<MediaGroup> getSubscriptionsObserve();
-    Observable<MediaGroup> getSubscriptionsObserve(String... channelIds);
+    Observable<MediaGroup> getRssFeedObserve(String... channelIds);
     /**
      * NOTE: recommended is a part of Home
      */

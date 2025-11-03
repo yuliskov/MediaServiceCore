@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.impl
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
+import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.withLock
@@ -19,6 +20,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private var v8Runtime: V8? = null
     private val v8Lock = Any()
     private var shutdownAction: Disposable? = null
+    private val isHeapBigEnough by lazy { DeviceHelpers.getMaxHeapMemoryMB() > 380 }
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
@@ -41,7 +43,7 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
         val result = runV8(stdin)
 
-        //shutdownIfNeeded()
+        shutdownIfNeeded()
 
         return result
     }
@@ -88,6 +90,9 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun shutdownIfNeeded() {
+        if (isHeapBigEnough)
+            return
+
         RxHelper.disposeActions(shutdownAction)
         shutdownAction = RxHelper.runAsync(::shutdown, 10_000)
     }

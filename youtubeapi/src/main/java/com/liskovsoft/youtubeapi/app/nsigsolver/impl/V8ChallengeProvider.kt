@@ -20,7 +20,8 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private var v8Runtime: V8? = null
     private val v8Lock = Any()
     private var shutdownAction: Disposable? = null
-    private val isHeapBigEnough by lazy { DeviceHelpers.getMaxHeapMemoryMB() > 380 }
+    private const val SMALL_HEAP_THRESHOLD_MB = 380
+    private val isSmallHeap by lazy { DeviceHelpers.getMaxHeapMemoryMB() < SMALL_HEAP_THRESHOLD_MB }
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
@@ -90,10 +91,9 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun shutdownIfNeeded() {
-        if (isHeapBigEnough)
-            return
-
-        RxHelper.disposeActions(shutdownAction)
-        shutdownAction = RxHelper.runAsync(::shutdown, 10_000)
+        if (isSmallHeap) {
+            RxHelper.disposeActions(shutdownAction)
+            shutdownAction = RxHelper.runAsync(::shutdown, 10_000)
+        }
     }
 }

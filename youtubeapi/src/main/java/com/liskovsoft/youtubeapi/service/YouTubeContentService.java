@@ -290,10 +290,10 @@ class YouTubeContentService implements ContentService {
             MediaGroup shorts = getBrowseService2().getShorts();
 
             if (shorts != null && shorts.getNextPageKey() != null) {
-                emitGroups(emitter, shorts);
+                emitGroup(emitter, shorts);
             } else {
-                emitGroupsPartial(emitter, shorts);
-                emitGroups(emitter, getBrowseService2().getShorts2());
+                emitGroupPartial(emitter, shorts);
+                emitGroup(emitter, getBrowseService2().getShorts2());
             }
         });
     }
@@ -423,35 +423,30 @@ class YouTubeContentService implements ContentService {
         return RxHelper.fromCallable(() -> getChannelSearch(channelId, query));
     }
 
-    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> result) {
-        if (result == null) {
-            String msg = "emitGroups2: groups are null or empty";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-            return;
-        }
-
-        List<MediaGroup> groups = result.getFirst();
-        String nextKey = result.getSecond();
-
-        while (groups != null && !groups.isEmpty()) {
-            emitGroupsPartial(emitter, groups);
-            result = getBrowseService2().continueSectionList(nextKey, groups.get(0).getType());
-            groups = result != null ? result.getFirst() : null;
-            nextKey = result != null ? result.getSecond() : null;
-        }
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> groupsAndKey) {
+        emitGroupsPartial(emitter, groupsAndKey);
 
         emitter.onComplete();
     }
 
-    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
-        if (groups == null || groups.isEmpty()) {
-            String msg = "emitGroups: groups are null or empty";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
+    private void emitGroupsPartial(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> groupsAndKey) {
+        if (groupsAndKey == null) {
+            Log.e(TAG, "emitGroupsPartial: groupsAndKey is null");
             return;
         }
 
+        List<MediaGroup> groups = groupsAndKey.getFirst();
+        String nextKey = groupsAndKey.getSecond();
+
+        while (groups != null && !groups.isEmpty()) {
+            emitGroupsPartial(emitter, groups);
+            groupsAndKey = getBrowseService2().continueSectionList(nextKey, groups.get(0).getType());
+            groups = groupsAndKey != null ? groupsAndKey.getFirst() : null;
+            nextKey = groupsAndKey != null ? groupsAndKey.getSecond() : null;
+        }
+    }
+
+    private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         emitGroupsPartial(emitter, groups);
 
         emitter.onComplete();
@@ -459,11 +454,12 @@ class YouTubeContentService implements ContentService {
 
     private void emitGroupsPartial(ObservableEmitter<List<MediaGroup>> emitter, List<MediaGroup> groups) {
         if (groups == null || groups.isEmpty()) {
+            Log.e(TAG, "emitGroupsPartial: groups are null or empty");
             return;
         }
 
         MediaGroup firstGroup = groups.get(0);
-        Log.d(TAG, "emitGroups: begin emitting group of type %s...", firstGroup != null ? firstGroup.getType() : null);
+        Log.d(TAG, "emitGroupsPartial: begin emitting group of type %s...", firstGroup != null ? firstGroup.getType() : null);
 
         List<MediaGroup> collector = new ArrayList<>();
 
@@ -493,27 +489,21 @@ class YouTubeContentService implements ContentService {
         }
     }
 
-    private void emitGroups(ObservableEmitter<MediaGroup> emitter, MediaGroup groups) {
-        if (groups == null) {
-            String msg = "emitGroups: groups are null or empty";
-            Log.e(TAG, msg);
-            RxHelper.onError(emitter, msg);
-            return;
-        }
-
-        emitGroupsPartial(emitter, groups);
+    private void emitGroup(ObservableEmitter<MediaGroup> emitter, MediaGroup group) {
+        emitGroupPartial(emitter, group);
 
         emitter.onComplete();
     }
 
-    private void emitGroupsPartial(ObservableEmitter<MediaGroup> emitter, MediaGroup groups) {
-        if (groups == null) {
+    private void emitGroupPartial(ObservableEmitter<MediaGroup> emitter, MediaGroup group) {
+        if (group == null) {
+            Log.e(TAG, "emitGroupPartial: group is null");
             return;
         }
 
-        Log.d(TAG, "emitGroups: begin emitting group of type %s...", groups.getType());
+        Log.d(TAG, "emitGroupPartial: begin emitting group of type %s...", group.getType());
 
-        emitter.onNext(groups);
+        emitter.onNext(group);
     }
 
     @Override

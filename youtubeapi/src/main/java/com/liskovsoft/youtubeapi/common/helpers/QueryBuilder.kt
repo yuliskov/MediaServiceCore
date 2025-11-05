@@ -173,7 +173,7 @@ internal class QueryBuilder(private val client: AppClient) {
                     ${createVideoIdChunk()}
                     ${createCPNChunk()}
                 """
-        return if (client.isReelPlayer)
+        return if (client.isReelClient)
             """
                 "playerRequest": {
                     $data

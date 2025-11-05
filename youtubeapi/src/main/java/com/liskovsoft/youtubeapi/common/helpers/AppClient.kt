@@ -38,6 +38,7 @@ internal enum class AppClient(
         referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
     TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE_TV),
+    TV_DOWNGRADED(TV, clientVersion = "4", userAgent = DefaultHeaders.USER_AGENT_COBALT_DOWNGRADED),
     // 8AEB2AMB - web client premium formats?
     WEB("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_WEB,
         referer = "https://www.youtube.com/"),
@@ -63,11 +64,12 @@ internal enum class AppClient(
         postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90")),
     INITIAL(WEB);
 
-    constructor(baseClient: AppClient, postData: String? = null, postDataBrowse: String? = null): this(baseClient.clientName, baseClient.clientVersion,
-        baseClient.innerTubeName, baseClient.userAgent, baseClient.referer, baseClient.clientScreen, baseClient.params,
+    constructor(baseClient: AppClient, clientVersion: String? = null, userAgent: String? = null, postData: String? = null, postDataBrowse: String? = null):
+            this(baseClient.clientName, clientVersion ?: baseClient.clientVersion, baseClient.innerTubeName,
+        userAgent ?: baseClient.userAgent, baseClient.referer, baseClient.clientScreen, baseClient.params,
         postData ?: baseClient.postData, postDataBrowse ?: baseClient.postDataBrowse)
 
-    private val browserInfo by lazy { if (isBrowserClient) extractBrowserInfo(userAgent) else null }
+    private val browserInfo by lazy { if (isWebClient) extractBrowserInfo(userAgent) else null }
     private val postDataBrowser by lazy { if (browserName != null && browserVersion != null) String.format(POST_DATA_BROWSER, browserName, browserVersion) else null }
 
     val browserName by lazy { browserInfo?.first }
@@ -77,13 +79,13 @@ internal enum class AppClient(
     val baseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent,
         (postDataBrowser ?: "") + (postData ?: "")) }
 
-    val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS) } // NOTE: TV_SIMPLY doesn't support auth
+    val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED) } // NOTE: TV_SIMPLY doesn't support auth
     val isWebPotRequired by lazy { Helpers.equalsAny(this, WEB, MWEB, WEB_EMBED) }
     // TODO: remove after implement SABR
     val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR) }
-    val isReelPlayer by lazy { Helpers.equalsAny(this, ANDROID_REEL) }
+    val isReelClient by lazy { Helpers.equalsAny(this, ANDROID_REEL) }
     val isEmbedded by lazy { Helpers.equalsAny(this, WEB_EMBED, TV_EMBED) }
-    private val isBrowserClient by lazy { !Helpers.equalsAny(this, ANDROID, ANDROID_VR, ANDROID_REEL, IOS) }
+    private val isWebClient by lazy { !Helpers.equalsAny(this, ANDROID, ANDROID_VR, ANDROID_REEL, ANDROID_SDK_LESS, IOS) }
 
     private fun extractBrowserInfo(userAgent: String): Pair<String, String> {
         // Include Shorts: "browserName":"Cobalt"

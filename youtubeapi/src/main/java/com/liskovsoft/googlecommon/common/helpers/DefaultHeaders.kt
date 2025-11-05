@@ -36,6 +36,7 @@ object DefaultHeaders {
     private const val USER_AGENT_COBALT_2 = "Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/20.lts.2.0-gold (unlike Gecko) Starboard/11"
     // See: https://github.com/youtube/cobalt/blob/main/cobalt/browser/user_agent/user_agent_platform_info.cc#L506
     private const val USER_AGENT_COBALT_3 = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)"
+    const val USER_AGENT_COBALT_DOWNGRADED = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version"
 
     // OK
     private const val USER_AGENT_WEBOS =

@@ -41,6 +41,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.IOS,
             AppClient.TV,
+            AppClient.TV_DOWNGRADED,
             AppClient.TV_EMBED, // single audio language
             AppClient.MWEB, // single audio language
     };
@@ -210,7 +211,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         boolean skipAuth = !client.isAuthSupported() || mSkipAuthBlock;
         mRecentInfoType = client;
 
-        if (client.isReelPlayer()) {
+        if (client.isReelClient()) {
             Call<VideoInfoReel> wrapper = mVideoInfoApi.getVideoInfoReel(videoInfoQuery, mAppService.getVisitorData(), client.getUserAgent());
             return getVideoInfoReel(wrapper, skipAuth);
         }

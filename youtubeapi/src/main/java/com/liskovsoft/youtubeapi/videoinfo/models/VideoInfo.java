@@ -412,9 +412,10 @@ public class VideoInfo {
     }
 
     /**
-     * TODO: to be removed. Temp SABR fix
+     * TODO: remove when SABR parser will be fixed
      */
     private boolean isAdaptiveFormatsBroken() {
+        // TODO: remove when SABR parser will be fixed
         if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty()) {
             return false;
         }

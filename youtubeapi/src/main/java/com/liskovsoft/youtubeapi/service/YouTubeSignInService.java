@@ -122,7 +122,9 @@ public class YouTubeSignInService implements SignInService {
         Account account = getSelectedAccount();
 
         if (account instanceof YouTubeAccount) {
-            name = account.getName();
+            if (account.getName() != null) {
+                name = "ok";
+            }
             if (((YouTubeAccount) account).getRefreshToken() != null) {
                 token = "ok";
             }

@@ -40,6 +40,10 @@ public abstract class VideoInfoServiceBase {
     }
 
     protected void transformFormats(VideoInfo videoInfo) {
+        if (videoInfo == null || videoInfo.isUnplayable()) {
+            return;
+        }
+
         applySabrFixes(videoInfo.getAdaptiveFormats(), videoInfo.getServerAbrStreamingUrl());
 
         decipherFormats(videoInfo.getAdaptiveFormats(), videoInfo.getRegularFormats());
@@ -53,9 +57,6 @@ public abstract class VideoInfoServiceBase {
     private void applySabrFixes(List<? extends VideoFormat> formats, String serverAbrStreamingUrl) {
         if (serverAbrStreamingUrl != null) {
             for (VideoFormat format : formats) {
-                if (!format.isBroken()) {
-                    break;
-                }
                 format.setSabrUrl(serverAbrStreamingUrl);
             }
         }

@@ -6,16 +6,19 @@ import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder;
 
 public class VideoInfoApiHelper {
     public static String getVideoInfoQuery(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client, videoId, clickTrackingParams, false);
+        return createCheckedQuery(client, videoId, clickTrackingParams, client == AppClient.GEO);
     }
+
+    ///**
+    // * NOTE: Should use protobuf to bypass geo blocking.
+    // */
+    //private static String getVideoInfoQueryGeo(AppClient client, String videoId, String clickTrackingParams) {
+    //    return createCheckedQuery(client, videoId, clickTrackingParams, true);
+    //}
 
     /**
-     * NOTE: Should use protobuf to bypass geo blocking.
+     * NOTE: enableGeoFix - Should use protobuf to bypass geo blocking.
      */
-    public static String getVideoInfoQueryGeo(AppClient client, String videoId, String clickTrackingParams) {
-        return createCheckedQuery(client, videoId, clickTrackingParams, true);
-    }
-
     private static String createCheckedQuery(AppClient client, String videoId, String clickTrackingParams, boolean enableGeoFix) {
         // Important: use only for the clients that don't support auth.
         // Otherwise, google suggestions and history won't work (visitor data bug)

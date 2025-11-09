@@ -62,7 +62,8 @@ internal enum class AppClient(
         referer = "https://www.youtube.com/"),
     IOS("IOS", "19.29.1", 5, userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null,
         postData = String.format(POST_DATA_IOS, "iPhone16,2", "17.5.1.21F90")),
-    INITIAL(WEB);
+    INITIAL(WEB),
+    GEO(WEB);
 
     constructor(baseClient: AppClient, clientVersion: String? = null, userAgent: String? = null, postData: String? = null, postDataBrowse: String? = null):
             this(baseClient.clientName, clientVersion ?: baseClient.clientVersion, baseClient.innerTubeName,

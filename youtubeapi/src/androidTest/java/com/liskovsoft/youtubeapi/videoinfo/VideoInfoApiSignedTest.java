@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.videoinfo;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
@@ -55,7 +57,8 @@ public class VideoInfoApiSignedTest extends BaseVideoInfoApiTest {
             }
 
             VideoInfo result = getVideoInfo(client, TestHelpers.VIDEO_ID_CARTOON);
-            assertTrue("Result not null for client " + client.name(), result != null && !result.isUnplayable());
+            assertNotNull("Result not null for client " + client.name(), result);
+            assertFalse("Result is playable for client " + client.name(), result.isUnplayable());
             testThatVideoInfoContainsRequiredFields(result);
         }
     }

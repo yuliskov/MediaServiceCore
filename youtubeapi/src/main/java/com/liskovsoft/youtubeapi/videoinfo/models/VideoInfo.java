@@ -108,6 +108,7 @@ public class VideoInfo {
     private boolean mIsStreamSeekable;
     private List<CaptionTrack> mMergedCaptionTracks;
     private boolean mIsAnonymous;
+    private String mPoToken;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -437,5 +438,13 @@ public class VideoInfo {
         }
 
         return allBroken;
+    }
+
+    public String getPoToken() {
+        return mPoToken;
+    }
+
+    public void setPoToken(String poToken) {
+        mPoToken = poToken;
     }
 }

@@ -59,4 +59,5 @@ public interface MediaItemFormatInfo {
     String getPaidContentText();
     String getVideoPlaybackUstreamerConfig();
     String getServerAbrStreamingUrl();
+    String getPoToken();
 }

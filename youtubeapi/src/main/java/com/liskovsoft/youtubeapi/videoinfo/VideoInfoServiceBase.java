@@ -44,9 +44,9 @@ public abstract class VideoInfoServiceBase {
             return;
         }
 
-        applySabrFixes(videoInfo.getAdaptiveFormats(), videoInfo.getServerAbrStreamingUrl());
+        applySabrFixes(videoInfo);
 
-        decipherFormats(videoInfo.getAdaptiveFormats(), videoInfo.getRegularFormats());
+        decipherFormats(videoInfo);
 
         if (videoInfo.isLive()) {
             Log.d(TAG, "Enable seeking support on live streams...");
@@ -54,7 +54,10 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    private void applySabrFixes(List<? extends VideoFormat> formats, String serverAbrStreamingUrl) {
+    private void applySabrFixes(VideoInfo videoInfo) {
+        List<? extends VideoFormat> formats = videoInfo.getAdaptiveFormats();
+        String serverAbrStreamingUrl = videoInfo.getServerAbrStreamingUrl();
+
         if (serverAbrStreamingUrl != null) {
             for (VideoFormat format : formats) {
                 format.setSabrUrl(serverAbrStreamingUrl);
@@ -62,7 +65,10 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    private void decipherFormats(List<? extends VideoFormat> adaptiveFormats, List<? extends VideoFormat> regularFormats) {
+    private void decipherFormats(VideoInfo videoInfo) {
+        List<? extends VideoFormat> adaptiveFormats = videoInfo.getAdaptiveFormats();
+        List<? extends VideoFormat> regularFormats = videoInfo.getRegularFormats();
+
         List<VideoFormat> formats = new ArrayList<>();
         if (adaptiveFormats != null)
             formats.addAll(adaptiveFormats);
@@ -86,7 +92,9 @@ public abstract class VideoInfoServiceBase {
         // What this for? Could this fix throttling or maybe the source error?
         //applyAdditionalStrings(formats);
 
-        applySessionPoToken(formats, PoTokenGate.getPoToken(getClient()));
+        String poToken = PoTokenGate.getPoToken(getClient());
+        applySessionPoToken(formats, poToken);
+        videoInfo.setPoToken(poToken);
     }
 
     private static List<String> extractSParams(List<? extends VideoFormat> formats) {

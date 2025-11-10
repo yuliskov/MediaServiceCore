@@ -32,7 +32,10 @@ public class TrackingApiTest {
     private BrowseService mBrowseService;
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
+        // Fix temp video url ban
+        Thread.sleep(3_000);
+
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mTrackingApi = RetrofitHelper.create(TrackingApi.class);
         mAppService = AppService.instance();

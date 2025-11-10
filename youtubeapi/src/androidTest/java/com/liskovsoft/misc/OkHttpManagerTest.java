@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import okhttp3.Response;
 public class OkHttpManagerTest {
     private static final String TAG = OkHttpManagerTest.class.getSimpleName();
 
+    @Ignore("Wrong credentials")
     @Test
     public void testSocks5Proxy() throws InterruptedException {
         String[] testUrls = {"https://www.youtube.com", "https://www.google.com"};

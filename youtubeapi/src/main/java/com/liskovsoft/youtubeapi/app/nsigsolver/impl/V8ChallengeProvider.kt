@@ -62,6 +62,8 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
     
     fun warmup() {
+        RxHelper.disposeActions(shutdownAction)
+
         synchronized(v8Lock) {
             if (v8Runtime != null)
                 return

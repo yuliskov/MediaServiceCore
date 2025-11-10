@@ -259,7 +259,7 @@ internal class QueryBuilder(private val client: AppClient) {
                     },
                     "devicePlaybackCapabilities": {
                         "supportsVp9Encoding": true,
-                        "supportXhr": false
+                        "supportXhr": ${!client.isTVClient}
                     }
                 },
             """

@@ -41,6 +41,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.IOS,
             AppClient.TV,
+            AppClient.TV_LEGACY,
             AppClient.TV_DOWNGRADED,
             AppClient.TV_EMBED, // single audio language
             AppClient.TV_SIMPLY, // Fixes "bot check error" bug?

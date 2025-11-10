@@ -62,6 +62,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mIsUnknownError;
     private String mPaidContentText;
     private String mClickTrackingParams;
+    private String mVideoPlaybackUstreamerConfig;
+    private String mServerAbrStreamingUrl;
     private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
     private static final Pattern durationPattern2 = Pattern.compile("/dur/([^/]*)");
 
@@ -130,6 +132,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mHasExtendedHlsFormats = videoInfo.hasExtendedHlsFormats();
         formatInfo.mLoudnessDb = videoInfo.getLoudnessDb();
         formatInfo.mPaidContentText = videoInfo.getPaidContentText();
+        formatInfo.mVideoPlaybackUstreamerConfig = videoInfo.getVideoPlaybackUstreamerConfig();
+        formatInfo.mServerAbrStreamingUrl = videoInfo.getServerAbrStreamingUrl();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -392,6 +396,16 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public String getPaidContentText() {
         return mPaidContentText;
+    }
+
+    @Override
+    public String getVideoPlaybackUstreamerConfig() {
+        return mVideoPlaybackUstreamerConfig;
+    }
+
+    @Override
+    public String getServerAbrStreamingUrl() {
+        return mServerAbrStreamingUrl;
     }
 
     public String getEventId() {

@@ -83,7 +83,7 @@ internal enum class AppClient(
     val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED) } // NOTE: TV_SIMPLY doesn't support auth
     val isWebPotRequired by lazy { Helpers.equalsAny(this, WEB, MWEB, WEB_EMBED, WEB_SAFARI, INITIAL, GEO) }
     // TODO: remove after implement SABR
-    val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR, TV_LEGACY, GEO) }
+    val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR, GEO) }
     val isReelClient by lazy { Helpers.equalsAny(this, ANDROID_REEL) }
     val isEmbedded by lazy { Helpers.equalsAny(this, WEB_EMBED, TV_EMBED) }
     private val isWebClient by lazy { !Helpers.equalsAny(this, ANDROID, ANDROID_VR, ANDROID_REEL, ANDROID_SDK_LESS, IOS) }

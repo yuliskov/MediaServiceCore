@@ -246,17 +246,8 @@ internal class QueryBuilder(private val client: AppClient) {
     }
 
     private fun createTimestampChunk(): String {
-        // adPlaybackContext https://github.com/yt-dlp/yt-dlp/commit/ff6f94041aeee19c5559e1c1cd693960a1c1dd14
         // isInlinePlaybackNoAd https://iter.ca/post/yt-adblock/
-        //     "playbackContext": {
-        //        "adPlaybackContext": {
-        //            "pyv": true,
-        //            "adType": "AD_TYPE_INSTREAM"
-        //        },
-        //        "contentPlaybackContext": {
-        //            "isInlinePlaybackNoAd": true,
-        //        }
-        //    },
+        // According to someone in the YouTube.js Discord server, setting supportXhr to false brings the URLs back for TV (matrix chat)
         return signatureTimestamp?.let {
             """
                 "playbackContext": {
@@ -268,7 +259,7 @@ internal class QueryBuilder(private val client: AppClient) {
                     },
                     "devicePlaybackCapabilities": {
                         "supportsVp9Encoding": true,
-                        "supportXhr": ${ !Helpers.equalsAny(client, AppClient.TV, AppClient.TV_SIMPLY) }
+                        "supportXhr": false
                     }
                 },
             """

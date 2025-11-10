@@ -94,6 +94,9 @@ public class VideoInfo {
     @JsonPath("$.streamingData.serverAbrStreamingUrl")
     private String mServerAbrStreamingUrl; // SABR format url
 
+    @JsonPath("$.playerConfig.mediaCommonConfig.mediaUstreamerRequestConfig.videoPlaybackUstreamerConfig")
+    private String mVideoPlaybackUstreamerConfig; // SABR config
+
     // Values used in tracking actions
     private String mEventId;
     private String mVisitorMonitoringData;
@@ -342,6 +345,10 @@ public class VideoInfo {
 
     public String getServerAbrStreamingUrl() {
         return mServerAbrStreamingUrl;
+    }
+
+    public String getVideoPlaybackUstreamerConfig() {
+        return mVideoPlaybackUstreamerConfig;
     }
 
     /**

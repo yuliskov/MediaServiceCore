@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import androidx.annotation.NonNull;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
@@ -36,9 +37,10 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mAudioQuality;
     private int mFormatType;
     private String mLanguage;
-    private String mTargetDurationSec;
+    private int mTargetDurationSec;
     private String mLastModified;
-    private String mMaxDvrDurationSec;
+    private int mMaxDvrDurationSec;
+    private int mApproxDurationMs;
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
         YouTubeMediaFormat mediaFormat = createBaseFormat(format);
@@ -89,9 +91,10 @@ public class YouTubeMediaFormat implements MediaFormat {
         mediaFormat.mSegmentUrlList = format.getSegmentUrlList();
         mediaFormat.mGlobalSegmentList = format.getGlobalSegmentList();
         mediaFormat.mLanguage = format.getLanguage();
-        mediaFormat.mTargetDurationSec = format.getTargetDurationSec() == 0 ? "" : String.valueOf(format.getTargetDurationSec());
+        mediaFormat.mTargetDurationSec = format.getTargetDurationSec();
         mediaFormat.mLastModified = format.getLastModified();
-        mediaFormat.mMaxDvrDurationSec = format.getMaxDvrDurationSec() == 0 ? "" : String.valueOf(format.getMaxDvrDurationSec());
+        mediaFormat.mMaxDvrDurationSec = format.getMaxDvrDurationSec();
+        mediaFormat.mApproxDurationMs = Helpers.parseInt(format.getApproxDurationMs());
 
         return mediaFormat;
     }
@@ -283,7 +286,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     @Override
-    public String getTargetDurationSec() {
+    public int getTargetDurationSec() {
         return mTargetDurationSec;
     }
 
@@ -293,8 +296,13 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     @Override
-    public String getMaxDvrDurationSec() {
+    public int getMaxDvrDurationSec() {
         return mMaxDvrDurationSec;
+    }
+
+    @Override
+    public int getApproxDurationMs() {
+        return mApproxDurationMs;
     }
 
     public String getIndexRange() {

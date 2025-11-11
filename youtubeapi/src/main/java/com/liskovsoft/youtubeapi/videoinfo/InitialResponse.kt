@@ -14,10 +14,10 @@ internal object InitialResponse {
 
     @Suppress("UNCHECKED_CAST")
     @JvmStatic
-    fun getVideoInfo(videoId: String, skipAuth: Boolean = false): VideoInfo? {
+    fun getVideoInfo(videoId: String, auth: Boolean = true): VideoInfo? {
         val fileApi = RetrofitHelper.create(FileApi::class.java)
         val resultWrapper = fileApi.getContent("https://www.youtube.com/watch?v=$videoId")
-        val result = RetrofitHelper.get(resultWrapper, skipAuth)
+        val result = RetrofitHelper.get(resultWrapper, auth)
 
         result?.content?.let {
             val jsonStr = JSInterpret.searchJson(YT_INITIAL_PLAYER_RESPONSE_RE, it)

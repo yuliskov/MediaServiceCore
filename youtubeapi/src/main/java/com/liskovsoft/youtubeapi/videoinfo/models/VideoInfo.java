@@ -107,7 +107,7 @@ public class VideoInfo {
     private int mSegmentDurationUs;
     private boolean mIsStreamSeekable;
     private List<CaptionTrack> mMergedCaptionTracks;
-    private boolean mIsAnonymous;
+    private boolean mIsAuth;
     private String mPoToken;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
@@ -366,12 +366,12 @@ public class VideoInfo {
         mIsStreamSeekable = dashInfo.isSeekable();
     }
 
-    public void setAnonymous(boolean isAnonymous) {
-        mIsAnonymous = isAnonymous;
+    public void setAuth(boolean auth) {
+        mIsAuth = auth;
     }
 
-    public boolean isAnonymous() {
-        return mIsAnonymous;
+    public boolean isAuth() {
+        return mIsAuth;
     }
 
     private void parseTrackingParams() {

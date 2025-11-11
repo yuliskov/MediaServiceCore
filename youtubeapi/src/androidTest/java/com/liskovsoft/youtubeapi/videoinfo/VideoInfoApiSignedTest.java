@@ -46,7 +46,7 @@ public class VideoInfoApiSignedTest extends BaseVideoInfoApiTest {
 
     @Test
     public void initialResponseTest() {
-        testThatVideoInfoContainsRequiredFields(InitialResponse.getVideoInfo(TestHelpers.VIDEO_ID_MUSIC_2, false));
+        testThatVideoInfoContainsRequiredFields(InitialResponse.getVideoInfo(TestHelpers.VIDEO_ID_MUSIC_2, true));
     }
 
     @Test

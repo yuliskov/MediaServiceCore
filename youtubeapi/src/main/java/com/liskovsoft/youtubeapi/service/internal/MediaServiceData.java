@@ -57,7 +57,6 @@ public class MediaServiceData {
     private int mEnabledFormats;
     private int mHiddenContent;
     private Disposable mPersistAction;
-    private boolean mSkipAuth;
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
     private PoTokenResponse mPoToken;
@@ -140,15 +139,13 @@ public class MediaServiceData {
         mDeviceId = deviceId;
         persistData();
     }
-
-    @NonNull
-    public Pair<Integer, Boolean> getVideoInfoType() {
-        return new Pair<>(mVideoInfoType, mSkipAuth);
+    
+    public int getVideoInfoType() {
+        return mVideoInfoType;
     }
 
-    public void setVideoInfoType(int videoInfoType, boolean skipAuth) {
+    public void setVideoInfoType(int videoInfoType) {
         mVideoInfoType = videoInfoType;
-        mSkipAuth = skipAuth;
         persistData();
     }
 
@@ -306,7 +303,7 @@ public class MediaServiceData {
         //String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
         mOldAppVersion = Helpers.parseStr(split, 3);
         mVideoInfoType = Helpers.parseInt(split, 4, -1);
-        mSkipAuth = Helpers.parseBoolean(split, 5);
+        //mSkipAuth = Helpers.parseBoolean(split, 5);
         // entries here moved to the cache
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
         // null
@@ -349,7 +346,7 @@ public class MediaServiceData {
 
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, mOldAppVersion,
-                        mVideoInfoType, mSkipAuth, null, null, null, null,
+                        mVideoInfoType, null, null, null, null, null,
                         null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
                         null, mVisitorCookie, null, mIsLegacyUIEnabled, mFailedAppInfo));
@@ -380,7 +377,6 @@ public class MediaServiceData {
 
     private void resetSensitiveData() {
         mVideoInfoType = -1;
-        mSkipAuth = false;
         mFailedAppInfo = null;
     }
 }

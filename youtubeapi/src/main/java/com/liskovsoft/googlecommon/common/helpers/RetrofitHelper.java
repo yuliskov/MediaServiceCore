@@ -76,23 +76,23 @@ public class RetrofitHelper {
     //}
 
     public static <T> T get(Call<T> wrapper) {
-        return get(wrapper, false);
+        return get(wrapper, true);
     }
 
-    public static <T> T get(Call<T> wrapper, boolean skipAuth) {
-        return get(wrapper, skipAuth, false);
+    public static <T> T get(Call<T> wrapper, boolean auth) {
+        return get(wrapper, auth, false);
     }
 
     public static <T> T getWithErrors(Call<T> wrapper) {
-        return getWithErrors(wrapper, false);
+        return getWithErrors(wrapper, true);
     }
 
-    public static <T> T getWithErrors(Call<T> wrapper, boolean skipAuth) {
-        return get(wrapper, skipAuth, true);
+    public static <T> T getWithErrors(Call<T> wrapper, boolean auth) {
+        return get(wrapper, auth, true);
     }
 
-    private static <T> T get(Call<T> wrapper, boolean skipAuth, boolean withErrors) {
-        if (skipAuth) {
+    private static <T> T get(Call<T> wrapper, boolean auth, boolean withErrors) {
+        if (!auth) {
             RetrofitOkHttpHelper.addAuthSkip(wrapper.request());
         }
 

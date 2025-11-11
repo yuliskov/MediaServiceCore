@@ -57,7 +57,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private boolean mHasExtendedHlsFormats;
     private float mLoudnessDb;
     private boolean mContainsAdaptiveVideoFormats;
-    private boolean mIsAnonymous;
+    private boolean mIsAuth;
     private boolean mIsSynced;
     private boolean mIsUnknownError;
     private String mPaidContentText;
@@ -121,7 +121,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         // END Tracking params
         formatInfo.mStoryboardSpec = videoInfo.getStoryboardSpec();
         formatInfo.mIsUnplayable = videoInfo.isUnplayable();
-        formatInfo.mIsAnonymous = videoInfo.isAnonymous();
+        formatInfo.mIsAuth = videoInfo.isAuth();
         formatInfo.mIsUnknownError = videoInfo.isUnknownRestricted();
         formatInfo.mPlayabilityStatus = videoInfo.getPlayabilityStatus();
         formatInfo.mIsStreamSeekable = videoInfo.isHfr() || videoInfo.isStreamSeekable();
@@ -347,8 +347,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mIsUnplayable;
     }
 
-    public boolean isAnonymous() {
-        return mIsAnonymous;
+    public boolean isAuth() {
+        return mIsAuth;
     }
 
     public boolean isSynced() {
@@ -462,7 +462,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         mEventId = formatInfo.getEventId();
         mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
         mOfParam = formatInfo.getOfParam();
-        mIsAnonymous = formatInfo.isAnonymous();
+        mIsAuth = formatInfo.isAuth();
     }
 
     /**

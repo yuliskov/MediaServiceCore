@@ -572,7 +572,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
-        return formatInfo.isAnonymous() && !formatInfo.isUnplayable() && getSignInService().isSigned();
+        return !formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 
     private static void syncItem(MediaItem item, MediaItemMetadata metadata) {

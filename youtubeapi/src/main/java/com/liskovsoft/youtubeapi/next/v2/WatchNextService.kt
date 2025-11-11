@@ -63,7 +63,7 @@ internal open class WatchNextService {
         var continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey))
 
         if (continuation == null || continuation.isEmpty()) {
-            continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey), true)
+            continuation = continueWatchNext(BrowseApiHelper.getContinuationQuery(nextKey), false)
         }
 
         return SuggestionsGroup.from(continuation, mediaGroup)
@@ -106,10 +106,10 @@ internal open class WatchNextService {
         return RetrofitHelper.get(wrapper)
     }
 
-    private fun continueWatchNext(query: String, skipAuth: Boolean = false): WatchNextResultContinuation? {
+    private fun continueWatchNext(query: String, auth: Boolean = true): WatchNextResultContinuation? {
         val wrapper = mWatchNextApi.continueWatchNextResult(query, mAppService.visitorData)
 
-        return RetrofitHelper.get(wrapper, skipAuth)
+        return RetrofitHelper.get(wrapper, auth)
     }
 
     private fun getDislikesResult(videoId: String?): DislikesResult? {

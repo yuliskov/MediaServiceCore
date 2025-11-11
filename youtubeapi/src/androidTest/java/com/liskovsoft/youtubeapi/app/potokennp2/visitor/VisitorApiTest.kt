@@ -16,7 +16,7 @@ class VisitorApiTest {
 
     @Test
     fun testThatVisitorDataNotNull() {
-        val visitorResult = RetrofitHelper.get(mApi.getVisitorId(VisitorApiHelper.getVisitorQuery()), true)
+        val visitorResult = RetrofitHelper.get(mApi.getVisitorId(VisitorApiHelper.getVisitorQuery()), false)
 
         Assert.assertNotNull("Visitor not empty", visitorResult?.getVisitorData())
     }

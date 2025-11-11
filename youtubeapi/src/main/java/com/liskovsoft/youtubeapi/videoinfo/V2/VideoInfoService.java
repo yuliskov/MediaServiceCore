@@ -37,7 +37,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.WEB_EMBED, // Restricted (18+) videos
-            AppClient.ANDROID_SDK_LESS, // doesn't require pot
+            //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on cronet!)
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.IOS,
             AppClient.TV, // Supports auth. Fixes "please sign in" bug!

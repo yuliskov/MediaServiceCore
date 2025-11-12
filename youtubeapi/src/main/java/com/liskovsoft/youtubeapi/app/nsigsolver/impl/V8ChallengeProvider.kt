@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.impl
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
-import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.withLock
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderError
@@ -11,14 +10,12 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.Script
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptSource
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptType
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.ScriptVariant
-import io.reactivex.disposables.Disposable
 
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
     private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah-6.1.4.min.js", "${libPrefix}astring-1.9.0.min.js")
     private var v8Runtime: V8? = null
     private val v8Lock = Any()
-    private var shutdownAction: Disposable? = null
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
         for ((source, func) in super.iterScriptSources()) {
@@ -62,8 +59,6 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
     
     fun warmup() {
-        RxHelper.disposeActions(shutdownAction)
-
         synchronized(v8Lock) {
             if (v8Runtime != null)
                 return
@@ -90,7 +85,8 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun shutdownIfNeeded() {
-        RxHelper.disposeActions(shutdownAction)
-        shutdownAction = RxHelper.runAsync(::shutdown, 10_000)
+        // NOTE: Possible Invalid thread access if using RxHelper runAsync
+        // NOTE: Shutdown should run on the same thread that created V8 engine.
+        shutdown()
     }
 }

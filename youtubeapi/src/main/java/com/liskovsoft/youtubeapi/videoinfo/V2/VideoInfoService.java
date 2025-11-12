@@ -125,12 +125,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         do {
             VideoInfo result = getVideoInfoWithRentFix(nextType, videoId, clickTrackingParams);
 
-            if (result == null && isAuthSupported(nextType) && mAuthBlock) { // retry anonymous
-                mAuthBlock = false;
-                result = getVideoInfoWithRentFix(nextType, videoId, clickTrackingParams);
-                mAuthBlock = true;
-            }
-
             if (result != null && infoTester.test(result)) {
                 return result;
             }

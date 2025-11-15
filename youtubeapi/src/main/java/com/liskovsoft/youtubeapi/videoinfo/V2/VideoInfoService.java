@@ -73,7 +73,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        initVideoInfoType();
+        initInfoTypeIfNeeded();
 
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
 
@@ -135,7 +135,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return null;
     }
 
-    private void initVideoInfoType() {
+    private void initInfoTypeIfNeeded() {
         if (mVideoInfoType != null) {
             return;
         }
@@ -144,6 +144,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextFormat() {
+        initInfoTypeIfNeeded();
+
         // Try to reset pot cache for the last video
         if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) {
             return;
@@ -155,7 +157,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return;
         }
         // And last, try to switch the client
-        nextVideoInfo();
+        nextVideoInfoType();
         persistVideoInfoType();
     }
 
@@ -169,7 +171,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         PoTokenGate.resetCache(getClient());
     }
 
-    private void nextVideoInfo() {
+    private void nextVideoInfoType() {
         mVideoInfoType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, mVideoInfoType);
     }
 

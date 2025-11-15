@@ -73,7 +73,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        initVideoInfo();
+        initVideoInfoType();
 
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
 
@@ -129,18 +129,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 return result;
             }
 
-            nextType = Helpers.getNextValue(nextType, VIDEO_INFO_TYPE_LIST);
+            nextType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, nextType);
         } while (nextType != beginType);
 
         return null;
     }
 
-    private void initVideoInfo() {
+    private void initVideoInfoType() {
         if (mVideoInfoType != null) {
             return;
         }
-
-        resetData();
+        
         restoreVideoInfoType();
     }
 
@@ -161,22 +160,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void switchNextSubtitle() {
-        CaptionTrack.sFormat = Helpers.getNextValue(CaptionTrack.sFormat, CaptionTrack.CaptionFormat.values());
+        CaptionTrack.sFormat = Helpers.getNextValue(CaptionTrack.CaptionFormat.values(), CaptionTrack.sFormat);
     }
 
     public void resetInfoType() {
-        resetData();
+        mVideoInfoType = null;
         persistVideoInfoType();
         PoTokenGate.resetCache(getClient());
     }
 
-    private void resetData() {
-        mVideoInfoType = null;
-        nextVideoInfo();
-    }
-
     private void nextVideoInfo() {
-        mVideoInfoType = Helpers.getNextValue(mVideoInfoType, VIDEO_INFO_TYPE_LIST);
+        mVideoInfoType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, mVideoInfoType);
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {
@@ -300,6 +294,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 mVideoInfoType = VIDEO_INFO_TYPE_LIST[0];
                 getData().setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1);
             }
+        } else {
+            mVideoInfoType = VIDEO_INFO_TYPE_LIST[0];
         }
     }
 

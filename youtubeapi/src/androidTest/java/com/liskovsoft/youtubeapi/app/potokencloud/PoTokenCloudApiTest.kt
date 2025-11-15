@@ -65,7 +65,7 @@ internal class PoTokenCloudApiTest {
             if (poToken?.poToken != null)
                 break
 
-            baseUrl = Helpers.getNextValue(PO_TOKEN_CLOUD_BASE_URLS[i], PO_TOKEN_CLOUD_BASE_URLS)
+            baseUrl = Helpers.getNextValue(PO_TOKEN_CLOUD_BASE_URLS, PO_TOKEN_CLOUD_BASE_URLS[i])
 
             if (i < (retryTimes - 1))
                 delay(50_000)
@@ -115,7 +115,7 @@ internal class PoTokenCloudApiTest {
             if (poToken?.poToken != null)
                 break
 
-            baseUrl = Helpers.getNextValue(baseUrl, PO_TOKEN_CLOUD_BASE_URLS)
+            baseUrl = Helpers.getNextValue(PO_TOKEN_CLOUD_BASE_URLS, baseUrl)
 
             if (i < (times - 1))
                 delay(50_000)

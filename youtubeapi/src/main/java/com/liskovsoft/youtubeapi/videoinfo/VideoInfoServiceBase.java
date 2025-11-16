@@ -93,8 +93,8 @@ public abstract class VideoInfoServiceBase {
         //applyAdditionalStrings(formats);
 
         String poToken = PoTokenGate.getPoToken(getClient());
-        applySessionPoToken(formats, poToken);
         videoInfo.setPoToken(poToken);
+        applySessionPoToken(formats, poToken);
     }
 
     private static List<String> extractSParams(List<? extends VideoFormat> formats) {

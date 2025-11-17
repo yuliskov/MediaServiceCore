@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.googlecommon.common.models.V2.TextItem;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
@@ -109,6 +110,7 @@ public class VideoInfo {
     private List<CaptionTrack> mMergedCaptionTracks;
     private boolean mIsAuth;
     private String mPoToken;
+    private AppClient mClient;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -446,5 +448,13 @@ public class VideoInfo {
 
     public void setPoToken(String poToken) {
         mPoToken = poToken;
+    }
+
+    public AppClient getClient() {
+        return mClient;
+    }
+
+    public void setClient(AppClient client) {
+        mClient = client;
     }
 }

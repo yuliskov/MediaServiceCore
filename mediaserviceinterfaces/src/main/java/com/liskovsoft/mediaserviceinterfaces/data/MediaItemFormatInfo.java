@@ -60,4 +60,10 @@ public interface MediaItemFormatInfo {
     String getVideoPlaybackUstreamerConfig();
     String getServerAbrStreamingUrl();
     String getPoToken();
+    ClientInfo getClientInfo();
+
+    interface ClientInfo {
+        String getName();
+        String getVersion();
+    }
 }

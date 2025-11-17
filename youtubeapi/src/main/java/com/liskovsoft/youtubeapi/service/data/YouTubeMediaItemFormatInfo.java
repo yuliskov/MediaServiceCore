@@ -9,6 +9,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser;
@@ -65,6 +66,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mVideoPlaybackUstreamerConfig;
     private String mServerAbrStreamingUrl;
     private String mPoToken;
+    private AppClient mClient;
     private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
     private static final Pattern durationPattern2 = Pattern.compile("/dur/([^/]*)");
 
@@ -136,6 +138,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mVideoPlaybackUstreamerConfig = videoInfo.getVideoPlaybackUstreamerConfig();
         formatInfo.mServerAbrStreamingUrl = videoInfo.getServerAbrStreamingUrl();
         formatInfo.mPoToken = videoInfo.getPoToken();
+        formatInfo.mClient = videoInfo.getClient();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
 
@@ -413,6 +416,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public String getPoToken() {
         return mPoToken;
+    }
+
+    @Override
+    public ClientInfo getClientInfo() {
+        return mClient;
     }
 
     public String getEventId() {

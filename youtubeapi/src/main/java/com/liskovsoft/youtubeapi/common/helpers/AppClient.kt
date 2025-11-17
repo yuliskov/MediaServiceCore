@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 
 private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
@@ -26,7 +27,7 @@ private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not al
 internal enum class AppClient(
     val clientName: String, val clientVersion: String, val innerTubeName: Int, val userAgent: String, val referer: String?,
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null, val postDataBrowse: String? = null
-) {
+): MediaItemFormatInfo.ClientInfo {
     // Doesn't support 8AEB2AMB param if X-Goog-Pageid is set!
     TV("TVHTML5", "7.20250714.16.00", 7, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
@@ -69,6 +70,9 @@ internal enum class AppClient(
             this(baseClient.clientName, clientVersion ?: baseClient.clientVersion, baseClient.innerTubeName,
         userAgent ?: baseClient.userAgent, baseClient.referer, baseClient.clientScreen, baseClient.params,
         postData ?: baseClient.postData, postDataBrowse ?: baseClient.postDataBrowse)
+
+    override fun getName() = name
+    override fun getVersion() = clientVersion
 
     private val browserInfo by lazy { if (isWebClient) extractBrowserInfo(userAgent) else null }
     private val postDataBrowser by lazy { if (browserName != null && browserVersion != null) String.format(POST_DATA_BROWSER, browserName, browserVersion) else null }

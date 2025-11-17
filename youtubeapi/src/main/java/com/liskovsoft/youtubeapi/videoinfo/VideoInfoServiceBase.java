@@ -52,6 +52,8 @@ public abstract class VideoInfoServiceBase {
             Log.d(TAG, "Enable seeking support on live streams...");
             videoInfo.sync(getDashInfo(videoInfo));
         }
+
+        videoInfo.setClient(getClient());
     }
 
     private void applySabrFixes(VideoInfo videoInfo) {

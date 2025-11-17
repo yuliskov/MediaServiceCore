@@ -63,7 +63,7 @@ public interface MediaItemFormatInfo {
     ClientInfo getClientInfo();
 
     interface ClientInfo {
-        String getName();
-        String getVersion();
+        String getClientName();
+        String getClientVersion();
     }
 }

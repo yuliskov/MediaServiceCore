@@ -25,7 +25,7 @@ private const val CLIENT_SCREEN_EMBED = "EMBED" // no 18+ restriction but not al
  * https://github.com/gamer191/yt-dlp/blob/3ad3676e585d144c16a2c5945eb6e422fb918d44/yt_dlp/extractor/youtube/_base.py#L41
  */
 internal enum class AppClient(
-    val clientName: String, val clientVersion: String, val innerTubeName: Int, val userAgent: String, val referer: String?,
+    @JvmField val clientName: String, @JvmField val clientVersion: String, val innerTubeName: Int, val userAgent: String, val referer: String?,
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null, val postDataBrowse: String? = null
 ): MediaItemFormatInfo.ClientInfo {
     // Doesn't support 8AEB2AMB param if X-Goog-Pageid is set!
@@ -71,8 +71,8 @@ internal enum class AppClient(
         userAgent ?: baseClient.userAgent, baseClient.referer, baseClient.clientScreen, baseClient.params,
         postData ?: baseClient.postData, postDataBrowse ?: baseClient.postDataBrowse)
 
-    override fun getName() = name
-    override fun getVersion() = clientVersion
+    override fun getClientName() = clientName
+    override fun getClientVersion() = clientVersion
 
     private val browserInfo by lazy { if (isWebClient) extractBrowserInfo(userAgent) else null }
     private val postDataBrowser by lazy { if (browserName != null && browserVersion != null) String.format(POST_DATA_BROWSER, browserName, browserVersion) else null }

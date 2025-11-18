@@ -87,9 +87,6 @@ public class YouTubeServiceManager implements ServiceManager {
         //AppService.instance().invalidateVisitorData();
         getYouTubeMediaItemService().invalidateCache();
         getVideoInfoService().resetInfoType();
-
-        if (getMediaServiceData() != null)
-            getMediaServiceData().persistNow();
     }
 
     @Override

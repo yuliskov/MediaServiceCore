@@ -38,7 +38,6 @@ public class YouTubeMediaFormat implements MediaFormat {
     private int mFormatType;
     private String mLanguage;
     private int mTargetDurationSec;
-    private String mLastModified;
     private int mMaxDvrDurationSec;
     private int mApproxDurationMs;
 
@@ -92,7 +91,8 @@ public class YouTubeMediaFormat implements MediaFormat {
         mediaFormat.mGlobalSegmentList = format.getGlobalSegmentList();
         mediaFormat.mLanguage = format.getLanguage();
         mediaFormat.mTargetDurationSec = format.getTargetDurationSec();
-        mediaFormat.mLastModified = format.getLastModified();
+        mediaFormat.mLmt = format.getLastModified();
+        mediaFormat.mQualityLabel = format.getQualityLabel();
         mediaFormat.mMaxDvrDurationSec = format.getMaxDvrDurationSec();
         mediaFormat.mApproxDurationMs = Helpers.parseInt(format.getApproxDurationMs());
 
@@ -288,11 +288,6 @@ public class YouTubeMediaFormat implements MediaFormat {
     @Override
     public int getTargetDurationSec() {
         return mTargetDurationSec;
-    }
-
-    @Override
-    public String getLastModified() {
-        return mLastModified;
     }
 
     @Override

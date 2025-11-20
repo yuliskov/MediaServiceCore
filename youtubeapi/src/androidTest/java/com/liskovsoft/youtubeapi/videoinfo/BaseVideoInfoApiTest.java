@@ -15,6 +15,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoApiHelper;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoReel;
@@ -102,88 +103,89 @@ abstract class BaseVideoInfoApiTest {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isAudio(item.getMimeType())); // smallest format
 
-        format.setSignature(mAppService.extractSig(format.getSParam()));
-        format.setNSignature(mAppService.extractNSig(format.getNParam()));
+        format.getUrlHolder().setSignature(mAppService.extractSig(format.getUrlHolder().getSParam()));
+        format.getUrlHolder().setNParam(mAppService.extractNSig(format.getUrlHolder().getNParam()));
 
         return format;
     }
 
     protected void decipherFormats(VideoInfo videoInfo) {
-        applySabrFixes(videoInfo.getAdaptiveFormats(), videoInfo.getServerAbrStreamingUrl());
+        List<? extends VideoFormat> adaptiveFormats = videoInfo.getAdaptiveFormats();
+        List<? extends VideoFormat> regularFormats = videoInfo.getRegularFormats();
 
-        // Process params
-        decipherFormats(videoInfo.getAdaptiveFormats());
-        decipherFormats(videoInfo.getRegularFormats());
-    }
-
-    private void applySabrFixes(List<? extends VideoFormat> formats, String serverAbrStreamingUrl) {
-        if (serverAbrStreamingUrl != null) {
-            for (VideoFormat format : formats) {
-                format.setSabrUrl(serverAbrStreamingUrl);
+        List<VideoUrlHolder> urlHolders = new ArrayList<>();
+        if (adaptiveFormats != null)
+            for (VideoFormat videoFormat : adaptiveFormats) {
+                urlHolders.add(videoFormat.getUrlHolder());
             }
-        }
+        if (regularFormats != null)
+            for (VideoFormat videoFormat : regularFormats) {
+                urlHolders.add(videoFormat.getUrlHolder());
+            }
+        urlHolders.add(videoInfo.getUrlHolder());
+
+        decipherFormats(urlHolders);
     }
 
-    private void decipherFormats(List<? extends VideoFormat> formats) {
-        if (formats == null) {
+    private void decipherFormats(List<VideoUrlHolder> urlHolders) {
+        if (urlHolders == null) {
             return;
         }
 
-        List<String> sParams = extractSParams(formats);
+        List<String> sParams = extractSParams(urlHolders);
         List<String> signatures = mAppService.extractSig(sParams);
-        applySignatures(formats, signatures);
+        applySignatures(urlHolders, signatures);
 
-        List<String> nParams = extractNParams(formats);
+        List<String> nParams = extractNParams(urlHolders);
         List<String> nSignatures = mAppService.extractNSig(nParams);
-        applyNSignatures(formats, nSignatures);
+        applyNSignatures(urlHolders, nSignatures);
     }
 
-    private static List<String> extractSParams(List<? extends VideoFormat> formats) {
+    private static List<String> extractSParams(List<VideoUrlHolder> urlHolders) {
         List<String> result = new ArrayList<>();
 
-        for (VideoFormat format : formats) {
-            result.add(format.getSParam());
+        for (VideoUrlHolder urlHolder : urlHolders) {
+            result.add(urlHolder.getSParam());
         }
 
         return result;
     }
 
-    private static void applySignatures(List<? extends VideoFormat> formats, List<String> signatures) {
+    private static void applySignatures(List<VideoUrlHolder> urlHolders, List<String> signatures) {
         if (signatures == null) {
             return;
         }
 
-        if (signatures.size() != formats.size()) {
-            throw new IllegalStateException("Sizes of formats and signatures should match!");
+        if (signatures.size() != urlHolders.size()) {
+            throw new IllegalStateException("Sizes of urlHolders and signatures should match!");
         }
 
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setSignature(signatures.get(i));
+        for (int i = 0; i < urlHolders.size(); i++) {
+            urlHolders.get(i).setSignature(signatures.get(i));
         }
     }
 
-    private static List<String> extractNParams(List<? extends VideoFormat> formats) {
+    private static List<String> extractNParams(List<VideoUrlHolder> urlHolders) {
         List<String> result = new ArrayList<>();
 
-        for (VideoFormat format : formats) {
-            result.add(format.getNParam());
+        for (VideoUrlHolder urlHolder : urlHolders) {
+            result.add(urlHolder.getNParam());
             // All throttled strings has same values
-            break;
         }
 
         return result;
     }
 
-    private static void applyNSignatures(List<? extends VideoFormat> formats, List<String> nSignatures) {
+    private static void applyNSignatures(List<VideoUrlHolder> urlHolders, List<String> nSignatures) {
         if (nSignatures == null || nSignatures.isEmpty()) {
             return;
         }
 
         // All throttled strings has same values
-        boolean sameSize = nSignatures.size() == formats.size();
+        boolean sameSize = nSignatures.size() == urlHolders.size();
 
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setNSignature(nSignatures.get(sameSize ? i : 0));
+        for (int i = 0; i < urlHolders.size(); i++) {
+            urlHolders.get(i).setNParam(nSignatures.get(sameSize ? i : 0));
         }
     }
 }

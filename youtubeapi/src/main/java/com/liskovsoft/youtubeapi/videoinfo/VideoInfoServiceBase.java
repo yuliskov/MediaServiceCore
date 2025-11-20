@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoHeaders;
@@ -44,8 +45,6 @@ public abstract class VideoInfoServiceBase {
             return;
         }
 
-        applySabrFixes(videoInfo);
-
         decipherFormats(videoInfo);
 
         if (videoInfo.isLive()) {
@@ -56,125 +55,91 @@ public abstract class VideoInfoServiceBase {
         videoInfo.setClient(getClient());
     }
 
-    private void applySabrFixes(VideoInfo videoInfo) {
-        List<? extends VideoFormat> formats = videoInfo.getAdaptiveFormats();
-        String serverAbrStreamingUrl = videoInfo.getServerAbrStreamingUrl();
-
-        if (serverAbrStreamingUrl != null) {
-            for (VideoFormat format : formats) {
-                format.setSabrUrl(serverAbrStreamingUrl);
-            }
-        }
-    }
-
     private void decipherFormats(VideoInfo videoInfo) {
         List<? extends VideoFormat> adaptiveFormats = videoInfo.getAdaptiveFormats();
         List<? extends VideoFormat> regularFormats = videoInfo.getRegularFormats();
 
-        List<VideoFormat> formats = new ArrayList<>();
+        List<VideoUrlHolder> urlHolders = new ArrayList<>();
         if (adaptiveFormats != null)
-            formats.addAll(adaptiveFormats);
+            for (VideoFormat videoFormat : adaptiveFormats) {
+                urlHolders.add(videoFormat.getUrlHolder());
+            }
         if (regularFormats != null)
-            formats.addAll(regularFormats);
+            for (VideoFormat videoFormat : regularFormats) {
+                urlHolders.add(videoFormat.getUrlHolder());
+            }
+        urlHolders.add(videoInfo.getUrlHolder());
 
-        if (formats.isEmpty()) {
-            return;
-        }
-
-        Pair<List<String>, List<String>> result = mAppService.bulkSigExtract(extractNParams(formats), extractSParams(formats));
+        Pair<List<String>, List<String>> result = mAppService.bulkSigExtract(extractNParams(urlHolders), extractSParams(urlHolders));
 
         if (result != null) {
-            List<String> nSignatures = result.getFirst();
+            List<String> nParams = result.getFirst();
             List<String> signatures = result.getSecond();
 
-            applyNSignatures(formats, nSignatures);
-            applySignatures(formats, signatures);
+            applyNParams(urlHolders, nParams);
+            applySignatures(urlHolders, signatures);
         }
-
-        // What this for? Could this fix throttling or maybe the source error?
-        //applyAdditionalStrings(formats);
 
         String poToken = PoTokenGate.getPoToken(getClient());
         videoInfo.setPoToken(poToken);
-        applySessionPoToken(formats, poToken);
+        applySessionPoToken(urlHolders, poToken);
     }
 
-    private static List<String> extractSParams(List<? extends VideoFormat> formats) {
+    private static List<String> extractSParams(List<VideoUrlHolder> urlHolders) {
         List<String> result = new ArrayList<>();
 
-        for (VideoFormat format : formats) {
-            result.add(format.getSParam());
+        for (VideoUrlHolder urlHolder : urlHolders) {
+            result.add(urlHolder.getSParam());
         }
 
         return result;
     }
 
-    private static void applySignatures(List<? extends VideoFormat> formats, List<String> signatures) {
+    private static void applySignatures(List<VideoUrlHolder> urlHolders, List<String> signatures) {
         if (signatures == null) {
             return;
         }
 
-        if (signatures.size() != formats.size()) {
-            throw new IllegalStateException("Sizes of formats and signatures should match!");
+        if (signatures.size() != urlHolders.size()) {
+            throw new IllegalStateException("Sizes of urlHolders and signatures should match!");
         }
 
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setSignature(signatures.get(i));
+        for (int i = 0; i < urlHolders.size(); i++) {
+            urlHolders.get(i).setSignature(signatures.get(i));
         }
     }
 
-    private static List<String> extractNParams(List<? extends VideoFormat> formats) {
+    private static List<String> extractNParams(List<VideoUrlHolder> urlHolders) {
         List<String> result = new ArrayList<>();
 
-        for (VideoFormat format : formats) {
-            result.add(format.getNParam());
+        for (VideoUrlHolder urlHolder : urlHolders) {
+            result.add(urlHolder.getNParam());
             // All throttled strings has same values
-            //break;
         }
 
         return result;
     }
 
-    private static void applyNSignatures(List<? extends VideoFormat> formats, List<String> nSignatures) {
-        if (nSignatures == null || nSignatures.isEmpty()) {
+    private static void applyNParams(List<VideoUrlHolder> urlHolders, List<String> nParams) {
+        if (nParams == null || nParams.isEmpty()) {
             return;
         }
 
         // All throttled strings has same values
-        boolean sameSize = nSignatures.size() == formats.size();
+        boolean sameSize = nParams.size() == urlHolders.size();
 
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setNSignature(nSignatures.get(sameSize ? i : 0));
+        for (int i = 0; i < urlHolders.size(); i++) {
+            urlHolders.get(i).setNParam(nParams.get(sameSize ? i : 0));
         }
     }
 
-    private static void applySessionPoToken(List<? extends VideoFormat> formats, String poToken) {
+    private static void applySessionPoToken(List<VideoUrlHolder> urlHolders, String poToken) {
         if (poToken == null) {
             return;
         }
 
-        for (int i = 0; i < formats.size(); i++) {
-            formats.get(i).setParam("pot", poToken);
-        }
-    }
-
-    /**
-     * What this for? Could this fix throttling?
-     */
-    private static void applyAdditionalStrings(List<? extends VideoFormat> formats) {
-        String cpn = AppService.instance().getClientPlaybackNonce();
-        //String poTokenResult = AppService.instance().getPoTokenResult();
-
-        for (VideoFormat format : formats) {
-            format.setCpn(cpn);
-            format.setClientVersion(AppClient.WEB.getClientVersion());
-
-            // Buffering fix? ptk=youtube_host&ptchn=youtube_host&pltype=adhost
-            //format.setParam("ptk", "youtube_host");
-            //format.setParam("ptchn", "youtube_host");
-            //format.setParam("pltype", "adhost");
-
-            //format.setParam("pot", poTokenResult);
+        for (int i = 0; i < urlHolders.size(); i++) {
+            urlHolders.get(i).setPoToken(poToken);
         }
     }
 

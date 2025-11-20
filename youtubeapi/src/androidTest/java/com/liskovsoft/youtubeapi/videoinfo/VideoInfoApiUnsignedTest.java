@@ -46,6 +46,6 @@ public class VideoInfoApiUnsignedTest extends BaseVideoInfoApiTest {
     public void testSabrFormats() {
         VideoInfo videoInfo = getVideoInfo(AppClient.WEB, TestHelpers.VIDEO_ID_MUSIC_2);
         decipherFormats(videoInfo);
-        Assert.assertTrue("Sabr format exists", TestHelpers.urlExists(videoInfo.getAdaptiveFormats().get(0).getUrl()));
+        Assert.assertTrue("Sabr format exists", TestHelpers.urlExists(videoInfo.getServerAbrStreamingUrl()));
     }
 }

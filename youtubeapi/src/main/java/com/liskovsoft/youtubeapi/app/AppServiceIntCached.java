@@ -44,8 +44,6 @@ public class AppServiceIntCached extends AppServiceInt {
 
             YouTubeMediaItemService.instance().invalidateCache();
 
-            //boolean forceBackupUrl = AppConstants.playerUrls.get(0).contains("0004de42"); // temp fix
-
             firstValidExtractor(
                     Helpers.equals(playerUrl, getFailedPlayerUrl()) ? null : playerUrl,
                     check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,

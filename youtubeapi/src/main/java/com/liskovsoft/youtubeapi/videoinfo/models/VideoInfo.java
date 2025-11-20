@@ -111,6 +111,7 @@ public class VideoInfo {
     private boolean mIsAuth;
     private String mPoToken;
     private AppClient mClient;
+    private VideoUrlHolder mUrlHolder;
 
     public List<AdaptiveVideoFormat> getAdaptiveFormats() {
         return mAdaptiveFormats;
@@ -347,7 +348,7 @@ public class VideoInfo {
     }
 
     public String getServerAbrStreamingUrl() {
-        return mServerAbrStreamingUrl;
+        return getUrlHolder().getUrl();
     }
 
     public String getVideoPlaybackUstreamerConfig() {
@@ -456,5 +457,13 @@ public class VideoInfo {
 
     public void setClient(AppClient client) {
         mClient = client;
+    }
+
+    public VideoUrlHolder getUrlHolder() {
+        if (mUrlHolder == null) {
+            mUrlHolder = new VideoUrlHolder(mServerAbrStreamingUrl, null, null);
+        }
+
+        return mUrlHolder;
     }
 }

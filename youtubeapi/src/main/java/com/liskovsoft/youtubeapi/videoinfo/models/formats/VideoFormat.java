@@ -3,30 +3,14 @@ package com.liskovsoft.youtubeapi.videoinfo.models.formats;
 import androidx.annotation.NonNull;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
-import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder;
 
 import java.util.List;
 
 public class VideoFormat {
     private static final String FORMAT_STREAM_TYPE_OTF = "FORMAT_STREAM_TYPE_OTF";
-
-    // Common params
-    public static final String PARAM_URL = "url";
-    public static final String PARAM_S = "s";
-    public static final String PARAM_CIPHER = "cipher";
-    public static final String PARAM_TYPE = "type";
-    public static final String PARAM_ITAG = "itag";
-    public static final String PARAM_CPN = "cpn";
-    public static final String PARAM_CVER = "cver";
-    public static final String PARAM_SIGNATURE = "signature";
-    public static final String PARAM_SIGNATURE_SPECIAL = "sig";
-    public static final String PARAM_SIGNATURE_SPECIAL_MARK = "lsig";
-    public static final String PARAM_EVENT_ID = "ei";
-    // End Common params
 
     // DASH params
     public static final String CLEN = "clen";
@@ -43,7 +27,6 @@ public class VideoFormat {
 
     // Regular video params
     public static final String QUALITY = "quality";
-    private static final String THROTTLE_PARAM = "n";
     // End Regular params
     
     @JsonPath("$.itag")
@@ -93,83 +76,21 @@ public class VideoFormat {
     private String mApproxDurationMs;
     @JsonPath("$.lastModified")
     private String mLastModified;
-    private String mEventId;
-    private UrlQueryString mUrlQuery;
     private String mLanguage;
     @JsonPath("$.targetDurationSec")
     private int mTargetDurationSec;
     @JsonPath("$.maxDvrDurationSec")
     private int mMaxDvrDurationSec;
-    private String mExtractedCipher;
     @JsonPath("$.isDrc")
     private boolean mIsDrc;
-    private boolean mIsSabr;
+    private VideoUrlHolder mUrlHolder;
 
     public String getUrl() {
-        parseCipher();
-        // Bypass query creation if url isn't transformed
-        return mUrlQuery != null ? mUrlQuery.toString() : mUrl;
+        return getUrlHolder().getUrl();
     }
 
     public void setUrl(String url) {
-        mUrl = url;
-    }
-
-    public void setSabrUrl(String url) {
-        if (!isBroken()) {
-            return; // A dash format. Keep as is.
-        }
-
-        mUrl = url;
-        mIsSabr = true;
-
-        // Doesn't work (403 error)
-        //UrlQueryString urlQuery = getUrlQuery();
-        //
-        //if (urlQuery != null) {
-        //    urlQuery.set("itag", getITag());
-        //    urlQuery.set("aitags", "133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C278%2C394%2C395%2C396%2C397%2C398%2C399");
-        //    urlQuery.set("mime", getMimeType());
-        //}
-    }
-
-    public String getSParam() {
-        parseCipher();
-        return mExtractedCipher;
-    }
-
-    private String getSignature() {
-        return mRealSignature;
-    }
-
-    public void setSignature(String signature) {
-        if (signature != null) {
-            //if (url.contains(PARAM_SIGNATURE_SPECIAL_MARK)) {
-            //    url.set(PARAM_SIGNATURE_SPECIAL, signature);
-            //} else {
-            //    url.set(PARAM_SIGNATURE, signature);
-            //}
-
-            setParam(PARAM_SIGNATURE_SPECIAL, signature);
-
-            mRealSignature = signature;
-        }
-    }
-
-    public String getNParam() {
-        return getParam(THROTTLE_PARAM);
-    }
-
-    public void setNSignature(String throttleCipher) {
-        setParam(THROTTLE_PARAM, throttleCipher);
-    }
-
-    public void setClientVersion(String clientVersion) {
-        setParam(PARAM_CVER, clientVersion);
-    }
-
-    public void setCpn(String cpn) {
-        setParam(PARAM_CPN, cpn);
+        getUrlHolder().setUrl(url);
     }
 
     public String getMimeType() {
@@ -336,32 +257,7 @@ public class VideoFormat {
     }
 
     public String getLanguage() {
-        if (mLanguage == null && getUrlQuery() != null) {
-            String xtags = getUrlQuery().get("xtags");
-
-            if (xtags != null) {
-                // Example: acont=dubbed:lang=ar
-                UrlQueryString xtagsQuery = UrlQueryStringFactory.parse(xtags.replace(":", "&"));
-                String lang = xtagsQuery.get("lang");
-                String acont = xtagsQuery.get("acont");
-                // original, descriptive, dubbed, dubbed-auto, secondary
-                mLanguage = lang != null && acont != null ? String.format("%s (%s)", YouTubeHelper.exoNameFix(lang), acont) : lang;
-            }
-        }
-
-        return mLanguage;
-    }
-
-    private void parseCipher() {
-        if (mUrl == null) { // items signatures are ciphered
-            String cipherUri = mCipher == null ? mSignatureCipher : mCipher;
-
-            if (cipherUri != null) {
-                UrlQueryString queryString = UrlQueryStringFactory.parse(cipherUri);
-                mUrl = queryString.get(PARAM_URL);
-                mExtractedCipher = queryString.get(PARAM_S);
-            }
-        }
+        return mLanguage != null ? mLanguage : getUrlHolder().getLanguage();
     }
 
     public String getApproxDurationMs() {
@@ -384,35 +280,12 @@ public class VideoFormat {
         return mMaxDvrDurationSec;
     }
 
-    public String getParam(String paramName) {
-        UrlQueryString queryString = getUrlQuery();
-
-        if (queryString != null) {
-            return queryString.get(paramName);
+    public VideoUrlHolder getUrlHolder() {
+        if (mUrlHolder == null) {
+            mUrlHolder = new VideoUrlHolder(mUrl, mCipher, mSignatureCipher);
         }
 
-        return null;
-    }
-
-    public void setParam(String paramName, String paramValue) {
-        UrlQueryString queryString = getUrlQuery();
-
-        if (queryString != null && paramName != null && paramValue != null) {
-            queryString.set(paramName, paramValue);
-        }
-    }
-
-    private UrlQueryString getUrlQuery() {
-        parseCipher();
-        if (mUrl == null) {
-            return null;
-        }
-
-        if (mUrlQuery == null) {
-            mUrlQuery = UrlQueryStringFactory.parse(mUrl);
-        }
-
-        return mUrlQuery;
+        return mUrlHolder;
     }
 
     @NonNull
@@ -421,7 +294,7 @@ public class VideoFormat {
                 "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Width: %s, Height: %s, ITag: %s}",
                 getUrl(),
                 getSourceURL(),
-                getSignature(),
+                getUrlHolder().getSignature(),
                 getContentLength(),
                 getWidth(),
                 getHeight(),
@@ -433,9 +306,5 @@ public class VideoFormat {
      */
     public boolean isBroken() {
         return Helpers.allNulls(mUrl, mCipher, mSignatureCipher);
-    }
-
-    public boolean isSabr() {
-        return mIsSabr;
     }
 }

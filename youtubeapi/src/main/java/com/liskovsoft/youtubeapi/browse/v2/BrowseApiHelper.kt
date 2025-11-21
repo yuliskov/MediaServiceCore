@@ -20,6 +20,7 @@ internal object BrowseApiHelper {
     private const val WHAT_TO_WATCH = "\"browseId\":\"FEwhat_to_watch\""
     private const val HOME_TV = "\"browseId\":\"default\""
     private const val TRENDING = "\"browseId\":\"FEtrending\",\"params\":\"6gQJRkVleHBsb3Jl\""
+    private const val HYPE = "\"browseId\":\"FEhype_leaderboard\""
     private const val SUBSCRIPTIONS = "\"browseId\":\"FEsubscriptions\""
     private const val SPORTS = "\"browseId\":\"FEtopics_sports\""
     private const val LIVE = "\"browseId\":\"FEtopics_live\""
@@ -45,6 +46,10 @@ internal object BrowseApiHelper {
 
     fun getTrendingQuery(client: AppClient): String {
         return PostDataHelper.createQuery(client.browseTemplate, TRENDING)
+    }
+
+    fun getHypeQuery(client: AppClient): String {
+        return PostDataHelper.createQuery(client.browseTemplate, HYPE)
     }
 
     fun getChannelQuery(client: AppClient, channelId: String, params: String? = null): String {

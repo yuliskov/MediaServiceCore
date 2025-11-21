@@ -70,11 +70,11 @@ public class MediaFormatUtils {
     }
 
     public static boolean isLiveMedia(MediaFormat format) {
-        boolean isLive =
-                format.getUrl().contains("live=1") ||
-                        format.getUrl().contains("yt_live_broadcast");
+        return isLiveMedia(format.getUrl());
+    }
 
-        return isLive;
+    public static boolean isLiveMedia(String url) {
+        return url.contains("live=1") || url.contains("yt_live_broadcast");
     }
 
     public static boolean isAudio(String mimeType) {

@@ -4,6 +4,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationItemRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.ReelWatchEndpoint
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+import com.liskovsoft.youtubeapi.next.v2.gen.Menu
 import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
 
 internal data class NavigationEndpointItem(
@@ -64,12 +65,7 @@ internal data class NavigationEndpointItem(
                                 }
                                 data class Header(
                                     val overlayPanelHeaderRenderer: OverlayPanelHeaderRenderer?
-                                ) {
-                                    data class OverlayPanelHeaderRenderer(
-                                        val title: TextItem?,
-                                        val subtitle: TextItem?
-                                    )
-                                }
+                                )
                             }
                         }
                     }
@@ -662,3 +658,14 @@ internal data class TrackingParam(
         val value: String?
     )
 }
+
+internal data class OverlayPanelHeaderRenderer(
+    val title: TextItem?,
+    val subtitle: TextItem?,
+    val image: ThumbnailItem?
+)
+
+internal data class EngagementPanelTitleHeaderRenderer(
+    val menu: Menu?,
+    val title: TextItem?
+)

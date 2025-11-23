@@ -246,16 +246,13 @@ internal data class EngagementPanel(
     data class EngagementPanelSectionListRenderer(
         val panelIdentifier: String?,
         val header: Header?,
-        val content: Content?
+        val content: Content?,
+        val identifier: Identifier?
     ) {
         data class Header(
-            val engagementPanelTitleHeaderRenderer: EngagementPanelTitleHeaderRenderer?
-        ) {
-            data class EngagementPanelTitleHeaderRenderer(
-                val menu: Menu?,
-                val title: TextItem?
-            )
-        }
+            val engagementPanelTitleHeaderRenderer: EngagementPanelTitleHeaderRenderer?,
+            val overlayPanelHeaderRenderer: OverlayPanelHeaderRenderer?
+        )
         data class Content(
             val structuredDescriptionContentRenderer: StructuredDescriptionContentRenderer?,
             val macroMarkersListRenderer: MacroMarkersListRenderer?,
@@ -276,6 +273,9 @@ internal data class EngagementPanel(
                 val contents: List<SectionWrapper?>?
             )
         }
+        data class Identifier(
+            val tag: String?
+        )
     }
 }
 

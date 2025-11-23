@@ -34,6 +34,9 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
     private val descriptionPanel by lazy {
         watchNextResult.getDescriptionPanel()
     }
+    private val collaboratorPanel by lazy {
+        watchNextResult.getCollaboratorPanel()
+    }
     private val liveChatKeyItem by lazy {
         watchNextResult.getLiveChatToken()
     }
@@ -103,8 +106,10 @@ internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
         )
     }
     private val videoAuthor by lazy { videoDetails?.getUserName() }
-    private val subscriberCountItem by lazy { videoOwner?.getSubscriberCount() }
-    private val videoAuthorImageUrl by lazy { (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails())?.getOptimalResThumbnailUrl() }
+    private val subscriberCountItem by lazy { videoOwner?.getSubscriberCount() ?: collaboratorPanel?.getSubscribersCount() }
+    private val videoAuthorImageUrl by lazy {
+        (videoOwner?.getThumbnails() ?: channelOwner?.getThumbnails() ?: collaboratorPanel?.getThumbnails())?.getOptimalResThumbnailUrl()
+    }
     private val suggestionList by lazy {
         // NOTE: the result also contains unnamed sections (new suggestions type)
         val list = suggestedSections

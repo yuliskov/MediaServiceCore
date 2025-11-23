@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 
 public final class YouTubeHelper {
+    public static final String TEXT_DELIM = "•";
+    public static final String TEXT_DELIM_ALT = "·";
     /**
      * NOTE: Optimal thumbnail index is 3. Lower values cause black borders around images on Chromecast and Sony.
      */

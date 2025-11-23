@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.next.v2.gen
 
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.PlaylistVideoListRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
 import com.liskovsoft.youtubeapi.browse.v2.gen.getItems
@@ -52,6 +53,7 @@ internal fun WatchNextResult.getChapters() = getPlayerOverlays()?.decoratedPlaye
         ?.firstNotNullOfOrNull { it?.payload?.macroMarkersListEntity?.markersList?.takeIf { it.markerType == MARKER_TYPE_CHAPTERS }?.markers }
 internal fun WatchNextResult.getCommentPanel() = engagementPanels?.firstOrNull { it?.isCommentsSection() == true }
 internal fun WatchNextResult.getDescriptionPanel() = engagementPanels?.firstOrNull { it?.isDescriptionSection() == true }
+internal fun WatchNextResult.getCollaboratorPanel() = engagementPanels?.firstOrNull { it?.isCollaboratorSection() == true }
 internal fun WatchNextResult.isEmpty(): Boolean = getSuggestedSections()?.isEmpty() ?: true
 private fun WatchNextResult.getAutoplaySet() = getWatchNextResults()?.autoplay?.autoplay?.sets?.getOrNull(0)
 
@@ -193,6 +195,7 @@ internal fun EngagementPanel.getTopCommentsToken(): String? = getSubMenuItems()?
 internal fun EngagementPanel.getNewCommentsToken(): String? = getSubMenuItems()?.getOrNull(1)?.continuation?.getContinuationToken()
 internal fun EngagementPanel.isCommentsSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "comment-item-section"
 internal fun EngagementPanel.isDescriptionSection(): Boolean = engagementPanelSectionListRenderer?.panelIdentifier == "video-description-ep-identifier"
+internal fun EngagementPanel.isCollaboratorSection(): Boolean = engagementPanelSectionListRenderer?.identifier?.tag?.startsWith("channel-actions-panel-") ?: false
 internal fun EngagementPanel.getTitle(): String? = getDescriptionHeader()?.title?.getText()
 internal fun EngagementPanel.getChannelName(): String? = getDescriptionHeader()?.channel?.getText()
 internal fun EngagementPanel.getViews(): String? = getDescriptionHeader()?.views?.getText()
@@ -200,6 +203,8 @@ internal fun EngagementPanel.getPublishDate(): String? = getDescriptionHeader()?
 internal fun EngagementPanel.getBrowseId(): String? = getDescriptionHeader()?.channelNavigationEndpoint?.getBrowseId()
 internal fun EngagementPanel.getLikeCount(): String? = getDescriptionHeader()?.factoid?.firstOrNull()?.getValue()
 internal fun EngagementPanel.getDescriptionText(): String? = getDescriptionBody()?.descriptionBodyText?.getText()
+internal fun EngagementPanel.getThumbnails(): ThumbnailItem? = getHeader()?.image
+internal fun EngagementPanel.getSubscribersCount(): String? = getHeader()?.subtitle?.getText()?.split(YouTubeHelper.TEXT_DELIM_ALT)?.last()
 private fun EngagementPanel.getDescriptionHeader(): VideoDescriptionHeaderRenderer? =
     getDescriptionItems()?.firstNotNullOfOrNull { it?.videoDescriptionHeaderRenderer }
 private fun EngagementPanel.getDescriptionBody(): ExpandableVideoDescriptionBodyRenderer? =
@@ -208,6 +213,7 @@ private fun EngagementPanel.getSections() = engagementPanelSectionListRenderer?.
 private fun EngagementPanel.getSubMenuItems() =
     engagementPanelSectionListRenderer?.header?.engagementPanelTitleHeaderRenderer?.menu?.sortFilterSubMenuRenderer?.subMenuItems
 private fun EngagementPanel.getDescriptionItems() = engagementPanelSectionListRenderer?.content?.structuredDescriptionContentRenderer?.items
+private fun EngagementPanel.getHeader() = engagementPanelSectionListRenderer?.header?.overlayPanelHeaderRenderer
 
 ///////
 

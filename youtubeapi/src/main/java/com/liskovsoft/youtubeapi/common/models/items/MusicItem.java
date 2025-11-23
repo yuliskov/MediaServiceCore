@@ -1,12 +1,12 @@
 package com.liskovsoft.youtubeapi.common.models.items;
 
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
 
 import java.util.List;
 
 public class MusicItem {
-    private static final String TERTIARY_TEXT_DELIM = "•";
     @JsonPath("$.navigationEndpoint.watchEndpoint.videoId")
     private String mVideoId;
     @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
@@ -69,11 +69,11 @@ public class MusicItem {
             return mViewCountText;
         }
 
-        if (mViewsAndPublished == null || !mViewsAndPublished.contains(TERTIARY_TEXT_DELIM)) {
+        if (mViewsAndPublished == null || !mViewsAndPublished.contains(YouTubeHelper.TEXT_DELIM)) {
             return null;
         }
 
-        return mViewsAndPublished.split(TERTIARY_TEXT_DELIM)[0];
+        return mViewsAndPublished.split(YouTubeHelper.TEXT_DELIM)[0];
     }
 
     public String getPublishedText() {
@@ -81,11 +81,11 @@ public class MusicItem {
             return mPublishedText;
         }
 
-        if (mViewsAndPublished == null || !mViewsAndPublished.contains(TERTIARY_TEXT_DELIM)) {
+        if (mViewsAndPublished == null || !mViewsAndPublished.contains(YouTubeHelper.TEXT_DELIM)) {
             return null;
         }
 
-        return mViewsAndPublished.split(TERTIARY_TEXT_DELIM)[1];
+        return mViewsAndPublished.split(YouTubeHelper.TEXT_DELIM)[1];
     }
 
     public String getLengthText() {

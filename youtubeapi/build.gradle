@@ -36,6 +36,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // gradle 4.6 migration: disable dimensions mechanism
+    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
+    flavorDimensions "default"
+
+    productFlavors {
+        stbeta {}
+        ststable {}
+        stfdroid {}
+    }
 }
 
 dependencies {
@@ -80,7 +90,9 @@ dependencies {
     //implementation(name: 'j2v8-6.2.1', ext: 'aar')
     //implementation files('libs/j2v8-6.2.1-fixed.aar')
     // https://stackoverflow.com/questions/60878599/error-building-android-library-direct-local-aar-file-dependencies-are-not-supp
-    implementation project(':j2v8')
+    stbetaImplementation project(':j2v8')
+    ststableImplementation project(':j2v8')
+    stfdroidImplementation 'com.eclipsesource.j2v8:j2v8:' + j2v8Version + '@aar'
 
     // Add kotlin support libs
     implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion

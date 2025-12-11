@@ -4,7 +4,9 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.ContinuationItemRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.ReelWatchEndpoint
 import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 import com.liskovsoft.youtubeapi.next.v2.gen.EngagementPanel
+import com.liskovsoft.youtubeapi.next.v2.gen.LikeButtonRenderer
 import com.liskovsoft.youtubeapi.next.v2.gen.Menu
+import com.liskovsoft.youtubeapi.next.v2.gen.VideoMetadataRenderer
 import com.liskovsoft.youtubeapi.next.v2.gen.VideoOwnerItem
 
 internal data class NavigationEndpointItem(
@@ -114,7 +116,8 @@ internal data class ButtonContentWrapper(
     val videoOwnerRenderer: VideoOwnerItem?,
     val toggleButtonRenderer: ToggleButtonRenderer?,
     val buttonRenderer: ButtonRenderer?,
-    val musicPlayButtonRenderer: MusicPlayButtonRenderer?
+    val musicPlayButtonRenderer: MusicPlayButtonRenderer?,
+    val likeButtonRenderer: LikeButtonRenderer?
 )
 
 internal data class ButtonRenderer(

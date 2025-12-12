@@ -378,7 +378,7 @@ class YouTubeContentService implements ContentService {
 
             // Special type of channel that could be found inside Music section (see Liked row More button)
             if (YouTubeHelper.isGridChannel(canonicalId)) {
-                MediaGroup gridChannel = getBrowseService2().getGridChannel(canonicalId);
+                MediaGroup gridChannel = getBrowseService2().getGridChannel(canonicalId, params);
 
                 if (gridChannel instanceof BaseMediaGroup && !gridChannel.isEmpty()) {
                     ((BaseMediaGroup) gridChannel).setTitle(title);

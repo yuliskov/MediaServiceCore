@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.getPlaylistId
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
@@ -182,7 +183,7 @@ internal open class BrowseService2 {
     }
 
     fun getHistory(): MediaGroup? {
-        return getBrowseGridTV(BrowseApiHelper::getMyLibraryQuery, MediaGroup.TYPE_HISTORY)
+        return getBrowseGridTV(BrowseApiHelper::getMyHistoryQuery, MediaGroup.TYPE_HISTORY)
     }
 
     private fun getLikedMusicWeb(): MediaGroup? {
@@ -215,7 +216,20 @@ internal open class BrowseService2 {
         val options = MediaGroupOptions.create(MediaGroup.TYPE_USER_PLAYLISTS)
         val result = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getMyPlaylistQuery(options.clientTV))
 
-        return RetrofitHelper.get(result)?.let { BrowseMediaGroupTV(it, options) }
+        return RetrofitHelper.get(result)?.let {
+            if (it.getItems()?.firstOrNull { it?.getPlaylistId().equals(BrowseApiHelper.WATCH_LATER_PLAYLIST) } != null) {
+                BrowseMediaGroupTV(it, options)
+            } else {
+                val library = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getMyLibraryQuery(options.clientTV))
+
+                val outer = it
+
+                RetrofitHelper.get(library)?.let {
+                    val watchLater = it.getItems()?.getOrNull(1)
+                    BrowseMediaGroupTV(outer, options, watchLater?.let { outer.getItems()?.toMutableList()?.apply { add(0, it) } })
+                }
+            }
+        }
     }
 
     private fun continueShortsWeb(continuationKey: String?, auth: Boolean = false): MediaGroup? {
@@ -383,8 +397,8 @@ internal open class BrowseService2 {
     /**
      * A special type of a channel that could be found inside Music section (see Liked row More button)
      */
-    fun getGridChannel(channelId: String): MediaGroup? {
-        return getBrowseGridTV({ BrowseApiHelper.getChannelQuery(it, channelId) }, MediaGroup.TYPE_CHANNEL_UPLOADS)
+    fun getGridChannel(channelId: String, params: String? = null): MediaGroup? {
+        return getBrowseGridTV({ BrowseApiHelper.getChannelQuery(it, channelId, params) }, MediaGroup.TYPE_CHANNEL_UPLOADS)
     }
 
     open fun getGroup(reloadPageKey: String, type: Int, title: String?): MediaGroup? {

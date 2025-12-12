@@ -5,6 +5,12 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 
 internal object BrowseApiHelper {
+    const val WATCH_LATER_CHANNEL_ID = "VLWL"
+    const val LIKED_CHANNEL_ID = "VLLL"
+    const val FAVORITES_CHANNEL_ID = "VLFL" // NOTE: it's only the beginning part
+    const val WATCH_LATER_PLAYLIST = "WL"
+    const val LIKED_PLAYLIST = "LL"
+
     private const val CHANNEL = "\"browseId\":\"%s\""
     private const val CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\""
     private const val CHANNEL_HOME = "\"browseId\":\"%s\",\"params\":\"EghmZWF0dXJlZPIGBAoCMgA%%3D\""
@@ -33,6 +39,9 @@ internal object BrowseApiHelper {
     private const val NEW_MUSIC_ALBUMS = "\"browseId\":\"FEmusic_new_releases_albums\""
     private const val MY_PLAYLISTS = "\"browseId\":\"FEplaylist_aggregation\""
     private const val MY_LIBRARY = "\"browseId\":\"FEmy_youtube\""
+    private const val MY_LIBRARY2 = "\"browseId\":\"FElibrary\""
+    private const val MY_WATCH_LATER = "\"browseId\":\"FEmy_youtube\",\"params\":\"cAc%3D\""
+    private const val MY_HISTORY = "\"browseId\":\"FEhistory\""
     private const val GAMING = "\"browseId\":\"FEtopics_gaming\""
     private const val NEWS = "\"browseId\":\"FEtopics_news\""
     private const val REEL = "\"disablePlayerResponse\":true,\"inputType\":\"REEL_WATCH_INPUT_TYPE_SEEDLESS\",\"params\":\"CA8%3D\""
@@ -131,7 +140,15 @@ internal object BrowseApiHelper {
     }
 
     fun getMyLibraryQuery(client: AppClient): String {
-        return PostDataHelper.createQuery(client.browseTemplate, MY_LIBRARY)
+        return PostDataHelper.createQuery(client.browseTemplate, MY_LIBRARY2)
+    }
+
+    fun getMyHistoryQuery(client: AppClient): String {
+        return PostDataHelper.createQuery(client.browseTemplate, MY_HISTORY)
+    }
+
+    fun getMyWatchLaterQuery(client: AppClient): String {
+        return PostDataHelper.createQuery(client.browseTemplate, MY_WATCH_LATER)
     }
 
     fun getReelDetailsQuery(client: AppClient, videoId: String, params: String): String {

@@ -28,6 +28,7 @@ internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMedia
     override val badgeTextItem by lazy { itemWrapper.getBadgeText() }
     override val lengthText by lazy { itemWrapper.getLengthText() }
     override val channelIdItem by lazy { itemWrapper.getChannelId() }
+    override val playlistParamsItem by lazy { itemWrapper.getChannelParams() }
     override val isLiveItem by lazy { itemWrapper.isLive() }
     override val isUpcomingItem by lazy { itemWrapper.isUpcoming() }
     override val isShortsItem by lazy { itemWrapper.isShorts() }

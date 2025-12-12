@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.common.models.impl.mediagroup
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.youtubeapi.common.helpers.AppConstants
+import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 
@@ -37,7 +37,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
             if (options.groupType != MediaGroup.TYPE_USER_PLAYLISTS)
                 return@let it
 
-            val idx = it.indexOfFirst { it.channelId == AppConstants.WATCH_LATER_CHANNEL_ID }
+            val idx = it.indexOfFirst { it.channelId == BrowseApiHelper.WATCH_LATER_CHANNEL_ID }
 
             if (idx == -1 || idx >= it.size)
                 return@let it

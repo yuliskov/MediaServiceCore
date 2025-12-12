@@ -90,8 +90,8 @@ internal enum class AppClient(
     val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR, GEO) }
     val isReelClient by lazy { Helpers.equalsAny(this, ANDROID_REEL) }
     val isTVClient by lazy { name.startsWith("TV") }
+    val isWebClient by lazy { Helpers.startsWithAny(name, "WEB", "MWEB", "INITIAL", "GEO") }
     val isEmbedded by lazy { Helpers.equalsAny(this, WEB_EMBED, TV_EMBED) }
-    private val isWebClient by lazy { !Helpers.equalsAny(this, ANDROID, ANDROID_VR, ANDROID_REEL, ANDROID_SDK_LESS, IOS) }
 
     private fun extractBrowserInfo(userAgent: String): Pair<String, String> {
         // Include Shorts: "browserName":"Cobalt"

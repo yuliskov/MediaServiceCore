@@ -248,6 +248,10 @@ internal class QueryBuilder(private val client: AppClient) {
     private fun createTimestampChunk(): String {
         // isInlinePlaybackNoAd https://iter.ca/post/yt-adblock/
         // According to someone in the YouTube.js Discord server, setting supportXhr to false brings the URLs back for TV (matrix chat)
+        // use_ad_playback_context`: Skip preroll ads to eliminate the mandatory wait period before download.
+        // Do NOT use this when passing premium account cookies to yt-dlp, as it will result in a loss of premium formats.
+        // Only effective with the `web`, `web_safari`, `web_music` and `mweb` player clients. Either `true` or `false`
+        // use_ad_playback_context extractor-arg: https://github.com/yt-dlp/yt-dlp/commit/f7acf3c1f42cc474927ecc452205d7877af36731
         return signatureTimestamp?.let {
             """
                 "playbackContext": {

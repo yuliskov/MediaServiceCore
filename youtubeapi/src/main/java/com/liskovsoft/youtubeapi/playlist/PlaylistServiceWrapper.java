@@ -8,7 +8,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
@@ -177,7 +177,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private static void renameCachedPlaylist(String playlistId, String newName) {
-        if (Helpers.equalsAny(playlistId, AppConstants.LIKED_PLAYLIST, AppConstants.WATCH_LATER_PLAYLIST)) {
+        if (Helpers.equalsAny(playlistId, BrowseApiHelper.LIKED_PLAYLIST, BrowseApiHelper.WATCH_LATER_PLAYLIST)) {
             throw new IllegalStateException("Can't rename a special playlist!");
         }
 

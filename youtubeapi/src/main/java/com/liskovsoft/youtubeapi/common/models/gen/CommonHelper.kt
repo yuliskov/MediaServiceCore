@@ -199,6 +199,7 @@ internal fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail ?:
 internal fun TileItem.getMovingThumbnails() = header?.tileHeaderRenderer?.let { it.movingThumbnail ?: it.onFocusThumbnail }
 internal fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
 internal fun TileItem.getChannelId() = onSelectCommand?.getBrowseId() ?: getMenu()?.getBrowseId()
+internal fun TileItem.getChannelParams() = onSelectCommand?.getParams()
 internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType
@@ -322,6 +323,7 @@ internal fun ItemWrapper.getPlaylistId() = getVideoItem()?.getPlaylistId() ?: ge
     ?: getPlaylistItem()?.getPlaylistId() ?: getRadioItem()?.getPlaylistId()
 internal fun ItemWrapper.getChannelId() = getVideoItem()?.getChannelId() ?: getMusicItem()?.getChannelId() ?: getTileItem()?.getChannelId()
     ?: getChannelItem()?.getChannelId() ?: getRadioItem()?.getChannelId()
+internal fun ItemWrapper.getChannelParams() = getTileItem()?.getChannelParams()
 internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex() ?: getMusicItem()?.getPlaylistIndex() ?: getTileItem()?.getPlaylistIndex()
 internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: getLockupItem()?.isLive() ?: false
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming() ?: false

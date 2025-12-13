@@ -20,7 +20,7 @@ public class TestHelpers extends TestHelpersBase {
             return mAuthorization;
         }
 
-        AccessToken token = AuthService.instance().getAccessTokenRaw(ApiKeys.RAW_JSON_AUTH_DATA_V2);
+        AccessToken token = AuthService.instance().updateAccessTokenRaw(ApiKeys.RAW_JSON_AUTH_DATA_V2);
 
         if (token == null) {
             throw new IllegalStateException("Token is null");

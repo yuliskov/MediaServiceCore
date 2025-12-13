@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.service.internal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange;
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -11,7 +12,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.auth.V2.AuthService;
-import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -86,7 +86,7 @@ public class YouTubeAccountManager {
             emitter.onNext(userCodeResult.getUserCode());
 
             try {
-                RefreshToken token = getAuthService().getRefreshTokenWait(userCodeResult.getDeviceCode());
+                AccessToken token = getAuthService().getAccessTokenWait(userCodeResult.getDeviceCode());
 
                 persistRefreshToken(token.getRefreshToken());
 

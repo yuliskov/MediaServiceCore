@@ -11,6 +11,7 @@ import java.io.InputStream
 
 internal object DriveServiceInt {
     private const val FILE_MIME_TYPE = "text/plain"
+    private const val FOLDER_MIME_TYPE = "application/vnd.google-apps.folder"
     private val mDriveApi = RetrofitHelper.create(DriveApi::class.java)
     private val mSignInService = GoogleSignInService.instance()
 
@@ -57,13 +58,22 @@ internal object DriveServiceInt {
     }
 
     @JvmStatic
-    fun getList(path: Uri): List<String?>? {
+    fun getFileList(path: Uri): List<String?>? {
+        return getList(path, FILE_MIME_TYPE)
+    }
+
+    @JvmStatic
+    fun getFolderList(path: Uri): List<String?>? {
+        return getList(path, FOLDER_MIME_TYPE)
+    }
+
+    private fun getList(path: Uri, mimeType: String): List<String?>? {
         mSignInService.checkAuth()
 
         val folderId = findFileId(path) ?: return null
 
         // List folder contents
-        val folderContentsQuery = "mimeType='$FILE_MIME_TYPE' and parents in '$folderId'"
+        val folderContentsQuery = "mimeType='$mimeType' and parents in '$folderId'"
 
         return RetrofitHelper.get(mDriveApi.getList(folderContentsQuery))?.files?.mapNotNull { it?.name }
     }

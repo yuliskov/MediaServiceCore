@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.auth.V1;
 
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
@@ -50,7 +49,7 @@ public class AuthApiTest {
     // Fail
     //@Test
     public void testThatUserIsAuthenticated() throws IOException {
-        Call<AccessToken> wrapper = mService.getAccessToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
+        Call<AccessToken> wrapper = mService.updateAccessToken(RequestBody.create(null, RAW_POST_DATA.getBytes()));
 
         Response<AccessToken> execute = wrapper.execute();
 
@@ -62,7 +61,7 @@ public class AuthApiTest {
     
     @Test
     public void testThatUserCanRefreshToken() throws IOException {
-        Call<AccessToken> wrapper = mService.getAccessToken(REFRESH_TOKEN, CLIENT_ID,
+        Call<AccessToken> wrapper = mService.updateAccessToken(REFRESH_TOKEN, CLIENT_ID,
                 CLIENT_SECRET,
                 GRANT_TYPE);
 
@@ -83,7 +82,7 @@ public class AuthApiTest {
 
     @Test
     public void testThatUserStillNotSignedIn() throws IOException {
-        RefreshToken token = getAccessToken();
+        AccessToken token = getAccessToken();
         assertEquals("authorization_pending", token.getError());
     }
 
@@ -111,12 +110,12 @@ public class AuthApiTest {
         return response.body();
     }
 
-    private RefreshToken getAccessToken() throws IOException {
+    private AccessToken getAccessToken() throws IOException {
         UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<RefreshToken> token = mService.getRefreshToken(userCode.getDeviceCode(), mAppService.getClientId(), mAppService.getClientSecret(), AuthApiHelper.getAccessGrantType());
-        Response<RefreshToken> response = token.execute();
+        Call<AccessToken> token = mService.getAccessToken(userCode.getDeviceCode(), mAppService.getClientId(), mAppService.getClientSecret(), AuthApiHelper.getAccessGrantType());
+        Response<AccessToken> response = token.execute();
         return response.body();
     }
 }

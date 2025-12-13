@@ -163,7 +163,7 @@ public class YouTubeSignInService implements SignInService {
         AccessToken token = null;
 
         if (refreshToken != null) {
-            token = getAuthService().getAccessToken(refreshToken);
+            token = getAuthService().updateAccessToken(refreshToken);
         }
 
         return token;

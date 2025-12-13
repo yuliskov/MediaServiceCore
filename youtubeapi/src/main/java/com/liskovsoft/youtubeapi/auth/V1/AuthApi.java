@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.auth.V1;
 
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
-import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 
@@ -24,21 +23,21 @@ public interface AuthApi {
 
     @FormUrlEncoded
     @POST("https://www.youtube.com/o/oauth2/token")
-    Call<RefreshToken> getRefreshToken(@Field("code") String deviceCode,
-                                       @Field("client_id") String clientId,
-                                       @Field("client_secret") String clientSecret,
-                                       @Field("grant_type") String grantType);
-
-    @FormUrlEncoded
-    @POST("https://www.youtube.com/o/oauth2/token")
-    Call<AccessToken> getAccessToken(@Field("refresh_token") String refreshToken,
+    Call<AccessToken> getAccessToken(@Field("code") String deviceCode,
                                      @Field("client_id") String clientId,
                                      @Field("client_secret") String clientSecret,
                                      @Field("grant_type") String grantType);
 
+    @FormUrlEncoded
+    @POST("https://www.youtube.com/o/oauth2/token")
+    Call<AccessToken> updateAccessToken(@Field("refresh_token") String refreshToken,
+                                        @Field("client_id") String clientId,
+                                        @Field("client_secret") String clientSecret,
+                                        @Field("grant_type") String grantType);
+
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("https://www.youtube.com/o/oauth2/token")
-    Call<AccessToken> getAccessToken(@Body RequestBody rawBody);
+    Call<AccessToken> updateAccessToken(@Body RequestBody rawBody);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/account/accounts_list")

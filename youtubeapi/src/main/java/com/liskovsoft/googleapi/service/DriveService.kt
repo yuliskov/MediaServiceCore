@@ -24,7 +24,12 @@ object DriveService {
     }
 
     @JvmStatic
-    fun getList(path: Uri): Observable<List<String?>?> {
-        return RxHelper.fromCallable { DriveServiceInt.getList(path) }
+    fun getFileList(path: Uri): Observable<List<String?>?> {
+        return RxHelper.fromCallable { DriveServiceInt.getFileList(path) }
+    }
+
+    @JvmStatic
+    fun getFolderList(path: Uri): Observable<List<String?>?> {
+        return RxHelper.fromCallable { DriveServiceInt.getFolderList(path) }
     }
 }

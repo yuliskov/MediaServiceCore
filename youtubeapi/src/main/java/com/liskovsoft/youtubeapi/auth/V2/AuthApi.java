@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.auth.V2;
 
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
-import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
@@ -19,11 +18,11 @@ public interface AuthApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/o/oauth2/token")
-    Call<RefreshToken> getRefreshToken(@Body String authQuery);
+    Call<AccessToken> getAccessToken(@Body String authQuery);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/o/oauth2/token")
-    Call<AccessToken> getAccessToken(@Body String authQuery);
+    Call<AccessToken> updateAccessToken(@Body String authQuery);
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/account/accounts_list")

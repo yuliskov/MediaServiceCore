@@ -54,7 +54,7 @@ public class OAuth2Service {
      */
     public AccessToken updateAccessToken(String refreshToken) {
         Call<AccessToken> wrapper = mOAuth2Api.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE_REFRESH, refreshToken);
-        return RetrofitHelper.get(wrapper);
+        return RetrofitHelper.getWithErrors(wrapper);
     }
 
     public AccessToken getAccessTokenWait(String deviceCode) throws InterruptedException {

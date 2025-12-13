@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
-import com.liskovsoft.googlecommon.common.models.auth.RefreshToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
@@ -53,8 +52,8 @@ public class AuthService {
      * @param deviceCode the code contained inside the response of the method {@link #getUserCode()}
      * @return refresh token that should be stored inside the app registry for future use
      */
-    public RefreshToken getRefreshToken(String deviceCode) {
-        Call<RefreshToken> wrapper = mAuthApi.getRefreshToken(
+    public AccessToken getAccessToken(String deviceCode) {
+        Call<AccessToken> wrapper = mAuthApi.getAccessToken(
                 AuthApiHelper.getRefreshTokenQuery(
                         deviceCode,
                         mAppService.getClientId(),
@@ -68,8 +67,8 @@ public class AuthService {
      * @param refreshToken token obtained from previous method
      * @return temporal access token
      */
-    public AccessToken getAccessToken(String refreshToken) {
-        Call<AccessToken> wrapper = mAuthApi.getAccessToken(
+    public AccessToken updateAccessToken(String refreshToken) {
+        Call<AccessToken> wrapper = mAuthApi.updateAccessToken(
                 AuthApiHelper.getAccessTokenQuery(refreshToken,
                         mAppService.getClientId(),
                         mAppService.getClientSecret())
@@ -77,18 +76,18 @@ public class AuthService {
         return RetrofitHelper.getWithErrors(wrapper);
     }
 
-    public AccessToken getAccessTokenRaw(String rawJsonAuthData) {
-        Call<AccessToken> wrapper = mAuthApi.getAccessToken(rawJsonAuthData);
+    public AccessToken updateAccessTokenRaw(String rawJsonAuthData) {
+        Call<AccessToken> wrapper = mAuthApi.updateAccessToken(rawJsonAuthData);
         return RetrofitHelper.get(wrapper);
     }
 
-    public RefreshToken getRefreshTokenWait(String deviceCode) throws InterruptedException {
-        RefreshToken tokenResult = null;
+    public AccessToken getAccessTokenWait(String deviceCode) throws InterruptedException {
+        AccessToken tokenResult = null;
 
         for (int i = 0; i < REFRESH_TOKEN_ATTEMPTS; i++) {
             Thread.sleep(REFRESH_TOKEN_ATTEMPT_INTERVAL_MS);
 
-            tokenResult = getRefreshToken(deviceCode);
+            tokenResult = getAccessToken(deviceCode);
 
             if (tokenResult != null && tokenResult.getRefreshToken() != null) {
                 break;

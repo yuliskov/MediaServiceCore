@@ -11,6 +11,7 @@ object DefaultHeaders {
 
     // NOTE: Possible OOM exception!!! Uses more RAM because of decompression. Fast!
     private const val ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br" // NOTE: HttpUrlConnection won't work with compression
+    private const val ACCEPT_ENCODING_COMPRESSED_LITE = "gzip, deflate" // br doesn't work good with ByeByeDPI
 
     // No compression. Optimal RAM usage! Slow.
     private const val ACCEPT_ENCODING_NONE = "identity"

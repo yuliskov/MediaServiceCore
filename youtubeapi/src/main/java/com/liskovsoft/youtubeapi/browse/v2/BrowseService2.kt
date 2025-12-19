@@ -219,13 +219,13 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(result)?.let {
             if (it.getItems()?.firstOrNull { it?.getPlaylistId().equals(BrowseApiHelper.WATCH_LATER_PLAYLIST) } != null) {
                 BrowseMediaGroupTV(it, options)
-            } else {
+            } else { // No Watch Later (moved to the dedicated subsection)
                 val library = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getMyLibraryQuery(options.clientTV))
 
                 val outer = it
 
                 RetrofitHelper.get(library)?.let {
-                    val watchLater = it.getItems()?.getOrNull(1)
+                    val watchLater = it.getItems()?.getOrNull(1) // Watch Later subsection
                     BrowseMediaGroupTV(outer, options, watchLater?.let { outer.getItems()?.toMutableList()?.apply { add(0, it) } })
                 }
             }

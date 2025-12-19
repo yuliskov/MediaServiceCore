@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.PathNotFoundException;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPathObj;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
@@ -179,7 +180,10 @@ public class JsonPathTypeAdapter<T> {
         }
 
         try {
-            if (jsonVal instanceof JsonArray) {
+            if (JsonPathObj.class.isAssignableFrom(field.getType())) {
+                Object val = readType(field.getType(), jsonVal.toString());
+                field.set(obj, val);
+            } else if (jsonVal instanceof JsonArray) {
                 List<Object> list = null;
                 Class<?> myType = ReflectionHelper.getGenericParamType(field);
 

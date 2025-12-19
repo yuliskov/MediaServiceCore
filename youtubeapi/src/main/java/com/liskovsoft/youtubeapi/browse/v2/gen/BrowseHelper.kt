@@ -99,16 +99,20 @@ private fun RichSectionRenderer.getContents() = content?.richShelfRenderer?.cont
 
 /////
 
+private const val SHELVE_ROW_SIZE = 3 // the modern grid layout is actually rows with the same size
+
 internal fun ShelfListWrapper.getTitle(): String? = getFirstShelfRenderer()?.title?.getText()
 internal fun ShelfListWrapper.getItems(): List<ItemWrapper?>? =
-    // Skip special rows like "Most relevant", "Shorts". Such rows always have a title.
+    // Remain only untitled rows. Helps to filter Subscriptions from "Most relevant" and "Shorts".
     getContents()?.flatMap { it?.takeIf { it.getTitle() == null }?.getItems() ?: emptyList() }
+    // The new approach: filter Subscriptions from 'Most relevant' by keeping the same size rows
+    //getContents()?.flatMap { it?.getItems()?.takeIf { it.size == SHELVE_ROW_SIZE } ?: emptyList() }
 internal fun ShelfListWrapper.getShortItems(): List<ItemWrapper?>? =
     getContents()?.firstNotNullOfOrNull { if (it?.containsShorts() == true) it.getItems() else null }
 internal fun ShelfListWrapper.getContinuationToken() = getContents()?.lastOrNull()?.getContinuationToken() ?: continuations?.getContinuationToken()
 internal fun ShelfListWrapper.getBrowseId() = getFirstShelfRenderer()?.endpoint?.getBrowseId()
 internal fun ShelfListWrapper.getParams() = getFirstShelfRenderer()?.endpoint?.getParams()
-private fun ShelfListWrapper.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
+private fun ShelfListWrapper.getContents() = contents // Contains shelves with items (usually 3 in a row) and single row for shorts
 private fun ShelfListWrapper.getFirstShelfRenderer() = contents?.firstNotNullOfOrNull { it?.shelfRenderer }
 private fun ShelfListWrapper.getFirstGridRenderer() = contents?.firstNotNullOfOrNull { it?.gridRenderer }
 
@@ -220,7 +224,7 @@ internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionL
     } ?: false }
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.contents
-    ?: getSubscriptionsTab()?.getItems()
+    ?: getSubscriptionsTab()?.getItems() // see: getTVListRenderer()?.getItems() for how the actual filter from 'Most relevant' is happening
     ?: getShelves()?.getOrNull(0)?.getItems()
 internal fun BrowseResultTV.getShortItems(): List<ItemWrapper?>? = getSubscriptionsTab()?.getShortItems()
 internal fun BrowseResultTV.getContinuationToken(): String? = getSubscriptionsTab()?.getContinuationToken()
@@ -228,7 +232,7 @@ internal fun BrowseResultTV.getContinuationToken(): String? = getSubscriptionsTa
     ?: getContent()?.sectionListRenderer?.continuations?.getContinuationToken()
     ?: getShelves()?.getOrNull(0)?.getContinuationToken()
     ?: getContent()?.gridRenderer?.getContinuationToken()
-// Get tabs, e.g. Subscriptions section with a channel list (first one is All)
+// Get tabs, e.g. All (Subscriptions), channel1, channel2 etc
 internal fun BrowseResultTV.getTabs() = getSections()?.getOrNull(0)?.tvSecondaryNavSectionRenderer?.tabs?.mapNotNull { it.tabRenderer ?: it.expandableTabRenderer }
 private fun BrowseResultTV.getContent() = contents?.tvBrowseRenderer?.content?.tvSurfaceContentRenderer?.content
 private fun BrowseResultTV.getSections() = contents?.tvBrowseRenderer?.content?.tvSecondaryNavRenderer?.sections

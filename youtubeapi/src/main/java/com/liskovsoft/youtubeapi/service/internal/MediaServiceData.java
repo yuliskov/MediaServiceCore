@@ -362,17 +362,17 @@ public class MediaServiceData {
                         null, null, mNSigData, mSigData, null, mPlayerExtractorCache));
     }
 
+    public void persistNow() {
+        RxHelper.disposeActions(mPersistAction);
+
+        mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); });
+    }
+
     private void persistData() {
         RxHelper.disposeActions(mPersistAction);
 
         // Improve memory usage by merging multiple persist requests
         mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); }, 5_000);
-    }
-
-    public void persistNow() {
-        RxHelper.disposeActions(mPersistAction);
-
-        mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); });
     }
 
     private void resetSensitiveData() {

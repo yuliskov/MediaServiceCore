@@ -28,6 +28,10 @@ internal class DeviceInfo : JsonPathObj() {
     var gl: String? = null
         private set
 
+    @JsonPath("$[3]")
+    var remoteHost: String? = null
+        private set
+
     @JsonPath("$[13]")
     var visitorData: String? = null
         private set
@@ -42,6 +46,13 @@ internal class DeviceInfo : JsonPathObj() {
 
     @JsonPath("$[18]")
     var osVersion: String? = null
+        private set
+
+    @JsonPath("$[61]")
+    private var configInfo: List<String?>? = null
+
+    var appInstallData: String? = null
+        get() = configInfo?.last()
         private set
 
     @JsonPath("$[79]")

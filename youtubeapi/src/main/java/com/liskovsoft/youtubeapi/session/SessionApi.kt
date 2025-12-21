@@ -13,6 +13,6 @@ internal interface SessionApi {
         "Accept: */*",
         "Referer: https://www.youtube.com/sw.js"
     )
-    @GET("https://www.youtube.com/sw.js_data")
+    @GET("https://www.youtube.com/sw.js_data") // new URL('/sw.js_data', Constants.URLS.YT_BASE)
     fun getSessionData(@HeaderMap headers: Map<String, String>): Call<SessionDataResult?>
 }

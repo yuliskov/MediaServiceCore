@@ -115,4 +115,8 @@ internal enum class AppClient(
 
         return null
     }
+
+    companion object {
+        fun hasName(name: String): Boolean = values().any { it.name == name }
+    }
 }

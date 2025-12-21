@@ -649,7 +649,8 @@ internal data class NotificationStateItem(
 }
 
 internal data class ResponseContext(
-    val serviceTrackingParams: List<TrackingParam?>?
+    val serviceTrackingParams: List<TrackingParam?>?,
+    val globalConfigGroup: GlobalConfigGroup?
 )
 
 internal data class TrackingParam(
@@ -659,6 +660,16 @@ internal data class TrackingParam(
     data class Param(
         val key: String?,
         val value: String?
+    )
+}
+
+internal data class GlobalConfigGroup(
+    val rawColdConfigGroup: RawColdConfigGroup?,
+    val coldHashData: String?,
+    val hotHashData: String?
+) {
+    data class RawColdConfigGroup(
+        val configData: String?
     )
 }
 

@@ -1,8 +1,10 @@
-package com.liskovsoft.youtubeapi.session
+package com.liskovsoft.youtubeapi.innertube
 
-import com.liskovsoft.youtubeapi.session.models.SessionDataResult
+import com.google.gson.GsonBuilder
+import com.liskovsoft.youtubeapi.innertube.models.ContextInfo
+import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult
 
-internal object SessionApiHelper {
+internal object InnertubeApiHelper {
     fun createSessionDataHeaders(): Map<String, String> {
         // TODO: replace with the real values
         return mapOf(
@@ -12,16 +14,21 @@ internal object SessionApiHelper {
         )
     }
 
-    fun createInnertubeConfigHeaders(sessionDataResult: SessionDataResult): Map<String, String> {
+    fun createInnertubeConfigHeaders(sessionData: SessionDataResult): Map<String, String> {
         // TODO: replace with the real values
         return buildMap {
             put("Accept-Language", "")
 
-            sessionDataResult.ytcfg?.deviceInfo?.visitorData
+            sessionData.ytcfg?.deviceInfo?.visitorData
                 ?.let { put("X-Goog-Visitor-Id", it) }
 
-            sessionDataResult.ytcfg?.deviceInfo?.clientVersion
+            sessionData.ytcfg?.deviceInfo?.clientVersion
                 ?.let { put("X-Youtube-Client-Version", it) }
         }
+    }
+
+    fun createInnertubeJsonConfig(contextInfo: ContextInfo): String {
+        val gson = GsonBuilder().create() // nulls are ignored by default
+        return gson.toJson(mapOf("context" to contextInfo))
     }
 }

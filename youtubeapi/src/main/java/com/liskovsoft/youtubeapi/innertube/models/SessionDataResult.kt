@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.session.models
+package com.liskovsoft.youtubeapi.innertube.models
 
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPathObj
@@ -7,9 +7,15 @@ internal class SessionDataResult {
     @JsonPath("$[0][2]")
     var ytcfg: YtCfg? = null
         private set
+
+    val deviceInfo: DeviceInfo?
+        get() = ytcfg?.deviceInfo
+
+    val apiKey: String?
+        get() = ytcfg?.apiKey
 }
 
-internal class YtCfg: JsonPathObj() {
+internal class YtCfg: JsonPathObj {
     @JsonPath("$[1]")
     var apiKey: String? = null
         private set
@@ -19,7 +25,7 @@ internal class YtCfg: JsonPathObj() {
         private set
 }
 
-internal class DeviceInfo : JsonPathObj() {
+internal class DeviceInfo : JsonPathObj {
     @JsonPath("$[0]")
     var hl: String? = null
         private set
@@ -51,9 +57,8 @@ internal class DeviceInfo : JsonPathObj() {
     @JsonPath("$[61]")
     private var configInfo: List<String?>? = null
 
-    var appInstallData: String? = null
+    val appInstallData: String?
         get() = configInfo?.last()
-        private set
 
     @JsonPath("$[79]")
     var timeZone: String? = null

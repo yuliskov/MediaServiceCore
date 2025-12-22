@@ -1,7 +1,7 @@
-package com.liskovsoft.youtubeapi.session
+package com.liskovsoft.youtubeapi.innertube
 
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
-import com.liskovsoft.youtubeapi.session.models.InnertubeConfigResult
+import com.liskovsoft.youtubeapi.innertube.models.InnertubeConfigResult
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap

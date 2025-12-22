@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.session.models
+package com.liskovsoft.youtubeapi.innertube.models
 
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import java.util.Date
@@ -22,12 +22,12 @@ internal class ContextInfo(
         val visitorData = options.visitorData ?: deviceInfo.visitorData
         val clientName = options.clientName
         val clientVersion = if (options.clientName == "WEB") deviceInfo.clientVersion
-            else if (options.clientName != null && AppClient.hasName(options.clientName)) AppClient.valueOf(options.clientName).clientVersion
+            else if (AppClient.hasName(options.clientName)) AppClient.valueOf(options.clientName).clientVersion
             else deviceInfo.clientVersion
         val osName = deviceInfo.osName
         val osVersion = deviceInfo.osVersion
         val userAgent = options.userAgent
-        val platform = options.deviceCategory?.uppercase()
+        val platform = options.deviceCategory.uppercase()
         val clientFormFactor = "UNKNOWN_FORM_FACTOR"
         val userInterfaceTheme = "USER_INTERFACE_THEME_LIGHT"
         val timeZone = deviceInfo.timeZone ?: options.timeZone
@@ -50,7 +50,11 @@ internal class ContextInfo(
             val isWebNativeShareAvailable = true
         }
 
-        class ConfigInfo(val appInstallData: String)
+        class ConfigInfo(val appInstallData: String) {
+            lateinit var coldConfigData: String
+            lateinit var coldHashData: String
+            lateinit var hotHashData: String
+        }
     }
 
     class User(options: SessionArgs) {

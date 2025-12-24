@@ -1,6 +1,7 @@
-package com.liskovsoft.youtubeapi.innertube
+package com.liskovsoft.youtubeapi.innertube.api
 
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
+import com.liskovsoft.youtubeapi.innertube.helpers.URLS
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeConfigResult
 import retrofit2.Call
 import retrofit2.http.Body
@@ -13,9 +14,9 @@ internal interface InnertubeConfigApi {
     @Headers(
         "Content-Type: application/json",
         "Accept: */*",
-        "Referer: https://www.youtube.com",
-        "X-Origin: https://www.youtube.com"
+        "Referer: ${URLS.YT_BASE}",
+        "X-Origin: ${URLS.YT_BASE}"
     )
-    @POST("https://www.youtube.com/youtubei/v1/config") // ${Constants.URLS.API.PRODUCTION_1}v1/config?prettyPrint=false
+    @POST("${URLS.API.PRODUCTION_1}v1/config")
     fun retrieveInnertubeConfig(@HeaderMap headers: Map<String, String>, @Body jsonConfig: String): Call<InnertubeConfigResult?>
 }

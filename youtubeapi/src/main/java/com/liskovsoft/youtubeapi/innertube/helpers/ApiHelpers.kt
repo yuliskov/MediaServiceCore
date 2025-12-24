@@ -1,10 +1,10 @@
-package com.liskovsoft.youtubeapi.innertube
+package com.liskovsoft.youtubeapi.innertube.helpers
 
 import com.google.gson.GsonBuilder
 import com.liskovsoft.youtubeapi.innertube.models.ContextInfo
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult
 
-internal object InnertubeApiHelper {
+internal object ApiHelpers {
     fun createSessionDataHeaders(): Map<String, String> {
         // TODO: replace with the real values
         return mapOf(

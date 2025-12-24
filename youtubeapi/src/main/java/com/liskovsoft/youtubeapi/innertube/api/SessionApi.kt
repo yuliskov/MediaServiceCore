@@ -1,6 +1,7 @@
-package com.liskovsoft.youtubeapi.innertube
+package com.liskovsoft.youtubeapi.innertube.api
 
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPathSkip
+import com.liskovsoft.youtubeapi.innertube.helpers.URLS
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult
 import retrofit2.Call
 import retrofit2.http.GET
@@ -11,8 +12,8 @@ import retrofit2.http.Headers
 internal interface SessionApi {
     @Headers(
         "Accept: */*",
-        "Referer: https://www.youtube.com/sw.js"
+        "Referer: ${URLS.YT_BASE}/sw.js"
     )
-    @GET("https://www.youtube.com/sw.js_data") // new URL('/sw.js_data', Constants.URLS.YT_BASE)
+    @GET("${URLS.YT_BASE}/sw.js_data")
     fun getSessionData(@HeaderMap headers: Map<String, String>): Call<SessionDataResult?>
 }

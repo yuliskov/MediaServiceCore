@@ -1,7 +1,15 @@
 package com.liskovsoft.youtubeapi.innertube
 
+import com.liskovsoft.googlecommon.common.api.FileApi
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.youtubeapi.innertube.api.InnertubeConfigApi
+import com.liskovsoft.youtubeapi.innertube.api.SessionApi
+import com.liskovsoft.youtubeapi.innertube.helpers.ApiHelpers
+import com.liskovsoft.youtubeapi.innertube.helpers.DeviceCategory
+import com.liskovsoft.youtubeapi.innertube.helpers.URLS
+import com.liskovsoft.youtubeapi.innertube.helpers.getRandomUserAgent
+import com.liskovsoft.youtubeapi.innertube.helpers.getStringBetweenStrings
 import com.liskovsoft.youtubeapi.innertube.models.ContextInfo
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeConfigResult
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
@@ -18,6 +26,7 @@ import org.robolectric.shadows.ShadowLog
 class InnertubeConfigApiTest {
     private lateinit var mSessionApi: SessionApi
     private lateinit var mInnertubeConfigApi: InnertubeConfigApi
+    private lateinit var mFileApi: FileApi
 
     @Before
     fun setUp() {
@@ -28,6 +37,7 @@ class InnertubeConfigApiTest {
         RetrofitOkHttpHelper.disableCompression = true
         mSessionApi = RetrofitHelper.create(SessionApi::class.java)
         mInnertubeConfigApi = RetrofitHelper.create(InnertubeConfigApi::class.java)
+        mFileApi = RetrofitHelper.create(FileApi::class.java)
     }
 
     @Test
@@ -92,17 +102,42 @@ class InnertubeConfigApiTest {
         )
     }
 
+    @Test
+    fun testGetPlayerId() {
+        val playerId = getPlayerId()
+
+        Assert.assertNotNull("playerId not null", playerId)
+    }
+
+    @Test
+    fun testGetPlayerJs() {
+        val playerId = getPlayerId()
+        
+        val playerUrl = "${URLS.YT_BASE}/s/player/${playerId!!}/player_ias.vflset/en_US/base.js"
+
+        val js = RetrofitHelper.get(mFileApi.getContent(mapOf("User-Agent" to getRandomUserAgent(DeviceCategory.DESKTOP)), playerUrl))
+
+        Assert.assertNotNull("js not null", js)
+    }
+
     private fun getSessionDataResult(): SessionDataResult? {
-        val sessionDataResult = mSessionApi.getSessionData(InnertubeApiHelper.createSessionDataHeaders())
+        val sessionDataResult = mSessionApi.getSessionData(ApiHelpers.createSessionDataHeaders())
         return RetrofitHelper.get(sessionDataResult)
     }
 
     private fun retrieveInnertubeConfig(sessionData: SessionDataResult, context: ContextInfo): InnertubeConfigResult? {
         val innertubeConfigResult =
             mInnertubeConfigApi.retrieveInnertubeConfig(
-                InnertubeApiHelper.createInnertubeConfigHeaders(sessionData),
-                InnertubeApiHelper.createInnertubeJsonConfig(context)
+                ApiHelpers.createInnertubeConfigHeaders(sessionData),
+                ApiHelpers.createInnertubeJsonConfig(context)
             )
         return RetrofitHelper.get(innertubeConfigResult)
+    }
+
+    private fun getPlayerId(): String? {
+        val js = RetrofitHelper.get(mFileApi.getContent("${URLS.YT_BASE}/iframe_api"))
+        Assert.assertNotNull("js not null", js)
+
+        return getStringBetweenStrings(js!!.content!!, "player\\/", "\\/")
     }
 }

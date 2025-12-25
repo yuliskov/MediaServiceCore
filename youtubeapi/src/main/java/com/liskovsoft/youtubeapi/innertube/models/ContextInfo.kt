@@ -20,28 +20,29 @@ internal class ContextInfo(
         val screenPixelDensity = 1
         val screenWidthPoints = 2560
         val visitorData = options.visitorData ?: deviceInfo.visitorData
-        val clientName = options.clientName
-        val clientVersion = if (options.clientName == "WEB") deviceInfo.clientVersion
+        var clientName = options.clientName
+        var clientVersion = if (options.clientName == "WEB") deviceInfo.clientVersion
             else if (AppClient.hasName(options.clientName)) AppClient.valueOf(options.clientName).clientVersion
             else deviceInfo.clientVersion
-        val osName = deviceInfo.osName
-        val osVersion = deviceInfo.osVersion
-        val userAgent = options.userAgent
-        val platform = options.deviceCategory.uppercase()
-        val clientFormFactor = "UNKNOWN_FORM_FACTOR"
+        var osName = deviceInfo.osName
+        var osVersion = deviceInfo.osVersion
+        var androidSdkVersion: Int? = null
+        var userAgent: String? = options.userAgent
+        var platform = options.deviceCategory.uppercase()
+        var clientFormFactor = "UNKNOWN_FORM_FACTOR"
         val userInterfaceTheme = "USER_INTERFACE_THEME_LIGHT"
         val timeZone = deviceInfo.timeZone ?: options.timeZone
         val originalUrl = "https://www.youtube.com" // Constants.URLS.YT_BASE
-        val deviceMake = deviceInfo.deviceMake
-        val deviceModel = deviceInfo.deviceModel
-        val browserName = deviceInfo.browserName
-        val browserVersion = deviceInfo.browserVersion
+        var deviceMake = deviceInfo.deviceMake
+        var deviceModel = deviceInfo.deviceModel
+        var browserName = deviceInfo.browserName
+        var browserVersion = deviceInfo.browserVersion
         val utcOffsetMinutes = -(TimeZone.getDefault().getOffset(Date().time) / 60000) // -Math.floor((new Date()).getTimezoneOffset())
         val memoryTotalKbytes = "8000000"
         val rolloutToken = deviceInfo.rolloutToken
         val deviceExperimentId = deviceInfo.deviceExperimentId
         val mainAppWebInfo: MainAppWebInfo = MainAppWebInfo()
-        val configInfo: ConfigInfo? = deviceInfo.appInstallData?.let { ConfigInfo(it) }
+        var configInfo: ConfigInfo? = deviceInfo.appInstallData?.let { ConfigInfo(it) }
 
         class MainAppWebInfo {
             val graftUrl = "https://www.youtube.com" // Constants.URLS.YT_BASE

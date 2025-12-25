@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.innertube
 import com.liskovsoft.googlecommon.common.api.FileApi
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
-import com.liskovsoft.youtubeapi.innertube.api.InnertubeConfigApi
+import com.liskovsoft.youtubeapi.innertube.api.InnertubeRequestApi
 import com.liskovsoft.youtubeapi.innertube.api.SessionApi
 import com.liskovsoft.youtubeapi.innertube.helpers.ApiHelpers
 import com.liskovsoft.youtubeapi.innertube.helpers.DeviceCategory
@@ -11,7 +11,10 @@ import com.liskovsoft.youtubeapi.innertube.helpers.URLS
 import com.liskovsoft.youtubeapi.innertube.helpers.getRandomUserAgent
 import com.liskovsoft.youtubeapi.innertube.helpers.getStringBetweenStrings
 import com.liskovsoft.youtubeapi.innertube.models.ContextInfo
+import com.liskovsoft.youtubeapi.innertube.models.HTTPClient
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeConfigResult
+import com.liskovsoft.youtubeapi.innertube.models.RequestInit
+import com.liskovsoft.youtubeapi.innertube.models.RequestInitBody
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataProcessed
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult
@@ -23,9 +26,9 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
-class InnertubeConfigApiTest {
+class InnertubeRequestApiTest {
     private lateinit var mSessionApi: SessionApi
-    private lateinit var mInnertubeConfigApi: InnertubeConfigApi
+    private lateinit var mInnertubeRequestApi: InnertubeRequestApi
     private lateinit var mFileApi: FileApi
 
     @Before
@@ -36,7 +39,7 @@ class InnertubeConfigApiTest {
         ShadowLog.stream = System.out // catch Log class output
         RetrofitOkHttpHelper.disableCompression = true
         mSessionApi = RetrofitHelper.create(SessionApi::class.java)
-        mInnertubeConfigApi = RetrofitHelper.create(InnertubeConfigApi::class.java)
+        mInnertubeRequestApi = RetrofitHelper.create(InnertubeRequestApi::class.java)
         mFileApi = RetrofitHelper.create(FileApi::class.java)
     }
 
@@ -76,30 +79,9 @@ class InnertubeConfigApiTest {
 
     @Test
     fun testCreateProcessedSessionData() {
-        val sessionData = getSessionDataResult()
-        Assert.assertNotNull("session data not null", sessionData)
-        val deviceInfo = sessionData!!.deviceInfo
-        Assert.assertNotNull("session data/device info not null", deviceInfo)
+        val sessionDataProcessed = createSessionDataProcessed()
 
-        val options = SessionArgs()
-        val context = ContextInfo(options, deviceInfo!!) // needed later
-
-        val innertubeConfig = retrieveInnertubeConfig(sessionData, context)
-        val coldConfigData = innertubeConfig?.responseContext?.globalConfigGroup?.rawColdConfigGroup?.configData
-        val coldHashData = innertubeConfig?.responseContext?.globalConfigGroup?.coldHashData
-        val hotHashData = innertubeConfig?.responseContext?.globalConfigGroup?.hotHashData
-        val configData = innertubeConfig?.configData
-
-        val sessionDataProcessed = SessionDataProcessed(
-            sessionData.apiKey!!,
-            "v1", // Constants.CLIENTS.WEB.API_VERSION
-            configData!!,
-            context.apply {
-                client.configInfo!!.coldConfigData = coldConfigData!!
-                client.configInfo.coldHashData = coldHashData!!
-                client.configInfo.hotHashData = hotHashData!!
-            }
-        )
+        Assert.assertNotNull("context not null", sessionDataProcessed.context)
     }
 
     @Test
@@ -120,6 +102,16 @@ class InnertubeConfigApiTest {
         Assert.assertNotNull("js not null", js)
     }
 
+    @Test
+    fun testGetVideoResults() {
+        val session = createSessionDataProcessed()
+        val httpClient = HTTPClient(mInnertubeRequestApi, session)
+
+        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody("K04WmBtVsOs", session = session)))
+
+        Assert.assertNotNull("Player result not null", playerResult)
+    }
+
     private fun getSessionDataResult(): SessionDataResult? {
         val sessionDataResult = mSessionApi.getSessionData(ApiHelpers.createSessionDataHeaders())
         return RetrofitHelper.get(sessionDataResult)
@@ -127,7 +119,7 @@ class InnertubeConfigApiTest {
 
     private fun retrieveInnertubeConfig(sessionData: SessionDataResult, context: ContextInfo): InnertubeConfigResult? {
         val innertubeConfigResult =
-            mInnertubeConfigApi.retrieveInnertubeConfig(
+            mInnertubeRequestApi.retrieveInnertubeConfig(
                 ApiHelpers.createInnertubeConfigHeaders(sessionData),
                 ApiHelpers.createInnertubeJsonConfig(context)
             )
@@ -139,5 +131,32 @@ class InnertubeConfigApiTest {
         Assert.assertNotNull("js not null", js)
 
         return getStringBetweenStrings(js!!.content!!, "player\\/", "\\/")
+    }
+
+    private fun createSessionDataProcessed(): SessionDataProcessed {
+        val sessionData = getSessionDataResult()
+        Assert.assertNotNull("session data not null", sessionData)
+        val deviceInfo = sessionData!!.deviceInfo
+        Assert.assertNotNull("session data/device info not null", deviceInfo)
+
+        val options = SessionArgs()
+        val context = ContextInfo(options, deviceInfo!!) // needed later
+
+        val innertubeConfig = retrieveInnertubeConfig(sessionData, context)
+        val coldConfigData = innertubeConfig?.responseContext?.globalConfigGroup?.rawColdConfigGroup?.configData
+        val coldHashData = innertubeConfig?.responseContext?.globalConfigGroup?.coldHashData
+        val hotHashData = innertubeConfig?.responseContext?.globalConfigGroup?.hotHashData
+        val configData = innertubeConfig?.configData
+
+        return SessionDataProcessed(
+            sessionData.apiKey!!,
+            "v1", // Constants.CLIENTS.WEB.API_VERSION
+            configData!!,
+            context.apply {
+                client.configInfo!!.coldConfigData = coldConfigData!!
+                client.configInfo!!.coldHashData = coldHashData!!
+                client.configInfo!!.hotHashData = hotHashData!!
+            }
+        )
     }
 }

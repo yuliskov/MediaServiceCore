@@ -28,7 +28,6 @@ internal object ApiHelpers {
     }
 
     fun createInnertubeJsonConfig(contextInfo: ContextInfo): String {
-        val gson = GsonBuilder().create() // nulls are ignored by default
-        return gson.toJson(mapOf("context" to contextInfo))
+        return toJsonString(mapOf("context" to contextInfo))
     }
 }

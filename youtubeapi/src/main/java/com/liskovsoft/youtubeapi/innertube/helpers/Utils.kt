@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.innertube.helpers
 
+import com.google.gson.GsonBuilder
 import java.util.regex.Pattern
 
 /**
@@ -47,4 +48,9 @@ internal fun getRandomUserAgent(type: DeviceCategory): String {
     return UserAgents
         .byCategory(type)
         .random()
+}
+
+internal fun toJsonString(obj: Any): String {
+    val gson = GsonBuilder().create() // nulls are ignored by default
+    return gson.toJson(obj)
 }

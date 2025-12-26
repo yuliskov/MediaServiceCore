@@ -4,7 +4,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import java.util.Date
 import java.util.TimeZone
 
-internal class ContextInfo(
+internal class InnertubeContext(
     options: SessionArgs, deviceInfo: DeviceInfo
 ) {
     val client: Client = Client(options, deviceInfo)

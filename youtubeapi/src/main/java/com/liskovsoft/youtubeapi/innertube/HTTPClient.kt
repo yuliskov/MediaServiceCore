@@ -1,17 +1,33 @@
-package com.liskovsoft.youtubeapi.innertube.models
+package com.liskovsoft.youtubeapi.innertube
 
 import android.net.Uri
-import com.liskovsoft.youtubeapi.innertube.api.InnertubeRequestApi
 import com.liskovsoft.youtubeapi.innertube.helpers.CLIENTS
 import com.liskovsoft.youtubeapi.innertube.helpers.CLIENT_NAME_IDS
 import com.liskovsoft.youtubeapi.innertube.helpers.SUPPORTED_CLIENTS
 import com.liskovsoft.youtubeapi.innertube.helpers.URLS
 import androidx.core.net.toUri
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.querystringparser.UrlEncodedQueryString
 import com.liskovsoft.youtubeapi.innertube.helpers.toJsonString
+import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
+import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.HeaderMap
+import retrofit2.http.POST
+import retrofit2.http.Url
+import kotlin.collections.get
 
-internal class HTTPClient(val requestApi: InnertubeRequestApi, val session: SessionDataProcessed) {
+@WithGson
+private interface InnertubePlayerApi {
+    @POST()
+    fun retrievePlayer(@Url url: String, @HeaderMap headers: Map<String, String>, @Body jsonBody: String): Call<PlayerResult?>
+}
+
+internal class HTTPClient(val session: Session) {
+    private val requestApi = RetrofitHelper.create(InnertubePlayerApi::class.java)
+
     fun fetch(input: String, init: RequestInit): PlayerResult? {
         val innertubeUrl = URLS.API.PRODUCTION_1 + session.apiVersion
         val baseURL = innertubeUrl
@@ -102,7 +118,7 @@ internal class HTTPClient(val requestApi: InnertubeRequestApi, val session: Sess
         return RetrofitHelper.get(playerResultWrapper)
     }
 
-    private fun setupCommonHeaders(requestHeaders: MutableMap<String, String>, session: SessionDataProcessed, requestUrl: Uri) {
+    private fun setupCommonHeaders(requestHeaders: MutableMap<String, String>, session: Session, requestUrl: Uri) {
         requestHeaders["Accept"] = "*/*"
         requestHeaders["Accept-Language"] = "*"
 
@@ -124,7 +140,7 @@ internal class HTTPClient(val requestApi: InnertubeRequestApi, val session: Sess
         requestHeaders["Origin"] = requestUrl.scheme + "://" + requestUrl.host
     }
 
-    private fun processJsonPayload(body: RequestInitBody, session: SessionDataProcessed): JsonPayloadProcessed {
+    private fun processJsonPayload(body: RequestInitBody, session: Session): JsonPayloadProcessed {
         val parsedPayload = body
         val adjustedContext = session.context // why do JSON.parse(JSON.stringify(session.context)) as Context
 
@@ -155,7 +171,7 @@ internal class HTTPClient(val requestApi: InnertubeRequestApi, val session: Sess
     }
 
 
-    private fun adjustContext(ctx: ContextInfo, client: String?) {
+    private fun adjustContext(ctx: InnertubeContext, client: String?) {
         if (client == null) return
 
         val clientName = client.uppercase()
@@ -247,14 +263,14 @@ internal class RequestInitBody(
     val videoId: String,
     var client: String? = null,
     // other values specific for player....
-    session: SessionDataProcessed
+    session: Session
 ) {
     val contentCheckOk: Boolean = true
     val racyCheckOk: Boolean = true
     val playbackContext: PlaybackContext = PlaybackContext(session)
-    var context: ContextInfo? = null
+    var context: InnertubeContext? = null
 
-    class PlaybackContext(session: SessionDataProcessed) {
+    class PlaybackContext(session: Session) {
         val adPlaybackContext: AdPlaybackContext = AdPlaybackContext()
         val contentPlaybackContext: ContentPlaybackContext = ContentPlaybackContext(session)
 
@@ -262,7 +278,7 @@ internal class RequestInitBody(
             val pyv: Boolean = true
         }
 
-        class ContentPlaybackContext(session: SessionDataProcessed) {
+        class ContentPlaybackContext(session: Session) {
             val signatureTimestamp: String? = session.player?.signatureTimestamp
         }
     }

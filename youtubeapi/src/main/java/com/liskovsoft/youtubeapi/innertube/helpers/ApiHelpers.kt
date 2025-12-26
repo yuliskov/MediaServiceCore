@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.innertube.helpers
 
-import com.google.gson.GsonBuilder
-import com.liskovsoft.youtubeapi.innertube.models.ContextInfo
+import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult
 
 internal object ApiHelpers {
@@ -27,7 +26,7 @@ internal object ApiHelpers {
         }
     }
 
-    fun createInnertubeJsonConfig(contextInfo: ContextInfo): String {
-        return toJsonString(mapOf("context" to contextInfo))
+    fun createInnertubeJsonConfig(innertubeContext: InnertubeContext): String {
+        return toJsonString(mapOf("context" to innertubeContext))
     }
 }

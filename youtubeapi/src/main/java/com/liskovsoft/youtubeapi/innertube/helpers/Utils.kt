@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.innertube.helpers
 
 import com.google.gson.GsonBuilder
+import com.liskovsoft.sharedutils.helpers.Helpers
 import java.util.regex.Pattern
 
 /**
@@ -53,4 +54,20 @@ internal fun getRandomUserAgent(type: DeviceCategory): String {
 internal fun toJsonString(obj: Any): String {
     val gson = GsonBuilder().create() // nulls are ignored by default
     return gson.toJson(obj)
+}
+
+
+/**
+ * Generates a random string with the given length.
+ *
+ */
+internal fun generateRandomString(length: Int): String {
+    val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+    val result = StringBuilder(length)
+
+    repeat(length) {
+        result.append(alphabet[Helpers.getRandom().nextInt(alphabet.length)])
+    }
+
+    return result.toString()
 }

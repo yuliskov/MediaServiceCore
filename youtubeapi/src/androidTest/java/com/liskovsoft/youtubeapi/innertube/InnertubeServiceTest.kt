@@ -1,34 +1,25 @@
 package com.liskovsoft.youtubeapi.innertube
 
-import com.liskovsoft.googlecommon.common.api.FileApi
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
-import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import androidx.test.platform.app.InstrumentationRegistry
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences
+import com.liskovsoft.youtubeapi.innertube.core.HTTPClient
 import com.liskovsoft.youtubeapi.innertube.core.Player
+import com.liskovsoft.youtubeapi.innertube.core.RequestInit
+import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import com.liskovsoft.youtubeapi.innertube.core.Session
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
-import com.liskovsoft.youtubeapi.innertube.core.HTTPClient
-import com.liskovsoft.youtubeapi.innertube.core.RequestInit
-import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.shadows.ShadowLog
 
-@RunWith(RobolectricTestRunner::class)
 class InnertubeServiceTest {
-    private lateinit var mFileApi: FileApi
+    val defaultId = "K04WmBtVsOs"
+    val musicId = "wj00r8IiJ7w"
 
     @Before
     fun setUp() {
-        // fix issue: No password supplied for PKCS#12 KeyStore
-        // https://github.com/robolectric/robolectric/issues/5115
-        System.setProperty("javax.net.ssl.trustStoreType", "JKS")
-        ShadowLog.stream = System.out // catch Log class output
-        RetrofitOkHttpHelper.disableCompression = true
-        mFileApi = RetrofitHelper.create(FileApi::class.java)
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().context)
     }
 
     @Test
@@ -94,7 +85,7 @@ class InnertubeServiceTest {
         val session = Session.create()
         val httpClient = HTTPClient(session!!)
 
-        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody("K04WmBtVsOs", session = session)))
+        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(musicId, session = session)))
 
         Assert.assertNotNull("Player result not null", playerResult)
     }

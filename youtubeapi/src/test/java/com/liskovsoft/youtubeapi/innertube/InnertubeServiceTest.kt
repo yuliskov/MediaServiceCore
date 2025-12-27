@@ -3,8 +3,13 @@ package com.liskovsoft.youtubeapi.innertube
 import com.liskovsoft.googlecommon.common.api.FileApi
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper
+import com.liskovsoft.youtubeapi.innertube.core.Player
+import com.liskovsoft.youtubeapi.innertube.core.Session
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
+import com.liskovsoft.youtubeapi.innertube.core.HTTPClient
+import com.liskovsoft.youtubeapi.innertube.core.RequestInit
+import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -64,7 +69,7 @@ class InnertubeServiceTest {
     fun testCreateProcessedSessionData() {
         val sessionDataProcessed = Session.getSessionData()
 
-        Assert.assertNotNull("context not null", sessionDataProcessed.context)
+        Assert.assertNotNull("context not null", sessionDataProcessed?.context)
     }
 
     @Test
@@ -87,7 +92,7 @@ class InnertubeServiceTest {
     @Test
     fun testGetVideoResults() {
         val session = Session.create()
-        val httpClient = HTTPClient(session)
+        val httpClient = HTTPClient(session!!)
 
         val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody("K04WmBtVsOs", session = session)))
 

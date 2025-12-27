@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.innertube.helpers
+package com.liskovsoft.youtubeapi.innertube.utils
 
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult

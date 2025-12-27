@@ -1,15 +1,16 @@
-package com.liskovsoft.youtubeapi.innertube
+package com.liskovsoft.youtubeapi.innertube.core
 
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPathSkip
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
-import com.liskovsoft.youtubeapi.innertube.helpers.ApiHelpers
-import com.liskovsoft.youtubeapi.innertube.helpers.URLS
+import com.liskovsoft.youtubeapi.innertube.utils.ApiHelpers
+import com.liskovsoft.youtubeapi.innertube.utils.URLS
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeConfigResult
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
 import com.liskovsoft.youtubeapi.innertube.models.SessionData
 import com.liskovsoft.youtubeapi.innertube.models.SessionDataResult
+import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -52,23 +53,20 @@ internal class Session private constructor(
     val poToken: String? = null
 ) {
     companion object {
-        private val sessionApi = RetrofitHelper.create(SessionApi::class.java)
-        private val innertubeConfigApi = RetrofitHelper.create(InnertubeConfigApi::class.java)
-
-        fun create(options: SessionOptions? = null): Session {
-            val (apiKey, apiVersion, configData, context, userAgent, accountIndex) = getSessionData(options)
+        fun create(options: SessionOptions? = null): Session? {
+            val (apiKey, apiVersion, configData, context, userAgent, accountIndex) = getSessionData(options) ?: return null
 
             return Session(context, apiKey, apiVersion, accountIndex, configData, userAgent, Player.create(options?.poToken, options?.playerId))
         }
 
-        fun getSessionData(options: SessionOptions? = null): SessionData {
-            // TODO: add caching
+        fun getSessionData(options: SessionOptions? = null): SessionData? {
+            // TODO: add caching of session data
 
-            val sessionData = getSessionDataResult()
-            val deviceInfo = sessionData!!.deviceInfo
+            val sessionData = getSessionDataResult() ?: return null
 
-            val options = SessionArgs()
-            val context = InnertubeContext(options, deviceInfo!!) // builds the context!
+            val args = SessionArgs()
+
+            val context = buildContext(sessionData, args) ?: return null
 
             val innertubeConfig = retrieveInnertubeConfig(sessionData, context)
             val coldConfigData = innertubeConfig?.responseContext?.globalConfigGroup?.rawColdConfigGroup?.configData
@@ -76,30 +74,40 @@ internal class Session private constructor(
             val hotHashData = innertubeConfig?.responseContext?.globalConfigGroup?.hotHashData
             val configData = innertubeConfig?.configData
 
+            // TODO: store session data
+
             return SessionData(
-                sessionData.apiKey!!,
-                "v1", // Constants.CLIENTS.WEB.API_VERSION
-                configData!!,
+                sessionData.apiKey ?: return null,
+                CLIENTS.WEB.API_VERSION,
+                configData ?: return null,
                 context.apply {
-                    client.configInfo!!.coldConfigData = coldConfigData!!
-                    client.configInfo!!.coldHashData = coldHashData!!
-                    client.configInfo!!.hotHashData = hotHashData!!
+                    client.configInfo?.coldConfigData = coldConfigData ?: return null
+                    client.configInfo?.coldHashData = coldHashData ?: return null
+                    client.configInfo?.hotHashData = hotHashData ?: return null
                 }
             )
         }
 
         fun getSessionDataResult(): SessionDataResult? {
+            val sessionApi = RetrofitHelper.create(SessionApi::class.java)
             val sessionDataResult = sessionApi.getSessionData(ApiHelpers.createSessionDataHeaders())
             return RetrofitHelper.get(sessionDataResult)
         }
 
         fun retrieveInnertubeConfig(sessionData: SessionDataResult, context: InnertubeContext): InnertubeConfigResult? {
+            val innertubeConfigApi = RetrofitHelper.create(InnertubeConfigApi::class.java)
+
             val innertubeConfigResult =
                 innertubeConfigApi.retrieveInnertubeConfig(
                     ApiHelpers.createInnertubeConfigHeaders(sessionData),
                     ApiHelpers.createInnertubeJsonConfig(context)
                 )
             return RetrofitHelper.get(innertubeConfigResult)
+        }
+
+        private fun buildContext(sessionData: SessionDataResult, options: SessionArgs): InnertubeContext? {
+            val deviceInfo = sessionData.deviceInfo ?: return null
+            return InnertubeContext(options, deviceInfo)
         }
     }
 }
@@ -110,6 +118,7 @@ internal data class SessionOptions(
     val userAgent: String?,
     val poToken: String?,
     val playerId: String?,
-    val retrieveInnertubeConfig: Boolean = true
+    val retrieveInnertubeConfig: Boolean = true,
+    val accountIndex: Int = 0
     // .....
 )

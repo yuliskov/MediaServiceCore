@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.innertube.helpers
+package com.liskovsoft.youtubeapi.innertube.utils
 
 import com.google.gson.GsonBuilder
 import com.liskovsoft.sharedutils.helpers.Helpers

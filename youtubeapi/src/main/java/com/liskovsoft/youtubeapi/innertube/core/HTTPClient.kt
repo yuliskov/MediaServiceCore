@@ -1,17 +1,17 @@
-package com.liskovsoft.youtubeapi.innertube
+package com.liskovsoft.youtubeapi.innertube.core
 
 import android.net.Uri
-import com.liskovsoft.youtubeapi.innertube.helpers.CLIENTS
-import com.liskovsoft.youtubeapi.innertube.helpers.CLIENT_NAME_IDS
-import com.liskovsoft.youtubeapi.innertube.helpers.SUPPORTED_CLIENTS
-import com.liskovsoft.youtubeapi.innertube.helpers.URLS
 import androidx.core.net.toUri
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.querystringparser.UrlEncodedQueryString
-import com.liskovsoft.youtubeapi.innertube.helpers.toJsonString
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
+import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
+import com.liskovsoft.youtubeapi.innertube.utils.CLIENT_NAME_IDS
+import com.liskovsoft.youtubeapi.innertube.utils.SUPPORTED_CLIENTS
+import com.liskovsoft.youtubeapi.innertube.utils.URLS
+import com.liskovsoft.youtubeapi.innertube.utils.toJsonString
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap

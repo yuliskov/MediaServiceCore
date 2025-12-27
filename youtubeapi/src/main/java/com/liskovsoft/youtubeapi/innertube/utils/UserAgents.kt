@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.innertube.helpers
+package com.liskovsoft.youtubeapi.innertube.utils
 
 internal object UserAgents {
     val desktop: List<String> = listOf(

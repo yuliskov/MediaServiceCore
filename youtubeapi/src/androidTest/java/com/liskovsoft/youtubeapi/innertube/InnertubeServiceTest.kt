@@ -9,13 +9,14 @@ import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import com.liskovsoft.youtubeapi.innertube.core.Session
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
+import com.liskovsoft.youtubeapi.innertube.utils.getServerAbrStreamingUrl
+import com.liskovsoft.youtubeapi.innertube.utils.getVideoPlaybackUstreamerConfig
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 class InnertubeServiceTest {
     val defaultId = "K04WmBtVsOs"
-    val musicId = "wj00r8IiJ7w"
 
     @Before
     fun setUp() {
@@ -85,8 +86,10 @@ class InnertubeServiceTest {
         val session = Session.create()
         val httpClient = HTTPClient(session!!)
 
-        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(musicId, session = session)))
+        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(defaultId, session = session)))
 
-        Assert.assertNotNull("Player result not null", playerResult)
+        Assert.assertNotNull("Player result not null", playerResult!!)
+        Assert.assertNotNull("Player has server abr url", playerResult.getServerAbrStreamingUrl())
+        Assert.assertNotNull("Player has server streaming config", playerResult.getVideoPlaybackUstreamerConfig())
     }
 }

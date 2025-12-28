@@ -2,12 +2,24 @@ package com.liskovsoft.youtubeapi.innertube.models
 
 internal data class PlayerResult(
     val playabilityStatus: PlayabilityStatus?,
-    val streamingData: StreamingData?
+    val streamingData: StreamingData?,
+    val playerConfig: PlayerConfig?
 ) {
     data class PlayabilityStatus(
         val status: String?,
         val playableInEmbed: Boolean?
     )
+    data class PlayerConfig(
+        val mediaCommonConfig: MediaCommonConfig?
+    ) {
+        data class MediaCommonConfig(
+            val mediaUstreamerRequestConfig: MediaUstreamerRequestConfig?
+        ) {
+            data class MediaUstreamerRequestConfig(
+                val videoPlaybackUstreamerConfig: String?
+            )
+        }
+    }
 }
 
 internal data class StreamingData(

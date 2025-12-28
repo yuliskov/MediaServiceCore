@@ -14,8 +14,8 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShuffleMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.notifications.NotificationStateImplWrapper
 
-internal data class MediaItemMetadataImpl(val watchNextResult: WatchNextResult,
-                                 val suggestionsResult: WatchNextResult? = null) : MediaItemMetadata {
+internal data class MediaItemMetadataImpl(private val watchNextResult: WatchNextResult,
+                                 private val suggestionsResult: WatchNextResult? = null) : MediaItemMetadata {
     private val channelIdItem by lazy {
         videoDetails?.getChannelId() ?: videoOwner?.getChannelId() ?: channelOwner?.getChannelId()
     }

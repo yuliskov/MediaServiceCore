@@ -76,7 +76,7 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
 
     override fun getFormat() = _format
 
-    override fun isOtf() = _isOtf
+    override fun isOtf(): Boolean = _isOtf
 
     override fun getOtfInitUrl() = urlHolder.getOtfInitUrl()
 

@@ -35,7 +35,7 @@ public interface MediaItemFormatInfo {
     MediaItemStoryboard createStoryboard();
     boolean isUnplayable();
     boolean isUnknownError();
-    String getPlayabilityStatus();
+    String getPlayabilityReason();
     boolean isStreamSeekable();
     /**
      * Stream start time in UTC (!!!).<br/>

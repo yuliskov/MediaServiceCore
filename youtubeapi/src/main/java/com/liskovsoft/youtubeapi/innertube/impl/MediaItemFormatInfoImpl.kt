@@ -1,21 +1,58 @@
 package com.liskovsoft.youtubeapi.innertube.impl
 
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.mylogger.Log
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryString
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory
+import com.liskovsoft.sharedutils.rx.RxHelper
+import com.liskovsoft.youtubeapi.app.AppService
+import com.liskovsoft.youtubeapi.app.PoTokenGate.isWebPotExpired
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder
+import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder
+import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser
 import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
 import com.liskovsoft.youtubeapi.innertube.utils.getAdaptiveFormats
 import com.liskovsoft.youtubeapi.innertube.utils.getLegacyFormats
+import com.liskovsoft.youtubeapi.innertube.utils.getLoudnessDb
 import com.liskovsoft.youtubeapi.innertube.utils.getMergeCaptionTracks
+import com.liskovsoft.youtubeapi.innertube.utils.getPaidContentText
+import com.liskovsoft.youtubeapi.innertube.utils.getPlayabilityDescription
+import com.liskovsoft.youtubeapi.innertube.utils.getPlayabilityReason
+import com.liskovsoft.youtubeapi.innertube.utils.getPlayabilityStatus
 import com.liskovsoft.youtubeapi.innertube.utils.getServerAbrStreamingUrl
+import com.liskovsoft.youtubeapi.innertube.utils.getStartTimestamp
+import com.liskovsoft.youtubeapi.innertube.utils.getStoryboardSpec
+import com.liskovsoft.youtubeapi.innertube.utils.getTrailerVideoId
+import com.liskovsoft.youtubeapi.innertube.utils.getUploadDate
 import com.liskovsoft.youtubeapi.innertube.utils.getVideoPlaybackUstreamerConfig
+import com.liskovsoft.youtubeapi.innertube.utils.getWatchTimeUrl
+import com.liskovsoft.youtubeapi.innertube.utils.isPlayableInEmbed
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemStoryboard
+import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder
 import io.reactivex.Observable
 import java.io.InputStream
 import java.util.regex.Pattern
+import kotlin.math.pow
+
+private const val PARAM_EVENT_ID = "ei"
+private const val PARAM_VM = "vm"
+private const val PARAM_OF = "of"
+
+private const val STATUS_OK = "OK"
+private const val STATUS_UNPLAYABLE = "UNPLAYABLE"
+private const val STATUS_ERROR = "ERROR"
+private const val STATUS_OFFLINE = "LIVE_STREAM_OFFLINE"
+private const val STATUS_LOGIN_REQUIRED = "LOGIN_REQUIRED"
+private const val STATUS_AGE_CHECK_REQUIRED = "AGE_CHECK_REQUIRED"
+private const val STATUS_AGE_VERIFICATION_REQUIRED = "AGE_VERIFICATION_REQUIRED"
+private const val STATUS_CONTENT_CHECK_REQUIRED = "CONTENT_CHECK_REQUIRED"
 
 internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResult): MediaItemFormatInfo {
     private val TAG = MediaItemFormatInfoImpl::class.simpleName
@@ -49,11 +86,50 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     private val _isLiveContent by lazy { videoDetails?.isLiveContent ?: false }
     private val _containsAdaptiveVideoFormats by lazy { containsAdaptiveVideoInfo() }
     private val _containsLegacyVideoFormats by lazy { containsLegacyVideoInfo() }
+    private val _isAdaptiveFullHD by lazy { _adaptiveFormats?.let { it.isNotEmpty() && "1080p" == it.first().getQualityLabel() } ?: false }
     private val _hasExtendedHlsFormats by lazy {
         // Need upload date check?
         // Extended formats may not work up to 3 days after publication.
-        !_isLive && _hlsManifestUrl != null && isAdaptiveFullHD()
+        !_isLive && _hlsManifestUrl != null && _isAdaptiveFullHD
     }
+    private val _isExtendedHlsFormatsBroken by lazy {
+        !_isLive && _hlsManifestUrl == null && _isAdaptiveFullHD
+    }
+    private val _loudnessDb by lazy { playerResult.getLoudnessDb() }
+    private val _storyboardSpec by lazy { playerResult.getStoryboardSpec() }
+    private val _trailerVideoId by lazy { playerResult.getTrailerVideoId() }
+    private val _playabilityStatus by lazy { playerResult.getPlayabilityStatus() }
+    private val _playabilityReason by lazy {
+        Helpers.toString(ServiceHelper.createInfo(playerResult.getPlayabilityReason(), playerResult.getPlayabilityDescription()))
+    }
+    private val _isPlayableInEmbed by lazy { playerResult.isPlayableInEmbed() }
+    private val _isUnplayable by lazy { isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted() }
+    /**
+     * Reason of unavailability unknown or we received a temporal ban
+     */
+    private val _isUnknownError by lazy { ServiceHelper.atLeastOneEquals(_playabilityStatus, STATUS_UNPLAYABLE) }
+    private val _isHfr by lazy { _dashManifestUrl?.contains("/hfr/all") ?: false }
+    private val _startTimestamp by lazy { playerResult.getStartTimestamp() }
+    private val _uploadDate by lazy { playerResult.getUploadDate() }
+    private val _paidContentText by lazy { playerResult.getPaidContentText() }
+    private val _watchTimeUrl by lazy { playerResult.getWatchTimeUrl() }
+
+    init {
+        parseTrackingParams()
+    }
+
+    private var _segmentDurationUs: Int = 0
+    private var _startTimeMs: Long = 0
+    private var _startSegmentNum: Int = 0
+    private var _isStreamSeekable: Boolean = false
+
+    private var isSynced: Boolean = false
+    private var eventId: String? = null
+    private var visitorMonitoringData: String? = null
+    private var ofParam: String? = null
+    private var isAuth: Boolean = false
+
+    private var clickTrackingParams: String? = null
 
     override fun getAdaptiveFormats() = _adaptiveFormats
 
@@ -86,95 +162,88 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
 
     override fun isLiveContent() = _isLiveContent
 
-    override fun containsMedia(): Boolean {
-        return containsDashUrl() || containsHlsUrl() || containsAdaptiveVideoFormats() || containsUrlFormats()
-    }
+    override fun containsMedia() = containsDashUrl() || containsHlsUrl() || containsAdaptiveVideoFormats() || containsUrlFormats()
 
-    override fun containsSabrFormats(): Boolean {
-        return _containsAdaptiveVideoFormats && _adaptiveFormats?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_SABR
-    }
+    override fun containsSabrFormats() = containsAdaptiveVideoFormats() && getAdaptiveFormats()?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_SABR
 
-    override fun containsDashFormats(): Boolean {
-        return _containsAdaptiveVideoFormats && _adaptiveFormats?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_DASH
-    }
+    override fun containsDashFormats() = containsAdaptiveVideoFormats() && getAdaptiveFormats()?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_DASH
 
-    private fun containsAdaptiveVideoFormats(): Boolean {
-        return _containsAdaptiveVideoFormats
-    }
+    private fun containsAdaptiveVideoFormats() = _containsAdaptiveVideoFormats
 
-    override fun containsHlsUrl(): Boolean {
-        return _hlsManifestUrl != null
-    }
+    override fun containsHlsUrl() = _hlsManifestUrl != null
 
-    override fun containsDashUrl(): Boolean {
-        return _dashManifestUrl != null
-    }
+    override fun containsDashUrl() = _dashManifestUrl != null
 
-    override fun containsUrlFormats(): Boolean {
-        return _legacyFormats != null
-    }
+    override fun containsUrlFormats() = _legacyFormats != null
 
     override fun hasExtendedHlsFormats() = _hasExtendedHlsFormats
 
     override fun getVolumeLevel(): Float {
-        TODO("Not yet implemented")
+        var result = 1.0f // the live loudness
+        
+        if (_loudnessDb != 0f) {
+            // Original tv web: Math.min(1, 10 ** (-loudnessDb / 20))
+            // -5db...5db (0.7...1.4) Base formula: normalLevel*10^(-db/20)
+            // Low test - R.E.M. and high test - Lindemann
+            var normalLevel = 10.0.pow((_loudnessDb / 20.0f).toDouble()).toFloat()
+            if (normalLevel > 1.95) { // don't normalize?
+                // System of a Down - Lonely Day
+                //normalLevel = 1.0f;
+                normalLevel = 1.5f
+            }
+            // Calculate the result as subtract of the video volume and the max volume
+            result = 2.0f - normalLevel
+        }
+
+        return result / 2
     }
 
     override fun createMpdStream(): InputStream? {
-        TODO("Not yet implemented")
+        return YouTubeMPDBuilder.from(this).build()
     }
 
-    override fun createMpdStreamObservable(): Observable<InputStream?>? {
-        TODO("Not yet implemented")
+    override fun createMpdStreamObservable(): Observable<InputStream?> {
+        return RxHelper.fromCallable(this::createMpdStream)
     }
 
-    override fun createUrlList(): List<String?>? {
-        TODO("Not yet implemented")
+    override fun createUrlList(): List<String>? {
+        return YouTubeUrlListBuilder.from(this).buildUriList()
     }
 
     override fun createStoryboard(): MediaItemStoryboard? {
-        TODO("Not yet implemented")
+        if (_storyboardSpec == null) {
+            return null
+        }
+
+        val storyParser = YouTubeStoryParser.from(_storyboardSpec)
+        storyParser.setSegmentDurationUs(segmentDurationUs)
+
+        // TODO: need to calculate real segment shift for 60 hrs streams (e.g. euronews live)
+        storyParser.setStartSegmentNum(startSegmentNum)
+        val storyboard = storyParser.extractStory()
+
+        return YouTubeMediaItemStoryboard.from(storyboard)
     }
 
-    override fun isUnplayable(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isUnplayable() = _isUnplayable
 
-    override fun isUnknownError(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isUnknownError() = _isUnknownError
 
-    override fun getPlayabilityStatus(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getPlayabilityReason(): String? = _playabilityReason
 
-    override fun isStreamSeekable(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isStreamSeekable() = _isHfr || _isStreamSeekable
 
-    override fun getStartTimestamp(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getStartTimestamp() = _startTimestamp
 
-    override fun getUploadDate(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getUploadDate() = _uploadDate
 
-    override fun getStartTimeMs(): Long {
-        TODO("Not yet implemented")
-    }
+    override fun getStartTimeMs() = _startTimeMs
 
-    override fun getStartSegmentNum(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getStartSegmentNum() = _startSegmentNum
 
-    override fun getSegmentDurationUs(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getSegmentDurationUs() = _segmentDurationUs
 
-    override fun getPaidContentText(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getPaidContentText() = _paidContentText
 
     override fun getVideoPlaybackUstreamerConfig() = _videoPlaybackUstreamerConfig
 
@@ -185,6 +254,63 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     }
 
     override fun getClientInfo() = _clientInfo
+
+    fun getEventId() = eventId
+
+    fun getVisitorMonitoringData() = visitorMonitoringData
+
+    fun getOfParam() = ofParam
+
+    fun getClickTrackingParams() = clickTrackingParams
+
+    fun setClickTrackingParams(clickTrackingParams: String?) {
+        this.clickTrackingParams = clickTrackingParams
+    }
+
+    /**
+     * Format is used between multiple functions. Do a little cache.
+     */
+    fun isCacheActual(): Boolean {
+        // NOTE: Musical live streams are ciphered too!
+
+        // Check app cipher first. It's not robust check (cipher may be updated not by us).
+        // So, also check internal cache state.
+        // Future translations (no media) should be polled constantly.
+
+        return containsMedia() && AppService.instance().isPlayerCacheActual && !isWebPotExpired()
+    }
+
+    /**
+     * Sync history data<br></br>
+     * Intended to merge signed and unsigned infos (no-playback fix)
+     */
+    fun sync(formatInfo: YouTubeMediaItemFormatInfo?) {
+        isSynced = true
+
+        if (formatInfo == null || Helpers.anyNull(formatInfo.eventId, formatInfo.visitorMonitoringData, formatInfo.ofParam)) {
+            return
+        }
+
+        // Intended to merge signed and unsigned infos (no-playback fix)
+        eventId = formatInfo.eventId
+        visitorMonitoringData = formatInfo.visitorMonitoringData
+        ofParam = formatInfo.ofParam
+        isAuth = formatInfo.isAuth
+    }
+
+    /**
+     * Sync live data
+     */
+    fun sync(dashInfo: DashInfo?) {
+        if (dashInfo == null) {
+            return
+        }
+
+        _segmentDurationUs = dashInfo.getSegmentDurationUs()
+        _startTimeMs = dashInfo.getStartTimeMs()
+        _startSegmentNum = dashInfo.getStartSegmentNum()
+        _isStreamSeekable = dashInfo.isSeekable()
+    }
 
     /**
      * Extracts time from video url (if present).
@@ -219,46 +345,61 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     }
 
     private fun containsAdaptiveVideoInfo(): Boolean {
-        if (_adaptiveFormats == null) {
-            return false
-        }
-
-        var result = false
-
-        for (format in _adaptiveFormats) {
-            val mimeType = format.getMimeType()
-            if (mimeType != null && mimeType.startsWith("video/")) {
-                result = true
-                break
-            }
-        }
-
-        return result
+        return _adaptiveFormats
+            ?.any { it.getMimeType()?.startsWith("video/") == true }
+            ?: false
     }
 
     private fun containsLegacyVideoInfo(): Boolean {
-        if (_legacyFormats == null) {
-            return false
-        }
-
-        var result = false
-
-        for (format in _legacyFormats) {
-            val mimeType: String? = format.getMimeType()
-            if (mimeType != null && mimeType.startsWith("video/")) {
-                result = true
-                break
-            }
-        }
-
-        return result
+        return _legacyFormats
+            ?.any { it.getMimeType()?.startsWith("video/") == true }
+            ?: false
     }
 
-    private fun isExtendedHlsFormatsBroken(): Boolean {
-        return !isLive() && getHlsManifestUrl() == null && isAdaptiveFullHD()
+    private fun isRent(): Boolean {
+        return _isUnplayable && _trailerVideoId != null
     }
 
-    private fun isAdaptiveFullHD(): Boolean {
-        return _adaptiveFormats?.let { it.isNotEmpty() && "1080p" == it.first().getQualityLabel() } ?: false
+    /**
+     * Video cannot be embedded
+     */
+    private fun isEmbedRestricted() = !_isPlayableInEmbed
+
+    /**
+     * Reason of unavailability unknown or we received a temporal ban
+     */
+    private fun isUnknownRestricted(): Boolean {
+        return ServiceHelper.atLeastOneEquals(_playabilityStatus, STATUS_UNPLAYABLE)
+    }
+
+    /**
+     * Removed or hidden by the user
+     */
+    private fun isVisibilityRestricted(): Boolean {
+        return ServiceHelper.atLeastOneEquals(_playabilityStatus, STATUS_ERROR)
+    }
+
+    /**
+     * Age restricted video
+     */
+    private fun isAgeRestricted(): Boolean {
+        return ServiceHelper.atLeastOneEquals(
+            _playabilityStatus,
+            STATUS_LOGIN_REQUIRED,
+            STATUS_AGE_CHECK_REQUIRED,
+            STATUS_CONTENT_CHECK_REQUIRED
+        )
+    }
+
+    private fun parseTrackingParams() {
+        val parseDone = eventId != null || visitorMonitoringData != null
+
+        if (!parseDone && _watchTimeUrl != null) {
+            val queryString: UrlQueryString = UrlQueryStringFactory.parse(_watchTimeUrl)
+
+            eventId = queryString.get(PARAM_EVENT_ID)
+            visitorMonitoringData = queryString.get(PARAM_VM)
+            ofParam = queryString.get(PARAM_OF)
+        }
     }
 }

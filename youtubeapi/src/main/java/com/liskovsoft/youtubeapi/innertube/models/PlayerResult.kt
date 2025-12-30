@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.innertube.models
 
+import com.liskovsoft.youtubeapi.common.models.gen.TextItem
 import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
 internal data class PlayerResult(
@@ -7,14 +8,33 @@ internal data class PlayerResult(
     val streamingData: StreamingData?,
     val playerConfig: PlayerConfig?,
     val captions: Captions?,
-    val videoDetails: VideoDetails?
+    val videoDetails: VideoDetails?,
+    val storyboards: Storyboards?,
+    val microformat: Microformat?,
+    val paidContentOverlay: PaidContentOverlay?,
+    val playbackTracking: PlaybackTracking?
 ) {
     data class PlayabilityStatus(
         val status: String?,
-        val playableInEmbed: Boolean?
-    )
+        val reason: String?,
+        val playableInEmbed: Boolean?,
+        val errorScreen: ErrorScreen?
+    ) {
+        data class ErrorScreen(
+            val playerLegacyDesktopYpcTrailerRenderer: PlayerLegacyDesktopYpcTrailerRenderer?,
+            val playerErrorMessageRenderer: PlayerErrorMessageRenderer?
+        ) {
+            data class PlayerLegacyDesktopYpcTrailerRenderer(
+                val trailerVideoId: String?
+            )
+            data class PlayerErrorMessageRenderer(
+                val subreason: TextItem?
+            )
+        }
+    }
     data class PlayerConfig(
-        val mediaCommonConfig: MediaCommonConfig?
+        val mediaCommonConfig: MediaCommonConfig?,
+        val audioConfig: AudioConfig?
     ) {
         data class MediaCommonConfig(
             val mediaUstreamerRequestConfig: MediaUstreamerRequestConfig?
@@ -23,6 +43,9 @@ internal data class PlayerResult(
                 val videoPlaybackUstreamerConfig: String?
             )
         }
+        data class AudioConfig(
+            val loudnessDb: Float?
+        )
     }
     data class Captions(
         val playerCaptionsTracklistRenderer: PlayerCaptionsTracklistRenderer?
@@ -30,6 +53,41 @@ internal data class PlayerResult(
         data class PlayerCaptionsTracklistRenderer(
             val captionTracks: List<CaptionTrack>?,
             val translationLanguages: List<TranslationLanguage>?
+        )
+    }
+    data class Storyboards(
+        val playerStoryboardSpecRenderer: StoryboardSpecRenderer?,
+        val playerLiveStoryboardSpecRenderer: StoryboardSpecRenderer?
+    ) {
+        data class StoryboardSpecRenderer(
+            val spec: String?
+        )
+    }
+    data class Microformat(
+        val playerMicroformatRenderer: PlayerMicroformatRenderer?
+    ) {
+        data class PlayerMicroformatRenderer(
+            val liveBroadcastDetails: LiveBroadcastDetails?,
+            val uploadDate: String?
+        ) {
+            data class LiveBroadcastDetails(
+                val startTimestamp: String?
+            )
+        }
+    }
+    data class PaidContentOverlay(
+        val paidContentOverlayRenderer: PaidContentOverlayRenderer?
+    ) {
+        data class PaidContentOverlayRenderer(
+            val text: TextItem?
+        )
+    }
+    data class PlaybackTracking(
+        val videostatsPlaybackUrl: VideostatsUrl?,
+        val videostatsWatchtimeUrl: VideostatsUrl?
+    ) {
+        data class VideostatsUrl(
+            val baseUrl: String?
         )
     }
 }
@@ -95,7 +153,7 @@ internal data class CaptionTrack(
     val isTranslatable: Boolean?,
     val languageCode: String?,
     val vssId: String?,
-    val name: String?,
+    val name: TextItem?,
     val kind: String?
 )
 

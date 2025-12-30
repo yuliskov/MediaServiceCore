@@ -364,7 +364,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
-    public String getPlayabilityStatus() {
+    public String getPlayabilityReason() {
         return mPlayabilityStatus;
     }
 

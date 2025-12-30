@@ -209,7 +209,7 @@ internal data class MediaItemMetadataImpl(private val watchNextResult: WatchNext
     }
 
     override fun getDescription(): String? {
-        return videoDescription;
+        return videoDescription
     }
 
     override fun getAuthor(): String? {

@@ -36,6 +36,17 @@ internal class VideoUrlHolder(private var url: String? = null,
         this.url = url
     }
 
+    /**
+     * Contains segments list and durations (required for stream switch!!!)
+     */
+    fun getOtfInitUrl(): String? {
+        return getUrl()?.let { "$it&sq=0" }
+    }
+
+    fun getOtfTemplateUrl(): String? {
+        return getUrl()?.let { "$it&sq=\$Number$" }
+    }
+
     fun getSParam(): String? {
         parseCipher()
         return extractedSParam

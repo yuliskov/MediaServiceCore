@@ -15,9 +15,9 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class InnertubeServiceTest {
-    val defaultId = "K04WmBtVsOs"
+private const val DEFAULT_VIDEO_ID = "K04WmBtVsOs"
 
+class InnertubeServiceTest {
     @Before
     fun setUp() {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().context)
@@ -86,7 +86,7 @@ class InnertubeServiceTest {
         val session = Session.create()
         val httpClient = HTTPClient(session!!)
 
-        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(defaultId, session = session)))
+        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(DEFAULT_VIDEO_ID, session = session)))
 
         Assert.assertNotNull("Player result not null", playerResult!!)
         Assert.assertNotNull("Player has server abr url", playerResult.getServerAbrStreamingUrl())

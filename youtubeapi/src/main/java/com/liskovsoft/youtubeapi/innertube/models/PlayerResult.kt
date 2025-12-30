@@ -159,7 +159,7 @@ internal data class CaptionTrack(
 
 internal data class TranslationLanguage(
     val languageCode: String?,
-    val languageName: String?
+    val languageName: TextItem?
 )
 
 internal data class VideoDetails(

@@ -34,18 +34,8 @@ public class YouTubeMediaSubtitle implements MediaSubtitle {
     }
 
     @Override
-    public void setBaseUrl(String baseUrl) {
-        mBaseUrl = baseUrl;
-    }
-
-    @Override
     public boolean isTranslatable() {
         return mIsTranslatable;
-    }
-
-    @Override
-    public void setTranslatable(boolean translatable) {
-        mIsTranslatable = translatable;
     }
 
     @Override
@@ -54,18 +44,8 @@ public class YouTubeMediaSubtitle implements MediaSubtitle {
     }
 
     @Override
-    public void setLanguageCode(String languageCode) {
-        mLanguageCode = languageCode;
-    }
-
-    @Override
     public String getVssId() {
         return mVssId;
-    }
-
-    @Override
-    public void setVssId(String vssId) {
-        mVssId = vssId;
     }
 
     @Override
@@ -74,18 +54,8 @@ public class YouTubeMediaSubtitle implements MediaSubtitle {
     }
 
     @Override
-    public void setName(String name) {
-        mName = name;
-    }
-
-    @Override
     public String getMimeType() {
         return mMimeType;
-    }
-
-    @Override
-    public void setMimeType(String mimeType) {
-        mMimeType = mimeType;
     }
 
     @Override
@@ -94,17 +64,7 @@ public class YouTubeMediaSubtitle implements MediaSubtitle {
     }
 
     @Override
-    public void setCodecs(String codecs) {
-        mCodecs = codecs;
-    }
-
-    @Override
     public String getType() {
         return mType;
-    }
-
-    @Override
-    public void setType(String type) {
-        mType = type;
     }
 }

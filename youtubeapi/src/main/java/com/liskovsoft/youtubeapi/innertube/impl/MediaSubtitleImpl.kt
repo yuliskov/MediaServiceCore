@@ -2,69 +2,34 @@ package com.liskovsoft.youtubeapi.innertube.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle
 import com.liskovsoft.youtubeapi.innertube.models.CaptionTrack
+import com.liskovsoft.youtubeapi.innertube.utils.getBaseUrl
+import com.liskovsoft.youtubeapi.innertube.utils.getCodecs
+import com.liskovsoft.youtubeapi.innertube.utils.getMimeType
+import com.liskovsoft.youtubeapi.innertube.utils.getName
 
 internal data class MediaSubtitleImpl(private val captionTrack: CaptionTrack): MediaSubtitle {
-    override fun getBaseUrl(): String? {
-        TODO("Not yet implemented")
-    }
+    private val _baseUrl by lazy { captionTrack.getBaseUrl() }
+    private val _isTranslatable by lazy { captionTrack.isTranslatable ?: false }
+    private val _languageCode by lazy { captionTrack.languageCode }
+    private val _vssId by lazy { captionTrack.vssId }
+    private val _name by lazy { captionTrack.getName() }
+    private val _mimeType by lazy { captionTrack.getMimeType() }
+    private val _codecs by lazy { captionTrack.getCodecs() }
+    private val _type by lazy { captionTrack.kind }
 
-    override fun setBaseUrl(baseUrl: String?) {
-        TODO("Not yet implemented")
-    }
+    override fun getBaseUrl() = _baseUrl
 
-    override fun isTranslatable(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isTranslatable() = _isTranslatable
 
-    override fun setTranslatable(translatable: Boolean) {
-        TODO("Not yet implemented")
-    }
+    override fun getLanguageCode() = _languageCode
 
-    override fun getLanguageCode(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getVssId() = _vssId
 
-    override fun setLanguageCode(languageCode: String?) {
-        TODO("Not yet implemented")
-    }
+    override fun getName() = _name
 
-    override fun getVssId(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getMimeType(): String = _mimeType
 
-    override fun setVssId(vssId: String?) {
-        TODO("Not yet implemented")
-    }
+    override fun getCodecs(): String = _codecs
 
-    override fun getName(): String? {
-        TODO("Not yet implemented")
-    }
-
-    override fun setName(name: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getMimeType(): String? {
-        TODO("Not yet implemented")
-    }
-
-    override fun setMimeType(mimeType: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCodecs(): String? {
-        TODO("Not yet implemented")
-    }
-
-    override fun setCodecs(codecs: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getType(): String? {
-        TODO("Not yet implemented")
-    }
-
-    override fun setType(type: String?) {
-        TODO("Not yet implemented")
-    }
+    override fun getType() = _type
 }

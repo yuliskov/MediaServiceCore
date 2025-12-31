@@ -7,7 +7,9 @@ import com.liskovsoft.youtubeapi.innertube.core.Player
 import com.liskovsoft.youtubeapi.innertube.core.RequestInit
 import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import com.liskovsoft.youtubeapi.innertube.core.Session
+import com.liskovsoft.youtubeapi.innertube.impl.MediaItemFormatInfoImpl
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
+import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
 import com.liskovsoft.youtubeapi.innertube.utils.getServerAbrStreamingUrl
 import com.liskovsoft.youtubeapi.innertube.utils.getVideoPlaybackUstreamerConfig
@@ -84,12 +86,36 @@ class InnertubeServiceTest {
     @Test
     fun testGetVideoResults() {
         val session = Session.create()
-        val httpClient = HTTPClient(session!!)
-
-        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(DEFAULT_VIDEO_ID, session = session)))
+        val playerResult = getPlayerResult(session!!)
 
         Assert.assertNotNull("Player result not null", playerResult!!)
         Assert.assertNotNull("Player has server abr url", playerResult.getServerAbrStreamingUrl())
         Assert.assertNotNull("Player has server streaming config", playerResult.getVideoPlaybackUstreamerConfig())
+    }
+
+    @Test
+    fun testDecipherVideoResults() {
+        val session = Session.create()
+        val playerResult = getPlayerResult(session!!)
+
+        val formatInfo = MediaItemFormatInfoImpl(playerResult!!)
+
+        val sabrUrl = formatInfo.serverAbrStreamingUrl
+
+        Assert.assertNotNull("sabrUrl not null", sabrUrl)
+
+        session.player.decipher(formatInfo)
+
+        val sabrUrl2 = formatInfo.serverAbrStreamingUrl
+
+        Assert.assertNotNull("sabrUrl2 not null", sabrUrl2)
+
+        Assert.assertNotEquals("sabr urls not equals", sabrUrl, sabrUrl2)
+    }
+
+    private fun getPlayerResult(session: Session): PlayerResult? {
+        val httpClient = HTTPClient(session)
+
+        return httpClient.fetch("/player", RequestInit(body = RequestInitBody(DEFAULT_VIDEO_ID, session = session)))
     }
 }

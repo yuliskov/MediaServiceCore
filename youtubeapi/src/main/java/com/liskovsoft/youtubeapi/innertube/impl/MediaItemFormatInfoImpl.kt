@@ -32,7 +32,6 @@ import com.liskovsoft.youtubeapi.innertube.utils.getUploadDate
 import com.liskovsoft.youtubeapi.innertube.utils.getVideoPlaybackUstreamerConfig
 import com.liskovsoft.youtubeapi.innertube.utils.getWatchTimeUrl
 import com.liskovsoft.youtubeapi.innertube.utils.isPlayableInEmbed
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemStoryboard
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder
@@ -114,22 +113,24 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     private val _paidContentText by lazy { playerResult.getPaidContentText() }
     private val _watchTimeUrl by lazy { playerResult.getWatchTimeUrl() }
 
-    init {
-        parseTrackingParams()
-    }
-
     private var _segmentDurationUs: Int = 0
     private var _startTimeMs: Long = 0
     private var _startSegmentNum: Int = 0
     private var _isStreamSeekable: Boolean = false
 
-    private var isSynced: Boolean = false
-    private var eventId: String? = null
-    private var visitorMonitoringData: String? = null
-    private var ofParam: String? = null
-    private var isAuth: Boolean = false
+    private var _isSynced: Boolean = false
+    private var _eventId: String? = null
+    private var _visitorMonitoringData: String? = null
+    private var _ofParam: String? = null
+    private var _isAuth: Boolean = false
 
-    private var clickTrackingParams: String? = null
+    private var _clickTrackingParams: String? = null
+
+    private var _poToken: String? = null
+
+    init {
+        parseTrackingParams()
+    }
 
     override fun getAdaptiveFormats() = _adaptiveFormats
 
@@ -227,6 +228,10 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
 
     override fun isUnplayable() = _isUnplayable
 
+    override fun isSynced() = _isSynced
+
+    override fun isAuth() = _isAuth
+
     override fun isUnknownError() = _isUnknownError
 
     override fun getPlayabilityReason(): String? = _playabilityReason
@@ -249,28 +254,30 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
 
     override fun getServerAbrStreamingUrl() = sabrUrlHolder.getUrl()
 
-    override fun getPoToken(): String? {
-        TODO("Not yet implemented")
+    override fun getPoToken() = _poToken
+
+    fun setPoToken(poToken: String?) {
+        _poToken = poToken
     }
 
     override fun getClientInfo() = _clientInfo
 
-    fun getEventId() = eventId
+    override fun getEventId() = _eventId
 
-    fun getVisitorMonitoringData() = visitorMonitoringData
+    override fun getVisitorMonitoringData() = _visitorMonitoringData
 
-    fun getOfParam() = ofParam
+    override fun getOfParam() = _ofParam
 
-    fun getClickTrackingParams() = clickTrackingParams
+    override fun getClickTrackingParams() = _clickTrackingParams
 
-    fun setClickTrackingParams(clickTrackingParams: String?) {
-        this.clickTrackingParams = clickTrackingParams
+    override fun setClickTrackingParams(clickTrackingParams: String?) {
+        _clickTrackingParams = clickTrackingParams
     }
 
     /**
      * Format is used between multiple functions. Do a little cache.
      */
-    fun isCacheActual(): Boolean {
+    override fun isCacheActual(): Boolean {
         // NOTE: Musical live streams are ciphered too!
 
         // Check app cipher first. It's not robust check (cipher may be updated not by us).
@@ -284,18 +291,18 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
      * Sync history data<br></br>
      * Intended to merge signed and unsigned infos (no-playback fix)
      */
-    fun sync(formatInfo: YouTubeMediaItemFormatInfo?) {
-        isSynced = true
+    override fun sync(formatInfo: MediaItemFormatInfo?) {
+        _isSynced = true
 
         if (formatInfo == null || Helpers.anyNull(formatInfo.eventId, formatInfo.visitorMonitoringData, formatInfo.ofParam)) {
             return
         }
 
         // Intended to merge signed and unsigned infos (no-playback fix)
-        eventId = formatInfo.eventId
-        visitorMonitoringData = formatInfo.visitorMonitoringData
-        ofParam = formatInfo.ofParam
-        isAuth = formatInfo.isAuth
+        _eventId = formatInfo.eventId
+        _visitorMonitoringData = formatInfo.visitorMonitoringData
+        _ofParam = formatInfo.ofParam
+        _isAuth = formatInfo.isAuth
     }
 
     /**
@@ -392,14 +399,14 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     }
 
     private fun parseTrackingParams() {
-        val parseDone = eventId != null || visitorMonitoringData != null
+        val parseDone = _eventId != null || _visitorMonitoringData != null
 
         if (!parseDone && _watchTimeUrl != null) {
             val queryString: UrlQueryString = UrlQueryStringFactory.parse(_watchTimeUrl)
 
-            eventId = queryString.get(PARAM_EVENT_ID)
-            visitorMonitoringData = queryString.get(PARAM_VM)
-            ofParam = queryString.get(PARAM_OF)
+            _eventId = queryString.get(PARAM_EVENT_ID)
+            _visitorMonitoringData = queryString.get(PARAM_VM)
+            _ofParam = queryString.get(PARAM_OF)
         }
     }
 }

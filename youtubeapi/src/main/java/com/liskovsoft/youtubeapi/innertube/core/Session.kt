@@ -47,7 +47,7 @@ internal class Session private constructor(
     val accountIndex: Int,
     val configData: String?,
     val userAgent: String,
-    val player: Player? = null,
+    val player: Player,
     val cookie: String? = null,
     //cache?: ICache,
     val poToken: String? = null
@@ -91,7 +91,7 @@ internal class Session private constructor(
         fun getSessionDataResult(): SessionDataResult? {
             val sessionApi = RetrofitHelper.create(SessionApi::class.java)
             val sessionDataResult = sessionApi.getSessionData(ApiHelpers.createSessionDataHeaders())
-            return RetrofitHelper.get(sessionDataResult)
+            return RetrofitHelper.get(sessionDataResult, false)
         }
 
         fun retrieveInnertubeConfig(sessionData: SessionDataResult, context: InnertubeContext): InnertubeConfigResult? {
@@ -102,7 +102,7 @@ internal class Session private constructor(
                     ApiHelpers.createInnertubeConfigHeaders(sessionData),
                     ApiHelpers.createInnertubeJsonConfig(context)
                 )
-            return RetrofitHelper.get(innertubeConfigResult)
+            return RetrofitHelper.get(innertubeConfigResult, false)
         }
 
         private fun buildContext(sessionData: SessionDataResult, options: SessionArgs): InnertubeContext? {

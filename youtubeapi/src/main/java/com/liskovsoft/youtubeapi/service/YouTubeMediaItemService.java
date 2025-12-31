@@ -22,6 +22,7 @@ import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.BaseMediaItem;
 import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
+import com.liskovsoft.youtubeapi.innertube.InnertubeService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
@@ -41,7 +42,7 @@ import java.util.Set;
 public class YouTubeMediaItemService implements MediaItemService {
     private static final String TAG = YouTubeMediaItemService.class.getSimpleName();
     private static YouTubeMediaItemService sInstance;
-    private YouTubeMediaItemFormatInfo mCachedFormatInfo;
+    private MediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemService() {
     }
@@ -58,18 +59,18 @@ public class YouTubeMediaItemService implements MediaItemService {
      * Format info is cached because it's supposed to run in multiple methods
      */
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
+    public MediaItemFormatInfo getFormatInfo(MediaItem item) {
         return getFormatInfo(item.getVideoId(), item.getClickTrackingParams());
     }
 
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(String videoId) {
+    public MediaItemFormatInfo getFormatInfo(String videoId) {
         return getFormatInfo(videoId, null);
     }
 
     @Override
-    public YouTubeMediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
-        YouTubeMediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
+    public MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
+        MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
 
         if (cachedFormatInfo != null) {
             // Improve the performance by fetching the history data on the second run
@@ -81,12 +82,31 @@ public class YouTubeMediaItemService implements MediaItemService {
 
         VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, clickTrackingParams);
 
-        YouTubeMediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
+        MediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
 
         setCachedFormatInfo(formatInfo, clickTrackingParams);
 
         return formatInfo;
     }
+
+    //@Override
+    //public MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
+    //    MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
+    //
+    //    if (cachedFormatInfo != null) {
+    //        // Improve the performance by fetching the history data on the second run
+    //        //syncWithAuthFormatIfNeeded(cachedFormatInfo);
+    //        return cachedFormatInfo;
+    //    }
+    //
+    //    checkSigned();
+    //
+    //    MediaItemFormatInfo formatInfo = InnertubeService.createFormatInfo(videoId);
+    //
+    //    setCachedFormatInfo(formatInfo, clickTrackingParams);
+    //
+    //    return formatInfo;
+    //}
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
@@ -110,7 +130,7 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public MediaItemStoryboard getStoryboard(String videoId) {
-        YouTubeMediaItemFormatInfo format = getFormatInfo(videoId);
+        MediaItemFormatInfo format = getFormatInfo(videoId);
         return format != null ? format.createStoryboard() : null;
     }
 
@@ -175,7 +195,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     public void updateHistoryPosition(String videoId, float positionSec) {
         checkSigned();
 
-        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
+        MediaItemFormatInfo formatInfo = getFormatInfo(videoId);
 
         if (formatInfo == null) {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
@@ -501,14 +521,14 @@ public class YouTubeMediaItemService implements MediaItemService {
         mCachedFormatInfo = null;
     }
 
-    private YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
+    private MediaItemFormatInfo getCachedFormatInfo(String videoId) {
         return  mCachedFormatInfo != null &&
                 mCachedFormatInfo.getVideoId() != null &&
                 mCachedFormatInfo.getVideoId().equals(videoId) &&
                 mCachedFormatInfo.isCacheActual() ? mCachedFormatInfo : null;
     }
 
-    private void setCachedFormatInfo(YouTubeMediaItemFormatInfo formatInfo, String clickTrackingParams) {
+    private void setCachedFormatInfo(MediaItemFormatInfo formatInfo, String clickTrackingParams) {
         mCachedFormatInfo = formatInfo;
 
         if (formatInfo != null) {
@@ -560,7 +580,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         return WatchNextServiceWrapper.INSTANCE;
     }
 
-    private static void syncWithAuthFormatIfNeeded(YouTubeMediaItemFormatInfo formatInfo) {
+    private static void syncWithAuthFormatIfNeeded(MediaItemFormatInfo formatInfo) {
         if (formatInfo == null) {
             return;
         }
@@ -571,7 +591,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         }
     }
 
-    private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
+    private static boolean shouldBeSynced(MediaItemFormatInfo formatInfo) {
         return !formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 

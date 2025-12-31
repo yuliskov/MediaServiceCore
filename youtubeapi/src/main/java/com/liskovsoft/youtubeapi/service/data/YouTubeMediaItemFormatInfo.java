@@ -350,10 +350,12 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mIsUnplayable;
     }
 
+    @Override
     public boolean isAuth() {
         return mIsAuth;
     }
 
+    @Override
     public boolean isSynced() {
         return mIsSynced;
     }
@@ -423,22 +425,27 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return mClient;
     }
 
+    @Override
     public String getEventId() {
         return mEventId;
     }
 
+    @Override
     public String getVisitorMonitoringData() {
         return mVisitorMonitoringData;
     }
 
+    @Override
     public String getOfParam() {
         return mOfParam;
     }
 
+    @Override
     public String getClickTrackingParams() {
         return mClickTrackingParams;
     }
 
+    @Override
     public void setClickTrackingParams(String clickTrackingParams) {
         mClickTrackingParams = clickTrackingParams;
     }
@@ -446,6 +453,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     /**
      * Format is used between multiple functions. Do a little cache.
      */
+    @Override
     public boolean isCacheActual() {
         // NOTE: Musical live streams are ciphered too!
 
@@ -459,7 +467,8 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
      * Sync history data<br/>
      * Intended to merge signed and unsigned infos (no-playback fix)
      */
-    public void sync(YouTubeMediaItemFormatInfo formatInfo) {
+    @Override
+    public void sync(MediaItemFormatInfo formatInfo) {
         mIsSynced = true;
 
         if (formatInfo == null || Helpers.anyNull(formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam())) {

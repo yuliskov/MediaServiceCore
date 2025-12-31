@@ -115,7 +115,7 @@ internal class HTTPClient(val session: Session) {
 
         val playerResultWrapper = requestApi.retrievePlayer(requestUrl.toString(), requestHeaders, requestBody)
 
-        return RetrofitHelper.get(playerResultWrapper)
+        return RetrofitHelper.get(playerResultWrapper, false)
     }
 
     private fun setupCommonHeaders(requestHeaders: MutableMap<String, String>, session: Session, requestUrl: Uri) {

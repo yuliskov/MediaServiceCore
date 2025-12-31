@@ -5,7 +5,7 @@ import io.reactivex.Observable;
 import java.io.InputStream;
 import java.util.List;
 
-public interface MediaItemFormatInfo {
+public interface MediaItemFormatInfo extends FormatInfoProvision {
     List<MediaFormat> getAdaptiveFormats();
     List<MediaFormat> getUrlFormats();
     List<MediaSubtitle> getSubtitles();

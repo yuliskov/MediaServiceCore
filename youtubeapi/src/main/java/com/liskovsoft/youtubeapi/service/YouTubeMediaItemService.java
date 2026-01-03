@@ -73,8 +73,6 @@ public class YouTubeMediaItemService implements MediaItemService {
         MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
 
         if (cachedFormatInfo != null) {
-            // Improve the performance by fetching the history data on the second run
-            //syncWithAuthFormatIfNeeded(cachedFormatInfo);
             return cachedFormatInfo;
         }
 
@@ -94,8 +92,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     //    MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
     //
     //    if (cachedFormatInfo != null) {
-    //        // Improve the performance by fetching the history data on the second run
-    //        //syncWithAuthFormatIfNeeded(cachedFormatInfo);
     //        return cachedFormatInfo;
     //    }
     //

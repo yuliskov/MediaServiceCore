@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.app.PoTokenGate
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils
 import com.liskovsoft.youtubeapi.innertube.impl.MediaFormatImpl
 import com.liskovsoft.youtubeapi.innertube.impl.MediaItemFormatInfoImpl
+import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
 import com.liskovsoft.youtubeapi.innertube.utils.DeviceCategory
 import com.liskovsoft.youtubeapi.innertube.utils.URLS
 import com.liskovsoft.youtubeapi.innertube.utils.getRandomUserAgent
@@ -72,6 +73,8 @@ internal class Player private constructor(
             applySignatures(urlHolders, signatures)
         }
 
+        applyClientVer(urlHolders)
+
         val poToken = PoTokenGate.getPoToken(formatInfo.clientInfo)
         formatInfo.setPoToken(poToken)
         applySessionPoToken(urlHolders, poToken)
@@ -105,6 +108,26 @@ internal class Player private constructor(
 
         for (i in urlHolders.indices) {
             urlHolders[i].setSignature(signatures[i])
+        }
+    }
+
+    private fun applyClientVer(urlHolders: List<VideoUrlHolder>) {
+        val clientParam = "c"
+        val clientVersionParam = "cver"
+        for (url in urlHolders) {
+            val client = url.getParam(clientParam)
+            client?.let {
+                when (it) {
+                    "WEB" -> url.setParam(clientVersionParam, CLIENTS.WEB.VERSION)
+                    "MWEB" -> url.setParam(clientVersionParam, CLIENTS.MWEB.VERSION)
+                    "WEB_REMIX" -> url.setParam(clientVersionParam, CLIENTS.YTMUSIC.VERSION)
+                    "WEB_KIDS" -> url.setParam(clientVersionParam, CLIENTS.WEB_KIDS.VERSION)
+                    "TVHTML5" -> url.setParam(clientVersionParam, CLIENTS.TV.VERSION)
+                    "TVHTML5_SIMPLY" -> url.setParam(clientVersionParam, CLIENTS.TV_SIMPLY.VERSION)
+                    "TVHTML5_SIMPLY_EMBEDDED_PLAYER" -> url.setParam(clientVersionParam, CLIENTS.TV_EMBEDDED.VERSION)
+                    "WEB_EMBEDDED_PLAYER" -> url.setParam(clientVersionParam, CLIENTS.WEB_EMBEDDED.VERSION)
+                }
+            }
         }
     }
     

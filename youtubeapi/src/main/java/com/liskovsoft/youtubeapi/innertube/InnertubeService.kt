@@ -12,7 +12,7 @@ internal object InnertubeService {
     fun createFormatInfo(videoId: String): MediaItemFormatInfo? {
         val session = Session.create() ?: return null
         val httpClient = HTTPClient(session)
-        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody(videoId, session = session)))
+        val playerResult = httpClient.fetch("/player", RequestInit(body = RequestInitBody("K04WmBtVsOs", session = session)))
             ?: return null
 
         val formatInfo = MediaItemFormatInfoImpl(playerResult)

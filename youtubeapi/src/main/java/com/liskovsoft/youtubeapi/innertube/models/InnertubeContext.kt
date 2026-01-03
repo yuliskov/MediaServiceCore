@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.innertube.models
 
-import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
 import java.util.Date
 import java.util.TimeZone
 
@@ -22,8 +22,7 @@ internal class InnertubeContext(
         val visitorData = options.visitorData ?: deviceInfo.visitorData
         var clientName = options.clientName
         var clientVersion = if (options.clientName == "WEB") deviceInfo.clientVersion
-            else if (AppClient.hasName(options.clientName)) AppClient.valueOf(options.clientName).clientVersion
-            else deviceInfo.clientVersion
+            else CLIENTS.ALl[options.clientName]?.VERSION ?: deviceInfo.clientVersion
         var osName = deviceInfo.osName
         var osVersion = deviceInfo.osVersion
         var androidSdkVersion: Int? = null

@@ -65,5 +65,7 @@ public interface MediaItemFormatInfo extends FormatInfoProvision {
     interface ClientInfo {
         String getClientName();
         String getClientVersion();
+        String getOsName();
+        String getOsVersion();
     }
 }

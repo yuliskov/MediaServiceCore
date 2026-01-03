@@ -102,6 +102,22 @@ internal object CLIENTS {
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco"
     )
+
+    val ALl = mapOf(
+        "IOS" to IOS,
+        "WEB" to WEB,
+        "MWEB" to MWEB,
+        "WEB_KIDS" to WEB_KIDS,
+        "YTMUSIC" to YTMUSIC,
+        "ANDROID" to ANDROID,
+        "YTSTUDIO_ANDROID" to YTSTUDIO_ANDROID,
+        "YTMUSIC_ANDROID" to YTMUSIC_ANDROID,
+        "TV" to TV,
+        "TV_SIMPLY" to TV_SIMPLY,
+        "TV_EMBEDDED" to TV_EMBEDDED,
+        "WEB_EMBEDDED" to WEB_EMBEDDED,
+        "WEB_CREATOR" to WEB_CREATOR
+    )
 }
 
 internal data class CLIENT(

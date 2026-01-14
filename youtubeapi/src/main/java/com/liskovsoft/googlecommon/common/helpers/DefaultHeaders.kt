@@ -11,7 +11,7 @@ object DefaultHeaders {
 
     // NOTE: Possible OOM exception!!! Uses more RAM because of decompression. Fast!
     private const val ACCEPT_ENCODING_COMPRESSED = "gzip, deflate, br" // NOTE: HttpUrlConnection won't work with compression
-    private const val ACCEPT_ENCODING_COMPRESSED_LITE = "gzip, deflate" // br doesn't work good with ByeByeDPI
+    private const val ACCEPT_ENCODING_COMPRESSED_FAST = "gzip, deflate" // br uses 3x more RAM and has problems with ByeByeDPI
 
     // No compression. Optimal RAM usage! Slow.
     private const val ACCEPT_ENCODING_NONE = "identity"
@@ -78,6 +78,6 @@ object DefaultHeaders {
     @JvmField
     val APP_USER_AGENT = USER_AGENT_TV // no buffering
 
-    const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED
+    const val ACCEPT_ENCODING = ACCEPT_ENCODING_COMPRESSED_FAST
     const val REFERER = "https://www.youtube.com/tv"
 }

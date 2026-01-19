@@ -316,8 +316,9 @@ public class MediaServiceData {
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);
-        mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
+        //mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
         mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);
+        mIsLegacyUIEnabled = Helpers.parseBoolean(split, 25);
 
         boolean isAppUpdated = mOldAppVersion != null && !Helpers.equals(mOldAppVersion, appVersion);
 
@@ -349,7 +350,7 @@ public class MediaServiceData {
                         mVideoInfoType, null, null, null, null, null,
                         null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
-                        null, mVisitorCookie, null, mIsLegacyUIEnabled, mFailedAppInfo));
+                        null, mVisitorCookie, null, null, mFailedAppInfo, mIsLegacyUIEnabled));
     }
 
     private void persistCachedDataInt() {

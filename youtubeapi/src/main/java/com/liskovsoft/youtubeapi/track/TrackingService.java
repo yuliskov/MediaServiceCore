@@ -1,7 +1,5 @@
 package com.liskovsoft.youtubeapi.track;
 
-import android.util.Pair;
-
 import androidx.annotation.NonNull;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -10,14 +8,16 @@ import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 
+import kotlin.Triple;
 import retrofit2.Call;
 
 public class TrackingService {
     private static final String TAG = TrackingService.class.getSimpleName();
     private static final int START_THRESHOLD_SEC = 3 * 60;
+    private static final long HISTORY_RENEW_MS = 5 * 60_000;
     private static TrackingService sInstance;
     private final TrackingApi mTrackingApi;
-    private Pair<String, Float> mPosition;
+    private Triple<String, Float, Long> mPosition;
 
     private TrackingService() {
         mTrackingApi = RetrofitHelper.create(TrackingApi.class);
@@ -48,7 +48,7 @@ public class TrackingService {
                 ofParam
         );
 
-        mPosition = new Pair<>(videoId, positionSec);
+        mPosition = new Triple<>(videoId, positionSec, System.currentTimeMillis());
     }
 
     private void updateWatchTimeFull(String videoId, float lengthSec, float oldPositionSec, float positionSec, String clientPlaybackNonce,
@@ -143,19 +143,23 @@ public class TrackingService {
     }
 
     private boolean needNewRecord(String videoId) {
-        return !containsRecord(videoId);
+        return !containsRecord(videoId) || isRecordOutdated();
     }
 
     private float getOldPositionSec(String videoId, float positionSec) {
-        return containsRecord(videoId) ? mPosition.second : positionSec < START_THRESHOLD_SEC ? 0 : positionSec;
+        return containsRecord(videoId) ? mPosition.getSecond() : positionSec < START_THRESHOLD_SEC ? 0 : positionSec;
     }
 
     private boolean previouslyAlmostWatched(String videoId, float lengthSec) {
-        return containsRecord(videoId) && lengthSec - mPosition.second < getEndThresholdSec(lengthSec);
+        return containsRecord(videoId) && lengthSec - mPosition.getSecond() < getEndThresholdSec(lengthSec);
     }
 
     private boolean containsRecord(String videoId) {
-        return mPosition != null && Helpers.equals(mPosition.first, videoId);
+        return mPosition != null && Helpers.equals(mPosition.getFirst(), videoId);
+    }
+
+    private boolean isRecordOutdated() {
+        return mPosition != null && System.currentTimeMillis() - mPosition.getThird() > HISTORY_RENEW_MS;
     }
 
     private float getEndThresholdSec(float lengthSec) {

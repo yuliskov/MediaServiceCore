@@ -118,7 +118,9 @@ private fun ShelfListWrapper.getFirstGridRenderer() = contents?.firstNotNullOfOr
 
 /////
 
-internal fun SectionListRenderer.getItems(): List<ItemWrapper?>? = getContents()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun SectionListRenderer.getItems(): List<ItemWrapper?>? =
+    // Remain only untitled rows. Helps to filter Subscriptions from "Most relevant" and "Shorts".
+    getContents()?.flatMap { it?.takeIf { it.getTitle() == null }?.getItems() ?: emptyList() }
 internal fun SectionListRenderer.getNestedShelves(): List<ShelfListWrapper?>? = getContents()?.mapNotNull { it?.itemSectionRenderer }
 internal fun SectionListRenderer.getContinuationToken(): String? = getContents()?.firstNotNullOfOrNull { it?.getContinuationToken() }
 private fun SectionListRenderer.getContents() = contents // Contains shelves with items (3 in a row) and single row for shorts
@@ -151,6 +153,7 @@ internal fun SectionWrapper.getItem() = richItemRenderer?.content ?: playlistVid
     ?: gridPlaylistRenderer?.let { ItemWrapper(gridPlaylistRenderer = it) } ?: gridVideoRenderer?.let { ItemWrapper(gridVideoRenderer = it) }
 
 internal fun SectionWrapper.getItems() = itemSectionRenderer?.getItems() ?: richSectionRenderer?.getItems() ?: gridRenderer?.items
+internal fun SectionWrapper.getTitle() = itemSectionRenderer?.getTitle() ?: richSectionRenderer?.getTitle()
 internal fun SectionWrapper.getContinuationToken() = continuationItemRenderer?.getContinuationToken() ?: itemSectionRenderer?.getContinuationToken()
 
 /////

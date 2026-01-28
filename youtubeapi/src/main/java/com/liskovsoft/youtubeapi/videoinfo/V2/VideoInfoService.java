@@ -34,9 +34,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
     // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
+            AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.WEB_EMBED, // Restricted (18+) videos
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on cronet!)
-            AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.IOS,
             AppClient.TV, // Supports auth. Fixes "please sign in" bug!
             AppClient.TV_LEGACY,
@@ -187,9 +187,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
-        if (client.isPlaybackBroken()) {
-            return null;
-        }
+        //if (client.isPlaybackBroken()) {
+        //    return null;
+        //}
 
         mRecentInfoType = client;
 

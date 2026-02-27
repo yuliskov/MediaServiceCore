@@ -48,6 +48,9 @@ public class MediaServiceData {
     public static final int CONTENT_UPCOMING_SUBSCRIPTIONS = 1 << 11;
     public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
     public static final int CONTENT_SHORTS_CHANNEL = 1 << 13;
+    public static final int CONTENT_SHORTS_ALL = CONTENT_SHORTS_HOME | CONTENT_SHORTS_SEARCH
+            | CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY
+            | CONTENT_SHORTS_TRENDING | CONTENT_SHORTS_CHANNEL;
     private static MediaServiceData sInstance;
     private String mScreenId;
     private String mDeviceId;

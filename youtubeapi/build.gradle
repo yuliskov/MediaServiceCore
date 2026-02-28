@@ -60,8 +60,8 @@ dependencies {
     androidTestImplementation project(':youtubeapi')
     androidTestImplementation project(':sharedtests')
     androidTestImplementation 'junit:junit:' + junitVersion
-    androidTestImplementation 'androidx.test:runner:' + testXSupportLibraryVersion
-    androidTestImplementation 'androidx.test:rules:' + testXSupportLibraryVersion
+    androidTestImplementation 'androidx.test:runner:' + testXSupportVersion
+    androidTestImplementation 'androidx.test:rules:' + testXSupportVersion
 
     implementation project(':commons-io-2.8.0') // My Android 4.3 fix
     implementation project(':sharedutils')
@@ -78,7 +78,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
-    implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion
+    implementation 'androidx.annotation:annotation:' + annotationXVersion
 
     // js interpreter
     // duktape fork

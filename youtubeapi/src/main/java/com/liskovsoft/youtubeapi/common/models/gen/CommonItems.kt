@@ -272,6 +272,10 @@ internal data class TileItem(
         val showMenuCommand: ShowMenuCommand?
     ) {
         data class ShowMenuCommand(
+            val contentId: String?,
+            val thumbnail: ThumbnailItem?,
+            val title: TextItem?,
+            val subtitle: TextItem?,
             val menu: MenuWrapper?
         )
     }

@@ -12,8 +12,13 @@ internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMedia
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
     override val secondTitleItem by lazy {
-        YouTubeHelper.createInfo(if (isLiveItem && !Helpers.allNulls(userName, viewCountText, publishedTime, upcomingEventText)) null else
-            subTitle, userName, viewCountText, publishedTime, upcomingEventText)
+        val videoInfo = arrayOf(userName, viewCountText, publishedTime, upcomingEventText)
+        val hasVideoInfo = !Helpers.allNulls(*videoInfo)
+        if (hasVideoInfo) {
+            YouTubeHelper.createInfo(*videoInfo)
+        } else {
+            YouTubeHelper.createInfo(subTitle)
+        }
     }
     override val subTitle by lazy { itemWrapper.getSubTitle() } // quality tag (e.g. 4K, LIVE) or full second title
     override val userName by lazy { itemWrapper.getUserName() }

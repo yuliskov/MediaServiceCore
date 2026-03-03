@@ -14,7 +14,7 @@ import retrofit2.Call;
 public class TrackingService {
     private static final String TAG = TrackingService.class.getSimpleName();
     private static final int START_THRESHOLD_SEC = 3 * 60;
-    private static final long HISTORY_RENEW_MS = 5 * 60_000;
+    private static final long HISTORY_RENEW_MS = 3 * 60_000;
     private static TrackingService sInstance;
     private final TrackingApi mTrackingApi;
     private Triple<String, Float, Long> mPosition;
@@ -55,26 +55,17 @@ public class TrackingService {
                                  String eventId, String visitorMonitoringData, String ofParam) {
         // Mark video as full watched if less than couple minutes remains
         boolean isVideoAlmostWatched = lengthSec - positionSec < getEndThresholdSec(lengthSec);
-        //boolean previouslyAlmostWatched = previouslyAlmostWatched(videoId, lengthSec);
-        //
-        //if (isVideoAlmostWatched && previouslyAlmostWatched) {
-        //    return;
-        //}
-
-        //if (isVideoAlmostWatched) {
-        //    createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        //    updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        //    return;
-        //}
 
         if (isVideoAlmostWatched) {
-            positionSec = lengthSec;
+            //positionSec = lengthSec;
+            createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            return;
         }
 
-        //if (needNewRecord(videoId)) {
-        //    createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        //}
-        createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+        if (needNewRecord(videoId)) {
+            createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+        }
         updateWatchTimeLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
     }
 

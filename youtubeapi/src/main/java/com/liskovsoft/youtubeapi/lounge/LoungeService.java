@@ -1,12 +1,14 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import androidx.annotation.Nullable;
+
+import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.googlecommon.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
@@ -14,12 +16,9 @@ import com.liskovsoft.youtubeapi.lounge.models.commands.PlaylistParams;
 import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
+import com.liskovsoft.youtubeapi.lounge.models.receiverCommands.ReceiverEvent;
+import com.liskovsoft.youtubeapi.lounge.models.receiverCommands.ReceiverEventBuilder;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.Response;
-import retrofit2.Call;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -31,6 +30,12 @@ import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Request.Builder;
+import okhttp3.Response;
+import retrofit2.Call;
 
 public class LoungeService {
     private static final String TAG = LoungeService.class.getSimpleName();
@@ -216,34 +221,34 @@ public class LoungeService {
 
     private void processCommands(CommandList commandList, OnCommand callback) {
         for (CommandItem commandItem : commandList.getCommands()) {
+            Log.d(TAG, "Command: %s, params: %s", commandItem.getType(), commandItem.getParams());
             updateData(commandItem);
             callback.onCommand(commandItem);
         }
     }
 
-    public void postStartPlaying(String videoId, long positionMs, long durationMs, boolean isPlaying) {
-        Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
-        postCommand(CommandParams.getNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex));
-        postStateChange(positionMs, durationMs, isPlaying);
-    }
-
-    public void postStateChange(long positionMs, long durationMs, boolean isPlaying) {
+    public void postStateChange(String videoId, String state, long positionMs, long durationMs) {
         // Live stream fix (negative position)
         if (positionMs < 0) {
-            positionMs = Math.abs(positionMs);
+            // Live stream has no duration, so we can set position to duration to avoid negative value.
+            // In fact, if you want to keep the time on the phone consistent with the time on the TV,
+            // you need to synchronize the duration every second; otherwise, the effect will be very poor, and the time will keep flickering.
+            // So it's better to set the position directly to duration.
+            // Anyway, there is no duration for live broadcasts, and the phone will directly display "live broadcasting" instead of showing the time.
+            positionMs = durationMs;
         }
 
-        if (durationMs > 0 && positionMs <= durationMs) {
-            Log.d(TAG, "Post onStateChange pos: %s, dur: %s, playing: %s...", positionMs, durationMs, isPlaying);
-
-            Map<String, String> stateChange = CommandParams.getOnStateChange(
-                    positionMs,
-                    durationMs,
-                    isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED
-            );
-
-            postCommand(stateChange);
-        }
+        Log.d(TAG, "Post onStateChange pos: %s, dur: %s, state: %s...", positionMs, durationMs, state);
+        ReceiverEventBuilder.UpdateNowPlaying builder =  new ReceiverEventBuilder.UpdateNowPlaying()
+                .listId(mPlaylistId)
+                .currentIndex(mPlaylistIndex)
+                .ctt(mCtt)
+                .videoId(videoId)
+                .state(state)
+                .currentTime(positionMs / 1_000f)
+                .seekableEndTime(durationMs / 1_000f)
+                .duration(durationMs / 1_000f);
+        postCommand(builder.build());
     }
 
     public void postVolumeChange(int volume) {
@@ -251,23 +256,37 @@ public class LoungeService {
             return;
         }
         Log.d(TAG, "Post onVolumeChanged: %s...", volume);
-        postCommand(CommandParams.getOnVolumeChanged(volume));
+        postCommand(
+                new ReceiverEventBuilder.OnVolumeChanged()
+                        .volume(volume)
+                        .muted(false)
+                        .build()
+        );
+    }
+
+    public void postSubtitleChange(@Nullable String vssId, String languageCode) {
+        vssId = vssId != null ? vssId.trim() : "";
+        if (vssId.isEmpty()) {
+            Log.d(TAG, "Post onSubtitleChange: cc off");
+            postCommand(
+                    new ReceiverEventBuilder.OnSubtitlesTrackChanged()
+                            .build()
+            );
+        } else {
+            Log.d(TAG, "Post onSubtitleChange: %s", languageCode);
+            postCommand(
+                    new ReceiverEventBuilder.OnSubtitlesTrackChanged()
+                            .vssId(vssId)
+                            .languageCode(languageCode)
+                            .build()
+            );
+        }
     }
 
     public void resetData() {
         MediaServiceData.instance().setScreenId(null);
         MediaServiceData.instance().setDeviceId(null);
         mLoungeToken = null;
-    }
-
-    private void postOnPrevNextChange() {
-        if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
-            return;
-        }
-
-        Log.d(TAG, "Post onPrevNextChange...");
-
-        postCommand(CommandParams.getOnPrevNextChange());
     }
 
     private void updateData(CommandItem info) {
@@ -314,11 +333,13 @@ public class LoungeService {
         return mLineSkipAdapter.read(new ByteArrayInputStream(result.getBytes(Charset.forName("UTF-8"))));
     }
 
-    private void postCommand(Map<String, String> command) {
+    private void postCommand(ReceiverEvent... events) {
         if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
             Log.e(TAG, "Can't send command. Error: mSessionId, mGSessionId is null");
             return;
         }
+
+        Map<String, String> command = ReceiverEvent.packageReceiverEvents(events);
 
         Call<Void> wrapper = mCommandManager.postCommand(
                 mScreenName, mDeviceId, mLoungeToken, mSessionId, mGSessionId,

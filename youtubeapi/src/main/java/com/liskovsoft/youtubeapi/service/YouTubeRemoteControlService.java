@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -52,18 +54,18 @@ class YouTubeRemoteControlService implements RemoteControlService {
     }
 
     @Override
-    public Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs, boolean isPlaying) {
-        return RxHelper.fromRunnable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, isPlaying));
-    }
-
-    @Override
-    public Observable<Void> postStateChangeObserve(long positionMs, long durationMs, boolean isPlaying) {
-        return RxHelper.fromRunnable(() -> mLoungeService.postStateChange(positionMs, durationMs, isPlaying));
+    public Observable<Void> postStateChangeObserve(String videoId, String state, long positionMs, long durationMs) {
+        return RxHelper.fromRunnable(() -> mLoungeService.postStateChange(videoId, state, positionMs, durationMs));
     }
 
     @Override
     public Observable<Void> postVolumeChangeObserve(int volume) {
         return RxHelper.fromRunnable(() -> mLoungeService.postVolumeChange(volume));
+    }
+
+    @Override
+    public Observable<Void> postSubtitleChangeObserve(@Nullable String vssId, String languageCode) {
+        return RxHelper.fromRunnable(() -> mLoungeService.postSubtitleChange(vssId, languageCode));
     }
 
     @Override

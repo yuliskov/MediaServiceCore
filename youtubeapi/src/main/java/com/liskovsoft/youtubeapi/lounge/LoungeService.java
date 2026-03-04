@@ -221,29 +221,38 @@ public class LoungeService {
         }
     }
 
-    public void postStartPlaying(String videoId, long positionMs, long durationMs, boolean isPlaying) {
+    public void postStartPlaying(String videoId, long positionMs, long durationMs, int state) {
         Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
-        postCommand(CommandParams.getNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex));
-        postStateChange(positionMs, durationMs, isPlaying);
+        postCommand(
+                CommandParams.getNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex),
+                createStateChange(positionMs, durationMs, state)
+        );
     }
 
-    public void postStateChange(long positionMs, long durationMs, boolean isPlaying) {
+    public void postStateChange(long positionMs, long durationMs, int state) {
+        Map<String, String> stateChange = createStateChange(positionMs, durationMs, state);
+        postCommand(stateChange);
+    }
+
+    private Map<String, String> createStateChange(long positionMs, long durationMs, int state) {
         // Live stream fix (negative position)
         if (positionMs < 0) {
             positionMs = Math.abs(positionMs);
         }
 
-        if (durationMs > 0 && positionMs <= durationMs) {
-            Log.d(TAG, "Post onStateChange pos: %s, dur: %s, playing: %s...", positionMs, durationMs, isPlaying);
+        Map<String, String> stateChange = null;
 
-            Map<String, String> stateChange = CommandParams.getOnStateChange(
+        if (durationMs > 0 && positionMs <= durationMs) {
+            Log.d(TAG, "Post onStateChange pos: %s, dur: %s, state: %s...", positionMs, durationMs, state);
+
+            stateChange = CommandParams.getOnStateChange(
                     positionMs,
                     durationMs,
-                    isPlaying ? CommandParams.STATE_PLAYING : CommandParams.STATE_PAUSED
+                    state
             );
-
-            postCommand(stateChange);
         }
+
+        return stateChange;
     }
 
     public void postVolumeChange(int volume) {
@@ -252,6 +261,18 @@ public class LoungeService {
         }
         Log.d(TAG, "Post onVolumeChanged: %s...", volume);
         postCommand(CommandParams.getOnVolumeChanged(volume));
+    }
+
+    public void postSubtitleChange(String vssId, String languageCode) {
+        vssId = vssId != null ? vssId.trim() : "";
+
+        if (vssId.isEmpty()) {
+            Log.d(TAG, "Post onSubtitleChange: cc off");
+            postCommand(CommandParams.getOnSubtitlesTrackChanged(null, null));
+        } else {
+            Log.d(TAG, "Post onSubtitleChange: %s", languageCode);
+            postCommand(CommandParams.getOnSubtitlesTrackChanged(vssId, languageCode));
+        }
     }
 
     public void resetData() {
@@ -314,15 +335,21 @@ public class LoungeService {
         return mLineSkipAdapter.read(new ByteArrayInputStream(result.getBytes(Charset.forName("UTF-8"))));
     }
 
-    private void postCommand(Map<String, String> command) {
+    @SafeVarargs
+    private final void postCommand(Map<String, String>... commands) {
         if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
             Log.e(TAG, "Can't send command. Error: mSessionId, mGSessionId is null");
             return;
         }
 
+        Map<String, String> packaged = CommandParams.packageCommands(commands);
+
+        if (packaged == null) {
+            return;
+        }
+
         Call<Void> wrapper = mCommandManager.postCommand(
-                mScreenName, mDeviceId, mLoungeToken, mSessionId, mGSessionId,
-                command);
+                mScreenName, mDeviceId, mLoungeToken, mSessionId, mGSessionId, packaged);
         RetrofitHelper.get(wrapper);
     }
 

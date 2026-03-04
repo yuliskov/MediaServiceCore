@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
+import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -225,12 +226,12 @@ public class LoungeService {
         Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
         postCommand(
                 CommandParams.getNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex),
-                createStateChange(positionMs, durationMs, state)
+                createStateChange(positionMs, durationMs, toLoungeState(state))
         );
     }
 
     public void postStateChange(long positionMs, long durationMs, int state) {
-        Map<String, String> stateChange = createStateChange(positionMs, durationMs, state);
+        Map<String, String> stateChange = createStateChange(positionMs, durationMs, toLoungeState(state));
         postCommand(stateChange);
     }
 
@@ -365,5 +366,16 @@ public class LoungeService {
 
     public interface OnCommand {
         void onCommand(CommandItem info);
+    }
+
+    private int toLoungeState(int state) {
+        switch (state) {
+            case RemoteControlService.STATE_PLAYING:
+                return CommandParams.STATE_PLAYING;
+            case RemoteControlService.STATE_PAUSED:
+                return CommandParams.STATE_PAUSED;
+            default:
+                return CommandParams.STATE_IDLE;
+        }
     }
 }

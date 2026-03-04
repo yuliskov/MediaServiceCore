@@ -237,7 +237,13 @@ public class LoungeService {
     private Map<String, String> createStateChange(long positionMs, long durationMs, int state) {
         // Live stream fix (negative position)
         if (positionMs < 0) {
-            positionMs = Math.abs(positionMs);
+            //positionMs = Math.abs(positionMs);
+            // Live stream has no duration, so we can set position to duration to avoid negative value.
+            // In fact, if you want to keep the time on the phone consistent with the time on the TV,
+            // you need to synchronize the duration every second; otherwise, the effect will be very poor, and the time will keep flickering.
+            // So it's better to set the position directly to duration.
+            // Anyway, there is no duration for live broadcasts, and the phone will directly display "live broadcasting" instead of showing the time.
+            positionMs = durationMs;
         }
 
         Map<String, String> stateChange = null;

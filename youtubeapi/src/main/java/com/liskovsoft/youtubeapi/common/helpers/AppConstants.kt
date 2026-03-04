@@ -4,6 +4,8 @@ internal object AppConstants {
     @JvmField
     val playerUrls = listOf(
         // NOTE: tv player should be in the top (ias ones may not validate correctly)
+        "https://www.youtube.com/s/player/99f55c01/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/ecc3e9a7/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/3510b6ff/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/721caf0b/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/ab89db3f/tv-player-es6.vflset/tv-player-es6.js",

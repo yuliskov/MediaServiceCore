@@ -23,7 +23,8 @@ public class LoungeServiceTest {
     @Test
     public void testCommandPackaging() {
         Map<String, String> onVolumeChanged = CommandParams.getOnVolumeChanged(50);
-        Map<String, String> nowPlaying = CommandParams.getNowPlaying("videoId", 0, 90_000, "ctt", "playlistId", "playlistIndex");
+        Map<String, String> nowPlaying =
+                CommandParams.getNowPlaying("videoId", 0, 90_000, 1, "ctt", "playlistId", "playlistIndex");
 
         Map<String, String> packagedCommands = CommandParams.packageCommands(onVolumeChanged, nowPlaying, null, null);
 

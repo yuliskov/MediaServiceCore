@@ -127,8 +127,8 @@ public class LoungeService {
         if (mScreenName == null) {
             mScreenName = String.format(
                     "%s (%s)",
-                    Helpers.getUserDeviceName(GlobalPreferences.sInstance.getContext()),
-                    AppInfoHelpers.getAppLabel(GlobalPreferences.sInstance.getContext())
+                    Helpers.getUserDeviceName(GlobalPreferences.context()),
+                    AppInfoHelpers.getAppLabel(GlobalPreferences.context())
             );
         }
 
@@ -224,10 +224,17 @@ public class LoungeService {
 
     public void postStartPlaying(String videoId, long positionMs, long durationMs, int state) {
         Log.d(TAG, "Post nowPlaying id: %s, pos: %s, dur: %s...", videoId, positionMs, durationMs);
-        postCommand(
-                CommandParams.getNowPlaying(videoId, positionMs, durationMs, mCtt, mPlaylistId, mPlaylistIndex),
-                createStateChange(positionMs, durationMs, toLoungeState(state))
-        );
+        //postCommand(
+        //        CommandParams.getNowPlaying(videoId, positionMs, durationMs, CommandParams.STATE_IDLE, mCtt, mPlaylistId, mPlaylistIndex),
+        //        createStateChange(positionMs, durationMs, toLoungeState(state))
+        //);
+
+        // Live stream fix (negative position)
+        if (positionMs < 0) {
+            positionMs = durationMs;
+        }
+
+        postCommand(CommandParams.getNowPlaying(videoId, positionMs, durationMs, toLoungeState(state), mCtt, mPlaylistId, mPlaylistIndex));
     }
 
     public void postStateChange(long positionMs, long durationMs, int state) {

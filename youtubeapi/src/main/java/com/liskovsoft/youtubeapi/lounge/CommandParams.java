@@ -77,13 +77,14 @@ public class CommandParams {
     public static Map<String, String> getNowPlaying(String videoId,
                                                     long positionMs,
                                                     long durationMs,
+                                                    int state,
                                                     String ctt,
                                                     String playlistId,
                                                     String playlistIndex) {
         Map<String, String> result = getBaseCommand(positionMs, durationMs);
 
         result.put(FIELD_COMMAND_NAME, COMMAND_NOW_PLAYING);
-        result.put(FIELD_STATE, String.valueOf(STATE_IDLE));
+        result.put(FIELD_STATE, String.valueOf(state));
         result.put(FIELD_VIDEO_ID, videoId);
         result.put(FIELD_CTT, ctt); // from previous request
         result.put(FIELD_PLAYLIST_ID, playlistId); // from previous request

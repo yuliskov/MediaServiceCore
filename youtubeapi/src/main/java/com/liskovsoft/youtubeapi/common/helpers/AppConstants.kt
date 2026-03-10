@@ -1,6 +1,16 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
 internal object AppConstants {
+    //140dafda
+    //4eecba16
+    //00c52fa0
+    //251ca12e
+    //267b6435
+    //32a343c8
+    //48995d17
+    //4c5cf06a
+    //9f4cc5e4
+    //a944b11f
     @JvmField
     val playerUrls = listOf(
         // NOTE: tv player should be in the top (ias ones may not validate correctly)

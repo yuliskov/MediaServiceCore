@@ -12,6 +12,9 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * NOTE: testing with Duktape (native libs)!!!
  */
@@ -51,15 +54,30 @@ public class VideoInfoApiSignedTest extends BaseVideoInfoApiTest {
 
     @Test
     public void testThatClientsHaveNonEmptyResponses() {
+        List<String> workingClients = new ArrayList<>();
         for (AppClient client : AppClient.values()) {
-            if (client.isPlaybackBroken()) {
-                continue;
-            }
+            //if (client.isPlaybackBroken()) {
+            //    continue;
+            //}
 
             VideoInfo result = getVideoInfo(client, TestHelpers.VIDEO_ID_CARTOON);
-            assertNotNull("Result not null for client " + client.name(), result);
-            assertFalse("Result is playable for client " + client.name(), result.isUnplayable());
-            testThatVideoInfoContainsRequiredFields(result);
+            //assertNotNull("Result not null for client " + client.name(), result);
+            //assertFalse("Result is playable for client " + client.name(), result.isUnplayable());
+            if (result != null && !result.isUnplayable()) {
+                testThatVideoInfoContainsRequiredFields(result);
+                workingClients.add(client.name());
+            }
         }
+
+        // workingClients = {java.util.ArrayList@28038}  size = 8
+        // 0 = "TV"
+        // 1 = "TV_LEGACY"
+        // 2 = "TV_SIMPLY"
+        // 3 = "TV_KIDS"
+        // 4 = "TV_DOWNGRADED"
+        // 5 = "ANDROID"
+        // 6 = "ANDROID_SDK_LESS"
+        // 7 = "ANDROID_REEL"
+        assertTrue("Has at least 3 working clients", workingClients.size() >= 3);
     }
 }

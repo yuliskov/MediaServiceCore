@@ -271,12 +271,13 @@ internal class RequestInitBody(
     var context: InnertubeContext? = null
 
     class PlaybackContext(session: Session) {
-        val adPlaybackContext: AdPlaybackContext = AdPlaybackContext()
+        // MOD: sabr-shaka-example error: this parameter prevented playback from starting
+        //val adPlaybackContext: AdPlaybackContext = AdPlaybackContext()
         val contentPlaybackContext: ContentPlaybackContext = ContentPlaybackContext(session)
 
-        class AdPlaybackContext {
-            val pyv: Boolean = true
-        }
+        //class AdPlaybackContext {
+        //    val pyv: Boolean = true
+        //}
 
         class ContentPlaybackContext(session: Session) {
             val signatureTimestamp: String? = session.player.signatureTimestamp

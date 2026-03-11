@@ -60,12 +60,29 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return Pair(response.first, response.second)
     }
 
+    /**
+     * "cpn":"KjdxegeSaJXRctIl"
+     */
     fun createClientPlaybackNonce(): String? {
         return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateCPNParameter()
     }
 
+    /**
+     * "signatureTimestamp":20522
+     */
     fun getSignatureTimestamp(): String? {
         return signatureTimestamp
+    }
+
+    /**
+     * Fix outdated timestamp (e.g. actual player is broken)
+     *
+     * The actual error: UNPLAYABLE: The page needs to be reloaded
+     */
+    fun fixSignatureTimestamp() {
+        signatureTimestamp?.let {
+            signatureTimestamp = (it.toInt() + 100).toString()
+        }
     }
 
     fun validate(): Boolean {

@@ -111,7 +111,7 @@ public class AppServiceIntCached extends AppServiceInt {
         int idx = -1;
         final int MAIN = 0;
         final int DATA = 1;
-        final int FALLBACK = 2;
+        final int APP_CONST = 2;
 
         for (String url : playerUrls) {
             idx++;
@@ -129,9 +129,11 @@ public class AppServiceIntCached extends AppServiceInt {
                         }
                         break;
                     case DATA:
+                        mPlayerDataExtractor.fixSignatureTimestamp();
                         getData().setFailedAppInfo(mAppInfo);
                         break;
-                    case FALLBACK:
+                    case APP_CONST:
+                        mPlayerDataExtractor.fixSignatureTimestamp();
                         getData().setFailedAppInfo(mAppInfo);
                         getData().setAppInfo(null);
                         break;

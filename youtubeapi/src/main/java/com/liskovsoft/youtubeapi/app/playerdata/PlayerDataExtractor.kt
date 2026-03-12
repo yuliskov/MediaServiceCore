@@ -74,17 +74,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return signatureTimestamp
     }
 
-    /**
-     * Fix outdated timestamp (e.g. actual player is broken)
-     *
-     * The actual error: UNPLAYABLE: The page needs to be reloaded
-     */
-    fun fixSignatureTimestamp() {
-        signatureTimestamp?.let {
-            signatureTimestamp = (it.toInt() + 10).toString()
-        }
-    }
-
     fun validate(): Boolean {
         // TODO: fix cpn code
         // return mNFuncCode && mSigFuncCode && mCPNCode != null && mSignatureTimestamp != null

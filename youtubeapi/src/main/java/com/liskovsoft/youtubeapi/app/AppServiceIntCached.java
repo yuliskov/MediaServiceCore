@@ -129,11 +129,9 @@ public class AppServiceIntCached extends AppServiceInt {
                         }
                         break;
                     case DATA:
-                        mPlayerDataExtractor.fixSignatureTimestamp();
                         getData().setFailedAppInfo(mAppInfo);
                         break;
                     case APP_CONST:
-                        mPlayerDataExtractor.fixSignatureTimestamp();
                         getData().setFailedAppInfo(mAppInfo);
                         getData().setAppInfo(null);
                         break;

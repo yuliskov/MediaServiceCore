@@ -65,7 +65,7 @@ internal class QueryBuilder(private val client: AppClient) {
             if (cpn == null)
                 cpn = appService.clientPlaybackNonce // get it somewhere else?
 
-            if (signatureTimestamp == null)
+            if (signatureTimestamp == null || signatureTimestamp == -1)
                 signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp) // get it somewhere else?
         }
 

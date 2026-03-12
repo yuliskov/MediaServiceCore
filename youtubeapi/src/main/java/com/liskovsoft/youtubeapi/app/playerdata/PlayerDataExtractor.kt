@@ -81,7 +81,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
      */
     fun fixSignatureTimestamp() {
         signatureTimestamp?.let {
-            signatureTimestamp = (it.toInt() + 100).toString()
+            signatureTimestamp = (it.toInt() + 10).toString()
         }
     }
 

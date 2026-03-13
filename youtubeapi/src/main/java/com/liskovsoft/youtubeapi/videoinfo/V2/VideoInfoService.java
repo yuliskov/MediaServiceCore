@@ -105,7 +105,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         mAuthBlock = true;
 
         // Only the tv client supports auth features
-        return getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
+        return getVideoInfo(AppClient.TV_AUTH, videoId, clickTrackingParams);
     }
 
     private VideoInfo firstPlayable(String videoId, String clickTrackingParams) {

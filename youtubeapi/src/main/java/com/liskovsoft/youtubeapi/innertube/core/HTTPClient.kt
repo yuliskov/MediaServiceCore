@@ -191,8 +191,8 @@ internal class HTTPClient(val session: Session) {
         ) {
             ctx.client.androidSdkVersion = CLIENTS.ANDROID.SDK_VERSION
             ctx.client.userAgent = CLIENTS.ANDROID.USER_AGENT
-            ctx.client.osName = "Android"
-            ctx.client.osVersion = "13"
+            ctx.client.osName = CLIENTS.ANDROID.OS_NAME
+            ctx.client.osVersion = CLIENTS.ANDROID.OS_VERSION
             ctx.client.platform = "MOBILE"
         }
 
@@ -205,7 +205,7 @@ internal class HTTPClient(val session: Session) {
             }
 
             "IOS" -> {
-                ctx.client.deviceMake = "Apple"
+                ctx.client.deviceMake = CLIENTS.IOS.DEVICE_MAKE
                 ctx.client.deviceModel = CLIENTS.IOS.DEVICE_MODEL
                 ctx.client.clientVersion = CLIENTS.IOS.VERSION
                 ctx.client.clientName = CLIENTS.IOS.NAME

@@ -20,23 +20,25 @@ internal object URLS {
 }
 
 internal object CLIENTS {
-    //val IOS = CLIENT(
-    //    NAME = "iOS",
-    //    VERSION = "20.11.6",
-    //    USER_AGENT = "com.google.ios.youtube/20.11.6 (iPhone10,4; U; CPU iOS 16_7_7 like Mac OS X)",
-    //    DEVICE_MODEL = "iPhone10,4",
-    //    OS_NAME = "iOS",
-    //    OS_VERSION = "16.7.7.20H330"
-    //)
-
     val IOS = CLIENT(
         NAME = "iOS",
         VERSION = "20.11.6",
-        USER_AGENT = "com.google.ios.youtube/20.11.6 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)",
-        DEVICE_MODEL = "iPhone16,2",
+        USER_AGENT = "com.google.ios.youtube/20.11.6 (iPhone10,4; U; CPU iOS 16_7_7 like Mac OS X)",
+        DEVICE_MAKE = "Apple",
+        DEVICE_MODEL = "iPhone10,4",
         OS_NAME = "iOS",
-        OS_VERSION = "17.5.1.21F90"
+        OS_VERSION = "16.7.7.20H330"
     )
+
+    //val IOS = CLIENT(
+    //    NAME = "iOS",
+    //    VERSION = "20.11.6",
+    //    USER_AGENT = "com.google.ios.youtube/20.11.6 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)",
+    //    DEVICE_MAKE = "Apple",
+    //    DEVICE_MODEL = "iPhone16,2",
+    //    OS_NAME = "iOS",
+    //    OS_VERSION = "17.5.1.21F90"
+    //)
 
     val WEB = CLIENT(
         NAME = "WEB",
@@ -66,6 +68,7 @@ internal object CLIENTS {
     val ANDROID = CLIENT(
         NAME = "ANDROID",
         VERSION = "21.03.36",
+        OS_NAME = "Android",
         SDK_VERSION = 36,
         OS_VERSION = "16",
         USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"

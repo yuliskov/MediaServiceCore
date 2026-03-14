@@ -3,7 +3,6 @@ package com.liskovsoft.youtubeapi.videoinfo.V2;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 public class VideoInfoApiHelper {
     public static String getVideoInfoQuery(AppClient client, String videoId, String clickTrackingParams) {
@@ -22,8 +21,6 @@ public class VideoInfoApiHelper {
                 .setPoToken(PoTokenGate.getPoToken(client, videoId))
                 .setVisitorData(PoTokenGate.getVisitorData(client))
                 .enableGeoFix(enableGeoFix) // may broke other functionality
-                // Temp history fix. Remove when nsigsolver will be fully fixed
-                .setSignatureTimestamp(client == AppClient.TV_AUTH && MediaServiceData.instance().getFailedAppInfo() != null ? 205220 : -1)
                 .build();
     }
 }

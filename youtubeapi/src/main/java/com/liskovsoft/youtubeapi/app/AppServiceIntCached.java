@@ -112,6 +112,7 @@ public class AppServiceIntCached extends AppServiceInt {
         final int MAIN = 0;
         final int DATA = 1;
         final int APP_CONST = 2;
+        String actualTimestamp = null;
 
         for (String url : playerUrls) {
             idx++;
@@ -137,7 +138,16 @@ public class AppServiceIntCached extends AppServiceInt {
                         break;
                 }
 
+                if (actualTimestamp != null) {
+                    mPlayerDataExtractor.setSignatureTimestamp(actualTimestamp);
+                }
+
                 break;
+            }
+
+            // Try to fetch the actual timestamp for old players. Needed for history (tracking) and possibly more.
+            if (idx == MAIN) {
+                actualTimestamp = mPlayerDataExtractor.getSignatureTimestamp();
             }
         }
     }

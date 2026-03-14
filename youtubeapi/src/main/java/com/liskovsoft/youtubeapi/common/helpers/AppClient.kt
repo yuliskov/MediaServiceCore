@@ -40,7 +40,6 @@ internal enum class AppClient(
     TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", -1, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE_TV),
     TV_DOWNGRADED(TV, clientVersion = "5.20251105", userAgent = DefaultHeaders.USER_AGENT_COBALT_DOWNGRADED),
-    TV_AUTH(TV), // Created specially for the auth request
     // 8AEB2AMB - web client premium formats?
     WEB("WEB", "2.20250312.04.00", 1, userAgent = DefaultHeaders.USER_AGENT_WEB,
         referer = "https://www.youtube.com/"),
@@ -87,7 +86,7 @@ internal enum class AppClient(
     val baseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent,
         (postDataBrowser ?: "") + (postData ?: "")) }
 
-    val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED, TV_AUTH) } // NOTE: TV_SIMPLY doesn't support auth
+    val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED) } // NOTE: TV_SIMPLY doesn't support auth
     val isWebPotRequired by lazy { Helpers.equalsAny(this, WEB, MWEB, WEB_EMBED, WEB_SAFARI, INITIAL, GEO) }
     // TODO: remove after implement SABR
     val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR, GEO, MWEB, WEB_EMBED, TV_EMBED, IOS) }

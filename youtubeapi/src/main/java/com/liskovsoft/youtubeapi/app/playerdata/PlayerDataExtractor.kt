@@ -74,6 +74,10 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return signatureTimestamp
     }
 
+    fun setSignatureTimestamp(timestamp: String) {
+        signatureTimestamp = timestamp
+    }
+
     fun validate(): Boolean {
         // TODO: fix cpn code
         // return mNFuncCode && mSigFuncCode && mCPNCode != null && mSignatureTimestamp != null

@@ -68,7 +68,7 @@ internal enum class AppClient(
                 + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID_VR.OS_VERSION)
                 + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID_VR.DEVICE_MODEL, CLIENTS.ANDROID_VR.DEVICE_MAKE)),
     IOS(CLIENTS.IOS.NAME, CLIENTS.IOS.VERSION, CLIENT_NAME_IDS[CLIENTS.IOS.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_IOS, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.IOS.DEVICE_MODEL, CLIENTS.IOS.OS_VERSION)),
+        userAgent = CLIENTS.IOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.IOS.DEVICE_MODEL, CLIENTS.IOS.OS_VERSION)),
     INITIAL(WEB),
     GEO(WEB);
 

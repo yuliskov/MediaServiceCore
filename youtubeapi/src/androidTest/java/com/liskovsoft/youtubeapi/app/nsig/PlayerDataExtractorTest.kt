@@ -11,7 +11,6 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -114,18 +113,18 @@ class PlayerDataExtractorTest {
         val extractor = PlayerDataExtractor(url)
 
         val nParam = "5cNpZqIJ7ixNqU68Y7S"
-        val nSig = extractor.extractNSig(nParam)
-        assertNotNull("NSig not null for url $url", nSig)
-        assertNotEquals("NSig not equal failed for url $url", nParam, nSig)
+        val result = extractor.extractNSig(nParam)
+        assertNotNull("NSig not null for url $url", result)
+        assertNotEquals("NSig not equal failed for url $url", nParam, result)
     }
 
     private fun testSigPlayerUrl(url: String) {
         val extractor = PlayerDataExtractor(url)
 
-        val sigParam = "5cNpZqIJ7ixNqU68Y7S"
-        val nSig = extractor.extractSig(listOf(sigParam))
-        assertNotNull("Sig not null for url $url", nSig?.firstOrNull())
-        assertNotEquals("Sig not equal failed for url $url", sigParam, nSig?.firstOrNull())
+        val sigParam = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz"
+        val result = extractor.extractSig(listOf(sigParam))
+        assertNotNull("Sig not null for url $url", result?.firstOrNull())
+        assertNotEquals("Sig not equal failed for url $url", sigParam, result?.firstOrNull())
     }
 
     private fun testCPNPlayerUrl(url: String) {

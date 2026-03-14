@@ -26,7 +26,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         playerUrl
             //.replace("_tce", "") // global helper functions, web url
             //.replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validates cpn
-            .replace("-es6", "-ias") // es6 no supported
+            //.replace("-es6", "-ias") // es6 no supported
     }
 
     init {
@@ -170,20 +170,21 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         }
 
         try {
-            val param = "5cNpZqIJ7ixNqU68Y7S"
+            val nParam = "5cNpZqIJ7ixNqU68Y7S"
+            val sigParam = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz"
             val result = V8ChallengeProvider.bulkSolve(
                 listOf(
-                    JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(param))),
-                    JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(param))),
+                    JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(nParam))),
+                    JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(sigParam))),
                 ))
 
             for (item in result) {
                 when (item.response?.type) {
                     JsChallengeType.N ->
-                        if (item.response.output.results[param]?.let { it != param } ?: false)
+                        if (item.response.output.results[nParam]?.let { it != nParam } ?: false)
                             nFuncCode = true
                     JsChallengeType.SIG ->
-                        if (item.response.output.results[param]?.let { it != param } ?: false)
+                        if (item.response.output.results[sigParam]?.let { it != sigParam } ?: false)
                             sFuncCode = true
                     else -> {}
                 }

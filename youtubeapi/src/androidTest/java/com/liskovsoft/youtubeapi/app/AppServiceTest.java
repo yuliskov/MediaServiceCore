@@ -42,7 +42,7 @@ public class AppServiceTest {
     @Test
     public void testThatItemsDecipheredCorrectly() {
         List<String> ciphered = new ArrayList<>();
-        String cipher = "ADBVCGD2934FBBBBBDDDFFF";
+        String cipher = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz";
         ciphered.add(cipher);
         ciphered.add(cipher);
         ciphered.add(cipher);
@@ -60,7 +60,7 @@ public class AppServiceTest {
     @Test
     public void testThatItemsDecipheredCorrectly2() {
         List<String> ciphered = new ArrayList<>();
-        String cipher = "ADBVCGD2934FBBBBBDDDFFF";
+        String cipher = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz";
         ciphered.add(cipher);
         ciphered.add(cipher);
         ciphered.add(cipher);

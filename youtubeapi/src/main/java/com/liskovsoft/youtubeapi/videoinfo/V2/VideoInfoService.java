@@ -28,13 +28,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    // VIDEO_INFO_TV can bypass "Sign in to confirm you're not a bot" (rare case)
-    // VIDEO_INFO_WEB_EMBED - the best one, with no occasional 403 errors
-    // VIDEO_INFO_IOS can work without NSig.
-    // VIDEO_INFO_TV and VIDEO_INFO_TV_EMBED are the only ones working in North America
-    // VIDEO_INFO_MWEB - can bypass SABR-only responses
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
+            AppClient.ANDROID_VR, // doesn't require pot and cipher
             AppClient.WEB_EMBED, // Restricted (18+) videos
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on cronet!)
             AppClient.IOS,

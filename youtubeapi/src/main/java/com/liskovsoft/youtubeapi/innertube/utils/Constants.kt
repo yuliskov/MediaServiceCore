@@ -31,7 +31,7 @@ internal object CLIENTS {
 
     val WEB = CLIENT(
         NAME = "WEB",
-        VERSION = "2.20250222.10.00",
+        VERSION = "2.20260206.01.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco",
@@ -40,13 +40,13 @@ internal object CLIENTS {
 
     val MWEB = CLIENT(
         NAME = "MWEB",
-        VERSION = "2.20250224.01.00",
+        VERSION = "2.20260205.04.01",
         API_VERSION = "v1"
     )
 
     val WEB_KIDS = CLIENT(
         NAME = "WEB_KIDS",
-        VERSION = "2.20250221.11.00"
+        VERSION = "2.20260205.00.00"
     )
 
     val YTMUSIC = CLIENT(
@@ -56,9 +56,21 @@ internal object CLIENTS {
 
     val ANDROID = CLIENT(
         NAME = "ANDROID",
-        VERSION = "19.35.36",
-        SDK_VERSION = 33,
-        USER_AGENT = "com.google.android.youtube/19.35.36(Linux; U; Android 13; en_US; SM-S908E Build/TP1A.220624.014) gzip"
+        VERSION = "21.03.36",
+        SDK_VERSION = 36,
+        OS_VERSION = "16",
+        USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
+    )
+
+    val ANDROID_VR = CLIENT(
+        NAME = "ANDROID_VR",
+        VERSION = "1.65.10",
+        SDK_VERSION = 32,
+        OS_NAME = "Android",
+        OS_VERSION = "12",
+        DEVICE_MAKE = "Oculus",
+        DEVICE_MODEL = "Quest 3",
+        USER_AGENT = "com.google.android.apps.youtube.vr.oculus/1.65.10 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
     )
 
     val YTSTUDIO_ANDROID = CLIENT(
@@ -73,7 +85,7 @@ internal object CLIENTS {
 
     val TV = CLIENT(
         NAME = "TVHTML5",
-        VERSION = "7.20250219.14.00",
+        VERSION = "7.20260311.12.00",
         USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version"
     )
 
@@ -89,7 +101,7 @@ internal object CLIENTS {
 
     val WEB_EMBEDDED = CLIENT(
         NAME = "WEB_EMBEDDED_PLAYER",
-        VERSION = "1.20250219.01.00",
+        VERSION = "1.20260206.01.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco"
@@ -110,6 +122,7 @@ internal object CLIENTS {
         "WEB_KIDS" to WEB_KIDS,
         "YTMUSIC" to YTMUSIC,
         "ANDROID" to ANDROID,
+        "ANDROID_VR" to ANDROID_VR,
         "YTSTUDIO_ANDROID" to YTSTUDIO_ANDROID,
         "YTMUSIC_ANDROID" to YTMUSIC_ANDROID,
         "TV" to TV,
@@ -124,6 +137,7 @@ internal data class CLIENT(
     val NAME: String,
     val VERSION: String,
     val SDK_VERSION: Int? = null,
+    val DEVICE_MAKE: String? = null,
     val DEVICE_MODEL: String? = null,
     val USER_AGENT: String? = null,
     val OS_NAME: String? = null,
@@ -135,7 +149,7 @@ internal data class CLIENT(
 )
 
 /**
- * The keys correspond to the `NAME` fields in {@linkcode CLIENTS} constant
+ * The keys correspond to the `NAME` fields in [CLIENTS] constant
  */
 internal val CLIENT_NAME_IDS: Map<String, String> = mapOf(
     "iOS" to "5",
@@ -146,11 +160,25 @@ internal val CLIENT_NAME_IDS: Map<String, String> = mapOf(
     "ANDROID" to "3",
     "ANDROID_CREATOR" to "14",
     "ANDROID_MUSIC" to "21",
+    "ANDROID_VR" to "28",
     "TVHTML5" to "7",
     "TVHTML5_SIMPLY" to "74",
     "TVHTML5_SIMPLY_EMBEDDED_PLAYER" to "85",
     "WEB_EMBEDDED_PLAYER" to "56",
     "WEB_CREATOR" to "62"
+)
+
+internal val STREAM_HEADERS: Map<String, String> = mapOf(
+    "accept" to "*/*",
+    "origin" to "https://www.youtube.com",
+    "referer" to "https://www.youtube.com",
+    "DNT" to "?1"
+)
+
+internal val INNERTUBE_HEADERS_BASE: Map<String, String> = mapOf(
+    "accept" to "*/*",
+    "accept-encoding" to "gzip, deflate",
+    "content-type" to "application/json"
 )
 
 internal val SUPPORTED_CLIENTS = listOf(
@@ -160,6 +188,7 @@ internal val SUPPORTED_CLIENTS = listOf(
     "YTKIDS",
     "YTMUSIC",
     "ANDROID",
+    "ANDROID_VR",
     "YTSTUDIO_ANDROID",
     "YTMUSIC_ANDROID",
     "TV",

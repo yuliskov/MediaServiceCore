@@ -226,6 +226,19 @@ internal class HTTPClient(val session: Session) {
                 ctx.client.clientFormFactor = "SMALL_FORM_FACTOR"
                 ctx.client.clientName = CLIENTS.ANDROID.NAME
             }
+            
+            "ANDROID_VR" -> {
+                ctx.client.androidSdkVersion = CLIENTS.ANDROID_VR.SDK_VERSION
+                ctx.client.osName = CLIENTS.ANDROID_VR.OS_NAME
+                ctx.client.osVersion = CLIENTS.ANDROID_VR.OS_VERSION
+                ctx.client.platform = "MOBILE"
+                ctx.client.userAgent = CLIENTS.ANDROID_VR.USER_AGENT
+                ctx.client.deviceMake = CLIENTS.ANDROID_VR.DEVICE_MAKE
+                ctx.client.deviceModel = CLIENTS.ANDROID_VR.DEVICE_MODEL
+                ctx.client.clientVersion = CLIENTS.ANDROID_VR.VERSION
+                ctx.client.clientFormFactor = "SMALL_FORM_FACTOR"
+                ctx.client.clientName = CLIENTS.ANDROID_VR.NAME
+            }
 
             "YTMUSIC_ANDROID" -> {
                 ctx.client.clientVersion = CLIENTS.YTMUSIC_ANDROID.VERSION

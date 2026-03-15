@@ -136,12 +136,16 @@ internal open class BrowseService2 {
     }
 
     fun getShorts(): MediaGroup? {
-        return getShortsTV()
+        return getShortsTV() ?: getShortsWeb()
     }
 
-    fun getShorts2(): MediaGroup? {
-        return getShortsWeb()
-    }
+    //fun getShorts(): MediaGroup? {
+    //    return getShortsTV()
+    //}
+    //
+    //fun getShorts2(): MediaGroup? {
+    //    return getShortsWeb()
+    //}
 
     private fun getShortsWeb(auth: Boolean = false): MediaGroup? {
         val firstResult = mBrowseApi.getReelResult(BrowseApiHelper.getReelQuery())

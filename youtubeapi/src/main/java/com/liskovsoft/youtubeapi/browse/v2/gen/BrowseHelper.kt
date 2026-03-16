@@ -285,6 +285,7 @@ internal fun Shelf.getItems(): List<ItemWrapper?>? = shelfRenderer?.getItemWrapp
     ?: gridRenderer?.items
     ?: playlistVideoListRenderer?.contents
     ?: videoRenderer?.let { listOf(ItemWrapper(videoRenderer = it)) }
+    ?: playlistRenderer?.let { listOf(ItemWrapper(playlistRenderer = it)) }
 internal fun Shelf.getContinuationToken(): String? = shelfRenderer?.getContinuationToken()
     ?: (gridRenderer ?: shelfRenderer?.content?.gridRenderer)?.getContinuationToken()
     ?: playlistVideoListRenderer?.getContinuationToken()

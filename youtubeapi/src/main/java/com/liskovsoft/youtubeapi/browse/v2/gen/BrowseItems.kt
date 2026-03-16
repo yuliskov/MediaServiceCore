@@ -220,7 +220,8 @@ internal data class Shelf(
     val shelfRenderer: ShelfRenderer?,
     val playlistVideoListRenderer: PlaylistVideoListRenderer?,
     val gridRenderer: GridRenderer?,
-    val videoRenderer: VideoItem?
+    val videoRenderer: VideoItem?,
+    val playlistRenderer: PlaylistItem?
 )
 
 internal data class PlaylistVideoListRenderer(

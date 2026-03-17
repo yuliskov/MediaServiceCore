@@ -74,41 +74,6 @@ class PlayerDataExtractorTest {
         getTestingUrls().forEach { testTimestampPlayerUrl(it) }
     }
 
-    @Test
-    fun testSingleNSigPlayerVersion() {
-        testNSigPlayerUrl("https://www.youtube.com/s/player/17ad44a3/tv-player-es6.vflset/tv-player-es6.js")
-        //testNSigPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-es6.vflset/tv-player-es6.js")
-        testNSigPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-ias.vflset/tv-player-ias.js")
-
-        testNSigPlayerUrl("https://www.youtube.com/s/player/3d3ba064/player_ias_tce.vflset/en_US/base.js")
-        testNSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js")
-    }
-
-    @Test
-    fun testSingleSigPlayerVersion() {
-        testSigPlayerUrl("https://www.youtube.com/s/player/17ad44a3/tv-player-es6.vflset/tv-player-es6.js")
-        testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js")
-        //testSigPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-es6.vflset/tv-player-es6.js")
-    }
-
-    @Test
-    fun testSingleCPNPlayerVersion() {
-        //testNSigPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-es6.vflset/tv-player-es6.js")
-        testCPNPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-ias.vflset/tv-player-ias.js")
-
-        testCPNPlayerUrl("https://www.youtube.com/s/player/3d3ba064/player_ias_tce.vflset/en_US/base.js")
-        testCPNPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js")
-    }
-
-    @Test
-    fun testSingleTimestampPlayerVersion() {
-        //testNSigPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-es6.vflset/tv-player-es6.js")
-        testTimestampPlayerUrl("https://www.youtube.com/s/player/a61444a1/tv-player-ias.vflset/tv-player-ias.js")
-
-        testTimestampPlayerUrl("https://www.youtube.com/s/player/3d3ba064/player_ias_tce.vflset/en_US/base.js")
-        testTimestampPlayerUrl("https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js")
-    }
-
     private fun testNSigPlayerUrl(url: String) {
         val extractor = PlayerDataExtractor(url)
 

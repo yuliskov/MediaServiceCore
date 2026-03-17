@@ -146,6 +146,7 @@ public class AppServiceIntCached extends AppServiceInt {
             }
 
             // Try to fetch the actual timestamp for old players. Needed for history (tracking) and possibly more.
+            // NOTE: the older player may not work on newer timestamp
             if (idx == MAIN) {
                 actualTimestamp = mPlayerDataExtractor.getSignatureTimestamp();
             }

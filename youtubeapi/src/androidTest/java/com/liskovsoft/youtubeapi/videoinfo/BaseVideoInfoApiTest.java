@@ -98,6 +98,21 @@ abstract class BaseVideoInfoApiTest {
         return RetrofitHelper.get(wrapper, client.isAuthSupported());
     }
 
+    protected VideoInfo getVideoInfo(String videoId) {
+        VideoInfo result = null;
+
+        for (AppClient client : AppClient.values()) {
+             result = getVideoInfo(client, videoId);
+
+            if (result != null && !result.isUnplayable()) {
+                break;
+            }
+        }
+
+
+        return result;
+    }
+
     @NonNull
     protected AdaptiveVideoFormat getSmallestAudio(VideoInfo videoInfo) {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),

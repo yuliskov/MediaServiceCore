@@ -55,7 +55,7 @@ public class PlaylistApiTest {
 
         assertNotNull("Action result success", actionResult);
 
-        Thread.sleep(10_000);
+        Thread.sleep(15_000);
 
         playlistsInfo = getPlaylistsInfo(TestHelpers.VIDEO_ID_AGE_RESTRICTED);
         firstPlaylistItem = playlistsInfo.getPlaylists().get(0);

@@ -31,7 +31,6 @@ open class BaseMediaItem : MediaItem {
     private var _isShortsItem: Boolean? = null
         get() = field ?: isShortsItem
 
-    //private val _id by lazy { videoId?.hashCode() ?: channelId?.hashCode() ?: sId++ }
     private val _id by lazy { hashCode() }
     // TODO: time conversion doesn't take into account locale specific delimiters
     private val durationMsItem by lazy { ServiceHelper.timeTextToMillis(lengthText ?: badgeTextItem) }
@@ -150,7 +149,7 @@ open class BaseMediaItem : MediaItem {
     }
 
     override fun getBadgeText(): String? {
-        return badgeTextItem
+        return lengthText ?: badgeTextItem
     }
 
     override fun getPlaylistId(): String? {

@@ -103,7 +103,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
             }
 
             // Fix duplicated items after previous group reuse
-            newGroup.mediaItems = if (mediaItems.isNotEmpty()) mediaItems else null
+            newGroup.mediaItems = mediaItems.ifEmpty { null }
             val nextKey = continuation.getContinuationToken()
             newGroup.nextPageKey = nextKey
             newGroup.title = baseGroup.title

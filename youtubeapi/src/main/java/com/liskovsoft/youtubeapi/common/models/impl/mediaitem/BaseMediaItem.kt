@@ -209,7 +209,7 @@ open class BaseMediaItem : MediaItem {
     }
 
     override fun getAuthor(): String? {
-        return null
+        return subTitle?.toString()
     }
 
     override fun getFeedbackToken(): String? {

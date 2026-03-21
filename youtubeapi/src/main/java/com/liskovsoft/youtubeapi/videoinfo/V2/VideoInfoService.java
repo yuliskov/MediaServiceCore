@@ -30,7 +30,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
-            AppClient.ANDROID_VR, // doesn't require pot and cipher
+            //AppClient.ANDROID_VR, // doesn't require pot and cipher (often hangs?)
             AppClient.WEB_EMBED, // Restricted (18+) videos
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on cronet!)
             AppClient.IOS,

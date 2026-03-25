@@ -231,10 +231,6 @@ public class MediaServiceData {
     }
 
     public void setAppInfo(AppInfoCached appInfo) {
-        if (appInfo != null) {
-            mFailedAppInfo = null;
-        }
-
         if (Helpers.equals(mAppInfo, appInfo)) {
             return;
         }

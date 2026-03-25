@@ -45,7 +45,6 @@ public class AppServiceIntCached extends AppServiceInt {
             YouTubeMediaItemService.instance().invalidateCache();
 
             firstValidExtractor(
-                    //Helpers.equals(playerUrl, getFailedPlayerUrl()) ? null : playerUrl,
                     playerUrl,
                     check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,
                     AppConstants.playerUrls.get(0)
@@ -125,13 +124,10 @@ public class AppServiceIntCached extends AppServiceInt {
             if (mPlayerDataExtractor.validate()) {
                 switch (idx) {
                     case MAIN:
-                        if (check(mAppInfo)) {
-                            getData().setAppInfo(mAppInfo);
-                        }
+                        getData().setAppInfo(mAppInfo);
+                        getData().setFailedAppInfo(null);
                         break;
                     case DATA:
-                        getData().setFailedAppInfo(mAppInfo);
-                        break;
                     case APP_CONST:
                         getData().setFailedAppInfo(mAppInfo);
                         getData().setAppInfo(null);

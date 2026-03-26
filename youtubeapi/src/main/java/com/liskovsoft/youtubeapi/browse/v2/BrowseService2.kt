@@ -269,7 +269,11 @@ internal open class BrowseService2 {
             return null
         }
 
-        return getBrowseRowsTV({ BrowseApiHelper.getChannelVideosQuery(it, channelId) }, MediaGroup.TYPE_CHANNEL_UPLOADS)?.first?.firstOrNull()
+        val rows = getBrowseRowsTV({ BrowseApiHelper.getChannelVideosQuery(it, channelId) }, MediaGroup.TYPE_CHANNEL_UPLOADS)?.first
+        val firstRow = rows?.firstOrNull()
+        return firstRow?.let { if (it.nextPageKey != null) it else
+            MergedMediaGroup(MediaGroupOptions.create(MediaGroup.TYPE_CHANNEL_UPLOADS), rows.getOrNull(1), it)
+        }
     }
 
     private fun getChannelVideosWeb(channelId: String?, auth: Boolean = false): MediaGroup? {
@@ -421,7 +425,7 @@ internal open class BrowseService2 {
         return when (group) {
             is ShortsMediaGroup -> continueShortsWeb(group.nextPageKey)
             is ShelfSectionMediaGroup -> continueGroupTV(group)
-            is BrowseMediaGroupTV -> continueGroupTV(group)
+            is BrowseMediaGroupTV, is MergedMediaGroup -> continueGroupTV(group)
             is WatchNexContinuationMediaGroup -> continueGroupTV(group)
             else -> continueGroupWeb(group)?.firstOrNull()
         }

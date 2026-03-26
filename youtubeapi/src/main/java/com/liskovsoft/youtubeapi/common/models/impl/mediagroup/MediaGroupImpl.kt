@@ -241,3 +241,17 @@ internal data class EmptyMediaGroup(
     override fun getNextPageKeyInt(): String = reloadPageKey
     override fun getTitleInt(): String? = title
 }
+
+internal data class MergedMediaGroup(
+    private val options: MediaGroupOptions,
+    private val videos: MediaGroup?,
+    private val live: MediaGroup?
+): BaseMediaGroup(options) {
+    init {
+        mediaItems = listOfNotNull(live?.mediaItems, videos?.mediaItems).flatten()
+    }
+
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = null
+    override fun getNextPageKeyInt(): String? = videos?.nextPageKey
+    override fun getTitleInt(): String? = videos?.title
+}

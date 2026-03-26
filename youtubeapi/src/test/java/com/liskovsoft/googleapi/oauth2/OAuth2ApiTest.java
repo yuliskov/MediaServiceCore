@@ -3,6 +3,8 @@ package com.liskovsoft.googleapi.oauth2;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.liskovsoft.googlecommon.common.constants.ConstantsService;
+import com.liskovsoft.googlecommon.common.constants.data.ConstantsResult;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.helpers.tests.ApiKeys;
@@ -41,7 +43,7 @@ public class OAuth2ApiTest {
     
     @Test
     public void testThatUserCanUpdateAccessToken() {
-        Call<AccessToken> wrapper = mService.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE_REFRESH, ApiKeys.REFRESH_TOKEN);
+        Call<AccessToken> wrapper = mService.updateAccessToken(getClientId(), getClientSecret(), OAuth2ApiHelper.GRANT_TYPE_REFRESH, ApiKeys.REFRESH_TOKEN);
 
         AccessToken token = RetrofitHelper.getWithErrors(wrapper);
 
@@ -88,7 +90,7 @@ public class OAuth2ApiTest {
     }
 
     private UserCode getUserCode() throws IOException {
-        Call<UserCode> userCode = mService.getUserCode(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.DRIVE_SCOPE);
+        Call<UserCode> userCode = mService.getUserCode(getClientId(), OAuth2ApiHelper.DRIVE_SCOPE);
         Response<UserCode> response = userCode.execute();
         return response.body();
     }
@@ -97,7 +99,17 @@ public class OAuth2ApiTest {
         UserCode userCode = getUserCode();
         System.out.println("The user code is: " + userCode.getUserCode());
 
-        Call<AccessToken> token = mService.getAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, userCode.getDeviceCode(), OAuth2ApiHelper.GRANT_TYPE);
+        Call<AccessToken> token = mService.getAccessToken(getClientId(), getClientSecret(), userCode.getDeviceCode(), OAuth2ApiHelper.GRANT_TYPE);
         return RetrofitHelper.getWithErrors(token);
+    }
+
+    private String getClientId() {
+        ConstantsResult constants = ConstantsService.getConstants();
+        return constants != null ? constants.getClientId() : null;
+    }
+
+    private String getClientSecret() {
+        ConstantsResult constants = ConstantsService.getConstants();
+        return constants != null ? constants.getClientSecret() : null;
     }
 }

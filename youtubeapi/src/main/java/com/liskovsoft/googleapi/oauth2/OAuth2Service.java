@@ -1,5 +1,7 @@
 package com.liskovsoft.googleapi.oauth2;
 
+import com.liskovsoft.googlecommon.common.constants.ConstantsService;
+import com.liskovsoft.googlecommon.common.constants.data.ConstantsResult;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
@@ -32,7 +34,7 @@ public class OAuth2Service {
      * @return response with user code and device code
      */
     public UserCode getUserCode() {
-        Call<UserCode> wrapper = mOAuth2Api.getUserCode(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.DRIVE_SCOPE);
+        Call<UserCode> wrapper = mOAuth2Api.getUserCode(getClientId(), OAuth2ApiHelper.DRIVE_SCOPE);
         return RetrofitHelper.get(wrapper);
     }
 
@@ -43,7 +45,7 @@ public class OAuth2Service {
      * @return refresh token that should be stored inside the app registry for future use
      */
     private AccessToken getAccessToken(String deviceCode) {
-        Call<AccessToken> wrapper = mOAuth2Api.getAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, deviceCode, OAuth2ApiHelper.GRANT_TYPE);
+        Call<AccessToken> wrapper = mOAuth2Api.getAccessToken(getClientId(), getClientSecret(), deviceCode, OAuth2ApiHelper.GRANT_TYPE);
         return RetrofitHelper.get(wrapper);
     }
 
@@ -53,7 +55,7 @@ public class OAuth2Service {
      * @return temporal access token
      */
     public AccessToken updateAccessToken(String refreshToken) {
-        Call<AccessToken> wrapper = mOAuth2Api.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE_REFRESH, refreshToken);
+        Call<AccessToken> wrapper = mOAuth2Api.updateAccessToken(getClientId(), getClientSecret(), OAuth2ApiHelper.GRANT_TYPE_REFRESH, refreshToken);
         return RetrofitHelper.getWithErrors(wrapper);
     }
 
@@ -91,4 +93,14 @@ public class OAuth2Service {
     //
     //    return accountsList != null ? accountsList.getAccounts() : null;
     //}
+
+    private String getClientId() {
+        ConstantsResult constants = ConstantsService.getConstants();
+        return constants != null ? constants.getClientId() : null;
+    }
+
+    private String getClientSecret() {
+        ConstantsResult constants = ConstantsService.getConstants();
+        return constants != null ? constants.getClientSecret() : null;
+    }
 }

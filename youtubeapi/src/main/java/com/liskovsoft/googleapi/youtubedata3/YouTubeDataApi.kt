@@ -18,5 +18,5 @@ internal interface YouTubeDataApi {
     @GET("https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails")
     fun getPlaylistMetadata(@Query("id") ids: String, @Query("key") key: String? = getKey()): Call<SnippetResponse?>
 
-    private fun getKey(): String? = ConstantsService.getConstants()?.youtubeDataApiKey
+    private fun getKey(): String? = ConstantsService.constants?.youtubeDataApiKey
 }

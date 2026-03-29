@@ -38,7 +38,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             AppClient.TV_LEGACY,
             AppClient.TV_DOWNGRADED,
             AppClient.TV_EMBED, // single audio language
-            AppClient.TV_SIMPLY,
+            //AppClient.TV_SIMPLY, // hangs?
             AppClient.GEO, // Fix video clip blocked in current location
             AppClient.MWEB, // single audio language
             AppClient.WEB_SAFARI,
@@ -147,11 +147,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return;
         }
         // The Premium is likely broken
-        if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
-            // Skip additional formats fetching that could produce an error
-            getData().setFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS, false);
-            return;
-        }
+        //if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
+        //    // Skip additional formats fetching that could produce an error
+        //    getData().setFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS, false);
+        //    return;
+        //}
         // And last, try to switch the client
         nextVideoInfoType();
         persistVideoInfoType();

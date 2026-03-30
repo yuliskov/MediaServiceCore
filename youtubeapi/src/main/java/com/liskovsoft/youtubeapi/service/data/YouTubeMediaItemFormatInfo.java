@@ -66,6 +66,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     private String mVideoPlaybackUstreamerConfig;
     private String mServerAbrStreamingUrl;
     private String mPoToken;
+    private String mVisitorCookie;
     private AppClient mClient;
     private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
     private static final Pattern durationPattern2 = Pattern.compile("/dur/([^/]*)");
@@ -138,6 +139,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         formatInfo.mVideoPlaybackUstreamerConfig = videoInfo.getVideoPlaybackUstreamerConfig();
         formatInfo.mServerAbrStreamingUrl = videoInfo.getServerAbrStreamingUrl();
         formatInfo.mPoToken = videoInfo.getPoToken();
+        formatInfo.mVisitorCookie = videoInfo.getVisitorCookie();
         formatInfo.mClient = videoInfo.getClient();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
@@ -418,6 +420,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     @Override
     public String getPoToken() {
         return mPoToken;
+    }
+
+    @Override
+    public String getVisitorCookie() {
+        return mVisitorCookie;
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.liskovsoft.youtubeapi.innertube.utils.DeviceCategory
 import com.liskovsoft.youtubeapi.innertube.utils.URLS
 import com.liskovsoft.youtubeapi.innertube.utils.getRandomUserAgent
 import com.liskovsoft.youtubeapi.innertube.utils.getStringBetweenStrings
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfoContent
@@ -39,11 +40,12 @@ internal class Player private constructor(
 
         decipherFormats(formatInfo)
 
-        if (formatInfo.isLive()) {
+        if (formatInfo.isLive) {
             Log.d(TAG, "Enable seeking support on live streams...")
             formatInfo.sync(getDashInfo(formatInfo))
         }
 
+        formatInfo.visitorCookie = MediaServiceData.instance().visitorCookie
         //formatInfo.setClient(getClient())
     }
 
@@ -76,7 +78,7 @@ internal class Player private constructor(
         applyClientVer(urlHolders)
 
         val poToken = PoTokenGate.getPoToken(formatInfo.clientInfo)
-        formatInfo.setPoToken(poToken)
+        formatInfo.poToken = poToken
         applySessionPoToken(urlHolders, poToken)
     }
 

@@ -331,10 +331,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return client != null && client.isAuthSupported();
     }
 
-    private static MediaServiceData getData() {
-        return MediaServiceData.instance();
-    }
-
     @NonNull
     private AppClient getDefaultClient() {
         return mVideoInfoType != null && Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];

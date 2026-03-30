@@ -127,6 +127,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     private var _clickTrackingParams: String? = null
 
     private var _poToken: String? = null
+    private var _visitorCookie: String? = null
 
     init {
         parseTrackingParams()
@@ -258,6 +259,12 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
 
     fun setPoToken(poToken: String?) {
         _poToken = poToken
+    }
+
+    override fun getVisitorCookie() = _visitorCookie
+
+    fun setVisitorCookie(cookie: String?) {
+        _visitorCookie = cookie
     }
 
     override fun getClientInfo() = _clientInfo

@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.V2.DashInfoApi;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder;
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo;
@@ -52,6 +53,7 @@ public abstract class VideoInfoServiceBase {
             videoInfo.sync(getDashInfo(videoInfo));
         }
 
+        videoInfo.setVisitorCookie(getData().getVisitorCookie());
         videoInfo.setClient(getClient());
     }
 
@@ -219,5 +221,9 @@ public abstract class VideoInfoServiceBase {
         AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
                 item -> MediaFormatUtils.isVideo(item.getMimeType())); // first is largest
         return format;
+    }
+
+    protected static MediaServiceData getData() {
+        return MediaServiceData.instance();
     }
 }

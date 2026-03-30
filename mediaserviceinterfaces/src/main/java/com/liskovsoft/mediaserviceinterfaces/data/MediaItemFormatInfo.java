@@ -60,6 +60,7 @@ public interface MediaItemFormatInfo extends FormatInfoProvision {
     String getVideoPlaybackUstreamerConfig();
     String getServerAbrStreamingUrl();
     String getPoToken();
+    String getVisitorCookie();
     ClientInfo getClientInfo();
 
     interface ClientInfo {

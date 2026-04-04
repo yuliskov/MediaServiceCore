@@ -257,10 +257,26 @@ private const val SUBSCRIPTIONS_BROWSE_ID = "FEsubscriptions"
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
     ?.filter { it?.shelfRenderer != null } // skip promoShelfRenderer
-    ?.sortedByDescending { it?.shelfRenderer?.endpoint?.getParams()?.let {
-        // Move Live, Past Streams and Videos to the top
-        Helpers.startsWithAny(it,"EgZ2aWRlb3MYAyACOAJwA", "EgZ2aWRlb3MYAyAAcA", "EgZ2aWRlb3MYAyACOARwA")
-    } ?: false }
+    ?.sortedBy {
+        val params = it?.shelfRenderer?.endpoint?.getParams()
+
+        when {
+            // Move Live, Past Streams and Videos to the top
+            params != null && Helpers.startsWithAny(
+                params,
+                "EgZ2aWRlb3MYAyACOAJwA",
+                "EgZ2aWRlb3MYAyAAcA",
+                "EgZ2aWRlb3MYAyACOARwA"
+            ) -> 0
+            // Move Shorts after (NOTE: Shorts doesn't contain endpoint)
+            params == null && it?.shelfRenderer?.containsShorts() == true -> 1
+            else -> 2 // Others
+        }
+    }
+    //?.sortedByDescending { it?.shelfRenderer?.endpoint?.getParams()?.let {
+    //    // Move Live, Past Streams and Videos to the top
+    //    Helpers.startsWithAny(it,"EgZ2aWRlb3MYAyACOAJwA", "EgZ2aWRlb3MYAyAAcA", "EgZ2aWRlb3MYAyACOARwA")
+    //} ?: false }
 internal fun BrowseResultTV.getItems(): List<ItemWrapper?>? = getContent()?.gridRenderer?.items
     ?: getContent()?.twoColumnRenderer?.rightColumn?.playlistVideoListRenderer?.contents
     ?: getSubscriptionsTab()?.getItems() // see: getTVListRenderer()?.getItems() for how the actual filter from 'Most relevant' is happening

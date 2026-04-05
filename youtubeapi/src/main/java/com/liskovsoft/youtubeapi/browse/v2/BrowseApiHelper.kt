@@ -3,6 +3,8 @@ package com.liskovsoft.youtubeapi.browse.v2
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
+import com.liskovsoft.youtubeapi.common.helpers.PostDataType
+import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder
 
 internal object BrowseApiHelper {
     const val WATCH_LATER_CHANNEL_ID = "VLWL"
@@ -10,6 +12,11 @@ internal object BrowseApiHelper {
     const val FAVORITES_CHANNEL_ID = "VLFL" // NOTE: it's only the beginning part
     const val WATCH_LATER_PLAYLIST = "WL"
     const val LIKED_PLAYLIST = "LL"
+
+    private const val HOME_TV_ID = "default"
+    private const val TRENDING_ID = "FEtrending"
+    private const val TRENDING_PARAMS = "6gQJRkVleHBsb3Jl"
+    private const val HYPE_ID = "FEhype_leaderboard"
 
     private const val CHANNEL = "\"browseId\":\"%s\""
     private const val CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\""
@@ -198,5 +205,13 @@ internal object BrowseApiHelper {
 
     fun getMyPlaylistQuery(client: AppClient): String {
         return PostDataHelper.createQuery(client.browseTemplate, MY_PLAYLISTS)
+    }
+
+    private fun createQuery(client: AppClient, browseId: String, params: String? = null): String {
+        return QueryBuilder(client)
+            .setType(PostDataType.Browse)
+            .setBrowseId(browseId)
+            .setParams(params)
+            .build()
     }
 }

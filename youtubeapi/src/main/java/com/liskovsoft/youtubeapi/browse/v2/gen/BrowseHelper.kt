@@ -257,22 +257,43 @@ private const val SUBSCRIPTIONS_BROWSE_ID = "FEsubscriptions"
 
 internal fun BrowseResultTV.getShelves(): List<Shelf?>? = getContent()?.sectionListRenderer?.contents
     ?.filter { it?.shelfRenderer != null } // skip promoShelfRenderer
-    ?.sortedBy {
-        val params = it?.shelfRenderer?.endpoint?.getParams()
-
-        when {
-            // Move Live, Past Streams and Videos to the top
+    ?.let {
+        // Move Live, Past Streams and Videos to the top
+        val (first, rest) = it.partition {
+            val params = it?.shelfRenderer?.endpoint?.getParams()
             params != null && Helpers.startsWithAny(
                 params,
-                "EgZ2aWRlb3MYAyACOAJwA",
-                "EgZ2aWRlb3MYAyAAcA",
-                "EgZ2aWRlb3MYAyACOARwA"
-            ) -> 0
-            // Move Shorts after (NOTE: Shorts doesn't contain endpoint)
-            params == null && it?.shelfRenderer?.containsShorts() == true -> 1
-            else -> 2 // Others
+                "EgZ2aWRlb3MYAyACOAJwA", // Live
+                "EgZ2aWRlb3MYAyAAcA", // Videos
+                "EgZ2aWRlb3MYAyACOARwA" // Past Streams
+            )
         }
+
+        if (first.isEmpty()) return@let it // Home section detected or non-standard channel
+
+        // Move Shorts after (NOTE: Shorts doesn't contain endpoint)
+        val (shorts, other) = rest.partition {
+            it?.shelfRenderer?.containsShorts() == true
+        }
+
+        first + shorts + other
     }
+    //?.sortedBy {
+    //    val params = it?.shelfRenderer?.endpoint?.getParams()
+    //
+    //    when {
+    //        // Move Live, Past Streams and Videos to the top
+    //        params != null && Helpers.startsWithAny(
+    //            params,
+    //            "EgZ2aWRlb3MYAyACOAJwA", // Live
+    //            "EgZ2aWRlb3MYAyAAcA", // Videos
+    //            "EgZ2aWRlb3MYAyACOARwA" // Past Streams
+    //        ) -> 0
+    //        // Move Shorts after (NOTE: Shorts doesn't contain endpoint)
+    //        params == null && it?.shelfRenderer?.containsShorts() == true -> 1
+    //        else -> 2 // Others
+    //    }
+    //}
     //?.sortedByDescending { it?.shelfRenderer?.endpoint?.getParams()?.let {
     //    // Move Live, Past Streams and Videos to the top
     //    Helpers.startsWithAny(it,"EgZ2aWRlb3MYAyACOAJwA", "EgZ2aWRlb3MYAyAAcA", "EgZ2aWRlb3MYAyACOARwA")

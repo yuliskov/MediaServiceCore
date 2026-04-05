@@ -47,6 +47,10 @@ internal class QueryBuilder(private val client: AppClient) {
     fun enableGeoFix(enableGeoFix: Boolean) = apply { isGeoFixEnabled = enableGeoFix }
 
     fun build(): String {
+        // TODO: need more robust type detection
+        if (browseId != null || continuationId != null || params != null)
+            type = PostDataType.Browse
+
         if (acceptLanguage == null)
             acceptLanguage = localeManager.language
 

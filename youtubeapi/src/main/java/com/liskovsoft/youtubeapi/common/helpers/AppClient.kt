@@ -82,7 +82,7 @@ internal enum class AppClient(
     override fun getOsName() = "Macintosh" // TODO: change later
     override fun getOsVersion() = "10_15_7" // TODO: change later
 
-    private val browserInfo by lazy { if (isWebClient) extractBrowserInfo(userAgent) else null }
+    private val browserInfo by lazy { extractBrowserInfo(userAgent) }
     private val postDataBrowser by lazy { if (browserName != null && browserVersion != null) String.format(POST_DATA_BROWSER, browserName, browserVersion) else null }
 
     val browserName by lazy { browserInfo?.first }
@@ -101,10 +101,10 @@ internal enum class AppClient(
     val isWebClient by lazy { Helpers.startsWithAny(name, "WEB", "MWEB", "INITIAL", "GEO") }
     val isEmbedded by lazy { Helpers.equalsAny(this, WEB_EMBED, TV_EMBED) }
 
-    private fun extractBrowserInfo(userAgent: String): Pair<String, String> {
+    private fun extractBrowserInfo(userAgent: String): Pair<String, String>? {
         // Include Shorts: "browserName":"Cobalt"
-        val browserName = "Cobalt"
-        val browserVersion = "22.lts.3.306369-gold"
+        //val browserName = "Cobalt"
+        //val browserVersion = "22.lts.3.306369-gold"
 
         for (name in listOf("SamsungBrowser", "LG Browser", "Cobalt", "Chrome", "Safari")) {
             val version = extractBrowserVersion(userAgent, name)
@@ -112,7 +112,8 @@ internal enum class AppClient(
                 return Pair(name, version)
         }
 
-        return Pair(browserName, browserVersion)
+        //return Pair(browserName, browserVersion)
+        return null
     }
 
     private fun extractBrowserVersion(userAgent: String, name: String): String? {

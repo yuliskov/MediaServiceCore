@@ -147,6 +147,11 @@ public final class YouTubeHelper {
 
         long lengthMs = mediaItem.getDurationMs();
 
+        // YT already able to mark shorts shorter than one minute (but not more than that)
+        if (lengthMs > 0 && lengthMs <= 60_000) {
+            return false;
+        }
+
         boolean isShortsLength = lengthMs > 0 && lengthMs <= SHORTS_LEN_MS;
 
         if (isShortsLength) {

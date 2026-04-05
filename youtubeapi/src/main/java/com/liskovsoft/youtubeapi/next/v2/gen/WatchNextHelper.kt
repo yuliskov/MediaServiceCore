@@ -74,7 +74,7 @@ private fun WatchNextResultContinuation.getSectionContinuation() = continuationC
 
 ///////
 
-internal fun SectionListContinuation.getItems(): List<ItemWrapper?>? = getShelves()?.flatMap { it?.getItems() ?: emptyList() }
+internal fun SectionListContinuation.getItems(): List<ItemWrapper?>? = getShelves()?.getItems()
 internal fun SectionListContinuation.getContinuationToken(): String? = continuations?.getContinuationToken()
 internal fun SectionListContinuation.getShelves(): List<Shelf?>? = contents
 

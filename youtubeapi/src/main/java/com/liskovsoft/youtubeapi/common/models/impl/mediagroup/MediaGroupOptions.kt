@@ -19,7 +19,7 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
             val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)) ||
                     (MediaGroup.TYPE_HISTORY == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY)) ||
-                    //(MediaGroup.TYPE_CHANNEL == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL)) ||
+                    (MediaGroup.TYPE_CHANNEL == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL)) ||
                     (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL)) ||
                     (MediaGroup.TYPE_TRENDING == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING))
             val removeLive = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS))
@@ -30,12 +30,10 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
             val removeWatched = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_HOME == groupType && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME)) ||
                     (channelId == BrowseApiHelper.WATCH_LATER_CHANNEL_ID && data.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER))
-            val isGridSection = MediaGroup.TYPE_SUBSCRIPTIONS == groupType || MediaGroup.TYPE_HISTORY == groupType || MediaGroup.TYPE_CHANNEL_UPLOADS == groupType
+            // NOTE: The modern grid ui contains shorts on a separate row
+            // NOTE: The legacy ui subscriptions is out of order and cannot be fixed
             val isBrowseSection = groupType != MediaGroup.TYPE_SUGGESTIONS // legacy suggestions ui doesn't have chapters
-            val enableLegacyUI = (data.isLegacyUIEnabled && isBrowseSection)
-                    // NOTE: The modern grid ui contains shorts on a separate row
-                    // NOTE: The legacy ui subscriptions is out of order and cannot be fixed
-                    || (!removeShorts && isGridSection && MediaGroup.TYPE_SUBSCRIPTIONS != groupType)
+            val enableLegacyUI = data.isLegacyUIEnabled && isBrowseSection
 
             return MediaGroupOptions(
                 removeShorts,

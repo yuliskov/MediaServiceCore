@@ -135,7 +135,7 @@ public final class YouTubeHelper {
             return false;
         }
 
-        return mediaItem.isShorts() || isShorts(mediaItem, true);
+        return mediaItem.isShorts() || isShorts(mediaItem, false);
     }
 
     public static boolean isShorts(MediaItem mediaItem, boolean isLegacyUiEnabled) {

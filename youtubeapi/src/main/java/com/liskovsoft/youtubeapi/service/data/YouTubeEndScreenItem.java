@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.service.data;
 import com.liskovsoft.mediaserviceinterfaces.data.EndScreenItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.next.v1.models.EndScreenElement;
-import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
+import com.liskovsoft.youtubeapi.common.helpers.YouTubeHelper;
 
 public class YouTubeEndScreenItem implements EndScreenItem {
     private int mType;
@@ -41,9 +41,9 @@ public class YouTubeEndScreenItem implements EndScreenItem {
         item.mTitle = element.getTitle() != null ? element.getTitle().toString() : null;
         item.mMetadata = element.getMetadata() != null ? element.getMetadata().toString() : null;
 
-        // Extract image URL
-        if (element.getImage() != null && element.getImage().getThumbnails() != null) {
-            item.mImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(element.getImage().getThumbnails());
+        // Extract image URL using gen helper
+        if (element.getImage() != null) {
+            item.mImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(element.getImage());
         }
 
         // Extract timing

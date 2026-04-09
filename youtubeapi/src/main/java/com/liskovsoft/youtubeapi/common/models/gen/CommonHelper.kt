@@ -402,4 +402,9 @@ internal fun ResponseContext.getSuggestToken(): String? = serviceTrackingParams?
     if (it?.service == SERVICE_SUGGEST) {
         it.params?.firstOrNull { it?.key == KEY_SUGGEST_TOKEN }?.value
     } else null
+    
+////////////
+// End Screen Support
+
+internal fun EndScreenElement.getThumbnails() = image?.thumbnails
 }

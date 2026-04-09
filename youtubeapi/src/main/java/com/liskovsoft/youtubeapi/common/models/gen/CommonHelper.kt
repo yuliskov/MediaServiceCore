@@ -1,14 +1,14 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
 import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.next.v1.models.EndScreenElement
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.sharedutils.helpers.DateHelper
 
 // A badge before the image
 private const val BADGE_STYLE_LIVE = "LIVE"
@@ -403,9 +403,9 @@ internal fun ResponseContext.getSuggestToken(): String? = serviceTrackingParams?
     if (it?.service == SERVICE_SUGGEST) {
         it.params?.firstOrNull { it?.key == KEY_SUGGEST_TOKEN }?.value
     } else null
-    
+}
+
 ////////////
 // End Screen Support
 
 internal fun EndScreenElement.getThumbnails() = image?.thumbnails
-}

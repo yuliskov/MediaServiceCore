@@ -42,7 +42,7 @@ public class YouTubeEndScreenItem implements EndScreenItem {
         item.mMetadata = element.getMetadata() != null ? element.getMetadata().toString() : null;
 
         // Extract image URL
-        if (element.getImage() != null) {
+        if (element.getImage() != null && element.getImage().getThumbnails() != null) {
             item.mImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(element.getImage().getThumbnails());
         }
 
@@ -59,7 +59,7 @@ public class YouTubeEndScreenItem implements EndScreenItem {
         // Extract ID based on endpoint type
         if (element.getEndpoint() != null) {
             EndScreenElement.Endpoint endpoint = element.getEndpoint();
-            
+
             if (endpoint.getWatchEndpoint() != null) {
                 item.mId = endpoint.getWatchEndpoint().getVideoId();
             } else if (endpoint.getBrowseEndpoint() != null) {

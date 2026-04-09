@@ -2,14 +2,14 @@ package com.liskovsoft.youtubeapi.next.v1.models;
 
 import com.google.gson.annotations.SerializedName;
 import com.liskovsoft.googlecommon.common.models.V2.TextItem;
-import com.liskovsoft.youtubeapi.common.models.gen.CommonItems;
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem;
 
 public class EndScreenElement {
     @SerializedName("style")
     private String mStyle; // "CHANNEL", "VIDEO", "PLAYLIST"
 
     @SerializedName("image")
-    private CommonItems.Thumbnail mImage;
+    private ThumbnailItem mImage;
 
     @SerializedName("title")
     private TextItem mTitle;
@@ -42,7 +42,7 @@ public class EndScreenElement {
         return mStyle;
     }
 
-    public CommonItems.Thumbnail getImage() {
+    public ThumbnailItem getImage() {
         return mImage;
     }
 

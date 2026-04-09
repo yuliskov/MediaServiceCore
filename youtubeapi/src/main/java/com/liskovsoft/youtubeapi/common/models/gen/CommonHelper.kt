@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
 import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
+import com.liskovsoft.youtubeapi.next.v1.models.EndScreenElement
 
 // A badge before the image
 private const val BADGE_STYLE_LIVE = "LIVE"

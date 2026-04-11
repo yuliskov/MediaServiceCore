@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 
 import org.junit.Before;
@@ -13,6 +14,8 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 public class YouTubeUrlListBuilderTest {
     private ServiceManager mService;
 
@@ -21,7 +24,9 @@ public class YouTubeUrlListBuilderTest {
         // Fix temp video url ban
         Thread.sleep(3_000);
 
+        GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mService = YouTubeServiceManager.instance();
+        mService.invalidateCache();
     }
 
     @Test

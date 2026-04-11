@@ -34,6 +34,7 @@ public class YouTubeMPDBuilderTest {
 
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mService = YouTubeServiceManager.instance();
+        mService.invalidateCache();
     }
 
     @After

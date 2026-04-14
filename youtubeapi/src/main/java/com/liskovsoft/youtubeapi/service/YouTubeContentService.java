@@ -657,6 +657,11 @@ class YouTubeContentService implements ContentService {
         getSearchService().clearSearchHistory();
     }
 
+    @Override
+    public void removeSearchTag(String tag) {
+        getSearchService().removeTag(tag);
+    }
+
     @NonNull
     private static YouTubeSignInService getSignInService() {
         return YouTubeSignInService.instance();

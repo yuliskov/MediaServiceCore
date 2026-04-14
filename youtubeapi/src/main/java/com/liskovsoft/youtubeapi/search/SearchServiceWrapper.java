@@ -46,6 +46,11 @@ public class SearchServiceWrapper extends SearchService {
         SearchTagStorage.clear();
     }
 
+    @Override
+    public void removeTag(String tag) {
+        SearchTagStorage.removeTag(tag);
+    }
+
     private List<String> getTagsIfNeeded() {
         if (GlobalPreferences.sInstance != null) {
             return SearchTagStorage.getTags();

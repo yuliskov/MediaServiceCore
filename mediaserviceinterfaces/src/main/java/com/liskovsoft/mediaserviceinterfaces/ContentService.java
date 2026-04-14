@@ -32,6 +32,7 @@ public interface ContentService {
     void enableHistory(boolean enable);
     void clearHistory();
     void clearSearchHistory();
+    void removeSearchTag(String tag);
 
     // RxJava interfaces
     Observable<List<MediaGroup>> getSearchObserve(String searchText);

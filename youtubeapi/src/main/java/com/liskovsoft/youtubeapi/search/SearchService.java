@@ -98,6 +98,10 @@ public class SearchService {
         // NOP
     }
 
+    public void removeTag(String tag) {
+        // NOP
+    }
+
     @NonNull
     private static AppService getAppService() {
         return AppService.instance();

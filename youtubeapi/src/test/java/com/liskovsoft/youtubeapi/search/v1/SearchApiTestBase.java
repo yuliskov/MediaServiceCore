@@ -1,13 +1,13 @@
-package com.liskovsoft.youtubeapi.search;
+package com.liskovsoft.youtubeapi.search.v1;
 
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.search.models.SearchSection;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchSection;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

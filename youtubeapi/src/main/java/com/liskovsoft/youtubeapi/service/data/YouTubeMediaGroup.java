@@ -10,9 +10,9 @@ import com.liskovsoft.youtubeapi.browse.v1.models.sections.Section;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.result.WatchNextResultContinuation;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.search.models.SearchSection;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchSection;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 import java.util.ArrayList;

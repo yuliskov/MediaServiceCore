@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
 
 public class SearchApiHelper {
     private static final String FIRST_SEARCH = "\"query\":\"%s\"";
@@ -21,7 +20,7 @@ public class SearchApiHelper {
 
     /**
      * Get data param for the next search
-     * @param nextPageKey {@link SearchResult#getNextPageKey()}
+     * @param nextPageKey SearchResult#getNextPageKey()
      * @return data param
      */
     public static String getContinuationQuery(String nextPageKey) {

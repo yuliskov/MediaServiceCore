@@ -16,6 +16,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
 import com.liskovsoft.youtubeapi.notifications.gen.NotificationsResult
 import com.liskovsoft.youtubeapi.notifications.gen.getItems
+import com.liskovsoft.youtubeapi.search.v2.gen.SearchSection
 
 /**
  *  Always renders first tab
@@ -254,4 +255,20 @@ internal data class MergedMediaGroup(
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = videos?.nextPageKey
     override fun getTitleInt(): String? = videos?.title
+}
+
+internal data class SearchSectionMediaGroup(
+    private val searchSection: SearchSection
+): BaseMediaGroup(MediaGroupOptions.create(groupType = MediaGroup.TYPE_SEARCH)) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = searchSection.itemWrappers
+    override fun getNextPageKeyInt(): String? = searchSection.nextPageKey
+    override fun getTitleInt(): String? = searchSection.title
+}
+
+internal data class SearchContinuationMediaGroup(
+    private val continuation: WatchNextResultContinuation,
+): BaseMediaGroup(MediaGroupOptions.create(groupType = MediaGroup.TYPE_SEARCH)) {
+    override fun getItemWrappersInt(): List<ItemWrapper?>? = continuation.getItems()
+    override fun getNextPageKeyInt(): String? = continuation.getContinuationToken()
+    override fun getTitleInt(): String? = null
 }

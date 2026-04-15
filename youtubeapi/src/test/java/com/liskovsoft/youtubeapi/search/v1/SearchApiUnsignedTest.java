@@ -1,10 +1,11 @@
-package com.liskovsoft.youtubeapi.search;
+package com.liskovsoft.youtubeapi.search.v1;
 
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.SearchApiHelper;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

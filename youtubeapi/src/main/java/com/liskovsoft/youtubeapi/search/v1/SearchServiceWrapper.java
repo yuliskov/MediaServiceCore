@@ -1,7 +1,8 @@
-package com.liskovsoft.youtubeapi.search;
+package com.liskovsoft.youtubeapi.search.v1;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.SearchTagStorage;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
 
 import java.util.List;
 

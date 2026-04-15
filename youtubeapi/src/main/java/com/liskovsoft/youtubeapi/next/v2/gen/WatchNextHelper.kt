@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.next.v2.gen
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.PlaylistVideoListRenderer
 import com.liskovsoft.youtubeapi.browse.v2.gen.Shelf
+import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getItems
 import com.liskovsoft.youtubeapi.common.models.gen.*
 
@@ -76,6 +77,7 @@ private fun WatchNextResultContinuation.getSectionContinuation() = continuationC
 
 internal fun SectionListContinuation.getItems(): List<ItemWrapper?>? = getShelves()?.getItems()
 internal fun SectionListContinuation.getContinuationToken(): String? = continuations?.getContinuationToken()
+    ?: getShelves()?.firstOrNull()?.getContinuationToken()
 internal fun SectionListContinuation.getShelves(): List<Shelf?>? = contents
 
 ///////

@@ -1,12 +1,13 @@
-package com.liskovsoft.youtubeapi.search;
+package com.liskovsoft.youtubeapi.search.v1;
 
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.search.models.SearchTags;
+import com.liskovsoft.youtubeapi.search.SearchApiHelper;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

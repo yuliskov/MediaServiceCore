@@ -1,9 +1,9 @@
-package com.liskovsoft.youtubeapi.search;
+package com.liskovsoft.youtubeapi.search.v1;
 
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
-import com.liskovsoft.youtubeapi.search.models.SearchTags;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchTags;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

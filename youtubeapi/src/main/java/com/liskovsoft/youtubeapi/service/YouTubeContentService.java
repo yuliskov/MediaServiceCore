@@ -12,19 +12,23 @@ import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SearchContinuationMediaGroup;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SearchSectionMediaGroup;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.rss.RssService;
-import com.liskovsoft.youtubeapi.search.SearchServiceWrapper;
+import com.liskovsoft.youtubeapi.search.v1.SearchServiceWrapper;
+import com.liskovsoft.youtubeapi.search.v2.SearchService2;
+import com.liskovsoft.youtubeapi.search.v2.SearchService2Wrapper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.utils.UtilsService;
 import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BaseMediaGroup;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
-import com.liskovsoft.youtubeapi.search.SearchService;
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.SearchService;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -53,16 +57,18 @@ class YouTubeContentService implements ContentService {
     public List<MediaGroup> getSearch(String searchText) {
         checkSigned();
 
-        SearchResult search = getSearchService().getSearch(searchText);
-        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        //SearchResult search = getSearchService().getSearch(searchText);
+        //return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return getSearchService2().getSearch(searchText);
     }
 
     @Override
     public List<MediaGroup> getSearch(String searchText, int options) {
         checkSigned();
 
-        SearchResult search = getSearchService().getSearch(searchText, options);
-        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        //SearchResult search = getSearchService().getSearch(searchText, options);
+        //return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return getSearchService2().getSearch(searchText, options);
     }
 
     @Override
@@ -79,7 +85,7 @@ class YouTubeContentService implements ContentService {
     public List<String> getSearchTags(String searchText) {
         checkSigned();
 
-        return getSearchService().getSearchTags(searchText);
+        return getSearchService2().getSearchTags(searchText);
     }
 
     @Override
@@ -553,6 +559,10 @@ class YouTubeContentService implements ContentService {
             return getWatchNextService().continueGroup(mediaGroup);
         }
 
+        if (mediaGroup instanceof SearchSectionMediaGroup || mediaGroup instanceof SearchContinuationMediaGroup) {
+            return getSearchService2().continueSearch(mediaGroup.getNextPageKey());
+        }
+
         if (mediaGroup instanceof BaseMediaGroup) {
             MediaGroup group = null;
 
@@ -654,12 +664,12 @@ class YouTubeContentService implements ContentService {
     @Override
     public void clearSearchHistory() {
         getActionsService().clearSearchHistory();
-        getSearchService().clearSearchHistory();
+        getSearchService2().clearSearchHistory();
     }
 
     @Override
     public void removeSearchTag(String tag) {
-        getSearchService().removeTag(tag);
+        getSearchService2().removeTag(tag);
     }
 
     @NonNull
@@ -675,6 +685,11 @@ class YouTubeContentService implements ContentService {
     @NonNull
     private static SearchService getSearchService() {
         return SearchServiceWrapper.instance();
+    }
+
+    @NonNull
+    private static SearchService2 getSearchService2() {
+        return SearchService2Wrapper.INSTANCE;
     }
 
     @NonNull

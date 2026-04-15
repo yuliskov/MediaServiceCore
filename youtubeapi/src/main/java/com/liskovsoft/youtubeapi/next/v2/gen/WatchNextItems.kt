@@ -34,8 +34,8 @@ internal data class ShelfRenderer(
         )
 
         data class HorizontalListRenderer(
-                val items: List<ItemWrapper?>?,
-                val continuations: List<ContinuationItem?>?
+            val items: List<ItemWrapper?>?,
+            val continuations: List<ContinuationItem?>?
         )
     }
 

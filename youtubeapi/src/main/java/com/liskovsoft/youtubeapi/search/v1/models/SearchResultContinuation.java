@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.search.models;
+package com.liskovsoft.youtubeapi.search.v1.models;
 
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;

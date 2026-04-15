@@ -1,17 +1,21 @@
-package com.liskovsoft.youtubeapi.search;
+package com.liskovsoft.youtubeapi.search.v1;
 
-import com.liskovsoft.youtubeapi.search.models.SearchResult;
-import com.liskovsoft.youtubeapi.search.models.SearchResultContinuation;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
+import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchServiceUnsignedTest {
+public class SearchServiceSignedTest {
     private SearchService mService;
 
     @Before
@@ -23,6 +27,8 @@ public class SearchServiceUnsignedTest {
         ShadowLog.stream = System.out; // catch Log class output
 
         mService = new SearchService();
+
+        RetrofitOkHttpHelper.getAuthHeaders().put("Authorization", TestHelpers.getAuthorization());
     }
 
     @Test
@@ -32,5 +38,12 @@ public class SearchServiceUnsignedTest {
 
         SearchResultContinuation nextSearchResult = mService.continueSearch(searchResult.getNextPageKey());
         assertTrue("next search not empty?", nextSearchResult.getItemWrappers().size() != 0);
+    }
+
+    @Test
+    public void testThatSearchTagsNotEmpty() {
+        List<String> searchTags = mService.getSearchTags("");
+
+        assertTrue("search tags not empty?", searchTags != null && !searchTags.isEmpty());
     }
 }

@@ -471,18 +471,10 @@ internal data class LockupItem(
             ) {
                 data class ThumbnailOverlayBadgeViewModel(
                     val thumbnailBadges: List<ThumbnailBadge?>?
-                ) {
-                    data class ThumbnailBadge(
-                        val thumbnailBadgeViewModel: ThumbnailBadgeViewModel?
-                    ) {
-                        data class ThumbnailBadgeViewModel(
-                            val text: String?,
-                            val badgeStyle: String?
-                        )
-                    }
-                }
+                )
                 data class ThumbnailBottomOverlayViewModel(
-                    val progressBar: ProgressBar?
+                    val progressBar: ProgressBar?,
+                    val badges: List<ThumbnailBadge?>?
                 ) {
                     data class ProgressBar(
                         val thumbnailOverlayProgressBarViewModel: ThumbnailOverlayProgressBarViewModel?
@@ -491,6 +483,14 @@ internal data class LockupItem(
                             val startPercent: Int?
                         )
                     }
+                }
+                data class ThumbnailBadge(
+                    val thumbnailBadgeViewModel: ThumbnailBadgeViewModel?
+                ) {
+                    data class ThumbnailBadgeViewModel(
+                        val text: String?,
+                        val badgeStyle: String?
+                    )
                 }
             }
         }

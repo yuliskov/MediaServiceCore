@@ -264,8 +264,8 @@ internal fun LockupItem.getFeedbackTokens() =
         ?.inlineContent?.sheetViewModel?.content?.listViewModel?.listItems?.mapNotNull {
             it?.listItemViewModel?.rendererContext?.commandContext?.onTap?.innertubeCommand?.feedbackEndpoint?.feedbackToken
         }
-private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull {
-    it?.thumbnailOverlayBadgeViewModel }?.thumbnailBadges?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
+private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull { it?.thumbnailOverlayBadgeViewModel?.thumbnailBadges
+    ?: it?.thumbnailBottomOverlayViewModel?.badges }?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = getThumbnailView()?.overlays
 private fun LockupItem.getThumbnailView() = contentImage?.thumbnailViewModel ?: contentImage?.collectionThumbnailViewModel?.primaryThumbnail?.thumbnailViewModel
 private fun LockupItem.getWatchEndpoint() = rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint

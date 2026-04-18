@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.utils.RelativePublishedTime;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
@@ -134,6 +135,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mClickTrackingParams = item.getClickTrackingParams();
         video.mIsMovie = item.isMovie();
 
+        video.setPublishedDate(RelativePublishedTime.publishedTimeTextToUnixMs(item.getPublishedTime()));
+
         addCommonProps(video);
 
         return video;
@@ -169,6 +172,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mFeedbackToken = item.getFeedbackToken();
         video.mClickTrackingParams = item.getClickTrackingParams();
 
+        video.setPublishedDate(RelativePublishedTime.publishedTimeTextToUnixMs(item.getPublishedDate()));
+
         addCommonProps(video);
 
         return video;
@@ -195,6 +200,8 @@ public class YouTubeMediaItem implements MediaItem {
         video.mPercentWatched = item.getPercentWatched();
         video.mAuthor = item.getUserName();
         video.mVideoPreviewUrl = item.getRichThumbnailUrl();
+
+        video.setPublishedDate(RelativePublishedTime.publishedTimeTextToUnixMs(item.getViewsAndPublished()));
 
         addCommonProps(video);
 

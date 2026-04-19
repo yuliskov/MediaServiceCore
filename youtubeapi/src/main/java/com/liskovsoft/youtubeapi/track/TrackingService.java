@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.track;
 
 import androidx.annotation.NonNull;
 
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
@@ -59,6 +60,7 @@ public class TrackingService {
         if (isVideoAlmostWatched) {
             //positionSec = lengthSec;
             createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+            ServiceHelper.sleep(1_000);
             updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
             return;
         }
@@ -67,6 +69,7 @@ public class TrackingService {
         //    createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
         //}
         createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
+        ServiceHelper.sleep(1_000);
         updateWatchTimeLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
     }
 

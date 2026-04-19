@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.common.helpers
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.googlecommon.common.locale.LocaleManager
+import com.liskovsoft.youtubeapi.innertube.embed.EmbedYtCfg
 
 internal enum class PostDataType { Player, Browse }
 
@@ -143,9 +144,16 @@ internal class QueryBuilder(private val client: AppClient) {
 
     private fun createWebEmbeddedChunk(): String {
         return if (client.isEmbedded)
+            // https://github.com/yt-dlp/yt-dlp/commit/f2bd3202c0ffa3f0c0069c44ca53b625dca568bc
+            //"""
+            //    "thirdParty": {
+            //        "embedUrl": "https://www.youtube.com/embed/${requireNotNull(videoId)}"
+            //    },
+            //"""
+            // Can be any valid non-YouTube URL
             """
                 "thirdParty": {
-                    "embedUrl": "https://www.youtube.com/embed/${requireNotNull(videoId)}"
+                    "embedUrl": "https://www.reddit.com/"
                 },
             """
            else ""
@@ -263,7 +271,8 @@ internal class QueryBuilder(private val client: AppClient) {
                         "html5Preference": "HTML5_PREF_WANTS",
                         "lactMilliseconds": 60000,
                         "isInlinePlaybackNoAd": true,
-                        "signatureTimestamp": $it
+                        "signatureTimestamp": $it,
+                        ${createEncryptedHostFlags()}
                     },
                     "devicePlaybackCapabilities": {
                         "supportsVp9Encoding": true,
@@ -272,6 +281,28 @@ internal class QueryBuilder(private val client: AppClient) {
                 },
             """
         } ?: ""
+    }
+
+    /**
+     * web_embedded player requests may need to include encryptedHostFlags in its contentPlaybackContext.
+     *
+     * This can be detected with the embeds_enable_encrypted_host_flags_enforcement experiemnt flag,
+     *
+     * but there is no harm in including encryptedHostFlags with all web_embedded player requests.
+     *
+     * ```
+     * traverse_obj(player_ytcfg, (
+     *                 'WEB_PLAYER_CONTEXT_CONFIGS', 'WEB_PLAYER_CONTEXT_CONFIG_ID_EMBEDDED_PLAYER', 'encryptedHostFlags'))
+     * ```
+     */
+    private fun createEncryptedHostFlags(): String {
+        return if (client.isEmbedded)
+            EmbedYtCfg.getEncryptedHostFlags(videoId)?.let {
+                """
+                   "encryptedHostFlags":"$it",
+                """
+            } ?: ""
+        else ""
     }
 
     private fun playerDataCheck() = videoId != null && type == PostDataType.Player

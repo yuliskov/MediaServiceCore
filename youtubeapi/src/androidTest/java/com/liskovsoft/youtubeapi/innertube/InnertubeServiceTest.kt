@@ -1,18 +1,23 @@
 package com.liskovsoft.youtubeapi.innertube
 
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.gson.JsonParser
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.innertube.core.HTTPClient
 import com.liskovsoft.youtubeapi.innertube.core.Player
 import com.liskovsoft.youtubeapi.innertube.core.RequestInit
 import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import com.liskovsoft.youtubeapi.innertube.core.Session
+import com.liskovsoft.youtubeapi.innertube.embed.EmbedYtCfg
+import com.liskovsoft.youtubeapi.innertube.embed.EmbedYtCfgApi
 import com.liskovsoft.youtubeapi.innertube.impl.MediaItemFormatInfoImpl
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
 import com.liskovsoft.youtubeapi.innertube.models.SessionArgs
 import com.liskovsoft.youtubeapi.innertube.utils.getServerAbrStreamingUrl
 import com.liskovsoft.youtubeapi.innertube.utils.getVideoPlaybackUstreamerConfig
+import com.liskovsoft.youtubeapi.innertube.utils.traverseObj
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -117,6 +122,28 @@ class InnertubeServiceTest {
         Assert.assertNotNull("sabrUrl2 not null", sabrUrl2)
 
         Assert.assertNotEquals("sabr urls not equals", sabrUrl, sabrUrl2)
+    }
+
+    @Test
+    fun testEmbedYtCfg() {
+        val api = RetrofitHelper.create(EmbedYtCfgApi::class.java)
+        val wrapper = api.getYtCfg("6sJZNpPgys4")
+
+        val ytCfgStr = RetrofitHelper.get(wrapper)
+
+        Assert.assertNotNull("ytytCfg not null", ytCfgStr?.ytCfg)
+
+        val parser = JsonParser()
+        val root = parser.parse(ytCfgStr?.ytCfg).asJsonObject
+
+        val encryptedHostFlags = traverseObj(
+            root,
+            "WEB_PLAYER_CONTEXT_CONFIGS",
+            "WEB_PLAYER_CONTEXT_CONFIG_ID_EMBEDDED_PLAYER",
+            "encryptedHostFlags"
+        )?.asString
+
+        Assert.assertNotNull("encryptedHostFlags not null", encryptedHostFlags)
     }
 
     private fun getPlayerResult(session: Session): PlayerResult? {

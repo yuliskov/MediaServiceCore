@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.innertube.utils
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
 import com.liskovsoft.sharedutils.helpers.Helpers
 import java.util.regex.Pattern
 
@@ -70,4 +71,29 @@ internal fun generateRandomString(length: Int): String {
     }
 
     return result.toString()
+}
+
+/**
+ * Extracts props from complex json e.g.
+ *
+ * ```
+ * val parser = JsonParser()
+ * val root = parser.parse(ytCfgStr?.ytCfg).asJsonObject
+ *
+ * val encryptedHostFlags = traverse(
+ *             root,
+ *             "WEB_PLAYER_CONTEXT_CONFIGS",
+ *             "WEB_PLAYER_CONTEXT_CONFIG_ID_EMBEDDED_PLAYER",
+ *             "encryptedHostFlags"
+ *         )?.asString
+ * ```
+ */
+internal fun traverseObj(root: JsonElement?, vararg path: String): JsonElement? {
+    var current = root
+
+    for (key in path) {
+        current = current?.asJsonObject?.get(key) ?: return null
+    }
+
+    return current
 }

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.innertube.embed
+package com.liskovsoft.youtubeapi.innertube.ytcfg
 
 import com.liskovsoft.googlecommon.common.converters.regexp.RegExp
 

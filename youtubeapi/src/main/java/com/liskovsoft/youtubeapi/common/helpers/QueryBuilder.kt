@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.common.helpers
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.googlecommon.common.locale.LocaleManager
-import com.liskovsoft.youtubeapi.innertube.embed.EmbedYtCfg
+import com.liskovsoft.youtubeapi.innertube.ytcfg.YtCfgService
 
 internal enum class PostDataType { Player, Browse }
 
@@ -297,7 +297,7 @@ internal class QueryBuilder(private val client: AppClient) {
      */
     private fun createEncryptedHostFlags(): String {
         return if (client.isEmbedded)
-            EmbedYtCfg.getEncryptedHostFlags(videoId)?.let {
+            YtCfgService.getEncryptedHostFlags(videoId)?.let {
                 """
                    "encryptedHostFlags":"$it",
                 """

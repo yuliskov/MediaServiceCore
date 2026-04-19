@@ -74,6 +74,8 @@ internal object CLIENTS {
         USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
     )
 
+    // "Made for kids" videos aren't available with this client
+    // Using a clientVersion>1.65 may return SABR streams only
     val ANDROID_VR = CLIENT(
         NAME = "ANDROID_VR",
         VERSION = "1.65.10",

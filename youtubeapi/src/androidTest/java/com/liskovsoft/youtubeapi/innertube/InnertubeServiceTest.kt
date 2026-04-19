@@ -4,13 +4,13 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.gson.JsonParser
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.innertube.core.HTTPClient
 import com.liskovsoft.youtubeapi.innertube.core.Player
 import com.liskovsoft.youtubeapi.innertube.core.RequestInit
 import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
 import com.liskovsoft.youtubeapi.innertube.core.Session
-import com.liskovsoft.youtubeapi.innertube.embed.EmbedYtCfg
-import com.liskovsoft.youtubeapi.innertube.embed.EmbedYtCfgApi
+import com.liskovsoft.youtubeapi.innertube.ytcfg.YtCfgApi
 import com.liskovsoft.youtubeapi.innertube.impl.MediaItemFormatInfoImpl
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
@@ -126,8 +126,9 @@ class InnertubeServiceTest {
 
     @Test
     fun testEmbedYtCfg() {
-        val api = RetrofitHelper.create(EmbedYtCfgApi::class.java)
-        val wrapper = api.getYtCfg("6sJZNpPgys4")
+        val api = RetrofitHelper.create(YtCfgApi::class.java)
+        val client = AppClient.WEB_EMBED
+        val wrapper = api.getYtCfg(client.getRefererUrl("6sJZNpPgys4")!!, client.userAgent)
 
         val ytCfgStr = RetrofitHelper.get(wrapper)
 

@@ -36,7 +36,7 @@ public class PostDataHelper {
     }
 
     public static String createQueryRemix(String data) {
-        return createQuery(AppClient.WEB_REMIX.getBrowseTemplate(), data);
+        return createQuery(AppClient.WEB_MUSIC.getBrowseTemplate(), data);
     }
 
     public static String createQuery(AppClient client, String data) {

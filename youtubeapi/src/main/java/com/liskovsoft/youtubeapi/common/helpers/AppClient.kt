@@ -45,19 +45,19 @@ internal enum class AppClient(
     TV_DOWNGRADED(TV, clientVersion = "5.20251105", userAgent = DefaultHeaders.USER_AGENT_COBALT_DOWNGRADED),
     // 8AEB2AMB - web client premium formats?
     WEB(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com"),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBED(CLIENTS.WEB_EMBEDDED.NAME, CLIENTS.WEB_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_EMBEDDED.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/embed/{video_id}?html5=1"),
     // Request contains an invalid argument.
     WEB_CREATOR(CLIENTS.WEB_CREATOR.NAME, CLIENTS.WEB_CREATOR.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_CREATOR.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com/"),
-    WEB_REMIX(CLIENTS.YTMUSIC.NAME, CLIENTS.YTMUSIC.VERSION, CLIENT_NAME_IDS[CLIENTS.YTMUSIC.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com/"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://studio.youtube.com"),
+    WEB_MUSIC(CLIENTS.YTMUSIC.NAME, CLIENTS.YTMUSIC.VERSION, CLIENT_NAME_IDS[CLIENTS.YTMUSIC.NAME],
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com"),
     WEB_SAFARI(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = "https://www.youtube.com/"),
+        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = "https://www.youtube.com"),
     MWEB(CLIENTS.MWEB.NAME, CLIENTS.MWEB.VERSION, CLIENT_NAME_IDS[CLIENTS.MWEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com/"),
+        userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com"),
     ANDROID(CLIENTS.ANDROID.NAME, CLIENTS.ANDROID.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID.NAME],
         userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
         postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
@@ -82,6 +82,13 @@ internal enum class AppClient(
     override fun getOsName() = "Macintosh" // TODO: change later
     override fun getOsVersion() = "10_15_7" // TODO: change later
 
+    fun getRefererUrl(videoId: String?): String? {
+        if (videoId == null)
+            return referer
+
+        return referer?.replace("{video_id}", videoId)
+    }
+
     private val browserInfo by lazy { extractBrowserInfo(userAgent) }
     private val postDataBrowser by lazy { if (browserName != null && browserVersion != null) String.format(POST_DATA_BROWSER, browserName, browserVersion) else null }
 
@@ -95,7 +102,7 @@ internal enum class AppClient(
     val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED) } // NOTE: TV_SIMPLY doesn't support auth
     val isWebPotRequired by lazy { Helpers.equalsAny(this, WEB, MWEB, WEB_EMBED, WEB_SAFARI, INITIAL, GEO) }
     // TODO: remove after implement SABR
-    val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_REMIX, WEB_SAFARI, ANDROID_VR, GEO, MWEB, WEB_EMBED, TV_EMBED, IOS) }
+    val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_MUSIC, WEB_SAFARI, ANDROID_VR, GEO, MWEB, WEB_EMBED, TV_EMBED, IOS) }
     val isReelClient by lazy { Helpers.equalsAny(this, ANDROID_REEL) }
     val isTVClient by lazy { name.startsWith("TV") }
     val isWebClient by lazy { Helpers.startsWithAny(name, "WEB", "MWEB", "INITIAL", "GEO") }

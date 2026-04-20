@@ -60,7 +60,7 @@ public class TrackingService {
         if (isVideoAlmostWatched) {
             //positionSec = lengthSec;
             createWatchRecordShort(videoId, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-            ServiceHelper.sleep(1_000);
+            //ServiceHelper.sleep(1_000);
             updateWatchTimeShort(videoId, lengthSec, lengthSec, lengthSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
             return;
         }
@@ -69,7 +69,7 @@ public class TrackingService {
         //    createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
         //}
         createWatchRecordLong(videoId, lengthSec, oldPositionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
-        ServiceHelper.sleep(1_000);
+        //ServiceHelper.sleep(1_000);
         updateWatchTimeLong(videoId, lengthSec, oldPositionSec, positionSec, clientPlaybackNonce, eventId, visitorMonitoringData, ofParam);
     }
 

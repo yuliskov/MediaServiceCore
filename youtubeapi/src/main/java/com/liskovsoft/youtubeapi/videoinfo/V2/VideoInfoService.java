@@ -31,12 +31,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
-            AppClient.WEB, // Fix video clip blocked in current location
-            AppClient.IOS,
             AppClient.TV, // Supports auth. Fixes "please sign in" bug!
+            AppClient.WEB, // Fix video clip blocked in current location
+            AppClient.WEB_SAFARI,
+            //AppClient.IOS,
             AppClient.GEO, // Fix video clip blocked in current location
             AppClient.MWEB, // single audio language
-            AppClient.WEB_SAFARI,
             AppClient.TV_LEGACY,
             AppClient.TV_DOWNGRADED,
             AppClient.TV_EMBED, // single audio language
@@ -45,7 +45,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on cronet!)
     };
     @Nullable
-    private AppClient mVideoInfoType = null;
+    private AppClient mDefaultInfoType = null;
     @Nullable
     private AppClient mRecentInfoType = null;
     private boolean mAuthBlock;
@@ -115,7 +115,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo firstInfoWith(String videoId, String clickTrackingParams, InfoTester infoTester) {
-        final AppClient beginType = getDefaultClient();
+        //final AppClient beginType = getDefaultClient();
+        final AppClient beginType = VIDEO_INFO_TYPE_LIST[0];
         AppClient nextType = beginType;
 
         do {
@@ -132,7 +133,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void initInfoTypeIfNeeded() {
-        if (mVideoInfoType != null) {
+        if (mDefaultInfoType != null) {
             return;
         }
         
@@ -162,13 +163,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void resetInfoType() {
-        mVideoInfoType = null;
+        mDefaultInfoType = null;
         persistVideoInfoType();
         PoTokenGate.resetCache(getClient());
     }
 
     private void nextVideoInfoType() {
-        mVideoInfoType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, mVideoInfoType);
+        mDefaultInfoType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, mDefaultInfoType);
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {
@@ -283,13 +284,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private void restoreVideoInfoType() {
         int videoInfoType = getData().getVideoInfoType();
         if (videoInfoType != -1) {
-            mVideoInfoType = videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType] : null;
-            if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType)) {
-                mVideoInfoType = VIDEO_INFO_TYPE_LIST[0];
-                getData().setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1);
+            mDefaultInfoType = videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType] : null;
+            if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mDefaultInfoType)) {
+                mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
+                getData().setVideoInfoType(mDefaultInfoType != null ? mDefaultInfoType.ordinal() : -1);
             }
         } else {
-            mVideoInfoType = VIDEO_INFO_TYPE_LIST[0];
+            mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
         }
     }
 
@@ -298,15 +299,15 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return;
         }
 
-        getData().setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1);
+        getData().setVideoInfoType(mDefaultInfoType != null ? mDefaultInfoType.ordinal() : -1);
     }
 
     private void persistRecentTypeIfNeeded(VideoInfo videoInfo) {
-        if (videoInfo == null || videoInfo.isUnplayable() || mRecentInfoType == null || mRecentInfoType == mVideoInfoType) {
+        if (videoInfo == null || videoInfo.isUnplayable() || mRecentInfoType == null || mRecentInfoType == mDefaultInfoType) {
             return;
         }
 
-        mVideoInfoType = mRecentInfoType;
+        mDefaultInfoType = mRecentInfoType;
         persistVideoInfoType();
     }
 
@@ -333,6 +334,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     @NonNull
     private AppClient getDefaultClient() {
-        return mVideoInfoType != null && Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mVideoInfoType) ? mVideoInfoType : VIDEO_INFO_TYPE_LIST[0];
+        return mDefaultInfoType != null && Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mDefaultInfoType) ? mDefaultInfoType : VIDEO_INFO_TYPE_LIST[0];
     }
 }

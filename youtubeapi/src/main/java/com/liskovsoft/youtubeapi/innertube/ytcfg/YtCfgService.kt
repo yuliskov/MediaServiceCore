@@ -8,9 +8,10 @@ import com.liskovsoft.youtubeapi.innertube.utils.traverseObj
 
 internal object YtCfgService {
     private val api = RetrofitHelper.create(YtCfgApi::class.java)
+    private var cachedEncryptedHostFlags: String? = null
 
-    val cachedEncryptedHostFlags by lazy {
-        getEncryptedHostFlags("6sJZNpPgys4")
+    fun getCachedEncryptedHostFlags(videoId: String?): String? {
+        return cachedEncryptedHostFlags ?: getEncryptedHostFlags(videoId)?.also { cachedEncryptedHostFlags = it }
     }
 
     fun getEncryptedHostFlags(videoId: String?): String? {

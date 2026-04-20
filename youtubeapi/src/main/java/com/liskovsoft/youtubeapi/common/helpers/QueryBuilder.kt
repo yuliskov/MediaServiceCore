@@ -297,7 +297,7 @@ internal class QueryBuilder(private val client: AppClient) {
      */
     private fun createEncryptedHostFlags(): String {
         return if (client.isEmbedded)
-            YtCfgService.getEncryptedHostFlags(videoId)?.let {
+            YtCfgService.getCachedEncryptedHostFlags(videoId)?.let {
                 """
                    "encryptedHostFlags":"$it",
                 """

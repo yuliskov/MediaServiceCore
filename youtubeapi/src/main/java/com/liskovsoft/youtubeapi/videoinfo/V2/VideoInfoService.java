@@ -287,10 +287,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
             mDefaultInfoType = videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType] : null;
             if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mDefaultInfoType)) {
                 mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
-                getData().setVideoInfoType(mDefaultInfoType != null ? mDefaultInfoType.ordinal() : -1);
+                persistVideoInfoType();
             }
         } else {
             mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
+            persistVideoInfoType();
         }
     }
 

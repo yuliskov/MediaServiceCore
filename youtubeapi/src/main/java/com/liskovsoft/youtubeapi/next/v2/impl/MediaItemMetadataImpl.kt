@@ -312,4 +312,8 @@ internal data class MediaItemMetadataImpl(private val watchNextResult: WatchNext
     override fun getBadgeText(): String? {
         return badgeTextItem
     }
+
+    override fun getEndScreenItems(): MutableList<EndScreenItem>? {
+        return null // V2 API doesn't support end screens yet
+    }
 }

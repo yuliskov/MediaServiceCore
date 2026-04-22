@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.videoinfo.V2;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -46,8 +45,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
     };
     @Nullable
     private AppClient mDefaultInfoType = null;
-    @Nullable
-    private AppClient mRecentInfoType = null;
     private boolean mAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
     private boolean mIsUnplayable;
@@ -144,7 +141,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         initInfoTypeIfNeeded();
 
         // Try to reset pot cache for the last video
-        if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) {
+        if (!mIsUnplayable && mDefaultInfoType != null && PoTokenGate.resetCache(mDefaultInfoType)) {
             return;
         }
         // The Premium is likely broken
@@ -163,9 +160,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public void resetInfoType() {
-        mDefaultInfoType = null;
-        persistVideoInfoType();
-        PoTokenGate.resetCache(getClient());
+        resetInfoTypeToDefault();
+        PoTokenGate.resetCache();
     }
 
     private void nextVideoInfoType() {
@@ -184,14 +180,20 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoId, String clickTrackingParams) {
-        mRecentInfoType = client;
+        VideoInfo result;
 
         if (client == AppClient.INITIAL) {
-            return InitialResponse.getVideoInfo(videoId, mAuthBlock);
+            result = InitialResponse.getVideoInfo(videoId, mAuthBlock);
+        } else {
+            String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
+            result = getVideoInfo(client, videoInfoQuery);
         }
 
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
-        return getVideoInfo(client, videoInfoQuery);
+        if (result != null) {
+            result.setClient(client);
+        }
+
+        return result;
     }
 
     private VideoInfo getVideoInfo(AppClient client, String videoInfoQuery) {
@@ -286,13 +288,16 @@ public class VideoInfoService extends VideoInfoServiceBase {
         if (videoInfoType != -1) {
             mDefaultInfoType = videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType] : null;
             if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mDefaultInfoType)) {
-                mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
-                persistVideoInfoType();
+                resetInfoTypeToDefault();
             }
         } else {
-            mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
-            persistVideoInfoType();
+            resetInfoTypeToDefault();
         }
+    }
+
+    private void resetInfoTypeToDefault() {
+        mDefaultInfoType = VIDEO_INFO_TYPE_LIST[0];
+        persistVideoInfoType();
     }
 
     private void persistVideoInfoType() {
@@ -304,11 +309,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void persistRecentTypeIfNeeded(VideoInfo videoInfo) {
-        if (videoInfo == null || videoInfo.isUnplayable() || mRecentInfoType == null || mRecentInfoType == mDefaultInfoType) {
+        if (videoInfo == null || videoInfo.isUnplayable() || videoInfo.getClient() == mDefaultInfoType) {
             return;
         }
 
-        mDefaultInfoType = mRecentInfoType;
+        mDefaultInfoType = videoInfo.getClient();
         persistVideoInfoType();
     }
 
@@ -324,17 +329,11 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return videoInfo != null && videoInfo.hasSubtitles() && (videoInfo.getTranslationLanguages() == null || videoInfo.getTranslationLanguages().size() < 100);
     }
 
-    @Override
-    protected AppClient getClient() {
-        return mRecentInfoType != null ? mRecentInfoType : getDefaultClient();
-    }
-
     private static boolean isAuthSupported(AppClient client) {
         return client != null && client.isAuthSupported();
     }
 
-    @NonNull
     private AppClient getDefaultClient() {
-        return mDefaultInfoType != null && Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mDefaultInfoType) ? mDefaultInfoType : VIDEO_INFO_TYPE_LIST[0];
+        return mDefaultInfoType;
     }
 }

@@ -85,6 +85,11 @@ internal object PoTokenGate {
         }
     }
 
+    @JvmStatic
+    fun resetCache() {
+        resetWebCache()
+    }
+
     fun getWebVisitorData(): String? {
         return mWebPoToken?.visitorData
     }

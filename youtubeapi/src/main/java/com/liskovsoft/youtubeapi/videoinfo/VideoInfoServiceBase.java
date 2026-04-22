@@ -36,11 +36,6 @@ public abstract class VideoInfoServiceBase {
         mFileApi = RetrofitHelper.create(FileApi.class);
     }
 
-    // Will be overridden in descendants
-    protected AppClient getClient() {
-        return null;
-    }
-
     protected void transformFormats(VideoInfo videoInfo) {
         if (videoInfo == null || videoInfo.isUnplayable()) {
             return;
@@ -54,7 +49,6 @@ public abstract class VideoInfoServiceBase {
         }
 
         videoInfo.setVisitorCookie(getData().getVisitorCookie());
-        videoInfo.setClient(getClient());
     }
 
     private void decipherFormats(VideoInfo videoInfo) {
@@ -82,7 +76,7 @@ public abstract class VideoInfoServiceBase {
             applySignatures(urlHolders, signatures);
         }
 
-        String poToken = PoTokenGate.getPoToken(getClient());
+        String poToken = PoTokenGate.getPoToken(videoInfo.getClient());
         videoInfo.setPoToken(poToken);
         applySessionPoToken(urlHolders, poToken);
     }

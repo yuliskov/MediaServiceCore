@@ -293,16 +293,16 @@ class YouTubeContentService implements ContentService {
         return RxHelper.create(emitter -> {
             checkSigned();
 
-            emitGroup(emitter, getBrowseService2().getShorts());
+            //emitGroup(emitter, getBrowseService2().getShorts());
 
-            //MediaGroup shorts = getBrowseService2().getShorts();
-            //
-            //if (shorts != null && shorts.getNextPageKey() != null) {
-            //    emitGroup(emitter, shorts);
-            //} else {
-            //    emitGroupPartial(emitter, shorts);
-            //    emitGroup(emitter, getBrowseService2().getShorts2());
-            //}
+            MediaGroup shorts = getBrowseService2().getShorts();
+
+            if (shorts != null && shorts.getNextPageKey() != null) {
+                emitGroup(emitter, shorts);
+            } else {
+                emitGroupPartial(emitter, shorts);
+                emitGroup(emitter, getBrowseService2().getShorts2());
+            }
         });
     }
 

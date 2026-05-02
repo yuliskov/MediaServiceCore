@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.potokennp3
+package com.liskovsoft.youtubeapi.app.potokennp2
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
@@ -13,24 +13,58 @@ class PoTokenProviderImplTest {
     @Before
     fun setUp() {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().context)
+        PoTokenProviderImpl.resetCache()
     }
 
     @Test
     fun testWebPoTokenIsNotEmpty() {
+        assertWebPoTokenIsNotEmpty()
+    }
+
+    @Test
+    fun testWebPoTokenOnEmptyVideoId() {
+        assertWebPoTokenOnEmptyVideoId()
+    }
+
+    @Test
+    fun testPoTokenResponse() {
+        assertPoTokenResponse()
+    }
+
+    @Test
+    fun testWebPoTokenIsNotEmpty2() {
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+
+        assertWebPoTokenIsNotEmpty()
+    }
+
+    @Test
+    fun testWebPoTokenOnEmptyVideoId2() {
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+
+        assertWebPoTokenOnEmptyVideoId()
+    }
+
+    @Test
+    fun testPoTokenResponse2() {
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+
+        assertPoTokenResponse()
+    }
+
+    private fun assertWebPoTokenIsNotEmpty() {
         val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(TestHelpers.VIDEO_ID_3)
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
 
-    @Test
-    fun testWebPoTokenOnEmptyVideoId() {
+    private fun assertWebPoTokenOnEmptyVideoId() {
         val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken("")
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
 
-    @Test
-    fun testPoTokenResponse() {
+    private fun assertPoTokenResponse() {
         val videoIdMusic = TestHelpers.VIDEO_ID_MUSIC_2
 
         val mediaItemDetails: MediaItemFormatInfo =

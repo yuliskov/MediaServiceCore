@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.potokennp3
+package com.liskovsoft.youtubeapi.app.potokennp2
 
 import android.content.Context
 import android.os.Handler
@@ -14,22 +14,12 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.BadWebViewException
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.PoTokenException
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.PoTokenGenerator
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.buildExceptionForJsError
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.hasThermalServiceBug
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.hasUsbServiceBug
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.parseChallengeData
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.parseIntegrityTokenData
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.stringToU8
-import com.liskovsoft.youtubeapi.app.potokennp3.misc.u8ToBase64
 import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 @RequiresApi(19)
-internal class PoTokenGeneratorImpl private constructor(
+internal class PoTokenWebView2 private constructor(
     context: Context,
     private var onInitDone: () -> Unit
 ) : PoTokenGenerator {
@@ -89,14 +79,14 @@ internal class PoTokenGeneratorImpl private constructor(
     }
 
     /**
-     * Must be called right after instantiating [PoTokenGeneratorImpl] to perform the actual
+     * Must be called right after instantiating [PoTokenWebView2] to perform the actual
      * initialization. This will asynchronously go through all the steps needed to load BotGuard,
      * run it, and obtain an `integrityToken`.
      */
     private fun loadHtmlAndObtainBotguard(context: Context) {
         Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
-        val html = context.assets.open("po_token3.html").bufferedReader()
+        val html = context.assets.open("po_token2.html").bufferedReader()
             .use { it.readText() }
 
         webView.loadDataWithBaseURL(
@@ -368,7 +358,7 @@ internal class PoTokenGeneratorImpl private constructor(
     //endregion
 
     companion object : PoTokenGenerator.Factory {
-        private val TAG = PoTokenGeneratorImpl::class.simpleName
+        private val TAG = PoTokenWebView2::class.simpleName
         // Public API key used by BotGuard, which has been got by looking at BotGuard requests
         private const val GOOGLE_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw" // NOSONAR
         private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"
@@ -387,12 +377,12 @@ internal class PoTokenGeneratorImpl private constructor(
 
             val latch = CountDownLatch(1)
 
-            lateinit var potWv: PoTokenGeneratorImpl
+            lateinit var potWv: PoTokenWebView2
             var initError: Throwable? = null
 
             runOnMainThread {
                 potWv = try {
-                    PoTokenGeneratorImpl(context) { latch.countDown() }
+                    PoTokenWebView2(context) { latch.countDown() }
                 } catch (e: Throwable) {
                     initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
                     latch.countDown()

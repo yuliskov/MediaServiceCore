@@ -22,6 +22,9 @@ internal object PoTokenProviderImpl : PoTokenProvider {
     private var webPoTokenVisitorData: String? = null
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
+
+    @RequiresApi(19)
+    var poTokenFactory: PoTokenGenerator.Factory? = null
     
     override fun getWebClientPoToken(videoId: String): PoTokenResult? {
         if (VERSION.SDK_INT < 19 || !isWebPotSupported) {
@@ -80,7 +83,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
                     latch?.await(3, TimeUnit.SECONDS)
 
                     // create a new webPoTokenGenerator
-                    webPoTokenGenerator = PoTokenWebView
+                    webPoTokenGenerator = (poTokenFactory ?: PoTokenWebView)
                         .newPoTokenGenerator(AppService.instance().context)
 
                     // The streaming poToken needs to be generated exactly once before generating

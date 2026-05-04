@@ -14,6 +14,7 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -86,7 +87,7 @@ internal class PoTokenWebView2 private constructor(
     private fun loadHtmlAndObtainBotguard(context: Context) {
         Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
-        val html = context.assets.open("po_token2.html").bufferedReader()
+        val html = context.assets.open("po_token.html").bufferedReader()
             .use { it.readText() }
 
         webView.loadDataWithBaseURL(
@@ -110,12 +111,27 @@ internal class PoTokenWebView2 private constructor(
     fun downloadAndRunBotguard() {
         Log.d(TAG, "downloadAndRunBotguard() called")
 
+        val client = AppClient.WEB
+
         val responseBody = makeBotguardServiceRequest(
-            "https://www.youtube.com/api/jnn/v1/Create",
-            "[ \"$REQUEST_KEY\" ]",
+            "https://www.youtube.com/youtubei/v1/att/get?prettyPrint=false",
+            """
+                {
+                            context: {
+                                client: {
+                                    clientName: "${client.clientName}",
+                                    clientVersion: "${client.clientVersion}",
+                                },
+                            },
+                            engagementType: "ENGAGEMENT_TYPE_UNBOUND",
+                 }
+            """,
+            mapOf(
+                "Content-Type" to "application/json"
+            )
         ) ?: return
 
-        val parsedChallengeData = parseChallengeData(responseBody)
+        val parsedChallengeData = parseDescrambledChallengeData(responseBody)
 
         runOnMainThread {
             webView.evaluateJavascript(
@@ -155,7 +171,7 @@ internal class PoTokenWebView2 private constructor(
         Log.d(TAG, "botguardResponse: $botguardResponse")
 
         val responseBody = makeBotguardServiceRequest(
-            "https://www.youtube.com/api/jnn/v1/GenerateIT",
+            "$BASE_URL/\$rpc/google.internal.waa.v1.Waa/GenerateIT",
             "[ \"$REQUEST_KEY\", \"$botguardResponse\" ]",
         ) ?: return
 
@@ -296,7 +312,8 @@ internal class PoTokenWebView2 private constructor(
      */
     private fun makeBotguardServiceRequest(
         url: String,
-        data: String
+        data: String,
+        headers: Map<String, String> = emptyMap()
     ): String? {
         val response = OkHttpManager.instance().doPostRequest(
             url,
@@ -307,7 +324,7 @@ internal class PoTokenWebView2 private constructor(
                 "Content-Type" to "application/json+protobuf",
                 "x-goog-api-key" to GOOGLE_API_KEY,
                 "x-user-agent" to "grpc-web-javascript/0.1",
-            ),
+            ) + headers,
             data,
             null
         )
@@ -362,9 +379,11 @@ internal class PoTokenWebView2 private constructor(
         // Public API key used by BotGuard, which has been got by looking at BotGuard requests
         private const val GOOGLE_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw" // NOSONAR
         private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"
-        private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.3"
+        private const val USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko)"
+        //private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+        //    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.3"
         private const val JS_INTERFACE = "PoTokenWebView"
+        private const val BASE_URL = "https://jnn-pa.googleapis.com"
 
         override fun newPoTokenGenerator(context: Context): PoTokenGenerator {
             if (hasThermalServiceBug(context)) {

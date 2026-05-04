@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.app.potokennp2
 import com.grack.nanojson.JsonObject
 import com.grack.nanojson.JsonParser
 import com.grack.nanojson.JsonWriter
+import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import okio.ByteString.Companion.decodeBase64
 import okio.ByteString.Companion.toByteString
 
@@ -37,6 +38,40 @@ internal fun parseChallengeData(rawChallengeData: String): String {
     return JsonWriter.string(
         JsonObject.builder()
             .value("messageId", messageId)
+            .`object`("interpreterJavascript")
+            .value("privateDoNotAccessOrElseSafeScriptWrappedValue", privateDoNotAccessOrElseSafeScriptWrappedValue)
+            .value("privateDoNotAccessOrElseTrustedResourceUrlWrappedValue", privateDoNotAccessOrElseTrustedResourceUrlWrappedValue)
+            .end()
+            .value("interpreterHash", interpreterHash)
+            .value("program", program)
+            .value("globalName", globalName)
+            .value("clientExperimentsStateBlob", clientExperimentsStateBlob)
+            .done()
+    )
+}
+
+/**
+ * Parses the raw challenge data obtained from the Create endpoint and returns an object that can be
+ * embedded in a JavaScript snippet.
+ */
+internal fun parseDescrambledChallengeData(rawChallengeData: String): String {
+    val root = JsonParser.`object`().from(rawChallengeData)
+    val bgChallenge = root.getObject("bgChallenge")
+
+    val interpreterHash = bgChallenge.getString("interpreterHash")
+    val program = bgChallenge.getString("program")
+    val globalName = bgChallenge.getString("globalName")
+    val clientExperimentsStateBlob = bgChallenge.getString("clientExperimentsStateBlob")
+
+    val privateDoNotAccessOrElseTrustedResourceUrlWrappedValue = bgChallenge
+        .getObject("interpreterUrl")
+        .getString("privateDoNotAccessOrElseTrustedResourceUrlWrappedValue")
+    val privateDoNotAccessOrElseSafeScriptWrappedValue =
+        OkHttpManager.instance().doGetRequest("https:$privateDoNotAccessOrElseTrustedResourceUrlWrappedValue").body()?.string()
+            ?: throw PoTokenException("Empty response body")
+
+    return JsonWriter.string(
+        JsonObject.builder()
             .`object`("interpreterJavascript")
             .value("privateDoNotAccessOrElseSafeScriptWrappedValue", privateDoNotAccessOrElseSafeScriptWrappedValue)
             .value("privateDoNotAccessOrElseTrustedResourceUrlWrappedValue", privateDoNotAccessOrElseTrustedResourceUrlWrappedValue)

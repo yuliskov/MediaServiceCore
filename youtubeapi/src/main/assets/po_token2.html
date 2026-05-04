@@ -197,6 +197,9 @@ function runBotGuard(challengeData) {
   }).then(function (botguard) {
     return botguard.snapshot({ webPoSignalOutput: webPoSignalOutput })
   }).then(function (botguardResponse) {
+    if (!webPoSignalOutput.length) {
+       throw new Error('webPoSignalOutput is empty');
+    }
     return { webPoSignalOutput: webPoSignalOutput, botguardResponse: botguardResponse }
   })
 }

@@ -53,7 +53,7 @@ class PoTokenProviderImplTest {
     }
 
     private fun assertWebPoTokenIsNotEmpty() {
-        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(TestHelpers.VIDEO_ID_3)
+        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken("K04WmBtVsOs")
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }

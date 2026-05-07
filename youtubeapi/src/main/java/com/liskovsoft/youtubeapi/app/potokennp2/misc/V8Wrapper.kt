@@ -69,4 +69,11 @@ internal class V8Wrapper {
             v8Runtime?.registerJavaMethod(callback, jsFunctionName)
         }
     }
+
+    fun executeJsFunction(fnName: String): Any? {
+        synchronized(v8Lock) {
+            initRuntime()
+            return v8Runtime?.executeJSFunction(fnName)
+        }
+    }
 }

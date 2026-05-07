@@ -7,12 +7,16 @@ import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
+import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.V8Wrapper
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import io.reactivex.SingleEmitter
+import io.reactivex.disposables.Disposable
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 
 private const val potLibPrefix = "potokennp/"
 private const val solverLibPrefix = "nsigsolver/"
@@ -26,49 +30,74 @@ internal class PoTokenV8 private constructor(
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
     var initError: Throwable? = null
-    private val v8NpmLibFilenames = listOf("${solverLibPrefix}polyfill.js", "${potLibPrefix}jsdom.js", "${potLibPrefix}po_token.js")
+    private val v8NpmLibFilenames = listOf("${solverLibPrefix}polyfill.js", "${potLibPrefix}polyfill.js", "${potLibPrefix}po_token.js")
 
     //region Initialization
     init {
+        initPolyfills()
+
         // load common libs: jsdom, polyfill
         v8Wrapper.registerJavaMethod(
-            { _, parameters ->
-
-                val botguardResponse = parameters.getString(0)
+            { _, args ->
+                val botguardResponse = args.getString(0)
 
                 onRunBotguardResult(botguardResponse)
             },
             "onRunBotguardResult"
         )
         v8Wrapper.registerJavaMethod(
-            { _, parameters ->
-
-                val error = parameters.getString(0)
+            { _, args ->
+                val error = args.getString(0)
 
                 onJsInitializationError(error)
             },
             "onJsInitializationError"
         )
         v8Wrapper.registerJavaMethod(
-            { _, parameters ->
-
-                val identifier = parameters.getString(0)
-                val poTokenU8 = parameters.getString(1)
+            { _, args ->
+                val identifier = args.getString(0)
+                val poTokenU8 = args.getString(1)
 
                 onObtainPoTokenResult(identifier, poTokenU8)
             },
             "onObtainPoTokenResult"
         )
         v8Wrapper.registerJavaMethod(
-            { _, parameters ->
-
-                val identifier = parameters.getString(0)
-                val error = parameters.getString(1)
+            { _, args ->
+                val identifier = args.getString(0)
+                val error = args.getString(1)
 
                 onObtainPoTokenError(identifier, error)
             },
             "onObtainPoTokenError"
         )
+    }
+
+    private fun initPolyfills() {
+        val disposables = ConcurrentHashMap<Int, Disposable>()
+        val idGen = AtomicInteger(1)
+
+        v8Wrapper.registerJavaMethod({ _, args ->
+            val delay = args.getInteger(0)
+
+            val id = idGen.getAndIncrement()
+
+            val disposable =
+                RxHelper.startInterval({
+                    v8Wrapper.executeVoidScript("""
+                    globalThis.__runInterval($id)
+                """.trimIndent())
+                }, delay)
+
+            disposables[id] = disposable
+
+            id
+        }, "__nativeSetInterval")
+
+        v8Wrapper.registerJavaMethod({ _, args ->
+            val id = args.getInteger(0)
+            disposables.remove(id)?.dispose()
+        }, "__nativeClearInterval")
     }
 
     /**
@@ -112,23 +141,21 @@ internal class PoTokenV8 private constructor(
 
         val parsedChallengeData = parseDescrambledChallengeData(responseBody)
 
-        runOnMainThread {
-            v8Wrapper.executeVoidScript(
-                """
-                    try {
-                        data = $parsedChallengeData;
-                        runBotGuard(data).then(function (result) {
-                            this.webPoSignalOutput = result.webPoSignalOutput;
-                            onRunBotguardResult(result.botguardResponse);
-                        }, function (error) {
-                            onJsInitializationError(error + "\n" + error.stack);
-                        });
-                    } catch (error) {
+        v8Wrapper.executeVoidScript(
+            """
+                try {
+                    data = $parsedChallengeData;
+                    runBotGuard(data).then(function (result) {
+                        this.webPoSignalOutput = result.webPoSignalOutput;
+                        onRunBotguardResult(result.botguardResponse);
+                    }, function (error) {
                         onJsInitializationError(error + "\n" + error.stack);
-                    }
-                """
-            )
-        }
+                    });
+                } catch (error) {
+                    onJsInitializationError(error + "\n" + error.stack);
+                }
+            """
+        )
     }
 
     /**
@@ -161,14 +188,12 @@ internal class PoTokenV8 private constructor(
         //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
-        runOnMainThread {
-            v8Wrapper.executeVoidScript(
-                "this.integrityToken = $integrityToken"
-            )
+        v8Wrapper.executeVoidScript(
+            "this.integrityToken = $integrityToken"
+        )
 
-            Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-            onInitDone()
-        }
+        Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
+        onInitDone()
     }
     //endregion
 
@@ -183,25 +208,23 @@ internal class PoTokenV8 private constructor(
 
         val u8Identifier = stringToU8(identifier)
 
-        runOnMainThread {
-            v8Wrapper.executeVoidScript(
-                """
-                        try {
-                            identifier = "$identifier";
-                            u8Identifier = $u8Identifier;
-                            poTokenU8 = obtainPoToken(webPoSignalOutput, integrityToken, u8Identifier);
-                            poTokenU8String = "";
-                            for (i = 0; i < poTokenU8.length; i++) {
-                                if (i != 0) poTokenU8String += ",";
-                                poTokenU8String += poTokenU8[i];
-                            }
-                            onObtainPoTokenResult(identifier, poTokenU8String);
-                        } catch (error) {
-                            onObtainPoTokenError(identifier, error + "\n" + error.stack);
+        v8Wrapper.executeVoidScript(
+            """
+                    try {
+                        identifier = "$identifier";
+                        u8Identifier = $u8Identifier;
+                        poTokenU8 = obtainPoToken(webPoSignalOutput, integrityToken, u8Identifier);
+                        poTokenU8String = "";
+                        for (i = 0; i < poTokenU8.length; i++) {
+                            if (i != 0) poTokenU8String += ",";
+                            poTokenU8String += poTokenU8[i];
                         }
-                    """,
-            )
-        }
+                        onObtainPoTokenResult(identifier, poTokenU8String);
+                    } catch (error) {
+                        onObtainPoTokenError(identifier, error + "\n" + error.stack);
+                    }
+                """,
+        )
 
         initError?.let { throw it }
 
@@ -325,11 +348,9 @@ internal class PoTokenV8 private constructor(
     private fun onInitializationErrorCloseAndCancel(error: Throwable) {
         initError = error
         popAllPoTokenEmitters()
-        runOnMainThread {
-            close()
-            // throw error
-            onInitDone()
-        }
+        close()
+        // throw error
+        onInitDone()
     }
 
     /**
@@ -362,23 +383,16 @@ internal class PoTokenV8 private constructor(
 
             val latch = CountDownLatch(1)
 
-            lateinit var potWv: PoTokenV8
-            var initError: Throwable? = null
-
-            runOnMainThread {
-                potWv = try {
-                    PoTokenV8(context) { latch.countDown() }
-                } catch (e: Throwable) {
-                    initError = V8WrapperException("${e::class.simpleName}: ${e.message}")
-                    latch.countDown()
-                    return@runOnMainThread
-                }
-                potWv.loadScriptAndObtainBotguard()
+            val potWv = try {
+                PoTokenV8(context) { latch.countDown() }
+            } catch (e: Throwable) {
+                latch.countDown()
+                throw V8WrapperException("${e::class.simpleName}: ${e.message}")
             }
+            potWv.loadScriptAndObtainBotguard()
 
             latch.await(20, TimeUnit.SECONDS)
 
-            initError?.let { throw it }
             potWv.initError?.let { throw it }
 
             return potWv

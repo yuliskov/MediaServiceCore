@@ -18,9 +18,6 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
-private const val potLibPrefix = "potokennp/"
-private const val solverLibPrefix = "nsigsolver/"
-
 @RequiresApi(19)
 internal class PoTokenV8 private constructor(
     context: Context,
@@ -30,7 +27,13 @@ internal class PoTokenV8 private constructor(
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
     var initError: Throwable? = null
-    private val v8NpmLibFilenames = listOf("${solverLibPrefix}polyfill.js", "${potLibPrefix}polyfill.js", "${potLibPrefix}po_token.js")
+    private val v8NpmLibFilenames =
+        listOf(
+            "${potLibPrefix}v8/polyfill.js",
+            //"${potLibPrefix}v8/linkedom.bundle.js",
+            "${potLibPrefix}v8/bootstrap.js",
+            "${potLibPrefix}v8/po_token.js"
+        )
 
     //region Initialization
     init {

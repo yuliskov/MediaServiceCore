@@ -33,21 +33,21 @@ class PoTokenProviderImplTest {
 
     @Test
     fun testWebPoTokenIsNotEmpty2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenV8
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
 
         assertWebPoTokenIsNotEmpty()
     }
 
     @Test
     fun testWebPoTokenOnEmptyVideoId2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenV8
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
 
         assertWebPoTokenOnEmptyVideoId()
     }
 
     @Test
     fun testPoTokenResponse2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenV8
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
 
         assertPoTokenResponse()
     }

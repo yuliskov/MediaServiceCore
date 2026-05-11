@@ -8,6 +8,8 @@ import com.liskovsoft.sharedutils.mylogger.Log
 
 private const val TAG = "WebViewUtil"
 
+internal const val potLibPrefix = "potokennp2/"
+
 internal fun isThermalServiceAvailable(context: Context): Boolean {
     // Only Android 10 has the issue
     if (Build.VERSION.SDK_INT != 29)

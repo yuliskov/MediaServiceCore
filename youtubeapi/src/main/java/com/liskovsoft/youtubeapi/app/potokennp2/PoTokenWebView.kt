@@ -86,7 +86,7 @@ internal class PoTokenWebView private constructor(
     private fun loadHtmlAndObtainBotguard(context: Context) {
         Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
-        val html = context.assets.open("po_token.html").bufferedReader()
+        val html = context.assets.open("${potLibPrefix}po_token.html").bufferedReader()
             .use { it.readText() }
 
         webView.loadDataWithBaseURL(

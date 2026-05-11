@@ -16,7 +16,7 @@ import org.junit.Ignore
 import org.junit.Test
 
 @Ignore("Not actual")
-internal class PoTokenCloudApiTest {
+internal class PoTokenCloudServiceTest {
     private lateinit var api: PoTokenCloudApi
 
     @Before

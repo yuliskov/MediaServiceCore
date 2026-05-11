@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.app
 
+import android.os.Build
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
+import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenWebView2
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
@@ -24,6 +26,11 @@ private enum class PoTokenType {
 internal object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
+
+    init {
+        if (Build.VERSION.SDK_INT >= 19)
+            PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+    }
 
     private fun getWebContentPoToken(videoId: String): String? {
         if (mWebPoToken?.videoId == videoId && !PoTokenProviderImpl.isWebPotExpired) {

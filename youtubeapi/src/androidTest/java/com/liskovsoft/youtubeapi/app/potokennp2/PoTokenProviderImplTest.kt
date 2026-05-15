@@ -33,23 +33,30 @@ class PoTokenProviderImplTest {
 
     @Test
     fun testWebPoTokenIsNotEmpty2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
 
-        assertWebPoTokenIsNotEmpty()
+        assertWebPoTokenLength(124) // SABR pot length
     }
 
     @Test
     fun testWebPoTokenOnEmptyVideoId2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
 
         assertWebPoTokenOnEmptyVideoId()
     }
 
     @Test
     fun testPoTokenResponse2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
 
         assertPoTokenResponse()
+    }
+
+    private fun assertWebPoTokenLength(length: Int) {
+        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken("K04WmBtVsOs")
+
+        Assert.assertNotNull("PoToken not empty", webClientPoToken)
+        Assert.assertEquals("PoToken length is $length", length, webClientPoToken?.playerRequestPoToken?.length)
     }
 
     private fun assertWebPoTokenIsNotEmpty() {

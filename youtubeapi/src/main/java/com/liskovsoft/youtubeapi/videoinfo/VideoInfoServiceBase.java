@@ -5,7 +5,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.api.FileApi;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
-import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -76,7 +75,7 @@ public abstract class VideoInfoServiceBase {
             applySignatures(urlHolders, signatures);
         }
 
-        String poToken = PoTokenGate.getPoToken(videoInfo.getClient());
+        String poToken = PoTokenGate.getPoToken(videoInfo.getClient(), videoInfo.getVideoDetails().getVideoId());
         videoInfo.setPoToken(poToken);
         applySessionPoToken(urlHolders, poToken);
     }

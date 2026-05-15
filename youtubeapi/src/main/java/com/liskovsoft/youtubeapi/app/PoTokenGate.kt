@@ -4,6 +4,7 @@ import android.os.Build
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenWebView2
+import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenWebView3
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
@@ -29,7 +30,7 @@ internal object PoTokenGate {
 
     init {
         if (Build.VERSION.SDK_INT >= 19)
-            PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
+            PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
     }
 
     private fun getWebContentPoToken(videoId: String): String? {

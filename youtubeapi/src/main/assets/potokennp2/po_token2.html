@@ -204,6 +204,22 @@ function runBotGuard(challengeData) {
   })
 }
 
+function refreshBotGuard(challengeData) {
+  const webPoSignalOutput = [];
+  return loadBotGuard({
+    globalName: challengeData.globalName,
+    globalObj: this,
+    program: challengeData.program
+  }).then(function (botguard) {
+    return botguard.snapshot({ webPoSignalOutput: webPoSignalOutput })
+  }).then(function (botguardResponse) {
+    if (!webPoSignalOutput.length) {
+       throw new Error('webPoSignalOutput is empty');
+    }
+    return { webPoSignalOutput: webPoSignalOutput, botguardResponse: botguardResponse }
+  })
+}
+
 function obtainPoToken(webPoSignalOutput, integrityToken, identifier) {
   const getMinter = webPoSignalOutput[0];
 

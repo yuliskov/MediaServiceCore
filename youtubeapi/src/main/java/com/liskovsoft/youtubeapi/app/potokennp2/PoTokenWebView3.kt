@@ -115,23 +115,22 @@ internal class PoTokenWebView3 private constructor(
 
         val parsedChallengeData = getChallengeData() ?: return
 
-        // NOTE: cache the values to be used in refreshBotGuard()
         runOnMainThread {
             webView.evaluateJavascript(
                 """try {
-                    const data = $parsedChallengeData
-                    challengeData = {
-                        globalName: data.globalName,
-                        program: data.program
-                    };
+                    const data = $parsedChallengeData;
                     runBotGuard(data).then(function (result) {
-                        this.webPoSignalOutput = result.webPoSignalOutput
-                        $JS_INTERFACE.onRunBotguardResult(result.botguardResponse)
+                        this.webPoSignalOutput = result.webPoSignalOutput;
+                        if (!webPoSignalOutput.length) {
+                          $JS_INTERFACE.onJsInitializationError("webPoSignalOutput is empty");
+                        } else {
+                          $JS_INTERFACE.onRunBotguardResult(result.botguardResponse);
+                        }
                     }, function (error) {
-                        $JS_INTERFACE.onJsInitializationError(error + "\n" + error.stack)
+                        $JS_INTERFACE.onJsInitializationError(error + "\n" + error.stack);
                     })
                 } catch (error) {
-                    $JS_INTERFACE.onJsInitializationError(error + "\n" + error.stack)
+                    $JS_INTERFACE.onJsInitializationError(error + "\n" + error.stack);
                 }""",
                 null
             )
@@ -159,9 +158,24 @@ internal class PoTokenWebView3 private constructor(
 
         val (integrityToken, expirationTimeInSeconds) = getIntegrityToken(botguardResponse) ?: return
 
+        // MOD: backport Instant.now().plusSeconds
+        // leave 10 minutes of margin just to be sure
+        //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
+        expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
+
         runOnMainThread {
             webView.evaluateJavascript(
-                "this.integrityToken = $integrityToken"
+                """
+                    const integrityToken = $integrityToken;
+                    const getMinter = webPoSignalOutput[0];
+
+                    if (!getMinter) {
+                      $JS_INTERFACE.onJsInitializationError("getMinter is undefined");  
+                    } else {
+                      mintCallback = getMinter(integrityToken);
+                      delete webPoSignalOutput;
+                    }
+                """
             ) {
                 Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
                 onInitDone()
@@ -174,8 +188,6 @@ internal class PoTokenWebView3 private constructor(
     @Synchronized
     override fun generatePoToken(identifier: String): String {
         cache[identifier]?.let { return it }
-
-        refreshBotguardData()
 
         Log.d(TAG, "generatePoToken() called with identifier $identifier")
         val latch = CountDownLatch(1)
@@ -190,17 +202,17 @@ internal class PoTokenWebView3 private constructor(
         runOnMainThread {
             webView.evaluateJavascript(
                 """try {
-                        const identifier = "$identifier"
-                        const u8Identifier = $u8Identifier
-                        const poTokenU8 = obtainPoToken(webPoSignalOutput, integrityToken, u8Identifier)
-                        var poTokenU8String = ""
+                        const identifier = "$identifier";
+                        const u8Identifier = $u8Identifier;
+                        const poTokenU8 = obtainPoToken(u8Identifier);
+                        var poTokenU8String = "";
                         for (i = 0; i < poTokenU8.length; i++) {
-                            if (i != 0) poTokenU8String += ","
-                            poTokenU8String += poTokenU8[i]
+                            if (i != 0) poTokenU8String += ",";
+                            poTokenU8String += poTokenU8[i];
                         }
-                        $JS_INTERFACE.onObtainPoTokenResult(identifier, poTokenU8String)
+                        $JS_INTERFACE.onObtainPoTokenResult(identifier, poTokenU8String);
                     } catch (error) {
-                        $JS_INTERFACE.onObtainPoTokenError(identifier, error + "\n" + error.stack)
+                        $JS_INTERFACE.onObtainPoTokenError(identifier, error + "\n" + error.stack);
                     }""",
             ) { latch.countDown() }
         }
@@ -286,40 +298,6 @@ internal class PoTokenWebView3 private constructor(
     //endregion
 
     //region Utils
-    private fun refreshBotguardData() {
-        if (cache.isEmpty()) // skip first run
-            return
-
-        Log.d(TAG, "refreshBotguardData() called")
-        val latch = CountDownLatch(1)
-
-        onInitDone = { latch.countDown() }
-
-        // NOTE: challengeData cached in downloadAndRunBotguard()
-        runOnMainThread {
-            webView.evaluateJavascript(
-                """try {
-                    if (!challengeData) {
-                        $JS_INTERFACE.callOnInitDone()                        
-                    } else {
-                        refreshBotGuard(challengeData).then(function (result) {
-                            this.webPoSignalOutput = result.webPoSignalOutput
-                            $JS_INTERFACE.callOnInitDone()
-                        }, function (error) {
-                            $JS_INTERFACE.callOnInitDone()
-                        })
-                    }
-                } catch (error) {
-                    $JS_INTERFACE.callOnInitDone()
-                }""",
-                null
-            )
-        }
-
-        latch.await(5, TimeUnit.SECONDS)
-        Log.d(TAG, "refreshBotguardData() DONE")
-    }
-
     private fun getChallengeData(): String? {
         val client = AppClient.WEB
 
@@ -351,15 +329,8 @@ internal class PoTokenWebView3 private constructor(
         ) ?: return null
 
         Log.d(TAG, "GenerateIT response: $responseBody")
-        val integrityToken = parseIntegrityTokenData(responseBody)
-        val (_, expirationTimeInSeconds) = integrityToken
 
-        // MOD: backport Instant.now().plusSeconds
-        // leave 10 minutes of margin just to be sure
-        //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
-        expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
-
-        return integrityToken
+        return parseIntegrityTokenData(responseBody)
     }
 
     /**

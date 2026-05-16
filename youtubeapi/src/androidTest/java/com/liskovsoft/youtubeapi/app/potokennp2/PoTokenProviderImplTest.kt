@@ -4,6 +4,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
+import com.liskovsoft.youtubeapi.app.potokennp2.generators.PoTokenWebView2
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager
 import org.junit.Assert
 import org.junit.Before
@@ -33,21 +34,21 @@ class PoTokenProviderImplTest {
 
     @Test
     fun testWebPoTokenIsNotEmpty2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
 
         assertWebPoTokenLength(124) // SABR pot length
     }
 
     @Test
     fun testWebPoTokenOnEmptyVideoId2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
 
         assertWebPoTokenOnEmptyVideoId()
     }
 
     @Test
     fun testPoTokenResponse2() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+        PoTokenProviderImpl.poTokenFactory = PoTokenWebView2
 
         assertPoTokenResponse()
     }

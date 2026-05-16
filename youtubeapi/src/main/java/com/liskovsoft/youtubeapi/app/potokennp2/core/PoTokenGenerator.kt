@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.potokennp2
+package com.liskovsoft.youtubeapi.app.potokennp2.core
 
 import android.content.Context
 import java.io.Closeable
@@ -10,7 +10,7 @@ import java.io.Closeable
 internal interface PoTokenGenerator : Closeable {
     /**
      * Generates a poToken for the provided identifier, using the `integrityToken` and
-     * `webPoSignalOutput` previously obtained in the initialization of [PoTokenWebView]. Can be
+     * `webPoSignalOutput` previously obtained in the initialization of [com.liskovsoft.youtubeapi.app.potokennp2.generators.PoTokenWebView]. Can be
      * called multiple times.
      */
     fun generatePoToken(identifier: String): String

@@ -1,9 +1,10 @@
-package com.liskovsoft.youtubeapi.app.potokennp2
+package com.liskovsoft.youtubeapi.app.potokennp2.misc
 
 import com.grack.nanojson.JsonObject
 import com.grack.nanojson.JsonParser
 import com.grack.nanojson.JsonWriter
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 import okio.ByteString.Companion.decodeBase64
 import okio.ByteString.Companion.toByteString
 

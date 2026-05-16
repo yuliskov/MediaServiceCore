@@ -3,34 +3,27 @@ package com.liskovsoft.youtubeapi.app
 import android.os.Build
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
-import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenWebView2
-import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenWebView3
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.selectFactory
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
-private enum class PoTokenType {
-    /**
-     * A poToken generated from videoId.
-     *
-     * Used in player requests.
-      */
-    CONTENT,
-
-    /**
-     * A generic poToken.
-     *
-     * Used in SABR requests.
-     */
-    SESSION
-}
-
+/**
+ * PoTokenType
+ *
+ * `CONTENT` A poToken generated from videoId.
+ * Used in DASH/SABR requests (e.g. `pot` param).
+ * Previously used in player requests.
+ *
+ * `SESSION` A poToken generated from visitorData.
+ * Usage is unknown. Previously used in DASH/SABR requests (e.g. `pot` param).
+ */
 internal object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
 
     init {
         if (Build.VERSION.SDK_INT >= 19)
-            PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+            PoTokenProviderImpl.poTokenFactory = selectFactory()
     }
 
     private fun getWebContentPoToken(videoId: String): String? {

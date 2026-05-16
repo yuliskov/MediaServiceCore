@@ -1,14 +1,17 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
 import android.os.Build.VERSION
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenProvider
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.PoTokenResult
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenProvider
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
+import com.liskovsoft.youtubeapi.app.potokennp2.generators.PoTokenWebView
+import com.liskovsoft.youtubeapi.app.potokennp2.core.BadWebViewException
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
 import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit

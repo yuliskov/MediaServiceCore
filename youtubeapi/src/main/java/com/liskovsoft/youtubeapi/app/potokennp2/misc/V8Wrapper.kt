@@ -4,7 +4,7 @@ import com.eclipsesource.v8.JavaVoidCallback
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.withLock
-import com.liskovsoft.youtubeapi.app.potokennp2.V8WrapperException
+import com.liskovsoft.youtubeapi.app.potokennp2.core.V8WrapperException
 
 internal class V8Wrapper {
     private val tag = V8Wrapper::class.simpleName

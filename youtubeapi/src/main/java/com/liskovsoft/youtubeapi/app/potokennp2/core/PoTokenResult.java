@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.potokennp2.misc;
+package com.liskovsoft.youtubeapi.app.potokennp2.core;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

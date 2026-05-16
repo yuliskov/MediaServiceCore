@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.potokennp2
+package com.liskovsoft.youtubeapi.app.potokennp2.core
 
 internal class PoTokenException(message: String) : RuntimeException(message)
 

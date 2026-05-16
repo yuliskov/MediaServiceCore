@@ -1,125 +1,125 @@
-package com.liskovsoft.youtubeapi.app.potokennp2
+package com.liskovsoft.youtubeapi.app.potokennp2.generators
 
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.webkit.ConsoleMessage
+import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
+import android.webkit.WebView
 import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
-import com.liskovsoft.sharedutils.rx.RxHelper
-import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.V8Wrapper
+import com.liskovsoft.youtubeapi.app.potokennp2.core.BadWebViewException
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
+import com.liskovsoft.youtubeapi.app.potokennp2.core.buildExceptionForJsError
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.hasThermalServiceBug
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.hasUsbServiceBug
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.parseDescrambledChallengeData
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.parseIntegrityTokenData
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.potLibPrefix
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.stringToU8
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.u8ToBase64
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import io.reactivex.SingleEmitter
-import io.reactivex.disposables.Disposable
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicInteger
 
 @RequiresApi(19)
-internal class PoTokenV8 private constructor(
+internal class PoTokenWebView2 private constructor(
     context: Context,
     private var onInitDone: () -> Unit
 ) : PoTokenGenerator {
-    private val v8Wrapper: V8Wrapper = V8Wrapper()
+    private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
     var initError: Throwable? = null
-    private val v8NpmLibFilenames =
-        listOf(
-            "${potLibPrefix}v8/polyfill.js",
-            //"${potLibPrefix}v8/linkedom.bundle.js",
-            "${potLibPrefix}v8/bootstrap.js",
-            "${potLibPrefix}v8/po_token.js"
-        )
 
     //region Initialization
     init {
-        initPolyfills()
+        val webViewSettings = webView.settings
+        //noinspection SetJavaScriptEnabled we want to use JavaScript!
+        webViewSettings.javaScriptEnabled = true
+        // MOD: fix AbstractMethodError (Android 8/9)
+        //if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
+        //    WebSettingsCompat.setSafeBrowsingEnabled(webViewSettings, false)
+        //}
+        setSafeBrowsingEnabled(webViewSettings, false)
 
-        // load common libs: jsdom, polyfill
-        v8Wrapper.registerJavaMethod(
-            { _, args ->
-                val botguardResponse = args.getString(0)
+        webViewSettings.userAgentString = USER_AGENT
+        webViewSettings.blockNetworkLoads = true // the WebView does not need internet access
 
-                onRunBotguardResult(botguardResponse)
-            },
-            "onRunBotguardResult"
-        )
-        v8Wrapper.registerJavaMethod(
-            { _, args ->
-                val error = args.getString(0)
+        // so that we can run async functions and get back the result
+        webView.addJavascriptInterface(this, JS_INTERFACE)
 
-                onJsInitializationError(error)
-            },
-            "onJsInitializationError"
-        )
-        v8Wrapper.registerJavaMethod(
-            { _, args ->
-                val identifier = args.getString(0)
-                val poTokenU8 = args.getString(1)
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(m: ConsoleMessage): Boolean {
+                if (m.message().contains("Uncaught")) {
+                    // There should not be any uncaught errors while executing the code, because
+                    // everything that can fail is guarded by try-catch. Therefore, this likely
+                    // indicates that there was a syntax error in the code, i.e. the WebView only
+                    // supports a really old version of JS.
 
-                onObtainPoTokenResult(identifier, poTokenU8)
-            },
-            "onObtainPoTokenResult"
-        )
-        v8Wrapper.registerJavaMethod(
-            { _, args ->
-                val identifier = args.getString(0)
-                val error = args.getString(1)
+                    val fmt = "\"${m.message()}\", source: ${m.sourceId()} (${m.lineNumber()})"
+                    Log.e(TAG, "This WebView implementation is broken: $fmt")
 
-                onObtainPoTokenError(identifier, error)
-            },
-            "onObtainPoTokenError"
-        )
+                    // TODO: not needed anymore?
+                    //isBroken = true
+
+                    // Next line cause crashes
+                    onInitializationErrorCloseAndCancel(BadWebViewException(fmt))
+                }
+                return super.onConsoleMessage(m)
+            }
+        }
     }
 
-    private fun initPolyfills() {
-        val disposables = ConcurrentHashMap<Int, Disposable>()
-        val idGen = AtomicInteger(1)
-
-        v8Wrapper.registerJavaMethod({ _, args ->
-            val delay = args.getInteger(0)
-
-            val id = idGen.getAndIncrement()
-
-            val disposable =
-                RxHelper.startInterval({
-                    v8Wrapper.executeVoidScript("""
-                    globalThis.__runInterval($id)
-                """.trimIndent())
-                }, delay)
-
-            disposables[id] = disposable
-
-            id
-        }, "__nativeSetInterval")
-
-        v8Wrapper.registerJavaMethod({ _, args ->
-            val id = args.getInteger(0)
-            disposables.remove(id)?.dispose()
-        }, "__nativeClearInterval")
+    private fun setSafeBrowsingEnabled(settings: WebSettings, enabled: Boolean) {
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
+            try {
+                WebSettingsCompat.setSafeBrowsingEnabled(settings, enabled)
+            } catch (e: AbstractMethodError) { // Sometimes happens on Android 8/9
+                e.printStackTrace()
+                //getAdapter(settings).setSafeBrowsingEnabled(enabled); // try alt approach from WebSettingsCompat
+            }
+        }
     }
 
     /**
-     * Must be called right after instantiating [PoTokenV8] to perform the actual
+     * Must be called right after instantiating [PoTokenWebView2] to perform the actual
      * initialization. This will asynchronously go through all the steps needed to load BotGuard,
      * run it, and obtain an `integrityToken`.
      */
-    private fun loadScriptAndObtainBotguard() {
+    private fun loadHtmlAndObtainBotguard(context: Context) {
         Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
-        v8Wrapper.executeVoidScript(loadScript(v8NpmLibFilenames))
-        downloadAndRunBotguard()
+        val html = context.assets.open("${potLibPrefix}po_token2.html").bufferedReader()
+            .use { it.readText() }
+
+        webView.loadDataWithBaseURL(
+            "https://www.youtube.com",
+            html.replaceFirst(
+                "</script>",
+                // calls downloadAndRunBotguard() when the page has finished loading
+                "\n$JS_INTERFACE.downloadAndRunBotguard()</script>"
+            ),
+            "text/html",
+            "utf-8",
+            null,
+        )
     }
 
     /**
      * Called during initialization by the JavaScript snippet appended to the HTML page content in
-     * [loadScriptAndObtainBotguard] after the WebView content has been loaded.
+     * [loadHtmlAndObtainBotguard] after the WebView content has been loaded.
      */
-    private fun downloadAndRunBotguard() {
+    @JavascriptInterface
+    fun downloadAndRunBotguard() {
         Log.d(TAG, "downloadAndRunBotguard() called")
 
         val client = AppClient.WEB
@@ -144,28 +144,33 @@ internal class PoTokenV8 private constructor(
 
         val parsedChallengeData = parseDescrambledChallengeData(responseBody)
 
-        v8Wrapper.executeVoidScript(
-            """
-                try {
-                    data = $parsedChallengeData;
+        runOnMainThread {
+            webView.evaluateJavascript(
+                """try {
+                    const data = $parsedChallengeData
                     runBotGuard(data).then(function (result) {
-                        this.webPoSignalOutput = result.webPoSignalOutput;
-                        onRunBotguardResult(result.botguardResponse);
+                        webPoSignalOutput = result.webPoSignalOutput
+                        if (!webPoSignalOutput.length)
+                            $JS_INTERFACE.onJsInitializationError("webPoSignalOutput is empty")
+                        else
+                            $JS_INTERFACE.onRunBotguardResult(result.botguardResponse)
                     }, function (error) {
-                        onJsInitializationError(error + "\n" + error.stack);
-                    });
+                        $JS_INTERFACE.onJsInitializationError(error + "\n" + error.stack)
+                    })
                 } catch (error) {
-                    onJsInitializationError(error + "\n" + error.stack);
-                }
-            """
-        )
+                    $JS_INTERFACE.onJsInitializationError(error + "\n" + error.stack)
+                }""",
+                null
+            )
+        }
     }
 
     /**
      * Called during initialization by the JavaScript snippets from either
      * [downloadAndRunBotguard] or [onRunBotguardResult].
      */
-    private fun onJsInitializationError(error: String) {
+    @JavascriptInterface
+    fun onJsInitializationError(error: String) {
         val msg = "onJsInitializationError: $error"
         Log.e(TAG, msg)
         onInitializationErrorCloseAndCancel(buildExceptionForJsError(msg))
@@ -175,7 +180,8 @@ internal class PoTokenV8 private constructor(
      * Called during initialization by the JavaScript snippet from [downloadAndRunBotguard] after
      * obtaining the BotGuard execution output [botguardResponse].
      */
-    private fun onRunBotguardResult(botguardResponse: String) {
+    @JavascriptInterface
+    fun onRunBotguardResult(botguardResponse: String) {
         Log.d(TAG, "botguardResponse: $botguardResponse")
 
         val responseBody = makeBotguardServiceRequest(
@@ -191,18 +197,30 @@ internal class PoTokenV8 private constructor(
         //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
-        v8Wrapper.executeVoidScript(
-            "this.integrityToken = $integrityToken"
-        )
-
-        Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-        onInitDone()
+        runOnMainThread {
+            webView.evaluateJavascript(
+                """try {
+                        const integrityToken = $integrityToken
+                        const getMinter = webPoSignalOutput[0]
+    
+                        mintCallback = getMinter(integrityToken)
+                        delete webPoSignalOutput
+                    } catch (error) {
+                        ${JS_INTERFACE}.onJsInitializationError(error + "\n" + error.stack)
+                    }
+                """
+            ) {
+                Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
+                onInitDone()
+            }
+        }
     }
     //endregion
 
     //region Obtaining poTokens
     override fun generatePoToken(identifier: String): String {
         Log.d(TAG, "generatePoToken() called with identifier $identifier")
+        val latch = CountDownLatch(1)
         lateinit var pot: String
 
         addPoTokenEmitter(identifier) {
@@ -211,23 +229,25 @@ internal class PoTokenV8 private constructor(
 
         val u8Identifier = stringToU8(identifier)
 
-        v8Wrapper.executeVoidScript(
-            """
-                    try {
-                        identifier = "$identifier";
-                        u8Identifier = $u8Identifier;
-                        poTokenU8 = obtainPoToken(webPoSignalOutput, integrityToken, u8Identifier);
-                        poTokenU8String = "";
+        runOnMainThread {
+            webView.evaluateJavascript(
+                """try {
+                        const identifier = "$identifier"
+                        const u8Identifier = $u8Identifier
+                        const poTokenU8 = obtainPoToken(u8Identifier)
+                        var poTokenU8String = ""
                         for (i = 0; i < poTokenU8.length; i++) {
-                            if (i != 0) poTokenU8String += ",";
-                            poTokenU8String += poTokenU8[i];
+                            if (i != 0) poTokenU8String += ","
+                            poTokenU8String += poTokenU8[i]
                         }
-                        onObtainPoTokenResult(identifier, poTokenU8String);
+                        $JS_INTERFACE.onObtainPoTokenResult(identifier, poTokenU8String)
                     } catch (error) {
-                        onObtainPoTokenError(identifier, error + "\n" + error.stack);
-                    }
-                """,
-        )
+                        $JS_INTERFACE.onObtainPoTokenError(identifier, error + "\n" + error.stack)
+                    }""",
+            ) { latch.countDown() }
+        }
+
+        latch.await()
 
         initError?.let { throw it }
 
@@ -238,6 +258,7 @@ internal class PoTokenV8 private constructor(
      * Called by the JavaScript snippet from [generatePoToken] when an error occurs in calling the
      * JavaScript `obtainPoToken()` function.
      */
+    @JavascriptInterface
     fun onObtainPoTokenError(identifier: String, error: String) {
         val msg = "onObtainPoTokenError: identifier=$identifier error=$error"
         Log.e(TAG, msg)
@@ -248,6 +269,7 @@ internal class PoTokenV8 private constructor(
      * Called by the JavaScript snippet from [generatePoToken] with the original identifier and the
      * result of the JavaScript `obtainPoToken()` function.
      */
+    @JavascriptInterface
     fun onObtainPoTokenResult(identifier: String, poTokenU8: String) {
         Log.d(TAG, "Generated poToken (before decoding): identifier=$identifier poTokenU8=$poTokenU8")
         val poToken = u8ToBase64(poTokenU8)
@@ -303,7 +325,6 @@ internal class PoTokenV8 private constructor(
     //endregion
 
     //region Utils
-
     /**
      * Makes a POST request to [url] with the given [data] by setting the correct headers. Calls
      * [onInitializationErrorCloseAndCancel] in case of any network errors and also if the response
@@ -351,28 +372,40 @@ internal class PoTokenV8 private constructor(
     private fun onInitializationErrorCloseAndCancel(error: Throwable) {
         initError = error
         popAllPoTokenEmitters()
-        close()
-        // throw error
-        onInitDone()
+        runOnMainThread {
+            close()
+            // throw error
+            onInitDone()
+        }
     }
 
     /**
-     * Releases all [v8Wrapper] and [disposables] resources.
+     * Releases all [webView] and [disposables] resources.
      */
     @MainThread
     override fun close() {
-        v8Wrapper.shutdownRuntime()
+        webView.clearHistory()
+        // clears RAM cache and disk cache (globally for all WebViews)
+        webView.clearCache(true)
+
+        // ensures that the WebView isn't doing anything when destroying it
+        webView.loadUrl("about:blank")
+
+        webView.onPause()
+        webView.removeAllViews()
+        webView.destroy()
     }
     //endregion
 
     companion object : PoTokenGenerator.Factory {
-        private val TAG = PoTokenV8::class.simpleName
+        private val TAG = PoTokenWebView2::class.simpleName
         // Public API key used by BotGuard, which has been got by looking at BotGuard requests
         private const val GOOGLE_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw" // NOSONAR
         private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"
         private const val USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko)"
         //private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
         //    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.3"
+        private const val JS_INTERFACE = "PoTokenWebView"
         private const val BASE_URL = "https://jnn-pa.googleapis.com"
 
         override fun newPoTokenGenerator(context: Context): PoTokenGenerator {
@@ -386,16 +419,23 @@ internal class PoTokenV8 private constructor(
 
             val latch = CountDownLatch(1)
 
-            val potWv = try {
-                PoTokenV8(context) { latch.countDown() }
-            } catch (e: Throwable) {
-                latch.countDown()
-                throw V8WrapperException("${e::class.simpleName}: ${e.message}")
+            lateinit var potWv: PoTokenWebView2
+            var initError: Throwable? = null
+
+            runOnMainThread {
+                potWv = try {
+                    PoTokenWebView2(context) { latch.countDown() }
+                } catch (e: Throwable) {
+                    initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
+                    latch.countDown()
+                    return@runOnMainThread
+                }
+                potWv.loadHtmlAndObtainBotguard(context)
             }
-            potWv.loadScriptAndObtainBotguard()
 
             latch.await(20, TimeUnit.SECONDS)
 
+            initError?.let { throw it }
             potWv.initError?.let { throw it }
 
             return potWv

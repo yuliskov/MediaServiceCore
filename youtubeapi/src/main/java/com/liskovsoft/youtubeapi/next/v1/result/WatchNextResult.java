@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.next.v1.models.NextVideo;
 import com.liskovsoft.youtubeapi.next.v1.models.Playlist;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoOwner;
+import com.liskovsoft.youtubeapi.next.v1.models.EndScreen;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class WatchNextResult {
     private ItemWrapper mReplayItem;
     @JsonPath("$.transportControls.transportControlsRenderer")
     private ButtonStates mButtonStates;
+    @JsonPath("$.endscreen")
+    private EndScreen mEndScreen;
 
     public List<SuggestedSection> getSuggestedSections() {
         return mSuggestedSections;
@@ -70,5 +73,9 @@ public class WatchNextResult {
 
     public VideoItem getVideoDetails() {
         return mVideoDetails;
+    }
+
+    public EndScreen getEndScreen() {
+        return mEndScreen;
     }
 }

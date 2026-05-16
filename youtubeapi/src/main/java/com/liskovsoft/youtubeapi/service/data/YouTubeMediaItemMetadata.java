@@ -6,11 +6,14 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.EndScreenItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.browse.v1.models.sections.Chip;
 import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import com.liskovsoft.youtubeapi.next.v1.models.ButtonStates;
+import com.liskovsoft.youtubeapi.next.v1.models.EndScreen;
+import com.liskovsoft.youtubeapi.next.v1.models.EndScreenRenderer;
 import com.liskovsoft.youtubeapi.next.v1.models.SuggestedSection;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoMetadata;
 import com.liskovsoft.youtubeapi.next.v1.models.VideoOwner;
@@ -42,6 +45,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private List<MediaGroup> mSuggestions;
     private boolean mIsLive;
     private boolean mIsUpcoming;
+    private List<EndScreenItem> mEndScreenItems;
     private PlaylistInfo mPlaylistInfo;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
@@ -156,6 +160,21 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
             if (buttonStates.getChannelId() != null) {
                 mediaItemMetadata.mChannelId = buttonStates.getChannelId();
+            }
+        }
+
+        // Parse end screen
+        EndScreen endScreen = watchNextResult.getEndScreen();
+        if (endScreen != null && endScreen.getRenderer() != null) {
+            EndScreenRenderer renderer = endScreen.getRenderer();
+            if (renderer.getElements() != null) {
+                mediaItemMetadata.mEndScreenItems = new ArrayList<>();
+                for (EndScreenRenderer.ElementWrapper wrapper : renderer.getElements()) {
+                    YouTubeEndScreenItem item = YouTubeEndScreenItem.from(wrapper.getElement());
+                    if (item != null) {
+                        mediaItemMetadata.mEndScreenItems.add(item);
+                    }
+                }
             }
         }
 
@@ -324,5 +343,10 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     @Override
     public String getBadgeText() {
         return null;
+    }
+
+    @Override
+    public List<EndScreenItem> getEndScreenItems() {
+        return mEndScreenItems;
     }
 }

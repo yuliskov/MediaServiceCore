@@ -146,8 +146,7 @@ internal class PoTokenWebView2 private constructor(
         runOnMainThread {
             webView.evaluateJavascriptLegacy(
                 """try {
-                    const data = $parsedChallengeData
-                    runBotGuard(data).then(function (result) {
+                    runBotGuard($parsedChallengeData).then(function (result) {
                         webPoSignalOutput = result.webPoSignalOutput
                         if (!webPoSignalOutput.length)
                             $JS_INTERFACE.onJsInitializationError("webPoSignalOutput is empty")
@@ -199,12 +198,11 @@ internal class PoTokenWebView2 private constructor(
         runOnMainThread {
             webView.evaluateJavascriptLegacy(
                 """try {
-                        const integrityToken = $integrityToken
-                        const getMinter = webPoSignalOutput[0]
-    
-                        mintCallback = getMinter(integrityToken)
-                        delete webPoSignalOutput
+                        getMinter = webPoSignalOutput[0]
+                        mintCallback = getMinter($integrityToken)
                         ${JS_INTERFACE}.onJsInitializationDone($expirationTimeInSeconds)
+                        webPoSignalOutput = null
+                        getMinter = null
                     } catch (error) {
                         ${JS_INTERFACE}.onJsInitializationError(error + "\n" + error.stack)
                     }""",
@@ -236,23 +234,23 @@ internal class PoTokenWebView2 private constructor(
         runOnMainThread {
             webView.evaluateJavascriptLegacy(
                 """try {
-                        const identifier = "$identifier"
-                        const u8Identifier = $u8Identifier
-                        const poTokenU8 = obtainPoToken(u8Identifier)
-                        var poTokenU8String = ""
+                        poTokenU8 = obtainPoToken($u8Identifier)
+                        poTokenU8String = ""
                         for (i = 0; i < poTokenU8.length; i++) {
                             if (i != 0) poTokenU8String += ","
                             poTokenU8String += poTokenU8[i]
                         }
-                        $JS_INTERFACE.onObtainPoTokenResult(identifier, poTokenU8String)
+                        $JS_INTERFACE.onObtainPoTokenResult("$identifier", poTokenU8String)
+                        poTokenU8 = null
+                        poTokenU8String = null
                     } catch (error) {
-                        $JS_INTERFACE.onObtainPoTokenError(identifier, error + "\n" + error.stack)
+                        $JS_INTERFACE.onObtainPoTokenError("$identifier", error + "\n" + error.stack)
                     }""",
                 null
             )
         }
 
-        latch.await()
+        latch.await(10, TimeUnit.SECONDS)
 
         initError?.let { throw it }
 

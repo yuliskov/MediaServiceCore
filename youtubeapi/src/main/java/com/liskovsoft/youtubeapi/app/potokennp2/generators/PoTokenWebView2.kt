@@ -9,7 +9,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.annotation.MainThread
-import androidx.annotation.RequiresApi
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.liskovsoft.sharedutils.mylogger.Log
@@ -18,6 +17,7 @@ import com.liskovsoft.youtubeapi.app.potokennp2.core.BadWebViewException
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
 import com.liskovsoft.youtubeapi.app.potokennp2.core.buildExceptionForJsError
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.evaluateJavascriptLegacy
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.hasThermalServiceBug
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.hasUsbServiceBug
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.parseDescrambledChallengeData
@@ -30,7 +30,6 @@ import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@RequiresApi(19)
 internal class PoTokenWebView2 private constructor(
     context: Context,
     private var onInitDone: () -> Unit
@@ -145,7 +144,7 @@ internal class PoTokenWebView2 private constructor(
         val parsedChallengeData = parseDescrambledChallengeData(responseBody)
 
         runOnMainThread {
-            webView.evaluateJavascript(
+            webView.evaluateJavascriptLegacy(
                 """try {
                     const data = $parsedChallengeData
                     runBotGuard(data).then(function (result) {
@@ -198,22 +197,26 @@ internal class PoTokenWebView2 private constructor(
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
         runOnMainThread {
-            webView.evaluateJavascript(
+            webView.evaluateJavascriptLegacy(
                 """try {
                         const integrityToken = $integrityToken
                         const getMinter = webPoSignalOutput[0]
     
                         mintCallback = getMinter(integrityToken)
                         delete webPoSignalOutput
+                        ${JS_INTERFACE}.onJsInitializationDone($expirationTimeInSeconds)
                     } catch (error) {
                         ${JS_INTERFACE}.onJsInitializationError(error + "\n" + error.stack)
-                    }
-                """
-            ) {
-                Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-                onInitDone()
-            }
+                    }""",
+                null
+            )
         }
+    }
+
+    @JavascriptInterface
+    fun onJsInitializationDone(expirationTimeInSeconds: Long) {
+        Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
+        onInitDone()
     }
     //endregion
 
@@ -225,12 +228,13 @@ internal class PoTokenWebView2 private constructor(
 
         addPoTokenEmitter(identifier) {
             pot = it
+            latch.countDown()
         }
 
         val u8Identifier = stringToU8(identifier)
 
         runOnMainThread {
-            webView.evaluateJavascript(
+            webView.evaluateJavascriptLegacy(
                 """try {
                         const identifier = "$identifier"
                         const u8Identifier = $u8Identifier
@@ -244,7 +248,8 @@ internal class PoTokenWebView2 private constructor(
                     } catch (error) {
                         $JS_INTERFACE.onObtainPoTokenError(identifier, error + "\n" + error.stack)
                     }""",
-            ) { latch.countDown() }
+                null
+            )
         }
 
         latch.await()

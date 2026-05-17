@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.app
 
-import android.os.Build
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
@@ -22,8 +21,7 @@ internal object PoTokenGate {
     private var mCacheResetTimeMs: Long = -1
 
     init {
-        if (Build.VERSION.SDK_INT >= 19)
-            PoTokenProviderImpl.poTokenFactory = selectFactory()
+        PoTokenProviderImpl.poTokenFactory = selectFactory()
     }
 
     private fun getWebContentPoToken(videoId: String): String? {

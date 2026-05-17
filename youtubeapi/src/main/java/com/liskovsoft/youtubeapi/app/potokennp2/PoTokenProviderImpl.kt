@@ -1,11 +1,9 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
-import android.os.Build.VERSION
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.RequiresApi
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
@@ -25,12 +23,11 @@ internal object PoTokenProviderImpl : PoTokenProvider {
     private var webPoTokenVisitorData: String? = null
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
-
-    @RequiresApi(19)
+    
     var poTokenFactory: PoTokenGenerator.Factory? = null
     
     override fun getWebClientPoToken(videoId: String): PoTokenResult? {
-        if (VERSION.SDK_INT < 19 || !isWebPotSupported) {
+        if (!isWebPotSupported) {
             return null
         }
 
@@ -55,7 +52,6 @@ internal object PoTokenProviderImpl : PoTokenProvider {
      * case the current [webPoTokenGenerator] threw an error last time
      * [PoTokenGenerator.generatePoToken] was called
      */
-    @RequiresApi(19)
     private fun getWebClientPoToken(videoId: String, forceRecreate: Boolean): PoTokenResult {
         // just a helper class since Kotlin does not have builtin support for 4-tuples
         data class Quadruple<T1, T2, T3, T4>(val t1: T1, val t2: T2, val t3: T3, val t4: T4)
@@ -139,7 +135,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
 
     override fun isWebPotExpired() = isWebPotSupported && webPoTokenGenerator?.isExpired() ?: true
 
-    override fun isWebPotSupported() = VERSION.SDK_INT >= 19 && webViewSupported && !webViewBadImpl
+    override fun isWebPotSupported() = webViewSupported && !webViewBadImpl
 
     fun resetCache() {
         webPoTokenVisitorData = null

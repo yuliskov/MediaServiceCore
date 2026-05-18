@@ -37,16 +37,20 @@ internal object CacheService {
         val version: String? = prefs.getString(getVersionKey(key), null)
         val variant: String? = prefs.getString(getVariantKey(key), null)
 
-        return code?.let { CachedData(it, version, variant) }
+        return loadFromCache(code)?.let { CachedData(it, version, variant) }
     }
 
     private fun persistToStorage(section: String, key: String, content: CachedData) {
         val prefs = getSharedPrefs(getPrefsName(section))
 
         prefs.clear() // free some RAM (one value per file)
-        prefs.putString(getCodeKey(key), content.code)
+        //prefs.putString(getCodeKey(key), content.code)
+        val fileName = "${section}/${key.substringBefore(":")}"
+        prefs.putString(getCodeKey(key), fileName)
         prefs.putString(getVersionKey(key), content.version)
         prefs.putString(getVariantKey(key), content.variant)
+
+        persistToCache(fileName, content.code)
     }
 
     private fun getSharedPrefs(name: String): SharedPreferencesBase {

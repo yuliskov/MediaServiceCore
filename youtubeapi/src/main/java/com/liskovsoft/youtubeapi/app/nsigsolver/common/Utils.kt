@@ -1,7 +1,9 @@
 package com.liskovsoft.youtubeapi.app.nsigsolver.common
 
 import com.eclipsesource.v8.V8
+import com.liskovsoft.sharedutils.helpers.FileHelpers
 import com.liskovsoft.youtubeapi.app.AppService
+import java.io.File
 
 internal class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)
 
@@ -26,6 +28,24 @@ internal fun loadScript(filenames: List<String>, errorMsg: String? = null): Stri
             append(loadScript(filename, errorMsg))
         }
     }
+}
+
+internal fun loadFromCache(fileName: String?): String? {
+    if (fileName == null || fileName.length > 50)
+        return null
+
+    val cache = FileHelpers.getCacheDir(AppService.instance().context)
+
+    return FileHelpers.getFileContents(File(cache, fileName))
+}
+
+internal fun persistToCache(fileName: String, content: String) {
+    if (fileName.length > 50)
+        return
+
+    val cache = FileHelpers.getCacheDir(AppService.instance().context)
+
+    FileHelpers.stringToFile(content, File(cache, fileName))
 }
 
 internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg

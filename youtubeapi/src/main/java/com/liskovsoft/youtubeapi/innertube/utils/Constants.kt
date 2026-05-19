@@ -40,13 +40,7 @@ internal object CLIENTS {
     //    OS_VERSION = "17.5.1.21F90"
     //)
 
-    val WEB = CLIENT(
-        NAME = "WEB",
-        VERSION = "2.20260206.01.00",
-        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
-        API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco",
-        SUGG_EXP_ID = "ytzpb5_e2,ytpo.bo.lqp.elu=1,ytpo.bo.lqp.ecsc=1,ytpo.bo.lqp.mcsc=3,ytpo.bo.lqp.mec=1,ytpo.bo.lqp.rw=0.8,ytpo.bo.lqp.fw=0.2,ytpo.bo.lqp.szp=1,ytpo.bo.lqp.mz=3,ytpo.bo.lqp.al=en_us,ytpo.bo.lqp.zrm=1,ytpo.bo.lqp.er=1,ytpo.bo.ro.erl=1,ytpo.bo.ro.mlus=3,ytpo.bo.ro.erls=3,ytpo.bo.qfo.mlus=3,ytzprp.ppp.e=1,ytzprp.ppp.st=772,ytzprp.ppp.p=5"
+    
     )
 
     val MWEB = CLIENT(
@@ -55,78 +49,37 @@ internal object CLIENTS {
         API_VERSION = "v1"
     )
 
-    val WEB_KIDS = CLIENT(
-        NAME = "WEB_KIDS",
-        VERSION = "2.20260205.00.00"
+    
     )
 
-    val YTMUSIC = CLIENT(
-        NAME = "WEB_REMIX",
-        VERSION = "1.20250219.01.00"
+    
     )
 
-    val ANDROID = CLIENT(
-        NAME = "ANDROID",
-        VERSION = "21.03.36",
-        OS_NAME = "Android",
-        SDK_VERSION = 36,
-        OS_VERSION = "16",
-        USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
+    
     )
 
-    // "Made for kids" videos aren't available with this client
-    // Using a clientVersion>1.65 may return SABR streams only
-    val ANDROID_VR = CLIENT(
-        NAME = "ANDROID_VR",
-        VERSION = "1.65.10",
-        SDK_VERSION = 32,
-        OS_NAME = "Android",
-        OS_VERSION = "12",
-        DEVICE_MAKE = "Oculus",
-        DEVICE_MODEL = "Quest 3",
-        USER_AGENT = "com.google.android.apps.youtube.vr.oculus/1.65.10 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
+    
     )
 
-    val YTSTUDIO_ANDROID = CLIENT(
-        NAME = "ANDROID_CREATOR",
-        VERSION = "22.43.101"
+    
     )
 
-    val YTMUSIC_ANDROID = CLIENT(
-        NAME = "ANDROID_MUSIC",
-        VERSION = "5.34.51"
+    
     )
 
-    val TV = CLIENT(
-        NAME = "TVHTML5",
-        VERSION = "7.20260311.12.00",
-        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version"
+    
     )
 
-    val TV_SIMPLY = CLIENT(
-        NAME = "TVHTML5_SIMPLY",
-        VERSION = "1.0"
+    
     )
 
-    val TV_EMBEDDED = CLIENT(
-        NAME = "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
-        VERSION = "2.0"
+    
     )
 
-    val WEB_EMBEDDED = CLIENT(
-        NAME = "WEB_EMBEDDED_PLAYER",
-        VERSION = "1.20260206.01.00",
-        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
-        API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco"
+    
     )
 
-    val WEB_CREATOR = CLIENT(
-        NAME = "WEB_CREATOR",
-        VERSION = "1.20241203.01.00",
-        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
-        API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco"
+    
     )
 
     val ALl = mapOf(

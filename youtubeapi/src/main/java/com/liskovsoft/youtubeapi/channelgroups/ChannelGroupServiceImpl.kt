@@ -229,7 +229,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     private fun restoreData() {
-        val data = MediaServicePrefs.getData(CHANNEL_GROUP_DATA)
+        val data = MediaServicePrefs.getProfileData(CHANNEL_GROUP_DATA)
         restoreData(data)
     }
 
@@ -245,7 +245,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     private fun persistDataReal() {
-        MediaServicePrefs.setData(CHANNEL_GROUP_DATA, Helpers.mergeData(mChannelGroups))
+        MediaServicePrefs.setProfileData(CHANNEL_GROUP_DATA, Helpers.mergeData(mChannelGroups))
     }
 
     private fun findOrInitGroup(id: String, title: String): ItemGroup {

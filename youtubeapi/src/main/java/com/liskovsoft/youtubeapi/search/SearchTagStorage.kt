@@ -50,7 +50,7 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
     private fun restoreData() {
         _tags.clear()
 
-        val data = MediaServicePrefs.getData(SEARCH_TAG_DATA)
+        val data = MediaServicePrefs.getProfileData(SEARCH_TAG_DATA)
 
         val split = Helpers.splitData(data)
 
@@ -60,6 +60,6 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
     }
 
     private fun persistData() {
-        MediaServicePrefs.setData(SEARCH_TAG_DATA, Helpers.mergeData(_tags))
+        MediaServicePrefs.setProfileData(SEARCH_TAG_DATA, Helpers.mergeData(_tags))
     }
 }

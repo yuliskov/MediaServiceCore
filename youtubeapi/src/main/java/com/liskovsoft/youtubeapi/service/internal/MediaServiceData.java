@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.service.internal;
 
 import android.content.Context;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.service.internal
 
+import android.annotation.SuppressLint
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account
 import com.liskovsoft.sharedutils.misc.WeakHashSet
@@ -9,6 +10,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 
 private const val PREF_NAME = "yt_service_prefs"
 
+@SuppressLint("StaticFieldLeak")
 internal object MediaServicePrefs: SharedPreferencesBase(AppService.instance().context, PREF_NAME), OnAccountChange {
     private const val ANONYMOUS_PROFILE_NAME = "anonymous"
     private val mListeners = WeakHashSet<ProfileChangeListener>()
@@ -41,13 +43,23 @@ internal object MediaServicePrefs: SharedPreferencesBase(AppService.instance().c
         mListeners.add(listener)
     }
 
-    fun getData(key: String): String? {
-        return getString(getProfileDataKey(key), null)
+    //fun getData(key: String): String? {
+    //    return getString(getProfileDataKey(key), null)
+    //}
+    //
+    //fun setData(key: String, data: String?) {
+    //    putString(getProfileDataKey(key), data)
+    //}
+
+    fun getProfileData(key: String): String? {
+        return getData(getProfileDataKey(key))
     }
 
-    fun setData(key: String, data: String?) {
-        putString(getProfileDataKey(key), data)
+    fun setProfileData(key: String, data: String?) {
+        setData(getProfileDataKey(key), data)
     }
 
     private fun getProfileDataKey(dataKey: String) = "${mProfileName}_$dataKey"
+
+    override fun getPrefsDir(): String = PREF_NAME
 }

@@ -84,7 +84,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     private fun restoreData() {
-        val data = MediaServicePrefs.getData(PLAYLIST_GROUP_DATA)
+        val data = MediaServicePrefs.getProfileData(PLAYLIST_GROUP_DATA)
         restoreData(data)
     }
 
@@ -104,6 +104,6 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
     }
 
     private fun persistDataReal() {
-        MediaServicePrefs.setData(PLAYLIST_GROUP_DATA, Helpers.mergeData(mPlaylists))
+        MediaServicePrefs.setProfileData(PLAYLIST_GROUP_DATA, Helpers.mergeData(mPlaylists))
     }
 }

@@ -67,7 +67,7 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
     }
 
     private fun restoreData() {
-        val data = MediaServicePrefs.getData(NOTIFICATION_DATA) ?: return
+        val data = MediaServicePrefs.getProfileData(NOTIFICATION_DATA) ?: return
 
         val split = Helpers.splitData(data)
 
@@ -79,6 +79,6 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
             notifications.add(ChannelGroupServiceImpl.createChannel(it, null, null))
         }
 
-        MediaServicePrefs.setData(NOTIFICATION_DATA, null)
+        MediaServicePrefs.setProfileData(NOTIFICATION_DATA, null)
     }
 }

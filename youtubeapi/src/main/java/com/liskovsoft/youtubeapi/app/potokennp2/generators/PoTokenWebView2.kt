@@ -437,10 +437,11 @@ internal class PoTokenWebView2 private constructor(
                 potWv.loadHtmlAndObtainBotguard(context)
             }
 
-            latch.await(20, TimeUnit.SECONDS)
+            val completed = latch.await(20, TimeUnit.SECONDS)
 
             initError?.let { throw it }
             potWv.initError?.let { throw it }
+            if (!completed) throw PoTokenException("${TAG}: failed to initialize within the specified time")
 
             return potWv
         }

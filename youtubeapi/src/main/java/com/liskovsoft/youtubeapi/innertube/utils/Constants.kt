@@ -20,15 +20,15 @@ internal object URLS {
 }
 
 internal object CLIENTS {
-    val IOS = CLIENT(
-        NAME = "iOS",
-        VERSION = "20.11.6",
-        USER_AGENT = "com.google.ios.youtube/20.11.6 (iPhone10,4; U; CPU iOS 16_7_7 like Mac OS X)",
-        DEVICE_MAKE = "Apple",
-        DEVICE_MODEL = "iPhone10,4",
-        OS_NAME = "iOS",
-        OS_VERSION = "16.7.7.20H330"
-    )
+    //val IOS = CLIENT(
+    //    NAME = "iOS",
+    //    VERSION = "20.11.6",
+    //    USER_AGENT = "com.google.ios.youtube/20.11.6 (iPhone10,4; U; CPU iOS 16_7_7 like Mac OS X)",
+    //    DEVICE_MAKE = "Apple",
+    //    DEVICE_MODEL = "iPhone10,4",
+    //    OS_NAME = "iOS",
+    //    OS_VERSION = "16.7.7.20H330"
+    //)
 
     //val IOS = CLIENT(
     //    NAME = "iOS",
@@ -40,9 +40,19 @@ internal object CLIENTS {
     //    OS_VERSION = "17.5.1.21F90"
     //)
 
+    val IOS = CLIENT(
+        NAME = "iOS",
+        VERSION = "21.26.4",
+        USER_AGENT = "com.google.ios.youtube/21.26.4 (iPhone16,2; U; CPU iOS 18_3_2 like Mac OS X;)",
+        DEVICE_MAKE = "Apple",
+        DEVICE_MODEL = "iPhone16,2",
+        OS_NAME = "iPhone",
+        OS_VERSION = "18.3.2.22D82"
+    )
+
     val WEB = CLIENT(
         NAME = "WEB",
-        VERSION = "2.20260206.01.00",
+        VERSION = "2.20260708.00.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco",
@@ -51,8 +61,10 @@ internal object CLIENTS {
 
     val MWEB = CLIENT(
         NAME = "MWEB",
-        VERSION = "2.20260205.04.01",
-        API_VERSION = "v1"
+        VERSION = "2.20260708.05.00",
+        API_VERSION = "v1",
+        // mweb previously did not require PO Token with this UA
+        USER_AGENT = "Mozilla/5.0 (iPad; CPU OS 16_7_10 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1,gzip(gfe)"
     )
 
     val WEB_KIDS = CLIENT(
@@ -62,16 +74,25 @@ internal object CLIENTS {
 
     val YTMUSIC = CLIENT(
         NAME = "WEB_REMIX",
-        VERSION = "1.20250219.01.00"
+        VERSION = "1.20260707.12.00"
     )
+
+    //val ANDROID = CLIENT(
+    //    NAME = "ANDROID",
+    //    VERSION = "21.03.36",
+    //    OS_NAME = "Android",
+    //    SDK_VERSION = 36,
+    //    OS_VERSION = "16",
+    //    USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
+    //)
 
     val ANDROID = CLIENT(
         NAME = "ANDROID",
-        VERSION = "21.03.36",
+        VERSION = "21.26.364",
         OS_NAME = "Android",
-        SDK_VERSION = 36,
-        OS_VERSION = "16",
-        USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
+        SDK_VERSION = 30,
+        OS_VERSION = "11",
+        USER_AGENT = "com.google.android.youtube/21.26.364 (Linux; U; Android 11) gzip"
     )
 
     // "Made for kids" videos aren't available with this client
@@ -99,7 +120,14 @@ internal object CLIENTS {
 
     val TV = CLIENT(
         NAME = "TVHTML5",
-        VERSION = "7.20260311.12.00",
+        VERSION = "7.20260707.07.00",
+        // See: https://github.com/youtube/cobalt/blob/main/cobalt/browser/user_agent/user_agent_platform_info.cc#L506
+        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)"
+    )
+
+    val TV_DOWNGRADED = CLIENT(
+        NAME = "TVHTML5",
+        VERSION = "5.20260707",
         USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version"
     )
 
@@ -115,7 +143,7 @@ internal object CLIENTS {
 
     val WEB_EMBEDDED = CLIENT(
         NAME = "WEB_EMBEDDED_PLAYER",
-        VERSION = "1.20260206.01.00",
+        VERSION = "2.20260708.00.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco"
@@ -140,6 +168,7 @@ internal object CLIENTS {
         "YTSTUDIO_ANDROID" to YTSTUDIO_ANDROID,
         "YTMUSIC_ANDROID" to YTMUSIC_ANDROID,
         "TV" to TV,
+        "TV_DOWNGRADED" to TV_DOWNGRADED,
         "TV_SIMPLY" to TV_SIMPLY,
         "TV_EMBEDDED" to TV_EMBEDDED,
         "WEB_EMBEDDED" to WEB_EMBEDDED,

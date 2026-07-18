@@ -40,9 +40,10 @@ internal enum class AppClient(
     // Can't use authorization
     TV_SIMPLY(CLIENTS.TV_SIMPLY.NAME, CLIENTS.TV_SIMPLY.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_SIMPLY.NAME],
         userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
+    // NOTE: TV KIDS not exists anymore. It has been merged with TV client!
     TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", null, userAgent = DefaultHeaders.USER_AGENT_TV,
         referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE_TV),
-    TV_DOWNGRADED(TV, clientVersion = "5.20251105", userAgent = DefaultHeaders.USER_AGENT_COBALT_DOWNGRADED),
+    TV_DOWNGRADED(TV, clientVersion = CLIENTS.TV_DOWNGRADED.VERSION, userAgent = CLIENTS.TV_DOWNGRADED.USER_AGENT),
     // 8AEB2AMB - web client premium formats?
     WEB(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
         userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com"),
@@ -57,7 +58,7 @@ internal enum class AppClient(
     WEB_SAFARI(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
         userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = "https://www.youtube.com"),
     MWEB(CLIENTS.MWEB.NAME, CLIENTS.MWEB.VERSION, CLIENT_NAME_IDS[CLIENTS.MWEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_MOBILE_WEB, referer = "https://m.youtube.com"),
+        userAgent = CLIENTS.MWEB.USER_AGENT!!, referer = "https://m.youtube.com"),
     ANDROID(CLIENTS.ANDROID.NAME, CLIENTS.ANDROID.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID.NAME],
         userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
         postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),

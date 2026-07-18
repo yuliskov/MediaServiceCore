@@ -28,17 +28,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.WEB_EMBED, // Restricted (18+) videos
+            AppClient.TV_DOWNGRADED,
             AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
-            AppClient.ANDROID_VR, // doesn't require pot and cipher (often hangs?)
             AppClient.WEB, // Fix video clip blocked in current location
             AppClient.WEB_SAFARI,
             AppClient.IOS,
             AppClient.GEO, // Fix video clip blocked in current location
             AppClient.MWEB, // single audio language
             AppClient.TV_LEGACY,
-            AppClient.TV_DOWNGRADED,
             AppClient.TV_EMBED, // single audio language
+            AppClient.ANDROID_VR, // doesn't require pot and cipher (often hangs?)
             AppClient.TV_SIMPLY, // hangs?
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on Cronet!)
     };

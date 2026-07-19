@@ -27,6 +27,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
+            AppClient.VISIONOS,
             AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.TV_DOWNGRADED,
             AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
@@ -236,8 +237,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(AppClient.IOS, videoId, clickTrackingParams);
-        return getVideoInfoHls(AppClient.IOS, videoInfoQuery);
+        AppClient client = AppClient.VISIONOS;
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
+        return getVideoInfoHls(client, videoInfoQuery);
     }
 
     private VideoInfoHls getVideoInfoHls(AppClient client, String videoInfoQuery) {

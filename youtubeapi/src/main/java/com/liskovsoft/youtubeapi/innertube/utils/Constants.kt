@@ -50,13 +50,24 @@ internal object CLIENTS {
         OS_VERSION = "18.3.2.22D82"
     )
 
+    val VISIONOS = CLIENT(
+        NAME = "VISIONOS",
+        VERSION = "1.02",
+        USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15",
+        DEVICE_MAKE = "Apple",
+        DEVICE_MODEL = "RealityDevice17,1",
+        OS_NAME = "visionOS",
+        OS_VERSION = "26.5.23O471"
+    )
+
     val WEB = CLIENT(
         NAME = "WEB",
         VERSION = "2.20260708.00.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco",
-        SUGG_EXP_ID = "ytzpb5_e2,ytpo.bo.lqp.elu=1,ytpo.bo.lqp.ecsc=1,ytpo.bo.lqp.mcsc=3,ytpo.bo.lqp.mec=1,ytpo.bo.lqp.rw=0.8,ytpo.bo.lqp.fw=0.2,ytpo.bo.lqp.szp=1,ytpo.bo.lqp.mz=3,ytpo.bo.lqp.al=en_us,ytpo.bo.lqp.zrm=1,ytpo.bo.lqp.er=1,ytpo.bo.ro.erl=1,ytpo.bo.ro.mlus=3,ytpo.bo.ro.erls=3,ytpo.bo.qfo.mlus=3,ytzprp.ppp.e=1,ytzprp.ppp.st=772,ytzprp.ppp.p=5"
+        SUGG_EXP_ID = "ytzpb5_e2,ytpo.bo.lqp.elu=1,ytpo.bo.lqp.ecsc=1,ytpo.bo.lqp.mcsc=3,ytpo.bo.lqp.mec=1,ytpo.bo.lqp.rw=0.8,ytpo.bo.lqp.fw=0.2,ytpo.bo.lqp.szp=1,ytpo.bo.lqp.mz=3,ytpo.bo.lqp.al=en_us,ytpo.bo.lqp.zrm=1,ytpo.bo.lqp.er=1,ytpo.bo.ro.erl=1,ytpo.bo.ro.mlus=3,ytpo.bo.ro.erls=3,ytpo.bo.qfo.mlus=3,ytzprp.ppp.e=1,ytzprp.ppp.st=772,ytzprp.ppp.p=5",
+        REFERER = "https://www.youtube.com"
     )
 
     val MWEB = CLIENT(
@@ -64,7 +75,8 @@ internal object CLIENTS {
         VERSION = "2.20260708.05.00",
         API_VERSION = "v1",
         // mweb previously did not require PO Token with this UA
-        USER_AGENT = "Mozilla/5.0 (iPad; CPU OS 16_7_10 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1,gzip(gfe)"
+        USER_AGENT = "Mozilla/5.0 (iPad; CPU OS 16_7_10 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1,gzip(gfe)",
+        REFERER = "https://m.youtube.com"
     )
 
     val WEB_KIDS = CLIENT(
@@ -74,7 +86,8 @@ internal object CLIENTS {
 
     val YTMUSIC = CLIENT(
         NAME = "WEB_REMIX",
-        VERSION = "1.20260707.12.00"
+        VERSION = "1.20260707.12.00",
+        REFERER = "https://music.youtube.com"
     )
 
     //val ANDROID = CLIENT(
@@ -122,23 +135,34 @@ internal object CLIENTS {
         NAME = "TVHTML5",
         VERSION = "7.20260707.07.00",
         // See: https://github.com/youtube/cobalt/blob/main/cobalt/browser/user_agent/user_agent_platform_info.cc#L506
-        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)"
+        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)",
+        REFERER = "https://www.youtube.com/tv"
     )
 
     val TV_DOWNGRADED = CLIENT(
         NAME = "TVHTML5",
         VERSION = "5.20260707",
-        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version"
+        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version",
+        REFERER = "https://www.youtube.com/tv"
     )
 
     val TV_SIMPLY = CLIENT(
         NAME = "TVHTML5_SIMPLY",
-        VERSION = "1.0"
+        VERSION = "1.0",
+        REFERER = "https://www.youtube.com/tv"
     )
 
     val TV_EMBEDDED = CLIENT(
         NAME = "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
-        VERSION = "2.0"
+        VERSION = "2.0",
+        REFERER = "https://www.youtube.com/tv"
+    )
+
+    // NOTE: TV KIDS not exists anymore. It has been merged with TV client!
+    val TV_KIDS = CLIENT(
+        NAME = "TVHTML5_KIDS",
+        VERSION = "3.20231113.03.00",
+        REFERER = "https://www.youtube.com/tv/kids"
     )
 
     val WEB_EMBEDDED = CLIENT(
@@ -146,7 +170,8 @@ internal object CLIENTS {
         VERSION = "2.20260708.00.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco"
+        STATIC_VISITOR_ID = "6zpwvWUNAco",
+        REFERER = "https://www.youtube.com"
     )
 
     val WEB_CREATOR = CLIENT(
@@ -154,11 +179,13 @@ internal object CLIENTS {
         VERSION = "1.20241203.01.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco"
+        STATIC_VISITOR_ID = "6zpwvWUNAco",
+        REFERER = "https://studio.youtube.com"
     )
 
     val ALl = mapOf(
         "IOS" to IOS,
+        "VISIONOS" to VISIONOS,
         "WEB" to WEB,
         "MWEB" to MWEB,
         "WEB_KIDS" to WEB_KIDS,
@@ -171,6 +198,7 @@ internal object CLIENTS {
         "TV_DOWNGRADED" to TV_DOWNGRADED,
         "TV_SIMPLY" to TV_SIMPLY,
         "TV_EMBEDDED" to TV_EMBEDDED,
+        "TV_KIDS" to TV_KIDS,
         "WEB_EMBEDDED" to WEB_EMBEDDED,
         "WEB_CREATOR" to WEB_CREATOR
     )
@@ -188,7 +216,8 @@ internal data class CLIENT(
     val API_KEY: String? = null,
     val API_VERSION: String = "v1",
     val STATIC_VISITOR_ID: String? = null,
-    val SUGG_EXP_ID: String? = null
+    val SUGG_EXP_ID: String? = null,
+    val REFERER: String? = null
 )
 
 /**
@@ -196,6 +225,7 @@ internal data class CLIENT(
  */
 internal val CLIENT_NAME_IDS: Map<String, String> = mapOf(
     "iOS" to "5",
+    "VISIONOS" to "101",
     "WEB" to "1",
     "MWEB" to "2",
     "WEB_KIDS" to "76",
@@ -226,6 +256,7 @@ internal val INNERTUBE_HEADERS_BASE: Map<String, String> = mapOf(
 
 internal val SUPPORTED_CLIENTS = listOf(
     "IOS",
+    "VISIONOS",
     "WEB",
     "MWEB",
     "YTKIDS",
@@ -235,8 +266,10 @@ internal val SUPPORTED_CLIENTS = listOf(
     "YTSTUDIO_ANDROID",
     "YTMUSIC_ANDROID",
     "TV",
+    "TV_DOWNGRADED",
     "TV_SIMPLY",
     "TV_EMBEDDED",
+    "TV_KIDS",
     "WEB_EMBEDDED",
     "WEB_CREATOR"
 )

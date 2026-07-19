@@ -33,32 +33,32 @@ internal enum class AppClient(
 ): MediaItemFormatInfo.ClientInfo {
     // Doesn't support 8AEB2AMB param if X-Goog-Pageid is set!
     TV(CLIENTS.TV.NAME, CLIENTS.TV.VERSION, CLIENT_NAME_IDS[CLIENTS.TV.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_TV_LEGACY),
     TV_EMBED(CLIENTS.TV_EMBEDDED.NAME, CLIENTS.TV_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_EMBEDDED.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv", clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV_EMBEDDED.REFERER, clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),
     // Can't use authorization
     TV_SIMPLY(CLIENTS.TV_SIMPLY.NAME, CLIENTS.TV_SIMPLY.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_SIMPLY.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = "https://www.youtube.com/tv", postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV_SIMPLY.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     // NOTE: TV KIDS not exists anymore. It has been merged with TV client!
-    TV_KIDS("TVHTML5_KIDS", "3.20231113.03.00", null, userAgent = DefaultHeaders.USER_AGENT_TV,
-        referer = "https://www.youtube.com/tv/kids", postDataBrowse = POST_DATA_BROWSE_TV),
+    TV_KIDS(CLIENTS.TV_KIDS.NAME, CLIENTS.TV_KIDS.VERSION, null, userAgent = DefaultHeaders.USER_AGENT_TV,
+        referer = CLIENTS.TV_KIDS.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     TV_DOWNGRADED(TV, clientVersion = CLIENTS.TV_DOWNGRADED.VERSION, userAgent = CLIENTS.TV_DOWNGRADED.USER_AGENT),
     // 8AEB2AMB - web client premium formats?
     WEB(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB.REFERER),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBED(CLIENTS.WEB_EMBEDDED.NAME, CLIENTS.WEB_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_EMBEDDED.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://www.youtube.com"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB_EMBEDDED.REFERER),
     // Request contains an invalid argument.
     WEB_CREATOR(CLIENTS.WEB_CREATOR.NAME, CLIENTS.WEB_CREATOR.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_CREATOR.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://studio.youtube.com"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB_CREATOR.REFERER),
     WEB_MUSIC(CLIENTS.YTMUSIC.NAME, CLIENTS.YTMUSIC.VERSION, CLIENT_NAME_IDS[CLIENTS.YTMUSIC.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = "https://music.youtube.com"),
+        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.YTMUSIC.REFERER),
     WEB_SAFARI(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = "https://www.youtube.com"),
+        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = CLIENTS.WEB.REFERER),
     MWEB(CLIENTS.MWEB.NAME, CLIENTS.MWEB.VERSION, CLIENT_NAME_IDS[CLIENTS.MWEB.NAME],
-        userAgent = CLIENTS.MWEB.USER_AGENT!!, referer = "https://m.youtube.com"),
+        userAgent = CLIENTS.MWEB.USER_AGENT!!, referer = CLIENTS.MWEB.REFERER),
     ANDROID(CLIENTS.ANDROID.NAME, CLIENTS.ANDROID.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID.NAME],
         userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
         postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
@@ -70,6 +70,8 @@ internal enum class AppClient(
                 + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID_VR.DEVICE_MODEL, CLIENTS.ANDROID_VR.DEVICE_MAKE)),
     IOS(CLIENTS.IOS.NAME, CLIENTS.IOS.VERSION, CLIENT_NAME_IDS[CLIENTS.IOS.NAME],
         userAgent = CLIENTS.IOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.IOS.DEVICE_MODEL, CLIENTS.IOS.OS_VERSION)),
+    VISIONOS(CLIENTS.VISIONOS.NAME, CLIENTS.VISIONOS.VERSION, CLIENT_NAME_IDS[CLIENTS.VISIONOS.NAME],
+        userAgent = CLIENTS.VISIONOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.VISIONOS.DEVICE_MODEL, CLIENTS.VISIONOS.OS_VERSION)),
     INITIAL(WEB),
     GEO(WEB);
 

@@ -18,12 +18,14 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoReel;
 
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
+    private static final AppClient IOS_CLIENT = AppClient.VISIONOS;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
@@ -69,6 +71,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         //initInfoTypeIfNeeded();
+        reorderTypeListIfNeeded();
 
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
 
@@ -92,6 +95,18 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return result;
     }
 
+    private void reorderTypeListIfNeeded() {
+        if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
+            if (VIDEO_INFO_TYPE_LIST[0] != IOS_CLIENT) {
+                Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(IOS_CLIENT), 0);
+            }
+        } else {
+            if (VIDEO_INFO_TYPE_LIST[0] == IOS_CLIENT) {
+                Helpers.move(VIDEO_INFO_TYPE_LIST, 0, 2);
+            }
+        }
+    }
+
     public VideoInfo getAuthVideoInfo(String videoId, String clickTrackingParams) {
         if (videoId == null) {
             return null;
@@ -106,7 +121,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private VideoInfo firstPlayable(String videoId, String clickTrackingParams) {
         VideoInfo result = firstInfoWith(videoId, clickTrackingParams, info -> !info.isUnplayable());
 
-        return result != null ? result : firstInfoWith(videoId, clickTrackingParams, info -> true);
+        return result != null ? result : firstInfoWith(videoId, clickTrackingParams, info -> info.getRegularFormats() != null);
     }
 
     private interface InfoTester {
@@ -237,9 +252,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
-        AppClient client = AppClient.VISIONOS;
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(client, videoId, clickTrackingParams);
-        return getVideoInfoHls(client, videoInfoQuery);
+        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(IOS_CLIENT, videoId, clickTrackingParams);
+        return getVideoInfoHls(IOS_CLIENT, videoInfoQuery);
     }
 
     private VideoInfoHls getVideoInfoHls(AppClient client, String videoInfoQuery) {

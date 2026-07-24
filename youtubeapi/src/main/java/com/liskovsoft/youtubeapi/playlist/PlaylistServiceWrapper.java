@@ -73,9 +73,9 @@ public class PlaylistServiceWrapper extends PlaylistService {
     }
 
     private List<PlaylistInfo> getCachedPlaylistInfo(List<PlaylistInfo> playlistsInfos, String videoId) {
+        mCachedPlaylistInfos = playlistsInfos;
         List<ItemGroup> playlistGroups = PlaylistGroupServiceImpl.getPlaylistGroups();
         if (!playlistGroups.isEmpty()) {
-            mCachedPlaylistInfos = playlistsInfos;
             List<PlaylistInfo> result = new ArrayList<>();
 
             if (playlistsInfos != null && !playlistsInfos.isEmpty()) {
@@ -139,7 +139,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
         ItemGroup playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId);
 
         if (playlistGroup == null) {
-            String title = findTitle(playlistId);
+            String title = findCashedTitle(playlistId);
 
             if (title == null) {
                 return;
@@ -237,7 +237,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
                 || Helpers.equals(item.getPlaylistId(), itemGroup.getId()));
     }
 
-    private String findTitle(String playlistId) {
+    private String findCashedTitle(String playlistId) {
         PlaylistInfo first = Helpers.findFirst(mCachedPlaylistInfos, item -> Helpers.equals(item.getPlaylistId(), playlistId));
 
         return first != null ? first.getTitle() : null;

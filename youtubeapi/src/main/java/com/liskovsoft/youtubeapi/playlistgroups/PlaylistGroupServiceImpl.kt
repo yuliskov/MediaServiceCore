@@ -83,6 +83,14 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
         return mPlaylists.firstOrNull { it.id == id }
     }
 
+    @JvmStatic
+    fun findPlaylistGroupByTitle(title: String?): ItemGroup? {
+        if (title == null)
+            return null
+
+        return mPlaylists.firstOrNull { it.title == title }
+    }
+
     private fun restoreData() {
         val data = MediaServicePrefs.getProfileData(PLAYLIST_GROUP_DATA)
         restoreData(data)

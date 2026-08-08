@@ -164,8 +164,6 @@ internal class PoTokenWebView4 private constructor(
      * ```
      */
     private fun getChallengeFromHomepage(): String? {
-        Log.d(TAG, "Using challenge from the homepage (patched)")
-
         val responseBody = makeBotguardServiceRequest(
             "https://www.youtube.com",
             null,
@@ -175,6 +173,18 @@ internal class PoTokenWebView4 private constructor(
                 "user-agent" to USER_AGENT,
             )
         ) ?: return null
+
+        //const ytcfgMatch = pageHtml.match(/ytcfg\.set\(({.+?})\);/s);
+        //if (ytcfgMatch) {
+        //    const ytObj = { config_: JSON.parse(ytcfgMatch[1] as string) };
+        //    const g: any = globalThis as any;
+        //    g.yt = ytObj; // BotGuard reads yt.config_.EVENT_ID
+        //    if (g.window) g.window.yt = ytObj;
+        //} else {
+        //    this.logger.warn(
+        //        "homepage-challenge: no ytcfg found (EVENT_ID missing)",
+        //    );
+        //}
 
         val attPattern = Pattern.compile("""window\.ytAtN\(\s*(\{[\s\S]*?\})\s*\)""")
         val attMatcher = attPattern.matcher(responseBody)
@@ -195,6 +205,8 @@ internal class PoTokenWebView4 private constructor(
             return null
         }
 
+        Log.d(TAG, "Using challenge from the homepage (patched)")
+
         return parseDescrambledChallengeData(rawChallengeData)
     }
 
@@ -202,8 +214,6 @@ internal class PoTokenWebView4 private constructor(
      * Using challenge from /att/get (legacy fallback)
      */
     private fun getLegacyChallengeData(): String? {
-        Log.d(TAG, "Using challenge from /att/get (legacy fallback)")
-
         val client = AppClient.WEB
 
         val responseBody = makeBotguardServiceRequest(
@@ -223,6 +233,8 @@ internal class PoTokenWebView4 private constructor(
                 "Content-Type" to "application/json"
             )
         ) ?: return null
+
+        Log.d(TAG, "Using challenge from /att/get (legacy fallback)")
 
         return parseDescrambledChallengeData(responseBody)
     }

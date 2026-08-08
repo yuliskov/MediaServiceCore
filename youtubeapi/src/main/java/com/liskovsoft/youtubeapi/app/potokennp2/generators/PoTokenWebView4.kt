@@ -130,6 +130,9 @@ internal class PoTokenWebView4 private constructor(
     fun downloadAndRunBotguard() {
         Log.d(TAG, "downloadAndRunBotguard() called")
 
+        // PATCH(unstem 2026-08): always mint from the homepage's
+        // (ytcfg, ytAtN) pair — plugin-passed challenges lack their
+        // page's ytcfg/EVENT_ID and /att/get tokens are rejected.
         val parsedChallengeData = getChallengeFromHomepage() ?: getLegacyChallengeData() ?: return
 
         runOnMainThread {
@@ -161,6 +164,8 @@ internal class PoTokenWebView4 private constructor(
      * ```
      */
     private fun getChallengeFromHomepage(): String? {
+        Log.d(TAG, "Using challenge from the homepage (patched)")
+
         val responseBody = makeBotguardServiceRequest(
             "https://www.youtube.com",
             null,
@@ -181,13 +186,24 @@ internal class PoTokenWebView4 private constructor(
 
         val attData = parseLooseJSON(attMatcher.group(1)!!)
 
-        return attData["R"]?.let { parseDescrambledChallengeData(it) }
+        val rawChallengeData = attData["R"]
+
+        if (rawChallengeData == null || !rawChallengeData.contains("bgChallenge")
+                || !rawChallengeData.contains("program")
+                || !rawChallengeData.contains("interpreterUrl")) {
+            Log.w(TAG, "homepage-challenge: ytAtN payload missing bgChallenge")
+            return null
+        }
+
+        return parseDescrambledChallengeData(rawChallengeData)
     }
 
     /**
      * Using challenge from /att/get (legacy fallback)
      */
     private fun getLegacyChallengeData(): String? {
+        Log.d(TAG, "Using challenge from /att/get (legacy fallback)")
+
         val client = AppClient.WEB
 
         val responseBody = makeBotguardServiceRequest(

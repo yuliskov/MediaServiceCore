@@ -26,12 +26,14 @@ import retrofit2.Call;
 public class VideoInfoService extends VideoInfoServiceBase {
     private static final String TAG = VideoInfoService.class.getSimpleName();
     private static final AppClient IOS_CLIENT = AppClient.VISIONOS;
+    private static final AppClient TV_CLIENT = AppClient.TV_DOWNGRADED;
+    private static final AppClient WEB_CLIENT = AppClient.WEB_EMBED;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            AppClient.VISIONOS,
-            AppClient.WEB_EMBED, // Restricted (18+) videos
-            AppClient.TV_DOWNGRADED,
+            AppClient.VISIONOS, // no url formats
+            AppClient.WEB_EMBED, // Restricted (18+) videos, no url formats
+            AppClient.TV_DOWNGRADED, // contains url formats
             AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.WEB, // Fix video clip blocked in current location
@@ -101,8 +103,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(IOS_CLIENT), 0);
             }
         } else {
-            if (VIDEO_INFO_TYPE_LIST[0] == IOS_CLIENT) {
-                Helpers.move(VIDEO_INFO_TYPE_LIST, 0, 2);
+            if (VIDEO_INFO_TYPE_LIST[0] != WEB_CLIENT) {
+                Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(WEB_CLIENT), 0);
             }
         }
     }

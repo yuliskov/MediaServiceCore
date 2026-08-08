@@ -7,8 +7,6 @@ import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 import okio.ByteString.Companion.decodeBase64
 import okio.ByteString.Companion.toByteString
-import org.json.JSONArray
-import org.json.JSONObject
 import java.util.regex.Pattern
 
 /**
@@ -128,7 +126,7 @@ internal fun parseLooseJSON(looseJson: String): Map<String, String> {
             val innerStr = singleQuoteMatcher.group(1)!!
                 .replace("""\'""", "'")
 
-            append(JSONObject.quote(innerStr))
+            append(quoteJson(innerStr))
 
             lastEnd = singleQuoteMatcher.end()
         }
@@ -141,25 +139,47 @@ internal fun parseLooseJSON(looseJson: String): Map<String, String> {
         .matcher(jsonStr)
         .replaceAll("""$1"$2":""")
 
-    val parsedData = JSONObject(jsonStr)
+    val parsedData = JsonParser.`object`().from(jsonStr)
     val result = LinkedHashMap<String, String>()
 
-    val keys = parsedData.keys()
-
-    while (keys.hasNext()) {
-        val key = keys.next()
-        val value = parsedData.get(key)
-
+    for ((key, value) in parsedData) {
         result[key] = when (value) {
-            is JSONObject -> value.toString()
-            is JSONArray -> value.toString()
-            JSONObject.NULL -> "null"
+            null -> "null"
             else -> value.toString()
         }
     }
 
     return result
 }
+
+private fun quoteJson(value: String): String =
+    buildString {
+        append('"')
+        for (char in value) {
+            when (char) {
+                '\\' -> append("\\\\")
+                '"' -> append("\\\"")
+                '\b' -> append("\\b")
+                '\u000C' -> append("\\f")
+                '\n' -> append("\\n")
+                '\r' -> append("\\r")
+                '\t' -> append("\\t")
+                else -> {
+                    if (char.code < 0x20) {
+                        // Securely escape raw control chars to match RFC spec
+                        //append("\\u%04x".format(char.code))
+                        append("\\u00")
+                        // Fast hex conversion for values 0-31 without allocations
+                        append("0123456789abcdef"[char.code ushr 4])
+                        append("0123456789abcdef"[char.code and 0x0F])
+                    } else {
+                        append(char)
+                    }
+                }
+            }
+        }
+        append('"')
+    }
 
 /**
  * Parses the raw integrity token data obtained from the GenerateIT endpoint to a JavaScript

@@ -10,8 +10,11 @@ import com.liskovsoft.youtubeapi.innertube.initialresponse.InitialResponseServic
 
 internal object InnertubeService {
     @JvmStatic
-    fun createFormatInfo(videoId: String): MediaItemFormatInfo? = createFormatInfoV2(videoId)
+    fun createFormatInfo(videoId: String): MediaItemFormatInfo? = createFormatInfoV1(videoId)
 
+    /**
+     * LuanRT variation
+     */
     internal fun createFormatInfoV1(videoId: String): MediaItemFormatInfo? {
         val session = Session.create() ?: return null
         val httpClient = HTTPClient(session)
@@ -28,6 +31,9 @@ internal object InnertubeService {
         return formatInfo
     }
 
+    /**
+     * yt-dlp variation
+     */
     internal fun createFormatInfoV2(videoId: String): MediaItemFormatInfo? {
         val session = Session.create() ?: return null
 

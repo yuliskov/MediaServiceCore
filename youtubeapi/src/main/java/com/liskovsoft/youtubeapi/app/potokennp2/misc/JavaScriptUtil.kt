@@ -7,6 +7,9 @@ import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 import okio.ByteString.Companion.decodeBase64
 import okio.ByteString.Companion.toByteString
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.regex.Pattern
 
 /**
  * Parses the raw challenge data obtained from the Create endpoint and returns an object that can be
@@ -83,6 +86,79 @@ internal fun parseDescrambledChallengeData(rawChallengeData: String): String {
             .value("clientExperimentsStateBlob", clientExperimentsStateBlob)
             .done()
     )
+}
+
+/**
+ * ```text
+ * --- PATCH(unstem 2026-08): homepage challenge + ytcfg (BgUtils#44) ------
+ * parseLooseJSON vendored from LuanRT/BgUtils v4.0.3 (MIT). The ytAtN
+ * payload is JS-object-literal-ish, not strict JSON.
+ * ```
+ */
+internal fun parseLooseJSON(looseJson: String): Map<String, String> {
+    val hexPattern = Pattern.compile("""\\x([0-9A-Fa-f]{2})""")
+    val hexMatcher = hexPattern.matcher(looseJson)
+
+    val sanitizedString = buildString {
+        var lastEnd = 0
+
+        while (hexMatcher.find()) {
+            append(looseJson, lastEnd, hexMatcher.start())
+            append(hexMatcher.group(1)!!.toInt(16).toChar())
+            lastEnd = hexMatcher.end()
+        }
+
+        append(looseJson, lastEnd, looseJson.length)
+    }
+
+    var jsonStr = Pattern
+        .compile(""",\s*([\]}])""")
+        .matcher(sanitizedString)
+        .replaceAll("$1")
+
+    val singleQuotePattern = Pattern.compile("""'((?:[^'\\]|\\[\s\S])*)'""")
+    val singleQuoteMatcher = singleQuotePattern.matcher(jsonStr)
+
+    jsonStr = buildString {
+        var lastEnd = 0
+
+        while (singleQuoteMatcher.find()) {
+            append(jsonStr, lastEnd, singleQuoteMatcher.start())
+
+            val innerStr = singleQuoteMatcher.group(1)!!
+                .replace("""\'""", "'")
+
+            append(JSONObject.quote(innerStr))
+
+            lastEnd = singleQuoteMatcher.end()
+        }
+
+        append(jsonStr, lastEnd, jsonStr.length)
+    }
+
+    jsonStr = Pattern
+        .compile("""([{,]\s*)([a-zA-Z0-9_$]+)\s*:""")
+        .matcher(jsonStr)
+        .replaceAll("""$1"$2":""")
+
+    val parsedData = JSONObject(jsonStr)
+    val result = LinkedHashMap<String, String>()
+
+    val keys = parsedData.keys()
+
+    while (keys.hasNext()) {
+        val key = keys.next()
+        val value = parsedData.get(key)
+
+        result[key] = when (value) {
+            is JSONObject -> value.toString()
+            is JSONArray -> value.toString()
+            JSONObject.NULL -> "null"
+            else -> value.toString()
+        }
+    }
+
+    return result
 }
 
 /**

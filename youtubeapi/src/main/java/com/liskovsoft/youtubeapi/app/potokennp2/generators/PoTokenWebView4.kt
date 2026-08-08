@@ -32,6 +32,11 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
+/**
+ * Just PoTokenWebView3 with these changes
+ *
+ * https://github.com/Brainicism/bgutil-ytdlp-pot-provider/pull/243/changes#diff-ae8671417d8830c4f2646084a58407d95de22263e76e86104e1a92aa58424ae7R173-R181
+ */
 internal class PoTokenWebView4 private constructor(
     context: Context,
     private var onInitDone: () -> Unit

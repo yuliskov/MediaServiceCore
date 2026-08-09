@@ -29,11 +29,13 @@ class MediaItemFormatInfoImplTest {
     @Test
     fun responseWithoutSabrEndpointRetainsDashFallback() {
         val response = parsePlayerResponse("player/web/2025.11.10_player_regular.json")
-        val dashFormat = response.streamingData?.adaptiveFormats?.first()?.copy(
-            url = "https://example.com/videoplayback",
-            cipher = null,
-            signatureCipher = null
-        )
+        val dashFormat = response.streamingData?.adaptiveFormats
+            ?.first { it.mimeType?.startsWith("video/") == true }
+            ?.copy(
+                url = "https://example.com/videoplayback",
+                cipher = null,
+                signatureCipher = null
+            )
         val withoutSabrEndpoint = response.copy(
             streamingData = response.streamingData?.copy(
                 adaptiveFormats = listOfNotNull(dashFormat),
@@ -41,6 +43,34 @@ class MediaItemFormatInfoImplTest {
             )
         )
         val formatInfo = MediaItemFormatInfoImpl(withoutSabrEndpoint)
+
+        assertFalse(formatInfo.containsSabrFormats())
+        assertTrue(formatInfo.containsDashFormats())
+        assertEquals(MediaFormat.FORMAT_TYPE_DASH, formatInfo.getAdaptiveFormats()?.first()?.getFormatType())
+    }
+
+    @Test
+    fun responseWithoutUstreamerConfigRetainsDashFallback() {
+        val response = parsePlayerResponse("player/web/2025.11.10_player_regular.json")
+        val dashFormat = response.streamingData?.adaptiveFormats
+            ?.first { it.mimeType?.startsWith("video/") == true }
+            ?.copy(
+                url = "https://example.com/videoplayback",
+                cipher = null,
+                signatureCipher = null
+            )
+        val withoutUstreamerConfig = response.copy(
+            streamingData = response.streamingData?.copy(
+                adaptiveFormats = listOfNotNull(dashFormat),
+                serverAbrStreamingUrl = "https://example.com/sabr"
+            ),
+            playerConfig = response.playerConfig?.copy(
+                mediaCommonConfig = response.playerConfig.mediaCommonConfig?.copy(
+                    mediaUstreamerRequestConfig = null
+                )
+            )
+        )
+        val formatInfo = MediaItemFormatInfoImpl(withoutUstreamerConfig)
 
         assertFalse(formatInfo.containsSabrFormats())
         assertTrue(formatInfo.containsDashFormats())

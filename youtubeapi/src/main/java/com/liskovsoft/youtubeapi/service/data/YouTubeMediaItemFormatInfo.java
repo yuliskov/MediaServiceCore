@@ -228,12 +228,16 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean containsSabrFormats() {
-        return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_SABR;
+        // A player response may contain legacy adaptive URLs alongside its SABR endpoint.
+        // Prefer the endpoint when the response includes all data needed to use it.
+        return mContainsAdaptiveVideoFormats && mServerAbrStreamingUrl != null
+                && mVideoPlaybackUstreamerConfig != null;
     }
 
     @Override
     public boolean containsDashFormats() {
-        return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_DASH;
+        return mContainsAdaptiveVideoFormats && !containsSabrFormats()
+                && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_DASH;
     }
     
     private boolean containsAdaptiveVideoFormats() {

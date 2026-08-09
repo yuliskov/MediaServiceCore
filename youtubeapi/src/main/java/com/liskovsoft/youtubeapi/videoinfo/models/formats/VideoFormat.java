@@ -47,7 +47,10 @@ public class VideoFormat {
     private int mAverageBitrate;
     @JsonPath("$.projectionType")
     private String mProjectionType;
+    @JsonPath("$.xtags")
     private String mXtags;
+    @JsonPath("$.audioTrack.id")
+    private String mAudioTrackId;
     @JsonPath("$.width")
     private int mWidth = -1;
     @JsonPath("$.height")
@@ -143,6 +146,10 @@ public class VideoFormat {
 
     public void setXtags(String xtags) {
         mXtags = xtags;
+    }
+
+    public String getAudioTrackId() {
+        return mAudioTrackId;
     }
 
     public int getWidth() {

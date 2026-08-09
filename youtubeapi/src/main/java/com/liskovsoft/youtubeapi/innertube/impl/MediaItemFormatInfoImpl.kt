@@ -166,9 +166,15 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
 
     override fun containsMedia() = containsDashUrl() || containsHlsUrl() || containsAdaptiveVideoFormats() || containsUrlFormats()
 
-    override fun containsSabrFormats() = containsAdaptiveVideoFormats() && getAdaptiveFormats()?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_SABR
+    // A player response may contain legacy adaptive URLs alongside its SABR endpoint.
+    // Prefer the endpoint when the response includes all data needed to use it.
+    override fun containsSabrFormats() = containsAdaptiveVideoFormats()
+            && getServerAbrStreamingUrl() != null
+            && getVideoPlaybackUstreamerConfig() != null
 
-    override fun containsDashFormats() = containsAdaptiveVideoFormats() && getAdaptiveFormats()?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_DASH
+    override fun containsDashFormats() = containsAdaptiveVideoFormats()
+            && !containsSabrFormats()
+            && getAdaptiveFormats()?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_DASH
 
     private fun containsAdaptiveVideoFormats() = _containsAdaptiveVideoFormats
 

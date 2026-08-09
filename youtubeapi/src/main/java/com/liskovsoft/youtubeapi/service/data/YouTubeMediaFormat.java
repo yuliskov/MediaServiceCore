@@ -21,6 +21,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     private String mBitrate;
     private String mProjectionType;
     private String mXtags;
+    private String mAudioTrackId;
     private int mWidth;
     private int mHeight;
     private String mInit;
@@ -90,6 +91,8 @@ public class YouTubeMediaFormat implements MediaFormat {
         mediaFormat.mSegmentUrlList = format.getSegmentUrlList();
         mediaFormat.mGlobalSegmentList = format.getGlobalSegmentList();
         mediaFormat.mLanguage = format.getLanguage();
+        mediaFormat.mXtags = format.getXtags();
+        mediaFormat.mAudioTrackId = format.getAudioTrackId();
         mediaFormat.mTargetDurationSec = format.getTargetDurationSec();
         mediaFormat.mLmt = format.getLastModified();
         mediaFormat.mQualityLabel = format.getQualityLabel();
@@ -157,6 +160,11 @@ public class YouTubeMediaFormat implements MediaFormat {
     @Override
     public String getXtags() {
         return mXtags;
+    }
+
+    @Override
+    public String getAudioTrackId() {
+        return mAudioTrackId;
     }
 
     @Override

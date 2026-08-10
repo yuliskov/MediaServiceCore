@@ -26,6 +26,8 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
     private val _clen by lazy { streamingFormat.contentLength }
     private val _bitrate by lazy { streamingFormat.bitrate?.takeIf { it != 0 }?.toString() ?: "" }
     private val _projectionType by lazy { streamingFormat.projectionType }
+    private val _xtags by lazy { streamingFormat.xtags }
+    private val _audioTrackId by lazy { streamingFormat.audioTrack?.id }
     private val _width by lazy { streamingFormat.width ?: -1 }
     private val _height by lazy { streamingFormat.height ?: -1 }
     private val _initRange by lazy { streamingFormat.getInitRange() }
@@ -58,7 +60,9 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
 
     override fun getProjectionType() = _projectionType
 
-    override fun getXtags(): String? = null
+    override fun getXtags() = _xtags
+
+    override fun getAudioTrackId() = _audioTrackId
 
     override fun getWidth() = _width
 

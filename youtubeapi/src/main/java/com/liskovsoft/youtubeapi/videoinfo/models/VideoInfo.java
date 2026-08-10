@@ -199,7 +199,7 @@ public class VideoInfo {
     }
 
     public boolean isUnplayable() {
-        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted() || isAdaptiveFormatsBroken();
+        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted();
     }
 
     /**
@@ -251,7 +251,7 @@ public class VideoInfo {
     }
 
     public boolean containsAdaptiveVideoInfo() {
-        if (getAdaptiveFormats() == null || isAdaptiveFormatsBroken()) {
+        if (getAdaptiveFormats() == null) {
             return false;
         }
 

@@ -5,7 +5,9 @@ import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +20,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 public class YouTubeUrlListBuilderTest {
     private ServiceManager mService;
+    private MediaServiceData mMediaServiceData;
 
     @Before
     public void setUp() throws Exception {
@@ -27,6 +30,14 @@ public class YouTubeUrlListBuilderTest {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().getContext());
         mService = YouTubeServiceManager.instance();
         mService.invalidateCache();
+        mMediaServiceData = MediaServiceData.instance();
+        mMediaServiceData.setFormatEnabled(MediaServiceData.FORMATS_ALL, false);
+        mMediaServiceData.setFormatEnabled(MediaServiceData.FORMATS_URL, true);
+    }
+
+    @After
+    public void tearDown() {
+        mMediaServiceData.setFormatEnabled(MediaServiceData.FORMATS_ADAPTIVE, true);
     }
 
     @Test

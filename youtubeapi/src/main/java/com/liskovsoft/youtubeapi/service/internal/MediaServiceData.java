@@ -27,9 +27,9 @@ import kotlin.Triple;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
-    public static final int FORMATS_NONE = 0;
+    private static final int FORMATS_NONE = 0;
     public static final int FORMATS_ALL = Integer.MAX_VALUE;
-    public static final int FORMATS_DASH = 1;
+    public static final int FORMATS_ADAPTIVE = 1;
     public static final int FORMATS_URL = 1 << 1;
     public static final int FORMATS_EXTENDED_HLS = 1 << 2;
     public static final int CONTENT_NONE = 0;
@@ -183,7 +183,7 @@ public class MediaServiceData {
 
     public boolean isFormatEnabled(int formats) {
         if (mEnabledFormats == FORMATS_NONE) {
-            setFormatEnabled(FORMATS_DASH | FORMATS_URL, true);
+            setFormatEnabled(FORMATS_ADAPTIVE, true);
         }
 
         return (mEnabledFormats & formats) == formats;
@@ -303,7 +303,7 @@ public class MediaServiceData {
         mVideoInfoType = Helpers.parseInt(split, 4, -1);
         //mSkipAuth = Helpers.parseBoolean(split, 5);
         // entries here moved to the cache
-        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
+        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_ADAPTIVE);
         // null
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);

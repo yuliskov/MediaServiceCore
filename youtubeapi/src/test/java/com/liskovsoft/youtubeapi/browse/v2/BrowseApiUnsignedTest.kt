@@ -140,7 +140,7 @@ class BrowseApiUnsignedTest {
         val sports = getSports()
 
         // recommended
-        val nextPageKey = sports?.getShelves()?.getOrNull(1)?.getContinuationToken()
+        val nextPageKey = sports?.getShelves()?.lastOrNull()?.getContinuationToken()
 
         checkContinuationTV(nextPageKey, true)
     }

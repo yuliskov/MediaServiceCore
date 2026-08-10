@@ -31,7 +31,7 @@ public class TestHelpersBase {
     public static final String VIDEO_ID_AGE_RESTRICTED = "8X2kIfS6fb8";
 
     // Lofi Girl
-    public static final String VIDEO_ID_LIVE = "EWrX250Zhko";
+    public static final String VIDEO_ID_LIVE = "X4VbdwhkE10";
 
     // American Pie
     public static final String VIDEO_ID_MUSIC_2 = "X4RDB-mMDJg";

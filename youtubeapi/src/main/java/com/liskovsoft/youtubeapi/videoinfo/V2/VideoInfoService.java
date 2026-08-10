@@ -99,13 +99,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private void reorderTypeListIfNeeded() {
         if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
-            if (VIDEO_INFO_TYPE_LIST[0] != IOS_CLIENT) {
-                Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(IOS_CLIENT), 0);
-            }
-        } else {
-            if (VIDEO_INFO_TYPE_LIST[0] != WEB_CLIENT) {
-                Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(WEB_CLIENT), 0);
-            }
+            moveFirst(IOS_CLIENT);
+        } else if (getData().isFormatEnabled(MediaServiceData.FORMATS_ADAPTIVE)) {
+            moveFirst(WEB_CLIENT);
+        } else if (getData().isFormatEnabled(MediaServiceData.FORMATS_URL)) {
+            moveFirst(TV_CLIENT);
+        }
+    }
+
+    private void moveFirst(AppClient client) {
+        if (VIDEO_INFO_TYPE_LIST[0] != client) {
+            Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(client), 0);
         }
     }
 

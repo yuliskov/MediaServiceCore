@@ -5,6 +5,7 @@ import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
 import com.liskovsoft.youtubeapi.search.v1.models.SearchResult;
 import com.liskovsoft.youtubeapi.search.v1.models.SearchResultContinuation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
+@Ignore("Search v1 not used")
 @RunWith(RobolectricTestRunner.class)
 public class SearchServiceSignedTest {
     private SearchService mService;

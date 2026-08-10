@@ -231,6 +231,7 @@ class BrowseApiSignedTest {
         BrowseTestHelper.checkMediaItem(mediaGroup.mediaItems?.getOrNull(0)!!)
     }
 
+    @Ignore("This row absent on some accounts")
     @Test
     fun testLikedMusicNotEmpty() {
         val likedMusic = getLikedMusic()

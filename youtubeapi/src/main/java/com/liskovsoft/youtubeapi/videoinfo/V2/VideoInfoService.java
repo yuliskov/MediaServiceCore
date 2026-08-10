@@ -31,9 +31,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            AppClient.VISIONOS, // no url formats
             AppClient.WEB_EMBED, // Restricted (18+) videos, no url formats
             AppClient.TV_DOWNGRADED, // contains url formats
+            AppClient.VISIONOS, // no url formats
             AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.WEB, // Fix video clip blocked in current location

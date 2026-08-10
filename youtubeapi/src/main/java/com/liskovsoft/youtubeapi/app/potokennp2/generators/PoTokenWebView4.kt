@@ -133,11 +133,15 @@ internal class PoTokenWebView4 private constructor(
         // PATCH(unstem 2026-08): always mint from the homepage's
         // (ytcfg, ytAtN) pair — plugin-passed challenges lack their
         // page's ytcfg/EVENT_ID and /att/get tokens are rejected.
-        val parsedChallengeData = getChallengeFromHomepage() ?: getLegacyChallengeData() ?: return
+        // BotGuard reads yt.config_.EVENT_ID
+        // NOTE: with ytcfg pot becomes smaller: 120 chars instead of regular 124
+        val (parsedChallengeData, ytcfg) = getChallengeFromHomepage() ?: getLegacyChallengeData() ?: return
 
         runOnMainThread {
             webView.evaluateJavascriptLegacy(
                 """try {
+                    if ($ytcfg)
+                        yt = { config_: $ytcfg }
                     runBotGuard($parsedChallengeData).then(function (result) {
                         webPoSignalOutput = result.webPoSignalOutput
                         if (!webPoSignalOutput.length)
@@ -163,8 +167,8 @@ internal class PoTokenWebView4 private constructor(
      * sees EVENT_ID. Returns undefined on any failure (caller falls back).
      * ```
      */
-    private fun getChallengeFromHomepage(): String? {
-        val responseBody = makeBotguardServiceRequest(
+    private fun getChallengeFromHomepage(): Pair<String, String?>? {
+        val pageHtml = makeBotguardServiceRequest(
             "https://www.youtube.com",
             null,
             mapOf(
@@ -174,20 +178,26 @@ internal class PoTokenWebView4 private constructor(
             )
         ) ?: return null
 
-        //const ytcfgMatch = pageHtml.match(/ytcfg\.set\(({.+?})\);/s);
-        //if (ytcfgMatch) {
-        //    const ytObj = { config_: JSON.parse(ytcfgMatch[1] as string) };
-        //    const g: any = globalThis as any;
-        //    g.yt = ytObj; // BotGuard reads yt.config_.EVENT_ID
-        //    if (g.window) g.window.yt = ytObj;
-        //} else {
-        //    this.logger.warn(
-        //        "homepage-challenge: no ytcfg found (EVENT_ID missing)",
-        //    );
-        //}
+        val ytcfgPattern = Pattern.compile("""ytcfg\.set\((\{.+?\})\);""", Pattern.DOTALL)
+        val ytcfgMatcher = ytcfgPattern.matcher(pageHtml)
+        val ytcfg: String?
+
+        if (ytcfgMatcher.find()) {
+            // NOTE: with ytcfg pot becomes smaller: 120 chars instead of regular 124
+            ytcfg = ytcfgMatcher.group(1)!!
+
+            // Usage example in node.js:
+            // const ytObj = { config_: JSON.parse(ytcfgMatch[1] as string) };
+            // const g: any = globalThis as any;
+            // g.yt = ytObj; // BotGuard reads yt.config_.EVENT_ID
+            // if (g.window) g.window.yt = ytObj;
+        } else {
+            ytcfg = null
+            Log.w(TAG, "homepage-challenge: no ytcfg found (EVENT_ID missing)")
+        }
 
         val attPattern = Pattern.compile("""window\.ytAtN\(\s*(\{[\s\S]*?\})\s*\)""")
-        val attMatcher = attPattern.matcher(responseBody)
+        val attMatcher = attPattern.matcher(pageHtml)
 
         if (!attMatcher.find()) {
             Log.w(TAG, "homepage-challenge: no ytAtN challenge in page")
@@ -207,13 +217,13 @@ internal class PoTokenWebView4 private constructor(
 
         Log.d(TAG, "Using challenge from the homepage (patched)")
 
-        return parseDescrambledChallengeData(rawChallengeData)
+        return Pair(parseDescrambledChallengeData(rawChallengeData), ytcfg)
     }
 
     /**
      * Using challenge from /att/get (legacy fallback)
      */
-    private fun getLegacyChallengeData(): String? {
+    private fun getLegacyChallengeData(): Pair<String, String?>? {
         val client = AppClient.WEB
 
         val responseBody = makeBotguardServiceRequest(
@@ -236,7 +246,7 @@ internal class PoTokenWebView4 private constructor(
 
         Log.d(TAG, "Using challenge from /att/get (legacy fallback)")
 
-        return parseDescrambledChallengeData(responseBody)
+        return Pair(parseDescrambledChallengeData(responseBody), null)
     }
 
     /**

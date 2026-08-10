@@ -60,7 +60,8 @@ class PoTokenProviderImplTest {
     fun testWebPoTokenIsNotEmpty4() {
         PoTokenProviderImpl.poTokenFactory = PoTokenWebView4
 
-        assertWebPoTokenLength(124) // SABR pot length
+        // NOTE: the new pot is shorter
+        assertWebPoTokenLength(120) // SABR pot length
     }
 
     @Test

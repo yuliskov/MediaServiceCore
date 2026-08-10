@@ -109,10 +109,9 @@ internal fun parseLooseJSON(looseJson: String): Map<String, String> {
         append(looseJson, lastEnd, looseJson.length)
     }
 
-    var jsonStr = Pattern
-        .compile(""",\s*([\]}])""")
-        .matcher(sanitizedString)
-        .replaceAll("$1")
+    val trailingCommaPattern = Pattern.compile(""",\s*([\]}])""")
+    val trailingCommaMatcher = trailingCommaPattern.matcher(sanitizedString)
+    var jsonStr = trailingCommaMatcher.replaceAll("$1")
 
     val singleQuotePattern = Pattern.compile("""'((?:[^'\\]|\\[\s\S])*)'""")
     val singleQuoteMatcher = singleQuotePattern.matcher(jsonStr)
@@ -134,10 +133,9 @@ internal fun parseLooseJSON(looseJson: String): Map<String, String> {
         append(jsonStr, lastEnd, jsonStr.length)
     }
 
-    jsonStr = Pattern
-        .compile("""([{,]\s*)([a-zA-Z0-9_$]+)\s*:""")
-        .matcher(jsonStr)
-        .replaceAll("""$1"$2":""")
+    val unquotedKeyPattern = Pattern.compile("""([{,]\s*)([a-zA-Z0-9_$]+)\s*:""")
+    val unquotedKeyMatcher = unquotedKeyPattern.matcher(jsonStr)
+    jsonStr = unquotedKeyMatcher.replaceAll("""$1"$2":""")
 
     val parsedData = JsonParser.`object`().from(jsonStr)
     val result = LinkedHashMap<String, String>()

@@ -100,7 +100,9 @@ internal class QueryBuilder(private val client: AppClient) {
             json.lineSequence().forEach { append(it.trim()) }
         }
 
-        return result
+        // fix JSON validation
+        //return result
+        return result.replace(",}", "}")
     }
 
     private fun createClientChunk(): String {

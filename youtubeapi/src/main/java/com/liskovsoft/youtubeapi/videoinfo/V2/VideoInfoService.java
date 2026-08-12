@@ -31,9 +31,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            AppClient.WEB_EMBED, // Restricted (18+) videos, no url formats
-            AppClient.TV_DOWNGRADED, // contains url formats
+            AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.VISIONOS, // no url formats
+            AppClient.TV_DOWNGRADED, // probably unplayable (weird potoken format?)
             AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
             AppClient.WEB, // Fix video clip blocked in current location
@@ -100,10 +100,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private void reorderTypeListIfNeeded() {
         if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
             moveFirst(IOS_CLIENT);
-        } else if (getData().isFormatEnabled(MediaServiceData.FORMATS_ADAPTIVE)) {
+        } else {
             moveFirst(WEB_CLIENT);
-        } else if (getData().isFormatEnabled(MediaServiceData.FORMATS_URL)) {
-            moveFirst(TV_CLIENT);
         }
     }
 

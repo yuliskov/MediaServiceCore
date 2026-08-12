@@ -275,7 +275,7 @@ public class VideoFormat {
 
         String urlHolderLang = getUrlHolder().getLanguage();
 
-        return urlHolderLang != null ? urlHolderLang : getSabrLanguage();
+        return urlHolderLang != null ? urlHolderLang : YouTubeHelper.getSabrLanguage(mAudioTrackId, mIsDefaultAudio, mIsAutoDubbed);
     }
 
     public String getApproxDurationMs() {
@@ -324,17 +324,5 @@ public class VideoFormat {
      */
     public boolean isBroken() {
         return Helpers.allNulls(mUrl, mCipher, mSignatureCipher);
-    }
-
-    private String getSabrLanguage() {
-        if (mAudioTrackId == null) {
-            return null;
-        }
-
-        String lang = mAudioTrackId.split("\\.")[0];
-        // original, descriptive, dubbed, dubbed-auto, secondary
-        String acont = mIsDefaultAudio ? "original" : mIsAutoDubbed ? "dubbed-auto" : null;
-
-        return acont != null ? String.format("%s (%s)", YouTubeHelper.exoNameFix(lang), acont) : lang;
     }
 }

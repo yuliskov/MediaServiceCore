@@ -295,4 +295,17 @@ public final class YouTubeHelper {
     public static String generateCPNParameter() {
         return RandomStringFromAlphabetGenerator.generate(16);
     }
+
+    @Nullable
+    public static String getSabrLanguage(String audioTrackId, boolean isDefaultAudio, boolean isAutoDubbed) {
+        if (audioTrackId == null) {
+            return null;
+        }
+
+        String lang = audioTrackId.split("\\.")[0];
+        // original, descriptive, dubbed, dubbed-auto, secondary
+        String acont = isDefaultAudio ? "original" : isAutoDubbed ? "dubbed-auto" : null;
+
+        return acont != null ? String.format("%s (%s)", exoNameFix(lang), acont) : lang;
+    }
 }

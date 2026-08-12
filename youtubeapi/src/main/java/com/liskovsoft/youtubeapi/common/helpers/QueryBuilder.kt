@@ -72,7 +72,7 @@ internal class QueryBuilder(private val client: AppClient) {
 
             // Web and tv timestamps now differs. TV one should have 001 suffix
             // E.g. web: 20522, tv: 20522001
-            // NOTE: wrong timestamp format yield 'page should be reloaded' error (this happens on tv at least)
+            // NOTE: wrong timestamp format yield 'page should be reloaded' error (this happens on the tv variant at least)
             // NOTE: we assumes that the timestamp value taken from the web variant
             if (signatureTimestamp == null || signatureTimestamp == -1)
                 signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp.let {

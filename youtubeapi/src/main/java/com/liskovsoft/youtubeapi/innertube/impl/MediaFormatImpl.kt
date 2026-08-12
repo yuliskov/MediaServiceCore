@@ -29,8 +29,8 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
     private val _projectionType by lazy { streamingFormat.projectionType }
     private val _xtags by lazy { streamingFormat.xtags }
     private val _audioTrackId by lazy { streamingFormat.audioTrack?.id }
-    private val _isDefaultAudio by lazy { streamingFormat.audioTrack?.audioIsDefault }
-    private val _isAutoDubbed by lazy { streamingFormat.audioTrack?.isAutoDubbed }
+    private val _isDefaultAudio by lazy { streamingFormat.audioTrack?.audioIsDefault ?: false }
+    private val _isAutoDubbed by lazy { streamingFormat.audioTrack?.isAutoDubbed ?: false }
     private val _width by lazy { streamingFormat.width ?: -1 }
     private val _height by lazy { streamingFormat.height ?: -1 }
     private val _initRange by lazy { streamingFormat.getInitRange() }
@@ -89,7 +89,7 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
 
     override fun getOtfTemplateUrl() = urlHolder.getOtfTemplateUrl()
 
-    override fun getLanguage() = urlHolder.getLanguage() ?: getSabrLanguage()
+    override fun getLanguage() = urlHolder.getLanguage() ?: YouTubeHelper.getSabrLanguage(_audioTrackId, _isDefaultAudio, _isAutoDubbed)
 
     override fun getTargetDurationSec() = _targetDurationSec
 
@@ -140,13 +140,5 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
             getHeight(),
             getITag()
         )
-    }
-
-    private fun getSabrLanguage(): String? {
-        val lang = _audioTrackId?.split(".")?.firstOrNull() ?: return null
-        // original, descriptive, dubbed, dubbed-auto, secondary
-        val acont = if (_isDefaultAudio == true) "original" else if (_isAutoDubbed == true) "dubbed-auto" else null
-
-        return if (acont != null) "${YouTubeHelper.exoNameFix(lang)} ($acont)" else lang
     }
 }

@@ -73,7 +73,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         }
 
         //initInfoTypeIfNeeded();
-        reorderTypeListIfNeeded();
+        //reorderTypeListIfNeeded();
 
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
 

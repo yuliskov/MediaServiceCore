@@ -35,7 +35,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             AppClient.VISIONOS, // no url formats
             AppClient.TV_DOWNGRADED, // probably unplayable (weird potoken format?)
             AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
-            AppClient.ANDROID_REEL, // doesn't require pot and cipher
+            //AppClient.ANDROID_REEL, // doesn't require pot and cipher (hangs on all engines)
             AppClient.WEB, // Fix video clip blocked in current location
             AppClient.WEB_SAFARI,
             AppClient.IOS,

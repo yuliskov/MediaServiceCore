@@ -89,7 +89,7 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
 
     override fun getOtfTemplateUrl() = urlHolder.getOtfTemplateUrl()
 
-    override fun getLanguage() = urlHolder.getLanguage() ?: YouTubeHelper.getSabrLanguage(_audioTrackId, _isDefaultAudio, _isAutoDubbed)
+    override fun getLanguage() = urlHolder.getLanguage() ?: YouTubeHelper.getSabrLanguage(_audioTrackId, _isAutoDubbed)
 
     override fun getTargetDurationSec() = _targetDurationSec
 

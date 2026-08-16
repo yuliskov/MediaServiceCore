@@ -30,6 +30,9 @@ import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * The same as PoTokenWebView2 but my fixes that could fix request hanging.
+ */
 internal class PoTokenWebView3 private constructor(
     context: Context,
     private var onInitDone: () -> Unit

@@ -29,6 +29,9 @@ import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * Original generator taken from NewPipe project. It is outdated and probably not working at all.
+ */
 internal class PoTokenWebView private constructor(
     context: Context,
     private var onInitDone: () -> Unit

@@ -30,6 +30,9 @@ import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * V1 generator based on https://github.com/Brainicism/bgutil-ytdlp-pot-provider
+ */
 internal class PoTokenWebView2 private constructor(
     context: Context,
     private var onInitDone: () -> Unit

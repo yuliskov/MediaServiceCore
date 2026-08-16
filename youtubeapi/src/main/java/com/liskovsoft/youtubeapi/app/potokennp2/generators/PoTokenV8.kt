@@ -29,6 +29,9 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
+/**
+ * TODO: remove me. It's impossible to build full fledged browser-like environment using the V8 engine
+ */
 internal class PoTokenV8 private constructor(
     context: Context,
     private var onInitDone: () -> Unit

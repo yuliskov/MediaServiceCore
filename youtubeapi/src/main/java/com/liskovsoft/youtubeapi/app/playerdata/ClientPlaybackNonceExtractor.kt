@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.googlecommon.common.js.V8Runtime
+import com.liskovsoft.googlecommon.common.js.JavaScriptRuntime
 import java.util.regex.Pattern
 
 internal object ClientPlaybackNonceExtractor {
@@ -34,7 +34,11 @@ internal object ClientPlaybackNonceExtractor {
     }
 
     fun createClientPlaybackNonce(clientPlaybackNonceCode: String): String? {
-        return V8Runtime.instance().evaluate(clientPlaybackNonceCode)
+        return try {
+            JavaScriptRuntime.evaluate(clientPlaybackNonceCode)
+        } catch (error: JavaScriptRuntime.JavaScriptRuntimeException) {
+            null
+        }
     }
 
     private fun extractRawClientPlaybackNonceFunction(jsCode: String): String? {

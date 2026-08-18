@@ -319,9 +319,6 @@ public class VideoFormat {
                 getITag());
     }
 
-    /**
-     * TODO: to be removed. Temp SABR fix
-     */
     public boolean isBroken() {
         return Helpers.allNulls(mUrl, mCipher, mSignatureCipher);
     }

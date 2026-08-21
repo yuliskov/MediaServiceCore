@@ -199,7 +199,7 @@ public class VideoInfo {
     }
 
     public boolean isUnplayable() {
-        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted();
+        return isUnknownRestricted() || isVisibilityRestricted() || isAgeRestricted() || isAdaptiveFormatsBroken();
     }
 
     /**
@@ -251,7 +251,7 @@ public class VideoInfo {
     }
 
     public boolean containsAdaptiveVideoInfo() {
-        if (getAdaptiveFormats() == null) {
+        if (getAdaptiveFormats() == null || isAdaptiveFormatsBroken()) {
             return false;
         }
 
@@ -428,8 +428,8 @@ public class VideoInfo {
      * TODO: remove when SABR parser will be fixed
      */
     private boolean isAdaptiveFormatsBroken() {
-        // TODO: remove when SABR parser will be fixed
-        if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty()) {
+        // TODO: live SABR formats still broken
+        if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty() || !isLive()) {
             return false;
         }
 

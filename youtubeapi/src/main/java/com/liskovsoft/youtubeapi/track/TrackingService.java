@@ -158,4 +158,8 @@ public class TrackingService {
     private float getEndThresholdSec(float lengthSec) {
         return lengthSec * 0.05f;
     }
+
+    public void clearCache() {
+        mPosition = null;
+    }
 }

@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.FeedbackReasons;
 import com.liskovsoft.mediaserviceinterfaces.data.FeedbackReasons.FeedbackItem;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackReason;
 import com.liskovsoft.youtubeapi.feedback.models.FeedbackResponse;
+import com.liskovsoft.youtubeapi.track.TrackingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,8 @@ public class FeedbackService {
         Call<FeedbackResponse> wrapper = mFeedbackApi.setNotInterested(
                 FeedbackApiHelper.getNotInterestedQuery(feedbackToken));
         RetrofitHelper.get(wrapper); // ignore result
+
+        TrackingService.instance().clearCache(); // fixed removing and then add again to history
     }
 
     public FeedbackReasons getReasons(String feedbackToken) {

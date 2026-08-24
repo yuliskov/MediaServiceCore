@@ -33,7 +33,7 @@ public class FeedbackService {
                 FeedbackApiHelper.getNotInterestedQuery(feedbackToken));
         RetrofitHelper.get(wrapper); // ignore result
 
-        TrackingService.instance().clearCache(); // fixed removing and then add again to history
+        TrackingService.instance().clearCache(); // fix when a user removed video from history and then play it immediately
     }
 
     public FeedbackReasons getReasons(String feedbackToken) {

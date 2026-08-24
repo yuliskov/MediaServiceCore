@@ -70,13 +70,12 @@ internal class QueryBuilder(private val client: AppClient) {
             if (cpn == null)
                 cpn = appService.clientPlaybackNonce // get it somewhere else?
 
-            // Web and tv timestamps now differs. TV one should have 001 suffix
+            // Web and TV timestamps now differs. TV one should have 001 suffix
             // E.g. web: 20522, tv: 20522001
             // NOTE: wrong timestamp format yield 'page should be reloaded' error (this happens on the tv variant at least)
-            // NOTE: we assumes that the timestamp value taken from the web variant
             if (signatureTimestamp == null || signatureTimestamp == -1)
                 signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp.let {
-                    if (client.isTVClient) it + "001" else it
+                    if (client.isTVClient && it.length == 5) it + "001" else it
                 }) // get it somewhere else?
         }
 

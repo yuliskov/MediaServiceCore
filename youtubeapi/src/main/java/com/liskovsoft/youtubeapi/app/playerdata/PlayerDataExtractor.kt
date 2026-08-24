@@ -27,6 +27,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             //.replace("_tce", "") // global helper functions, web url
             //.replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validates cpn
             //.replace("-es6", "-ias") // es6 no supported
+            //.replace("/tv-player-es6.vflset/tv-player-es6.js", "/player_es6.vflset/en_US/base.js") // web player (403 fix?)
     }
 
     init {
@@ -35,7 +36,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         checkSigData()
         checkCpnData()
 
-        if (cpnCode == null || signatureTimestamp == null) {
+        if (signatureTimestamp == null) {
             fetchAllData()
             checkCpnData()
             persistAllData()
@@ -64,7 +65,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
      * "cpn":"KjdxegeSaJXRctIl"
      */
     fun createClientPlaybackNonce(): String? {
-        return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateCPNParameter()
+        return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateCPNParameter2()
     }
 
     /**

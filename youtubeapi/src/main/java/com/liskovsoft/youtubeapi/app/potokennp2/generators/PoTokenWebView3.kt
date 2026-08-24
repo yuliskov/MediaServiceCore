@@ -31,7 +31,10 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 /**
- * The same as PoTokenWebView2 but my fixes that could fix request hanging.
+ * The same as PoTokenWebView2 but with the below fix.
+ * 
+ * Using "https://www.youtube.com/api/jnn/v1/GenerateIT" instead of  
+ * "$BASE_URL/\$rpc/google.internal.waa.v1.Waa/GenerateIT" because the first one often hangs.
  */
 internal class PoTokenWebView3 private constructor(
     context: Context,

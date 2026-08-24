@@ -267,6 +267,10 @@ internal class PoTokenWebView4 private constructor(
     fun onRunBotguardResult(botguardResponse: String) {
         Log.d(TAG, "botguardResponse: $botguardResponse")
 
+        // NOTE: both urls can be used to get botguard response.
+        // The first on produces more reliable token (without 403 error) but may hang upon request.
+        // "$BASE_URL/\$rpc/google.internal.waa.v1.Waa/GenerateIT"
+        // "https://www.youtube.com/api/jnn/v1/GenerateIT"
         val responseBody = makeBotguardServiceRequest(
             "https://www.youtube.com/api/jnn/v1/GenerateIT",
             "[ \"${REQUEST_KEY}\", \"$botguardResponse\" ]",

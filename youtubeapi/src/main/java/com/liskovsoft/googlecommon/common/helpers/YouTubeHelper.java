@@ -296,6 +296,14 @@ public final class YouTubeHelper {
         return RandomStringFromAlphabetGenerator.generate(16);
     }
 
+    /**
+     * New YT implementation of CPN
+     */
+    @NonNull
+    public static String generateCPNParameter2() {
+        return RandomStringFromAlphabetGenerator.generate2(16);
+    }
+
     @Nullable
     public static String getSabrLanguage(String audioTrackId, boolean isAutoDubbed) {
         if (audioTrackId == null) {

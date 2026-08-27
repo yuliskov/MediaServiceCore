@@ -25,10 +25,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         // web url: https://www.youtube.com/s/player/e12fbea4/player_ias_tce.vflset/en_US/base.js
         playerUrl
             //.replace("_tce", "") // global helper functions, web url
-            //.replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validates cpn
+            //.replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validate cpn
             //.replace("-es6", "-ias") // es6 no supported
-            //.replace("/tv-player-es6.vflset/tv-player-es6.js", "/player_es6.vflset/en_US/base.js") // web player (403 fix?)
             .replace("-tcl", "") // (403 fix, incompatible nParam, e.g. /tv-player-es6-tcl.vflset/tv-player-es6-tcl.js)
+            .replace("/tv-player-es6.vflset/tv-player-es6.js", "/player_es6.vflset/en_US/base.js") // 403 fix, incompatible nParam?
+            .replace("/tv-player-ias.vflset/tv-player-ias.js", "/player_ias.vflset/en_US/base.js") // 403 fix, incompatible nParam?
     }
 
     init {

@@ -74,7 +74,7 @@ internal class QueryBuilder(private val client: AppClient) {
             // E.g. web: 20522, tv: 20522001
             // NOTE: wrong timestamp format yield 'page should be reloaded' error (this happens on the tv variant at least)
             if (signatureTimestamp == null || signatureTimestamp == -1)
-                signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp.let {
+                signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp?.let {
                     if (client.isTVClient && it.length == 5) it + "001" else it
                 }) // get it somewhere else?
         }

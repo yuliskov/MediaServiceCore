@@ -433,6 +433,13 @@ public class VideoInfo {
             return false;
         }
 
+        // The stream is still playable through the manifest even when every format is SABR only.
+        // Without this check such a stream is reported as unplayable and the player never gets
+        // a chance to try the dash/hls manifest it already has.
+        if (getDashManifestUrl() != null || getHlsManifestUrl() != null) {
+            return false;
+        }
+
         boolean allBroken = true;
 
         for (AdaptiveVideoFormat format : mAdaptiveFormats) {

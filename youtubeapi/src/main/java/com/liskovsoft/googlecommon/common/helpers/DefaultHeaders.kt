@@ -65,7 +65,7 @@ object DefaultHeaders {
     private const val USER_AGENT_IOS_2 = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
     const val USER_AGENT_SAFARI = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15,gzip(gfe)"
 
-    //const val USER_AGENT_TV = USER_AGENT_COBALT_3
+    //const val USER_AGENT_TV = USER_AGENT_COBALT_1 // (uses old 5 digits timeStamp format)
     //const val USER_AGENT_TV = USER_AGENT_SAMSUNG_3 // no buffering (only 320x180 thumbs)
     //const val USER_AGENT_TV = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
     const val USER_AGENT_TV = USER_AGENT_FIRE_TV // buffering?

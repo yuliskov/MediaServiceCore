@@ -3,7 +3,8 @@ package com.liskovsoft.youtubeapi.common.helpers
 internal object AppConstants {
     @JvmField
     val playerUrls = listOf(
-        // NOTE: tv player should be in the top (ias ones may not validate correctly)
+        // NOTE: TV player should be in the top (ias ones may not validate correctly)
+        "https://www.youtube.com/s/player/06ab6907/tv-player-es6.vflset/tv-player-es6.js", // the recent one with common nParam among all the clients
         "https://www.youtube.com/s/player/854a788e/player_es6.vflset/en_US/base.js",
         "https://www.youtube.com/s/player/b81a9a58/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/c2f7551f/tv-player-es6.vflset/tv-player-es6.js",

@@ -1,4 +1,4 @@
-package com.liskovsoft.youtubeapi.app.nsig
+package com.liskovsoft.youtubeapi.app.playerdata
 
 import android.Manifest
 import androidx.test.platform.app.InstrumentationRegistry
@@ -6,7 +6,6 @@ import androidx.test.rule.GrantPermissionRule
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import com.liskovsoft.youtubeapi.app.AppServiceInt
-import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue

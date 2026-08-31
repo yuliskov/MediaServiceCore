@@ -30,13 +30,14 @@ public class TestHelpersBase {
     // Cyberpunk
     public static final String VIDEO_ID_AGE_RESTRICTED = "8X2kIfS6fb8";
 
-    // Lofi Girl
-    public static final String VIDEO_ID_LIVE = "X4VbdwhkE10";
+    // Progressive House 24/7 (since 2017)
+    public static final String VIDEO_ID_LIVE = "d8Oc90QevaI";
 
     // American Pie
     public static final String VIDEO_ID_MUSIC_2 = "X4RDB-mMDJg";
-    
-    public static final String VIDEO_ID_CARTOON = "mosPaiR-nrs";
+
+    // The Road Trip Song | SpongeBob (since 2012)
+    public static final String VIDEO_ID_CARTOON = "75truKq3aYg";
 
     // GECID.com
     public static final String CHANNEL_ID = "UC3PyIqYQ7lw7YKHRLqIvXlw";

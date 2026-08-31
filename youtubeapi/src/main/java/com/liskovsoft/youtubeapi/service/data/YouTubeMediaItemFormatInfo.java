@@ -228,7 +228,9 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean containsSabrFormats() {
-        return mContainsAdaptiveVideoFormats && (mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_SABR || mServerAbrStreamingUrl != null);
+        return mContainsAdaptiveVideoFormats
+                && (mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_SABR
+                || (mServerAbrStreamingUrl != null && mVideoPlaybackUstreamerConfig != null));
     }
 
     @Override

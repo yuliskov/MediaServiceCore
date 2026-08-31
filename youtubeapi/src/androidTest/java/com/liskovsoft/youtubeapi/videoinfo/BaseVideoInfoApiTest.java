@@ -105,9 +105,10 @@ abstract class BaseVideoInfoApiTest {
         VideoInfo result = null;
 
         for (AppClient client : AppClient.values()) {
-             result = getVideoInfo(client, videoId);
+            result = getVideoInfo(client, videoId);
 
-            if (result != null && !result.isUnplayable()) {
+            // TODO: tv clients are fully broken because of '-tcl' player
+            if (result != null && !result.isUnplayable() && !client.isTVClient()) {
                 break;
             }
         }

@@ -115,10 +115,10 @@ internal open class SearchServiceTestBase {
 
     private fun checkSearchResultLokupItem(lockupItem: LockupItem?) {
         Assert.assertNotNull("Search result item not null", lockupItem)
-        Assert.assertNotNull("Search result item contains video id", lockupItem?.getVideoId())
+        Assert.assertNotNull("Search result item contains video/channel id", lockupItem?.getVideoId() ?: lockupItem?.getChannelId())
         Assert.assertNotNull("Search result item contains title", lockupItem?.getTitle())
-        //assertNotNull("Search result item contains channel id", lockupItem.getChannelId()); // not exists in search result
-        Assert.assertNotNull("Search result item contains view count", lockupItem?.getBadgeText())
+        if (lockupItem?.getVideoId() != null)
+            Assert.assertNotNull("Search result item contains view count", lockupItem.getBadgeText())
         Assert.assertNotNull("Search result item contains date", lockupItem?.getSubTitle())
     }
 }

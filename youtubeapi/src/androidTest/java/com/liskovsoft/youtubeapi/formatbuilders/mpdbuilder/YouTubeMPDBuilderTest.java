@@ -63,7 +63,7 @@ public class YouTubeMPDBuilderTest {
     public void testThatMpdNotEmpty() {
         MediaItemFormatInfo mediaItemDetails = mService.getMediaItemService().getFormatInfo(TestHelpers.VIDEO_ID_CAPTIONS);
 
-        assertTrue("Is dash", mediaItemDetails.containsDashFormats());
+        assertTrue("Is dash/sabr", mediaItemDetails.containsDashFormats() || mediaItemDetails.containsSabrFormats());
 
         InputStream mpdStream = mediaItemDetails.createMpdStream();
 
@@ -91,6 +91,10 @@ public class YouTubeMPDBuilderTest {
         assertTrue("Format list not empty", mediaItemDetails.getAdaptiveFormats().size() > 0);
 
         String url = mediaItemDetails.getAdaptiveFormats().get(0).getUrl();
+
+        if (url == null) {
+            url = mediaItemDetails.getServerAbrStreamingUrl();
+        }
 
         assertTrue("Video url is not empty", url != null);
         assertTrue("Video url is working", TestHelpers.urlExists(url));

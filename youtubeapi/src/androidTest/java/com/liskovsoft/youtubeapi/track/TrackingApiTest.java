@@ -60,7 +60,7 @@ public class TrackingApiTest {
     //}
 
     @Test
-    public void testUpdateWatchTime() throws IOException {
+    public void testUpdateWatchTime() throws IOException, InterruptedException {
         String playbackNonce = mAppService.getClientPlaybackNonce();
         String videoIdSimple = TestHelpers.VIDEO_ID_3;
 
@@ -73,6 +73,8 @@ public class TrackingApiTest {
         response = updateWatchTime(videoIdSimple, 300.4f, playbackNonce);
 
         assertTrue("Update watch time response successful", response.isSuccessful());
+
+        Thread.sleep(10_000); // history is usually updated with a delay
 
         GridTab history = mBrowseService.getHistory();
 

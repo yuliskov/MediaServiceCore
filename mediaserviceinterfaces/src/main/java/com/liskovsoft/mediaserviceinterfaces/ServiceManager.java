@@ -12,5 +12,6 @@ public interface ServiceManager {
     void invalidateCache();
     void refreshCacheIfNeeded();
     void switchNextClient();
+    void switchNextClientNow();
     void switchNextSubsFormat();
 }

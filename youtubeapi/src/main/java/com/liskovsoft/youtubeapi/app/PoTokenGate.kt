@@ -20,6 +20,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient
 internal object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
+    private const val CACHE_RESET_TIME_MS = 60_000
 
     init {
         PoTokenProviderImpl.poTokenFactory = selectFactory()
@@ -109,7 +110,7 @@ internal object PoTokenGate {
         } else
             PoTokenCloudService.resetCache()
 
-        mCacheResetTimeMs = currentTimeMs + 60_000
+        mCacheResetTimeMs = currentTimeMs + CACHE_RESET_TIME_MS
 
         return true
     }

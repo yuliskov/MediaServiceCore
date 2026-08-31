@@ -97,7 +97,13 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void switchNextClient() {
         getYouTubeMediaItemService().invalidateCache();
-        getVideoInfoService().switchNextFormat();
+        getVideoInfoService().switchNextFormat(false);
+    }
+
+    @Override
+    public void switchNextClientNow() {
+        getYouTubeMediaItemService().invalidateCache();
+        getVideoInfoService().switchNextFormat(true);
     }
 
     @Override

@@ -159,7 +159,12 @@ public class VideoInfoService extends VideoInfoServiceBase {
     //    restoreVideoInfoType();
     //}
 
-    public void switchNextFormat() {
+    public void switchNextFormat(boolean force) {
+        if (force) {
+            nextVideoInfoType();
+            return;
+        }
+
         //initInfoTypeIfNeeded();
 
         // Try to reset pot cache for the last video

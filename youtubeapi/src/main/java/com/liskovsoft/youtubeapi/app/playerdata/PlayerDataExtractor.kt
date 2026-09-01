@@ -1,10 +1,10 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
-import com.eclipsesource.v8.V8ScriptExecutionException
+import com.liskovsoft.googlecommon.common.js.JavaScriptRuntime.JavaScriptRuntimeException
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
-import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
+import com.liskovsoft.youtubeapi.app.nsigsolver.impl.JsChallangeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
@@ -111,7 +111,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, it))
         }
 
-        val result = V8ChallengeProvider.bulkSolve(listOfNotNull(nRequest, sRequest))
+        val result = JsChallangeProvider.bulkSolve(listOfNotNull(nRequest, sRequest))
 
         for (item in result) {
             when (item.response?.type) {
@@ -160,7 +160,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
                 val result = createClientPlaybackNonce()
                 if (result == null)
                     cpnCode = null
-            } catch (error: V8ScriptExecutionException) {
+            } catch (error: JavaScriptRuntimeException) {
                 cpnCode = null
             }
         }
@@ -168,14 +168,14 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     private fun checkSigData() {
         if (nFuncCode && sFuncCode) {
-            V8ChallengeProvider.warmup() // enable hot start
+            JsChallangeProvider.warmup() // enable hot start
             return
         }
 
         try {
             val nParam = "5cNpZqIJ7ixNqU68Y7S"
             val sigParam = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz"
-            val result = V8ChallengeProvider.bulkSolve(
+            val result = JsChallangeProvider.bulkSolve(
                 listOf(
                     JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(nParam))),
                     JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(sigParam))),

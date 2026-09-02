@@ -30,23 +30,17 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final AppClient WEB_CLIENT = AppClient.WEB_EMBED;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    // TODO: tv clients are fully broken because of '-tcl' player
+    // TV clients used as authenticated fallback for member-only/restricted videos
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.VISIONOS, // no url formats
-            //AppClient.TV_DOWNGRADED, // probably unplayable (weird potoken format?)
-            //AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
-            //AppClient.ANDROID_REEL, // doesn't require pot and cipher (hangs on all engines)
             AppClient.WEB, // Fix video clip blocked in current location
             AppClient.WEB_SAFARI,
             AppClient.IOS,
             AppClient.GEO, // Fix video clip blocked in current location
             AppClient.MWEB, // single audio language
-            //AppClient.TV_LEGACY,
-            //AppClient.TV_EMBED, // single audio language
             AppClient.ANDROID_VR, // doesn't require pot and cipher (often hangs?)
-            //AppClient.TV_SIMPLY, // hangs?
-            //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on Cronet!)
+            AppClient.TV_DOWNGRADED, // Authenticated fallback for member-only, paid, and restricted streams
     };
     @Nullable
     private AppClient mActualInfoType = null;

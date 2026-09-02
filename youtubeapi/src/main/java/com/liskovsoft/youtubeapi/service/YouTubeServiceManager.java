@@ -15,6 +15,7 @@ import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -26,17 +27,30 @@ public class YouTubeServiceManager implements ServiceManager {
     private static final String TAG = YouTubeServiceManager.class.getSimpleName();
     private static YouTubeServiceManager sInstance;
     private Disposable mRefreshCoreDataAction;
+    private Disposable mWarmUpPoTokenAction;
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
     }
 
-    public static ServiceManager instance() {
+    public static YouTubeServiceManager instance() {
         if (sInstance == null) {
             sInstance = new YouTubeServiceManager();
         }
 
         return sInstance;
+    }
+
+    /**
+     * Prepare the proof-token generator off the UI thread so first playback does not pay its
+     * initialization cost. Actual per-video tokens are still generated normally at playback.
+     */
+    public void warmUpPlaybackToken() {
+        if (RxHelper.isAnyActionRunning(mWarmUpPoTokenAction)) {
+            return;
+        }
+
+        mWarmUpPoTokenAction = RxHelper.execute(RxHelper.fromRunnable(PoTokenGate::warmUp));
     }
 
     @Override

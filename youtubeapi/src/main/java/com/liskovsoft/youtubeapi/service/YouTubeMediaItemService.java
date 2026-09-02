@@ -43,6 +43,8 @@ public class YouTubeMediaItemService implements MediaItemService {
     private static final String TAG = YouTubeMediaItemService.class.getSimpleName();
     private static YouTubeMediaItemService sInstance;
     private MediaItemFormatInfo mCachedFormatInfo;
+    private String mLoadingFormatVideoId;
+    private Observable<MediaItemFormatInfo> mLoadingFormatInfo;
 
     private YouTubeMediaItemService() {
     }
@@ -108,17 +110,49 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
-        return RxHelper.fromCallable(() -> getFormatInfo(item));
+        return getFormatInfoObserve(item.getVideoId(), item.getClickTrackingParams());
     }
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
-        return RxHelper.fromCallable(() -> getFormatInfo(videoId));
+        return getFormatInfoObserve(videoId, null);
     }
 
     @Override
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams) {
-        return RxHelper.fromCallable(() -> getFormatInfo(videoId, clickTrackingParams));
+        return getSharedFormatInfoObserve(videoId, clickTrackingParams);
+    }
+
+    /**
+     * A card click starts resolving formats before the playback activity is ready. Reuse that
+     * in-flight request when the player asks for the same video, rather than issuing a second
+     * player request. The completed result still follows the existing cache-validity rules.
+     */
+    private synchronized Observable<MediaItemFormatInfo> getSharedFormatInfoObserve(
+            String videoId, String clickTrackingParams) {
+        MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
+        if (cachedFormatInfo != null) {
+            return Observable.just(cachedFormatInfo);
+        }
+
+        if (videoId != null && videoId.equals(mLoadingFormatVideoId) && mLoadingFormatInfo != null) {
+            return mLoadingFormatInfo;
+        }
+
+        Observable<MediaItemFormatInfo> request = RxHelper
+                .fromCallable(() -> getFormatInfo(videoId, clickTrackingParams))
+                .doFinally(() -> clearLoadingFormatInfo(videoId))
+                .cache();
+        mLoadingFormatVideoId = videoId;
+        mLoadingFormatInfo = request;
+        return request;
+    }
+
+    private synchronized void clearLoadingFormatInfo(String videoId) {
+        if (videoId != null && videoId.equals(mLoadingFormatVideoId)) {
+            mLoadingFormatVideoId = null;
+            mLoadingFormatInfo = null;
+        }
     }
 
     @Override

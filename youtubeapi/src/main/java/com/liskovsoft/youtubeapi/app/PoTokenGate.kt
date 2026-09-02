@@ -55,6 +55,16 @@ internal object PoTokenGate {
         }
     }
 
+    /**
+     * Initializes the proof-token generator before the first playback request. The session token
+     * itself is not used for a video request; this only avoids constructing the generator on the
+     * user's first Play action.
+     */
+    @JvmStatic
+    fun warmUp() {
+        getWebSessionPoToken()
+    }
+
     @JvmStatic
     @JvmOverloads
     fun getPoToken(client: AppClient, videoId: String? = null): String? {

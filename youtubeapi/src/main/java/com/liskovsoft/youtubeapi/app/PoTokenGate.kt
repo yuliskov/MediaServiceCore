@@ -62,7 +62,9 @@ internal object PoTokenGate {
      */
     @JvmStatic
     fun warmUp() {
-        getWebSessionPoToken()
+        if (PoTokenProviderImpl.isWebPotSupported) {
+            getWebSessionPoToken()
+        }
     }
 
     @JvmStatic

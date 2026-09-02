@@ -33,7 +33,11 @@ public class YouTubeServiceManager implements ServiceManager {
         Log.d(TAG, "Starting...");
     }
 
-    public static YouTubeServiceManager instance() {
+    public static ServiceManager instance() {
+        return getInstance();
+    }
+
+    private static YouTubeServiceManager getInstance() {
         if (sInstance == null) {
             sInstance = new YouTubeServiceManager();
         }
@@ -45,7 +49,11 @@ public class YouTubeServiceManager implements ServiceManager {
      * Prepare the proof-token generator off the UI thread so first playback does not pay its
      * initialization cost. Actual per-video tokens are still generated normally at playback.
      */
-    public void warmUpPlaybackToken() {
+    public static void warmUpPlaybackToken() {
+        getInstance().warmUpPlaybackTokenInternal();
+    }
+
+    private void warmUpPlaybackTokenInternal() {
         if (RxHelper.isAnyActionRunning(mWarmUpPoTokenAction)) {
             return;
         }

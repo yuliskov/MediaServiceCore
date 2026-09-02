@@ -37,6 +37,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class YouTubeMediaItemService implements MediaItemService {
@@ -135,7 +136,7 @@ public class YouTubeMediaItemService implements MediaItemService {
             return Observable.just(cachedFormatInfo);
         }
 
-        if (videoId != null && videoId.equals(mLoadingFormatVideoId) && mLoadingFormatInfo != null) {
+        if (Objects.equals(videoId, mLoadingFormatVideoId) && mLoadingFormatInfo != null) {
             return mLoadingFormatInfo;
         }
 
@@ -149,7 +150,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private synchronized void clearLoadingFormatInfo(String videoId) {
-        if (videoId != null && videoId.equals(mLoadingFormatVideoId)) {
+        if (Objects.equals(videoId, mLoadingFormatVideoId)) {
             mLoadingFormatVideoId = null;
             mLoadingFormatInfo = null;
         }

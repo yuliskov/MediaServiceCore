@@ -15,6 +15,12 @@ internal object DeArrowService {
         val branding = mDeArrowApi.getBranding(videoId)
 
         return RetrofitHelper.get(branding)?.let {
+            val title = it.titles?.firstOrNull()?.takeIf { entry ->
+                entry?.original != true && (entry?.locked == true || (entry?.votes ?: -1) >= 0)
+            }
+            val thumbnail = it.thumbnails?.firstOrNull()?.takeIf { entry ->
+                entry?.original != true && (entry?.locked == true || (entry?.votes ?: -1) >= 0)
+            }
             object : DeArrowData {
                 override fun getVideoId(): String {
                     return videoId
@@ -24,11 +30,13 @@ internal object DeArrowService {
                     // '>' character is used in some titles to tell the DeArrow formatter which words to leave alone
                     // Example: https://sponsor.ajay.app/api/branding?videoID=dtp6b76pMak
                     // https://github.com/yuliskov/MediaServiceCore/pull/9
-                    return it.titles?.firstOrNull { !(it?.original ?: false) }?.title?.replace(">", "")
+                    return title?.title?.replace(">", "")
                 }
 
                 override fun getThumbnailUrl(): String? {
-                    return it.thumbnails?.firstOrNull { !(it?.original ?: false) }?.let { "${DeArrowApiHelper.THUMBNAIL_URL}?videoID=$videoId&time=${it.timestamp}" }
+                    return thumbnail?.timestamp?.let { timestamp ->
+                        "${DeArrowApiHelper.THUMBNAIL_URL}?videoID=$videoId&time=$timestamp"
+                    }
                 }
             }
         }

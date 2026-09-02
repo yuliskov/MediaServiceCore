@@ -15,10 +15,10 @@ internal object DeArrowService {
         val branding = mDeArrowApi.getBranding(videoId)
 
         return RetrofitHelper.get(branding)?.let {
-            val title = it.titles?.firstOrNull()?.takeIf { entry ->
+            val title = it.titles?.firstOrNull { entry ->
                 entry?.original != true && (entry?.locked == true || (entry?.votes ?: -1) >= 0)
             }
-            val thumbnail = it.thumbnails?.firstOrNull()?.takeIf { entry ->
+            val thumbnail = it.thumbnails?.firstOrNull { entry ->
                 entry?.original != true && (entry?.locked == true || (entry?.votes ?: -1) >= 0)
             }
             object : DeArrowData {

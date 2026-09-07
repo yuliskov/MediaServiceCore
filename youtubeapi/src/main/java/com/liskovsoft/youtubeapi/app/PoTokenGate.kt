@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app
 
+import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
@@ -18,6 +19,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient
  * Usage is unknown. Previously used in DASH/SABR requests (e.g. `pot` param).
  */
 internal object PoTokenGate {
+    private const val TAG = "PoTokenGate"
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
     private const val CACHE_RESET_TIME_MS = 60_000
@@ -27,31 +29,62 @@ internal object PoTokenGate {
     }
 
     private fun getWebContentPoToken(videoId: String): String? {
-        if (mWebPoToken?.videoId == videoId && !PoTokenProviderImpl.isWebPotExpired) {
-            return mWebPoToken?.playerRequestPoToken
+        if (PoTokenProviderImpl.isWebPotSupported) {
+            if (mWebPoToken?.videoId == videoId && !PoTokenProviderImpl.isWebPotExpired) {
+                return mWebPoToken?.playerRequestPoToken
+            }
+
+            try {
+                PoTokenProviderImpl.getWebClientPoToken(videoId)?.let {
+                    mWebPoToken = it
+                    return it.playerRequestPoToken
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Can't mint local web poToken", e)
+            }
         }
 
-        mWebPoToken = if (PoTokenProviderImpl.isWebPotSupported)
-            PoTokenProviderImpl.getWebClientPoToken(videoId)
-        else null
-
-        return mWebPoToken?.playerRequestPoToken
+        // No local minter (no WebView on the device or it's broken).
+        // NOTE: the cloud minter isn't used here on purpose: its endpoints are
+        // placeholder URLs, so each call would just stall the playback thread.
+        return null
     }
 
     private fun getWebSessionPoToken(): String? {
-        return if (PoTokenProviderImpl.isWebPotSupported) {
-            if (mWebPoToken == null)
-                mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("")
-            mWebPoToken?.streamingDataPoToken
-        } else PoTokenCloudService.getPoToken()
-    }
-    
-    private fun updatePoToken() {
         if (PoTokenProviderImpl.isWebPotSupported) {
-            //mNpPoToken = null // only refresh
-            mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
+            try {
+                if (mWebPoToken == null)
+                    mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("")
+                mWebPoToken?.streamingDataPoToken?.let { return it }
+            } catch (e: Exception) {
+                Log.e(TAG, "Can't mint local web poToken", e)
+            }
+        }
+
+        // NOTE: cached value only (the cloud endpoints are placeholders).
+        return PoTokenCloudService.getPoToken()
+    }
+
+    /**
+     * Refreshes the web poToken in the background.
+     * Call it on the app start (before any playback) to avoid
+     * the WebView/BotGuard boot delay on the first video.
+     */
+    @JvmStatic
+    fun updatePoToken() {
+        if (PoTokenProviderImpl.isWebPotSupported) {
+            mWebPoToken = try {
+                PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
+            } catch (e: Exception) {
+                Log.e(TAG, "Can't preload web poToken...", e)
+                null
+            }
         } else {
-            PoTokenCloudService.updatePoToken()
+            try {
+                PoTokenCloudService.updatePoToken()
+            } catch (e: Exception) {
+                Log.e(TAG, "Can't preload cloud web poToken...", e)
+            }
         }
     }
 
@@ -112,7 +145,7 @@ internal object PoTokenGate {
     }
 
     fun getWebVisitorData(): String? {
-        return mWebPoToken?.visitorData
+        return mWebPoToken?.visitorData ?: AppService.instance().visitorData
     }
 
     private fun resetWebCache(): Boolean {

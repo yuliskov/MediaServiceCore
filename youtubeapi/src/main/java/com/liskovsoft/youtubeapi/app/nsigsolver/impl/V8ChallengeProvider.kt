@@ -67,12 +67,22 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
     private fun disposeRuntime() {
         val runtime = v8Runtime ?: return
+        v8Runtime = null
 
         // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
-        runtime.withLock {
-            it.release(false)
+        try {
+            runtime.withLock {
+                // no-op: ensure the locker exists and is properly released
+            }
+        } catch (_: Throwable) {
         }
-        v8Runtime = null
+
+        // NOTE: Isolate::Dispose aborts if the V8 locker is still held,
+        // so dispose OUTSIDE of the locker scope.
+        try {
+            runtime.release(false)
+        } catch (_: Throwable) {
+        }
     }
     
     fun warmup() {

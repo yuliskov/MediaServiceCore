@@ -15,6 +15,7 @@ import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -29,6 +30,25 @@ public class YouTubeServiceManager implements ServiceManager {
 
     private YouTubeServiceManager() {
         Log.d(TAG, "Starting...");
+        preloadPoToken();
+    }
+
+    /**
+     * Mint the web poToken in advance (background), so the first playback
+     * doesn't stall on the WebView/BotGuard (or cloud minter) boot.
+     */
+    private void preloadPoToken() {
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(3_000); // don't compete with the app startup network
+                PoTokenGate.updatePoToken();
+            } catch (Throwable e) {
+                Log.e(TAG, "Can't preload poToken", e);
+            }
+        });
+        thread.setDaemon(true);
+        thread.setName("pot-preload");
+        thread.start();
     }
 
     public static ServiceManager instance() {

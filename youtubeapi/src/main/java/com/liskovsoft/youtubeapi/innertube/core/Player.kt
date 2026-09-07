@@ -77,7 +77,7 @@ internal class Player private constructor(
 
         applyClientVer(urlHolders)
 
-        val poToken = PoTokenGate.getPoToken(formatInfo.clientInfo, formatInfo.videoId)
+        val poToken = PoTokenGate.getStreamPoToken(formatInfo.clientInfo, formatInfo.videoId)
         formatInfo.poToken = poToken
         applySessionPoToken(urlHolders, poToken)
     }

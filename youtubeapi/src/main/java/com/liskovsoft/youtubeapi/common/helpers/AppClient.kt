@@ -33,8 +33,12 @@ internal enum class AppClient(
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null, val postDataBrowse: String? = null
 ): MediaItemFormatInfo.ClientInfo {
     // Doesn't support 8AEB2AMB param if X-Goog-Pageid is set!
+    // The TVHTML5 client is a Cobalt-based web app. It requires its platform UA
+    // in both the body and headers. Using an Android TV (ATV) UA here triggers a 403
+    // from the player endpoint. See yt-dlp "Revert tv client user-agent to work around 403 errors".
+    // The real device identity is still reported via the structured context fields.
     TV(CLIENTS.TV.NAME, CLIENTS.TV.VERSION, CLIENT_NAME_IDS[CLIENTS.TV.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = CLIENTS.TV.USER_AGENT!!, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_TV_LEGACY),
     TV_EMBED(CLIENTS.TV_EMBEDDED.NAME, CLIENTS.TV_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_EMBEDDED.NAME],
         userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV_EMBEDDED.REFERER, clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),

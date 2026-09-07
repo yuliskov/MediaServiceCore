@@ -59,6 +59,22 @@ internal object PoTokenGate {
     @JvmOverloads
     fun getPoToken(client: AppClient, videoId: String? = null): String? {
         return when {
+            client.isWebPotRequired || client.isTVClient -> if (videoId != null) getWebContentPoToken(videoId) else getWebSessionPoToken()
+            else -> null
+        }
+    }
+
+    /**
+     * Content poToken used in DASH/SABR stream requests.
+     *
+     * Only web-based clients require it (see yt-dlp PO Token Guide).
+     * TVHTML5 clients must NOT receive it: a pot bound to the web client
+     * injected into a TVHTML5-signed SABR URL makes gvs return HTTP 403.
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getStreamPoToken(client: AppClient, videoId: String? = null): String? {
+        return when {
             client.isWebPotRequired -> if (videoId != null) getWebContentPoToken(videoId) else getWebSessionPoToken()
             else -> null
         }
@@ -71,7 +87,7 @@ internal object PoTokenGate {
     @JvmStatic
     fun getVisitorData(client: AppClient): String? {
         return when {
-            client.isWebPotRequired -> getWebVisitorData()
+            client.isWebPotRequired || client.isTVClient -> getWebVisitorData()
             else -> null
         }
     }

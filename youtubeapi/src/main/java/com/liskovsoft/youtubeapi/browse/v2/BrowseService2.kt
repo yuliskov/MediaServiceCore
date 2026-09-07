@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.ClientMode
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.*
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
@@ -74,7 +75,7 @@ internal open class BrowseService2 {
     }
 
     open fun getSubscriptions(): MediaGroup? {
-        return getSubscriptionsTV()
+        return if (ClientMode.isPhoneMode) getSubscriptionsWeb() else getSubscriptionsTV()
     }
 
     private fun getSubscriptionsWeb(): MediaGroup? {
@@ -96,6 +97,10 @@ internal open class BrowseService2 {
     }
 
     open fun getSubscribedChannels(): MediaGroup? {
+        if (ClientMode.isPhoneMode) {
+            return getSubscribedChannelsWeb()
+        }
+
         return getSubscribedChannelsTV() ?: getSubscribedChannelsWeb()
     }
 
@@ -114,6 +119,10 @@ internal open class BrowseService2 {
     }
 
     open fun getSubscribedChannelsByName(): MediaGroup? {
+        if (ClientMode.isPhoneMode) {
+            return getSubscribedChannelsByNameWeb()
+        }
+
         return getSubscribedChannelsTV(sortByName = true) ?: getSubscribedChannelsByNameWeb()
     }
 
@@ -125,6 +134,10 @@ internal open class BrowseService2 {
     }
 
     open fun getSubscribedChannelsByNewContent(): MediaGroup? {
+        if (ClientMode.isPhoneMode) {
+            return getSubscribedChannelsWeb()
+        }
+
         return getSubscribedChannelsByNewContentTV()
     }
 
@@ -136,6 +149,10 @@ internal open class BrowseService2 {
     }
 
     fun getShorts(): MediaGroup? {
+        if (ClientMode.isPhoneMode) {
+            return getShortsWeb()
+        }
+
         return getShortsTV() ?: getShortsWeb()
     }
 
@@ -171,6 +188,10 @@ internal open class BrowseService2 {
     }
 
     fun getLikedMusic(): MediaGroup? {
+        if (ClientMode.isPhoneMode) {
+            return getLikedMusicWeb()
+        }
+
         return getLikedMusicTV() ?: getLikedMusicWeb()
     }
 
@@ -214,6 +235,16 @@ internal open class BrowseService2 {
 
     open fun getMyPlaylists(): MediaGroup? {
         val options = MediaGroupOptions.create(MediaGroup.TYPE_USER_PLAYLISTS)
+
+        // Phone/tablet devices render playlists through the standard (non-TV) surface
+        if (ClientMode.isPhoneMode) {
+            val result = mBrowseApi.getBrowseResult(BrowseApiHelper.getMyPlaylistQuery(options.clientTV))
+
+            return RetrofitHelper.get(result)?.let {
+                BrowseMediaGroup(it, options)
+            }
+        }
+
         val result = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getMyPlaylistQuery(options.clientTV))
 
         return RetrofitHelper.get(result)?.let {
@@ -446,6 +477,11 @@ internal open class BrowseService2 {
     }
 
     private fun continueSectionListTV(nextPageKey: String?, groupType: Int): Pair<List<MediaGroup?>?, String?>? {
+        if (ClientMode.isPhoneMode) {
+            // No TV shelves in phone mode; rows continue through their own nextPageKey
+            return null
+        }
+
         if (nextPageKey == null) {
             return null
         }
@@ -482,8 +518,10 @@ internal open class BrowseService2 {
         }
 
         val options = MediaGroupOptions.create(group.type)
+        // In phone mode continue with the Android app client, otherwise with WEB
+        val continuationClient = if (ClientMode.isPhoneMode) options.clientTV else AppClient.WEB
         val continuationResult =
-            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQuery(AppClient.WEB, group.nextPageKey))
+            mBrowseApi.getContinuationResult(BrowseApiHelper.getContinuationQuery(continuationClient, group.nextPageKey))
 
         return RetrofitHelper.get(continuationResult, auth)?.let {
             val result = mutableListOf<MediaGroup?>()
@@ -496,6 +534,10 @@ internal open class BrowseService2 {
     }
 
     private fun continueGroupTV(group: MediaGroup?, continueIfNeeded: Boolean = false): MediaGroup? {
+        if (ClientMode.isPhoneMode) {
+            return continueGroupWeb(group)?.firstOrNull()
+        }
+
         if (group?.nextPageKey == null) {
             return null
         }
@@ -532,6 +574,20 @@ internal open class BrowseService2 {
     }
 
     private fun getBrowseRowsTV(query: (AppClient) -> String, sectionType: Int, gridType: Int = MediaGroup.TYPE_UNDEFINED): Pair<List<MediaGroup?>?, String?>? {
+        // Phone/tablet devices render the same screens through the standard (non-TV) surface
+        if (ClientMode.isPhoneMode) {
+            return getBrowseRowsPhone(query, sectionType)
+        }
+
+        return getBrowseRowsTVOnly(query, sectionType, gridType)
+    }
+
+    private fun getBrowseRowsPhone(query: (AppClient) -> String, sectionType: Int): Pair<List<MediaGroup?>?, String?>? {
+        val rowsOptions = MediaGroupOptions.create(sectionType)
+        return Pair(getBrowseRowsWeb(query(rowsOptions.clientTV), sectionType), null)
+    }
+
+    private fun getBrowseRowsTVOnly(query: (AppClient) -> String, sectionType: Int, gridType: Int = MediaGroup.TYPE_UNDEFINED): Pair<List<MediaGroup?>?, String?>? {
         val rowsOptions = MediaGroupOptions.create(sectionType)
         val gridOptions = MediaGroupOptions.create(gridType)
         val browseResult = mBrowseApi.getBrowseResultTV(query(rowsOptions.clientTV))
@@ -548,6 +604,18 @@ internal open class BrowseService2 {
     }
 
     private fun getBrowseGridTV(query: (AppClient) -> String, sectionType: Int, shouldContinue: Boolean = false): MediaGroup? {
+        // Phone/tablet devices render grids through the standard (non-TV) surface
+        if (ClientMode.isPhoneMode) {
+            val options = MediaGroupOptions.create(sectionType)
+            val result = mBrowseApi.getBrowseResult(query(options.clientTV))
+
+            return RetrofitHelper.get(result)?.let { BrowseMediaGroup(it, options) }
+        }
+
+        return getBrowseGridTVOnly(query, sectionType, shouldContinue)
+    }
+
+    private fun getBrowseGridTVOnly(query: (AppClient) -> String, sectionType: Int, shouldContinue: Boolean = false): MediaGroup? {
         val options = MediaGroupOptions.create(sectionType)
         val browseResult = mBrowseApi.getBrowseResultTV(query(options.clientTV))
 

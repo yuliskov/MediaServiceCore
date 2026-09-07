@@ -12,10 +12,11 @@ private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\
         "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 // Merge Shorts with Subscriptions: TV_APP_QUALITY_LIMITED_ANIMATION
 // Separate Shorts from Subscriptions: TV_APP_QUALITY_FULL_ANIMATION
-private const val POST_DATA_BROWSE_TV =
-    "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
-private const val POST_DATA_BROWSE_TV_LEGACY =
-    "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
+private val POST_DATA_TV_DEVICE = "\"deviceMake\":\"${DeviceInfo.deviceMake}\",\"deviceModel\":\"${DeviceInfo.deviceModel}\","
+private val POST_DATA_BROWSE_TV =
+    "$POST_DATA_TV_DEVICE\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
+private val POST_DATA_BROWSE_TV_LEGACY =
+    "$POST_DATA_TV_DEVICE\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 private const val POST_DATA_IOS_MODEL = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID_OS = "\"osName\":\"Android\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID_SDK = "\"androidSdkVersion\":\"%s\","
@@ -61,8 +62,9 @@ internal enum class AppClient(
         userAgent = CLIENTS.MWEB.USER_AGENT!!, referer = CLIENTS.MWEB.REFERER),
     ANDROID(CLIENTS.ANDROID.NAME, CLIENTS.ANDROID.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID.NAME],
         userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
-        postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
-    ANDROID_SDK_LESS(baseClient = ANDROID, postData = String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
+        postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)
+                + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID.DEVICE_MODEL, CLIENTS.ANDROID.DEVICE_MAKE)),
+    ANDROID_SDK_LESS(baseClient = ANDROID, postData = String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION) + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID.DEVICE_MODEL, CLIENTS.ANDROID.DEVICE_MAKE)),
     ANDROID_REEL(ANDROID),
     ANDROID_VR(CLIENTS.ANDROID_VR.NAME, CLIENTS.ANDROID_VR.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID_VR.NAME],
         userAgent = CLIENTS.ANDROID_VR.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID_VR.SDK_VERSION)
@@ -82,8 +84,8 @@ internal enum class AppClient(
 
     override fun getClientName() = clientName
     override fun getClientVersion() = clientVersion
-    override fun getOsName() = "Macintosh" // TODO: change later
-    override fun getOsVersion() = "10_15_7" // TODO: change later
+    override fun getOsName() = DeviceInfo.osName
+    override fun getOsVersion() = DeviceInfo.osVersion
     override fun getUserAgent() = userAgent
 
     fun getRefererUrl(videoId: String?): String? {

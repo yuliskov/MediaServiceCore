@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.common.models.impl.mediagroup
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
 import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.ClientMode
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 internal class MediaGroupOptions private constructor(val removeShorts: Boolean = false,
@@ -11,7 +12,15 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
                                       val removeWatched: Boolean = false,
                                       val groupType: Int,
                                       val enableLegacyUI: Boolean = false) {
-    val clientTV by lazy { if (enableLegacyUI) AppClient.TV_LEGACY else AppClient.TV }
+    // NOTE: the primary browse client follows the real device (ClientMode).
+    // On a phone/tablet it resolves to the Android app client instead of the TV one.
+    val clientTV by lazy {
+        when {
+            ClientMode.isPhoneMode -> AppClient.ANDROID
+            enableLegacyUI -> AppClient.TV_LEGACY
+            else -> AppClient.TV
+        }
+    }
 
     companion object {
         fun create(groupType: Int, channelId: String? = null): MediaGroupOptions {

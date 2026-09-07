@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.innertube.core
 import android.net.Uri
 import androidx.core.net.toUri
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.querystringparser.UrlEncodedQueryString
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
@@ -193,6 +194,8 @@ internal class HTTPClient(val session: Session) {
             ctx.client.userAgent = CLIENTS.ANDROID.USER_AGENT
             ctx.client.osName = CLIENTS.ANDROID.OS_NAME
             ctx.client.osVersion = CLIENTS.ANDROID.OS_VERSION
+            ctx.client.deviceMake = CLIENTS.ANDROID.DEVICE_MAKE
+            ctx.client.deviceModel = CLIENTS.ANDROID.DEVICE_MODEL
             ctx.client.platform = "MOBILE"
         }
 
@@ -255,7 +258,7 @@ internal class HTTPClient(val session: Session) {
             "TV" -> {
                 ctx.client.clientVersion = CLIENTS.TV.VERSION
                 ctx.client.clientName = CLIENTS.TV.NAME
-                ctx.client.userAgent = CLIENTS.TV.USER_AGENT
+                ctx.client.userAgent = DefaultHeaders.USER_AGENT_TV
             }
 
             "TV_SIMPLY" -> {

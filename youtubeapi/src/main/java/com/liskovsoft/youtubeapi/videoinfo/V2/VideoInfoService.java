@@ -8,6 +8,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.DeviceInfo;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.innertube.initialresponse.InitialResponseService;
@@ -48,6 +49,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on Cronet!)
             AppClient.TV_DOWNGRADED, // some user still reported it work (no luck in my case)
     };
+    // On phone/tablet hardware report the real Android app client first
+    private final static AppClient[] PHONE_VIDEO_INFO_TYPE_LIST = {
+            AppClient.ANDROID, // real device as the client
+            AppClient.WEB_EMBED,
+            AppClient.WEB,
+            AppClient.WEB_SAFARI,
+            AppClient.MWEB,
+            AppClient.ANDROID_VR, // doesn't require pot and cipher (often hangs?)
+    };
+
+    private static AppClient[] getVideoInfoTypeList() {
+        return DeviceInfo.INSTANCE.isTVDevice() ? VIDEO_INFO_TYPE_LIST : PHONE_VIDEO_INFO_TYPE_LIST;
+    }
     @Nullable
     private AppClient mActualInfoType = null;
     @Nullable
@@ -107,8 +121,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void moveFirst(AppClient client) {
-        if (VIDEO_INFO_TYPE_LIST[0] != client) {
-            Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(client), 0);
+        AppClient[] typeList = getVideoInfoTypeList();
+        if (typeList[0] != client) {
+            Helpers.move(typeList, Arrays.asList(typeList).indexOf(client), 0);
         }
     }
 
@@ -135,7 +150,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo firstInfoWith(String videoId, String clickTrackingParams, InfoTester infoTester) {
         //final AppClient beginType = getDefaultClient();
-        final AppClient beginType = mNextInfoType != null ? mNextInfoType : VIDEO_INFO_TYPE_LIST[0];
+        final AppClient beginType = mNextInfoType != null ? mNextInfoType : getVideoInfoTypeList()[0];
         AppClient nextType = beginType;
 
         do {
@@ -145,7 +160,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 return result;
             }
 
-            nextType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, nextType);
+            nextType = Helpers.getNextValue(getVideoInfoTypeList(), nextType);
         } while (nextType != beginType);
 
         return null;
@@ -192,7 +207,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfoType() {
-        mNextInfoType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, mActualInfoType);
+        mNextInfoType = Helpers.getNextValue(getVideoInfoTypeList(), mActualInfoType);
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {
@@ -331,7 +346,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private void resetInfoTypeToDefault() {
         mNextInfoType = null;
-        mActualInfoType = VIDEO_INFO_TYPE_LIST[0];
+        mActualInfoType = getVideoInfoTypeList()[0];
         persistVideoInfoType();
     }
 

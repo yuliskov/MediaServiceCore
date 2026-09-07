@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.browse.v2
 
 import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.ClientMode
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import com.liskovsoft.youtubeapi.common.helpers.PostDataType
 import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder
@@ -57,7 +58,9 @@ internal object BrowseApiHelper {
     private const val CONTINUATION = "\"continuation\":\"%s\""
 
     fun getHomeQuery(client: AppClient): String {
-        return PostDataHelper.createQuery(client.browseTemplate, HOME_TV)
+        // On a real TV the home comes from the TV surface; on phone/tablet devices
+        // from the standard "what to watch" feed (same client screen as the Android app).
+        return PostDataHelper.createQuery(client.browseTemplate, if (ClientMode.isPhoneMode) WHAT_TO_WATCH else HOME_TV)
     }
 
     fun getTrendingQuery(client: AppClient): String {

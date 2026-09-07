@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.innertube.utils
 
+import com.liskovsoft.youtubeapi.common.helpers.DeviceInfo
+
 internal object URLS {
     const val YT_BASE = "https://www.youtube.com"
     const val YT_MUSIC_BASE = "https://music.youtube.com"
@@ -99,13 +101,18 @@ internal object CLIENTS {
     //    USER_AGENT = "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
     //)
 
+    private const val ANDROID_VERSION = "21.26.364"
+
+    // Report the real device as the client instead of a hardcoded one
     val ANDROID = CLIENT(
         NAME = "ANDROID",
-        VERSION = "21.26.364",
+        VERSION = ANDROID_VERSION,
         OS_NAME = "Android",
-        SDK_VERSION = 30,
-        OS_VERSION = "11",
-        USER_AGENT = "com.google.android.youtube/21.26.364 (Linux; U; Android 11) gzip"
+        SDK_VERSION = DeviceInfo.sdkVersion,
+        OS_VERSION = DeviceInfo.osVersion,
+        DEVICE_MAKE = DeviceInfo.deviceMake,
+        DEVICE_MODEL = DeviceInfo.deviceModel,
+        USER_AGENT = buildAndroidUserAgent(ANDROID_VERSION)
     )
 
     // "Made for kids" videos aren't available with this client
@@ -113,12 +120,12 @@ internal object CLIENTS {
     val ANDROID_VR = CLIENT(
         NAME = "ANDROID_VR",
         VERSION = "1.65.10",
-        SDK_VERSION = 32,
+        SDK_VERSION = DeviceInfo.sdkVersion,
         OS_NAME = "Android",
-        OS_VERSION = "12",
-        DEVICE_MAKE = "Oculus",
-        DEVICE_MODEL = "Quest 3",
-        USER_AGENT = "com.google.android.apps.youtube.vr.oculus/1.65.10 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
+        OS_VERSION = DeviceInfo.osVersion,
+        DEVICE_MAKE = DeviceInfo.deviceMake,
+        DEVICE_MODEL = DeviceInfo.deviceModel,
+        USER_AGENT = "com.google.android.apps.youtube.vr.oculus/1.65.10 (Linux; U; Android ${DeviceInfo.osVersion}; ${DeviceInfo.deviceModel} Build/${DeviceInfo.buildId}) gzip"
     )
 
     val YTSTUDIO_ANDROID = CLIENT(
@@ -219,6 +226,12 @@ internal data class CLIENT(
     val SUGG_EXP_ID: String? = null,
     val REFERER: String? = null
 )
+
+/**
+ * Builds a User-Agent that reports the real Android device.
+ */
+private fun buildAndroidUserAgent(version: String): String =
+    "com.google.android.youtube/$version (Linux; U; Android ${DeviceInfo.osVersion}; ${DeviceInfo.deviceModel} Build/${DeviceInfo.buildId}) gzip"
 
 /**
  * The keys correspond to the `NAME` fields in [CLIENTS] constant

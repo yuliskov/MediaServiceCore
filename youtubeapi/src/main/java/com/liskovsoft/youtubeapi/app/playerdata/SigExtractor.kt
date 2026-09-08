@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
-import com.eclipsesource.v8.V8ScriptExecutionException
+import com.liskovsoft.googlecommon.common.js.JavaScriptRuntime.JavaScriptRuntimeException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.googlecommon.common.js.JSInterpret
 import java.util.regex.Pattern
@@ -62,7 +62,7 @@ internal object SigExtractor {
         // Test the function works
         try {
             extractSig(fixedFuncCode, "5cNpZqIJ7ixNqU68Y7S")
-        } catch (error: V8ScriptExecutionException) {
+        } catch (error: JavaScriptRuntimeException) {
             if (nestedCount > 1)
                 return null
 

@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.potoken
 
 import com.liskovsoft.sharedutils.TestHelpers
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
-import com.liskovsoft.googlecommon.common.js.V8Runtime
+import com.liskovsoft.googlecommon.common.js.JavaScriptRuntime
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -78,7 +78,7 @@ class PoTokenApiTest {
             "var vm = trayride; vm.a('${program}', () => {}, true, undefined, () => {}).toString();"
         )
 
-        val result = V8Runtime.instance().evaluate(script.joinToString(""))
+        val result = JavaScriptRuntime.evaluate(script.joinToString(""))
 
         assertNotNull(result)
     }

@@ -13,7 +13,7 @@ internal object JSInterpret {
         return { args: List<String> ->
             val fullCode =
                 "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
-            V8Runtime.instance().evaluateWithErrors(fullCode)
+            JavaScriptRuntime.evaluate(fullCode)
         }
     }
 
@@ -46,7 +46,11 @@ internal object JSInterpret {
     }
 
     fun interpretExpression(jsCode: String): List<String>? {
-        val result = V8Runtime.instance().evaluate("JSON.stringify($jsCode)")
+        val result = try {
+            JavaScriptRuntime.evaluate("JSON.stringify($jsCode)")
+        } catch (error: JavaScriptRuntime.JavaScriptRuntimeException) {
+            null
+        }
 
         val gson = Gson()
         val listType = object : TypeToken<List<String>>() {}.type

@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.app.potoken
 import com.google.gson.JsonElement
 import com.liskovsoft.sharedutils.TestHelpers
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
-import com.liskovsoft.googlecommon.common.js.V8Runtime
+import com.liskovsoft.googlecommon.common.js.JavaScriptRuntime
 
 internal class PoToken {
     data class Arguments(val privateScript: String?,
@@ -39,7 +39,7 @@ internal class PoToken {
             """.trimIndent()
         )
 
-        val poToken = V8Runtime.instance().evaluate(script.joinToString(""))
+        val poToken = JavaScriptRuntime.evaluate(script.joinToString(""))
 
         return Result(poToken, bgResult.integrityTokenData)
     }
@@ -102,8 +102,8 @@ internal class PoToken {
             "result.toString();"
         )
 
-        val result = V8Runtime.instance().evaluate(script) ?: return null
-        //val result = V8Runtime.instance().evaluate(script.joinToString(""))
+        val result = JavaScriptRuntime.evaluate(script) ?: return null
+        //val result = JavaScriptRuntime.evaluate(script.joinToString(""))
 
         val (postProcessFunction, payload) = result.split(RESULT_DELIM)
 

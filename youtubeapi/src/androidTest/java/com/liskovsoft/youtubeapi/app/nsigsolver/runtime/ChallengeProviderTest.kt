@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app.nsigsolver.runtime
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
-import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
+import com.liskovsoft.youtubeapi.app.nsigsolver.impl.JsChallangeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeOutput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderResponse
@@ -86,13 +86,13 @@ internal class ChallengeProviderTest {
 
     @Test
     fun testNonEmptyResponse() {
-        val actual = V8ChallengeProvider.bulkSolve(tests).toList()
+        val actual = JsChallangeProvider.bulkSolve(tests).toList()
         assertEquals(responses, actual)
     }
 
     @Test
     fun testSingleNRequest() {
-        val result = V8ChallengeProvider.bulkSolve(listOf(tests.first())).toList()
+        val result = JsChallangeProvider.bulkSolve(listOf(tests.first())).toList()
         assertTrue("not empty", result.isNotEmpty())
     }
 }

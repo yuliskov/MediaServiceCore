@@ -3,106 +3,111 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
-    testOptions.unitTests.includeAndroidResources = true
+  compileSdkVersion project.ext.compileSdkVersion
+  buildToolsVersion project.ext.buildToolsVersion
+  testOptions.unitTests.includeAndroidResources = true
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  defaultConfig {
+    minSdkVersion project.ext.minSdkVersion
+    targetSdkVersion project.ext.targetSdkVersion
+    versionCode 15
+    versionName "0.1.5"
+
+    // required for androidTest support
+    // more info: https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests
+    // small tests: https://stackoverflow.com/questions/4671923/what-is-the-purpose-of-smalltest-mediumtest-and-largetest-annotations-in-an
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    // More info: http://myhexaville.com/2017/03/10/android-multidex/
+    // Additionally, you should extend your application from MultiDexApplication
+    multiDexEnabled = true
+
+    consumerProguardFiles 'consumer-rules.pro'
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 
-    defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-        versionCode 15
-        versionName "0.1.5"
+  // gradle 4.6 migration: disable dimensions mechanism
+  // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
+  flavorDimensions "default"
 
-        // required for androidTest support
-        // more info: https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests
-        // small tests: https://stackoverflow.com/questions/4671923/what-is-the-purpose-of-smalltest-mediumtest-and-largetest-annotations-in-an
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        // More info: http://myhexaville.com/2017/03/10/android-multidex/
-        // Additionally, you should extend your application from MultiDexApplication
-        multiDexEnabled = true
-
-        // consumerProguardFiles 'proguard-rules.txt' // embed this file to aar
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    // gradle 4.6 migration: disable dimensions mechanism
-    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
-    flavorDimensions "default"
-
-    productFlavors {
-        stbeta {}
-        ststable {}
-        stfdroid {}
-    }
+  productFlavors {
+    stbeta {}
+    // The active JavaScriptEngine implementation requires API 26.
+    ststable { minSdkVersion 26 }
+    stfdroid {}
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation project(':youtubeapi')
-    testImplementation project(':sharedtests')
-    testImplementation 'co.infinum:retromock:' + retromockVersion
-    testImplementation 'junit:junit:' + junitVersion
-    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
+  testImplementation project(':youtubeapi')
+  testImplementation project(':sharedtests')
+  testImplementation 'co.infinum:retromock:' + retromockVersion
+  testImplementation 'junit:junit:' + junitVersion
+  testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
-    androidTestImplementation project(':youtubeapi')
-    androidTestImplementation project(':sharedtests')
-    androidTestImplementation 'junit:junit:' + junitVersion
-    androidTestImplementation 'androidx.test:runner:' + testXSupportVersion
-    androidTestImplementation 'androidx.test:rules:' + testXSupportVersion
+  androidTestImplementation project(':youtubeapi')
+  androidTestImplementation project(':sharedtests')
+  androidTestImplementation 'junit:junit:' + junitVersion
+  androidTestImplementation 'androidx.test:runner:' + testXSupportVersion
+  androidTestImplementation 'androidx.test:rules:' + testXSupportVersion
 
-    implementation project(':commons-io-2.8.0') // My Android 4.3 fix
-    implementation project(':sharedutils')
-    implementation project(':mediaserviceinterfaces')
+  implementation project(':commons-io-2.8.0') // My Android 4.3 fix
+  implementation project(':sharedutils')
+  implementation project(':mediaserviceinterfaces')
 
-    implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
-    implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
-    implementation 'com.google.code.gson:gson:' + gsonVersion
-    implementation 'com.jayway.jsonpath:json-path:' + jsonPathVersion
+  implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
+  implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
+  implementation 'com.google.code.gson:gson:' + gsonVersion
+  implementation 'com.jayway.jsonpath:json-path:' + jsonPathVersion
 
-    implementation 'com.google.net.cronet:cronet-okhttp:' + cronetOkHttpVersion
-    implementation 'org.chromium.net:cronet-api:' + cronetApiVersion
+  implementation 'com.google.net.cronet:cronet-okhttp:' + cronetOkHttpVersion
+  implementation 'org.chromium.net:cronet-api:' + cronetApiVersion
 
-    implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
-    implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
+  implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
+  implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
-    implementation 'androidx.annotation:annotation:' + annotationXVersion
+  implementation 'androidx.annotation:annotation:' + annotationXVersion
+  // Beta01 remains compatible with SmartTube's AGP 7.4.2 build.
+  implementation 'androidx.javascriptengine:javascriptengine:1.0.0-beta01'
 
-    // js interpreter
-    // duktape fork
-    // implementation 'app.cash.quickjs:quickjs-android:' + quickjsVersion
-    //implementation 'com.squareup.duktape:duktape-android:' + duktapeVersion
-    //implementation 'org.mozilla:rhino:' + rhinoVersion
-    //implementation 'com.eclipsesource.j2v8:j2v8:' + j2v8Version + '@aar'
-    // https://mvnrepository.com/artifact/com.eclipsesource.j2v8/j2v8/6.2.1
-    //implementation(name: 'j2v8-6.2.1', ext: 'aar')
-    //implementation files('libs/j2v8-6.2.1-fixed.aar')
-    // https://stackoverflow.com/questions/60878599/error-building-android-library-direct-local-aar-file-dependencies-are-not-supp
-    stbetaImplementation project(':j2v8')
-    ststableImplementation project(':j2v8')
-    stfdroidImplementation 'com.eclipsesource.j2v8:j2v8:' + j2v8Version + '@aar'
+  // js interpreter
+  // duktape fork
+  // implementation 'app.cash.quickjs:quickjs-android:' + quickjsVersion
+  //implementation 'com.squareup.duktape:duktape-android:' + duktapeVersion
+  //implementation 'org.mozilla:rhino:' + rhinoVersion
+  //implementation 'com.eclipsesource.j2v8:j2v8:' + j2v8Version + '@aar'
+  // https://mvnrepository.com/artifact/com.eclipsesource.j2v8/j2v8/6.2.1
+  //implementation(name: 'j2v8-6.2.1', ext: 'aar')
+  //implementation files('libs/j2v8-6.2.1-fixed.aar')
+  // https://stackoverflow.com/questions/60878599/error-building-android-library-direct-local-aar-file-dependencies-are-not-supp
+  stbetaImplementation project(':j2v8')
+  // Keep the unused V8 implementation compilable without publishing or
+  // packaging its native libraries in the stable artifact.
+  ststableCompileOnly project(':j2v8')
+  stfdroidImplementation 'com.eclipsesource.j2v8:j2v8:' + j2v8Version + '@aar'
 
-    // Add kotlin support libs
-    implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + kotlinVersion
+  // Add kotlin support libs
+  implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + kotlinxVersion
 
-    // https://github.com/florianingerl/com.florianingerl.util.regex
-    implementation 'com.github.florianingerl.util:regex:' + florianingerlRegexVersion
+  // https://github.com/florianingerl/com.florianingerl.util.regex
+  implementation 'com.github.florianingerl.util:regex:' + florianingerlRegexVersion
 
-    // NewPipe pot
-    implementation 'androidx.webkit:webkit:' + webkitVersion
-    implementation 'com.grack:nanojson:' + nanojsonVersion
+  // NewPipe pot
+  implementation 'androidx.webkit:webkit:' + webkitVersion
+  implementation 'com.grack:nanojson:' + nanojsonVersion
 }

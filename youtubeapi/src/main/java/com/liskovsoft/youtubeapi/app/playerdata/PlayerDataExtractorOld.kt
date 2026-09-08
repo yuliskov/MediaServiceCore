@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.app.playerdata
 
-import com.eclipsesource.v8.V8ScriptExecutionException
+import com.liskovsoft.googlecommon.common.js.JavaScriptRuntime.JavaScriptRuntimeException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached
 import com.liskovsoft.googlecommon.common.js.JSInterpret
@@ -153,7 +153,7 @@ internal class PlayerDataExtractorOld(val playerUrl: String) {
                 val result = extractNSigReal(param)
                 if (result == null || result == param)
                     mNFuncCode = null
-            } catch (error: V8ScriptExecutionException) {
+            } catch (error: JavaScriptRuntimeException) {
                 mNFuncCode = null
             }
         }
@@ -164,7 +164,7 @@ internal class PlayerDataExtractorOld(val playerUrl: String) {
                 val result = extractSigReal(param)
                 if (result == null || result == param)
                     mSigFuncCode = null
-            } catch (error: V8ScriptExecutionException) {
+            } catch (error: JavaScriptRuntimeException) {
                 mSigFuncCode = null
             }
         }
@@ -174,7 +174,7 @@ internal class PlayerDataExtractorOld(val playerUrl: String) {
                 val result = createClientPlaybackNonce()
                 if (result == null)
                     mCPNCode = null
-            } catch (error: V8ScriptExecutionException) {
+            } catch (error: JavaScriptRuntimeException) {
                 mCPNCode = null
             }
         }

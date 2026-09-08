@@ -7,7 +7,7 @@ import com.liskovsoft.youtubeapi.innertube.ytcfg.YtCfgService
 
 internal enum class PostDataType { Player, Browse }
 
-// Use protobuf to bypass geo blocking
+// Use protobuf to bypass geo-blocking
 private const val GEO_PARAMS: String = "CgIQBg%3D%3D"
 
 internal class QueryBuilder(private val client: AppClient) {
@@ -70,13 +70,16 @@ internal class QueryBuilder(private val client: AppClient) {
             if (cpn == null)
                 cpn = appService.clientPlaybackNonce // get it somewhere else?
 
-            // Web and TV timestamps now differs. TV one should have 001 suffix
-            // E.g. web: 20522, tv: 20522001
-            // NOTE: wrong timestamp format yield 'page should be reloaded' error (this happens on the tv variant at least)
+            // Newer TV -tcl player variants use 8 digits timestamp, usually with 001 suffix, and dedicated nParam/nSig generation.
+            // E.g. web: 20522 vs tv: 20522001
+            // NOTE: wrong timestamp format yield 'page should be reloaded' error (this happens on the TV variant at least)
+            //if (signatureTimestamp == null || signatureTimestamp == -1)
+            //    signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp?.let {
+            //        if (client.isTVClient && it.length == 5) it + "001" else it
+            //    }) // get it somewhere else?
+            // NOTE: downgraded UAs use the same timestamp format for WEB and TV
             if (signatureTimestamp == null || signatureTimestamp == -1)
-                signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp?.let {
-                    if (client.isTVClient && it.length == 5) it + "001" else it
-                }) // get it somewhere else?
+                signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp) // get it somewhere else?
         }
 
         val json = """

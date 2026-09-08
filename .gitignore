@@ -16,6 +16,7 @@ tmp/
 *_bak*
 *_tmp
 *.bak*
+*.new*
 /.idea
 *.apk
 *.7z

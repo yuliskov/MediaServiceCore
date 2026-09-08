@@ -305,14 +305,14 @@ public final class YouTubeHelper {
     }
 
     @Nullable
-    public static String getSabrLanguage(String audioTrackId, boolean isAutoDubbed) {
+    public static String getSabrLanguage(String audioTrackId, boolean isAutoDubbed, boolean isDefaultAudio) {
         if (audioTrackId == null) {
             return null;
         }
 
         String lang = audioTrackId.split("\\.")[0];
         // original, descriptive, dubbed, dubbed-auto, secondary
-        String acont = isAutoDubbed ? "dubbed-auto" : "original";
+        String acont = isAutoDubbed ? "dubbed-auto" : isDefaultAudio ? "original" : "dubbed";
 
         return String.format("%s (%s)", exoNameFix(lang), acont);
     }

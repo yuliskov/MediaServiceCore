@@ -67,12 +67,12 @@ object DefaultHeaders {
     private const val USER_AGENT_IOS_2 = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
     const val USER_AGENT_SAFARI = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15,gzip(gfe)"
 
-    //const val USER_AGENT_TV = USER_AGENT_COBALT_1 // (uses old 5 digits timeStamp format)
+    const val USER_AGENT_TV_DOWNGRADED = USER_AGENT_COBALT_1 // (uses old 5 digits timeStamp format and NON-tcl player)
+    //const val USER_AGENT_TV_DOWNGRADED = USER_AGENT_XBOX // (uses old 5 digits timeStamp format and NON-tcl player)
     //const val USER_AGENT_TV = USER_AGENT_SAMSUNG_3 // no buffering (only 320x180 thumbs)
-    // Report the real device as the TV client instead of spoofing.
-    // On a real Android TV report its own ATV identity; on other hardware
-    // (phones/tablets running SmartTube) fall back to a generic Cobalt UA.
-    val USER_AGENT_TV = if (DeviceInfo.isTVDevice) USER_AGENT_ATV_COMBINED else USER_AGENT_COBALT_3
+    //const val USER_AGENT_TV = USER_AGENT_ATV_COMBINED // buffering badly even with protobuf params (see videoinfo)
+    //const val USER_AGENT_TV = USER_AGENT_FIRE_TV // buffering?
+    const val USER_AGENT_TV = USER_AGENT_TV_DOWNGRADED
     const val USER_AGENT_WEB = USER_AGENT_CHROME
     const val USER_AGENT_MOBILE_WEB = USER_AGENT_MOBILE_CHROME_2
     val USER_AGENT_ANDROID = CLIENTS.ANDROID.USER_AGENT ?: USER_AGENT_ANDROID_20

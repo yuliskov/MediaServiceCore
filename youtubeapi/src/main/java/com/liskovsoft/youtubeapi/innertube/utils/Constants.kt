@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.innertube.utils
 
 import com.liskovsoft.youtubeapi.common.helpers.DeviceInfo
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
 
 internal object URLS {
     const val YT_BASE = "https://www.youtube.com"
@@ -149,7 +150,8 @@ internal object CLIENTS {
     val TV_DOWNGRADED = CLIENT(
         NAME = "TVHTML5",
         VERSION = "5.20260707",
-        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version",
+        //USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version",
+        USER_AGENT = DefaultHeaders.USER_AGENT_TV_DOWNGRADED,
         REFERER = "https://www.youtube.com/tv"
     )
 

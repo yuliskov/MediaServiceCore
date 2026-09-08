@@ -77,7 +77,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     private MediaItemFormatInfo selectPlaybackFormatInfo(String videoId, String clickTrackingParams) {
         MediaItemFormatInfo formatInfo = getFormatInfoLegacy(videoId, clickTrackingParams);
 
-        if (formatInfo.isUnplayable()) {
+        if (formatInfo != null && formatInfo.isUnplayable()) {
             formatInfo = getFormatInfoInnertube(videoId, clickTrackingParams);
         }
 

@@ -275,7 +275,7 @@ public class VideoFormat {
 
         String urlHolderLang = getUrlHolder().getLanguage();
 
-        return urlHolderLang != null ? urlHolderLang : YouTubeHelper.getSabrLanguage(mAudioTrackId, mIsAutoDubbed);
+        return urlHolderLang != null ? urlHolderLang : YouTubeHelper.getSabrLanguage(mAudioTrackId, mIsAutoDubbed, mIsDefaultAudio);
     }
 
     public String getApproxDurationMs() {

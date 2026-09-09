@@ -12,6 +12,11 @@ private const val TAG = "WebViewUtil"
 
 internal const val potLibPrefix = "potokennp2/"
 
+// NOTE: The listener lambdas were moved into ThermalServiceCheck on purpose.
+// Inlined here they make ART resolve PowerManager$OnThermalStatusChangedListener
+// (API 29+) while running these functions, which throws NoClassDefFoundError on
+// older devices before the SDK_INT guard can return. See ThermalServiceCheck.
+
 internal fun isThermalServiceAvailable(context: Context): Boolean {
     // Only Android 10 has the issue
     if (Build.VERSION.SDK_INT != 29)
@@ -19,18 +24,7 @@ internal fun isThermalServiceAvailable(context: Context): Boolean {
 
     val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
 
-    val listener = PowerManager.OnThermalStatusChangedListener {
-        // NOP
-    }
-
-    return try {
-        powerService.addThermalStatusListener(listener)
-        true
-    } catch (e: Exception) {
-        false
-    } finally {
-        powerService.removeThermalStatusListener(listener)
-    }
+    return ThermalServiceCheck.isAvailable(powerService)
 }
 
 internal fun hasThermalServiceBug(context: Context): Boolean {
@@ -40,18 +34,7 @@ internal fun hasThermalServiceBug(context: Context): Boolean {
 
     val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
 
-    val listener = PowerManager.OnThermalStatusChangedListener {
-        // NOP
-    }
-
-    return try {
-        powerService.addThermalStatusListener(listener)
-        false
-    } catch (e: Exception) {
-        true
-    } finally {
-        powerService.removeThermalStatusListener(listener)
-    }
+    return ThermalServiceCheck.hasBug(powerService)
 }
 
 /**

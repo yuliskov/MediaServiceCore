@@ -12,6 +12,7 @@ import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.innertube.initialresponse.InitialResponseService;
 import com.liskovsoft.youtubeapi.videoinfo.VideoInfoServiceBase;
+import com.liskovsoft.youtubeapi.videoinfo.LoginRequiredException;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.TranslationLanguage;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -124,30 +125,38 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo firstPlayable(String videoId, String clickTrackingParams) {
-        VideoInfo result = firstInfoWith(videoId, clickTrackingParams, info -> !info.isUnplayable());
-
-        return result != null ? result : firstInfoWith(videoId, clickTrackingParams, info -> info.getRegularFormats() != null);
-    }
-
-    private interface InfoTester {
-        boolean test(VideoInfo info);
-    }
-
-    private VideoInfo firstInfoWith(String videoId, String clickTrackingParams, InfoTester infoTester) {
-        //final AppClient beginType = getDefaultClient();
         final AppClient beginType = mNextInfoType != null ? mNextInfoType : VIDEO_INFO_TYPE_LIST[0];
-        AppClient nextType = beginType;
+        return firstPlayable(beginType, client -> getVideoInfoWithRentFix(client, videoId, clickTrackingParams));
+    }
 
-        do {
-            VideoInfo result = getVideoInfoWithRentFix(nextType, videoId, clickTrackingParams);
+    interface InfoProvider {
+        VideoInfo get(AppClient client);
+    }
 
-            if (result != null && infoTester.test(result)) {
-                return result;
-            }
+    static VideoInfo firstPlayable(AppClient beginType, InfoProvider provider) {
+        VideoInfo loginRequired = null;
 
-            nextType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, nextType);
-        } while (nextType != beginType);
+        // Keep both existing fallback passes: adaptive formats first, then regular formats.
+        for (int pass = 0; pass < 2; pass++) {
+            AppClient nextType = beginType;
+            do {
+                VideoInfo result = provider.get(nextType);
+                if (result != null) {
+                    if (result.isLoginRequired()) {
+                        loginRequired = result;
+                    }
+                    if (pass == 0 ? !result.isUnplayable() : result.getRegularFormats() != null) {
+                        return result;
+                    }
+                }
+                nextType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, nextType);
+            } while (nextType != beginType);
+        }
 
+        // Only stop after all clients fail; an earlier restriction must not hide a playable fallback.
+        if (loginRequired != null) {
+            throw new LoginRequiredException(loginRequired.getPlayabilityStatus());
+        }
         return null;
     }
 

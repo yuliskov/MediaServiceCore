@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.PowerManager
 import android.webkit.ValueCallback
 import android.webkit.WebView
+import androidx.annotation.Keep
+import androidx.annotation.RequiresApi
 import com.liskovsoft.sharedutils.mylogger.Log
 
 private const val TAG = "WebViewUtil"
@@ -19,18 +21,7 @@ internal fun isThermalServiceAvailable(context: Context): Boolean {
 
     val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
 
-    val listener = PowerManager.OnThermalStatusChangedListener {
-        // NOP
-    }
-
-    return try {
-        powerService.addThermalStatusListener(listener)
-        true
-    } catch (e: Exception) {
-        false
-    } finally {
-        powerService.removeThermalStatusListener(listener)
-    }
+    return ThermalServiceApi29.isAvailable(powerService)
 }
 
 internal fun hasThermalServiceBug(context: Context): Boolean {
@@ -40,17 +31,26 @@ internal fun hasThermalServiceBug(context: Context): Boolean {
 
     val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
 
-    val listener = PowerManager.OnThermalStatusChangedListener {
-        // NOP
-    }
+    return !ThermalServiceApi29.isAvailable(powerService)
+}
 
-    return try {
-        powerService.addThermalStatusListener(listener)
-        false
-    } catch (e: Exception) {
-        true
-    } finally {
-        powerService.removeThermalStatusListener(listener)
+// Keep API 29 types out of the class verified on older Android versions.
+@Keep
+@RequiresApi(29)
+private object ThermalServiceApi29 {
+    fun isAvailable(powerService: PowerManager): Boolean {
+        val listener = PowerManager.OnThermalStatusChangedListener {
+            // NOP
+        }
+
+        return try {
+            powerService.addThermalStatusListener(listener)
+            powerService.removeThermalStatusListener(listener)
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Thermal service check failed", e)
+            false
+        }
     }
 }
 

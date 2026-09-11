@@ -74,26 +74,6 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
         }
         v8Runtime = null
     }
-    
-    fun warmup() {
-        synchronized(v8Lock) {
-            initRuntime()
-        }
-    }
-
-    fun shutdown() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-        }
-    }
-
-    fun forceRecreate() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-
-            initRuntime()
-        }
-    }
 
     private fun shutdownIfNeeded() {
         // NOTE: Possible Invalid thread access if using RxHelper runAsync

@@ -160,7 +160,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
                 val result = createClientPlaybackNonce()
                 if (result == null)
                     cpnCode = null
-            } catch (error: V8ScriptExecutionException) {
+            } catch (_: V8ScriptExecutionException) {
                 cpnCode = null
             }
         }
@@ -168,7 +168,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
 
     private fun checkSigData() {
         if (nFuncCode && sFuncCode) {
-            V8ChallengeProvider.warmup() // enable hot start
             return
         }
 

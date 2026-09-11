@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit
 internal object PoTokenProviderImpl : PoTokenProvider {
     val TAG = PoTokenProviderImpl::class.simpleName
     private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
-    private var webViewBadImpl = false // whether the system has a bad WebView implementation
+    private var webViewBadUntilMs = -1L // time after which the WebView should be retried
+    private const val BAD_WEBVIEW_RETRY_MS = 10 * 60 * 1000L
 
     private object WebPoTokenGenLock
     private var webPoTokenVisitorData: String? = null
@@ -39,7 +40,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
             when (val cause = e.cause) {
                 is BadWebViewException -> {
                     Log.e(TAG, "Could not obtain poToken because WebView is broken", e)
-                    webViewBadImpl = true
+                    webViewBadUntilMs = System.currentTimeMillis() + BAD_WEBVIEW_RETRY_MS // retry later
                     return null
                 }
                 null -> throw e
@@ -158,7 +159,7 @@ internal object PoTokenProviderImpl : PoTokenProvider {
 
     override fun isWebPotExpired() = isWebPotSupported && webPoTokenGenerator?.isExpired() ?: true
 
-    override fun isWebPotSupported() = webViewSupported && !webViewBadImpl
+    override fun isWebPotSupported() = webViewSupported && System.currentTimeMillis() >= webViewBadUntilMs
 
     fun resetCache() {
         webPoTokenVisitorData = null

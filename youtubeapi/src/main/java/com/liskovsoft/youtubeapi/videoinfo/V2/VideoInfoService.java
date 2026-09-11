@@ -8,6 +8,7 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.DeviceInfo;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.innertube.initialresponse.InitialResponseService;
@@ -30,8 +31,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private static final AppClient WEB_CLIENT = AppClient.WEB_EMBED;
     private static VideoInfoService sInstance;
     private final VideoInfoApi mVideoInfoApi;
-    // TODO: TV clients are broken because of recently introduced '-tcl' player variant (different nParam and nSignature)
-    private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
+    // TODO: tv clients are fully broken because of '-tcl' player
+    // Web fallbacks used when the real TV (TVHTML5) clients below aren't usable
+    private final static AppClient[] TV_FALLBACK_VIDEO_INFO_TYPE_LIST = {
             AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.VISIONOS, // no url formats
             AppClient.TV_DOWNGRADED, // works with old UAs like old Cobalt and old Xbox (non-tcl players)
@@ -48,6 +50,33 @@ public class VideoInfoService extends VideoInfoServiceBase {
             //AppClient.TV_SIMPLY, // hangs?
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on Cronet!)
     };
+    // On a real Android TV the YouTube TV app client (TVHTML5) comes first,
+    // reporting the actual device as the client.
+    private final static AppClient[] ATV_VIDEO_INFO_TYPE_LIST = {
+            AppClient.TV, // TVHTML5, supports auth ("please sign in" fix), the best for Premium users
+            AppClient.TV_LEGACY,
+    };
+    // On phone/tablet hardware report the real Android app client first
+    private final static AppClient[] PHONE_VIDEO_INFO_TYPE_LIST = {
+            AppClient.ANDROID, // real device as the client
+            AppClient.WEB_EMBED,
+            AppClient.WEB,
+            AppClient.WEB_SAFARI,
+            AppClient.MWEB,
+            AppClient.ANDROID_VR, // doesn't require pot and cipher (often hangs?)
+    };
+    private final static AppClient[] TV_VIDEO_INFO_TYPE_LIST = concat(ATV_VIDEO_INFO_TYPE_LIST, TV_FALLBACK_VIDEO_INFO_TYPE_LIST);
+
+    private static AppClient[] getVideoInfoTypeList() {
+        return DeviceInfo.INSTANCE.isTVDevice()  ? TV_VIDEO_INFO_TYPE_LIST : PHONE_VIDEO_INFO_TYPE_LIST;
+    }
+
+    private static AppClient[] concat(AppClient[] head, AppClient[] tail) {
+        AppClient[] result = new AppClient[head.length + tail.length];
+        System.arraycopy(head, 0, result, 0, head.length);
+        System.arraycopy(tail, 0, result, head.length, tail.length);
+        return result;
+    }
     @Nullable
     private AppClient mActualInfoType = null;
     @Nullable
@@ -107,8 +136,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void moveFirst(AppClient client) {
-        if (VIDEO_INFO_TYPE_LIST[0] != client) {
-            Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(client), 0);
+        AppClient[] typeList = getVideoInfoTypeList();
+        if (typeList[0] != client) {
+            Helpers.move(typeList, Arrays.asList(typeList).indexOf(client), 0);
         }
     }
 
@@ -124,9 +154,19 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private VideoInfo firstPlayable(String videoId, String clickTrackingParams) {
-        VideoInfo result = firstInfoWith(videoId, clickTrackingParams, info -> !info.isUnplayable());
+        // NOTE: On real TV hardware the TVHTML5 client comes first, but the gvs backend rejects
+        // its signed SABR sessions (HTTP 403) even when authenticated, so skip it entirely and
+        // start with the web fallbacks (WEB_EMBED), which serve 200 SABR. TV is still available
+        // below in the regular-format fallback for restricted/premium edge cases.
+        VideoInfo result = firstInfoWith(videoId, clickTrackingParams, info -> !info.isUnplayable()
+                && !isTvHtml5Client(info.getClient()));
 
         return result != null ? result : firstInfoWith(videoId, clickTrackingParams, info -> info.getRegularFormats() != null);
+    }
+
+    private static boolean isTvHtml5Client(AppClient client) {
+        return client == AppClient.TV || client == AppClient.TV_LEGACY || client == AppClient.TV_EMBED
+                || client == AppClient.TV_SIMPLY || client == AppClient.TV_DOWNGRADED || client == AppClient.TV_KIDS;
     }
 
     private interface InfoTester {
@@ -135,7 +175,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private VideoInfo firstInfoWith(String videoId, String clickTrackingParams, InfoTester infoTester) {
         //final AppClient beginType = getDefaultClient();
-        final AppClient beginType = mNextInfoType != null ? mNextInfoType : VIDEO_INFO_TYPE_LIST[0];
+        final AppClient beginType = mNextInfoType != null ? mNextInfoType : getVideoInfoTypeList()[0];
         AppClient nextType = beginType;
 
         do {
@@ -145,7 +185,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 return result;
             }
 
-            nextType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, nextType);
+            nextType = Helpers.getNextValue(getVideoInfoTypeList(), nextType);
         } while (nextType != beginType);
 
         return null;
@@ -192,7 +232,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void nextVideoInfoType() {
-        mNextInfoType = Helpers.getNextValue(VIDEO_INFO_TYPE_LIST, mActualInfoType);
+        mNextInfoType = Helpers.getNextValue(getVideoInfoTypeList(), mActualInfoType);
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {
@@ -321,7 +361,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     //    int videoInfoType = getData().getVideoInfoType();
     //    if (videoInfoType != -1) {
     //        mActualInfoType = videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType] : null;
-    //        if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mActualInfoType)) {
+    //        if (!Arrays.asList(TV_VIDEO_INFO_TYPE_LIST).contains(mActualInfoType)) {
     //            resetInfoTypeToDefault();
     //        }
     //    } else {
@@ -331,7 +371,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private void resetInfoTypeToDefault() {
         mNextInfoType = null;
-        mActualInfoType = VIDEO_INFO_TYPE_LIST[0];
+        mActualInfoType = getVideoInfoTypeList()[0];
         persistVideoInfoType();
     }
 

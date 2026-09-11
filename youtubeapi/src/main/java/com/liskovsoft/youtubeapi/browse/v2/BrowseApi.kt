@@ -29,7 +29,6 @@ internal interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
         "Referer: https://www.youtube.com/tv/kids"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -37,7 +36,6 @@ internal interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
         "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -53,7 +51,6 @@ internal interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
         "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -69,7 +66,6 @@ internal interface BrowseApi {
 
     @Headers(
         "Content-Type: application/json",
-        "User-Agent: " + DefaultHeaders.USER_AGENT_TV,
         "Referer: https://www.youtube.com/tv"
     )
     @POST("https://www.youtube.com/youtubei/v1/guide")

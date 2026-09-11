@@ -2,6 +2,8 @@ package com.liskovsoft.googlecommon.common.helpers
 
 import android.os.Build
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
+import com.liskovsoft.youtubeapi.common.helpers.DeviceInfo
+import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
 
 object DefaultHeaders {
     private const val COBALT_VER = "23.lts.2.309559-gold"
@@ -73,11 +75,11 @@ object DefaultHeaders {
     const val USER_AGENT_TV = USER_AGENT_TV_DOWNGRADED
     const val USER_AGENT_WEB = USER_AGENT_CHROME
     const val USER_AGENT_MOBILE_WEB = USER_AGENT_MOBILE_CHROME_2
-    const val USER_AGENT_ANDROID = USER_AGENT_ANDROID_20
+    val USER_AGENT_ANDROID = CLIENTS.ANDROID.USER_AGENT ?: USER_AGENT_ANDROID_20
     const val USER_AGENT_IOS = USER_AGENT_IOS_2
 
     @JvmField
-    val APP_USER_AGENT = USER_AGENT_TV // no buffering
+    val APP_USER_AGENT = if (DeviceInfo.isTVDevice) USER_AGENT_TV else USER_AGENT_ANDROID // report the real device
 
     const val ACCEPT_ENCODING = ACCEPT_ENCODING_LOW
     const val REFERER = "https://www.youtube.com/tv"

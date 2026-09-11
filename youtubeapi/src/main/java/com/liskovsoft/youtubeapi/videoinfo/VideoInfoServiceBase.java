@@ -75,7 +75,7 @@ public abstract class VideoInfoServiceBase {
             applySignatures(urlHolders, signatures);
         }
 
-        String poToken = PoTokenGate.getPoToken(videoInfo.getClient(), videoInfo.getVideoDetails().getVideoId());
+        String poToken = PoTokenGate.getStreamPoToken(videoInfo.getClient(), videoInfo.getVideoDetails().getVideoId());
         videoInfo.setPoToken(poToken);
         applySessionPoToken(urlHolders, poToken);
     }

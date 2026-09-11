@@ -12,10 +12,11 @@ private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\
         "\"racyCheckOk\":true,\"contentCheckOk\":true,%%s}"
 // Merge Shorts with Subscriptions: TV_APP_QUALITY_LIMITED_ANIMATION
 // Separate Shorts from Subscriptions: TV_APP_QUALITY_FULL_ANIMATION
-private const val POST_DATA_BROWSE_TV =
-    "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
-private const val POST_DATA_BROWSE_TV_LEGACY =
-    "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
+private val POST_DATA_TV_DEVICE = "\"deviceMake\":\"${DeviceInfo.deviceMake}\",\"deviceModel\":\"${DeviceInfo.deviceModel}\","
+private val POST_DATA_BROWSE_TV =
+    "$POST_DATA_TV_DEVICE\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
+private val POST_DATA_BROWSE_TV_LEGACY =
+    "$POST_DATA_TV_DEVICE\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 private const val POST_DATA_IOS_MODEL = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID_OS = "\"osName\":\"Android\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID_SDK = "\"androidSdkVersion\":\"%s\","
@@ -32,8 +33,12 @@ internal enum class AppClient(
     val clientScreen: String = CLIENT_SCREEN_WATCH, val params: String? = null, val postData: String? = null, val postDataBrowse: String? = null
 ): MediaItemFormatInfo.ClientInfo {
     // Doesn't support 8AEB2AMB param if X-Goog-Pageid is set!
+    // The TVHTML5 client is a Cobalt-based web app. It requires its platform UA
+    // in both the body and headers. Using an Android TV (ATV) UA here triggers a 403
+    // from the player endpoint. See yt-dlp "Revert tv client user-agent to work around 403 errors".
+    // The real device identity is still reported via the structured context fields.
     TV(CLIENTS.TV.NAME, CLIENTS.TV.VERSION, CLIENT_NAME_IDS[CLIENTS.TV.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = CLIENTS.TV.USER_AGENT!!, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_TV_LEGACY),
     TV_EMBED(CLIENTS.TV_EMBEDDED.NAME, CLIENTS.TV_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_EMBEDDED.NAME],
         userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV_EMBEDDED.REFERER, clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),
@@ -61,8 +66,9 @@ internal enum class AppClient(
         userAgent = CLIENTS.MWEB.USER_AGENT!!, referer = CLIENTS.MWEB.REFERER),
     ANDROID(CLIENTS.ANDROID.NAME, CLIENTS.ANDROID.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID.NAME],
         userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
-        postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
-    ANDROID_SDK_LESS(baseClient = ANDROID, postData = String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
+        postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)
+                + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID.DEVICE_MODEL, CLIENTS.ANDROID.DEVICE_MAKE)),
+    ANDROID_SDK_LESS(baseClient = ANDROID, postData = String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION) + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID.DEVICE_MODEL, CLIENTS.ANDROID.DEVICE_MAKE)),
     ANDROID_REEL(ANDROID),
     ANDROID_VR(CLIENTS.ANDROID_VR.NAME, CLIENTS.ANDROID_VR.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID_VR.NAME],
         userAgent = CLIENTS.ANDROID_VR.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID_VR.SDK_VERSION)
@@ -82,8 +88,8 @@ internal enum class AppClient(
 
     override fun getClientName() = clientName
     override fun getClientVersion() = clientVersion
-    override fun getOsName() = "Macintosh" // TODO: change later
-    override fun getOsVersion() = "10_15_7" // TODO: change later
+    override fun getOsName() = DeviceInfo.osName
+    override fun getOsVersion() = DeviceInfo.osVersion
     override fun getUserAgent() = userAgent
 
     fun getRefererUrl(videoId: String?): String? {

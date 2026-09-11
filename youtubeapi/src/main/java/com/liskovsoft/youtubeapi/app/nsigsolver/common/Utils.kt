@@ -34,17 +34,17 @@ internal fun loadFromCache(fileName: String?): String? {
     if (fileName == null || fileName.length > 50)
         return null
 
-    return FileHelpers.getFileContents(File(getCacheDir(), fileName))
+    return FileHelpers.getFileContents(File(getPersistentDir(), fileName))
 }
 
 internal fun persistToCache(fileName: String, content: String) {
     if (fileName.length > 50)
         return
 
-    FileHelpers.stringToFile(content, File(getCacheDir(), fileName))
+    FileHelpers.stringToFile(content, File(getPersistentDir(), fileName))
 }
 
-private fun getCacheDir() = FileHelpers.getFilesDir(AppService.instance().context) // use persistent cache dir
+private fun getPersistentDir() = FileHelpers.getFilesDir(AppService.instance().context)
 
 internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
 

@@ -15,7 +15,6 @@ import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -118,10 +117,7 @@ public class YouTubeServiceManager implements ServiceManager {
             return;
         }
 
-        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(() -> {
-            getAppService().refreshCacheIfNeeded();
-            PoTokenGate.resetCache();
-        }));
+        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded));
     }
 
     @NonNull

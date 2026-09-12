@@ -3,14 +3,23 @@ package com.liskovsoft.youtubeapi.app.playerdata
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
+import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
+import com.liskovsoft.youtubeapi.app.nsigsolver.impl.TclChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
-internal class PlayerDataExtractor(val playerUrl: String) {
+/**
+ * @param isTcl whether [playerUrl] is the TCL-flavored player (from tv_config, usually only
+ * resolved for a signed-in session). Its n-function has a different call shape than the regular
+ * web/TV player, so n-param extraction is routed to [TclChallengeProvider] instead of the
+ * generic (yt-dlp ejs) [V8ChallengeProvider]. The TCL player has no separate decipher/sig
+ * function, so signature extraction ([sFuncCode]) is never enabled for it.
+ */
+internal class PlayerDataExtractor @JvmOverloads constructor(val playerUrl: String, val isTcl: Boolean = false) {
     private val tag = PlayerDataExtractor::class.java.simpleName
     private val data
         get() = MediaServiceData.instance()
@@ -31,8 +40,13 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             //.replace("/tv-player-es6.vflset/tv-player-es6.js", "/player_es6.vflset/en_US/base.js") // 403 fix, incompatible nParam?
             //.replace("/tv-player-ias.vflset/tv-player-ias.js", "/player_ias.vflset/en_US/base.js") // 403 fix, incompatible nParam?
     }
+    // Fetched lazily, once, and shared between validation (checkSigData) and real extraction —
+    // only used on the isTcl path, where TclChallengeProvider needs the raw player source.
+    private val playerCode: String? by lazy { loadPlayer() }
 
     init {
+        Log.d(tag, "Using player url: $playerUrl (isTcl=$isTcl)")
+
         // Get the code from the cache
         restoreAllData()
         checkSigData()
@@ -84,7 +98,8 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     fun validate(): Boolean {
         // TODO: fix cpn code
         // return mNFuncCode && mSigFuncCode && mCPNCode != null && mSignatureTimestamp != null
-        return nFuncCode && sFuncCode && signatureTimestamp != null
+        // TCL works only in TV version, so sFuncCode isn't necessary in this client.
+        return nFuncCode && (sFuncCode || isTcl) && signatureTimestamp != null
     }
 
     private fun extractNSigReal(nParam: String): String? {
@@ -100,10 +115,19 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             return Pair(null, null)
         }
 
+        val validNParams = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()
+
+        if (isTcl) {
+            val nResults = validNParams?.let { params -> playerCode?.let { TclChallengeProvider.solveN(fixedPlayerUrl, it, params) } }
+            val nProcessed = nResults?.let { results -> nParams?.map { results[it] } }
+            // TCL works only in TV version, so sFuncCode isn't necessary in this client
+            return Pair(nProcessed, null)
+        }
+
         var nProcessed: List<String?>? = null
         var sProcessed: List<String?>? = null
 
-        val nRequest = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
+        val nRequest = validNParams?.let {
             JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, it))
         }
 
@@ -131,7 +155,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     private fun fetchAllData() {
-        val jsCode = loadPlayer()
+        val jsCode = playerCode
 
         cpnCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
         signatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
@@ -171,6 +195,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             return
         }
 
+        if (isTcl) {
+            checkTclSigData()
+            return
+        }
+
         try {
             val nParam = "5cNpZqIJ7ixNqU68Y7S"
             val sigParam = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz"
@@ -190,6 +219,23 @@ internal class PlayerDataExtractor(val playerUrl: String) {
                             sFuncCode = true
                     else -> {}
                 }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkTclSigData() {
+        if (nFuncCode) {
+            return
+        }
+
+        try {
+            val nParam = "5cNpZqIJ7ixNqU68Y7S"
+            val code = playerCode ?: return
+            val result = TclChallengeProvider.solveN(fixedPlayerUrl, code, listOf(nParam))
+            if (result[nParam]?.let { it != nParam } == true) {
+                nFuncCode = true
             }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -32,10 +32,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     // TODO: TV clients are broken because of recently introduced '-tcl' player variant (different nParam and nSignature)
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
+            AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.VISIONOS, // no url formats
             AppClient.TV_DOWNGRADED, // works with old UAs like old Cobalt and old Xbox (non-tcl players)
-            //AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             //AppClient.ANDROID_REEL, // doesn't require pot and cipher (hangs on all engines)
             AppClient.WEB, // Fix video clip blocked in current location
             AppClient.WEB_SAFARI,

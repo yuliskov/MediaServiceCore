@@ -582,12 +582,12 @@ var tclSolver = (function (meriyah, astring) {
 
     let urlBuilderSection = urlBuilderDeps + "\n" + urlBuilderCtorCode + "\n" + urlBuilderProtoMethodsCode;
 
-    let newUrlObjectInit = "let newObjectWithUrlObject = new " + urlBuilderCtorName + "(nValue, true); \n\n";
+    let urlParamsInit = "let urlParams = new " + urlBuilderCtorName + "(nValue, true); \n\n";
     return (
       "if (typeof globalThis.XMLHttpRequest === 'undefined') { globalThis.XMLHttpRequest = { prototype: {} }; }\n" +
       "if (typeof location !== 'undefined') { try { location.href = 'https://www.youtube.com/watch?v=yt-dlp-wins'; } catch (e) {} }\n" +
       nFunctionSection + urlBuilderSection +
-      "\nvar nFunction=function(nValue) { " + newUrlObjectInit + "; " + nFunctionName + "(" + nCallArgs + ", newObjectWithUrlObject); return newObjectWithUrlObject['get']('n') };" +
+      "\nvar nFunction=function(nValue) { " + urlParamsInit + "; " + nFunctionName + "(" + nCallArgs + ", urlParams); return urlParams['get']('n') };" +
       "\nreturn nFunction;"
     );
   }

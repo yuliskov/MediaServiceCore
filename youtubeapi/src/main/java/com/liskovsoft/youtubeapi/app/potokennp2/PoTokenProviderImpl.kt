@@ -45,6 +45,14 @@ internal object PoTokenProviderImpl : PoTokenProvider {
                 null -> throw e
                 else -> throw cause // includes PoTokenException
             }
+        } catch (e: LinkageError) {
+            // NoClassDefFoundError and friends: the poToken code touched a platform API that
+            // this (older) device does not provide. An Error is not an Exception, so without
+            // this branch it escapes every caller and kills the whole video info lookup.
+            // Treat it like a broken WebView so we stop retrying and fall back gracefully.
+            Log.e(TAG, "Could not obtain poToken because of a missing platform API", e)
+            webViewBadImpl = true
+            return null
         }
     }
 

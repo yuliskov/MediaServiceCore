@@ -64,7 +64,7 @@ internal object CLIENTS {
 
     val WEB = CLIENT(
         NAME = "WEB",
-        VERSION = "2.20260708.00.00",
+        VERSION = "2.20260907.06.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco",
@@ -74,7 +74,7 @@ internal object CLIENTS {
 
     val MWEB = CLIENT(
         NAME = "MWEB",
-        VERSION = "2.20260708.05.00",
+        VERSION = "2.20260907.05.00",
         API_VERSION = "v1",
         // mweb previously did not require PO Token with this UA
         USER_AGENT = "Mozilla/5.0 (iPad; CPU OS 16_7_10 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1,gzip(gfe)",
@@ -135,7 +135,7 @@ internal object CLIENTS {
 
     val TV = CLIENT(
         NAME = "TVHTML5",
-        VERSION = "7.20260707.07.00",
+        VERSION = "7.20260901.15.00",
         // See: https://github.com/youtube/cobalt/blob/main/cobalt/browser/user_agent/user_agent_platform_info.cc#L506
         USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)",
         REFERER = "https://www.youtube.com/tv"
@@ -143,7 +143,7 @@ internal object CLIENTS {
 
     val TV_DOWNGRADED = CLIENT(
         NAME = "TVHTML5",
-        VERSION = "5.20260707",
+        VERSION = "5.20260901",
         //USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version",
         USER_AGENT = DefaultHeaders.USER_AGENT_TV_DOWNGRADED,
         REFERER = "https://www.youtube.com/tv"
@@ -170,7 +170,7 @@ internal object CLIENTS {
 
     val WEB_EMBEDDED = CLIENT(
         NAME = "WEB_EMBEDDED_PLAYER",
-        VERSION = "2.20260708.00.00",
+        VERSION = "2.20260908.01.00",
         API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco",

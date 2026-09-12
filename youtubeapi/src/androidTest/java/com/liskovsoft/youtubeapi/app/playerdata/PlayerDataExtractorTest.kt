@@ -126,6 +126,9 @@ class PlayerDataExtractorTest {
 
         val timestamp = extractor.getSignatureTimestamp()
         assertNotNull("Timestamp not null for url $url", timestamp)
+
+        val timestampLength = if (url.contains("-tcl.")) 8 else 5
+        assertEquals("Timestamp length is $timestampLength", timestampLength, timestamp?.length ?: 0)
     }
 
     private fun getTestingUrls(): List<String> = AppConstants.playerUrls.take(5) // do limit to avoid OOM

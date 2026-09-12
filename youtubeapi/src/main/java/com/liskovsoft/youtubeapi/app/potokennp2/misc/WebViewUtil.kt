@@ -14,16 +14,6 @@ private const val TAG = "WebViewUtil"
 
 internal const val potLibPrefix = "potokennp2/"
 
-internal fun isThermalServiceAvailable(context: Context): Boolean {
-    // Only Android 10 has the issue
-    if (Build.VERSION.SDK_INT != 29)
-        return true
-
-    val powerService = context.getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return false
-
-    return ThermalServiceApi29.isAvailable(powerService)
-}
-
 internal fun hasThermalServiceBug(context: Context): Boolean {
     // Only Android 10 has the issue
     if (Build.VERSION.SDK_INT != 29)
@@ -34,7 +24,22 @@ internal fun hasThermalServiceBug(context: Context): Boolean {
     return !ThermalServiceApi29.isAvailable(powerService)
 }
 
-// Keep API 29 types out of the class verified on older Android versions.
+/**
+ * Isolates every access to [PowerManager.OnThermalStatusChangedListener] (API 29+).
+ *
+ * Why this class exists: Kotlin compiles the listener lambda into its own synthetic
+ * class that implements [PowerManager.OnThermalStatusChangedListener]. When that
+ * lambda sits directly inside WebViewUtil.kt, ART resolves the synthetic class while
+ * executing hasThermalServiceBug() - before the SDK_INT guard can return - and throws
+ * NoClassDefFoundError on every device below API 29 (observed on Fire OS 6 / Android
+ * 7.1). NoClassDefFoundError is an Error, not an Exception, so none of the callers
+ * catch it and the whole poToken generation aborts. Without a poToken the player
+ * request returns null for every client, which surfaces as an endless
+ * "Can't get video info" retry loop.
+ *
+ * Keeping the API usage in a separate class means it is only loaded when the code is
+ * actually called, i.e. on Android 10 only.
+ */
 @Keep
 @RequiresApi(29)
 private object ThermalServiceApi29 {

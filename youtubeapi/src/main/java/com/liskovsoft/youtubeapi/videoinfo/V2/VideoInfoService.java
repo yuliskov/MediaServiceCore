@@ -32,6 +32,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     // TODO: TV clients are broken because of recently introduced '-tcl' player variant (different nParam and nSignature)
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
+            AppClient.VISIONOS, // first: native x86_64 build of SmartTube served it url formats
             AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.VISIONOS, // no url formats
             AppClient.TV_DOWNGRADED, // works with old UAs like old Cobalt and old Xbox (non-tcl players)

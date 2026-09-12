@@ -16,6 +16,7 @@ private const val POST_DATA_BROWSE_TV =
     "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_FULL_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
 private const val POST_DATA_BROWSE_TV_LEGACY =
     "\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\",\"zylonLeftNav\":true},\"webpSupport\":false,\"animatedWebpSupport\":true,"
+private const val POST_DATA_VISIONOS = "\"deviceMake\":\"%s\",\"deviceModel\":\"%s\",\"osName\":\"%s\",\"osVersion\":\"%s\","
 private const val POST_DATA_IOS_MODEL = "\"deviceModel\":\"%s\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID_OS = "\"osName\":\"Android\",\"osVersion\":\"%s\","
 private const val POST_DATA_ANDROID_SDK = "\"androidSdkVersion\":\"%s\","
@@ -71,7 +72,7 @@ internal enum class AppClient(
     IOS(CLIENTS.IOS.NAME, CLIENTS.IOS.VERSION, CLIENT_NAME_IDS[CLIENTS.IOS.NAME],
         userAgent = CLIENTS.IOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.IOS.DEVICE_MODEL, CLIENTS.IOS.OS_VERSION)),
     VISIONOS(CLIENTS.VISIONOS.NAME, CLIENTS.VISIONOS.VERSION, CLIENT_NAME_IDS[CLIENTS.VISIONOS.NAME],
-        userAgent = CLIENTS.VISIONOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.VISIONOS.DEVICE_MODEL, CLIENTS.VISIONOS.OS_VERSION)),
+        userAgent = CLIENTS.VISIONOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_VISIONOS, CLIENTS.VISIONOS.DEVICE_MAKE, CLIENTS.VISIONOS.DEVICE_MODEL, CLIENTS.VISIONOS.OS_NAME, CLIENTS.VISIONOS.OS_VERSION)),
     INITIAL(WEB),
     GEO(WEB);
 
@@ -82,8 +83,8 @@ internal enum class AppClient(
 
     override fun getClientName() = clientName
     override fun getClientVersion() = clientVersion
-    override fun getOsName() = "Macintosh" // TODO: change later
-    override fun getOsVersion() = "10_15_7" // TODO: change later
+    override fun getOsName() = CLIENTS.VISIONOS.OS_NAME ?: "Macintosh"
+    override fun getOsVersion() = CLIENTS.VISIONOS.OS_VERSION ?: "10_15_7"
     override fun getUserAgent() = userAgent
 
     fun getRefererUrl(videoId: String?): String? {

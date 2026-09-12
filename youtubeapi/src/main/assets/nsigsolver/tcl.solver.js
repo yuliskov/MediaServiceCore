@@ -25,6 +25,9 @@ var tclSolver = (function (meriyah, astring) {
     function visit(n, ancestors) {
       const fn = visitors[n.type];
       if (fn) fn(n, ancestors);
+      // don't walk into throw arguments — an unreachable error path shouldn't drag in its own
+      // dependency chain
+      if (n.type === "ThrowStatement") return;
       const nextAncestors = ancestors.concat([n]);
       forEachChild(n, (child) => visit(child, nextAncestors));
     }
@@ -227,10 +230,17 @@ var tclSolver = (function (meriyah, astring) {
     return code;
   }
 
-  function collectPrototypeMethods(parsed, constructorName, globalArrayData, globalArrayName) {
-    const results = [];
+  // Groups every prototype-method assignment by constructor name in one pass, instead of
+  // rescanning the whole body per dependency (the dominant cost otherwise).
+  function buildProtoMethodsIndex(parsed, globalArrayData, globalArrayName) {
+    const index = new Map();
+    const addTo = (ctorName, node) => {
+      const list = index.get(ctorName);
+      if (list) list.push(node);
+      else index.set(ctorName, [node]);
+    };
+
     const body = parsed.body[1]?.expression.callee.body.body || parsed.body[0]?.expression.callee.object.body.body;
-    const ctorNorm = constructorName.trim();
     const aliasMap = new Map();
 
     function protoTargetOf(node) {
@@ -281,10 +291,10 @@ var tclSolver = (function (meriyah, astring) {
 
       if (!left.computed && left.object?.type === "Identifier") {
         const aliasTarget = aliasMap.get(left.object.name);
-        if (aliasTarget && aliasTarget === ctorNorm) {
+        if (aliasTarget) {
           const rewritten = JSON.parse(JSON.stringify(node));
-          rewritten.expression.left.object = meriyah.parse(ctorNorm + ".prototype").body[0].expression;
-          results.push(rewritten);
+          rewritten.expression.left.object = meriyah.parse(aliasTarget + ".prototype").body[0].expression;
+          addTo(aliasTarget, rewritten);
           continue;
         }
       }
@@ -301,24 +311,18 @@ var tclSolver = (function (meriyah, astring) {
         ) {
           const protoIdx = protoExpr.property.value;
           if (globalArrayData[protoIdx] === "prototype") {
-            const ctorGenerated = astring.generate(obj.object).trim();
-            if (ctorGenerated === ctorNorm) {
-              results.push(node);
-              continue;
-            }
+            addTo(astring.generate(obj.object).trim(), node);
+            continue;
           }
         }
       }
 
       if (!obj.computed && (obj.property?.name === "prototype" || obj.property?.value === "prototype")) {
-        const ctorGenerated = astring.generate(obj.object).trim();
-        if (ctorGenerated === ctorNorm) {
-          results.push(node);
-        }
+        addTo(astring.generate(obj.object).trim(), node);
       }
     }
 
-    return results;
+    return index;
   }
 
   const excludeArrayMethodsName = [
@@ -386,105 +390,204 @@ var tclSolver = (function (meriyah, astring) {
     return new Set([...unDeclared].filter(name => !declared.has(name)));
   }
 
-  function collectDependencies(entryCode, challengeName, parsedBaseJs) {
-    const processed = new Set();
-    const codeMap = new Map();
-    const depsMap = new Map();
+  // Walks entryNodes' dependencies transitively (ownName is their own name, so self-references
+  // aren't treated as missing deps) and returns the collected code, topologically ordered.
+  function collectDependencies(entryNodes, ownName, parsedBaseJs) {
+    const visitedNames = new Set();
+    const nameToCodeText = new Map();
+    const nameToDepNames = new Map();
     const { globalArrayName, globalArrayData } = findGlobalArray(parsedBaseJs);
+    const protoMethodsByCtorName = buildProtoMethodsIndex(parsedBaseJs, globalArrayData, globalArrayName);
 
-    function collect(name) {
-      if (name === challengeName || processed.has(name)) return;
-      processed.add(name);
+    function resolveAndCollect(name) {
+      if (name === ownName || visitedNames.has(name)) return;
+      visitedNames.add(name);
 
-      const node = findMethodByName(parsedBaseJs, name);
-      if (!node) return;
+      const declarationNode = findMethodByName(parsedBaseJs, name);
+      if (!declarationNode) return;
 
-      const rawCode = astring.generate(node).replace("};;", "};").replace("};\n;", "};\n");
-      const code = ensureVarDeclaration(node, rawCode);
-      codeMap.set(name, code);
+      nameToCodeText.set(name, generateCode(declarationNode));
+      const depNames = new Set(getUndeclaredMethods(declarationNode, ownName));
 
-      const parsed = meriyah.parse(code);
-      const deps = new Set(getUndeclaredMethods(parsed, challengeName));
+      const protoMethodNodes = protoMethodsByCtorName.get(name.trim()) || [];
+      if (protoMethodNodes.length) {
+        const protoGroupKey = name + "$$proto";
+        nameToCodeText.set(protoGroupKey, protoMethodNodes.map(generateCode).join("\n"));
 
-      const protoMethods = collectPrototypeMethods(parsedBaseJs, name, globalArrayData, globalArrayName);
-      if (protoMethods.length) {
-        const protoKey = name + "$$proto";
-        const protoRawCode = protoMethods.map(n => {
-          const raw = astring.generate(n).replace("};;", "};").replace("};\n;", "};\n");
-          return ensureVarDeclaration(n, raw);
-        }).join("\n");
-        codeMap.set(protoKey, protoRawCode);
-
-        const protoParsed = meriyah.parse(protoRawCode);
-        const protoDeps = getUndeclaredMethods(protoParsed, challengeName);
-        for (const dep of protoDeps) deps.add(dep);
-        depsMap.set(protoKey, new Set([...protoDeps, name]));
+        const protoDepNames = new Set();
+        for (const protoMethodNode of protoMethodNodes) {
+          for (const dep of getUndeclaredMethods(protoMethodNode, ownName)) protoDepNames.add(dep);
+        }
+        for (const dep of protoDepNames) depNames.add(dep);
+        // proto methods depend on the constructor itself
+        nameToDepNames.set(protoGroupKey, new Set([...protoDepNames, name]));
       }
 
-      depsMap.set(name, deps);
+      nameToDepNames.set(name, depNames);
 
-      for (const dep of deps) collect(dep);
+      for (const dep of depNames) resolveAndCollect(dep);
     }
 
-    const initialDeps = getUndeclaredMethods(meriyah.parse(entryCode), challengeName);
-    for (const name of initialDeps) collect(name);
+    const rootDepNames = new Set();
+    for (const entryNode of Array.isArray(entryNodes) ? entryNodes : [entryNodes]) {
+      for (const dep of getUndeclaredMethods(entryNode, ownName)) rootDepNames.add(dep);
+    }
+    for (const name of rootDepNames) resolveAndCollect(name);
 
-    const sorted = [];
-    const visited = new Set();
+    const orderedNames = [];
+    const topoVisited = new Set();
 
     function topoSort(name) {
-      if (visited.has(name)) return;
-      visited.add(name);
-      for (const dep of (depsMap.get(name) || [])) topoSort(dep);
-      if (codeMap.has(name)) sorted.push(name);
+      if (topoVisited.has(name)) return;
+      topoVisited.add(name);
+      for (const dep of (nameToDepNames.get(name) || [])) topoSort(dep);
+      if (nameToCodeText.has(name)) orderedNames.push(name);
     }
 
-    for (const name of codeMap.keys()) topoSort(name);
+    for (const name of nameToCodeText.keys()) topoSort(name);
 
-    return sorted.map(name => codeMap.get(name)).join("\n");
+    return orderedNames.map(name => nameToCodeText.get(name)).join("\n");
+  }
+
+  function generateCode(node) {
+    const raw = astring.generate(node).replace(/;;+\s*$/, ";");
+    return ensureVarDeclaration(node, raw);
+  }
+
+  // Matches "obj[expr[literal]]" — a computed member access whose own index is itself computed
+  // (e.g. "O[r[65]]", the scrambled-property-lookup idiom guarding the n-function call).
+  function isNestedComputedMember(node) {
+    return node?.type === "MemberExpression" && node.computed &&
+      node.property?.type === "MemberExpression" && node.property.computed;
+  }
+
+  // Finds the n-function call site, e.g. "...&&O[r[65]]&&(w=m$(2,4027,O));" — a "&&" guard
+  // ending in a scrambled property read, then an assignment of a 3-arg call (two int literals
+  // + the URL-param object).
+  // Old regex (kept for reference): /\]\]&&\([A-z0-9$]+\=([A-z0-9$]+)\(([0-9]+),([0-9]+),[A-z0-9$]+\)\);(?:\)|)/
+  function findNCallSite(parsedBaseJs) {
+    let best = null;
+    function visit(node) {
+      if (
+        node.type === "LogicalExpression" && node.operator === "&&" &&
+        (isNestedComputedMember(node.left) || (node.left.type === "LogicalExpression" && isNestedComputedMember(node.left.right)))
+      ) {
+        const assignment = node.right;
+        if (assignment?.type === "AssignmentExpression" && assignment.operator === "=") {
+          const call = assignment.right;
+          if (call?.type === "CallExpression" && call.callee?.type === "Identifier" && call.arguments.length === 3) {
+            const [arg1, arg2, arg3] = call.arguments;
+            if (
+              arg1?.type === "Literal" && typeof arg1.value === "number" &&
+              arg2?.type === "Literal" && typeof arg2.value === "number" &&
+              arg3?.type === "Identifier" &&
+              (!best || node.start < best.start)
+            ) {
+              best = { functionName: call.callee.name, args: arg1.value + "," + arg2.value, start: node.start };
+            }
+          }
+        }
+      }
+      forEachChild(node, visit);
+    }
+    visit(parsedBaseJs);
+    return best;
+  }
+
+  // A bare identifier / "this" / property-chain off either — excludes literals, so a generic
+  // "new Error('message')" doesn't get mistaken for the URL-builder.
+  function isThreadedArg(node) {
+    if (node?.type === "Identifier" || node?.type === "ThisExpression") return true;
+    if (node?.type === "MemberExpression") return isThreadedArg(node.object);
+    return false;
+  }
+
+  // Does this statement start with identifier `name`, as in "X..." right after "var X=new Y(...)"?
+  function statementStartsWithIdentifier(node, name) {
+    if (node?.type !== "ExpressionStatement") return false;
+    let expr = node.expression;
+    while (expr) {
+      if (expr.type === "AssignmentExpression") { expr = expr.left; continue; }
+      if (expr.type === "CallExpression") { expr = expr.callee; continue; }
+      if (expr.type === "MemberExpression") { expr = expr.object; continue; }
+      break;
+    }
+    return expr?.type === "Identifier" && expr.name === name;
+  }
+
+  // Finds the URL-param object's constructor: a two-arg "new" call assigned to a fresh var,
+  // immediately reused by the next statement — e.g. "var B=new J5(this[y[163]],this[y[9]]);B[y[1826]]=...".
+  // Old regex (kept for reference): /;var ([A-z0-9$]+)=new ([A-z0-9$]+)\([A-z0-9]+,[A-z0-9]+\);\1/
+  function findUrlBuilderCtor(parsedBaseJs) {
+    let best = null;
+    function visitBody(body) {
+      for (let i = 0; i < body.length - 1; i++) {
+        const node = body[i];
+        if (node?.type !== "VariableDeclaration" || node.declarations.length !== 1) continue;
+        const decl = node.declarations[0];
+        if (decl.id?.type !== "Identifier" || decl.init?.type !== "NewExpression") continue;
+        if (decl.init.callee?.type !== "Identifier" || decl.init.arguments.length !== 2) continue;
+        if (!decl.init.arguments.every(isThreadedArg)) continue;
+        if (statementStartsWithIdentifier(body[i + 1], decl.id.name) && (!best || node.start < best.start)) {
+          best = { ctorName: decl.init.callee.name, start: node.start };
+        }
+      }
+    }
+    function visit(node) {
+      if ((node.type === "Program" || node.type === "BlockStatement") && Array.isArray(node.body)) {
+        visitBody(node.body);
+      }
+      forEachChild(node, visit);
+    }
+    visit(parsedBaseJs);
+    return best;
   }
 
   function preprocessPlayer(baseJsData) {
     let parsedBaseJs = meriyah.parse(baseJsData);
-    let func = /\]\]&&\([A-z0-9$]+\=([A-z0-9$]+)\(([0-9]+),([0-9]+),[A-z0-9$]+\)\);(?:\)|)/.exec(baseJsData);
-    if (!func) throw new Error("Could not locate TCL n-function call site");
 
-    let funcArgs = func[2] + "," + func[3];
-    let funcName = func[1];
+    const nCallSite = findNCallSite(parsedBaseJs);
+    if (!nCallSite) throw new Error("Could not locate TCL n-function call site");
+
+    let nFunctionName = nCallSite.functionName;
+    let nCallArgs = nCallSite.args;
 
     let globalArray = findGlobalArray(parsedBaseJs);
-    let startFunc = findMethodByName(parsedBaseJs, funcName);
-    if (!startFunc) throw new Error("Could not locate n-function body for " + funcName);
-    let additionalCode = collectDependencies(astring.generate(startFunc), funcName, parsedBaseJs);
+    let nFunctionNode = findMethodByName(parsedBaseJs, nFunctionName);
+    if (!nFunctionNode) throw new Error("Could not locate n-function body for " + nFunctionName);
+    let nFunctionDeps = collectDependencies(nFunctionNode, nFunctionName, parsedBaseJs);
 
-    let firstPoint = /;var ([A-z0-9$]+)=new ([A-z0-9$]+)\([A-z0-9]+,[A-z0-9]+\);\1/.exec(baseJsData);
-    if (!firstPoint) throw new Error("Could not locate URL-builder constructor");
-    let gph = firstPoint[2];
+    const urlBuilderCtor = findUrlBuilderCtor(parsedBaseJs);
+    if (!urlBuilderCtor) throw new Error("Could not locate URL-builder constructor");
+    let urlBuilderCtorName = urlBuilderCtor.ctorName;
 
-    let r = "var g = {}; \n var " + globalArray.globalArrayName + "=" + JSON.stringify(globalArray.globalArrayData) + ";\n" + astring.generate(startFunc) + "\n" + additionalCode + "\n";
+    // "g" is a namespace object some builds attach methods to (e.g. "g.Foo = function(){}");
+    // harmless to predeclare even when unused.
+    const globalArrayDecl = `var ${globalArray.globalArrayName} = ${JSON.stringify(globalArray.globalArrayData)};`;
+    let nFunctionSection = `var g = {};\n${globalArrayDecl}\n${astring.generate(nFunctionNode)}\n${nFunctionDeps}\n`;
 
-    const ctorNode = findMethodByName(parsedBaseJs, gph);
-    const ctorCode = ctorNode
-      ? ensureVarDeclaration(ctorNode, astring.generate(ctorNode).replace("};;", "};").replace("};\n;", "};\n"))
-      : "";
+    const urlBuilderCtorNode = findMethodByName(parsedBaseJs, urlBuilderCtorName);
+    const urlBuilderCtorCode = urlBuilderCtorNode ? generateCode(urlBuilderCtorNode) : "";
 
-    const protoMethodsCode = collectPrototypeMethods(
-      parsedBaseJs, gph, globalArray.globalArrayData, globalArray.globalArrayName
-    ).map(n => {
-      const rawCode = astring.generate(n).replace("};;", "};").replace("};\n;", "};\n");
-      return ensureVarDeclaration(n, rawCode);
-    }).join("\n");
+    const urlBuilderProtoMethodNodes = buildProtoMethodsIndex(
+      parsedBaseJs, globalArray.globalArrayData, globalArray.globalArrayName
+    ).get(urlBuilderCtorName.trim()) || [];
+    const urlBuilderProtoMethodsCode = urlBuilderProtoMethodNodes.map(generateCode).join("\n");
 
-    const gphDeps = collectDependencies(ctorCode + "\n" + protoMethodsCode, gph, parsedBaseJs);
+    const urlBuilderDeps = collectDependencies(
+      [...(urlBuilderCtorNode ? [urlBuilderCtorNode] : []), ...urlBuilderProtoMethodNodes],
+      urlBuilderCtorName,
+      parsedBaseJs
+    );
 
-    let gphProtoMethods = gphDeps + "\n" + ctorCode + "\n" + protoMethodsCode;
+    let urlBuilderSection = urlBuilderDeps + "\n" + urlBuilderCtorCode + "\n" + urlBuilderProtoMethodsCode;
 
-    let prePart = "let newObjectWithUrlObject = new " + gph + "(nValue, true); \n\n";
+    let newUrlObjectInit = "let newObjectWithUrlObject = new " + urlBuilderCtorName + "(nValue, true); \n\n";
     return (
       "if (typeof globalThis.XMLHttpRequest === 'undefined') { globalThis.XMLHttpRequest = { prototype: {} }; }\n" +
       "if (typeof location !== 'undefined') { try { location.href = 'https://www.youtube.com/watch?v=yt-dlp-wins'; } catch (e) {} }\n" +
-      r + gphProtoMethods +
-      "\nvar nFunction=function(nValue) { " + prePart + "; " + funcName + "(" + funcArgs + ", newObjectWithUrlObject); return newObjectWithUrlObject['get']('n') };" +
+      nFunctionSection + urlBuilderSection +
+      "\nvar nFunction=function(nValue) { " + newUrlObjectInit + "; " + nFunctionName + "(" + nCallArgs + ", newObjectWithUrlObject); return newObjectWithUrlObject['get']('n') };" +
       "\nreturn nFunction;"
     );
   }

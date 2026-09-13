@@ -65,7 +65,7 @@ public class AppServiceTest {
         ciphered.add(cipher);
         ciphered.add(cipher);
 
-        PlayerDataExtractor extractor = new PlayerDataExtractor(AppConstants.playerUrls.get(0));
+        PlayerDataExtractor extractor = new PlayerDataExtractor(AppConstants.playerUrls.get(0), false);
 
         List<String> deciphered = extractor.extractSig(ciphered);
 

@@ -13,13 +13,13 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
 /**
- * @param isTcl whether [playerUrl] is the TCL-flavored player (from tv_config, usually only
- * resolved for a signed-in session). Its n-function has a different call shape than the regular
+ * @param isTcl whether [playerUrl] is the TCL-flavored player (from tv_config).
+ * Its n-function has a different call shape than the regular
  * web/TV player, so n-param extraction is routed to [TclChallengeProvider] instead of the
- * generic (yt-dlp ejs) [V8ChallengeProvider]. The TCL player has no separate decipher/sig
+ * generic (yt-dlp ejs) [V8ChallengeProvider]. The TCL player isn't required decipher/sig
  * function, so signature extraction ([sFuncCode]) is never enabled for it.
  */
-internal class PlayerDataExtractor @JvmOverloads constructor(val playerUrl: String, val isTcl: Boolean = false) {
+internal class PlayerDataExtractor(val playerUrl: String, val isTcl: Boolean = false) {
     private val tag = PlayerDataExtractor::class.java.simpleName
     private val data
         get() = MediaServiceData.instance()

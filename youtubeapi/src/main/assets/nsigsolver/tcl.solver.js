@@ -88,106 +88,157 @@ var tclSolver = (function (meriyah, astring) {
     return results;
   }
 
-  function findAssigningStatement(body, funcNode) {
-    function assignsTarget(node) {
-      if (!node || typeof node !== "object") return false;
-      if (node.type === "AssignmentExpression" && node.left?.type === "Identifier" && node.left.name === funcNode) {
-        return true;
-      }
-      if (node.type.includes("Function")) return false;
-      for (const key in node) {
-        if (key === "start" || key === "end" || key === "loc" || key === "range") continue;
-        const value = node[key];
-        if (Array.isArray(value)) {
-          for (const item of value) {
-            if (item && typeof item.type === "string" && assignsTarget(item)) return true;
-          }
-        } else if (value && typeof value.type === "string") {
-          if (assignsTarget(value)) return true;
-        }
-      }
-      return false;
+  // A per-lookup full-tree scan (findAssigningStatement below) is the other hot spot when many
+  // names fall through the top-level index: this builds a name -> containing top-level statement
+  // map in one pass instead, cached per body.
+  const assigningStatementIndexByBody = new WeakMap();
+
+  function collectAssignedNames(node, into) {
+    if (!node || typeof node !== "object") return;
+    if (node.type === "AssignmentExpression" && node.left?.type === "Identifier") {
+      into.add(node.left.name);
     }
+    if (node.type.includes("Function")) return;
+    for (const key in node) {
+      if (key === "start" || key === "end" || key === "loc" || key === "range") continue;
+      const value = node[key];
+      if (Array.isArray(value)) {
+        for (const item of value) {
+          if (item && typeof item.type === "string") collectAssignedNames(item, into);
+        }
+      } else if (value && typeof value.type === "string") {
+        collectAssignedNames(value, into);
+      }
+    }
+  }
+
+  function buildAssigningStatementIndex(body) {
+    const map = new Map();
+    const names = new Set();
+    for (const node of body) {
+      if (!node) continue;
+      names.clear();
+      collectAssignedNames(node, names);
+      for (const name of names) {
+        if (!map.has(name)) map.set(name, node);
+      }
+    }
+    return map;
+  }
+
+  function findAssigningStatement(body, funcNode) {
+    let index = assigningStatementIndexByBody.get(body);
+    if (!index) {
+      index = buildAssigningStatementIndex(body);
+      assigningStatementIndexByBody.set(body, index);
+    }
+    return index.get(funcNode) || null;
+  }
+
+  // findMethodByName is called once per dependency name during collection, so a per-call linear
+  // scan of the (often huge) top-level body turns into O(names * bodySize). This index turns
+  // repeat lookups into O(1) map reads; built once per body and cached on it.
+  const topLevelIndexByBody = new WeakMap();
+
+  function buildTopLevelIndex(body) {
+    const firstReturn = new Map();
+    const bareNames = new Set();
+    const dotAssign = new Map();
 
     for (const node of body) {
-      if (node && assignsTarget(node)) return node;
+      if (node?.type === "FunctionDeclaration" && node.id?.name) {
+        if (!firstReturn.has(node.id.name)) firstReturn.set(node.id.name, { kind: "func", node });
+        continue;
+      }
+      if (node?.type === "VariableDeclaration") {
+        for (const v of node.declarations) {
+          const name = v.id.name;
+          if (v.init) {
+            if (!firstReturn.has(name)) firstReturn.set(name, { kind: "var", node, v });
+          } else if (!firstReturn.has(name)) {
+            bareNames.add(name);
+          }
+        }
+        continue;
+      }
+      if (node?.type === "ExpressionStatement") {
+        const expr = node.expression;
+        if (
+          expr?.type === "AssignmentExpression" &&
+          expr.left?.type === "MemberExpression" &&
+          !expr.left.computed &&
+          expr.left.object?.name &&
+          expr.left.property?.name &&
+          expr.right
+        ) {
+          const key = expr.left.object.name + "." + expr.left.property.name;
+          if (!dotAssign.has(key)) dotAssign.set(key, node);
+        }
+        if (expr?.left?.name && expr?.right) {
+          if (!firstReturn.has(expr.left.name)) firstReturn.set(expr.left.name, { kind: "expr", node });
+        }
+        continue;
+      }
+      if (node?.type === "AssignmentExpression" && node.left?.name && node.right) {
+        if (!firstReturn.has(node.left.name)) firstReturn.set(node.left.name, { kind: "assign", node });
+      }
     }
-    return null;
+
+    return { firstReturn, bareNames, dotAssign };
+  }
+
+  function getTopLevelIndex(body) {
+    let index = topLevelIndexByBody.get(body);
+    if (!index) {
+      index = buildTopLevelIndex(body);
+      topLevelIndexByBody.set(body, index);
+    }
+    return index;
   }
 
   function findMethodByName(parsed, funcNode) {
     if (!funcNode) return null;
     const dotIndex = funcNode.indexOf(".");
     let body = parsed.body[1]?.expression.callee.body.body || parsed.body[0]?.expression.callee.object.body.body;
-    if (dotIndex !== -1) {
-      const objName = funcNode.substring(0, dotIndex);
-      const propName = funcNode.substring(dotIndex + 1);
-      for (let node of body) {
-        if (node?.type === "ExpressionStatement") {
-          const expr = node.expression;
-          if (
-            expr?.type === "AssignmentExpression" &&
-            expr.left?.type === "MemberExpression" &&
-            !expr.left.computed &&
-            expr.left.object?.name === objName &&
-            expr.left.property?.name === propName &&
-            expr.right
-          ) {
-            return node;
-          }
-        }
-      }
-      return null;
-    }
-    let bareDeclarationFound = false;
-    for (let node of body) {
-      if (node?.type === "FunctionDeclaration" && node.id?.name === funcNode) {
-        return node;
-      }
-      if (node?.type === "VariableDeclaration") {
-        for (let v of node.declarations) {
-          if (v.id.name === funcNode) {
-            if (!v.init) bareDeclarationFound = true;
-            if (v.init) {
-              const wasEmptyArrayLiteral = v.init.type === "ArrayExpression" && v.init.elements.length === 0;
-              if (v.init.type === "ArrayExpression" && v.init.elements.every(el => el?.type === "Identifier")) {
-                for (let i = 0; i < v.init.elements.length; i++) {
-                  v.init = findMethodByName(parsed, v.init.elements[i].name);
-                }
-              }
-              const declNode = {
-                type: "VariableDeclaration",
-                kind: node.kind,
-                declarations: [v],
-                start: node.start,
-                end: node.end,
-              };
+    const index = getTopLevelIndex(body);
 
-              if (wasEmptyArrayLiteral) {
-                const indexAssignments = findTopLevelLiteralIndexAssignments(body, funcNode);
-                if (indexAssignments.length) {
-                  return {
-                    type: "Program",
-                    sourceType: "script",
-                    body: [declNode, ...indexAssignments],
-                    start: node.start,
-                    end: indexAssignments[indexAssignments.length - 1].end,
-                  };
-                }
-              }
-              return declNode;
-            }
-          }
+    if (dotIndex !== -1) {
+      return index.dotAssign.get(funcNode) || null;
+    }
+
+    const entry = index.firstReturn.get(funcNode);
+    if (entry) {
+      if (entry.kind === "func" || entry.kind === "expr" || entry.kind === "assign") return entry.node;
+
+      // entry.kind === "var"
+      const { node, v } = entry;
+      const wasEmptyArrayLiteral = v.init.type === "ArrayExpression" && v.init.elements.length === 0;
+      if (v.init.type === "ArrayExpression" && v.init.elements.every(el => el?.type === "Identifier")) {
+        for (let i = 0; i < v.init.elements.length; i++) {
+          v.init = findMethodByName(parsed, v.init.elements[i].name);
         }
       }
-      if (node?.type === "ExpressionStatement") {
-        if (node?.expression?.left?.name === funcNode) {
-          if (node?.expression?.right) return node;
+      const declNode = {
+        type: "VariableDeclaration",
+        kind: node.kind,
+        declarations: [v],
+        start: node.start,
+        end: node.end,
+      };
+
+      if (wasEmptyArrayLiteral) {
+        const indexAssignments = findTopLevelLiteralIndexAssignments(body, funcNode);
+        if (indexAssignments.length) {
+          return {
+            type: "Program",
+            sourceType: "script",
+            body: [declNode, ...indexAssignments],
+            start: node.start,
+            end: indexAssignments[indexAssignments.length - 1].end,
+          };
         }
       }
-      if (node?.type === "AssignmentExpression" && node.left.name === funcNode) {
-        if (node.right) return node;
-      }
+      return declNode;
     }
 
     const assigningStatement = findAssigningStatement(body, funcNode);
@@ -208,7 +259,7 @@ var tclSolver = (function (meriyah, astring) {
       };
     }
 
-    if (bareDeclarationFound) {
+    if (index.bareNames.has(funcNode)) {
       return {
         type: "VariableDeclaration",
         kind: "var",
@@ -390,24 +441,32 @@ var tclSolver = (function (meriyah, astring) {
     return new Set([...unDeclared].filter(name => !declared.has(name)));
   }
 
-  // Walks entryNodes' dependencies transitively (ownName is their own name, so self-references
-  // aren't treated as missing deps) and returns the collected code, topologically ordered.
-  function collectDependencies(entryNodes, ownName, parsedBaseJs) {
+  // ownNames may be a single name or an array, so multiple entry points can share one visited set.
+  function collectDependencies(entryNodes, ownNames, parsedBaseJs) {
+    const ownNameSet = new Set(Array.isArray(ownNames) ? ownNames : [ownNames]);
     const visitedNames = new Set();
     const nameToCodeText = new Map();
     const nameToDepNames = new Map();
     const { globalArrayName, globalArrayData } = findGlobalArray(parsedBaseJs);
     const protoMethodsByCtorName = buildProtoMethodsIndex(parsedBaseJs, globalArrayData, globalArrayName);
 
+    function undeclaredExcludingOwnNames(node) {
+      const merged = new Set();
+      for (const ownName of ownNameSet) {
+        for (const dep of getUndeclaredMethods(node, ownName)) merged.add(dep);
+      }
+      return new Set([...merged].filter(dep => !ownNameSet.has(dep)));
+    }
+
     function resolveAndCollect(name) {
-      if (name === ownName || visitedNames.has(name)) return;
+      if (ownNameSet.has(name) || visitedNames.has(name)) return;
       visitedNames.add(name);
 
       const declarationNode = findMethodByName(parsedBaseJs, name);
       if (!declarationNode) return;
 
       nameToCodeText.set(name, generateCode(declarationNode));
-      const depNames = new Set(getUndeclaredMethods(declarationNode, ownName));
+      const depNames = undeclaredExcludingOwnNames(declarationNode);
 
       const protoMethodNodes = protoMethodsByCtorName.get(name.trim()) || [];
       if (protoMethodNodes.length) {
@@ -416,7 +475,7 @@ var tclSolver = (function (meriyah, astring) {
 
         const protoDepNames = new Set();
         for (const protoMethodNode of protoMethodNodes) {
-          for (const dep of getUndeclaredMethods(protoMethodNode, ownName)) protoDepNames.add(dep);
+          for (const dep of undeclaredExcludingOwnNames(protoMethodNode)) protoDepNames.add(dep);
         }
         for (const dep of protoDepNames) depNames.add(dep);
         // proto methods depend on the constructor itself
@@ -430,7 +489,7 @@ var tclSolver = (function (meriyah, astring) {
 
     const rootDepNames = new Set();
     for (const entryNode of Array.isArray(entryNodes) ? entryNodes : [entryNodes]) {
-      for (const dep of getUndeclaredMethods(entryNode, ownName)) rootDepNames.add(dep);
+      for (const dep of undeclaredExcludingOwnNames(entryNode)) rootDepNames.add(dep);
     }
     for (const name of rootDepNames) resolveAndCollect(name);
 
@@ -555,16 +614,10 @@ var tclSolver = (function (meriyah, astring) {
     let globalArray = findGlobalArray(parsedBaseJs);
     let nFunctionNode = findMethodByName(parsedBaseJs, nFunctionName);
     if (!nFunctionNode) throw new Error("Could not locate n-function body for " + nFunctionName);
-    let nFunctionDeps = collectDependencies(nFunctionNode, nFunctionName, parsedBaseJs);
 
     const urlBuilderCtor = findUrlBuilderCtor(parsedBaseJs);
     if (!urlBuilderCtor) throw new Error("Could not locate URL-builder constructor");
     let urlBuilderCtorName = urlBuilderCtor.ctorName;
-
-    // "g" is a namespace object some builds attach methods to (e.g. "g.Foo = function(){}");
-    // harmless to predeclare even when unused.
-    const globalArrayDecl = `var ${globalArray.globalArrayName} = ${JSON.stringify(globalArray.globalArrayData)};`;
-    let nFunctionSection = `var g = {};\n${globalArrayDecl}\n${astring.generate(nFunctionNode)}\n${nFunctionDeps}\n`;
 
     const urlBuilderCtorNode = findMethodByName(parsedBaseJs, urlBuilderCtorName);
     const urlBuilderCtorCode = urlBuilderCtorNode ? generateCode(urlBuilderCtorNode) : "";
@@ -574,19 +627,25 @@ var tclSolver = (function (meriyah, astring) {
     ).get(urlBuilderCtorName.trim()) || [];
     const urlBuilderProtoMethodsCode = urlBuilderProtoMethodNodes.map(generateCode).join("\n");
 
-    const urlBuilderDeps = collectDependencies(
-      [...(urlBuilderCtorNode ? [urlBuilderCtorNode] : []), ...urlBuilderProtoMethodNodes],
-      urlBuilderCtorName,
+    // Shared dep walk avoids emitting deps common to both entry points twice.
+    const sharedDeps = collectDependencies(
+      [nFunctionNode, ...(urlBuilderCtorNode ? [urlBuilderCtorNode] : []), ...urlBuilderProtoMethodNodes],
+      [nFunctionName, urlBuilderCtorName],
       parsedBaseJs
     );
 
-    let urlBuilderSection = urlBuilderDeps + "\n" + urlBuilderCtorCode + "\n" + urlBuilderProtoMethodsCode;
+    // "g" is a namespace object some builds attach methods to (e.g. "g.Foo = function(){}");
+    // harmless to predeclare even when unused.
+    const globalArrayDecl = `var ${globalArray.globalArrayName} = ${JSON.stringify(globalArray.globalArrayData)};`;
+    let combinedSection =
+      `var g = {};\n${globalArrayDecl}\n${astring.generate(nFunctionNode)}\n` +
+      sharedDeps + "\n" + urlBuilderCtorCode + "\n" + urlBuilderProtoMethodsCode;
 
     let urlParamsInit = "let urlParams = new " + urlBuilderCtorName + "(nValue, true); \n\n";
     return (
       "if (typeof globalThis.XMLHttpRequest === 'undefined') { globalThis.XMLHttpRequest = { prototype: {} }; }\n" +
       "if (typeof location !== 'undefined') { try { location.href = 'https://www.youtube.com/watch?v=yt-dlp-wins'; } catch (e) {} }\n" +
-      nFunctionSection + urlBuilderSection +
+      combinedSection +
       "\nvar nFunction=function(nValue) { " + urlParamsInit + "; " + nFunctionName + "(" + nCallArgs + ", urlParams); return urlParams['get']('n') };" +
       "\nreturn nFunction;"
     );

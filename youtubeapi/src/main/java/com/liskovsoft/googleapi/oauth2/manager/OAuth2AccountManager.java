@@ -168,7 +168,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         //// Apply merged tokens
         //checkAuth();
 
-        Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
+        Log.d(TAG, "Success. Refresh token stored successfully in registry");
     }
 
     private void addAccount(Account newAccount) {

@@ -1,5 +1,8 @@
 package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.*
@@ -7,17 +10,27 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.notifications.gen.*
 
+private const val MEMBERS_BADGE_COLOR = 0xFF2BA640.toInt() // YouTube sponsor green
+
+/** Colors the members-first / members-only label so it stands out on the card's subtitle line. */
+private fun colorizeMembers(label: String): CharSequence =
+    SpannableString(label).apply {
+        setSpan(ForegroundColorSpan(MEMBERS_BADGE_COLOR), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+
 internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMediaItem() {
     override val typeItem by lazy { itemWrapper.getType() }
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }
     override val secondTitleItem by lazy {
+        // Appended (in green) to the end of the subtitle line so members-first/only cards are recognizable
+        val membersLabel = itemWrapper.getMembersBadgeText()?.let { colorizeMembers(it) }
         val videoInfo = arrayOf(userName, viewCountText, publishedTime, upcomingEventText)
         val hasVideoInfo = !Helpers.allNulls(*videoInfo)
         if (hasVideoInfo) {
-            YouTubeHelper.createInfo(*videoInfo)
+            YouTubeHelper.createInfo(*videoInfo, membersLabel)
         } else {
-            YouTubeHelper.createInfo(subTitle)
+            YouTubeHelper.createInfo(subTitle, membersLabel)
         }
     }
     override val subTitle by lazy { itemWrapper.getSubTitle() } // quality tag (e.g. 4K, LIVE) or full second title

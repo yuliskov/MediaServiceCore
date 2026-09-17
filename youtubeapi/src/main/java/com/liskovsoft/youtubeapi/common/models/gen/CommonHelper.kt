@@ -22,6 +22,7 @@ private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC" // This mark sometimes presents on regular videos (e.g. fundraiser mark)
 private const val STATUS_STYLE_QUALITY = "BADGE_STYLE_TYPE_SIMPLE"
 private const val STATUS_STYLE_LIVE = "BADGE_STYLE_TYPE_LIVE_NOW"
+private const val STATUS_STYLE_MEMBERS = "BADGE_STYLE_TYPE_MEMBERS_ONLY" // "Members first" (early access) or "Members only"
 
 ///////////
 
@@ -110,6 +111,9 @@ internal fun VideoItem.getPercentWatched() = thumbnailOverlays?.firstNotNullOfOr
 internal fun VideoItem.getStartTimeSeconds() = navigationEndpoint?.getStartTimeSeconds()
 internal fun VideoItem.getBadgeText() = thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() } ?:
     badges?.firstNotNullOfOrNull { it?.liveBadge?.label?.getText() ?: it?.upcomingEventBadge?.label?.getText() }
+internal fun VideoItem.getMembersBadgeText() = badges?.firstNotNullOfOrNull {
+    it?.metadataBadgeRenderer?.takeIf { it.style == STATUS_STYLE_MEMBERS }?.label
+}
 internal fun VideoItem.getUserName() = shortBylineText?.getText() ?: longBylineText?.getText()
 internal fun VideoItem.getPublishedTimeText() = publishedTimeText?.getText()
 internal fun VideoItem.getViewCount() = shortViewCountText?.getText() ?: viewCountText?.getText() ?: videoInfo?.getText()
@@ -191,6 +195,10 @@ internal fun TileItem.getSubTitle() = metadata?.tileMetadataRenderer?.lines
 internal fun TileItem.getBadgeText() = header?.tileHeaderRenderer?.thumbnailOverlays
     ?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.text?.getText() }
     ?: header?.trackTileHeaderRenderer?.duration?.getText()
+internal fun TileItem.getMembersBadgeText() = metadata?.tileMetadataRenderer?.lines
+    ?.firstNotNullOfOrNull { line -> line?.lineRenderer?.items?.firstNotNullOfOrNull { item ->
+        item?.lineItemRenderer?.badge?.metadataBadgeRenderer?.takeIf { it.style == STATUS_STYLE_MEMBERS }?.label
+    } }
 internal fun TileItem.getVideoId() = onSelectCommand?.getVideoId()
 internal fun TileItem.getPlaylistId() = onSelectCommand?.getPlaylistId() ?: getMenu()?.getPlaylistId()
 internal fun TileItem.getPlaylistIndex() = 0
@@ -319,6 +327,7 @@ internal fun ItemWrapper.getMovingThumbnails() = getVideoItem()?.getMovingThumbn
 internal fun ItemWrapper.getLengthText() = getVideoItem()?.getLengthText() ?: getMusicItem()?.getLengthText() ?: getTileItem()?.getBadgeText()
 internal fun ItemWrapper.getBadgeText() = getVideoItem()?.getBadgeText() ?: getMusicItem()?.getBadgeText() ?: getTileItem()?.getBadgeText()
 ?: getPlaylistItem()?.getBadgeText() ?: getChannelItem()?.getBadgeText() ?: getLockupItem()?.getBadgeText()
+internal fun ItemWrapper.getMembersBadgeText() = getVideoItem()?.getMembersBadgeText() ?: getTileItem()?.getMembersBadgeText()
 internal fun ItemWrapper.getPercentWatched() = getVideoItem()?.getPercentWatched() ?: getTileItem()?.getPercentWatched() ?: getLockupItem()?.getPercentWatched()
 internal fun ItemWrapper.getStartTimeSeconds() = getVideoItem()?.getStartTimeSeconds() ?: getTileItem()?.getStartTimeSeconds()
 internal fun ItemWrapper.getUserName() = getVideoItem()?.getUserName() ?: getMusicItem()?.getUserName() ?: getTileItem()?.getUserName()

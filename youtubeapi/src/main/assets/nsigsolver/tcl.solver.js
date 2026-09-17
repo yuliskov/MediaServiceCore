@@ -522,7 +522,8 @@ var tclSolver = (function (meriyah, astring) {
 
   // Finds the n-function call site, e.g. "...&&O[r[65]]&&(w=m$(2,4027,O));" — a "&&" guard
   // ending in a scrambled property read, then an assignment of a 3-arg call (two int literals
-  // + the URL-param object).
+  // + the URL-param object). Ambiguous on its own — unrelated helpers can share this exact
+  // shape — so it is only a fallback; preprocessPlayer prefers findNCallSiteByThrow below.
   // Old regex (kept for reference): /\]\]&&\([A-z0-9$]+\=([A-z0-9$]+)\(([0-9]+),([0-9]+),[A-z0-9$]+\)\);(?:\)|)/
   function findNCallSite(parsedBaseJs) {
     let best = null;
@@ -551,6 +552,92 @@ var tclSolver = (function (meriyah, astring) {
     }
     visit(parsedBaseJs);
     return best;
+  }
+
+  // The real n-transform throws on failure, unlike unrelated helpers that can match the
+  // "&&"-guarded 3-arg-call shape above by coincidence. This confirms the call site by finding
+  // that throw directly, then re-derives its call args from a plain invocation elsewhere in the
+  // code, rather than trusting whatever "&&" shape happened to match first.
+  //   throw pattern: /throw new [A-z0-9$]+\([A-z]\[/   ([A-z] = the global array name)
+  //   call pattern:  /FF\([0-9]+,[0-9]+,[A-z0-9$]+\);/  ("FF" = the confirmed function's name)
+  function findNCallSiteByThrow(parsedBaseJs, globalArrayName) {
+    if (!globalArrayName) return null;
+
+    // Only a throw that is a *direct* descendant of `funcNode` counts — one nested inside an
+    // inner function doesn't implicate the outer one. Deliberately does not reuse walkAncestor,
+    // which skips into ThrowStatement's own children for dependency-collection purposes.
+    function throwsFromGlobalArrayDirect(funcNode) {
+      let found = false;
+      (function visit(node) {
+        if (found || !node || typeof node !== "object") return;
+        if (node.type?.includes("Function") && node !== funcNode) return;
+        if (node.type === "ThrowStatement") {
+          const arg = node.argument;
+          if (arg?.type === "NewExpression" && arg.callee?.type === "Identifier") {
+            for (const a of arg.arguments || []) {
+              if (
+                a.type === "MemberExpression" && a.computed &&
+                a.object?.type === "Identifier" && a.object.name === globalArrayName
+              ) {
+                found = true;
+                return;
+              }
+            }
+          }
+        }
+        forEachChild(node, visit);
+      })(funcNode.body);
+      return found;
+    }
+
+    // A bare call `funcName(a, b, ident)` anywhere — literal, literal, identifier args —
+    // regardless of whether it sits in an expression statement or feeds a `var`/assignment.
+    function findCallArgs(funcName) {
+      let result = null;
+      function visit(node) {
+        if (result || !node || typeof node !== "object") return;
+        if (
+          node.type === "CallExpression" &&
+          node.callee?.type === "Identifier" && node.callee.name === funcName &&
+          node.arguments.length === 3
+        ) {
+          const [a0, a1, a2] = node.arguments;
+          if (
+            a0.type === "Literal" && typeof a0.value === "number" &&
+            a1.type === "Literal" && typeof a1.value === "number" &&
+            a2.type === "Identifier"
+          ) {
+            result = a0.value + "," + a1.value;
+            return;
+          }
+        }
+        forEachChild(node, visit);
+      }
+      visit(parsedBaseJs);
+      return result;
+    }
+
+    // Earliest confirming function by source position.
+    let confirmed = null;
+    function visit(node) {
+      if (confirmed && node.start >= confirmed.start) return;
+      if (node.type === "VariableDeclarator" && node.id?.type === "Identifier" && node.init?.type === "FunctionExpression") {
+        if (throwsFromGlobalArrayDirect(node.init)) {
+          confirmed = { functionName: node.id.name, start: node.start };
+        }
+      } else if (node.type === "FunctionDeclaration" && node.id?.name) {
+        if (throwsFromGlobalArrayDirect(node)) {
+          confirmed = { functionName: node.id.name, start: node.start };
+        }
+      }
+      forEachChild(node, visit);
+    }
+    visit(parsedBaseJs);
+
+    if (!confirmed) return null;
+    const args = findCallArgs(confirmed.functionName);
+    if (!args) return null;
+    return { functionName: confirmed.functionName, args, start: confirmed.start };
   }
 
   // A bare identifier / "this" / property-chain off either — excludes literals, so a generic
@@ -605,13 +692,13 @@ var tclSolver = (function (meriyah, astring) {
   function preprocessPlayer(baseJsData) {
     let parsedBaseJs = meriyah.parse(baseJsData);
 
-    const nCallSite = findNCallSite(parsedBaseJs);
+    let globalArray = findGlobalArray(parsedBaseJs);
+
+    const nCallSite = findNCallSiteByThrow(parsedBaseJs, globalArray.globalArrayName) || findNCallSite(parsedBaseJs);
     if (!nCallSite) throw new Error("Could not locate TCL n-function call site");
 
     let nFunctionName = nCallSite.functionName;
     let nCallArgs = nCallSite.args;
-
-    let globalArray = findGlobalArray(parsedBaseJs);
     let nFunctionNode = findMethodByName(parsedBaseJs, nFunctionName);
     if (!nFunctionNode) throw new Error("Could not locate n-function body for " + nFunctionName);
 

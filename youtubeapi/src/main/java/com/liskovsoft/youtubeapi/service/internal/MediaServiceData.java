@@ -47,9 +47,10 @@ public class MediaServiceData {
     public static final int CONTENT_UPCOMING_SUBSCRIPTIONS = 1 << 11;
     public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
     public static final int CONTENT_SHORTS_CHANNEL = 1 << 13;
+    public static final int CONTENT_SHORTS_NEWS = 1 << 14;
     public static final int CONTENT_SHORTS_ALL = CONTENT_SHORTS_HOME | CONTENT_SHORTS_SEARCH
-            | CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY
-            | CONTENT_SHORTS_TRENDING | CONTENT_SHORTS_CHANNEL;
+            | CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING
+            | CONTENT_SHORTS_CHANNEL | CONTENT_SHORTS_NEWS;
     private static MediaServiceData sInstance;
     private String mScreenId;
     private String mDeviceId;
@@ -310,7 +311,7 @@ public class MediaServiceData {
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
         mHiddenContent = Helpers.parseInt(split, 18,
-                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_UPCOMING_HOME);
+                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_NEWS | CONTENT_UPCOMING_HOME);
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);

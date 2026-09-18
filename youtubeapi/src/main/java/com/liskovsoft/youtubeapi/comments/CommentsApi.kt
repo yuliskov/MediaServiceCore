@@ -16,4 +16,8 @@ internal interface CommentsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/comment/perform_comment_action")
     fun commentAction(@Body actionQuery: String): Call<Void?>
+
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/comment/create_comment")
+    fun createComment(@Body createQuery: String): Call<Void?>
 }

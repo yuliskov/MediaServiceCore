@@ -7,7 +7,10 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.notifications.gen.*
 
-internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMediaItem() {
+internal class WrapperMediaItem(private val itemWrapper: ItemWrapper,
+        val contextMenuClient: com.liskovsoft.youtubeapi.common.helpers.AppClient = com.liskovsoft.youtubeapi.common.helpers.AppClient.TV): BaseMediaItem() {
+    val contextMenuPanel get() = itemWrapper.tileRenderer?.onLongPressCommand?.showEngagementPanelEndpoint
+
     override val typeItem by lazy { itemWrapper.getType() }
     override val videoIdItem by lazy { itemWrapper.getVideoId() }
     override val titleItem by lazy { itemWrapper.getTitle() }

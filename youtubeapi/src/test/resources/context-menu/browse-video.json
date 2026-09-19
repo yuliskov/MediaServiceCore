@@ -1,0 +1,333 @@
+{
+  "content": {
+    "engagementPanelSectionListRenderer": {
+      "header": {
+        "overlayPanelHeaderRenderer": {
+          "image": {
+            "thumbnails": [
+              {
+                "url": "redacted:c8d1b29e9e0f4c15",
+                "width": 320,
+                "height": 180
+              }
+            ]
+          },
+          "title": {
+            "simpleText": "Thomas Campbell Finally Tells the Full Hemi-Sync Origin Story"
+          },
+          "subtitle": {
+            "simpleText": "redacted:0c7a66a847c11ee4"
+          },
+          "style": "OVERLAY_PANEL_HEADER_STYLE_VIDEO_THUMBNAIL"
+        }
+      },
+      "content": {
+        "listViewModel": {
+          "listItems": [
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Play"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "signalServiceEndpoint": {
+                                "signal": "redacted:f60bef6dc4088458",
+                                "actions": [
+                                  {
+                                    "signalAction": {
+                                      "signal": "redacted:1c926ad42d5e5507"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "watchEndpoint": {
+                                "videoId": "redacted:28460223192466ef",
+                                "playerParams": "redacted:d10573b7defa2619",
+                                "ustreamerConfig": "redacted:e3d967c79bddd840"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Save to Watch later"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "signalServiceEndpoint": {
+                                "signal": "redacted:f60bef6dc4088458",
+                                "actions": [
+                                  {
+                                    "signalAction": {
+                                      "signal": "redacted:1c926ad42d5e5507"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "playlistEditEndpoint": {
+                                "playlistId": "redacted:034f519b2478c03f",
+                                "actions": [
+                                  {
+                                    "addedVideoId": "redacted:28460223192466ef",
+                                    "action": "redacted:63be52d584bbf801"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "openPopupAction": {
+                                "popup": {
+                                  "overlayToastRenderer": {
+                                    "title": {
+                                      "simpleText": "Video saved to your \"Watch later\" list."
+                                    }
+                                  }
+                                },
+                                "popupType": "redacted:f1bcc55312e1f228"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Save to playlist"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "openClientOverlayAction": {
+                          "type": "CLIENT_OVERLAY_TYPE_ADD_TO_PLAYLIST",
+                          "context": "redacted:28460223192466ef"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Go to channel"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "signalServiceEndpoint": {
+                                "signal": "redacted:f60bef6dc4088458",
+                                "actions": [
+                                  {
+                                    "signalAction": {
+                                      "signal": "redacted:1c926ad42d5e5507"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "browseEndpoint": {
+                                "browseId": "redacted:26f79e42e21c9132"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Not interested"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "feedbackEndpoint": {
+                          "feedbackToken": "redacted:fcc47951febeeba6",
+                          "uiActions": {
+                            "hideEnclosingContainer": true
+                          },
+                          "actions": [
+                            {
+                              "openClientOverlayAction": {
+                                "type": "CLIENT_OVERLAY_TYPE_DISMISSAL_FOLLOW_UP",
+                                "context": "redacted:28460223192466ef",
+                                "token": "redacted:fcc47951febeeba6"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Don't recommend channel"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "openPopupAction": {
+                          "popup": {
+                            "overlaySectionRenderer": {
+                              "overlay": {
+                                "overlayTwoPanelRenderer": {
+                                  "actionPanel": {
+                                    "overlayPanelRenderer": {
+                                      "header": {
+                                        "overlayPanelHeaderRenderer": {
+                                          "title": {
+                                            "runs": [
+                                              {
+                                                "text": "Don't recommend channel"
+                                              }
+                                            ]
+                                          },
+                                          "subtitle": {
+                                            "runs": [
+                                              {
+                                                "text": "We won't recommend videos from this channel to you again"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      "content": {
+                                        "overlayPanelItemListRenderer": {
+                                          "items": [
+                                            {
+                                              "compactLinkRenderer": {
+                                                "title": {
+                                                  "runs": [
+                                                    {
+                                                      "text": "Confirm"
+                                                    }
+                                                  ]
+                                                },
+                                                "serviceEndpoint": {
+                                                  "commandExecutorCommand": {
+                                                    "commands": [
+                                                      {
+                                                        "feedbackEndpoint": {
+                                                          "feedbackToken": "redacted:3f60b213991a2671",
+                                                          "uiActions": {
+                                                            "hideEnclosingContainer": true
+                                                          },
+                                                          "actions": [
+                                                            {
+                                                              "removeItemAction": {
+                                                                "childId": "redacted:28460223192466ef"
+                                                              }
+                                                            },
+                                                            {
+                                                              "openPopupAction": {
+                                                                "popup": {
+                                                                  "overlayMessageRenderer": {
+                                                                    "title": {
+                                                                      "runs": [
+                                                                        {
+                                                                          "text": "Channel removed from recommendations"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "popupType": "redacted:f1bcc55312e1f228"
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "signalAction": {
+                                                          "signal": "redacted:1c926ad42d5e5507"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "compactLinkRenderer": {
+                                                "title": {
+                                                  "runs": [
+                                                    {
+                                                      "text": "Go back"
+                                                    }
+                                                  ]
+                                                },
+                                                "serviceEndpoint": {
+                                                  "signalAction": {
+                                                    "signal": "redacted:2db5d7c961625d60"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "popupType": "redacted:9b30253bde99d30b"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "rendererContext": {}
+        }
+      }
+    }
+  }
+}

@@ -45,6 +45,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     private static YouTubeMediaItemService sInstance;
     private MediaItemFormatInfo mCachedFormatInfo;
 
+    @Override
+    public Observable<MediaItem> resolveContextMenuObserve(MediaItem item) {
+        return RxHelper.fromCallable(() -> com.liskovsoft.youtubeapi.menu.ContextMenuService.resolve(item));
+    }
+
     private YouTubeMediaItemService() {
     }
 

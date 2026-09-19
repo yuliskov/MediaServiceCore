@@ -15,6 +15,11 @@ import java.util.List;
 import java.util.Set;
 
 public interface MediaItemService {
+    /** Resolve deferred context-menu commands without changing the original browse item. */
+    default Observable<MediaItem> resolveContextMenuObserve(MediaItem item) {
+        return Observable.just(item);
+    }
+
     int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
     int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
     int PLAYLIST_ORDER_POPULARITY = 3;

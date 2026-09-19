@@ -1,0 +1,73 @@
+{
+  "content": {
+    "engagementPanelSectionListRenderer": {
+      "header": {
+        "overlayPanelHeaderRenderer": {
+          "image": {
+            "thumbnails": [
+              {
+                "url": "redacted:bf01dd5bec503b6b",
+                "width": 88,
+                "height": 88
+              },
+              {
+                "url": "redacted:672e88b45f0df62c",
+                "width": 176,
+                "height": 176
+              }
+            ]
+          },
+          "title": {
+            "simpleText": "Bitcoin Audible"
+          },
+          "subtitle": {
+            "simpleText": "redacted:b85ee83555192e54"
+          },
+          "style": "OVERLAY_PANEL_HEADER_STYLE_CIRCULAR_THUMBNAIL"
+        }
+      },
+      "content": {
+        "listViewModel": {
+          "listItems": [
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "View channel"
+                },
+                "rendererContext": {
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "signalServiceEndpoint": {
+                                "signal": "redacted:f60bef6dc4088458",
+                                "actions": [
+                                  {
+                                    "signalAction": {
+                                      "signal": "redacted:1c926ad42d5e5507"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "browseEndpoint": {
+                                "browseId": "redacted:a9174f4abe2219b3"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

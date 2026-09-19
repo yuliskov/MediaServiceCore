@@ -270,7 +270,8 @@ internal data class TileItem(
     }
 
     data class OnLongPressCommand(
-        val showMenuCommand: ShowMenuCommand?
+        val showMenuCommand: ShowMenuCommand?,
+        val showEngagementPanelEndpoint: ContextMenuPanelEndpoint?
     )
 }
 

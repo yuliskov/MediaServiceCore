@@ -49,7 +49,7 @@ internal enum class AppClient(
         userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB.REFERER),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBED(CLIENTS.WEB_EMBEDDED.NAME, CLIENTS.WEB_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_EMBEDDED.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB_EMBEDDED.REFERER),
+        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = CLIENTS.WEB_EMBEDDED.REFERER),
     // Request contains an invalid argument.
     WEB_CREATOR(CLIENTS.WEB_CREATOR.NAME, CLIENTS.WEB_CREATOR.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_CREATOR.NAME],
         userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB_CREATOR.REFERER),

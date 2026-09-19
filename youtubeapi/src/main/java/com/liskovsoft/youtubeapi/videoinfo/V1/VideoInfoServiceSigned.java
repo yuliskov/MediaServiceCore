@@ -46,7 +46,7 @@ public class VideoInfoServiceSigned extends VideoInfoServiceBase {
         if (result != null) {
             transformFormats(result);
         } else {
-            Log.e(TAG, "Can't get video info. videoId: %s, authorization: %s", videoId, authorization);
+            Log.e(TAG, "Can't get video info. videoId: %s", videoId);
         }
 
         return result;

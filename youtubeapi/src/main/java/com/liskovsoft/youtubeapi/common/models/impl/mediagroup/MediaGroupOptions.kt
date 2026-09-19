@@ -23,6 +23,7 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
                     || (MediaGroup.TYPE_CHANNEL_UPLOADS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL))
                     || (MediaGroup.TYPE_TRENDING == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING))
                     || (MediaGroup.TYPE_SEARCH == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH))
+                    || (MediaGroup.TYPE_NEWS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_NEWS))
             val removeLive = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS))
             val removeUpcoming = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_CHANNEL == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)) ||

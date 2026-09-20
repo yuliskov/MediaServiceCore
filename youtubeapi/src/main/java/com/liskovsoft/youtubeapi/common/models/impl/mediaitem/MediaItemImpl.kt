@@ -4,6 +4,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.*
 import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
+import com.liskovsoft.mediaserviceinterfaces.data.FeedbackEndpoint
 import com.liskovsoft.youtubeapi.next.v2.gen.*
 import com.liskovsoft.youtubeapi.notifications.gen.*
 
@@ -40,6 +41,18 @@ internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMedia
     override val isMovieItem by lazy { itemWrapper.isMovie() }
     override val feedbackTokenItem by lazy { itemWrapper.getFeedbackToken() }
     override val feedbackTokenItem2 by lazy { itemWrapper.getFeedbackToken2() }
+    override val feedbackEndpointItem by lazy { itemWrapper.getFeedbackEndpoint()?.let {
+            // Ignore endpoint on channels. It mainly contains only channel id (useless)
+            if (videoId == null)
+                return@let null
+
+            val (tag, params) = it
+            object : FeedbackEndpoint {
+                override fun getPanelId(): String = tag
+                override fun getParams(): String = params
+            }
+        }
+    }
     override val percentWatchedItem by lazy { itemWrapper.getPercentWatched() }
     override val startTimeSecondsItem by lazy { itemWrapper.getStartTimeSeconds() }
     override val searchQueryItem by lazy { itemWrapper.getQuery() }

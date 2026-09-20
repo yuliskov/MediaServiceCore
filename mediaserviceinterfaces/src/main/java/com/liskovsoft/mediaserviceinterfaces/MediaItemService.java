@@ -2,6 +2,7 @@ package com.liskovsoft.mediaserviceinterfaces;
 
 import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
 import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
+import com.liskovsoft.mediaserviceinterfaces.data.FeedbackEndpoint;
 import com.liskovsoft.mediaserviceinterfaces.data.FeedbackReasons;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -43,6 +44,7 @@ public interface MediaItemService {
     void unsubscribe(String channelId);
     void markAsNotInterested(String feedbackToken);
     FeedbackReasons getFeedbackReasons(String feedbackToken);
+    List<String> getFeedbackTokens(FeedbackEndpoint endpoint);
     List<PlaylistInfo> getPlaylistsInfo(String videoId);
     void removeFromPlaylist(String playlistId, String videoId);
     void renamePlaylist(String playlistId, String newName);
@@ -69,6 +71,7 @@ public interface MediaItemService {
     Observable<Void> unsubscribeObserve(String channelId);
     Observable<Void> markAsNotInterestedObserve(String feedbackToken);
     Observable<FeedbackReasons> getFeedbackReasonsObserve(String feedbackToken);
+    Observable<List<String>> getFeedbackTokensObserve(FeedbackEndpoint endpoint);
     Observable<Void> setLikeObserve(MediaItem item);
     Observable<Void> removeLikeObserve(MediaItem item);
     Observable<Void> setDislikeObserve(MediaItem item);

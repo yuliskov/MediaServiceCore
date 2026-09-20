@@ -25,6 +25,7 @@ internal class QueryBuilder(private val client: AppClient) {
     private var playlistId: String? = null
     private var playlistIndex: Int? = null
     private var clickTrackingParams: String? = null
+    private var panelId: String? = null
     private var params: String? = null
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
@@ -43,6 +44,7 @@ internal class QueryBuilder(private val client: AppClient) {
     fun setClientPlaybackNonce(cpn: String?) = apply { this.cpn = cpn }
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
+    fun setPanelId(panelId: String?) = apply { this.panelId = panelId }
     fun setParams(params: String?) = apply { this.params = params }
     fun setVisitorData(visitorData: String?) = apply { this.visitorData = visitorData }
     fun enableGeoFix(enableGeoFix: Boolean) = apply { isGeoFixEnabled = enableGeoFix }
@@ -212,6 +214,7 @@ internal class QueryBuilder(private val client: AppClient) {
                     ${createBrowseIdChunk()}
                     ${createContinuationIdChunk()}
                     ${createPlaylistIdChunk()}
+                    ${createPanelIdChunk()}
                     ${createParamsChunk()}
                 """
     }
@@ -246,6 +249,14 @@ internal class QueryBuilder(private val client: AppClient) {
             """
                 "playlistId": "$it",
                 "playlistIndex": "${playlistIndex?.coerceAtLeast(0) ?: 0}",
+            """
+        } ?: ""
+    }
+
+    private fun createPanelIdChunk(): String {
+        return panelId?.let {
+            """
+                "panelId": "$it",
             """
         } ?: ""
     }

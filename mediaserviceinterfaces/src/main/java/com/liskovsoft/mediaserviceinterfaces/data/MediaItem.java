@@ -20,6 +20,7 @@ public interface MediaItem {
     String getAuthor();
     String getFeedbackToken();
     String getFeedbackToken2();
+    FeedbackEndpoint getFeedbackEndpoint();
 
     // Playlist props
     String getPlaylistId();

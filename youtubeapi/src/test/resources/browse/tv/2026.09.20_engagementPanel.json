@@ -1,0 +1,411 @@
+{
+  "responseContext": {
+    "serviceTrackingParams": [
+      {
+        "service": "GFEEDBACK",
+        "params": [
+          {
+            "key": "logged_in",
+            "value": "1"
+          }
+        ]
+      }
+    ],
+    "responseId": "IhMIidL02b_7lgMVGWZ6BR2INwnM"
+  },
+  "content": {
+    "engagementPanelSectionListRenderer": {
+      "header": {
+        "overlayPanelHeaderRenderer": {
+          "image": {
+            "thumbnails": [
+              {
+                "url": "https://i.ytimg.com/vi/NO6ZB9iF8kc/hqdefault.jpg?sqp=-oaymwEVCMACELQBSFDyq4qpAwcVAACIQhgB&rs=AOn4CLBwpXZAvSUr6Xw1y-5tGsEjF_30hQ",
+                "width": 320,
+                "height": 180
+              }
+            ]
+          },
+          "title": {
+            "simpleText": "MamaRika - На Нашій Вулиці (Official Music Video)"
+          },
+          "subtitle": {
+            "simpleText": "MamaRika • @MamaRika"
+          },
+          "style": "OVERLAY_PANEL_HEADER_STYLE_VIDEO_THUMBNAIL"
+        }
+      },
+      "content": {
+        "listViewModel": {
+          "listItems": [
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Play"
+                },
+                "rendererContext": {
+                  "loggingContext": {
+                    "loggingDirectives": {
+                      "trackingParams": "CAsQmvwFGAAiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+                    }
+                  },
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "clickTrackingParams": "CAsQmvwFGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "clickTrackingParams": "CAsQmvwFGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "signalServiceEndpoint": {
+                                "signal": "CLIENT_SIGNAL",
+                                "actions": [
+                                  {
+                                    "clickTrackingParams": "CAsQmvwFGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                    "signalAction": {
+                                      "signal": "CLOSE_POPUP"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "clickTrackingParams": "CAsQmvwFGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CcxaD0ZFd2hhdF90b193YXRjaJoBBhCOHhieAcoBBENIP6o=",
+                              "watchEndpoint": {
+                                "videoId": "NO6ZB9iF8kc",
+                                "params": "wAEB",
+                                "ustreamerConfig": "GgIIBQ=="
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Save to Watch later"
+                },
+                "rendererContext": {
+                  "loggingContext": {
+                    "loggingDirectives": {
+                      "trackingParams": "CAoQwcoIGAEiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+                    }
+                  },
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "clickTrackingParams": "CAoQwcoIGAEiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "clickTrackingParams": "CAoQwcoIGAEiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "signalServiceEndpoint": {
+                                "signal": "CLIENT_SIGNAL",
+                                "actions": [
+                                  {
+                                    "clickTrackingParams": "CAoQwcoIGAEiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                    "signalAction": {
+                                      "signal": "CLOSE_POPUP"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "clickTrackingParams": "CAoQwcoIGAEiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "playlistEditEndpoint": {
+                                "playlistId": "WL",
+                                "actions": [
+                                  {
+                                    "addedVideoId": "NO6ZB9iF8kc",
+                                    "action": "ACTION_ADD_VIDEO"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "clickTrackingParams": "CAoQwcoIGAEiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "openPopupAction": {
+                                "popup": {
+                                  "overlayToastRenderer": {
+                                    "title": {
+                                      "simpleText": "Video saved to your \"Watch later\" list."
+                                    }
+                                  }
+                                },
+                                "popupType": "TOAST"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Save to playlist"
+                },
+                "rendererContext": {
+                  "loggingContext": {
+                    "loggingDirectives": {
+                      "trackingParams": "CAkQ-ZwEGAIiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+                    }
+                  },
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "clickTrackingParams": "CAkQ-ZwEGAIiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                        "openClientOverlayAction": {
+                          "type": "CLIENT_OVERLAY_TYPE_ADD_TO_PLAYLIST",
+                          "context": "NO6ZB9iF8kc"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Go to channel"
+                },
+                "rendererContext": {
+                  "loggingContext": {
+                    "loggingDirectives": {
+                      "trackingParams": "CAgQ8sgIGAMiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+                    }
+                  },
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "clickTrackingParams": "CAgQ8sgIGAMiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                        "commandExecutorCommand": {
+                          "commands": [
+                            {
+                              "clickTrackingParams": "CAgQ8sgIGAMiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "signalServiceEndpoint": {
+                                "signal": "CLIENT_SIGNAL",
+                                "actions": [
+                                  {
+                                    "clickTrackingParams": "CAgQ8sgIGAMiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                    "signalAction": {
+                                      "signal": "CLOSE_POPUP"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "clickTrackingParams": "CAgQ8sgIGAMiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "browseEndpoint": {
+                                "browseId": "UC5A0PgkH6vndkzWBBUnRuxw"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Not interested"
+                },
+                "rendererContext": {
+                  "loggingContext": {
+                    "loggingDirectives": {
+                      "trackingParams": "CAcQi8sIGAQiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+                    }
+                  },
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "clickTrackingParams": "CAcQi8sIGAQiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                        "feedbackEndpoint": {
+                          "feedbackToken": "AB9zfpJH72r5QTaOlGuLD25V87E5J1yWOPpf294h1WEvFbq_a7BhtJ3vYAjYtSGjtSuy_UFKYAo-DvFV7-ZACT3faLq6FofX_u6iwj9MwqWwfZem6CO6GPmADqUBVXAeX1RbRahD3wf9",
+                          "uiActions": {
+                            "hideEnclosingContainer": true
+                          },
+                          "actions": [
+                            {
+                              "clickTrackingParams": "CAcQi8sIGAQiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                              "openClientOverlayAction": {
+                                "type": "CLIENT_OVERLAY_TYPE_DISMISSAL_FOLLOW_UP",
+                                "context": "NO6ZB9iF8kc",
+                                "token": "AB9zfpJH72r5QTaOlGuLD25V87E5J1yWOPpf294h1WEvFbq_a7BhtJ3vYAjYtSGjtSuy_UFKYAo-DvFV7-ZACT3faLq6FofX_u6iwj9MwqWwfZem6CO6GPmADqUBVXAeX1RbRahD3wf9"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "listItemViewModel": {
+                "title": {
+                  "content": "Don't recommend channel"
+                },
+                "rendererContext": {
+                  "loggingContext": {
+                    "loggingDirectives": {
+                      "trackingParams": "CAMQ8s8DGAUiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+                    }
+                  },
+                  "commandContext": {
+                    "onTap": {
+                      "innertubeCommand": {
+                        "clickTrackingParams": "CAMQ8s8DGAUiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                        "openPopupAction": {
+                          "popup": {
+                            "overlaySectionRenderer": {
+                              "overlay": {
+                                "overlayTwoPanelRenderer": {
+                                  "actionPanel": {
+                                    "overlayPanelRenderer": {
+                                      "header": {
+                                        "overlayPanelHeaderRenderer": {
+                                          "title": {
+                                            "runs": [
+                                              {
+                                                "text": "Don't recommend channel"
+                                              }
+                                            ]
+                                          },
+                                          "subtitle": {
+                                            "runs": [
+                                              {
+                                                "text": "We won't recommend videos from this channel to you again"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      "content": {
+                                        "overlayPanelItemListRenderer": {
+                                          "items": [
+                                            {
+                                              "compactLinkRenderer": {
+                                                "title": {
+                                                  "runs": [
+                                                    {
+                                                      "text": "Confirm"
+                                                    }
+                                                  ]
+                                                },
+                                                "trackingParams": "CAYQ8s8DGAAiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw=",
+                                                "serviceEndpoint": {
+                                                  "clickTrackingParams": "CAYQ8s8DGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                                  "commandExecutorCommand": {
+                                                    "commands": [
+                                                      {
+                                                        "clickTrackingParams": "CAYQ8s8DGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                                        "feedbackEndpoint": {
+                                                          "feedbackToken": "AB9zfpLmixGfJb0sa5Cj1397hcriz9plgYjvpFgFA7wh1SLNJDd3kgMhMYCSOvrA94-dnl-woJAJXlozhFHC3O7nLvNRslwJOMRN1IHmlWFehE-sXhM96xGA7wUEMvCIG7u157kyUqLPRz0bDZ91NBPSkBNZfOJ12CcJm6qKmSAU2XWpCfElln8",
+                                                          "uiActions": {
+                                                            "hideEnclosingContainer": true
+                                                          },
+                                                          "actions": [
+                                                            {
+                                                              "clickTrackingParams": "CAYQ8s8DGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                                              "removeItemAction": {
+                                                                "childId": "NO6ZB9iF8kc"
+                                                              }
+                                                            },
+                                                            {
+                                                              "clickTrackingParams": "CAYQ8s8DGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                                              "openPopupAction": {
+                                                                "popup": {
+                                                                  "overlayMessageRenderer": {
+                                                                    "title": {
+                                                                      "runs": [
+                                                                        {
+                                                                          "text": "Channel removed from recommendations"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "popupType": "TOAST"
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "clickTrackingParams": "CAYQ8s8DGAAiEwiJ0vTZv_uWAxUZZnoFHYg3CczKAQRDSD-q",
+                                                        "signalAction": {
+                                                          "signal": "CLOSE_POPUP"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "compactLinkRenderer": {
+                                                "title": {
+                                                  "runs": [
+                                                    {
+                                                      "text": "Go back"
+                                                    }
+                                                  ]
+                                                },
+                                                "trackingParams": "CAUQp0wYASITCInS9Nm_-5YDFRlmegUdiDcJzA==",
+                                                "serviceEndpoint": {
+                                                  "clickTrackingParams": "CAUQp0wYASITCInS9Nm_-5YDFRlmegUdiDcJzMoBBENIP6o=",
+                                                  "signalAction": {
+                                                    "signal": "POPUP_BACK"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "trackingParams": "CAQQ9sQLIhMIidL02b_7lgMVGWZ6BR2INwnM"
+                                    }
+                                  }
+                                }
+                              },
+                              "trackingParams": "CAQQ9sQLIhMIidL02b_7lgMVGWZ6BR2INwnM"
+                            }
+                          },
+                          "popupType": "MODAL"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "rendererContext": {
+            "loggingContext": {
+              "loggingDirectives": {
+                "trackingParams": "CAIQpzsiEwiJ0vTZv_uWAxUZZnoFHYg3Ccw="
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "trackingParams": "CAAQzP0HIhMIidL02b_7lgMVGWZ6BR2INwnMygEEQ0g_qg=="
+}

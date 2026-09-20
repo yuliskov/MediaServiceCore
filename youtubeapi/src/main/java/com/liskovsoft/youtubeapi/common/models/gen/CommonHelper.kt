@@ -5,7 +5,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
-import com.liskovsoft.youtubeapi.browse.v2.gen.getVideoId
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.getFeedbackToken
@@ -209,6 +208,7 @@ internal fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movi
 internal fun TileItem.getChannelId() = onSelectCommand?.getBrowseId() ?: getMenu()?.getBrowseId()
 internal fun TileItem.getChannelParams() = onSelectCommand?.getParams()
 internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
+internal fun TileItem.getEngagementPanelEndpoint() = onLongPressCommand?.showEngagementPanelEndpoint
 internal fun TileItem.isLive() = BADGE_STYLE_LIVE == getBadgeStyle()
 internal fun TileItem.getContentType() = contentType
 internal fun TileItem.getRichTextTileText() = header?.richTextTileHeaderRenderer?.textContent?.get(0)?.getText()
@@ -341,6 +341,11 @@ internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileTe
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)
 internal fun ItemWrapper.getFeedbackToken2() = getFeedbackTokens()?.getOrNull(1)
+internal fun ItemWrapper.getFeedbackEndpoint() = getTileItem()?.getEngagementPanelEndpoint()?.let {
+    if (it.identifier?.tag != null && it.globalConfiguration?.params != null)
+        it.identifier.tag to it.globalConfiguration.params
+    else null
+}
 internal fun ItemWrapper.isEmpty() = getLockupItem()?.isEmpty() ?: false
 internal fun ItemWrapper.getQuery() = getTileItem()?.getQuery()
 private fun ItemWrapper.getFeedbackTokens() = getVideoItem()?.getFeedbackTokens() ?: getTileItem()?.getFeedbackTokens() ?: getLockupItem()?.getFeedbackTokens()
@@ -413,6 +418,7 @@ internal fun RendererContext.getVideoId() = getOnTapCommand()?.getVideoId()
 internal fun RendererContext.getPlaylistId() = getOnTapCommand()?.getPlaylistId()
 internal fun RendererContext.getBrowseId() = getOnTapCommand()?.getBrowseId()
 internal fun RendererContext.getContinuationToken() = getOnTapCommand()?.getContinuationToken()
+internal fun RendererContext.getFeedbackToken() = getOnTapCommand()?.getFeedbackToken()
 private fun RendererContext.getOnTapCommand() = commandContext?.onTap?.innertubeCommand
 
 ///////
@@ -423,5 +429,15 @@ internal fun InnertubeCommand.getBrowseId() = browseEndpoint?.browseId
 internal fun InnertubeCommand.getContinuationToken() = continuationCommand?.token ?: commandExecutorCommand?.getContinuationToken()
 internal fun InnertubeCommand.getThumbnails() = reelWatchEndpoint?.getThumbnails()
 internal fun InnertubeCommand.getFeedbackToken() = feedbackEndpoint?.feedbackToken
+    ?: openPopupAction?.getOverlayPanelRenderer()?.getCommandExecutorCommand()?.getFeedbackToken()
 internal fun InnertubeCommand.getFeedbackTokens() = showSheetCommand?.getFeedbackTokens()
 internal fun InnertubeCommand.getItems() = showSheetCommand?.getItems()
+
+///////
+
+internal fun PopupActionItem.getOverlayPanelRenderer() = popup?.overlaySectionRenderer?.overlay?.overlayTwoPanelRenderer?.actionPanel?.overlayPanelRenderer
+
+///////
+
+internal fun OverlayPanelRenderer.getCommandExecutorCommand() =
+    content?.overlayPanelItemListRenderer?.items?.firstNotNullOfOrNull { it?.compactLinkRenderer?.serviceEndpoint?.commandExecutorCommand }

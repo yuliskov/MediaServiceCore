@@ -230,7 +230,8 @@ internal data class EngagementPanel(
         data class Content(
             val structuredDescriptionContentRenderer: StructuredDescriptionContentRenderer?,
             val macroMarkersListRenderer: MacroMarkersListRenderer?,
-            val sectionListRenderer: SectionListRenderer?
+            val sectionListRenderer: SectionListRenderer?,
+            val listViewModel: ListViewModel?
         ) {
             data class StructuredDescriptionContentRenderer(
                  val items: List<Item?>?

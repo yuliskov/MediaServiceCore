@@ -159,6 +159,7 @@ internal fun ChipViewModel.getContinuationToken() = tapCommand?.innertubeCommand
 
 internal fun ListItemViewModel.getTitle() = title?.getText()
 internal fun ListItemViewModel.getContinuationToken() = rendererContext?.getContinuationToken()
+internal fun ListItemViewModel.getFeedbackToken() = rendererContext?.getFeedbackToken()
 
 /////
 
@@ -171,6 +172,7 @@ internal fun ChipItemWrapper.getTitle() = chipCloudChipRenderer?.getTitle() ?: c
 internal fun ChipItemWrapper.getContinuationToken() = chipCloudChipRenderer?.getContinuationToken()
     ?: chipViewModel?.getContinuationToken()
     ?: listItemViewModel?.getContinuationToken()
+internal fun ChipItemWrapper.getFeedbackToken() = listItemViewModel?.getFeedbackToken()
 
 /////
 

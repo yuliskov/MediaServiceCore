@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
+import com.liskovsoft.mediaserviceinterfaces.data.FeedbackEndpoint
 import kotlin.math.abs
 
 open class BaseMediaItem : MediaItem {
@@ -60,6 +61,7 @@ open class BaseMediaItem : MediaItem {
     protected open val isMovieItem: Boolean? = null
     protected open val feedbackTokenItem: String? = null
     protected open val feedbackTokenItem2: String? = null
+    protected open val feedbackEndpointItem: FeedbackEndpoint? = null
     protected open val percentWatchedItem: Int? = null
     protected open val startTimeSecondsItem: Int? = null
     protected open val hasNewContentItem: Boolean? = null
@@ -218,6 +220,10 @@ open class BaseMediaItem : MediaItem {
 
     override fun getFeedbackToken2(): String? {
         return feedbackTokenItem2
+    }
+
+    override fun getFeedbackEndpoint(): FeedbackEndpoint? {
+        return feedbackEndpointItem
     }
 
     override fun getContentType(): String? {

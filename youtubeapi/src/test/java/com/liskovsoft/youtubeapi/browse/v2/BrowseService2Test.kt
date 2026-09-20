@@ -44,8 +44,10 @@ class BrowseService2Test {
 
         val mediaItem = home?.mediaItems?.first { !YouTubeHelper.isEmpty(it) } // skip ad cards
 
-        assertTrue("Home row contains token 1", mediaItem?.feedbackToken != null)
-        assertTrue("Home row contains token 2", mediaItem?.feedbackToken2 != null)
+        if (mediaItem?.feedbackEndpoint == null) {
+            assertTrue("Home row contains token 1", mediaItem?.feedbackToken != null)
+            assertTrue("Home row contains token 2", mediaItem?.feedbackToken2 != null)
+        }
     }
 
     @Test

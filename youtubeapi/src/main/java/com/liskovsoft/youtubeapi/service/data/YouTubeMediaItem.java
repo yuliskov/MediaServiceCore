@@ -2,6 +2,8 @@ package com.liskovsoft.youtubeapi.service.data;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.liskovsoft.mediaserviceinterfaces.data.FeedbackEndpoint;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -530,6 +532,11 @@ public class YouTubeMediaItem implements MediaItem {
 
     @Override
     public String getFeedbackToken2() {
+        return null;
+    }
+
+    @Override
+    public FeedbackEndpoint getFeedbackEndpoint() {
         return null;
     }
 

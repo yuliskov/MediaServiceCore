@@ -11,6 +11,7 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.youtubeapi.browse.v2.mock.SubscriptionsApiMock
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
+import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackEndpoint
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.common.models.gen.getFeedbackToken2
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.KidsSectionMediaGroup
@@ -185,10 +186,12 @@ class BrowseApiSignedTest {
     fun testThatHomeContainsAllTokens() {
         val home = getHome()
 
-        val item = home?.getItems()?.firstOrNull { it?.getFeedbackToken() != null }
+        val item = home?.getItems()?.firstOrNull { it?.getFeedbackToken() != null || it?.getFeedbackEndpoint() != null }
 
-        assertNotNull("Home contains feedback token 1", item?.getFeedbackToken())
-        assertNotNull("Home contains feedback token 2", item?.getFeedbackToken2())
+        if (item?.getFeedbackEndpoint() == null) {
+            assertNotNull("Home contains feedback token 1", item?.getFeedbackToken())
+            assertNotNull("Home contains feedback token 2", item?.getFeedbackToken2())
+        }
     }
 
     @Test

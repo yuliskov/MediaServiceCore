@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
 import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
+import com.liskovsoft.mediaserviceinterfaces.data.FeedbackEndpoint;
 import com.liskovsoft.mediaserviceinterfaces.data.FeedbackReasons;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -26,6 +27,7 @@ import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.innertube.InnertubeService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
+import com.liskovsoft.youtubeapi.panel.PanelService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistServiceWrapper;
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
@@ -357,6 +359,18 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
+    public List<String> getFeedbackTokens(FeedbackEndpoint endpoint) {
+        checkSigned();
+
+        return getPanelService().getFeedbackTokens(endpoint);
+    }
+
+    @Override
+    public Observable<List<String>> getFeedbackTokensObserve(FeedbackEndpoint endpoint) {
+        return RxHelper.fromCallable(() -> getFeedbackTokens(endpoint));
+    }
+
+    @Override
     public List<PlaylistInfo> getPlaylistsInfo(String videoId) {
         checkSigned();
 
@@ -597,6 +611,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     @NonNull
     private static FeedbackService getFeedbackService() {
         return FeedbackService.instance();
+    }
+
+    @NonNull
+    private static PanelService getPanelService() {
+        return PanelService.INSTANCE;
     }
 
     @NonNull

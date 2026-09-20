@@ -22,56 +22,57 @@ internal data class NavigationEndpointItem(
     data class SearchEndpoint(
         val query: String?
     )
-    data class PopupActionItem(
-        val popup: Popup?
-    ) {
-        data class Popup(
-            val overlaySectionRenderer: OverlaySectionRenderer?
-        ) {
-            data class OverlaySectionRenderer(
-                val overlay: Overlay?
-            ) {
-                data class Overlay(
-                    val overlayTwoPanelRenderer: OverlayTwoPanelRenderer?
-                ) {
-                    data class OverlayTwoPanelRenderer(
-                        val actionPanel: ActionPanel?
-                    ) {
-                        data class ActionPanel(
-                            val overlayPanelRenderer: OverlayPanelRenderer?
-                        ) {
-                            data class OverlayPanelRenderer(
-                                val content: Content?,
-                                val header: Header?
-                            ) {
-                                data class Content(
-                                    val overlayPanelItemListRenderer: OverlayPanelItemListRenderer?,
-                                    val itemSectionRenderer: ItemSectionRenderer?
-                                ) {
-                                    data class OverlayPanelItemListRenderer(
-                                        val items: List<Item?>?
-                                    ) {
-                                        data class Item(
-                                            val toggleButtonRenderer: ToggleButtonRenderer?,
-                                            val subscribeButtonRenderer: SubscribeButtonRenderer?,
-                                            val compactLinkRenderer: CompactLinkRenderer?
-                                        )
-                                    }
+}
 
-                                    data class ItemSectionRenderer(
-                                        val continuations: List<ContinuationItem?>?
-                                    )
-                                }
-                                data class Header(
-                                    val overlayPanelHeaderRenderer: OverlayPanelHeaderRenderer?
-                                )
-                            }
-                        }
-                    }
+internal data class PopupActionItem(
+    val popup: Popup?
+) {
+    data class Popup(
+        val overlaySectionRenderer: OverlaySectionRenderer?
+    ) {
+        data class OverlaySectionRenderer(
+            val overlay: Overlay?
+        ) {
+            data class Overlay(
+                val overlayTwoPanelRenderer: OverlayTwoPanelRenderer?
+            ) {
+                data class OverlayTwoPanelRenderer(
+                    val actionPanel: ActionPanel?
+                ) {
+                    data class ActionPanel(
+                        val overlayPanelRenderer: OverlayPanelRenderer?
+                    )
                 }
             }
         }
     }
+}
+
+internal data class OverlayPanelRenderer(
+    val content: Content?,
+    val header: Header?
+) {
+    data class Content(
+        val overlayPanelItemListRenderer: OverlayPanelItemListRenderer?,
+        val itemSectionRenderer: ItemSectionRenderer?
+    ) {
+        data class OverlayPanelItemListRenderer(
+            val items: List<Item?>?
+        ) {
+            data class Item(
+                val toggleButtonRenderer: ToggleButtonRenderer?,
+                val subscribeButtonRenderer: SubscribeButtonRenderer?,
+                val compactLinkRenderer: CompactLinkRenderer?
+            )
+        }
+
+        data class ItemSectionRenderer(
+            val continuations: List<ContinuationItem?>?
+        )
+    }
+    data class Header(
+        val overlayPanelHeaderRenderer: OverlayPanelHeaderRenderer?
+    )
 }
 
 internal data class BrowseEndpoint(
@@ -111,8 +112,17 @@ internal data class ToggledServiceEndpoint(
 )
 
 internal data class ShowEngagementPanelEndpoint(
-    val engagementPanel: EngagementPanel?
-)
+    val engagementPanel: EngagementPanel?,
+    val identifier: Identifier?,
+    val globalConfiguration: GlobalConfiguration?
+) {
+    data class Identifier(
+        val tag: String?
+    )
+    data class GlobalConfiguration(
+        val params: String?
+    )
+}
 
 internal data class ButtonContentWrapper(
     val videoOwnerRenderer: VideoOwnerItem?,
@@ -270,7 +280,8 @@ internal data class TileItem(
     }
 
     data class OnLongPressCommand(
-        val showMenuCommand: ShowMenuCommand?
+        val showMenuCommand: ShowMenuCommand?,
+        val showEngagementPanelEndpoint: ShowEngagementPanelEndpoint?
     )
 }
 
@@ -420,7 +431,8 @@ internal data class InnertubeCommand(
     val browseEndpoint: BrowseEndpoint?,
     val continuationCommand: ContinuationCommand?,
     val commandExecutorCommand: CommandExecutorCommand?,
-    val showMenuCommand: ShowMenuCommand?
+    val showMenuCommand: ShowMenuCommand?,
+    val openPopupAction: PopupActionItem?
 )
 
 internal data class ShowSheetCommand(
@@ -437,15 +449,15 @@ internal data class ShowSheetCommand(
             ) {
                 data class Content(
                     val listViewModel: ListViewModel?
-                ) {
-                    data class ListViewModel(
-                        val listItems: List<ChipItemWrapper?>?
-                    )
-                }
+                )
             }
         }
     }
 }
+
+internal data class ListViewModel(
+    val listItems: List<ChipItemWrapper?>?
+)
 
 internal data class CommandExecutorCommand(
     // WARN: don't merge ExecutorCommand with InnertubeCommand: Android 4 StackOverflowError

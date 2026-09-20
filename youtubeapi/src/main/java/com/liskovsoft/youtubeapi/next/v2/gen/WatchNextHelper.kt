@@ -199,6 +199,7 @@ internal fun EngagementPanel.getLikeCount(): String? = getDescriptionHeader()?.f
 internal fun EngagementPanel.getDescriptionText(): String? = getDescriptionBody()?.descriptionBodyText?.getText()
 internal fun EngagementPanel.getThumbnails(): ThumbnailItem? = getHeader()?.image
 internal fun EngagementPanel.getSubscribersCount(): String? = getHeader()?.subtitle?.getText()?.split(YouTubeHelper.TEXT_DELIM_ALT)?.last()
+internal fun EngagementPanel.getMenuItems() = engagementPanelSectionListRenderer?.content?.listViewModel?.listItems
 private fun EngagementPanel.getDescriptionHeader(): VideoDescriptionHeaderRenderer? =
     getDescriptionItems()?.firstNotNullOfOrNull { it?.videoDescriptionHeaderRenderer }
 private fun EngagementPanel.getDescriptionBody(): ExpandableVideoDescriptionBodyRenderer? =

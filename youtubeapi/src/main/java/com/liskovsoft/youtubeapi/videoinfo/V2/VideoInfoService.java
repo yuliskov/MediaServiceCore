@@ -120,7 +120,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         mUseAuth = true;
 
         // Only the TV client supports auth features
-        return getVideoInfo(AppClient.TV, videoId, clickTrackingParams);
+        return getVideoInfo(TV_CLIENT, videoId, clickTrackingParams);
     }
 
     private VideoInfo firstPlayable(String videoId, String clickTrackingParams) {

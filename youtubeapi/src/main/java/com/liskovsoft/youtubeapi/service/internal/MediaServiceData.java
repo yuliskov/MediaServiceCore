@@ -168,6 +168,15 @@ public class MediaServiceData {
         return mPlayerExtractorCache;
     }
 
+    /**
+     *  Debug menu should display the player build actually being used
+     *  for n/sig extraction instead of a stale player .js url
+     */
+    @Nullable
+    public String getActivePlayerUrl() {
+        return mPlayerExtractorCache != null ? mPlayerExtractorCache.getPlayerUrl() : null;
+    }
+
     public void setPlayerExtractorCache(PlayerExtractorCache playerCache) {
         mPlayerExtractorCache = playerCache;
         persistData();

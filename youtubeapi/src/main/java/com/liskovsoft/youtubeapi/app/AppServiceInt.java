@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.app;
 
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
@@ -40,7 +41,16 @@ public class AppServiceInt {
     }
 
     public PlayerDataExtractor getPlayerDataExtractor(String playerUrl) {
-        return new PlayerDataExtractor(playerUrl);
+        return new PlayerDataExtractor(playerUrl, false);
+    }
+
+    public PlayerDataExtractor getPlayerDataExtractor(String playerUrl, boolean isTcl) {
+        return new PlayerDataExtractor(playerUrl, isTcl);
+    }
+
+    protected TvConfig getTvConfig() {
+        Call<TvConfig> wrapper = mAppApi.getTvConfig();
+        return RetrofitHelper.get(wrapper);
     }
 
     protected ClientData getClientData(String clientUrl) {

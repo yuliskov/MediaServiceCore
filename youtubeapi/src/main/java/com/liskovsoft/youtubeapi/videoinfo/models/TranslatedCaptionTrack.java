@@ -2,6 +2,8 @@ package com.liskovsoft.youtubeapi.videoinfo.models;
 
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
+import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 
 public class TranslatedCaptionTrack extends CaptionTrack {
     public final static String TRANSLATE_MARKER = "*";
@@ -20,7 +22,24 @@ public class TranslatedCaptionTrack extends CaptionTrack {
             return mOriginTrack.getBaseUrl();
         }
 
-        return mOriginTrack.getBaseUrl() + "&tlang=" + mLanguage.getLanguageCode();
+        UrlQueryString baseUrlQuery = UrlQueryStringFactory.parse(mOriginTrack.getBaseUrl());
+        if (baseUrlQuery == null) {
+            return mOriginTrack.getBaseUrl();
+        }
+
+        baseUrlQuery.set("tlang", mLanguage.getLanguageCode());
+        baseUrlQuery.set("fmt", CaptionFormat.VTT.name);
+        return baseUrlQuery.toString();
+    }
+
+    @Override
+    public String getMimeType() {
+        return CaptionFormat.VTT.mimeType;
+    }
+
+    @Override
+    public String getCodecs() {
+        return CaptionFormat.VTT.codecs;
     }
 
     @Override
@@ -35,7 +54,7 @@ public class TranslatedCaptionTrack extends CaptionTrack {
 
     @Override
     public String getVssId() {
-        return mOriginTrack.getVssId();
+        return mOriginTrack.getVssId() + "." + mLanguage.getLanguageCode();
     }
 
     @Override
@@ -51,15 +70,7 @@ public class TranslatedCaptionTrack extends CaptionTrack {
         return mOriginTrack.getType();
     }
 
-    @Override
-    public String getMimeType() {
-        return mOriginTrack.getMimeType();
-    }
 
-    @Override
-    public String getCodecs() {
-        return mOriginTrack.getCodecs();
-    }
 
     // Doesn't work!!!!
     private String countryCodeToFlag(String countryCode) {

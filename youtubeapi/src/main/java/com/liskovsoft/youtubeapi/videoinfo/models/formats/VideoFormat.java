@@ -157,6 +157,10 @@ public class VideoFormat {
         return mAudioTrackId;
     }
 
+    public boolean isAutoDubbed() {
+        return mIsAutoDubbed;
+    }
+
     public int getWidth() {
         return mWidth;
     }

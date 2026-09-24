@@ -45,7 +45,8 @@ import java.util.Set;
 public class YouTubeMediaItemService implements MediaItemService {
     private static final String TAG = YouTubeMediaItemService.class.getSimpleName();
     private static YouTubeMediaItemService sInstance;
-    private MediaItemFormatInfo mCachedFormatInfo;
+    // Written and read from several Rx worker threads (player, history, stream reminder).
+    private volatile MediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemService() {
     }
@@ -560,18 +561,25 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private MediaItemFormatInfo getCachedFormatInfo(String videoId) {
-        return  mCachedFormatInfo != null &&
-                mCachedFormatInfo.getVideoId() != null &&
-                mCachedFormatInfo.getVideoId().equals(videoId) &&
-                mCachedFormatInfo.isCacheActual() ? mCachedFormatInfo : null;
+        // Read the field once. isCacheActual() blocks on AppService's player lock, which is also
+        // held across the player JS download, so another thread can replace the cache between the
+        // id check and the value we hand back - that returns another video's streams.
+        MediaItemFormatInfo cached = mCachedFormatInfo;
+
+        return  cached != null &&
+                videoId != null &&
+                videoId.equals(cached.getVideoId()) &&
+                cached.isCacheActual() ? cached : null;
     }
 
     private void setCachedFormatInfo(MediaItemFormatInfo formatInfo, String clickTrackingParams) {
-        mCachedFormatInfo = formatInfo;
-
+        // Finish initialising before publishing, so a reader can't observe the entry
+        // without its click tracking params.
         if (formatInfo != null) {
             formatInfo.setClickTrackingParams(clickTrackingParams);
         }
+
+        mCachedFormatInfo = formatInfo;
     }
 
     private void checkSigned() {

@@ -18,7 +18,9 @@ public class TranslatedCaptionTrack extends CaptionTrack {
     @Override
     public String getBaseUrl() {
         // Don't try to translate the same lang or you'll get a mess
-        if (Helpers.equals(mOriginTrack.getLanguageCode(), mLanguage.getLanguageCode())) {
+        String originBase = getBaseLanguage(mOriginTrack.getLanguageCode());
+        String transBase = getBaseLanguage(mLanguage.getLanguageCode());
+        if (!originBase.isEmpty() && originBase.equalsIgnoreCase(transBase)) {
             return mOriginTrack.getBaseUrl();
         }
 
@@ -72,10 +74,18 @@ public class TranslatedCaptionTrack extends CaptionTrack {
 
 
 
-    // Doesn't work!!!!
-    private String countryCodeToFlag(String countryCode) {
-        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
-        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
-        return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+    private static String getBaseLanguage(String lang) {
+        if (lang == null) {
+            return "";
+        }
+        int idx = lang.indexOf('-');
+        if (idx != -1) {
+            lang = lang.substring(0, idx);
+        }
+        idx = lang.indexOf('_');
+        if (idx != -1) {
+            lang = lang.substring(0, idx);
+        }
+        return lang.trim().toLowerCase(java.util.Locale.ROOT);
     }
 }

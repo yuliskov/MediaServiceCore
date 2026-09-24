@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.RegularVideoFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideoInfo {
@@ -390,17 +391,44 @@ public class VideoInfo {
 
     private List<CaptionTrack> mergeCaptionTracks() {
         if (mMergedCaptionTracks == null) {
-            mMergedCaptionTracks = mCaptionTracks;
+            mMergedCaptionTracks = mCaptionTracks != null ? new ArrayList<>(mCaptionTracks) : new ArrayList<>();
 
-            if (mTranslationLanguages != null && mCaptionTracks != null) {
+            if (mTranslationLanguages != null && mCaptionTracks != null && !mCaptionTracks.isEmpty()) {
                 CaptionTrack originTrack = findOriginTrack(mCaptionTracks);
+                String originBaseLang = getBaseLanguage(originTrack != null ? originTrack.getLanguageCode() : null);
+
                 for (TranslationLanguage language : mTranslationLanguages) {
+                    if (language == null || language.getLanguageCode() == null) {
+                        continue;
+                    }
+                    String transBaseLang = getBaseLanguage(language.getLanguageCode());
+                    // NEVER translate into the origin track's own language!
+                    // This eliminates the weird monstrosity where "English" was auto-translated into "English",
+                    // and avoids HTTP 403 Forbidden errors when requesting timedtext with identical tlang.
+                    if (!originBaseLang.isEmpty() && originBaseLang.equalsIgnoreCase(transBaseLang)) {
+                        continue;
+                    }
                     mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language));
                 }
             }
         }
 
         return mMergedCaptionTracks;
+    }
+
+    private static String getBaseLanguage(String lang) {
+        if (lang == null) {
+            return "";
+        }
+        int idx = lang.indexOf('-');
+        if (idx != -1) {
+            lang = lang.substring(0, idx);
+        }
+        idx = lang.indexOf('_');
+        if (idx != -1) {
+            lang = lang.substring(0, idx);
+        }
+        return lang.trim().toLowerCase(java.util.Locale.ROOT);
     }
 
     /**

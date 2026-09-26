@@ -53,6 +53,26 @@ internal object FormatInfoWrapper {
         mCachedFormatInfo = null
     }
 
+    @JvmStatic
+    fun syncWithAuthInfoIfNeeded(formatInfo: MediaItemFormatInfo?) {
+        if (formatInfo == null) {
+            return
+        }
+
+        if (shouldBeSynced(formatInfo) && !formatInfo.isSynced()) {
+            val videoInfo = getVideoInfoService().getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams())
+            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo))
+        }
+
+        if (shouldBeSynced(formatInfo)) { // still not synced
+            throw IllegalStateException("Update history error: the format should be synced first")
+        }
+    }
+
+    private fun shouldBeSynced(formatInfo: MediaItemFormatInfo): Boolean {
+        return !formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned
+    }
+
     private fun selectPlaybackFormatInfo(videoId: String, clickTrackingParams: String?): MediaItemFormatInfo? {
         var formatInfo = getPrimaryProvider()(videoId, clickTrackingParams)
 

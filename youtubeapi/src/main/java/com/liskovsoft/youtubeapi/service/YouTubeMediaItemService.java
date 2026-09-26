@@ -31,12 +31,11 @@ import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.youtubeapi.playlist.PlaylistServiceWrapper;
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.service.internal.FormatInfoWrapper;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+
 import io.reactivex.Observable;
 
 import java.util.List;
@@ -170,11 +169,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         }
 
         // Improve the performance by fetching the history data on the second run
-        syncWithAuthFormatIfNeeded(formatInfo);
-
-        if (shouldBeSynced(formatInfo)) {
-            throw new IllegalStateException("Update history error: the format should be synced first");
-        }
+        FormatInfoWrapper.syncWithAuthInfoIfNeeded(formatInfo);
 
         getTrackingService().updateWatchTime(
                 formatInfo.getVideoId(), positionSec, Helpers.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
@@ -555,21 +550,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @NonNull
     private static WatchNextService getWatchNextService() {
         return WatchNextServiceWrapper.INSTANCE;
-    }
-
-    private static void syncWithAuthFormatIfNeeded(MediaItemFormatInfo formatInfo) {
-        if (formatInfo == null) {
-            return;
-        }
-
-        if (shouldBeSynced(formatInfo) && !formatInfo.isSynced()) {
-            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams());
-            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
-        }
-    }
-
-    private static boolean shouldBeSynced(MediaItemFormatInfo formatInfo) {
-        return !formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 
     private static void syncItem(MediaItem item, MediaItemMetadata metadata) {

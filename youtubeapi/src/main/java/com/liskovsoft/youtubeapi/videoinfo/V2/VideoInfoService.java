@@ -18,7 +18,6 @@ import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoHls;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfoReel;
 
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,9 +31,9 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     // TODO: TV clients are broken because of recently introduced '-tcl' player variant (different nParam and nSignature)
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
-            AppClient.WEB_EMBED, // Restricted (18+) videos
             AppClient.VISIONOS, // no url formats
             AppClient.TV_DOWNGRADED, // works with old UAs like old Cobalt and old Xbox (non-tcl players)
+            AppClient.WEB_EMBED, // Restricted (18+) videos (not working)
             //AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             //AppClient.ANDROID_REEL, // doesn't require pot and cipher (hangs on all engines)
             AppClient.WEB, // Fix video clip blocked in current location
@@ -73,9 +72,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        //initInfoTypeIfNeeded();
-        //reorderTypeListIfNeeded();
-
         AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
 
         mUseAuth = true;
@@ -96,20 +92,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         mIsUnplayable = result.isUnplayable();
 
         return result;
-    }
-
-    private void reorderTypeListIfNeeded() {
-        if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
-            moveFirst(IOS_CLIENT);
-        } else {
-            moveFirst(WEB_CLIENT);
-        }
-    }
-
-    private void moveFirst(AppClient client) {
-        if (VIDEO_INFO_TYPE_LIST[0] != client) {
-            Helpers.move(VIDEO_INFO_TYPE_LIST, Arrays.asList(VIDEO_INFO_TYPE_LIST).indexOf(client), 0);
-        }
     }
 
     public VideoInfo getAuthVideoInfo(String videoId, String clickTrackingParams) {
@@ -151,35 +133,20 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return null;
     }
 
-    //private void initInfoTypeIfNeeded() {
-    //    if (mActualInfoType != null) {
-    //        return;
-    //    }
-    //
-    //    restoreVideoInfoType();
-    //}
-
-    public void switchNextFormat(boolean force) {
+    public boolean switchNextFormat(boolean force) {
         if (force) {
             nextVideoInfoType();
-            return;
+            return mNextInfoType == VIDEO_INFO_TYPE_LIST[0];
         }
-
-        //initInfoTypeIfNeeded();
 
         // Try to reset pot cache for the last video
         if (!mIsUnplayable && mActualInfoType != null && PoTokenGate.resetCache(mActualInfoType)) {
-            return;
+            return false;
         }
-        // The Premium is likely broken
-        //if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
-        //    // Skip additional formats fetching that could produce an error
-        //    getData().setFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS, false);
-        //    return;
-        //}
+
         // And last, try to switch the client
         nextVideoInfoType();
-        //persistVideoInfoType();
+        return mNextInfoType == VIDEO_INFO_TYPE_LIST[0];
     }
 
     public void switchNextSubtitle() {
@@ -316,18 +283,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mUseAuth = oldUseAuth;
     }
-
-    //private void restoreVideoInfoType() {
-    //    int videoInfoType = getData().getVideoInfoType();
-    //    if (videoInfoType != -1) {
-    //        mActualInfoType = videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType] : null;
-    //        if (!Arrays.asList(VIDEO_INFO_TYPE_LIST).contains(mActualInfoType)) {
-    //            resetInfoTypeToDefault();
-    //        }
-    //    } else {
-    //        resetInfoTypeToDefault();
-    //    }
-    //}
 
     private void resetInfoTypeToDefault() {
         mNextInfoType = null;

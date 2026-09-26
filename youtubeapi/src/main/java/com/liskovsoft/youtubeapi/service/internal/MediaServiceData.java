@@ -18,7 +18,6 @@ import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.NSigData;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerExtractorCache;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 
 import java.util.UUID;
 
@@ -199,7 +198,7 @@ public class MediaServiceData {
 
         persistData();
 
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        FormatInfoWrapper.invalidateCache();
     }
 
     public boolean isContentHidden(int content) {
@@ -272,7 +271,7 @@ public class MediaServiceData {
         mIsMoreSubtitlesUnlocked = unlock;
         persistData();
 
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        FormatInfoWrapper.invalidateCache();
     }
 
     public boolean isPotSupported() {

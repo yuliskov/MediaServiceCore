@@ -17,6 +17,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.service.internal.FormatInfoWrapper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
@@ -85,8 +86,8 @@ public class YouTubeServiceManager implements ServiceManager {
         getYouTubeSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
         getAppService().invalidateCache();
         //AppService.instance().invalidateVisitorData();
-        getYouTubeMediaItemService().invalidateCache();
-        getVideoInfoService().resetInfoType();
+        FormatInfoWrapper.invalidateCache();
+        FormatInfoWrapper.resetFormat();
     }
 
     @Override
@@ -96,19 +97,19 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public void switchNextClient() {
-        getYouTubeMediaItemService().invalidateCache();
-        getVideoInfoService().switchNextFormat(false);
+        FormatInfoWrapper.invalidateCache();
+        FormatInfoWrapper.switchNextFormat(false);
     }
 
     @Override
     public void switchNextClientNow() {
-        getYouTubeMediaItemService().invalidateCache();
-        getVideoInfoService().switchNextFormat(true);
+        FormatInfoWrapper.invalidateCache();
+        FormatInfoWrapper.switchNextFormat(true);
     }
 
     @Override
     public void switchNextSubsFormat() {
-        getYouTubeMediaItemService().invalidateCache();
+        FormatInfoWrapper.invalidateCache();
         getVideoInfoService().switchNextSubtitle();
     }
 

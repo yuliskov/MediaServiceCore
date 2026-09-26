@@ -24,7 +24,6 @@ import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.BaseMediaItem;
 import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
-import com.liskovsoft.youtubeapi.innertube.InnertubeService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.youtubeapi.panel.PanelService;
@@ -34,6 +33,7 @@ import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
+import com.liskovsoft.youtubeapi.service.internal.FormatInfoWrapper;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -45,7 +45,6 @@ import java.util.Set;
 public class YouTubeMediaItemService implements MediaItemService {
     private static final String TAG = YouTubeMediaItemService.class.getSimpleName();
     private static YouTubeMediaItemService sInstance;
-    private MediaItemFormatInfo mCachedFormatInfo;
 
     private YouTubeMediaItemService() {
     }
@@ -73,53 +72,7 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
-        return selectPlaybackFormatInfo(videoId, clickTrackingParams);
-    }
-
-    private MediaItemFormatInfo selectPlaybackFormatInfo(String videoId, String clickTrackingParams) {
-        MediaItemFormatInfo formatInfo = getFormatInfoLegacy(videoId, clickTrackingParams);
-
-        if (formatInfo != null && formatInfo.isUnplayable()) {
-            formatInfo = getFormatInfoInnertube(videoId, clickTrackingParams);
-        }
-
-        return formatInfo;
-    }
-
-    private MediaItemFormatInfo getFormatInfoLegacy(String videoId, String clickTrackingParams) {
-        MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
-
-        if (cachedFormatInfo != null) {
-            return cachedFormatInfo;
-        }
-
-        checkSigned();
-
-        VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, clickTrackingParams);
-
-        MediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
-
-        setCachedFormatInfo(formatInfo, clickTrackingParams);
-
-        return formatInfo;
-    }
-
-    private MediaItemFormatInfo getFormatInfoInnertube(String videoId, String clickTrackingParams) {
-        //videoId = "K04WmBtVsOs"; // the testing video: Memories of Memories
-
-        MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
-
-        if (cachedFormatInfo != null) {
-            return cachedFormatInfo;
-        }
-
-        checkSigned();
-
-        MediaItemFormatInfo formatInfo = InnertubeService.createFormatInfo(videoId);
-
-        setCachedFormatInfo(formatInfo, clickTrackingParams);
-
-        return formatInfo;
+        return FormatInfoWrapper.getFormatInfo(videoId, clickTrackingParams);
     }
 
     @Override
@@ -553,25 +506,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<String> getUnlocalizedTitleObserve(String videoId) {
         return RxHelper.fromCallable(() -> getWatchNextService().getUnlocalizedTitle(videoId));
-    }
-
-    public void invalidateCache() {
-        mCachedFormatInfo = null;
-    }
-
-    private MediaItemFormatInfo getCachedFormatInfo(String videoId) {
-        return  mCachedFormatInfo != null &&
-                mCachedFormatInfo.getVideoId() != null &&
-                mCachedFormatInfo.getVideoId().equals(videoId) &&
-                mCachedFormatInfo.isCacheActual() ? mCachedFormatInfo : null;
-    }
-
-    private void setCachedFormatInfo(MediaItemFormatInfo formatInfo, String clickTrackingParams) {
-        mCachedFormatInfo = formatInfo;
-
-        if (formatInfo != null) {
-            formatInfo.setClickTrackingParams(clickTrackingParams);
-        }
     }
 
     private void checkSigned() {

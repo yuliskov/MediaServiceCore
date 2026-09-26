@@ -294,6 +294,10 @@ public class VideoInfo {
         return getVideoDetails() != null && getVideoDetails().isLive();
     }
 
+    public boolean isLiveContent() {
+        return getVideoDetails() != null && getVideoDetails().isLiveContent();
+    }
+
     public boolean hasSubtitles() {
         return mCaptionTracks != null;
     }
@@ -428,21 +432,12 @@ public class VideoInfo {
      * TODO: remove when SABR parser will be fixed
      */
     private boolean isAdaptiveFormatsBroken() {
-        // TODO: live SABR formats still broken
-        if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty() || !isLive()) {
+        if (mAdaptiveFormats == null || mAdaptiveFormats.isEmpty()) {
             return false;
         }
 
-        boolean allBroken = true;
-
-        for (AdaptiveVideoFormat format : mAdaptiveFormats) {
-            if (format != null && !format.isBroken()) {
-                allBroken = false;
-                break;
-            }
-        }
-
-        return allBroken;
+        // TODO: live SABR formats still broken
+        return mAdaptiveFormats.get(0).isBroken() && (isLive() || isLiveContent());
     }
 
     public String getPoToken() {

@@ -5,6 +5,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat.FORMAT_TYPE_DASH
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat.FORMAT_TYPE_SABR
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat.FORMAT_TYPE_REGULAR
+import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils
 import com.liskovsoft.youtubeapi.innertube.models.StreamingFormat
 import com.liskovsoft.youtubeapi.innertube.utils.getIndexRange
@@ -140,5 +141,9 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
             getHeight(),
             getITag()
         )
+    }
+
+    fun isBroken(): Boolean {
+        return Helpers.allNulls(streamingFormat.url, streamingFormat.cipher, streamingFormat.signatureCipher)
     }
 }

@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service.internal
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
+import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.PoTokenGate
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.innertube.InnertubeService
@@ -101,6 +102,8 @@ internal object FormatInfoWrapper {
         }
 
         checkSigned()
+
+        AppService.instance().resetClientPlaybackNonce() // history fix: unique value per each video info
 
         val formatInfo = InnertubeService.createFormatInfo(videoId)
 

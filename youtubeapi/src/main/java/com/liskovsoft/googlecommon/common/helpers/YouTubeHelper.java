@@ -304,15 +304,23 @@ public final class YouTubeHelper {
         return RandomStringFromAlphabetGenerator.generate2(16);
     }
 
+    /**
+     * Converts a SABR track description to the app's internal format
+     * @param audioTrackId lang/id (4 - original)
+     * @param isAutoDubbed ai dubbed
+     * @param isDefaultAudio track language match app locale
+     */
     @Nullable
     public static String getSabrLanguage(String audioTrackId, boolean isAutoDubbed, boolean isDefaultAudio) {
         if (audioTrackId == null) {
             return null;
         }
 
-        String lang = audioTrackId.split("\\.")[0];
+        String[] langAndId = audioTrackId.split("\\.");
+        String lang = langAndId[0];
+        boolean isOriginal = langAndId.length == 2 ? "4".equals(langAndId[1]) : isDefaultAudio;
         // original, descriptive, dubbed, dubbed-auto, secondary
-        String acont = isAutoDubbed ? "dubbed-auto" : isDefaultAudio ? "original" : "dubbed";
+        String acont = isAutoDubbed ? "dubbed-auto" : isOriginal ? "original" : "dubbed";
 
         return String.format("%s (%s)", exoNameFix(lang), acont);
     }

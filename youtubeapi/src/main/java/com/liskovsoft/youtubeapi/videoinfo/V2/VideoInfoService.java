@@ -33,10 +33,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final static AppClient[] VIDEO_INFO_TYPE_LIST = {
             AppClient.VISIONOS, // no url formats
             AppClient.TV_DOWNGRADED, // works with old UAs like old Cobalt and old Xbox (non-tcl players)
+            AppClient.WEB, // Fix video clip blocked in current location
             AppClient.WEB_EMBED, // Restricted (18+) videos (not working)
             //AppClient.TV, // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
             //AppClient.ANDROID_REEL, // doesn't require pot and cipher (hangs on all engines)
-            AppClient.WEB, // Fix video clip blocked in current location
             AppClient.WEB_SAFARI,
             AppClient.IOS,
             AppClient.GEO, // Fix video clip blocked in current location
@@ -72,7 +72,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
+        AppService.instance().resetClientPlaybackNonce(); // history fix: unique value per each video info
 
         mUseAuth = true;
 

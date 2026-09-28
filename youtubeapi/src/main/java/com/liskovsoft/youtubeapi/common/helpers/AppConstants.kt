@@ -5,17 +5,11 @@ internal object AppConstants {
     val playerUrls = listOf(
         // NOTE: TV player should be in the top (ias ones may not validate correctly)
         "https://www.youtube.com/s/player/7460dd14/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/7460dd14/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js", // not compatible with WEB, TV's unique decipher routines
         "https://www.youtube.com/s/player/4fd832e7/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/4fd832e7/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js", // not compatible with WEB, TV's unique decipher routines
         "https://www.youtube.com/s/player/1c642fb9/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/1c642fb9/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js", // not compatible with WEB, TV's unique decipher routines
         "https://www.youtube.com/s/player/8c3fda2d/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/8c3fda2d/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js", // not compatible with WEB, TV's unique decipher routines
         "https://www.youtube.com/s/player/f572e43c/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/f572e43c/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js", // not compatible with WEB, TV's unique decipher routines
         "https://www.youtube.com/s/player/e937390a/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/e937390a/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js", // not compatible with WEB, TV's unique decipher routines
         "https://www.youtube.com/s/player/06ab6907/tv-player-es6.vflset/tv-player-es6.js", // the recent one with common nParam among all the clients
         "https://www.youtube.com/s/player/854a788e/player_es6.vflset/en_US/base.js",
         "https://www.youtube.com/s/player/b81a9a58/tv-player-es6.vflset/tv-player-es6.js",
@@ -54,34 +48,18 @@ internal object AppConstants {
         "https://www.youtube.com/s/player/e12fbea4/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/a10d7fcc/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/5dcb2c1f/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/14397202/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/680f8c75/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/20c72c18/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/6275f73c/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/a74bf670/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/612f74a3/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/94f771d8/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/9fe2e06e/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/fc2a56a5/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/59b252b9/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/8102da6c/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/22f02d3d/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/6450230e/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/9599b765/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/73381ccc/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/8a8ac953/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/20830619/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/69f581a5/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/4fcd6e4a/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/643afba4/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/363db69b/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/c8dbda2a/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/e7567ecf/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/2f1832d2/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/baafab19/tv-player-es6.vflset/tv-player-es6.js",
-        "https://www.youtube.com/s/player/fb725ac8/tv-player-ias.vflset/tv-player-ias.js",
-        "https://www.youtube.com/s/player/1f8742dc/tv-player-ias.vflset/tv-player-ias.js",
-        "https://www.youtube.com/s/player/b12cc44b/tv-player-ias.vflset/tv-player-ias.js",
+        "https://www.youtube.com/s/player/14397202/tv-player-es6.vflset/tv-player-es6.js"
+    )
+
+    @JvmField
+    val tclPlayerUrls = listOf(
+        // NOTE: not compatible with WEB, TV's unique decipher routines
+        //"https://www.youtube.com/s/player/7460dd14/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
+        "https://www.youtube.com/s/player/4fd832e7/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
+        "https://www.youtube.com/s/player/1c642fb9/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
+        "https://www.youtube.com/s/player/8c3fda2d/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
+        "https://www.youtube.com/s/player/f572e43c/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
+        "https://www.youtube.com/s/player/e937390a/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js"
     )
 
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"

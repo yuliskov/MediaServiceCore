@@ -70,7 +70,7 @@ internal class QueryBuilder(private val client: AppClient) {
 
         if (playerDataCheck()) {
             if (cpn == null)
-                cpn = appService.clientPlaybackNonce // get it somewhere else?
+                cpn = appService.getClientPlaybackNonce(client) // get it somewhere else?
 
             // Newer TV -tcl player variants use 8 digits timestamp, usually with 001 suffix, and dedicated nParam/nSig generation.
             // E.g. web: 20522 vs tv: 20522001
@@ -81,7 +81,7 @@ internal class QueryBuilder(private val client: AppClient) {
             //    }) // get it somewhere else?
             // NOTE: downgraded UAs use the same timestamp format for WEB and TV
             if (signatureTimestamp == null || signatureTimestamp == -1)
-                signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp) // get it somewhere else?
+                signatureTimestamp = Helpers.parseInt(appService.getSignatureTimestamp(client)) // get it somewhere else?
         }
 
         val json = """

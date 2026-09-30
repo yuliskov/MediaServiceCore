@@ -293,7 +293,7 @@ internal class RequestInitBody(
         //}
 
         class ContentPlaybackContext(session: Session) {
-            val signatureTimestamp: String? = session.player.signatureTimestamp
+            val signatureTimestamp: String? = session.player.getSignatureTimestamp(session.appClient)
         }
     }
 }

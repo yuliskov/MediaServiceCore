@@ -14,7 +14,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class PlayerDataExtractorTest {
+class WebPlayerDataExtractorTest {
     private val mAppServiceInt = AppServiceInt()
 
     @JvmField
@@ -42,7 +42,7 @@ class PlayerDataExtractorTest {
     }
 
     private fun testPlayerExtractorValid(playerUrl: String) {
-        val extractor = PlayerDataExtractor(playerUrl)
+        val extractor = WebPlayerDataExtractor(playerUrl)
         assertNotNull("NSig not null for $playerUrl", extractor.extractNSig("5cNpZqIJ7ixNqU68Y7S"))
         assertTrue("PlayerExtractor validated", extractor.validate())
     }
@@ -93,7 +93,7 @@ class PlayerDataExtractorTest {
     }
 
     private fun testNSigPlayerUrl(url: String): String? {
-        val extractor = PlayerDataExtractor(url)
+        val extractor = WebPlayerDataExtractor(url)
 
         val nParam = "5cNpZqIJ7ixNqU68Y7S"
         val result = extractor.extractNSig(nParam)
@@ -104,7 +104,7 @@ class PlayerDataExtractorTest {
     }
 
     private fun testSigPlayerUrl(url: String): String? {
-        val extractor = PlayerDataExtractor(url)
+        val extractor = WebPlayerDataExtractor(url)
 
         val sigParam = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz"
         val result = extractor.extractSig(listOf(sigParam))
@@ -115,14 +115,14 @@ class PlayerDataExtractorTest {
     }
 
     private fun testCPNPlayerUrl(url: String) {
-        val extractor = PlayerDataExtractor(url)
+        val extractor = WebPlayerDataExtractor(url)
 
         val cpn = extractor.createClientPlaybackNonce()
         assertNotNull("CPN not null for url $url", cpn)
     }
 
     private fun testTimestampPlayerUrl(url: String) {
-        val extractor = PlayerDataExtractor(url)
+        val extractor = WebPlayerDataExtractor(url)
 
         val timestamp = extractor.getSignatureTimestamp()
         assertNotNull("Timestamp not null for url $url", timestamp)

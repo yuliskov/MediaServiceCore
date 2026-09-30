@@ -6,7 +6,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
+import com.liskovsoft.youtubeapi.app.playerdata.WebPlayerDataExtractor;
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 
 import org.junit.Before;
@@ -65,7 +65,7 @@ public class AppServiceTest {
         ciphered.add(cipher);
         ciphered.add(cipher);
 
-        PlayerDataExtractor extractor = new PlayerDataExtractor(AppConstants.playerUrls.get(0));
+        WebPlayerDataExtractor extractor = new WebPlayerDataExtractor(AppConstants.playerUrls.get(0));
 
         List<String> deciphered = extractor.extractSig(ciphered);
 

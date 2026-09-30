@@ -65,7 +65,7 @@ public abstract class VideoInfoServiceBase {
             }
         urlHolders.add(videoInfo.getUrlHolder());
 
-        Pair<List<String>, List<String>> result = mAppService.bulkSigExtract(extractNParams(urlHolders), extractSParams(urlHolders));
+        Pair<List<String>, List<String>> result = mAppService.bulkSigExtract(videoInfo.getClient(), extractNParams(urlHolders), extractSParams(urlHolders));
 
         if (result != null) {
             List<String> nParams = result.getFirst();

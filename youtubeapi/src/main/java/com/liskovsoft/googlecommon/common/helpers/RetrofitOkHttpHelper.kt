@@ -2,7 +2,6 @@ package com.liskovsoft.googlecommon.common.helpers
 
 import com.google.net.cronet.okhttptransport.CronetInterceptor
 import com.liskovsoft.sharedutils.cronet.CronetManager
-import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import com.liskovsoft.youtubeapi.app.AppService
@@ -10,9 +9,10 @@ import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.concurrent.CopyOnWriteArrayList
 
 internal object RetrofitOkHttpHelper {
-    private val authSkipList = mutableListOf<Request>()
+    private val authSkipList = CopyOnWriteArrayList<Request>() // possible parallel access (ArrayIndexOutOfBoundsException on line 28)
 
     @JvmStatic
     val authHeaders = mutableMapOf<String, String>()

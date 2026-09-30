@@ -28,7 +28,7 @@ import java.util.List;
 
 import retrofit2.Call;
 
-abstract class BaseVideoInfoApiTest {
+public abstract class BaseVideoInfoApiTest {
     private VideoInfoApi mService;
     private AppService mAppService;
 

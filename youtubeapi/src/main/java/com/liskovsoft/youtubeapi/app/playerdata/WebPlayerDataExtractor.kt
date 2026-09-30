@@ -3,26 +3,15 @@ package com.liskovsoft.youtubeapi.app.playerdata
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
-import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
-import com.liskovsoft.youtubeapi.app.nsigsolver.impl.TclChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
-private const val TCL_URL = "/tv-player-ias-tcl.vflset/tv-player-ias-tcl.js"
-
-/**
- * @param isTcl whether [playerUrl] is the TCL-flavored player (from tv_config).
- * Its n-function has a different call shape than the regular
- * web/TV player, so n-param extraction is routed to [TclChallengeProvider] instead of the
- * generic (yt-dlp ejs) [V8ChallengeProvider]. The TCL player isn't required decipher/sig
- * function, so signature extraction ([sFuncCode]) is never enabled for it.
- */
-internal class TclPlayerDataExtractor @JvmOverloads constructor(override val playerUrl: String, val isTcl: Boolean = true): PlayerDataExtractor {
-    private val tag = TclPlayerDataExtractor::class.java.simpleName
+internal class WebPlayerDataExtractor(override val playerUrl: String): PlayerDataExtractor {
+    private val tag = WebPlayerDataExtractor::class.java.simpleName
     private val data
         get() = MediaServiceData.instance()
     private var nFuncCode: Boolean = false
@@ -35,19 +24,10 @@ internal class TclPlayerDataExtractor @JvmOverloads constructor(override val pla
         // tv url: https://www.youtube.com/s/player/69b31e11/tv-player-es6-tce.vflset/tv-player-es6-tce.js
         // web url: https://www.youtube.com/s/player/e12fbea4/player_ias_tce.vflset/en_US/base.js
         playerUrl
-            .replace("/tv-player-es6.vflset/tv-player-es6.js", TCL_URL)
-            .replace("/tv-player-ias.vflset/tv-player-ias.js", TCL_URL)
-            .replace("/player_es6.vflset/en_US/base.js", TCL_URL)
-            .replace("/player_ias.vflset/en_US/base.js", TCL_URL)
-            .replace("-es6", "-ias") // es6 no supported
+            //.replace("-tcl", "") // (403 fix, incompatible nParam, e.g. /tv-player-es6-tcl.vflset/tv-player-es6-tcl.js)
     }
-    // Fetched lazily, once, and shared between validation (checkSigData) and real extraction —
-    // only used on the isTcl path, where TclChallengeProvider needs the raw player source.
-    private val playerCode: String? by lazy { loadPlayer() }
 
     init {
-        Log.d(tag, "Using player url: $playerUrl (isTcl=$isTcl)")
-
         // Get the code from the cache
         restoreAllData()
         checkSigData()
@@ -99,8 +79,7 @@ internal class TclPlayerDataExtractor @JvmOverloads constructor(override val pla
     override fun validate(): Boolean {
         // TODO: fix cpn code
         // return mNFuncCode && mSigFuncCode && mCPNCode != null && mSignatureTimestamp != null
-        // TCL works only in TV version, so sFuncCode isn't necessary in this client.
-        return nFuncCode && (sFuncCode || isTcl) && signatureTimestamp != null
+        return nFuncCode && sFuncCode && signatureTimestamp != null
     }
 
     private fun extractNSigReal(nParam: String): String? {
@@ -116,19 +95,10 @@ internal class TclPlayerDataExtractor @JvmOverloads constructor(override val pla
             return Pair(null, null)
         }
 
-        val validNParams = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()
-
-        if (isTcl) {
-            val nResults = validNParams?.let { params -> playerCode?.let { TclChallengeProvider.solveN(fixedPlayerUrl, it, params) } }
-            val nProcessed = nResults?.let { results -> nParams?.map { results[it] } }
-            // TCL works only in TV version, so sFuncCode isn't necessary in this client
-            return Pair(nProcessed, null)
-        }
-
         var nProcessed: List<String?>? = null
         var sProcessed: List<String?>? = null
 
-        val nRequest = validNParams?.let {
+        val nRequest = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
             JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, it))
         }
 
@@ -156,7 +126,7 @@ internal class TclPlayerDataExtractor @JvmOverloads constructor(override val pla
     }
 
     private fun fetchAllData() {
-        val jsCode = playerCode
+        val jsCode = loadPlayer()
 
         cpnCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
         signatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
@@ -196,11 +166,6 @@ internal class TclPlayerDataExtractor @JvmOverloads constructor(override val pla
             return
         }
 
-        if (isTcl) {
-            checkTclSigData()
-            return
-        }
-
         try {
             val nParam = "5cNpZqIJ7ixNqU68Y7S"
             val sigParam = "NJAJEij0EwRgIhAI0KExTgjfPk-MPM9MAdzyyPRt=BM8-XO5tm5hlMCSVpAiEAv7eP3CURqZNSPow8BXXAoazVoXgeMP7gH9BdylHCwgw=gwzz"
@@ -220,23 +185,6 @@ internal class TclPlayerDataExtractor @JvmOverloads constructor(override val pla
                             sFuncCode = true
                     else -> {}
                 }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun checkTclSigData() {
-        if (nFuncCode) {
-            return
-        }
-
-        try {
-            val nParam = "5cNpZqIJ7ixNqU68Y7S"
-            val code = playerCode ?: return
-            val result = TclChallengeProvider.solveN(fixedPlayerUrl, code, listOf(nParam))
-            if (result[nParam]?.let { it != nParam } == true) {
-                nFuncCode = true
             }
         } catch (e: Exception) {
             e.printStackTrace()

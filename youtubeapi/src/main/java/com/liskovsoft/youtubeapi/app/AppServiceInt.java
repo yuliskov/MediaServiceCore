@@ -1,10 +1,16 @@
 package com.liskovsoft.youtubeapi.app;
 
+import androidx.annotation.Nullable;
+
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
+import com.liskovsoft.youtubeapi.app.playerdata.TclPlayerDataExtractor;
+import com.liskovsoft.youtubeapi.app.playerdata.WebPlayerDataExtractor;
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import retrofit2.Call;
@@ -40,7 +46,19 @@ public class AppServiceInt {
     }
 
     public PlayerDataExtractor getPlayerDataExtractor(String playerUrl) {
-        return new PlayerDataExtractor(playerUrl);
+        return getPlayerDataExtractor(null, playerUrl);
+    }
+
+    public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client) {
+        return getPlayerDataExtractor(client, getPlayerUrl());
+    }
+
+    public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client, String playerUrl) {
+        return isTcl(client) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
+    }
+
+    protected boolean isTcl(@Nullable AppClient client) {
+        return client != null && client.isTVClient() && client != AppClient.TV_DOWNGRADED;
     }
 
     protected ClientData getClientData(String clientUrl) {

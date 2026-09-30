@@ -3,9 +3,12 @@ package com.liskovsoft.youtubeapi.app.playerdata
 import android.Manifest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
-import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import com.liskovsoft.youtubeapi.app.AppServiceInt
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants
+import com.liskovsoft.youtubeapi.videoinfo.BaseVideoInfoApiTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -15,7 +18,7 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
-class TclPlayerDataExtractorTest {
+class TclPlayerDataExtractorTest: BaseVideoInfoApiTest() {
     private val mAppServiceInt = AppServiceInt()
 
     @JvmField
@@ -24,6 +27,7 @@ class TclPlayerDataExtractorTest {
 
     @Before
     fun setUp() {
+        initBase()
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().context)
     }
 
@@ -74,6 +78,17 @@ class TclPlayerDataExtractorTest {
     @Test
     fun testTimestampPlayerVersions() {
         getTestingUrls().forEach { testTimestampPlayerUrl(it) }
+    }
+
+    @Test
+    fun testSabrUrlAccessible() {
+        val videoInfo = getVideoInfo(AppClient.TV, TestHelpers.VIDEO_ID_CAPTIONS)
+
+        assertNotNull("Contains adaptive formats error: ${videoInfo.playabilityStatus}", videoInfo.adaptiveFormats)
+
+        decipherFormats(videoInfo)
+
+        assertTrue("Sabr format exists", TestHelpers.urlExists(videoInfo.serverAbrStreamingUrl))
     }
 
     private fun testNSigPlayerUrl(url: String): String? {

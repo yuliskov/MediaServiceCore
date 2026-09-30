@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.innertube.core
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPathSkip
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.innertube.utils.ApiHelpers
 import com.liskovsoft.youtubeapi.innertube.utils.URLS
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeConfigResult
@@ -37,6 +38,7 @@ internal class Session private constructor(
     val context: InnertubeContext,
     val apiKey: String,
     val apiVersion: String,
+    val appClient: AppClient,
     val accountIndex: Int,
     val configData: String?,
     val userAgent: String,
@@ -54,10 +56,10 @@ internal class Session private constructor(
                     return it.second
             }
 
-            val (apiKey, apiVersion, configData, context, userAgent, accountIndex) = getSessionData(options) ?: return null
+            val (apiKey, apiVersion, appClient, configData, context, userAgent, accountIndex) = getSessionData(options) ?: return null
 
             val session =
-                Session(context, apiKey, apiVersion, accountIndex, configData, userAgent, Player.create(options?.poToken, options?.playerId))
+                Session(context, apiKey, apiVersion, appClient, accountIndex, configData, userAgent, Player.create(options?.poToken, options?.playerId))
 
             cached = Pair(options?.playerId, session)
 
@@ -84,6 +86,7 @@ internal class Session private constructor(
             return SessionData(
                 sessionData.apiKey ?: return null,
                 CLIENTS.WEB.API_VERSION,
+                AppClient.WEB, // TODO: should we use dynamic player selection?
                 configData ?: return null,
                 context.apply {
                     client.configInfo?.coldConfigData = coldConfigData ?: return null

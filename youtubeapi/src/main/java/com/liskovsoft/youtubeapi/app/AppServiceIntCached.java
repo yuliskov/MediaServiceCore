@@ -1,5 +1,7 @@
 package com.liskovsoft.youtubeapi.app;
 
+import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
@@ -7,6 +9,7 @@ import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 
 public class AppServiceIntCached extends AppServiceInt {
@@ -14,11 +17,13 @@ public class AppServiceIntCached extends AppServiceInt {
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
     private AppInfoCached mAppInfo;
     private ClientDataCached mClientData;
-    private PlayerDataExtractor mPlayerDataExtractor;
+    private PlayerDataExtractor mWebPlayerDataExtractor;
+    private PlayerDataExtractor mTclPlayerDataExtractor;
     private long mAppInfoUpdateTimeMs;
     private final Object mAppInfoSync = new Object();
     private final Object mPlayerSync = new Object();
     private final Object mClientDataSync = new Object();
+    private AppClient mRecentClient;
 
     @Override
     protected AppInfo getAppInfo(String userAgent) {
@@ -44,23 +49,28 @@ public class AppServiceIntCached extends AppServiceInt {
 
     @Override
     public PlayerDataExtractor getPlayerDataExtractor(String playerUrl) {
-        synchronized (mPlayerSync) {
-            return getPlayerDataExtractorSync(playerUrl);
-        }
+        return getPlayerDataExtractorSync(null, playerUrl);
     }
 
-    private PlayerDataExtractor getPlayerDataExtractorSync(String playerUrl) {
-        if (mPlayerDataExtractor != null && Helpers.equalsAny(playerUrl, mPlayerDataExtractor.getPlayerUrl(), getFailedPlayerUrl())) {
-            return mPlayerDataExtractor;
+    @Override
+    public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client) {
+        return getPlayerDataExtractorSync(client, getPlayerUrl());
+    }
+
+    @Override
+    public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client, String playerUrl) {
+        return getPlayerDataExtractorSync(client, playerUrl);
+    }
+
+    private PlayerDataExtractor getPlayerDataExtractorSync(@Nullable AppClient client, String playerUrl) {
+        synchronized (mPlayerSync) {
+            return firstValidExtractor(
+                    client,
+                    playerUrl,
+                    check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,
+                    AppConstants.playerUrls.get(0)
+            );
         }
-
-        firstValidExtractor(
-                playerUrl,
-                check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,
-                AppConstants.playerUrls.get(0)
-        );
-
-        return mPlayerDataExtractor;
     }
 
     @Override
@@ -105,7 +115,7 @@ public class AppServiceIntCached extends AppServiceInt {
     @Override
     public boolean isPlayerCacheActual() {
         synchronized (mPlayerSync) {
-            return mPlayerDataExtractor != null;
+            return mWebPlayerDataExtractor != null || mTclPlayerDataExtractor != null;
         }
     }
 
@@ -121,12 +131,23 @@ public class AppServiceIntCached extends AppServiceInt {
         return getData().getFailedAppInfo() != null ? getData().getFailedAppInfo().getPlayerUrl() : null;
     }
 
-    private void firstValidExtractor(String... playerUrls) {
+    private PlayerDataExtractor firstValidExtractor(@Nullable AppClient client, String... playerUrls) {
+        if (client == null) {
+            client = mRecentClient;
+        } else {
+            mRecentClient = client;
+        }
+
         int idx = -1;
         final int MAIN = 0;
         final int DATA = 1;
         final int APP_CONST = 2;
         String actualTimestamp = null;
+        PlayerDataExtractor playerDataExtractor = restoreExtractor(client);
+
+        if (playerDataExtractor != null && Helpers.equalsAny(playerUrls[MAIN], playerDataExtractor.getPlayerUrl(), getFailedPlayerUrl())) {
+            return playerDataExtractor;
+        }
 
         for (String url : playerUrls) {
             idx++;
@@ -134,9 +155,10 @@ public class AppServiceIntCached extends AppServiceInt {
                 continue;
             }
 
-            mPlayerDataExtractor = super.getPlayerDataExtractor(url);
+            playerDataExtractor = super.getPlayerDataExtractor(client, url);
+            persistExtractor(client, playerDataExtractor);
 
-            if (mPlayerDataExtractor.validate()) {
+            if (playerDataExtractor.validate()) {
                 switch (idx) {
                     case MAIN:
                         getData().setAppInfo(mAppInfo);
@@ -150,7 +172,7 @@ public class AppServiceIntCached extends AppServiceInt {
                 }
 
                 if (actualTimestamp != null) {
-                    mPlayerDataExtractor.setSignatureTimestamp(actualTimestamp);
+                    playerDataExtractor.setSignatureTimestamp(actualTimestamp);
                 }
 
                 break;
@@ -159,8 +181,22 @@ public class AppServiceIntCached extends AppServiceInt {
             // Try to fetch the actual timestamp for old players. Needed for history (tracking) and possibly more.
             // NOTE: the older player may not work on newer timestamp
             if (idx == MAIN) {
-                actualTimestamp = mPlayerDataExtractor.getSignatureTimestamp();
+                actualTimestamp = playerDataExtractor.getSignatureTimestamp();
             }
+        }
+
+        return playerDataExtractor;
+    }
+
+    private PlayerDataExtractor restoreExtractor(@Nullable AppClient client) {
+        return isTcl(client) ? mTclPlayerDataExtractor : mWebPlayerDataExtractor;
+    }
+
+    private void persistExtractor(@Nullable AppClient client, PlayerDataExtractor extractor) {
+        if (isTcl(client)) {
+            mTclPlayerDataExtractor = extractor;
+        } else {
+            mWebPlayerDataExtractor = extractor;
         }
     }
 }

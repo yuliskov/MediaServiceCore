@@ -7,6 +7,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.PoTokenGate
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils
 import com.liskovsoft.youtubeapi.innertube.impl.MediaFormatImpl
 import com.liskovsoft.youtubeapi.innertube.impl.MediaItemFormatInfoImpl
@@ -28,10 +29,11 @@ internal class Player private constructor(
 ) {
     private val TAG = Player::class.simpleName
 
-    val signatureTimestamp: String by lazy { appService.signatureTimestamp }
     private val appService by lazy { AppService.instance() }
     private val dashInfoApi by lazy { RetrofitHelper.create(DashInfoApi::class.java) }
     private val fileApi by lazy { RetrofitHelper.create(FileApi::class.java) }
+
+    fun getSignatureTimestamp(appClient: AppClient): String? = appService.getSignatureTimestamp(appClient)
 
     fun decipher(formatInfo: MediaItemFormatInfoImpl) {
         if (formatInfo.isUnplayable()) {
@@ -65,7 +67,7 @@ internal class Player private constructor(
         urlHolders.add(formatInfo.sabrUrlHolder)
 
         val result: Pair<MutableList<String?>?, MutableList<String?>?>? =
-            appService.bulkSigExtract(extractNParams(urlHolders), extractSParams(urlHolders))
+            appService.bulkSigExtract(formatInfo.clientInfo,extractNParams(urlHolders), extractSParams(urlHolders))
 
         if (result != null) {
             val nParams = result.first

@@ -33,7 +33,7 @@ internal object FormatInfoWrapper {
     @JvmStatic
     fun switchNextFormat(force: Boolean) {
         if (mTryInnertubeFirst && !mInnertubeResult.isUnplayable) {
-            if (mInnertubeResult.client?.let { PoTokenGate.resetCache(it) } ?: false)
+            if (!force && mInnertubeResult.client?.let { PoTokenGate.resetCache(it) } ?: false)
                 return
 
             mTryInnertubeFirst = false

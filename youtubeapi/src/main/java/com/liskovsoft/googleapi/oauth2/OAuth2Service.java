@@ -34,7 +34,9 @@ public class OAuth2Service {
      * @return response with user code and device code
      */
     public UserCode getUserCode() {
-        Call<UserCode> wrapper = mOAuth2Api.getUserCode(getClientId(), OAuth2ApiHelper.DRIVE_SCOPE);
+        Call<UserCode> wrapper = // youtube scope is required for comment posting and other authenticated innertube actions;
+        // existing tokens keep the old scope until the user re-logins
+        mOAuth2Api.getUserCode(getClientId(), OAuth2ApiHelper.DRIVE_SCOPE + " " + OAuth2ApiHelper.YOUTUBE_SCOPE);
         return RetrofitHelper.get(wrapper);
     }
 

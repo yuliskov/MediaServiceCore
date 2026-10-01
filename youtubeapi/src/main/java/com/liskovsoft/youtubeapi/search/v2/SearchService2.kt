@@ -28,7 +28,10 @@ internal open class SearchService2 {
     open fun getSearch(searchText: String?, options: Int): List<MediaGroup>? {
         val wrapper: Call<SearchResult?> =
             mSearchApi.getSearchResult(SearchApiHelper.getSearchQuery(searchText, options), mAppService.visitorData)
-        val searchResult = RetrofitHelper.get(wrapper) ?: RetrofitHelper.get(wrapper, false)
+        // NOTE: a Call is single-shot. Retrofit's OkHttpCall.execute() sets executed=true before
+        // dispatching, so reusing the same instance makes the anonymous retry throw
+        // IllegalStateException("Already executed.") instead of falling back. clone() gives a fresh one.
+        val searchResult = RetrofitHelper.get(wrapper) ?: RetrofitHelper.get(wrapper.clone(), false)
 
 
         if (searchResult == null) {

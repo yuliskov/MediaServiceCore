@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.youtubeapi.app.playerdata.TclPlayerDataExtractor;
 import com.liskovsoft.youtubeapi.app.playerdata.WebPlayerDataExtractor;
@@ -54,7 +55,26 @@ public class AppServiceInt {
     }
 
     public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client, String playerUrl) {
-        return isTcl(client) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
+        // Only the TCL flavored player (e.g. resolved from tv_config) has a different n-function shape.
+        // Other urls (e.g. fallbacks) are regular players and should be solved the regular way, whatever the client is.
+        return isTclPlayerUrl(playerUrl) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
+    }
+
+    protected boolean isTclPlayerUrl(@Nullable String playerUrl) {
+        return playerUrl != null && playerUrl.contains("-tcl.js");
+    }
+
+    protected TvConfig getTvConfig() {
+        Call<TvConfig> wrapper = mAppApi.getTvConfig();
+        return RetrofitHelper.get(wrapper);
+    }
+
+    /**
+     * The client that most recently requested the player data
+     */
+    @Nullable
+    public AppClient getRecentClient() {
+        return null;
     }
 
     protected boolean isTcl(@Nullable AppClient client) {

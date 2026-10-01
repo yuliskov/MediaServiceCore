@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
@@ -17,6 +18,9 @@ public class AppServiceIntCached extends AppServiceInt {
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
     private AppInfoCached mAppInfo;
     private ClientDataCached mClientData;
+    private TvConfig mTvConfig;
+    private long mTvConfigUpdateTimeMs;
+    private final Object mTvConfigSync = new Object();
     private PlayerDataExtractor mWebPlayerDataExtractor;
     private PlayerDataExtractor mTclPlayerDataExtractor;
     private long mAppInfoUpdateTimeMs;
@@ -64,8 +68,18 @@ public class AppServiceIntCached extends AppServiceInt {
 
     private PlayerDataExtractor getPlayerDataExtractorSync(@Nullable AppClient client, String playerUrl) {
         synchronized (mPlayerSync) {
+            // Resolve the client first: tv_config is needed only for the TCL clients
+            if (client == null) {
+                client = mRecentClient;
+            } else {
+                mRecentClient = client;
+            }
+
+            TvConfig tvConfig = isTcl(client) ? getTvConfig() : null;
+
             return firstValidExtractor(
                     client,
+                    check(tvConfig) ? tvConfig.getJsUrl() : null,
                     playerUrl,
                     check(getData().getAppInfo()) ? getData().getAppInfo().getPlayerUrl() : null,
                     AppConstants.playerUrls.get(0)
@@ -119,6 +133,41 @@ public class AppServiceIntCached extends AppServiceInt {
         }
     }
 
+    @Nullable
+    @Override
+    public AppClient getRecentClient() {
+        return mRecentClient;
+    }
+
+    @Override
+    protected TvConfig getTvConfig() {
+        synchronized (mTvConfigSync) {
+            return getTvConfigSync();
+        }
+    }
+
+    private TvConfig getTvConfigSync() {
+        if (mTvConfig != null && System.currentTimeMillis() - mTvConfigUpdateTimeMs < CACHE_REFRESH_PERIOD_MS) {
+            return mTvConfig;
+        }
+
+        Log.d(TAG, "updateTvConfig");
+
+        TvConfig tvConfig = super.getTvConfig();
+
+        // Don't replace a good cached value with a failed/empty lookup
+        if (check(tvConfig)) {
+            mTvConfig = tvConfig;
+            mTvConfigUpdateTimeMs = System.currentTimeMillis();
+        }
+
+        return mTvConfig;
+    }
+
+    private boolean check(TvConfig tvConfig) {
+        return tvConfig != null && tvConfig.getJsUrl() != null;
+    }
+
     private boolean check(AppInfoCached appInfo) {
         return appInfo != null && appInfo.validate();
     }
@@ -132,20 +181,17 @@ public class AppServiceIntCached extends AppServiceInt {
     }
 
     private PlayerDataExtractor firstValidExtractor(@Nullable AppClient client, String... playerUrls) {
-        if (client == null) {
-            client = mRecentClient;
-        } else {
-            mRecentClient = client;
-        }
-
         int idx = -1;
-        final int MAIN = 0;
-        final int DATA = 1;
-        final int APP_CONST = 2;
+        final int TV_CONFIG = 0;
+        final int MAIN = 1;
+        final int DATA = 2;
+        final int APP_CONST = 3;
         String actualTimestamp = null;
         PlayerDataExtractor playerDataExtractor = restoreExtractor(client);
+        // The tv_config player (if any) is the primary one
+        String primaryUrl = playerUrls[TV_CONFIG] != null ? playerUrls[TV_CONFIG] : playerUrls[MAIN];
 
-        if (playerDataExtractor != null && Helpers.equalsAny(playerUrls[MAIN], playerDataExtractor.getPlayerUrl(), getFailedPlayerUrl())) {
+        if (playerDataExtractor != null && Helpers.equalsAny(primaryUrl, playerDataExtractor.getPlayerUrl(), getFailedPlayerUrl())) {
             return playerDataExtractor;
         }
 
@@ -160,6 +206,7 @@ public class AppServiceIntCached extends AppServiceInt {
 
             if (playerDataExtractor.validate()) {
                 switch (idx) {
+                    case TV_CONFIG:
                     case MAIN:
                         getData().setAppInfo(mAppInfo);
                         getData().setFailedAppInfo(null);

@@ -62,8 +62,10 @@ internal object AppConstants {
         "https://www.youtube.com/s/player/e937390a/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js"
     )
 
-    private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
-    private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
+    // NOTE: not a secret credential - this is YouTube's public Innertube client identifier key
+    // used by official TV/web clients. Externalized to allow override without touching source.
+    private val API_KEY_OLD = System.getenv("YOUTUBE_API_KEY_OLD") ?: "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
+    private val API_KEY_NEW = System.getenv("YOUTUBE_API_KEY_NEW") ?: "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
 
     /**
      * Used when parsing video_info data

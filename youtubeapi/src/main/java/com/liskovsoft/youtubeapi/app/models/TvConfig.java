@@ -52,11 +52,10 @@ public class TvConfig {
     }
 
     /**
-     * Whether the resolved player is the TCL one (different n-function code shape
+     * Whether the player url is the TCL one (different n-function code shape
      * than the regular web/TV player).
      */
-    public boolean isTcl() {
-        String jsUrl = getJsUrl();
-        return jsUrl != null && jsUrl.contains("-tcl.js");
+    public static boolean isTclPlayerUrl(String playerUrl) {
+        return playerUrl != null && playerUrl.contains("-tcl.js");
     }
 }

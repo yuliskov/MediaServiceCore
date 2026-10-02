@@ -57,11 +57,7 @@ public class AppServiceInt {
     public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client, String playerUrl) {
         // Only the TCL flavored player (e.g. resolved from tv_config) has a different n-function shape.
         // Other urls (e.g. fallbacks) are regular players and should be solved the regular way, whatever the client is.
-        return isTclPlayerUrl(playerUrl) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
-    }
-
-    protected boolean isTclPlayerUrl(@Nullable String playerUrl) {
-        return playerUrl != null && playerUrl.contains("-tcl.js");
+        return TvConfig.isTclPlayerUrl(playerUrl) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
     }
 
     protected TvConfig getTvConfig() {

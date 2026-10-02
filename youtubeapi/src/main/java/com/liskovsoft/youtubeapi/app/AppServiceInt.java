@@ -2,7 +2,6 @@ package com.liskovsoft.youtubeapi.app;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.TvConfig;
@@ -63,14 +62,6 @@ public class AppServiceInt {
     protected TvConfig getTvConfig() {
         Call<TvConfig> wrapper = mAppApi.getTvConfig();
         return RetrofitHelper.get(wrapper);
-    }
-
-    /**
-     * The client that most recently requested the player data
-     */
-    @Nullable
-    public AppClient getRecentClient() {
-        return null;
     }
 
     protected boolean isTcl(@Nullable AppClient client) {

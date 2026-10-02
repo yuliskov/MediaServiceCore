@@ -133,12 +133,6 @@ public class AppServiceIntCached extends AppServiceInt {
         }
     }
 
-    @Nullable
-    @Override
-    public AppClient getRecentClient() {
-        return mRecentClient;
-    }
-
     @Override
     protected TvConfig getTvConfig() {
         synchronized (mTvConfigSync) {

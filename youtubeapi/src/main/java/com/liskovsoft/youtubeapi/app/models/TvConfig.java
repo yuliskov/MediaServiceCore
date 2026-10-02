@@ -17,8 +17,38 @@ public class TvConfig {
     @RegExp("\"WEB_PLAYER_CONTEXT_CONFIG_ID_LIVING_ROOM_WATCH\":\\{.*?\"jsUrl\":\"(.*?)\"")
     private String mJsUrl;
 
+    /**
+     * BotGuard request key of the living room (TV) client. Differs from the web one.
+     */
+    @RegExp("\"challengeRequestKey\":\"(.*?)\"")
+    private String mChallengeRequestKey;
+
+    /**
+     * Escaped JSON of the ready to use BotGuard challenge (contains <b>bgChallenge</b> object).
+     */
+    @RegExp("\"challengeParams\":\\{\"R\":\"(.*?[^\\\\])\",\"T\"")
+    private String mChallengeRaw;
+
     public String getJsUrl() {
         return ServiceHelper.tidyUrl(mJsUrl);
+    }
+
+    public String getChallengeRequestKey() {
+        return mChallengeRequestKey;
+    }
+
+    /**
+     * @return unescaped challenge JSON or null
+     */
+    public String getChallenge() {
+        if (mChallengeRaw == null) {
+            return null;
+        }
+        try {
+            return JsonParser.object().from("{\"challenge\":\"" + mChallengeRaw + "\"}").getString("challenge");
+        } catch (JsonParserException e) {
+            return null;
+        }
     }
 
     /**

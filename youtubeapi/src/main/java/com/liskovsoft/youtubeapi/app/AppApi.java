@@ -39,9 +39,7 @@ public interface AppApi {
     Call<PlayerData> getPlayerData(@Url String playerUrl);
 
     /**
-     * Same endpoint the official TV app queries on startup. The shared OkHttp client attaches
-     * the signed-in session's auth headers automatically, so a signed-in call commonly resolves
-     * to the TCL-flavored player instead of the regular TV one.
+     * Same endpoint the official TV app queries on startup.
      */
     @GET("https://www.youtube.com/tv_config?action_get_config=true&client=lb4&theme=cl")
     Call<TvConfig> getTvConfig();

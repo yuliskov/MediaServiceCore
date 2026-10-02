@@ -470,7 +470,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         // So, also check internal cache state.
         // Future translations (no media) should be polled constantly.
         return containsMedia() && AppService.instance().isPlayerCacheActual()
-                && (!mClient.isWebPotRequired() || !PoTokenGate.isWebPotExpired());
+                && (!mClient.isWebPotRequired() || !PoTokenGate.isPotExpired(mClient));
     }
 
     /**

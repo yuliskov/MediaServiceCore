@@ -36,7 +36,7 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
     private val playerCode: String? by lazy { loadPlayer() }
 
     init {
-        Log.d(tag, "Using TCL player url: $playerUrl")
+        Log.d(tag, "Using player url: $fixedPlayerUrl")
 
         // Get the code from the cache
         restoreAllData()
@@ -89,16 +89,8 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
     override fun validate(): Boolean {
         // TODO: fix cpn code
         // return mNFuncCode && mSigFuncCode && mCPNCode != null && mSignatureTimestamp != null
-        // TCL works only in TV version, so sig function isn't necessary in this client.
+        // TCL works only in TV version, so sFuncCode isn't necessary in this client.
         return nFuncCode && signatureTimestamp != null
-    }
-
-    private fun extractNSigReal(nParam: String): String? {
-        return bulkSigExtractReal(listOf(nParam), null).first?.firstOrNull()
-    }
-
-    private fun extractSigReal(sParam: List<String>): List<String?>? {
-        return bulkSigExtractReal(null, sParam).second
     }
 
     private fun bulkSigExtractReal(nParams: List<String?>?, sParams: List<String?>?): Pair<List<String?>?, List<String?>?> {

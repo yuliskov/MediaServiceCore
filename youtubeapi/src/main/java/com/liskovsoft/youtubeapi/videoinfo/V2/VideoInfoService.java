@@ -134,13 +134,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     public boolean switchNextFormat(boolean force) {
-        if (force) {
-            nextVideoInfoType();
-            return mNextInfoType == VIDEO_INFO_TYPE_LIST[0];
-        }
-
         // Try to reset pot cache for the last video
-        if (!mIsUnplayable && mActualInfoType != null && PoTokenGate.resetCache(mActualInfoType)) {
+        if (!force && !mIsUnplayable && mActualInfoType != null && PoTokenGate.resetCache(mActualInfoType)) {
             return false;
         }
 

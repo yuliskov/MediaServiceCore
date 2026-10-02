@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
@@ -197,21 +196,6 @@ public class AppService {
      */
     public String getVisitorData() {
         return mAppServiceInt.getVisitorData();
-    }
-
-    /**
-     * Cached tv_config: TCL player url, BotGuard challenge and request key
-     */
-    @Nullable
-    public TvConfig getTvConfig() {
-        return mAppServiceInt.getTvConfig();
-    }
-
-    /**
-     * Whether the most recent client uses the TCL player (tv_config)
-     */
-    public boolean isTclClientRecent() {
-        return mAppServiceInt.isTcl(mAppServiceInt.getRecentClient());
     }
 
     public void invalidateCache() {

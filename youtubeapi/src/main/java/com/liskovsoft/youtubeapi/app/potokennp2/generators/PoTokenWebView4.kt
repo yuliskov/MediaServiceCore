@@ -39,6 +39,9 @@ import java.util.regex.Pattern
  */
 internal class PoTokenWebView4 private constructor(
     context: Context,
+    private val requestKey: String,
+    private val presetChallenge: String?,
+    private val attClient: AppClient?,
     private var onInitDone: () -> Unit
 ) : PoTokenGenerator {
     private val webView = WebView(context)
@@ -135,7 +138,10 @@ internal class PoTokenWebView4 private constructor(
         // page's ytcfg/EVENT_ID and /att/get tokens are rejected.
         // BotGuard reads yt.config_.EVENT_ID
         // NOTE: with ytcfg pot becomes smaller: 120 chars instead of regular 124
-        val (parsedChallengeData, ytcfg) = getChallengeFromHomepage() ?: getLegacyChallengeData() ?: return
+        // NOTE: if there is no preset challenge but the client is given, the program is taken from /att/get for that client
+        val (parsedChallengeData, ytcfg) = presetChallenge?.let { Pair(parseDescrambledChallengeData(it), null) }
+            ?: attClient?.let { getLegacyChallengeData(it) ?: return }
+            ?: getChallengeFromHomepage() ?: getLegacyChallengeData() ?: return
 
         runOnMainThread {
             webView.evaluateJavascriptLegacy(
@@ -223,9 +229,7 @@ internal class PoTokenWebView4 private constructor(
     /**
      * Using challenge from /att/get (legacy fallback)
      */
-    private fun getLegacyChallengeData(): Pair<String, String?>? {
-        val client = AppClient.WEB
-
+    private fun getLegacyChallengeData(client: AppClient = AppClient.WEB): Pair<String, String?>? {
         val responseBody = makeBotguardServiceRequest(
             "https://www.youtube.com/youtubei/v1/att/get?prettyPrint=false",
             """
@@ -273,7 +277,7 @@ internal class PoTokenWebView4 private constructor(
         // "https://www.youtube.com/api/jnn/v1/GenerateIT"
         val responseBody = makeBotguardServiceRequest(
             "https://www.youtube.com/api/jnn/v1/GenerateIT",
-            "[ \"${REQUEST_KEY}\", \"$botguardResponse\" ]",
+            "[ \"${requestKey}\", \"$botguardResponse\" ]",
         ) ?: return
 
         Log.d(TAG, "GenerateIT response: $responseBody")
@@ -502,7 +506,16 @@ internal class PoTokenWebView4 private constructor(
         private const val JS_INTERFACE = "PoTokenWebView"
         private const val BASE_URL = "https://jnn-pa.googleapis.com"
 
-        override fun newPoTokenGenerator(context: Context): PoTokenGenerator {
+        override fun newPoTokenGenerator(context: Context): PoTokenGenerator = newPoTokenGenerator(context, REQUEST_KEY, null)
+
+        /**
+         * @param requestKey BotGuard request key (web and TV clients have different ones)
+         * @param presetChallenge ready to use challenge JSON (with `bgChallenge`). Null - fetch the web one.
+         * @param attClient used only when [presetChallenge] is null: fetch the challenge (program) from /att/get for this client
+         */
+        fun newPoTokenGenerator(
+            context: Context, requestKey: String, presetChallenge: String?, attClient: AppClient? = null
+        ): PoTokenGenerator {
             if (hasThermalServiceBug(context)) {
                 throw BadWebViewException("ThermalService isn't available")
             }
@@ -518,7 +531,7 @@ internal class PoTokenWebView4 private constructor(
 
             runOnMainThread {
                 potWv = try {
-                    PoTokenWebView4(context) { latch.countDown() }
+                    PoTokenWebView4(context, requestKey, presetChallenge, attClient) { latch.countDown() }
                 } catch (e: Throwable) {
                     initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
                     latch.countDown()

@@ -9,37 +9,30 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.impl.TclChallengeProvider
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 
-private const val TCL_URL = "/tv-player-ias-tcl.vflset/tv-player-ias-tcl.js"
-
 /**
- * The extractor for TCL-flavored player (from tv_config).
+ * [playerUrl] is the TCL-flavored player (from tv_config).
  * Its n-function has a different call shape than the regular
  * web/TV player, so n-param extraction is routed to [TclChallengeProvider] instead of the
  * generic (yt-dlp ejs) [V8ChallengeProvider]. The TCL player isn't required decipher/sig
- * function, so signature extraction ([sFuncCode]) is never enabled for it.
+ * function, so signature extraction is never supported by it.
  */
 internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDataExtractor {
     private val tag = TclPlayerDataExtractor::class.java.simpleName
     private val data
         get() = MediaServiceData.instance()
     private var nFuncCode: Boolean = false
-    private var sFuncCode: Boolean = false
     private var cpnCode: String? = null
     private var signatureTimestamp: String? = null
     private val fixedPlayerUrl by lazy {
-        // Those are implements global helper functions. No fix. Fallback to regular.
+        // The hash must come from tv_config: the n-params are bound to that exact player build.
+        // Don't substitute the path of the regular player (its hash differs).
         // See https://github.com/yt-dlp/yt-dlp/issues/12398
         // tv url: https://www.youtube.com/s/player/69b31e11/tv-player-es6-tce.vflset/tv-player-es6-tce.js
         // web url: https://www.youtube.com/s/player/e12fbea4/player_ias_tce.vflset/en_US/base.js
-        playerUrl
-            .replace("/tv-player-es6.vflset/tv-player-es6.js", TCL_URL)
-            .replace("/tv-player-ias.vflset/tv-player-ias.js", TCL_URL)
-            .replace("/player_es6.vflset/en_US/base.js", TCL_URL)
-            .replace("/player_ias.vflset/en_US/base.js", TCL_URL)
-            .replace("-es6", "-ias") // es6 no supported
+        playerUrl.replace("-es6", "-ias") // es6 no supported by TCL solver
     }
     // Fetched lazily, once, and shared between validation (checkSigData) and real extraction —
-    // only used on the isTcl path, where TclChallengeProvider needs the raw player source.
+    // TclChallengeProvider needs the raw player source.
     private val playerCode: String? by lazy { loadPlayer() }
 
     init {
@@ -109,7 +102,8 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
 
         val nResults = validNParams?.let { params -> playerCode?.let { TclChallengeProvider.solveN(fixedPlayerUrl, it, params) } }
         val nProcessed = nResults?.let { results -> nParams?.map { results[it] } }
-        // TCL works only in TV version, so sFuncCode isn't necessary in this client
+
+        // TCL works only in TV version, so sig isn't necessary in this client
         return Pair(nProcessed, null)
     }
 
@@ -137,7 +131,6 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
             cpnCode = playerCache.cpnCode
             signatureTimestamp = playerCache.signatureTimestamp
             nFuncCode = true
-            sFuncCode = true
         }
     }
 
@@ -154,15 +147,6 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
     }
 
     private fun checkSigData() {
-        if (nFuncCode && sFuncCode) {
-            return
-        }
-
-        checkTclSigData()
-        return
-    }
-
-    private fun checkTclSigData() {
         if (nFuncCode) {
             return
         }

@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.app;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
+import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp;
 
 import retrofit2.Call;
@@ -36,6 +37,12 @@ public interface AppApi {
      */
     @GET
     Call<PlayerData> getPlayerData(@Url String playerUrl);
+
+    /**
+     * Same endpoint the official TV app queries on startup.
+     */
+    @GET("https://www.youtube.com/tv_config?action_get_config=true&client=lb4&theme=cl")
+    Call<TvConfig> getTvConfig();
 
     /**
      * Contains constants used in Auth<br/>

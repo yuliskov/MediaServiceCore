@@ -32,6 +32,16 @@ public class AppInfo {
     @RegExp("\"visitorData\":\"(.*?)\"")
     private String mVisitorData;
 
+    /**
+     * The TV poToken is bound to this id. E.g. wpeaWfYpTp8=
+     */
+    @RegExp("\"LIVING_ROOM_PO_TOKEN_ID\":\"(.*?)\"")
+    private String mLivingRoomPoTokenId;
+
+    public String getLivingRoomPoTokenId() {
+        return mLivingRoomPoTokenId != null ? mLivingRoomPoTokenId.replace("\\u003d", "=") : null;
+    }
+
     public String getPlayerUrl() {
         return ServiceHelper.tidyUrl(mPlayerUrl);
     }
@@ -50,7 +60,8 @@ public class AppInfo {
             AppInfo target = (AppInfo) obj;
             return Helpers.equals(getPlayerUrl(), target.getPlayerUrl()) &&
                     Helpers.equals(getClientUrl(), target.getClientUrl()) &&
-                    Helpers.equals(getVisitorData(), target.getVisitorData());
+                    Helpers.equals(getVisitorData(), target.getVisitorData()) &&
+                    Helpers.equals(getLivingRoomPoTokenId(), target.getLivingRoomPoTokenId());
         }
 
         return super.equals(obj);

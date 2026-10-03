@@ -1,14 +1,15 @@
 package com.liskovsoft.youtubeapi.innertube.impl
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.innertube.models.CaptionTrack
 import com.liskovsoft.youtubeapi.innertube.utils.getBaseUrl
 import com.liskovsoft.youtubeapi.innertube.utils.getCodecs
 import com.liskovsoft.youtubeapi.innertube.utils.getMimeType
 import com.liskovsoft.youtubeapi.innertube.utils.getName
 
-internal data class MediaSubtitleImpl(private val captionTrack: CaptionTrack): MediaSubtitle {
-    private val _baseUrl by lazy { captionTrack.getBaseUrl() }
+internal data class MediaSubtitleImpl(private val captionTrack: CaptionTrack, private val poToken: String?, private val client: AppClient): MediaSubtitle {
+    private val _baseUrl by lazy { captionTrack.getBaseUrl()?.let { if (poToken != null) "$it&pot=$poToken&c=${client.name}" else it } }
     private val _isTranslatable by lazy { captionTrack.isTranslatable ?: false }
     private val _languageCode by lazy { captionTrack.languageCode }
     private val _vssId by lazy { captionTrack.vssId }

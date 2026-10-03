@@ -60,7 +60,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     val sabrUrlHolder by lazy { VideoUrlHolder(playerResult.getServerAbrStreamingUrl()) }
     private val videoDetails by lazy { playerResult.videoDetails }
     private val _videoPlaybackUstreamerConfig by lazy { playerResult.getVideoPlaybackUstreamerConfig() }
-    private val _clientInfo by lazy { AppClient.WEB } // TODO: replace with innertube client
+    private val _clientInfo by lazy { AppClient.WEB } // TODO: replace with real innertube client
     private val _adaptiveFormats by lazy {
         playerResult.getAdaptiveFormats()?.map { MediaFormatImpl(it) }
     }
@@ -68,7 +68,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         playerResult.getLegacyFormats()?.map { MediaFormatImpl(it) }
     }
     private val _subtitles by lazy {
-        playerResult.getMergeCaptionTracks()?.map { MediaSubtitleImpl(it) }
+        playerResult.getMergeCaptionTracks()?.map { MediaSubtitleImpl(it, poToken, clientInfo) }
     }
     private val _hlsManifestUrl by lazy { playerResult.streamingData?.hlsManifestUrl }
     private val _dashManifestUrl by lazy { playerResult.streamingData?.dashManifestUrl }

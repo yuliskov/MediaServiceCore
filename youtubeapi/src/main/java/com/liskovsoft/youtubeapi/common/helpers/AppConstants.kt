@@ -51,17 +51,6 @@ internal object AppConstants {
         "https://www.youtube.com/s/player/14397202/tv-player-es6.vflset/tv-player-es6.js"
     )
 
-    @JvmField
-    val tclPlayerUrls = listOf(
-        // NOTE: not compatible with WEB, TV's unique decipher routines
-        //"https://www.youtube.com/s/player/7460dd14/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
-        "https://www.youtube.com/s/player/4fd832e7/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
-        "https://www.youtube.com/s/player/1c642fb9/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
-        "https://www.youtube.com/s/player/8c3fda2d/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
-        "https://www.youtube.com/s/player/f572e43c/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js",
-        "https://www.youtube.com/s/player/e937390a/tv-player-es6-tcl.vflset/tv-player-es6-tcl.js"
-    )
-
     private const val API_KEY_OLD = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8"
     private const val API_KEY_NEW = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
 

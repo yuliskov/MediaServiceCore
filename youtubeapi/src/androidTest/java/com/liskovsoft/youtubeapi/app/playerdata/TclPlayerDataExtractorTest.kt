@@ -18,6 +18,8 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
+private const val TCL_TIMESTAMP_LENGTH = 8
+
 class TclPlayerDataExtractorTest: BaseVideoInfoApiTest() {
     private val mAppServiceInt = AppServiceInt()
 
@@ -127,9 +129,8 @@ class TclPlayerDataExtractorTest: BaseVideoInfoApiTest() {
         val timestamp = extractor.getSignatureTimestamp()
         assertNotNull("Timestamp not null for url $url", timestamp)
 
-        val timestampLength = if (url.contains("-tcl.")) 8 else 5
-        assertEquals("Timestamp length is $timestampLength", timestampLength, timestamp?.length ?: 0)
+        assertEquals("Timestamp length is $TCL_TIMESTAMP_LENGTH", TCL_TIMESTAMP_LENGTH, timestamp?.length ?: 0)
     }
 
-    private fun getTestingUrls(): List<String> = AppConstants.tclPlayerUrls.take(5) // do limit to avoid OOM
+    private fun getTestingUrls(): List<String> = AppConstants.playerUrls.take(5) // do limit to avoid OOM
 }

@@ -14,6 +14,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+private const val WEB_TIMESTAMP_LENGTH = 5
+
 class WebPlayerDataExtractorTest {
     private val mAppServiceInt = AppServiceInt()
 
@@ -127,8 +129,7 @@ class WebPlayerDataExtractorTest {
         val timestamp = extractor.getSignatureTimestamp()
         assertNotNull("Timestamp not null for url $url", timestamp)
 
-        val timestampLength = if (url.contains("-tcl.")) 8 else 5
-        assertEquals("Timestamp length is $timestampLength", timestampLength, timestamp?.length ?: 0)
+        assertEquals("Timestamp length is $WEB_TIMESTAMP_LENGTH", WEB_TIMESTAMP_LENGTH, timestamp?.length ?: 0)
     }
 
     private fun getTestingUrls(): List<String> = AppConstants.playerUrls.take(5) // do limit to avoid OOM

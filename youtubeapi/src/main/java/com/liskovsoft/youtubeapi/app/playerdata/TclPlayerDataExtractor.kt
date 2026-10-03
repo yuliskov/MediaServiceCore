@@ -126,12 +126,12 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
 
     private fun persistAllData() {
         if (validate()) {
-            data.playerExtractorCache = PlayerExtractorCache(playerUrl, cpnCode, signatureTimestamp)
+            data.tclPlayerExtractorCache = PlayerExtractorCache(playerUrl, cpnCode, signatureTimestamp)
         }
     }
 
     private fun restoreAllData() {
-        val playerCache = data.playerExtractorCache
+        val playerCache = data.tclPlayerExtractorCache
 
         if (playerCache?.playerUrl == playerUrl) {
             cpnCode = playerCache.cpnCode

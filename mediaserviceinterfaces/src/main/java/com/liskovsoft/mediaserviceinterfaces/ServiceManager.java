@@ -14,4 +14,5 @@ public interface ServiceManager {
     void switchNextClient();
     void switchNextClientNow();
     void switchNextSubsFormat();
+    void reloadPlayerResponse(String videoId, String reloadPlaybackToken);
 }

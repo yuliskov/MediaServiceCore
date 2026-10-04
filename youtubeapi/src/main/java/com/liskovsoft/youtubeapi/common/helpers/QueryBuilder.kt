@@ -29,6 +29,7 @@ internal class QueryBuilder(private val client: AppClient) {
     private var params: String? = null
     private var poToken: String? = null
     private var signatureTimestamp: Int? = null
+    private var reloadPlaybackToken: String? = null
     private var isGeoFixEnabled: Boolean = false
 
     fun setType(type: PostDataType) = apply { this.type = type }
@@ -43,6 +44,7 @@ internal class QueryBuilder(private val client: AppClient) {
     fun setPoToken(poToken: String?) = apply { this.poToken = poToken }
     fun setClientPlaybackNonce(cpn: String?) = apply { this.cpn = cpn }
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
+    fun setReloadPlaybackToken(token: String?) = apply { reloadPlaybackToken = token }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
     fun setPanelId(panelId: String?) = apply { this.panelId = panelId }
     fun setParams(params: String?) = apply { this.params = params }
@@ -298,6 +300,23 @@ internal class QueryBuilder(private val client: AppClient) {
                     "devicePlaybackCapabilities": {
                         "supportsVp9Encoding": true,
                         "supportXhr": ${!client.isTVClient}
+                    },
+                    ${createReloadPlaybackChunk()}
+                },
+            """
+        } ?: ""
+    }
+
+    /**
+     * Token from SABR ReloadPlayerResponse (reload_playback_params).
+     * Without it the SABR server keeps answering with ReloadPlayerResponse and no media.
+     */
+    private fun createReloadPlaybackChunk(): String {
+        return reloadPlaybackToken?.let {
+            """
+                "reloadPlaybackContext": {
+                    "reloadPlaybackParams": {
+                        "token": "$it"
                     }
                 },
             """

@@ -28,6 +28,7 @@ internal class QueryBuilder(private val client: AppClient) {
     private var panelId: String? = null
     private var params: String? = null
     private var poToken: String? = null
+    private var livingRoomPoTokenId: String? = null
     private var signatureTimestamp: Int? = null
     private var isGeoFixEnabled: Boolean = false
 
@@ -41,6 +42,7 @@ internal class QueryBuilder(private val client: AppClient) {
     fun setPlaylistId(playlistId: String?) = apply { this.playlistId = playlistId }
     fun setPlaylistIndex(playlistIndex: Int?) = apply { this.playlistIndex = playlistIndex }
     fun setPoToken(poToken: String?) = apply { this.poToken = poToken }
+    fun setLivingRoomPoTokenId(poTokenId: String?) = apply { livingRoomPoTokenId = poTokenId }
     fun setClientPlaybackNonce(cpn: String?) = apply { this.cpn = cpn }
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
@@ -123,6 +125,9 @@ internal class QueryBuilder(private val client: AppClient) {
             """
             else ""
         val postVars = client.postData ?: ""
+        val tvAppInfo = if (type == PostDataType.Player)
+                livingRoomPoTokenId?.let { """ "tvAppInfo": { "livingRoomPoTokenId": "$it" }, """ } ?: ""
+            else ""
         val postBrowseVars = if (requireNotNull(type) == PostDataType.Browse)
                 client.postDataBrowse ?: ""
             else ""
@@ -137,6 +142,7 @@ internal class QueryBuilder(private val client: AppClient) {
                 $clientVars
                 $browserVars
                 $postVars
+                $tvAppInfo
                 $postBrowseVars
                 $regionVars
                 $visitorVar

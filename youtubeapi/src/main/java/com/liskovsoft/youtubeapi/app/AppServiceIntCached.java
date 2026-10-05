@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 
-public class AppServiceIntCached extends AppServiceInt {
+class AppServiceIntCached extends AppServiceInt {
     private static final String TAG = AppServiceIntCached.class.getSimpleName();
     private static final long CACHE_REFRESH_PERIOD_MS = 10 * 60 * 60 * 1_000; // check updated core files every 10 hours
     private AppInfoCached mAppInfo;
@@ -26,7 +26,7 @@ public class AppServiceIntCached extends AppServiceInt {
     private AppClient mRecentClient;
 
     @Override
-    protected AppInfo getAppInfo(String userAgent) {
+    public AppInfo getAppInfo(String userAgent) {
         synchronized (mAppInfoSync) {
             return getAppInfoSync(userAgent);
         }

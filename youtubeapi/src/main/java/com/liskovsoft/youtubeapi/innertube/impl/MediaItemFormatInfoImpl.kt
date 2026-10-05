@@ -10,7 +10,7 @@ import com.liskovsoft.sharedutils.querystringparser.UrlQueryString
 import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.app.AppService
-import com.liskovsoft.youtubeapi.app.PoTokenGate.isWebPotExpired
+import com.liskovsoft.youtubeapi.app.PoTokenGate
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder
@@ -293,7 +293,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         // So, also check internal cache state.
         // Future translations (no media) should be polled constantly.
 
-        return containsMedia() && AppService.instance().isPlayerCacheActual && !isWebPotExpired()
+        return containsMedia() && AppService.instance().isPlayerCacheActual && !PoTokenGate.isPotExpired(clientInfo)
     }
 
     /**

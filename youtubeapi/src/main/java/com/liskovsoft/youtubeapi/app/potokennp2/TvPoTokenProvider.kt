@@ -1,13 +1,11 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.mylogger.Log
-import com.liskovsoft.youtubeapi.app.AppApi
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
-import com.liskovsoft.youtubeapi.app.potokennp2.generators.TclPoTokenWebView4
+import com.liskovsoft.youtubeapi.app.potokennp2.generators.TvPoTokenWebView4
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
 /**
@@ -19,7 +17,6 @@ internal object TvPoTokenProvider {
     private val TAG = TvPoTokenProvider::class.simpleName
     private val lock = Any()
     private const val FORCE_ATT_CHALLENGE = true
-    private val api by lazy { RetrofitHelper.create(AppApi::class.java) }
     private var generator: PoTokenGenerator? = null
     private var result: PoTokenResult? = null
 
@@ -58,7 +55,7 @@ internal object TvPoTokenProvider {
     private fun getPoTokenSync(): PoTokenResult? {
         result?.let { if (!isExpired) return it }
 
-        val tvConfig = RetrofitHelper.get(api.getTvConfig())
+        val tvConfig = AppService.instance().tvConfig
         val requestKey = tvConfig?.challengeRequestKey
         // May be absent (e.g. with the Cobalt user agent). Then the program is taken from /att/get.
         val challenge = if (FORCE_ATT_CHALLENGE) null else tvConfig?.challenge
@@ -73,7 +70,7 @@ internal object TvPoTokenProvider {
         }
 
         // The id and the visitor data should come from the same /tv page
-        val appInfo = RetrofitHelper.get(api.getAppInfo(DefaultHeaders.APP_USER_AGENT))
+        val appInfo = AppService.instance().getAppInfo(DefaultHeaders.APP_USER_AGENT)
         val livingRoomId = appInfo?.livingRoomPoTokenId
         val visitorData = appInfo?.visitorData
 
@@ -84,7 +81,7 @@ internal object TvPoTokenProvider {
 
         reset()
 
-        val newGenerator = TclPoTokenWebView4.newPoTokenGenerator(AppService.instance().context, requestKey, challenge, AppClient.TV)
+        val newGenerator = TvPoTokenWebView4.newPoTokenGenerator(AppService.instance().context, requestKey, challenge, AppClient.TV)
         val sessionPot = newGenerator.generatePoToken(livingRoomId)
 
         // Log.d(TAG, "TV poToken: livingRoomId=$livingRoomId, pot=$sessionPot, visitor_data=$visitorData")

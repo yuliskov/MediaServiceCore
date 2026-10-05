@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.app;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.youtubeapi.app.playerdata.TclPlayerDataExtractor;
 import com.liskovsoft.youtubeapi.app.playerdata.WebPlayerDataExtractor;
@@ -16,7 +16,7 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class AppServiceInt {
+class AppServiceInt {
     private static final String TAG = AppServiceInt.class.getSimpleName();
     private final AppApi mAppApi;
 
@@ -27,7 +27,7 @@ public class AppServiceInt {
     /**
      * Obtains info with respect of anonymous browsing data (visitor cookie)
      */
-    protected AppInfo getAppInfo(String userAgent) {
+    public AppInfo getAppInfo(String userAgent) {
         String visitorCookie = getData().getVisitorCookie();
         Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
         AppInfo result = null;
@@ -54,7 +54,14 @@ public class AppServiceInt {
     }
 
     public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client, String playerUrl) {
+        // Only the TCL flavored player (e.g. resolved from tv_config) has a different n-function shape.
+        // Other urls (e.g. fallbacks) are regular players and should be solved the regular way, whatever the client is.
         return isTcl(client) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
+    }
+
+    public TvConfig getTvConfig() {
+        Call<TvConfig> wrapper = mAppApi.getTvConfig();
+        return RetrofitHelper.get(wrapper);
     }
 
     protected boolean isTcl(@Nullable AppClient client) {
@@ -103,7 +110,6 @@ public class AppServiceInt {
     // Moved from AppService
 
     public String getClientId() {
-        // TODO: NPE 1.6K!!!
         ClientData clientData = getClientData();
         return clientData != null ? clientData.getClientId() : null;
     }
@@ -112,26 +118,26 @@ public class AppServiceInt {
      * Constant used in AuthApi
      */
     public String getClientSecret() {
-        return getClientData() != null ? getClientData().getClientSecret() : null;
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.getClientSecret() : null;
     }
 
     /**
      * Used with get_video_info, anonymous search and suggestions
      */
     public String getVisitorData() {
-        // TODO: NPE 300!!!
-        return getAppInfoData() != null ? getAppInfoData().getVisitorData() : null;
+        AppInfo appInfoData = getAppInfoData();
+        return appInfoData != null ? appInfoData.getVisitorData() : null;
     }
 
     public String getPlayerUrl() {
-        // NOTE: NPE 2.5K
-        //return getData().getPlayerUrl() != null ? getData().getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
-        return getAppInfoData() != null ? getAppInfoData().getPlayerUrl() : null;
+        AppInfo appInfoData = getAppInfoData();
+        return appInfoData != null ? appInfoData.getPlayerUrl() : null;
     }
 
     public String getClientUrl() {
-        // NOTE: NPE 143K!!!
-        return getAppInfoData() != null ? getAppInfoData().getClientUrl() : null;
+        AppInfo appInfoData = getAppInfoData();
+        return appInfoData != null ? appInfoData.getClientUrl() : null;
     }
 
     private AppInfo getAppInfoData() {

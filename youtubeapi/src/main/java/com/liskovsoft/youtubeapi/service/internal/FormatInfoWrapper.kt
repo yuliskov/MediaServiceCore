@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService
 
 internal object FormatInfoWrapper {
     private var mCachedFormatInfo: MediaItemFormatInfo? = null
-    private var mTryInnertubeFirst: Boolean = true
+    private var mTryInnertubeFirst: Boolean = false
     private val mInnertubeResult = object { var isUnplayable: Boolean = false; var client: AppClient? = null }
     private val mInnertubeProvider: (String, String?) -> MediaItemFormatInfo? =
         { videoId, clickTrackingParams ->

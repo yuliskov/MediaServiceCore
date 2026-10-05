@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.TvConfig;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerDataExtractor;
 import com.liskovsoft.youtubeapi.auth.V1.AuthApi;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
@@ -227,5 +229,13 @@ public class AppService {
         }
 
         return context;
+    }
+
+    public TvConfig getTvConfig() {
+        return mAppServiceInt.getTvConfig();
+    }
+
+    public AppInfo getAppInfo(String userAgent) {
+        return mAppServiceInt.getAppInfo(userAgent);
     }
 }

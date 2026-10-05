@@ -37,7 +37,7 @@ import java.util.regex.Pattern
  *
  * The changes compared to V1: https://github.com/Brainicism/bgutil-ytdlp-pot-provider/pull/243/changes
  */
-internal class TclPoTokenWebView4 private constructor(
+internal class TvPoTokenWebView4 private constructor(
     context: Context,
     private val requestKey: String,
     private val presetChallenge: String?,
@@ -102,7 +102,7 @@ internal class TclPoTokenWebView4 private constructor(
     }
 
     /**
-     * Must be called right after instantiating [TclPoTokenWebView4] to perform the actual
+     * Must be called right after instantiating [TvPoTokenWebView4] to perform the actual
      * initialization. This will asynchronously go through all the steps needed to load BotGuard,
      * run it, and obtain an `integrityToken`.
      */
@@ -496,7 +496,7 @@ internal class TclPoTokenWebView4 private constructor(
     //endregion
 
     companion object : PoTokenGenerator.Factory {
-        private val TAG = TclPoTokenWebView4::class.simpleName
+        private val TAG = TvPoTokenWebView4::class.simpleName
         // Public API key used by BotGuard, which has been got by looking at BotGuard requests
         private const val GOOGLE_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw" // NOSONAR
         private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"
@@ -526,12 +526,12 @@ internal class TclPoTokenWebView4 private constructor(
 
             val latch = CountDownLatch(1)
 
-            lateinit var potWv: TclPoTokenWebView4
+            lateinit var potWv: TvPoTokenWebView4
             var initError: Throwable? = null
 
             runOnMainThread {
                 potWv = try {
-                    TclPoTokenWebView4(context, requestKey, presetChallenge, attClient) { latch.countDown() }
+                    TvPoTokenWebView4(context, requestKey, presetChallenge, attClient) { latch.countDown() }
                 } catch (e: Throwable) {
                     initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
                     latch.countDown()

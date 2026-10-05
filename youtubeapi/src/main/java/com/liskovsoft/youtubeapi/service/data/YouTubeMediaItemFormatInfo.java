@@ -469,8 +469,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         // Check app cipher first. It's not robust check (cipher may be updated not by us).
         // So, also check internal cache state.
         // Future translations (no media) should be polled constantly.
-        return containsMedia() && AppService.instance().isPlayerCacheActual()
-                && (!mClient.isWebPotRequired() || !PoTokenGate.isWebPotExpired());
+        return containsMedia() && AppService.instance().isPlayerCacheActual() && !PoTokenGate.isPotExpired(mClient);
     }
 
     /**

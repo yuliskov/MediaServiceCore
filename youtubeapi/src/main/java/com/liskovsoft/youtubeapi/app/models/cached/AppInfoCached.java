@@ -10,11 +10,13 @@ public class AppInfoCached extends AppInfo {
     private final String mPlayerUrl;
     private final String mClientUrl;
     private final String mVisitorData;
+    private final String mLivingRoomPoTokenId;
 
-    private AppInfoCached(String playerUrl, String clientUrl, String visitorData) {
+    private AppInfoCached(String playerUrl, String clientUrl, String visitorData, String livingRoomPoTokenId) {
         mPlayerUrl = playerUrl;
         mClientUrl = clientUrl;
         mVisitorData = visitorData;
+        mLivingRoomPoTokenId = livingRoomPoTokenId;
     }
 
     public static AppInfoCached fromString(String spec) {
@@ -27,8 +29,9 @@ public class AppInfoCached extends AppInfo {
         String playerUrl = Helpers.parseStr(split, 0);
         String clientUrl = Helpers.parseStr(split, 1);
         String visitorData = Helpers.parseStr(split, 2);
+        String livingRoomPoTokenId = Helpers.parseStr(split, 3);
 
-        return new AppInfoCached(playerUrl, clientUrl, visitorData);
+        return new AppInfoCached(playerUrl, clientUrl, visitorData, livingRoomPoTokenId);
     }
 
     public static AppInfoCached from(AppInfo appInfo) {
@@ -36,13 +39,13 @@ public class AppInfoCached extends AppInfo {
             return null;
         }
 
-        return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
+        return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData(), appInfo.getLivingRoomPoTokenId());
     }
 
     @NonNull
     @Override
     public String toString() {
-        return Helpers.merge(DELIM, mPlayerUrl, mClientUrl, mVisitorData);
+        return Helpers.merge(DELIM, mPlayerUrl, mClientUrl, mVisitorData, mLivingRoomPoTokenId);
     }
 
     @Override
@@ -60,7 +63,12 @@ public class AppInfoCached extends AppInfo {
         return mVisitorData;
     }
 
+    @Override
+    public String getLivingRoomPoTokenId() {
+        return mLivingRoomPoTokenId;
+    }
+
     public boolean validate() {
-        return mPlayerUrl != null && mClientUrl != null && mVisitorData != null;
+        return mPlayerUrl != null && mClientUrl != null && mVisitorData != null && mLivingRoomPoTokenId != null;
     }
 }

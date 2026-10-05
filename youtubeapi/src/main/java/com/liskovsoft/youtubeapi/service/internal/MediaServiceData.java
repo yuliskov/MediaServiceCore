@@ -14,15 +14,12 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.PoTokenGate;
 import com.liskovsoft.youtubeapi.app.models.cached.AppInfoCached;
 import com.liskovsoft.youtubeapi.app.models.cached.ClientDataCached;
-import com.liskovsoft.youtubeapi.app.models.cached.PlayerDataCached;
-import com.liskovsoft.youtubeapi.app.playerdata.NSigData;
 import com.liskovsoft.youtubeapi.app.playerdata.PlayerExtractorCache;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
 
 import java.util.UUID;
 
 import io.reactivex.disposables.Disposable;
-import kotlin.Triple;
 
 public class MediaServiceData {
     private static final String TAG = MediaServiceData.class.getSimpleName();
@@ -272,7 +269,7 @@ public class MediaServiceData {
     }
 
     public boolean isPotSupported() {
-        return PoTokenGate.isWebPotSupported();
+        return PoTokenGate.isPotSupported();
     }
 
     public boolean isLegacyUIEnabled() {

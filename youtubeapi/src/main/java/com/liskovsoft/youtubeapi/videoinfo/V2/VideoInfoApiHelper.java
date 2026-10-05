@@ -20,7 +20,8 @@ public class VideoInfoApiHelper {
                 .setClickTrackingParams(clickTrackingParams)
                 .setPoToken(PoTokenGate.getPoToken(client, videoId))
                 .setVisitorData(PoTokenGate.getVisitorData(client))
-                .enableGeoFix(enableGeoFix) // may broke other functionality
+                .setLivingRoomPoTokenId(PoTokenGate.getLivingRoomPoTokenId(client))
+                .enableGeoFix(enableGeoFix) // may break other functionality
                 .build();
     }
 }

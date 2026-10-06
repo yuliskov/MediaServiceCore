@@ -16,11 +16,11 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import retrofit2.Call;
 import retrofit2.Response;
 
-class AppServiceInt {
-    private static final String TAG = AppServiceInt.class.getSimpleName();
+class AppServiceCore {
+    private static final String TAG = AppServiceCore.class.getSimpleName();
     private final AppApi mAppApi;
 
-    public AppServiceInt() {
+    public AppServiceCore() {
         mAppApi = RetrofitHelper.create(AppApi.class);
     }
 

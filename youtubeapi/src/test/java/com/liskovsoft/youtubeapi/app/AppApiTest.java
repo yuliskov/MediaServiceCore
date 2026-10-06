@@ -14,7 +14,7 @@ import org.robolectric.shadows.ShadowLog;
 
 @RunWith(RobolectricTestRunner.class)
 public class AppApiTest {
-    private AppServiceInt mAppServiceInt;
+    private AppServiceCore mAppServiceCore;
 
     @Before
     public void setUp() {
@@ -24,21 +24,21 @@ public class AppApiTest {
 
         ShadowLog.stream = System.out; // catch Log class output
 
-        mAppServiceInt = new AppServiceInt();
+        mAppServiceCore = new AppServiceCore();
     }
 
     @Test
     public void testThatAppInfoContainsAllRequiredFields() {
-        String playerUrl = mAppServiceInt.getPlayerUrl();
+        String playerUrl = mAppServiceCore.getPlayerUrl();
         assertTrue("Player url should ends with js", playerUrl.endsWith(".js"));
     }
 
     @Ignore("Robolectric doesn't support loading native libraries (*.so)")
     @Test
     public void testThatDecipherFunctionIsValid() {
-        String playerUrl = mAppServiceInt.getPlayerUrl();
+        String playerUrl = mAppServiceCore.getPlayerUrl();
 
-        mAppServiceInt.getPlayerDataExtractor(playerUrl).validate();
+        mAppServiceCore.getPlayerDataExtractor(playerUrl).validate();
     }
 
     @Test
@@ -50,7 +50,7 @@ public class AppApiTest {
     }
 
     private String getBaseUrl() {
-        String baseUrl = mAppServiceInt.getClientUrl();
+        String baseUrl = mAppServiceCore.getClientUrl();
 
         assertNotNull("Base url not null", baseUrl);
 
@@ -60,7 +60,7 @@ public class AppApiTest {
     private ClientData getClientData() {
         String baseUrl = getBaseUrl();
 
-        ClientData clientData = mAppServiceInt.getClientData(baseUrl);
+        ClientData clientData = mAppServiceCore.getClientData(baseUrl);
 
         assertNotNull("Base data not null", clientData);
         return clientData;

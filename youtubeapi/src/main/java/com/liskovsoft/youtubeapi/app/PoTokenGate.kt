@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.app
 
 import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
-import com.liskovsoft.youtubeapi.app.potokennp2.PoTokenProviderImpl
+import com.liskovsoft.youtubeapi.app.potokennp2.WebPoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.TvPoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.selectFactory
@@ -26,36 +26,27 @@ internal object PoTokenGate {
     private const val CACHE_RESET_TIME_MS = 60_000
 
     init {
-        PoTokenProviderImpl.poTokenFactory = selectFactory()
+        WebPoTokenProvider.poTokenFactory = selectFactory()
     }
 
     private fun getWebContentPoToken(videoId: String): String? {
-        if (mWebPoToken?.videoId == videoId && !PoTokenProviderImpl.isWebPotExpired) {
+        if (mWebPoToken?.videoId == videoId && !WebPoTokenProvider.isWebPotExpired) {
             return mWebPoToken?.playerRequestPoToken
         }
 
-        mWebPoToken = if (PoTokenProviderImpl.isWebPotSupported)
-            PoTokenProviderImpl.getWebClientPoToken(videoId)
+        mWebPoToken = if (WebPoTokenProvider.isWebPotSupported)
+            WebPoTokenProvider.getWebClientPoToken(videoId)
         else null
 
         return mWebPoToken?.playerRequestPoToken
     }
 
     private fun getWebSessionPoToken(): String? {
-        return if (PoTokenProviderImpl.isWebPotSupported) {
+        return if (WebPoTokenProvider.isWebPotSupported) {
             if (mWebPoToken == null)
-                mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("")
+                mWebPoToken = WebPoTokenProvider.getWebClientPoToken("")
             mWebPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
-    }
-    
-    private fun updatePoToken() {
-        if (PoTokenProviderImpl.isWebPotSupported) {
-            //mNpPoToken = null // only refresh
-            mWebPoToken = PoTokenProviderImpl.getWebClientPoToken("") // refresh and preload
-        } else {
-            PoTokenCloudService.updatePoToken()
-        }
     }
 
     /**
@@ -80,6 +71,7 @@ internal object PoTokenGate {
     @JvmStatic
     @JvmOverloads
     fun getPoToken(client: AppClient, videoId: String? = null): String? {
+        resetOtherProviders(client)
         return when {
             client.isWebPotRequired -> if (videoId != null) getWebContentPoToken(videoId) else getWebSessionPoToken()
             client.isTvPotRequired -> getTvPoToken()
@@ -101,12 +93,12 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun isPotSupported() = PoTokenProviderImpl.isWebPotSupported
+    fun isPotSupported() = WebPoTokenProvider.isWebPotSupported
 
     @JvmStatic
     fun isPotExpired(client: AppClient): Boolean {
         return when {
-            client.isWebPotRequired -> PoTokenProviderImpl.isWebPotExpired
+            client.isWebPotRequired -> WebPoTokenProvider.isWebPotExpired
             client.isTvPotRequired -> TvPoTokenProvider.isExpired
             else -> false
         }
@@ -132,9 +124,9 @@ internal object PoTokenGate {
         if (currentTimeMs < mCacheResetTimeMs)
             return false
 
-        if (PoTokenProviderImpl.isWebPotSupported) {
+        if (WebPoTokenProvider.isWebPotSupported) {
             mWebPoToken = null
-            PoTokenProviderImpl.resetCache()
+            WebPoTokenProvider.reset()
         } else
             PoTokenCloudService.resetCache()
 
@@ -154,5 +146,12 @@ internal object PoTokenGate {
         mTvCacheResetTimeMs = currentTimeMs + CACHE_RESET_TIME_MS
 
         return true
+    }
+
+    private fun resetOtherProviders(client: AppClient) {
+        when {
+            client.isWebPotRequired -> TvPoTokenProvider.reset()
+            client.isTvPotRequired -> WebPoTokenProvider.reset()
+        }
     }
 }

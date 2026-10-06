@@ -15,8 +15,8 @@ import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-internal object PoTokenProviderImpl : PoTokenProvider {
-    val TAG = PoTokenProviderImpl::class.simpleName
+internal object WebPoTokenProvider : PoTokenProvider {
+    val TAG = WebPoTokenProvider::class.simpleName
     private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
 
@@ -168,8 +168,12 @@ internal object PoTokenProviderImpl : PoTokenProvider {
 
     override fun isWebPotSupported() = webViewSupported && !webViewBadImpl
 
-    fun resetCache() {
-        webPoTokenVisitorData = null
-        webPoTokenStreamingPot = null
+    fun reset() {
+        synchronized(WebPoTokenGenLock) {
+            webPoTokenGenerator?.let { runCatching { it.close() } }
+            webPoTokenGenerator = null
+            webPoTokenVisitorData = null
+            webPoTokenStreamingPot = null
+        }
     }
 }

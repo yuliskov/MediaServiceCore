@@ -30,7 +30,7 @@ internal object TvPoTokenProvider {
         get() = generator?.isExpired() ?: true
 
     fun getPoToken(): PoTokenResult? {
-        if (!PoTokenProviderImpl.isWebPotSupported) {
+        if (!WebPoTokenProvider.isWebPotSupported) {
             return null
         }
 

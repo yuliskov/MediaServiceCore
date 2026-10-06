@@ -13,11 +13,11 @@ import org.junit.Test
 
 private const val VIDEO_ID = "K04WmBtVsOs"
 
-class PoTokenProviderImplTest {
+class WebPoTokenProviderTest {
     @Before
     fun setUp() {
         GlobalPreferences.instance(InstrumentationRegistry.getInstrumentation().context)
-        PoTokenProviderImpl.resetCache()
+        WebPoTokenProvider.reset()
     }
 
     @Test
@@ -37,28 +37,28 @@ class PoTokenProviderImplTest {
 
     @Test
     fun testWebPoTokenIsNotEmpty3() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+        WebPoTokenProvider.poTokenFactory = PoTokenWebView3
 
         assertWebPoTokenLength(124) // SABR pot length
     }
 
     @Test
     fun testWebPoTokenOnEmptyVideoId3() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+        WebPoTokenProvider.poTokenFactory = PoTokenWebView3
 
         assertWebPoTokenOnEmptyVideoId()
     }
 
     @Test
     fun testPoTokenResponse3() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView3
+        WebPoTokenProvider.poTokenFactory = PoTokenWebView3
 
         assertPoTokenResponse()
     }
 
     @Test
     fun testWebPoTokenIsNotEmpty4() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView4
+        WebPoTokenProvider.poTokenFactory = PoTokenWebView4
 
         // NOTE: the new pot is shorter
         assertWebPoTokenLength(120) // SABR pot length
@@ -66,33 +66,33 @@ class PoTokenProviderImplTest {
 
     @Test
     fun testWebPoTokenOnEmptyVideoId4() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView4
+        WebPoTokenProvider.poTokenFactory = PoTokenWebView4
 
         assertWebPoTokenOnEmptyVideoId()
     }
 
     @Test
     fun testPoTokenResponse4() {
-        PoTokenProviderImpl.poTokenFactory = PoTokenWebView4
+        WebPoTokenProvider.poTokenFactory = PoTokenWebView4
 
         assertPoTokenResponse()
     }
 
     private fun assertWebPoTokenLength(length: Int) {
-        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(VIDEO_ID)
+        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken(VIDEO_ID)
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
         Assert.assertEquals("PoToken length is $length", length, webClientPoToken?.playerRequestPoToken?.length)
     }
 
     private fun assertWebPoTokenIsNotEmpty() {
-        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(VIDEO_ID)
+        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken(VIDEO_ID)
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
 
     private fun assertWebPoTokenOnEmptyVideoId() {
-        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken("")
+        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken("")
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
@@ -105,7 +105,7 @@ class PoTokenProviderImplTest {
 
         val url = mediaItemDetails.adaptiveFormats[0].url ?: mediaItemDetails.serverAbrStreamingUrl
 
-        val webClientPoToken = PoTokenProviderImpl.getWebClientPoToken(videoIdMusic)
+        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken(videoIdMusic)
 
         Assert.assertTrue("Video url is working", TestHelpers.urlExists("$url&pot=${webClientPoToken?.streamingDataPoToken}"))
     }

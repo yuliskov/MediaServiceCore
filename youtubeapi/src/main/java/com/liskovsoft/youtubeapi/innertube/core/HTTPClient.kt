@@ -5,6 +5,7 @@ import androidx.core.net.toUri
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.querystringparser.UrlEncodedQueryString
+import com.liskovsoft.youtubeapi.app.ReloadPlaybackGate
 import com.liskovsoft.youtubeapi.innertube.models.InnertubeContext
 import com.liskovsoft.youtubeapi.innertube.models.PlayerResult
 import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
@@ -280,13 +281,16 @@ internal class RequestInitBody(
 ) {
     val contentCheckOk: Boolean = true
     val racyCheckOk: Boolean = true
-    val playbackContext: PlaybackContext = PlaybackContext(session)
+    val playbackContext: PlaybackContext = PlaybackContext(session, videoId)
     var context: InnertubeContext? = null
 
-    class PlaybackContext(session: Session) {
+    class PlaybackContext(session: Session, videoId: String) {
         // MOD: sabr-shaka-example error: this parameter prevented playback from starting
         //val adPlaybackContext: AdPlaybackContext = AdPlaybackContext()
         val contentPlaybackContext: ContentPlaybackContext = ContentPlaybackContext(session)
+        // Token from SABR ReloadPlayerResponse. Null values are omitted by Gson.
+        val reloadPlaybackContext: ReloadPlaybackContext? =
+            ReloadPlaybackGate.getToken(videoId)?.let { ReloadPlaybackContext(ReloadPlaybackParams(it)) }
 
         //class AdPlaybackContext {
         //    val pyv: Boolean = true
@@ -295,6 +299,10 @@ internal class RequestInitBody(
         class ContentPlaybackContext(session: Session) {
             val signatureTimestamp: String? = session.player.getSignatureTimestamp(session.appClient)
         }
+
+        class ReloadPlaybackContext(val reloadPlaybackParams: ReloadPlaybackParams)
+
+        class ReloadPlaybackParams(val token: String)
     }
 }
 

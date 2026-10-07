@@ -4,6 +4,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.PoTokenGate
+import com.liskovsoft.youtubeapi.app.ReloadPlaybackGate
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.innertube.InnertubeService
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
@@ -27,7 +28,11 @@ internal object FormatInfoWrapper {
 
     @JvmStatic
     fun getFormatInfo(videoId: String, clickTrackingParams: String?): MediaItemFormatInfo? {
-        return selectPlaybackFormatInfo(videoId, clickTrackingParams)
+        try {
+            return selectPlaybackFormatInfo(videoId, clickTrackingParams)
+        } finally {
+            ReloadPlaybackGate.reset(videoId)
+        }
     }
 
     @JvmStatic

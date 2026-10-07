@@ -15,6 +15,7 @@ import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.app.ReloadPlaybackGate;
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.internal.FormatInfoWrapper;
@@ -111,6 +112,16 @@ public class YouTubeServiceManager implements ServiceManager {
     public void switchNextSubsFormat() {
         FormatInfoWrapper.invalidateCache();
         getVideoInfoService().switchNextSubtitle();
+    }
+
+    /**
+     * SABR server sent ReloadPlayerResponse and won't send any media until the player response is re-fetched.<br/>
+     * The next player request for this video will include the token (reloadPlaybackContext).
+     */
+    @Override
+    public void reloadPlayerResponse(String videoId, String reloadPlaybackToken) {
+        FormatInfoWrapper.invalidateCache();
+        ReloadPlaybackGate.setToken(videoId, reloadPlaybackToken);
     }
 
     private void refreshCacheIfNeededInt() {

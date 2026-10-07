@@ -29,6 +29,7 @@ internal class QueryBuilder(private val client: AppClient) {
     private var params: String? = null
     private var poToken: String? = null
     private var livingRoomPoTokenId: String? = null
+    private var reloadPlaybackToken: String? = null
     private var signatureTimestamp: Int? = null
     private var isGeoFixEnabled: Boolean = false
 
@@ -43,6 +44,7 @@ internal class QueryBuilder(private val client: AppClient) {
     fun setPlaylistIndex(playlistIndex: Int?) = apply { this.playlistIndex = playlistIndex }
     fun setPoToken(poToken: String?) = apply { this.poToken = poToken }
     fun setLivingRoomPoTokenId(poTokenId: String?) = apply { livingRoomPoTokenId = poTokenId }
+    fun setReloadPlaybackToken(token: String?) = apply { reloadPlaybackToken = token }
     fun setClientPlaybackNonce(cpn: String?) = apply { this.cpn = cpn }
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
@@ -304,7 +306,8 @@ internal class QueryBuilder(private val client: AppClient) {
                     "devicePlaybackCapabilities": {
                         "supportsVp9Encoding": true,
                         "supportXhr": ${!client.isTVClient}
-                    }
+                    },
+                    ${createReloadPlaybackChunk()}
                 },
             """
         } ?: ""
@@ -330,6 +333,22 @@ internal class QueryBuilder(private val client: AppClient) {
                 """
             } ?: ""
         else ""
+    }
+
+    /**
+     * Token from SABR ReloadPlayerResponse (reload_playback_params).
+     * Without it the SABR server keeps answering with ReloadPlayerResponse and no media.
+     */
+    private fun createReloadPlaybackChunk(): String {
+        return reloadPlaybackToken?.let {
+            """
+                "reloadPlaybackContext": {
+                    "reloadPlaybackParams": {
+                        "token": "$it"
+                    }
+                },
+            """
+        } ?: ""
     }
 
     private fun playerDataCheck() = videoId != null && type == PostDataType.Player

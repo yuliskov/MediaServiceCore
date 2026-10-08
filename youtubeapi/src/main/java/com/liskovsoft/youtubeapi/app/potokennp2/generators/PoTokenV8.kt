@@ -1,8 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokennp2.generators
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.annotation.MainThread
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
@@ -406,18 +404,6 @@ internal class PoTokenV8 private constructor(
             potWv.initError?.let { throw it }
 
             return potWv
-        }
-
-        /**
-         * Runs [runnable] on the main thread using `Handler(Looper.getMainLooper()).post()`, and
-         * if the `post` fails emits an error on [emitterIfPostFails].
-         */
-        private fun runOnMainThread(
-            runnable: Runnable
-        ) {
-            if (!Handler(Looper.getMainLooper()).post(runnable)) {
-                throw PoTokenException("Could not run on main thread")
-            }
         }
     }
 }

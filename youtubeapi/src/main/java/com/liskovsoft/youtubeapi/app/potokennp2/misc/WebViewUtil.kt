@@ -3,12 +3,15 @@ package com.liskovsoft.youtubeapi.app.potokennp2.misc
 import android.content.Context
 import android.hardware.usb.UsbManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
 import android.webkit.ValueCallback
 import android.webkit.WebView
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
 import com.liskovsoft.sharedutils.mylogger.Log
+import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 
 private const val TAG = "WebViewUtil"
 
@@ -107,5 +110,17 @@ internal fun WebView.evaluateJavascriptLegacy(script: String, resultCallback: Va
     } else {
         // NOTE: callbacks not supported. Use jsInterface instead
         loadUrl("javascript:(function() { $script })();")
+    }
+}
+
+/**
+ * Runs [runnable] on the main thread using `Handler(Looper.getMainLooper()).post()`, and
+ * if the `post` fails emits an [PoTokenException] exception.
+ */
+internal fun runOnMainThread(
+    runnable: Runnable
+) {
+    if (!Handler(Looper.getMainLooper()).post(runnable)) {
+        throw PoTokenException("Could not run on main thread")
     }
 }

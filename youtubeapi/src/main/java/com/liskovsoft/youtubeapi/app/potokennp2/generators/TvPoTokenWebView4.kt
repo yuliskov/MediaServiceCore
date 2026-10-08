@@ -1,8 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokennp2.generators
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -24,6 +22,7 @@ import com.liskovsoft.youtubeapi.app.potokennp2.misc.parseDescrambledChallengeDa
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.parseIntegrityTokenData
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.parseLooseJSON
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.potLibPrefix
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.runOnMainThread
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.stringToU8
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.u8ToBase64
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
@@ -535,18 +534,6 @@ internal class TvPoTokenWebView4 private constructor(
             if (!completed) throw PoTokenException("${TAG}: failed to initialize within the specified time")
 
             return potWv
-        }
-
-        /**
-         * Runs [runnable] on the main thread using `Handler(Looper.getMainLooper()).post()`, and
-         * if the `post` fails emits an error on [emitterIfPostFails].
-         */
-        private fun runOnMainThread(
-            runnable: Runnable
-        ) {
-            if (!Handler(Looper.getMainLooper()).post(runnable)) {
-                throw PoTokenException("Could not run on main thread")
-            }
         }
     }
 }

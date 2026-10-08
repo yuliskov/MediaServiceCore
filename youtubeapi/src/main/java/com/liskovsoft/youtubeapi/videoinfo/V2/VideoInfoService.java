@@ -262,7 +262,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
                 mUseAuth = false;
                 VideoInfo webInfo = null;
                 try {
-                    webInfo = getVideoInfo(AppClient.WEB, videoId, clickTrackingParams);
+                    webInfo = getVideoInfo(AppClient.WEB_DUMMY, videoId, clickTrackingParams);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

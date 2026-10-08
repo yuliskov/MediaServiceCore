@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * TODO: remove me. It's impossible to build full fledged browser-like environment using the V8 engine
+ * TODO: remove me later. It's impossible to build full fledged browser-like environment using the V8 engine
  */
 internal class PoTokenV8 private constructor(
     context: Context,
@@ -38,8 +38,7 @@ internal class PoTokenV8 private constructor(
 ) : PoTokenGenerator {
     private val v8Wrapper: V8Wrapper = V8Wrapper()
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
-    private var expirationMs: Long = -1
-    var initError: Throwable? = null
+    private var initError: Throwable? = null
     private val v8NpmLibFilenames =
         listOf(
             "${potLibPrefix}v8/polyfill.js",
@@ -47,6 +46,8 @@ internal class PoTokenV8 private constructor(
             "${potLibPrefix}v8/bootstrap.js",
             "${potLibPrefix}v8/po_token.js"
         )
+    override var expirationMs: Long = -1
+        private set
 
     //region Initialization
     init {
@@ -201,7 +202,6 @@ internal class PoTokenV8 private constructor(
 
         // MOD: backport Instant.now().plusSeconds
         // leave 10 minutes of margin just to be sure
-        //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
         v8Wrapper.executeVoidScript(
@@ -267,12 +267,6 @@ internal class PoTokenV8 private constructor(
 
         Log.d(TAG, "Generated poToken: identifier=$identifier poToken=$poToken")
         popPoTokenEmitter(identifier)?.invoke(poToken)
-    }
-
-    override fun isExpired(): Boolean {
-        // MOD: java.time backport
-        //return Instant.now().isAfter(expirationInstant)
-        return System.currentTimeMillis() > expirationMs
     }
 
     //endregion

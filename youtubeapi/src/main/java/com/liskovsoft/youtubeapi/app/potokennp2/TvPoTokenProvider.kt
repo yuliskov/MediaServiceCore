@@ -19,6 +19,7 @@ internal object TvPoTokenProvider {
     private const val FORCE_ATT_CHALLENGE = true
     private var generator: PoTokenGenerator? = null
     private var result: PoTokenResult? = null
+    private var expirationMs: Long = -1
 
     /**
      * The id that should be passed to the player request: tvAppInfo.livingRoomPoTokenId
@@ -26,11 +27,10 @@ internal object TvPoTokenProvider {
     var livingRoomPoTokenId: String? = null
         private set
 
-    val isExpired: Boolean
-        get() = generator?.isExpired() ?: true
+    fun isPotExpired(): Boolean = System.currentTimeMillis() > expirationMs
 
     fun getPoToken(): PoTokenResult? {
-        if (!WebPoTokenProvider.isWebPotSupported) {
+        if (!WebPoTokenProvider.isPotSupported()) {
             return null
         }
 
@@ -48,12 +48,14 @@ internal object TvPoTokenProvider {
             generator?.let { runCatching { it.close() } }
             generator = null
             result = null
-            livingRoomPoTokenId = null
+            // NOTE: Intentionally not reset; needed to keep cached access working.
+            //livingRoomPoTokenId = null
+            //expirationMs = -1
         }
     }
 
     private fun getPoTokenSync(): PoTokenResult? {
-        result?.let { if (!isExpired) return it }
+        result?.let { if (generator != null && !isPotExpired()) return it }
 
         val tvConfig = AppService.instance().tvConfig
         val requestKey = tvConfig?.challengeRequestKey
@@ -87,6 +89,7 @@ internal object TvPoTokenProvider {
         // Log.d(TAG, "TV poToken: livingRoomId=$livingRoomId, pot=$sessionPot, visitor_data=$visitorData")
 
         generator = newGenerator
+        expirationMs = newGenerator.expirationMs
         livingRoomPoTokenId = livingRoomId
         // Same session token is used both for the player request and the streaming
         result = PoTokenResult("", visitorData, sessionPot, sessionPot)

@@ -46,8 +46,9 @@ internal class TvPoTokenWebView4 private constructor(
 ) : PoTokenGenerator {
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
-    private var expirationMs: Long = -1
     var initError: Throwable? = null
+    override var expirationMs: Long = -1
+        private set
 
     //region Initialization
     init {
@@ -55,9 +56,6 @@ internal class TvPoTokenWebView4 private constructor(
         //noinspection SetJavaScriptEnabled we want to use JavaScript!
         webViewSettings.javaScriptEnabled = true
         // MOD: fix AbstractMethodError (Android 8/9)
-        //if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
-        //    WebSettingsCompat.setSafeBrowsingEnabled(webViewSettings, false)
-        //}
         setSafeBrowsingEnabled(webViewSettings, false)
 
         webViewSettings.userAgentString = USER_AGENT
@@ -78,9 +76,6 @@ internal class TvPoTokenWebView4 private constructor(
                         .removePrefix("Uncaught (in promise) ")
                     val fmt = "\"$message\", source: ${m.sourceId()} (${m.lineNumber()})"
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
-
-                    // TODO: not needed anymore?
-                    //isBroken = true
 
                     // Next line cause crashes
                     onInitializationErrorCloseAndCancel(BadWebViewException(fmt))
@@ -285,7 +280,6 @@ internal class TvPoTokenWebView4 private constructor(
 
         // MOD: backport Instant.now().plusSeconds
         // leave 10 minutes of margin just to be sure
-        //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
         runOnMainThread {
@@ -374,12 +368,6 @@ internal class TvPoTokenWebView4 private constructor(
 
         Log.d(TAG, "Generated poToken: identifier=$identifier poToken=$poToken")
         popPoTokenEmitter(identifier)?.invoke(poToken)
-    }
-
-    override fun isExpired(): Boolean {
-        // MOD: java.time backport
-        //return Instant.now().isAfter(expirationInstant)
-        return System.currentTimeMillis() > expirationMs
     }
 
     //endregion

@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
-import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
 import android.os.Handler
 import android.os.Looper
@@ -15,7 +14,7 @@ import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-internal object WebPoTokenProvider : PoTokenProvider {
+internal object WebPoTokenProvider {
     val TAG = WebPoTokenProvider::class.simpleName
     private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
@@ -24,16 +23,17 @@ internal object WebPoTokenProvider : PoTokenProvider {
     private var webPoTokenVisitorData: String? = null
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
+    private var expirationMs: Long = -1
     
     var poTokenFactory: PoTokenGenerator.Factory? = null
     
-    override fun getWebClientPoToken(videoId: String): PoTokenResult? {
-        if (!isWebPotSupported) {
+    fun getPoToken(videoId: String): PoTokenResult? {
+        if (!isPotSupported()) {
             return null
         }
 
         try {
-            return getWebClientPoToken(videoId = videoId, forceRecreate = false)
+            return getPoToken(videoId = videoId, forceRecreate = false)
         } catch (e: RuntimeException) {
             // RxJava's Single wraps exceptions into RuntimeErrors, so we need to unwrap them here
             when (val cause = e.cause) {
@@ -61,14 +61,14 @@ internal object WebPoTokenProvider : PoTokenProvider {
      * case the current [webPoTokenGenerator] threw an error last time
      * [PoTokenGenerator.generatePoToken] was called
      */
-    private fun getWebClientPoToken(videoId: String, forceRecreate: Boolean): PoTokenResult {
+    private fun getPoToken(videoId: String, forceRecreate: Boolean): PoTokenResult {
         // just a helper class since Kotlin does not have builtin support for 4-tuples
         data class Quadruple<T1, T2, T3, T4>(val t1: T1, val t2: T2, val t3: T3, val t4: T4)
 
         val (poTokenGenerator, visitorData, streamingPot, hasBeenRecreated) =
             synchronized(WebPoTokenGenLock) {
                 val shouldRecreate = webPoTokenGenerator == null || webPoTokenVisitorData == null || webPoTokenStreamingPot == null ||
-                   forceRecreate || webPoTokenGenerator!!.isExpired()
+                   forceRecreate || isPotExpired()
 
                 if (shouldRecreate) {
                     // MOD: my visitor data
@@ -116,6 +116,8 @@ internal object WebPoTokenProvider : PoTokenProvider {
                         }
                     }
 
+                    expirationMs = webPoTokenGenerator!!.expirationMs
+
                     // The streaming poToken needs to be generated exactly once before generating
                     // any other (player) tokens.
                     webPoTokenStreamingPot = webPoTokenGenerator!!
@@ -145,7 +147,7 @@ internal object WebPoTokenProvider : PoTokenProvider {
                 // this might happen for example if NewPipe goes in the background and the WebView
                 // content is lost
                 Log.e(TAG, "Failed to obtain poToken, retrying", throwable)
-                return getWebClientPoToken(videoId = videoId, forceRecreate = true)
+                return getPoToken(videoId = videoId, forceRecreate = true)
             }
         }
 
@@ -158,15 +160,9 @@ internal object WebPoTokenProvider : PoTokenProvider {
         return PoTokenResult(videoId, visitorData, playerPot, streamingPot)
     }
 
-    override fun getWebEmbedClientPoToken(videoId: String): PoTokenResult? = null
+    fun isPotExpired() = System.currentTimeMillis() > expirationMs
 
-    override fun getAndroidClientPoToken(videoId: String): PoTokenResult? = null
-
-    override fun getIosClientPoToken(videoId: String): PoTokenResult? = null
-
-    override fun isWebPotExpired() = isWebPotSupported && webPoTokenGenerator?.isExpired() ?: true
-
-    override fun isWebPotSupported() = webViewSupported && !webViewBadImpl
+    fun isPotSupported() = webViewSupported && !webViewBadImpl
 
     fun reset() {
         synchronized(WebPoTokenGenLock) {
@@ -174,6 +170,8 @@ internal object WebPoTokenProvider : PoTokenProvider {
             webPoTokenGenerator = null
             webPoTokenVisitorData = null
             webPoTokenStreamingPot = null
+            // NOTE: Intentionally not reset; needed to keep cached access working.
+            //expirationMs = -1
         }
     }
 }

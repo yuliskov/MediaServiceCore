@@ -30,21 +30,21 @@ internal object PoTokenGate {
     }
 
     private fun getWebContentPoToken(videoId: String): String? {
-        if (mWebPoToken?.videoId == videoId && !WebPoTokenProvider.isWebPotExpired) {
+        if (mWebPoToken?.videoId == videoId && !WebPoTokenProvider.isPotExpired()) {
             return mWebPoToken?.playerRequestPoToken
         }
 
-        mWebPoToken = if (WebPoTokenProvider.isWebPotSupported)
-            WebPoTokenProvider.getWebClientPoToken(videoId)
+        mWebPoToken = if (WebPoTokenProvider.isPotSupported())
+            WebPoTokenProvider.getPoToken(videoId)
         else null
 
         return mWebPoToken?.playerRequestPoToken
     }
 
     private fun getWebSessionPoToken(): String? {
-        return if (WebPoTokenProvider.isWebPotSupported) {
+        return if (WebPoTokenProvider.isPotSupported()) {
             if (mWebPoToken == null)
-                mWebPoToken = WebPoTokenProvider.getWebClientPoToken("")
+                mWebPoToken = WebPoTokenProvider.getPoToken("")
             mWebPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
@@ -53,7 +53,7 @@ internal object PoTokenGate {
      * The living room (TV) client uses its own BotGuard config (request key and challenge from tv_config)
      */
     private fun getTvPoToken(): String? {
-        if (mTvPoToken == null || TvPoTokenProvider.isExpired) {
+        if (mTvPoToken == null || TvPoTokenProvider.isPotExpired()) {
             mTvPoToken = TvPoTokenProvider.getPoToken()
         }
 
@@ -93,13 +93,13 @@ internal object PoTokenGate {
     }
 
     @JvmStatic
-    fun isPotSupported() = WebPoTokenProvider.isWebPotSupported
+    fun isPotSupported() = WebPoTokenProvider.isPotSupported()
 
     @JvmStatic
     fun isPotExpired(client: AppClient): Boolean {
         return when {
-            client.isWebPotRequired -> WebPoTokenProvider.isWebPotExpired
-            client.isTvPotRequired -> TvPoTokenProvider.isExpired
+            client.isWebPotRequired -> WebPoTokenProvider.isPotExpired()
+            client.isTvPotRequired -> TvPoTokenProvider.isPotExpired()
             else -> false
         }
     }
@@ -124,7 +124,7 @@ internal object PoTokenGate {
         if (currentTimeMs < mCacheResetTimeMs)
             return false
 
-        if (WebPoTokenProvider.isWebPotSupported) {
+        if (WebPoTokenProvider.isPotSupported()) {
             mWebPoToken = null
             WebPoTokenProvider.reset()
         } else

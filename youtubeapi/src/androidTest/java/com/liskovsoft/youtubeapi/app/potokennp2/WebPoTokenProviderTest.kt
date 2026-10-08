@@ -79,20 +79,20 @@ class WebPoTokenProviderTest {
     }
 
     private fun assertWebPoTokenLength(length: Int) {
-        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken(VIDEO_ID)
+        val webClientPoToken = WebPoTokenProvider.getPoToken(VIDEO_ID)
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
         Assert.assertEquals("PoToken length is $length", length, webClientPoToken?.playerRequestPoToken?.length)
     }
 
     private fun assertWebPoTokenIsNotEmpty() {
-        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken(VIDEO_ID)
+        val webClientPoToken = WebPoTokenProvider.getPoToken(VIDEO_ID)
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
 
     private fun assertWebPoTokenOnEmptyVideoId() {
-        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken("")
+        val webClientPoToken = WebPoTokenProvider.getPoToken("")
 
         Assert.assertNotNull("PoToken not empty", webClientPoToken)
     }
@@ -105,7 +105,7 @@ class WebPoTokenProviderTest {
 
         val url = mediaItemDetails.adaptiveFormats[0].url ?: mediaItemDetails.serverAbrStreamingUrl
 
-        val webClientPoToken = WebPoTokenProvider.getWebClientPoToken(videoIdMusic)
+        val webClientPoToken = WebPoTokenProvider.getPoToken(videoIdMusic)
 
         Assert.assertTrue("Video url is working", TestHelpers.urlExists("$url&pot=${webClientPoToken?.streamingDataPoToken}"))
     }

@@ -71,7 +71,7 @@ internal object PoTokenGate {
     @JvmStatic
     @JvmOverloads
     fun getPoToken(client: AppClient, videoId: String? = null): String? {
-        resetOtherProviders(client)
+        releaseOtherProviders(client)
         return when {
             client.isWebPotRequired -> if (videoId != null) getWebContentPoToken(videoId) else getWebSessionPoToken()
             client.isTvPotRequired -> getTvPoToken()
@@ -148,10 +148,10 @@ internal object PoTokenGate {
         return true
     }
 
-    private fun resetOtherProviders(client: AppClient) {
+    private fun releaseOtherProviders(client: AppClient) {
         when {
-            client.isWebPotRequired -> TvPoTokenProvider.reset()
-            client.isTvPotRequired -> WebPoTokenProvider.reset()
+            client.isWebPotRequired -> TvPoTokenProvider.release()
+            client.isTvPotRequired -> WebPoTokenProvider.release()
         }
     }
 }

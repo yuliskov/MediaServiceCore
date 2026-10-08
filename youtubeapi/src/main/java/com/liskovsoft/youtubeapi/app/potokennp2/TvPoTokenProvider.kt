@@ -43,14 +43,21 @@ internal object TvPoTokenProvider {
         }
     }
 
+    /** Clears all state, including the generator and cached tokens. The next call regenerates everything. */
     fun reset() {
+        synchronized(lock) {
+            release()
+            result = null
+            livingRoomPoTokenId = null
+            expirationMs = -1
+        }
+    }
+
+    /** Frees the generator to reduce memory. Cached values are kept; the generator is recreated on demand. */
+    fun release() {
         synchronized(lock) {
             generator?.let { runCatching { it.close() } }
             generator = null
-            result = null
-            // NOTE: Intentionally not reset; needed to keep cached access working.
-            //livingRoomPoTokenId = null
-            //expirationMs = -1
         }
     }
 

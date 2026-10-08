@@ -164,14 +164,21 @@ internal object WebPoTokenProvider {
 
     fun isPotSupported() = webViewSupported && !webViewBadImpl
 
+    /** Clears all state, including the generator and cached tokens. The next call regenerates everything. */
     fun reset() {
+        synchronized(WebPoTokenGenLock) {
+            release()
+            webPoTokenVisitorData = null
+            webPoTokenStreamingPot = null
+            expirationMs = -1
+        }
+    }
+
+    /** Frees the generator to reduce memory. Cached values are kept; the generator is recreated on demand. */
+    fun release() {
         synchronized(WebPoTokenGenLock) {
             webPoTokenGenerator?.let { runCatching { it.close() } }
             webPoTokenGenerator = null
-            webPoTokenVisitorData = null
-            webPoTokenStreamingPot = null
-            // NOTE: Intentionally not reset; needed to keep cached access working.
-            //expirationMs = -1
         }
     }
 }

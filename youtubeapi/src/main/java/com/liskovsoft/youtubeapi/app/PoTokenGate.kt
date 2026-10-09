@@ -5,7 +5,6 @@ import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.WebPoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.TvPoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
-import com.liskovsoft.youtubeapi.app.potokennp2.misc.runOnMainThread
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.selectFactory
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
@@ -151,8 +150,8 @@ internal object PoTokenGate {
 
     private fun releaseOtherProviders(client: AppClient) {
         when {
-            client.isWebPotRequired -> runOnMainThread { TvPoTokenProvider.release() }
-            client.isTvPotRequired -> runOnMainThread { WebPoTokenProvider.release() }
+            client.isWebPotRequired -> TvPoTokenProvider.release()
+            client.isTvPotRequired -> WebPoTokenProvider.release()
         }
     }
 }

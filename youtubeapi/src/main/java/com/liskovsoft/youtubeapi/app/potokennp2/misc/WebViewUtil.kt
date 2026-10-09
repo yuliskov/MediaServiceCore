@@ -15,6 +15,8 @@ import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 
 private const val TAG = "WebViewUtil"
 
+private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
+
 internal const val potLibPrefix = "potokennp2/"
 
 internal fun hasThermalServiceBug(context: Context): Boolean {
@@ -120,7 +122,11 @@ internal fun WebView.evaluateJavascriptLegacy(script: String, resultCallback: Va
 internal fun runOnMainThread(
     runnable: Runnable
 ) {
-    if (!Handler(Looper.getMainLooper()).post(runnable)) {
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+        runnable.run()
+        return
+    }
+    if (!mainHandler.post(runnable)) {
         throw PoTokenException("Could not run on main thread")
     }
 }

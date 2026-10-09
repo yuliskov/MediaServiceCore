@@ -6,7 +6,10 @@ import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
 import com.liskovsoft.youtubeapi.app.potokennp2.generators.TvPoTokenWebView4
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.runOnMainThread
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 /**
  * The living room (TV) client has its own BotGuard request key and challenge (tv_config).
@@ -56,7 +59,16 @@ internal object TvPoTokenProvider {
     /** Frees the generator to reduce memory. Cached values are kept; the generator is recreated on demand. */
     fun release() {
         synchronized(lock) {
-            generator?.let { runCatching { it.close() } }
+            generator?.let {
+                val latch = CountDownLatch(1)
+
+                runOnMainThread {
+                    runCatching { it.close() }.onFailure { Log.w(TAG, "close failed", it) }
+                    latch.countDown()
+                }
+
+                latch.await(3, TimeUnit.SECONDS)
+            }
             generator = null
         }
     }

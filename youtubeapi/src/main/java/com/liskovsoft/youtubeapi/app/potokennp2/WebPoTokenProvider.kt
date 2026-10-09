@@ -10,6 +10,7 @@ import com.liskovsoft.youtubeapi.app.potokennp2.generators.PoTokenWebView
 import com.liskovsoft.youtubeapi.app.potokennp2.core.BadWebViewException
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
+import com.liskovsoft.youtubeapi.app.potokennp2.misc.runOnMainThread
 import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -177,7 +178,16 @@ internal object WebPoTokenProvider {
     /** Frees the generator to reduce memory. Cached values are kept; the generator is recreated on demand. */
     fun release() {
         synchronized(WebPoTokenGenLock) {
-            webPoTokenGenerator?.let { runCatching { it.close() } }
+            webPoTokenGenerator?.let {
+                val latch = CountDownLatch(1)
+
+                runOnMainThread {
+                    runCatching { it.close() }.onFailure { Log.w(TAG, "close failed", it) }
+                    latch.countDown()
+                }
+
+                latch.await(3, TimeUnit.SECONDS)
+            }
             webPoTokenGenerator = null
         }
     }

@@ -223,6 +223,10 @@ public class VideoInfo {
         return ServiceHelper.atLeastOneEquals(mPlayabilityStatus, STATUS_ERROR);
     }
 
+    public boolean isLoginRequired() {
+        return STATUS_LOGIN_REQUIRED.equals(mPlayabilityStatus);
+    }
+
     /**
      * Age restricted video
      */

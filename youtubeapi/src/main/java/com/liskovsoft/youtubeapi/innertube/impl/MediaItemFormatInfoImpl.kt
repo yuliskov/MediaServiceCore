@@ -202,6 +202,8 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         return result / 2
     }
 
+    override fun getLoudnessDb() = _loudnessDb
+
     override fun createMpdStream(): InputStream? {
         return YouTubeMPDBuilder.from(this).build()
     }

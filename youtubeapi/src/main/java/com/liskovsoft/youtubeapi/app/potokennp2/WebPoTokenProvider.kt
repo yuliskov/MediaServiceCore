@@ -1,8 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
-import android.os.Handler
-import android.os.Looper
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
@@ -12,18 +10,18 @@ import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenException
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenGenerator
 import com.liskovsoft.youtubeapi.app.potokennp2.misc.runOnMainThreadSync
 import com.liskovsoft.youtubeapi.app.potokennp2.visitor.VisitorService
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 internal object WebPoTokenProvider {
     val TAG = WebPoTokenProvider::class.simpleName
     private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
+    @Volatile
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
 
     private object WebPoTokenGenLock
     private var webPoTokenVisitorData: String? = null
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
+    @Volatile
     private var expirationMs: Long = -1
     
     var poTokenFactory: PoTokenGenerator.Factory? = null
@@ -76,26 +74,9 @@ internal object WebPoTokenProvider {
                     //webPoTokenVisitorData = AppService.instance().visitorData
                     webPoTokenVisitorData = VisitorService.getVisitorData()
 
-                    val latch = if (webPoTokenGenerator != null) CountDownLatch(1) else null
-
                     // close the current webPoTokenGenerator on the main thread
-                    webPoTokenGenerator?.let {
-                        Handler(Looper.getMainLooper()).post {
-                            try {
-                                it.close()
-                            } catch (_: Exception) {
-                                // NullPointerException: android.webkit.WebViewClassic.clearHistory (WebViewClassic.java:3670)
-                            } finally {
-                                latch?.countDown()
-                            }
-                        }
-                    }
-
-                    latch?.await(3, TimeUnit.SECONDS)
-
-                    //// create a new webPoTokenGenerator
-                    //webPoTokenGenerator = (poTokenFactory ?: PoTokenWebView)
-                    //    .newPoTokenGenerator(AppService.instance().context)
+                    // Fixes NullPointerException: android.webkit.WebViewClassic.clearHistory (WebViewClassic.java:3670)
+                    release()
 
                     // create a new webPoTokenGenerator
                     val context = AppService.instance().context
@@ -178,10 +159,9 @@ internal object WebPoTokenProvider {
     /** Frees the generator to reduce memory. Cached values are kept; the generator is recreated on demand. */
     fun release() {
         synchronized(WebPoTokenGenLock) {
-            webPoTokenGenerator?.let {
-                runOnMainThreadSync(3) { it.close() }
-            }
+            val old = webPoTokenGenerator
             webPoTokenGenerator = null
+            old?.let { runOnMainThreadSync(3) { it.close() } }
         }
     }
 }

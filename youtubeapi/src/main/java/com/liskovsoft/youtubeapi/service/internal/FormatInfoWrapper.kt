@@ -25,11 +25,14 @@ internal object FormatInfoWrapper {
         }
     private val mLegacyProvider: (String, String?) -> MediaItemFormatInfo? =
         { videoId, clickTrackingParams -> getFormatInfoLegacy(videoId, clickTrackingParams) }
+    private val lock = Any()
 
     @JvmStatic
     fun getFormatInfo(videoId: String, clickTrackingParams: String?): MediaItemFormatInfo? {
         try {
-            return selectPlaybackFormatInfo(videoId, clickTrackingParams)
+            synchronized(lock) {
+                return selectPlaybackFormatInfo(videoId, clickTrackingParams)
+            }
         } finally {
             ReloadPlaybackGate.reset(videoId)
         }

@@ -20,6 +20,7 @@ internal object TvPoTokenProvider {
     private const val FORCE_ATT_CHALLENGE = true
     private var generator: PoTokenGenerator? = null
     private var result: PoTokenResult? = null
+    @Volatile
     private var expirationMs: Long = -1
 
     /**
@@ -57,10 +58,9 @@ internal object TvPoTokenProvider {
     /** Frees the generator to reduce memory. Cached values are kept; the generator is recreated on demand. */
     fun release() {
         synchronized(lock) {
-            generator?.let {
-                runOnMainThreadSync(3) { it.close() }
-            }
+            val old = generator
             generator = null
+            old?.let { runOnMainThreadSync(3) { it.close() } }
         }
     }
 

@@ -29,6 +29,11 @@ public interface MediaItemFormatInfo extends FormatInfoProvision {
     boolean containsUrlFormats();
     boolean hasExtendedHlsFormats();
     float getVolumeLevel();
+    /**
+     * Raw loudness of the video in dB (playerConfig.audioConfig.loudnessDb).<br/>
+     * 0 if unknown (e.g. live streams)
+     */
+    float getLoudnessDb();
     InputStream createMpdStream();
     Observable<InputStream> createMpdStreamObservable();
     List<String> createUrlList();

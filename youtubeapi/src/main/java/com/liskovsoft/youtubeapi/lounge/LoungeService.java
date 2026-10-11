@@ -117,7 +117,18 @@ public class LoungeService {
                 e.printStackTrace();
                 break;
             } catch (Exception e) {
+                // NOTE: without a backoff delay here, a persistent failure (e.g. UnknownHostException
+                // right after the TV wakes from sleep, before WiFi/DNS is actually back up) turns this
+                // into a tight busy-loop retrying every few milliseconds, hammering CPU/DNS and never
+                // giving the network a chance to recover in between attempts. Sleeping between retries
+                // gives WiFi/DNS time to come back up, same as the normal-path delay above.
                 Log.e(TAG, e.getMessage());
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException interrupted) {
+                    Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
+                    break;
+                }
                 // Continue to listen whichever is happening.
             }
         }

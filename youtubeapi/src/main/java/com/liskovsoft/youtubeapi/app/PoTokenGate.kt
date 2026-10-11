@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.app
 
 import com.liskovsoft.youtubeapi.app.potoken.PoTokenService
-import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenCloudService
 import com.liskovsoft.youtubeapi.app.potokennp2.WebPoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.TvPoTokenProvider
 import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenResult
@@ -46,7 +45,7 @@ internal object PoTokenGate {
             if (mWebPoToken == null)
                 mWebPoToken = WebPoTokenProvider.getPoToken("")
             mWebPoToken?.streamingDataPoToken
-        } else PoTokenCloudService.getPoToken()
+        } else null
     }
 
     /**
@@ -127,8 +126,7 @@ internal object PoTokenGate {
         if (WebPoTokenProvider.isPotSupported()) {
             mWebPoToken = null
             WebPoTokenProvider.reset()
-        } else
-            PoTokenCloudService.resetCache()
+        }
 
         mCacheResetTimeMs = currentTimeMs + CACHE_RESET_TIME_MS
 

@@ -50,8 +50,10 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
                 false
             }
 
-            val stdin = constructStdin(player, cached, groupedRequests)
-            val stdout = runJsRuntime(stdin)
+            // Fast path: reuse solvers already compiled inside a warm JS runtime (same player).
+            // Falls back to the regular (full) run on any problem.
+            val stdout = (if (cached) fastSolve(playerUrl, player, Gson().toJson(toJsonRequests(groupedRequests))) else null)
+                ?: runJsRuntime(constructStdin(player, cached, groupedRequests))
 
             val gson = Gson()
             val output: SolverOutput = try {
@@ -78,6 +80,19 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
                 }
             }
         }
+    }
+
+    /**
+     * Optional fast path for runtimes that stay alive between calls.
+     * @return solver output json (same shape as the regular run) or null to use the regular run
+     */
+    protected open fun fastSolve(playerUrl: String, preprocessedPlayer: String, requestsJson: String): String? = null
+
+    private fun toJsonRequests(requests: List<JsChallengeRequest>) = requests.map { request ->
+        mapOf(
+            "type" to request.type.value,
+            "challenges" to request.input.challenges
+        )
     }
 
     private fun constructStdin(player: String, preprocessed: Boolean, requests: List<JsChallengeRequest>): String {

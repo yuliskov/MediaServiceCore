@@ -139,10 +139,7 @@ internal object FormatInfoWrapper {
     }
 
     private fun getCachedFormatInfo(videoId: String?): MediaItemFormatInfo? {
-        return if (mCachedFormatInfo?.getVideoId() != null &&
-            mCachedFormatInfo?.getVideoId() == videoId &&
-            mCachedFormatInfo?.isCacheActual() ?: false
-        ) mCachedFormatInfo else null
+        return mCachedFormatInfo?.takeIf { videoId != null && it.getVideoId() == videoId && it.isCacheActual() }
     }
 
     private fun setCachedFormatInfo(formatInfo: MediaItemFormatInfo?, clickTrackingParams: String?) {

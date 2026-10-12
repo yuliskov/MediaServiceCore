@@ -95,6 +95,38 @@ public class LoungeService {
     }
 
     /**
+     * Pairs a sender with this screen using a pairing code the sender generated, as sent in a DIAL launch request
+     * ({@code pairingCode=...}). After this the sender joins the lounge of this screen.
+     *
+     * @return true if the code was accepted
+     */
+    public boolean registerPairingCode(String pairingCode) {
+        if (pairingCode == null || pairingCode.isEmpty()) {
+            return false;
+        }
+
+        initConstants();
+
+        if (mScreenId == null) {
+            Log.e(TAG, "Can't register pairing code: no screen id");
+            return false;
+        }
+
+        Call<Void> wrapper = mInfoManager.registerPairingCode(
+                BindParams.ACCESS_TYPE,
+                BindParams.APP,
+                pairingCode,
+                mScreenId,
+                mScreenName,
+                mDeviceId);
+        retrofit2.Response<Void> response = RetrofitHelper.getResponse(wrapper);
+
+        boolean success = response != null && response.isSuccessful();
+        Log.d(TAG, "Register pairing code: %s", success ? "success" : "failure");
+        return success;
+    }
+
+    /**
      * Process couldn't be stopped, only interrupted.
      */
     public void startListening(OnCommand callback) {

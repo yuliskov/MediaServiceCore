@@ -306,7 +306,7 @@ public final class YouTubeHelper {
 
     /**
      * Converts a SABR track description to the app's internal format
-     * @param audioTrackId lang/id (4 - original)
+     * @param audioTrackId lang/id (4 - original, 2 - descriptive aka audio description)
      * @param isAutoDubbed ai dubbed
      * @param isDefaultAudio track language match app locale
      */
@@ -319,8 +319,9 @@ public final class YouTubeHelper {
         String[] langAndId = audioTrackId.split("\\.");
         String lang = langAndId[0];
         boolean isOriginal = langAndId.length == 2 ? "4".equals(langAndId[1]) : isDefaultAudio;
+        boolean isDescriptive = langAndId.length == 2 && "2".equals(langAndId[1]);
         // original, descriptive, dubbed, dubbed-auto, secondary
-        String acont = isAutoDubbed ? "dubbed-auto" : isOriginal ? "original" : "dubbed";
+        String acont = isAutoDubbed ? "dubbed-auto" : isOriginal ? "original" : isDescriptive ? "descriptive" : "dubbed";
 
         return String.format("%s (%s)", exoNameFix(lang), acont);
     }

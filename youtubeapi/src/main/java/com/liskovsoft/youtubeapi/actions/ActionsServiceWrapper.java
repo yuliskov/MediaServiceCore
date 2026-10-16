@@ -15,17 +15,25 @@ public class ActionsServiceWrapper extends ActionsService {
     }
 
     @Override
-    public void subscribe(String channelId, String params) {
-        super.subscribe(channelId, params);
+    public boolean subscribe(String channelId, String params) {
+        boolean accepted = super.subscribe(channelId, params);
 
-        ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
+        if (accepted) {
+            ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
+        }
+
+        return accepted;
     }
 
     @Override
-    public void unsubscribe(String channelId) {
-        super.unsubscribe(channelId);
+    public boolean unsubscribe(String channelId) {
+        boolean accepted = super.unsubscribe(channelId);
 
-        ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
+        if (accepted) {
+            ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
+        }
+
+        return accepted;
     }
 
     @Override

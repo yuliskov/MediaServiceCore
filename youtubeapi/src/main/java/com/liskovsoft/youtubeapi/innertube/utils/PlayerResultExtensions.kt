@@ -32,7 +32,7 @@ internal fun PlayerResult.getMergeCaptionTracks(): List<CaptionTrack>? {
     val translationLanguages = getTranslationLanguages()
     val captionTracks = getCaptionTracks()
 
-    if (translationLanguages == null || captionTracks == null)
+    if (translationLanguages.isNullOrEmpty() || captionTracks.isNullOrEmpty())
         return captionTracks
 
     val resultTracks = captionTracks.toMutableList()
@@ -71,7 +71,7 @@ private fun PlayerResult.findOriginTrack(captionTracks: List<CaptionTrack>): Cap
             if (result == null)
                 result = track
 
-            if (!track.isDubTranscript() && !YouTubeHelper.containsIgnoreCase(dubbedLanguages, track.languageCode)) {
+            if (!track.isDubTranscript() && !Helpers.containsIgnoreCase(dubbedLanguages, track.languageCode)) {
                 result = track
                 break
             }

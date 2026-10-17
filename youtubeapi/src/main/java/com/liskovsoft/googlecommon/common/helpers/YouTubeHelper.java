@@ -345,18 +345,4 @@ public final class YouTubeHelper {
     public static String extractLang(@NonNull String audioTrackId) {
         return splitToLangAndId(audioTrackId)[0];
     }
-
-    public static boolean containsIgnoreCase(@NonNull List<String> list, String value) {
-        if (value == null) {
-            return false;
-        }
-
-        for (String item : list) {
-            if (value.equalsIgnoreCase(item)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

@@ -398,7 +398,7 @@ public class VideoInfo {
         if (mMergedCaptionTracks == null) {
             mMergedCaptionTracks = mCaptionTracks;
 
-            if (mTranslationLanguages != null && mCaptionTracks != null) {
+            if (!Helpers.isNullOrEmpty(mTranslationLanguages) && !Helpers.isNullOrEmpty(mCaptionTracks)) {
                 CaptionTrack originTrack = findOriginTrack(mCaptionTracks);
                 for (TranslationLanguage language : mTranslationLanguages) {
                     mMergedCaptionTracks.add(new TranslatedCaptionTrack(originTrack, language));
@@ -425,7 +425,7 @@ public class VideoInfo {
                     result = track;
                 }
 
-                if (!track.isDubTranscript() && !YouTubeHelper.containsIgnoreCase(dubbedLanguages, track.getLanguageCode())) {
+                if (!track.isDubTranscript() && !Helpers.containsIgnoreCase(dubbedLanguages, track.getLanguageCode())) {
                     result = track;
                     break;
                 }

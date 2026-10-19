@@ -24,6 +24,8 @@ public class VideoDetails {
     private boolean mIsLive;
     @JsonPath("$.isLiveContent")
     private boolean mIsLiveContent;
+    @JsonPath("$.isLiveDvrEnabled")
+    private boolean mIsLiveDvrEnabled;
     @JsonPath("$.isOwnerViewing")
     private boolean mIsOwnerViewing;
     @JsonPath("$.thumbnail.thumbnails[*]")
@@ -57,6 +59,10 @@ public class VideoDetails {
 
     public String getAuthor() {
         return mAuthor;
+    }
+
+    public boolean isLiveDvrEnabled() {
+        return mIsLiveDvrEnabled;
     }
 
     /**

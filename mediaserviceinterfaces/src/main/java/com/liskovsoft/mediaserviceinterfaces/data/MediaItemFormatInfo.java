@@ -21,6 +21,7 @@ public interface MediaItemFormatInfo extends FormatInfoProvision {
     String getChannelId();
     boolean isLive();
     boolean isLiveContent();
+    boolean isLiveDvrEnabled();
     boolean containsMedia();
     boolean containsSabrFormats();
     boolean containsDashFormats();

@@ -28,7 +28,10 @@ internal object FormatInfoWrapper {
     private val lock = Any()
 
     @JvmStatic
-    fun getFormatInfo(videoId: String, clickTrackingParams: String?): MediaItemFormatInfo? {
+    fun getFormatInfo(videoId: String?, clickTrackingParams: String?): MediaItemFormatInfo? {
+        if (videoId == null)
+            return null
+
         try {
             synchronized(lock) {
                 return selectPlaybackFormatInfo(videoId, clickTrackingParams)

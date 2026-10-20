@@ -70,13 +70,15 @@ internal object TclChallengeProvider {
             )
         }
 
-        val stdin = "JSON.stringify(tclSolver(${Gson().toJson(request)}));"
-
         val stdout = try {
             synchronized(v8Lock) {
                 initRuntime()
-                val result = runV8(stdin)
-                shutdownIfNeeded()
+                // Fast path: n-function already compiled in the warm runtime for this player.
+                val fast = if (cachedPreprocessed != null)
+                    fastSolve(playerUrl, cachedPreprocessed, challengeByParam.values.toList()) else null
+                val result = fast ?: runV8("JSON.stringify(tclSolver(${Gson().toJson(request)}));")
+                if (!KEEP_ALIVE)
+                    shutdownIfNeeded()
                 result
             }
         } catch (e: Exception) {
@@ -96,6 +98,7 @@ internal object TclChallengeProvider {
             if (cachedPreprocessed != null) {
                 // cached preprocessed script may be stale (e.g. player build rotated)
                 CacheService.clear(cacheSection)
+                synchronized(v8Lock) { resetMemo() }
             }
             return nParams.associateWith { null }
         }
@@ -105,6 +108,47 @@ internal object TclChallengeProvider {
         val results = output.results ?: emptyMap()
 
         return nParams.associateWith { param -> results[challengeByParam[param]] }
+    }
+
+    // Keep the runtime warm between videos (V8 init + lib eval costs seconds on low-end SoCs).
+    private const val KEEP_ALIVE = true
+
+    /** Must be called under [v8Lock] with an initialized runtime. Returns null to use the regular run. */
+    private fun fastSolve(playerUrl: String, preprocessed: String, challenges: List<String>): String? {
+        if (!KEEP_ALIVE)
+            return null
+        val runtime = v8Runtime ?: return null
+        val gson = Gson()
+        val key = gson.toJson(playerUrl)
+        return try {
+            runtime.withLock {
+                if (!it.executeBooleanScript("globalThis.__tclKey === $key")) {
+                    it.executeVoidScript("""
+                        globalThis.__tclN = new Function(${gson.toJson(preprocessed)})();
+                        globalThis.__tclKey = $key;
+                    """)
+                }
+                it.executeStringScript("""
+                    JSON.stringify((function(cs) {
+                        var r = {};
+                        cs.forEach(function(c) { r[c] = globalThis.__tclN(c); });
+                        return { type: 'result', results: r };
+                    })(${gson.toJson(challenges)}));
+                """)
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "TCL fast solve failed, falling back: ${e.message}")
+            resetMemo()
+            null
+        }
+    }
+
+    private fun resetMemo() {
+        try {
+            v8Runtime?.withLock { it.executeVoidScript("globalThis.__tclKey = null; globalThis.__tclN = null;") }
+        } catch (e: Exception) {
+            shutdownIfNeeded()
+        }
     }
 
     private fun runV8(stdin: String): String {

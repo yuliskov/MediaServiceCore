@@ -77,6 +77,13 @@ class MediaItemFormatInfoImplTest {
         assertEquals(MediaFormat.FORMAT_TYPE_DASH, formatInfo.getAdaptiveFormats()?.first()?.getFormatType())
     }
 
+    @Test
+    fun rawLoudnessIsExposed() {
+        val formatInfo = MediaItemFormatInfoImpl(parsePlayerResponse("player/web/2025.11.10_player_regular.json"))
+
+        assertEquals(-0.69f, formatInfo.getLoudnessDb(), 0.001f)
+    }
+
     private fun parsePlayerResponse(path: String) =
         Gson().fromJson(TestHelpers.readResource(path), PlayerResult::class.java)
 }

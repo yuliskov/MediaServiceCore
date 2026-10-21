@@ -1,11 +1,11 @@
-package com.liskovsoft.youtubeapi.app.playerdata
+package com.liskovsoft.youtubeapi.app
 
 import android.Manifest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants
-import com.liskovsoft.youtubeapi.app.AppServiceInt
+import com.liskovsoft.youtubeapi.app.playerdata.WebPlayerDataExtractor
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -17,7 +17,7 @@ import org.junit.Test
 private const val WEB_TIMESTAMP_LENGTH = 5
 
 class WebPlayerDataExtractorTest {
-    private val mAppServiceInt = AppServiceInt()
+    private val mAppServiceCore = AppServiceCore()
 
     @JvmField
     @Rule
@@ -29,7 +29,7 @@ class WebPlayerDataExtractorTest {
     }
 
     private fun getPlayerUrl(): String {
-        val playerUrl = mAppServiceInt.playerUrl
+        val playerUrl = mAppServiceCore.playerUrl
 
         assertNotNull("Player url not null", playerUrl)
 
@@ -51,9 +51,9 @@ class WebPlayerDataExtractorTest {
 
     @Test
     fun testThatDecipherFunctionIsValid() {
-        val playerUrl = mAppServiceInt.playerUrl
+        val playerUrl = mAppServiceCore.playerUrl
 
-        mAppServiceInt.getPlayerDataExtractor(playerUrl).validate()
+        mAppServiceCore.getPlayerDataExtractor(playerUrl).validate()
     }
     
     @Test

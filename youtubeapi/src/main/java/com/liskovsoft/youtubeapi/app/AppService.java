@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -237,5 +238,15 @@ public class AppService {
 
     public AppInfo getAppInfo(String userAgent) {
         return mAppServiceCore.getAppInfo(userAgent);
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public String getPlayerUrl() {
+        return mAppServiceCore.getPlayerUrl();
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public PlayerDataExtractor getPlayerDataExtractor(String playerUrl) {
+        return mAppServiceCore.getPlayerDataExtractor(playerUrl);
     }
 }

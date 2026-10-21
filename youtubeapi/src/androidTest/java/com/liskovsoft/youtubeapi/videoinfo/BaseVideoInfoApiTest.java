@@ -67,6 +67,7 @@ public abstract class BaseVideoInfoApiTest {
 
     protected void testThatNonLiveVideoInfoContainsRequiredFields(VideoInfo result) {
         List<AdaptiveVideoFormat> formats = result.getAdaptiveFormats();
+        assertNotNull("Contains adaptive formats. Client: " + result.getClient() + " Status: " + result.getPlayabilityStatus(), formats);
         assertNotNull("Contains range", formats.get(0).getIndexRange());
 
         testThatVideoInfoContainsRequiredFields(result);
@@ -86,19 +87,25 @@ public abstract class BaseVideoInfoApiTest {
     }
 
     protected VideoInfo getVideoInfo(AppClient client, String videoId) {
-        if (client == AppClient.INITIAL) {
-            return InitialResponseService.getVideoInfo(videoId, client.isAuthSupported());
-        }
+        VideoInfo result;
 
-        if (client == AppClient.ANDROID_REEL) {
+        if (client == AppClient.INITIAL) {
+            result = InitialResponseService.getVideoInfo(videoId, client.isAuthSupported());
+        } else if (client == AppClient.ANDROID_REEL) {
             Call<VideoInfoReel> wrapper = mService.getVideoInfoReel(VideoInfoApiHelper.getVideoInfoQuery(client, videoId, null), mAppService.getVisitorData(),
                     client.getUserAgent(), client.getInnerTubeName(), client.getClientVersion());
-            return RetrofitHelper.get(wrapper, client.isAuthSupported()).getVideoInfo();
+            result = RetrofitHelper.get(wrapper, client.isAuthSupported()).getVideoInfo();
+        } else {
+            Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(client, videoId, null), mAppService.getVisitorData(),
+                    client.getUserAgent(), client.getInnerTubeName(), client.getClientVersion());
+            result = RetrofitHelper.get(wrapper, client.isAuthSupported());
         }
 
-        Call<VideoInfo> wrapper = mService.getVideoInfo(VideoInfoApiHelper.getVideoInfoQuery(client, videoId, null), mAppService.getVisitorData(),
-                client.getUserAgent(), client.getInnerTubeName(), client.getClientVersion());
-        return RetrofitHelper.get(wrapper, client.isAuthSupported());
+        if (result != null) {
+            result.setClient(client);
+        }
+
+        return result;
     }
 
     protected VideoInfo getVideoInfo(String videoId) {

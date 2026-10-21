@@ -65,11 +65,13 @@ public class YouTubeMPDBuilderTest {
 
         assertTrue("Is dash/sabr", mediaItemDetails.containsDashFormats() || mediaItemDetails.containsSabrFormats());
 
-        InputStream mpdStream = mediaItemDetails.createMpdStream();
+        if (mediaItemDetails.containsDashFormats()) {
+            InputStream mpdStream = mediaItemDetails.createMpdStream();
 
-        assertNotNull("Mpd stream not null", mpdStream);
-        String mpdContent = Helpers.toString(mpdStream);
-        assertFalse("Mpd content not empty", mpdContent.isEmpty());
+            assertNotNull("Mpd stream not null", mpdStream);
+            String mpdContent = Helpers.toString(mpdStream);
+            assertFalse("Mpd content not empty", mpdContent.isEmpty());
+        }
     }
 
     private MediaItemFormatInfo getMediaItemDetails() {

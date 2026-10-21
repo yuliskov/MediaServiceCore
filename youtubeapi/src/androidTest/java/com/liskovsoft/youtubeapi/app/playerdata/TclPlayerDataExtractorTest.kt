@@ -5,7 +5,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences
-import com.liskovsoft.youtubeapi.app.AppServiceInt
+import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import com.liskovsoft.youtubeapi.videoinfo.BaseVideoInfoApiTest
@@ -21,7 +21,7 @@ import org.junit.Test
 private const val TCL_TIMESTAMP_LENGTH = 8
 
 class TclPlayerDataExtractorTest: BaseVideoInfoApiTest() {
-    private val mAppServiceInt = AppServiceInt()
+    private val mAppService = AppService.instance()
 
     @JvmField
     @Rule
@@ -34,7 +34,7 @@ class TclPlayerDataExtractorTest: BaseVideoInfoApiTest() {
     }
 
     private fun getPlayerUrl(): String {
-        val playerUrl = mAppServiceInt.playerUrl
+        val playerUrl = mAppService.playerUrl
 
         assertNotNull("Player url not null", playerUrl)
 
@@ -56,9 +56,9 @@ class TclPlayerDataExtractorTest: BaseVideoInfoApiTest() {
 
     @Test
     fun testThatDecipherFunctionIsValid() {
-        val playerUrl = mAppServiceInt.playerUrl
+        val playerUrl = mAppService.playerUrl
 
-        mAppServiceInt.getPlayerDataExtractor(playerUrl).validate()
+        mAppService.getPlayerDataExtractor(playerUrl).validate()
     }
     
     @Test

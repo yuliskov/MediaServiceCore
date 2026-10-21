@@ -1,8 +1,9 @@
 package com.liskovsoft.youtubeapi.service;
 
+import androidx.annotation.NonNull;
+
 import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.lounge.LoungeService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
@@ -11,15 +12,9 @@ import io.reactivex.Observable;
 class YouTubeRemoteControlService implements RemoteControlService {
     private static final String TAG = YouTubeRemoteControlService.class.getSimpleName();
     private static YouTubeRemoteControlService sInstance;
-    private final LoungeService mLoungeService;
+    private LoungeService mLoungeService;
 
     private YouTubeRemoteControlService() {
-        mLoungeService = LoungeService.instance();
-
-        GlobalPreferences.setOnInit(() -> {
-            //mAccountManager.init();
-            //this.updateAuthorizationHeader();
-        });
     }
 
     public static YouTubeRemoteControlService instance() {
@@ -32,7 +27,7 @@ class YouTubeRemoteControlService implements RemoteControlService {
 
     @Override
     public String getPairingCode() {
-        return mLoungeService.getPairingCode();
+        return getLoungeService().getPairingCode();
     }
 
     @Override
@@ -43,7 +38,7 @@ class YouTubeRemoteControlService implements RemoteControlService {
     @Override
     public Observable<Command> getCommandObserve() {
         return RxHelper.createLong(emitter -> {
-            mLoungeService.startListening(
+            getLoungeService().startListening(
                     info -> emitter.onNext(YouTubeCommand.from(info))
             );
 
@@ -53,26 +48,39 @@ class YouTubeRemoteControlService implements RemoteControlService {
 
     @Override
     public Observable<Void> postStartPlayingObserve(String videoId, long positionMs, long durationMs, int state) {
-        return RxHelper.fromRunnable(() -> mLoungeService.postStartPlaying(videoId, positionMs, durationMs, state));
+        return RxHelper.fromRunnable(() -> getLoungeService().postStartPlaying(videoId, positionMs, durationMs, state));
     }
 
     @Override
     public Observable<Void> postStateChangeObserve(long positionMs, long durationMs, int state) {
-        return RxHelper.fromRunnable(() -> mLoungeService.postStateChange(positionMs, durationMs, state));
+        return RxHelper.fromRunnable(() -> getLoungeService().postStateChange(positionMs, durationMs, state));
     }
 
     @Override
     public Observable<Void> postVolumeChangeObserve(int volume) {
-        return RxHelper.fromRunnable(() -> mLoungeService.postVolumeChange(volume));
+        return RxHelper.fromRunnable(() -> getLoungeService().postVolumeChange(volume));
     }
 
     @Override
     public Observable<Void> postSubtitleChangeObserve(String vssId, String languageCodee) {
-        return RxHelper.fromRunnable(() -> mLoungeService.postSubtitleChange(vssId, languageCodee));
+        return RxHelper.fromRunnable(() -> getLoungeService().postSubtitleChange(vssId, languageCodee));
     }
 
     @Override
     public Observable<Void> resetDataObserve() {
-        return RxHelper.fromRunnable(mLoungeService::resetData);
+        return RxHelper.fromRunnable(getLoungeService()::resetData);
+    }
+
+    /**
+     * Lazy init, called from a bg thread instead of at instance creation. <br/>
+     * Fixes NetworkOnMainThreadException that happened inside proxy init (OkHttpCommons.java:395)
+     */
+    @NonNull
+    private LoungeService getLoungeService() {
+        if (mLoungeService == null) {
+            mLoungeService = LoungeService.instance();
+        }
+
+        return mLoungeService;
     }
 }

@@ -88,7 +88,7 @@ public class YouTubeServiceManager implements ServiceManager {
         getAppService().invalidateCache();
         //AppService.instance().invalidateVisitorData();
         FormatInfoWrapper.invalidateCache();
-        FormatInfoWrapper.resetFormat();
+        FormatInfoWrapper.resetClient();
     }
 
     @Override
@@ -99,13 +99,13 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void switchNextClient() {
         FormatInfoWrapper.invalidateCache();
-        FormatInfoWrapper.switchNextFormat(false);
+        FormatInfoWrapper.switchNextClient(false);
     }
 
     @Override
     public void switchNextClientNow() {
         FormatInfoWrapper.invalidateCache();
-        FormatInfoWrapper.switchNextFormat(true);
+        FormatInfoWrapper.switchNextClient(true);
     }
 
     @Override
@@ -129,7 +129,8 @@ public class YouTubeServiceManager implements ServiceManager {
             return;
         }
 
-        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded));
+        mRefreshCoreDataAction =
+                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().refreshCacheIfNeeded(getVideoInfoService().getClient())));
     }
 
     @NonNull

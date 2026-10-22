@@ -17,7 +17,6 @@ import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
 import io.reactivex.Observable;
 
@@ -256,7 +255,7 @@ public class YouTubeAccountManager {
     private void onAccountChanged() {
         mSignInService.invalidateCache();
         AppService.instance().invalidateCache(); // regenerate visitor data
-        FormatInfoWrapper.resetFormat();
+        FormatInfoWrapper.resetClient();
 
         notifyListeners();
     }

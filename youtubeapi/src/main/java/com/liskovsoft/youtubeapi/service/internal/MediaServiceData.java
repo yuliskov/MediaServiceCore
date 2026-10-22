@@ -51,7 +51,7 @@ public class MediaServiceData {
     private String mScreenId;
     private String mDeviceId;
     private String mOldAppVersion;
-    private int mVideoInfoType;
+    private int mClientType;
     private String mVisitorCookie;
     private int mEnabledFormats;
     private int mHiddenContent;
@@ -88,7 +88,7 @@ public class MediaServiceData {
         if (Helpers.isJUnitTest()) {
             Log.d(TAG, "JUnit test is running. Skipping data restore...");
             mEnabledFormats = FORMATS_ALL; // Debug
-            mVideoInfoType = -1; // Required for testing
+            mClientType = -1; // Required for testing
             return;
         }
 
@@ -137,12 +137,12 @@ public class MediaServiceData {
         persistData();
     }
     
-    public int getVideoInfoType() {
-        return mVideoInfoType;
+    public int getClientType() {
+        return mClientType;
     }
 
-    public void setVideoInfoType(int videoInfoType) {
-        mVideoInfoType = videoInfoType;
+    public void setClientType(int clientType) {
+        mClientType = clientType;
         persistData();
     }
 
@@ -294,7 +294,7 @@ public class MediaServiceData {
         mDeviceId = Helpers.parseStr(split, 2);
         //String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
         mOldAppVersion = Helpers.parseStr(split, 3);
-        mVideoInfoType = Helpers.parseInt(split, 4, -1);
+        mClientType = Helpers.parseInt(split, 4, -1);
         //mSkipAuth = Helpers.parseBoolean(split, 5);
         // entries here moved to the cache
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_ADAPTIVE);
@@ -337,7 +337,7 @@ public class MediaServiceData {
 
         mGlobalPrefs.setMediaServiceData(
                 Helpers.mergeData(null, mScreenId, mDeviceId, mOldAppVersion,
-                        mVideoInfoType, null, null, null, null, null,
+                        mClientType, null, null, null, null, null,
                         null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         null, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
                         null, mVisitorCookie, null, null, mFailedAppInfo, mIsLegacyUIEnabled));
@@ -367,7 +367,7 @@ public class MediaServiceData {
     }
 
     private void resetSensitiveData() {
-        mVideoInfoType = -1;
+        mClientType = -1;
         mFailedAppInfo = null;
     }
 }

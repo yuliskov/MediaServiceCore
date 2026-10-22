@@ -45,6 +45,10 @@ class AppServiceCore {
         return result;
     }
 
+    public PlayerDataExtractor getPlayerDataExtractor() {
+        return getPlayerDataExtractor(getPlayerUrl());
+    }
+
     public PlayerDataExtractor getPlayerDataExtractor(String playerUrl) {
         return getPlayerDataExtractor(null, playerUrl);
     }
@@ -148,14 +152,10 @@ class AppServiceCore {
         return getClientData(getClientUrl());
     }
 
-    public PlayerDataExtractor getPlayerDataExtractor() {
-        return getPlayerDataExtractor(getPlayerUrl());
-    }
-
-    public void refreshCacheIfNeeded() {
+    public void refreshCacheIfNeeded(@Nullable AppClient client) {
         getAppInfoData();
         getClientData();
-        getPlayerDataExtractor();
+        getPlayerDataExtractor(client);
     }
 
     protected MediaServiceData getData() {

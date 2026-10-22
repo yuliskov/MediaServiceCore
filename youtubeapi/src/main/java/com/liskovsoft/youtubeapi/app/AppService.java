@@ -205,8 +205,8 @@ public class AppService {
         mAppServiceCore.invalidateCache();
     }
 
-    public void refreshCacheIfNeeded() {
-        mAppServiceCore.refreshCacheIfNeeded();
+    public void refreshCacheIfNeeded(@Nullable AppClient client) {
+        mAppServiceCore.refreshCacheIfNeeded(client);
     }
 
     /**

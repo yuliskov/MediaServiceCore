@@ -181,6 +181,7 @@ internal data class VideoDetails(
     val author: String?,
     val isLive: Boolean?,
     val isLiveContent: Boolean?,
+    val isLiveDvrEnabled: Boolean?,
     val isOwnerViewing: Boolean?,
     val thumbnail: ThumbnailItem?,
     val isLowLatencyLiveStream: Boolean?

@@ -83,6 +83,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     private val _channelId by lazy { videoDetails?.channelId }
     private val _isLive by lazy { videoDetails?.isLive ?: false }
     private val _isLiveContent by lazy { videoDetails?.isLiveContent ?: false }
+    private val _isLiveDvrEnabled by lazy { videoDetails?.isLiveDvrEnabled ?: false }
     private val _containsAdaptiveVideoFormats by lazy { containsAdaptiveVideoInfo() }
     private val _containsLegacyVideoFormats by lazy { containsLegacyVideoInfo() }
     private val _isAdaptiveFullHD by lazy { _adaptiveFormats?.let { it.isNotEmpty() && "1080p" == it.first().getQualityLabel() } ?: false }
@@ -163,6 +164,8 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
     override fun isLive() = _isLive
 
     override fun isLiveContent() = _isLiveContent
+
+    override fun isLiveDvrEnabled() = _isLiveDvrEnabled
 
     override fun containsMedia() = containsDashUrl() || containsHlsUrl() || containsAdaptiveVideoFormats() || containsUrlFormats()
 
@@ -427,7 +430,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
             return false
         }
 
-        // TODO: live SABR formats still broken
-        return !containsDashFormats() && (_isLive || _isLiveContent)
+        // TODO: live SABR formats are experimental
+        return false
     }
 }

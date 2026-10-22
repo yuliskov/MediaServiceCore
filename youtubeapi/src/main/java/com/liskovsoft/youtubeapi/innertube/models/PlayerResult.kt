@@ -128,6 +128,7 @@ internal data class StreamingFormat(
     val loudnessDb: Float?,
     val trackAbsoluteLoudnessLkfs: Float?,
     val isDrc: Boolean?,
+    val isVb: Boolean?,
     /**
      * New format type FORMAT_STREAM_TYPE_OTF or null
      */

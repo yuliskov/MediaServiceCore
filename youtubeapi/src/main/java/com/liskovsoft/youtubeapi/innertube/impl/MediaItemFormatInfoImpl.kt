@@ -430,7 +430,10 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
             return false
         }
 
+        // TODO: live SABR formats still broken
+        return !containsDashFormats() && _isLive
+
         // TODO: live SABR formats are experimental
-        return false
+        //return false
     }
 }

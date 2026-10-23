@@ -465,8 +465,11 @@ public class VideoInfo {
             return false;
         }
 
+        // TODO: live SABR formats still broken
+        return mAdaptiveFormats.get(0).isBroken() && isLive();
+
         // TODO: live SABR formats are experimental
-        return false;
+        //return false;
     }
 
     public String getPoToken() {

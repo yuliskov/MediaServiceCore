@@ -47,29 +47,34 @@ public class ActionsService {
 
     /**
      * params needed for mobile notifications
+     *
+     * @return true when YouTube accepted the request (it can refuse, e.g. a supervised account)
      */
-    public void subscribe(String channelId, String params) {
+    public boolean subscribe(String channelId, String params) {
         if (channelId == null) {
             Log.e(TAG, "Can't subscribe: ChannelId is null");
-            return;
+            return false;
         }
 
         Call<ActionResult> wrapper =
                 mActionsApi.subscribe(ActionsApiHelper.getSubscribeActionQuery(channelId, params));
 
-        RetrofitHelper.get(wrapper); // ignore result
+        return RetrofitHelper.get(wrapper) != null;
     }
 
-    public void unsubscribe(String channelId) {
+    /**
+     * @return true when YouTube accepted the request
+     */
+    public boolean unsubscribe(String channelId) {
         if (channelId == null) {
             Log.e(TAG, "Can't unsubscribe: ChannelId is null");
-            return;
+            return false;
         }
 
         Call<ActionResult> wrapper =
                 mActionsApi.unsubscribe(ActionsApiHelper.getSubscribeActionQuery(channelId, null));
 
-        RetrofitHelper.get(wrapper); // ignore result
+        return RetrofitHelper.get(wrapper) != null;
     }
 
     public void pauseWatchHistory() {

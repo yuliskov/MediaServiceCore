@@ -12,6 +12,10 @@ public interface MediaFormat extends Comparable<MediaFormat> {
     String getMimeType();
     String getITag();
     boolean isDrc();
+    /**
+     * Voice boost variant (speech enhanced, music/ambience lowered). YouTube serves it as a separate copy of the same itag.
+     */
+    boolean isVb();
 
     // DASH
     String getClen();

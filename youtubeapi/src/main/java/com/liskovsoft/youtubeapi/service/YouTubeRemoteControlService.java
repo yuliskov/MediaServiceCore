@@ -31,6 +31,11 @@ class YouTubeRemoteControlService implements RemoteControlService {
     }
 
     @Override
+    public boolean registerPairingCode(String pairingCode) {
+        return getLoungeService().registerPairingCode(pairingCode);
+    }
+
+    @Override
     public Observable<String> getPairingCodeObserve() {
         return RxHelper.fromCallable(this::getPairingCode);
     }

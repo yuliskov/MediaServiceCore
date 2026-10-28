@@ -10,6 +10,11 @@ public interface RemoteControlService {
 
     String getPairingCode();
 
+    /**
+     * Pairs a sender that generated its own pairing code (DIAL launch) with this screen.
+     */
+    boolean registerPairingCode(String pairingCode);
+
     // RxJava interfaces
     Observable<String> getPairingCodeObserve();
     Observable<Command> getCommandObserve();

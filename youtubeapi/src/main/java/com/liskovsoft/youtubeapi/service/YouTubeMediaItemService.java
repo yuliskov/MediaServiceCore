@@ -33,6 +33,7 @@ import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.youtubeapi.service.internal.FormatInfoWrapper;
+import com.liskovsoft.youtubeapi.service.internal.AccountSession;
 import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
@@ -159,6 +160,11 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void updateHistoryPosition(String videoId, float positionSec) {
+        updateHistoryPosition(videoId, positionSec, AccountSession.getGeneration());
+    }
+
+    private void updateHistoryPosition(String videoId, float positionSec, long generation) {
+        AccountSession.checkCurrent(generation);
         checkSigned();
 
         MediaItemFormatInfo formatInfo = getFormatInfo(videoId);
@@ -171,19 +177,22 @@ public class YouTubeMediaItemService implements MediaItemService {
         // Improve the performance by fetching the history data on the second run
         FormatInfoWrapper.syncWithAuthInfoIfNeeded(formatInfo);
 
+        AccountSession.checkCurrent(generation);
+
         getTrackingService().updateWatchTime(
                 formatInfo.getVideoId(), positionSec, Helpers.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
-                formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam());
+                formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam(), generation);
     }
 
     @Override
     public Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec) {
-        return RxHelper.fromRunnable(() -> updateHistoryPosition(item, positionSec));
+        return updateHistoryPositionObserve(item.getVideoId(), positionSec);
     }
 
     @Override
     public Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec) {
-        return RxHelper.fromRunnable(() -> updateHistoryPosition(videoId, positionSec));
+        long generation = AccountSession.getGeneration();
+        return RxHelper.fromRunnable(() -> updateHistoryPosition(videoId, positionSec, generation));
     }
 
     @Override

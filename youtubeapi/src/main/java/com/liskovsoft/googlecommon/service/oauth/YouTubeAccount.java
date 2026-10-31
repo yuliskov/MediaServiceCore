@@ -90,6 +90,15 @@ public class YouTubeAccount implements Account {
     }
 
     @Override
+    public String getProfileId() {
+        if (mPageIdToken != null && !mPageIdToken.isEmpty()) {
+            return "youtube:page:" + mPageIdToken;
+        }
+
+        return mEmail != null && !mEmail.isEmpty() ? "youtube:email:" + mEmail : null;
+    }
+
+    @Override
     public String getAvatarImageUrl() {
         return mImageUrl;
     }

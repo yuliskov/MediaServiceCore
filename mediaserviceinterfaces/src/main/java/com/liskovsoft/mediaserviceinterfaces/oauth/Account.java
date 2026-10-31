@@ -7,4 +7,9 @@ public interface Account {
     String getAvatarImageUrl();
     boolean isSelected();
     boolean isEmpty();
+
+    /** Stable, non-secret profile identity, or null when the provider cannot supply one. */
+    default String getProfileId() {
+        return null;
+    }
 }

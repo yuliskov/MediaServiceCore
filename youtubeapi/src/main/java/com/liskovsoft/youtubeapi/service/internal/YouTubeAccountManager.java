@@ -27,6 +27,7 @@ public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
     private boolean mStorageSynced;
+    private boolean mAccountsRestored;
     private final YouTubeSignInService mSignInService;
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
     /**
@@ -98,6 +99,7 @@ public class YouTubeAccountManager {
 
     @Nullable
     public List<Account> getAccounts() {
+        init();
         return mAccounts;
     }
 
@@ -165,6 +167,7 @@ public class YouTubeAccountManager {
     }
 
     public void removeAccount(Account account) {
+        init();
         if (account != null && mAccounts.contains(account)) {
             mAccounts.remove(account);
             persistAccounts();
@@ -174,6 +177,7 @@ public class YouTubeAccountManager {
     }
 
     public Account getSelectedAccount() {
+        init();
         for (Account account : mAccounts) {
             if (account != null && account.isSelected()) {
                 return account;
@@ -225,7 +229,17 @@ public class YouTubeAccountManager {
     }
 
     public void init() {
-        restoreAccounts();
+        synchronized (this) {
+            if (mAccountsRestored || GlobalPreferences.sInstance == null) {
+                return;
+            }
+
+            restoreAccounts();
+            mAccountsRestored = true;
+            AccountSession.invalidate();
+        }
+
+        notifyListeners();
     }
 
     public void addOnAccountChange(OnAccountChange listener) {
@@ -253,8 +267,10 @@ public class YouTubeAccountManager {
     }
 
     private void onAccountChanged() {
+        AccountSession.invalidate();
         mSignInService.invalidateCache();
         AppService.instance().invalidateCache(); // regenerate visitor data
+        FormatInfoWrapper.invalidateCache();
         FormatInfoWrapper.resetClient();
 
         notifyListeners();
@@ -287,15 +303,25 @@ public class YouTubeAccountManager {
         mStorageSynced = true;
     }
 
-    private void notifyListeners() {
+    private synchronized void notifyListeners() {
+        long generation = AccountSession.getGeneration();
         Account account = getSelectedAccount();
+        if (generation != AccountSession.getGeneration()) {
+            return;
+        }
 
         // Fix sign in bug
         mListeners.forEach(listener -> {
             if (listener instanceof MediaServicePrefs) {
-                listener.onAccountChanged(account);
+                if (generation == AccountSession.getGeneration()) {
+                    listener.onAccountChanged(account);
+                }
             } else {
-                RxHelper.runUser(() -> listener.onAccountChanged(account));
+                RxHelper.runUser(() -> {
+                    if (generation == AccountSession.getGeneration()) {
+                        listener.onAccountChanged(account);
+                    }
+                });
             }
         });
     }

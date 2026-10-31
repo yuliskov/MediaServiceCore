@@ -303,14 +303,19 @@ public class YouTubeAccountManager {
         mStorageSynced = true;
     }
 
-    private void notifyListeners() {
-        Account account = getSelectedAccount();
+    private synchronized void notifyListeners() {
         long generation = AccountSession.getGeneration();
+        Account account = getSelectedAccount();
+        if (generation != AccountSession.getGeneration()) {
+            return;
+        }
 
         // Fix sign in bug
         mListeners.forEach(listener -> {
             if (listener instanceof MediaServicePrefs) {
-                listener.onAccountChanged(account);
+                if (generation == AccountSession.getGeneration()) {
+                    listener.onAccountChanged(account);
+                }
             } else {
                 RxHelper.runUser(() -> {
                     if (generation == AccountSession.getGeneration()) {

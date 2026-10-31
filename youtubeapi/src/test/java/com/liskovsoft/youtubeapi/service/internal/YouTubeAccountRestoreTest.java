@@ -19,6 +19,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -90,6 +91,82 @@ public class YouTubeAccountRestoreTest {
 
         assertEquals(1, delivered.size());
         assertEquals("youtube:email:second@example.invalid", delivered.get(0).getProfileId());
+    }
+
+    @Test
+    public void switchDuringAccountLookupCannotGiveOldAccountTheNewGeneration() throws Exception {
+        storeAccount("first@example.invalid");
+        YouTubeAccountManager manager = manager();
+        manager.init();
+        mScheduler.triggerActions();
+        List<Account> delivered = new ArrayList<>();
+        OnAccountChange listener = delivered::add;
+        manager.addOnAccountChange(listener);
+        Account second = syntheticAccount("second@example.invalid");
+        manager.getAccounts().clear();
+        manager.getAccounts().add(switchDuringLookup(manager, second));
+
+        notifyListeners(manager);
+        mScheduler.triggerActions();
+
+        assertEquals(second, manager.getSelectedAccount());
+        assertEquals(1, delivered.size());
+        assertEquals(second, delivered.get(0));
+    }
+
+    @Test
+    public void switchDuringLookupCannotRestoreOldImmediateServicePreferences() throws Exception {
+        storeAccount("first@example.invalid");
+        YouTubeAccountManager manager = manager();
+        manager.init();
+        mScheduler.triggerActions();
+        MediaServicePrefs prefs = MediaServicePrefs.INSTANCE;
+        manager.addOnAccountChange(prefs);
+        Account second = syntheticAccount("second@example.invalid");
+        Account first = switchDuringLookup(manager, second);
+        prefs.onAccountChanged(first);
+        prefs.setProfileData("notification_boundary_test", "first-profile");
+        prefs.onAccountChanged(second);
+        prefs.setProfileData("notification_boundary_test", "second-profile");
+        prefs.onAccountChanged(first);
+        manager.getAccounts().clear();
+        manager.getAccounts().add(first);
+
+        notifyListeners(manager);
+
+        assertEquals(second, manager.getSelectedAccount());
+        assertEquals("second-profile", prefs.getProfileData("notification_boundary_test"));
+    }
+
+    private static Account switchDuringLookup(YouTubeAccountManager manager, Account second) {
+        AtomicBoolean pendingSwitch = new AtomicBoolean(true);
+        return new YouTubeAccount() {
+            @Override
+            public String getName() {
+                return "First synthetic profile";
+            }
+
+            @Override
+            public boolean isSelected() {
+                if (pendingSwitch.getAndSet(false)) {
+                    manager.getAccounts().clear();
+                    manager.getAccounts().add(second);
+                    AccountSession.invalidate();
+                    notifyListeners(manager);
+                }
+                return true;
+            }
+        };
+    }
+
+    private static void notifyListeners(YouTubeAccountManager manager) {
+        try {
+            Method notify = YouTubeAccountManager.class.getDeclaredMethod("notifyListeners");
+            notify.setAccessible(true);
+            notify.invoke(manager);
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
     }
 
     private static void storeAccount(String email) {

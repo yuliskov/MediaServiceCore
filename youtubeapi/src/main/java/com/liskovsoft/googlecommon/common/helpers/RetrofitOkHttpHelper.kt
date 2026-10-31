@@ -9,13 +9,26 @@ import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.Collections
+import java.util.HashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 internal object RetrofitOkHttpHelper {
     private val authSkipList = CopyOnWriteArrayList<Request>() // possible parallel access (ArrayIndexOutOfBoundsException on line 28)
 
     @JvmStatic
-    val authHeaders = mutableMapOf<String, String>()
+    val authHeaders: MutableMap<String, String> = Collections.synchronizedMap(mutableMapOf())
+
+    @JvmStatic
+    fun replaceAuthHeaders(headers: Map<String, String>) {
+        synchronized(authHeaders) {
+            authHeaders.clear()
+            authHeaders.putAll(headers)
+        }
+    }
+
+    @JvmStatic
+    fun snapshotAuthHeaders(): Map<String, String> = synchronized(authHeaders) { HashMap(authHeaders) }
 
     @JvmStatic
     val client: OkHttpClient by lazy { createClient() }
@@ -81,6 +94,7 @@ internal object RetrofitOkHttpHelper {
             val url = request.url().toString()
 
             if (apiPrefixes.any { url.startsWith(it) }) {
+                val currentAuthHeaders = snapshotAuthHeaders()
                 val doSkipAuth = authSkipList.remove(request)
 
                 // Empty Home fix (anonymous user) and improve Recommendations for everyone
@@ -91,12 +105,12 @@ internal object RetrofitOkHttpHelper {
 
                 val tParam = if (tParamSuffixes.any { url.contains(it) }) YouTubeHelper.generateTParameter() else null
 
-                if (authHeaders.isEmpty() || doSkipAuth) {
+                if (currentAuthHeaders.isEmpty() || doSkipAuth) {
                     applyQueryKeys(mapOf("key" to AppConstants.API_KEY, "prettyPrint" to "false", "t" to tParam),
                         request, requestBuilder)
                 } else {
                     applyQueryKeys(mapOf("prettyPrint" to "false", "t" to tParam), request, requestBuilder)
-                    applyHeaders(authHeaders, headers, requestBuilder)
+                    applyHeaders(currentAuthHeaders, headers, requestBuilder)
                 }
             }
 

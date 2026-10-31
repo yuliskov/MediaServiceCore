@@ -14,6 +14,7 @@ import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import com.liskovsoft.youtubeapi.service.internal.YouTubeAccountManager;
 import io.reactivex.Observable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -174,8 +175,7 @@ public class YouTubeSignInService implements SignInService {
             return;
         }
 
-        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        headers.clear();
+        Map<String, String> headers = new HashMap<>();
 
         Account selectedAccount = getSelectedAccount();
 
@@ -187,6 +187,8 @@ public class YouTubeSignInService implements SignInService {
                 headers.put("X-Goog-Pageid", pageIdToken);
             }
         }
+
+        RetrofitOkHttpHelper.replaceAuthHeaders(headers);
     }
 
     @Override

@@ -112,15 +112,16 @@ private const val TYPE_SKIP_PREVIOUS = "TRANSPORT_CONTROLS_BUTTON_TYPE_SKIP_PREV
 private const val TYPE_SKIP_NEXT = "TRANSPORT_CONTROLS_BUTTON_TYPE_SKIP_NEXT"
 private const val TYPE_LIKE = "TRANSPORT_CONTROLS_BUTTON_TYPE_LIKE_BUTTON"
 private const val TYPE_DISLIKE = "TRANSPORT_CONTROLS_BUTTON_TYPE_DISLIKE_BUTTON"
+private const val TYPE_SUBSCRIBE = "TRANSPORT_CONTROLS_BUTTON_TYPE_SUBSCRIBE"
 private const val TYPE_ADD_TO_PLAYLIST = "TRANSPORT_CONTROLS_BUTTON_TYPE_ADD_TO_PLAYLIST"
 private const val TVHTML5_SHELF_RENDERER_TYPE_SHORTS = "TVHTML5_SHELF_RENDERER_TYPE_SHORTS"
 
-internal fun ButtonStateItem.isLikeToggled() = likeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_LIKE)?.toggleButtonRenderer?.isToggled
+internal fun ButtonStateItem.isLikeToggled() = getButton(TYPE_LIKE)?.toggleButtonRenderer?.isToggled ?: likeButton?.toggleButtonRenderer?.isToggled
 internal fun ButtonStateItem.isDislikeToggled() =
-    dislikeButton?.toggleButtonRenderer?.isToggled ?: getButton(TYPE_DISLIKE)?.toggleButtonRenderer?.isToggled
-internal fun ButtonStateItem.isSubscribeToggled() = subscribeButton?.toggleButtonRenderer?.isToggled
+    getButton(TYPE_DISLIKE)?.toggleButtonRenderer?.isToggled ?: dislikeButton?.toggleButtonRenderer?.isToggled
+internal fun ButtonStateItem.isSubscribeToggled() = getButton(TYPE_SUBSCRIBE)?.subscribeButtonRenderer?.subscribed ?: subscribeButton?.toggleButtonRenderer?.isToggled
 internal fun ButtonStateItem.getChannelId() = getChannelOwner()?.getChannelId()
-internal fun ButtonStateItem.getChannelOwner() = channelButton?.videoOwnerRenderer ?: getButton(TYPE_CHANNEL)?.videoOwnerRenderer
+internal fun ButtonStateItem.getChannelOwner() = getButton(TYPE_CHANNEL)?.videoOwnerRenderer ?: channelButton?.videoOwnerRenderer
 internal fun ButtonStateItem.getLikeStatus() = getButton(TYPE_LIKE)?.likeButtonRenderer?.likeStatus
 private fun ButtonStateItem.getButton(type: String) = buttons?.firstOrNull { it?.type == type }?.button
 

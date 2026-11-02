@@ -25,6 +25,7 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
     private val _mimeType by lazy { streamingFormat.mimeType }
     private val _iTag by lazy { streamingFormat.itag?.takeIf { it != 0 }?.toString() ?: "" }
     private val _isDrc by lazy { streamingFormat.isDrc ?: false }
+    private val _isVb by lazy { streamingFormat.isVb ?: false }
     private val _clen by lazy { streamingFormat.contentLength }
     private val _bitrate by lazy { streamingFormat.bitrate?.takeIf { it != 0 }?.toString() ?: "" }
     private val _projectionType by lazy { streamingFormat.projectionType }
@@ -57,6 +58,7 @@ internal data class MediaFormatImpl(private val streamingFormat: StreamingFormat
     override fun getITag() = _iTag
 
     override fun isDrc() = _isDrc
+    override fun isVb() = _isVb
 
     override fun getClen() = _clen
 

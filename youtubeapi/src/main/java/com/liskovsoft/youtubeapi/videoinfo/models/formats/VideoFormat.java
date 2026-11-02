@@ -91,6 +91,8 @@ public class VideoFormat {
     private int mMaxDvrDurationSec;
     @JsonPath("$.isDrc")
     private boolean mIsDrc;
+    @JsonPath("$.isVb")
+    private boolean mIsVb;
     private VideoUrlHolder mUrlHolder;
 
     public String getUrl() {
@@ -119,6 +121,10 @@ public class VideoFormat {
 
     public boolean isDrc() {
         return mIsDrc;
+    }
+
+    public boolean isVb() {
+        return mIsVb;
     }
 
     public String getContentLength() {

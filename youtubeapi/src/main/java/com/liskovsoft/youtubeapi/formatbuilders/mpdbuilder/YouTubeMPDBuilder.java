@@ -395,7 +395,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     private void writeMediaFormatTag(MediaFormat format) {
         startTag("", "Representation");
 
-        attribute("", "id", format.isDrc() ? format.getITag() + "-drc" : format.getITag());
+        attribute("", "id", format.isDrc() ? format.getITag() + "-drc" : format.isVb() ? format.getITag() + "-vb" : format.getITag());
         attribute("", "codecs", MediaFormatUtils.extractCodecs(format));
         attribute("", "startWithSAP", "1");
         attribute("", "bandwidth", format.getBitrate());

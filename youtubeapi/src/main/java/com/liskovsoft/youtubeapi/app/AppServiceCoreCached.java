@@ -149,6 +149,7 @@ class AppServiceCoreCached extends AppServiceCore {
             return playerDataExtractor;
         }
 
+        loop:
         for (String url : playerUrls) {
             idx++;
             if (url == null) {
@@ -156,34 +157,31 @@ class AppServiceCoreCached extends AppServiceCore {
             }
 
             playerDataExtractor = super.getPlayerDataExtractor(client, url);
-            persistExtractor(client, playerDataExtractor);
 
-            if (playerDataExtractor.validate()) {
-                switch (idx) {
-                    case MAIN:
+            switch (idx) {
+                case MAIN:
+                    if (playerDataExtractor.validate()) {
                         getData().setAppInfo(mAppInfo);
                         getData().setFailedAppInfo(null);
-                        break;
-                    case DATA:
-                    case APP_CONST:
-                        getData().setFailedAppInfo(mAppInfo);
-                        getData().setAppInfo(null);
-                        break;
-                }
-
-                if (actualTimestamp != null) {
-                    playerDataExtractor.setSignatureTimestamp(actualTimestamp);
-                }
-
-                break;
-            }
-
-            // Try to fetch the actual timestamp for old players. Needed for history (tracking) and possibly more.
-            // NOTE: the older player may not work on newer timestamp
-            if (idx == MAIN) {
-                actualTimestamp = playerDataExtractor.getSignatureTimestamp();
+                        break loop;
+                    }
+                    // Try to fetch the actual timestamp for old players. Needed for history (tracking) and possibly more.
+                    // NOTE: the older player may not work on newer timestamp
+                    actualTimestamp = playerDataExtractor.getSignatureTimestamp();
+                    break;
+                case DATA:
+                case APP_CONST:
+                    // We assume that fallback URLs already validated
+                    getData().setFailedAppInfo(mAppInfo);
+                    getData().setAppInfo(null);
+                    if (actualTimestamp != null) {
+                        playerDataExtractor.setSignatureTimestamp(actualTimestamp);
+                    }
+                    break loop;
             }
         }
+
+        persistExtractor(client, playerDataExtractor);
 
         return playerDataExtractor;
     }

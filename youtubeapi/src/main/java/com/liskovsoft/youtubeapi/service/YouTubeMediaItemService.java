@@ -188,22 +188,32 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<Void> subscribeObserve(MediaItem item) {
-        return RxHelper.fromRunnable(() -> subscribe(item));
+        return RxHelper.fromRunnable(() -> requireAccepted(subscribeInt(item.getChannelId(), item.getParams()), "subscribe"));
     }
 
     @Override
     public Observable<Void> subscribeObserve(String channelId) {
-        return RxHelper.fromRunnable(() -> subscribe(channelId));
+        return RxHelper.fromRunnable(() -> requireAccepted(subscribeInt(channelId, null), "subscribe"));
     }
 
     @Override
     public Observable<Void> unsubscribeObserve(MediaItem item) {
-        return RxHelper.fromRunnable(() -> unsubscribe(item));
+        return RxHelper.fromRunnable(() -> requireAccepted(unsubscribeInt(item.getChannelId()), "unsubscribe"));
     }
 
     @Override
     public Observable<Void> unsubscribeObserve(String channelId) {
-        return RxHelper.fromRunnable(() -> unsubscribe(channelId));
+        return RxHelper.fromRunnable(() -> requireAccepted(unsubscribeInt(channelId), "unsubscribe"));
+    }
+
+    /**
+     * The observable variants report a request YouTube didn't accept as an error, so the caller can undo what it
+     * showed (the plain void variants can't tell)
+     */
+    private static void requireAccepted(boolean accepted, String action) {
+        if (!accepted) {
+            throw new IllegalStateException("Can't " + action + ": YouTube didn't accept the request");
+        }
     }
 
     @Override
@@ -265,9 +275,13 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private void subscribe(String channelId, String params) {
+        subscribeInt(channelId, params);
+    }
+
+    private boolean subscribeInt(String channelId, String params) {
         checkSigned();
 
-        getActionsService().subscribe(channelId, params);
+        return getActionsService().subscribe(channelId, params);
     }
 
     @Override
@@ -277,9 +291,13 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void unsubscribe(String channelId) {
+        unsubscribeInt(channelId);
+    }
+
+    private boolean unsubscribeInt(String channelId) {
         checkSigned();
 
-        getActionsService().unsubscribe(channelId);
+        return getActionsService().unsubscribe(channelId);
     }
 
     @Override

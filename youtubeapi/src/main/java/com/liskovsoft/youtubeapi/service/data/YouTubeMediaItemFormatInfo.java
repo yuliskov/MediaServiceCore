@@ -317,6 +317,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     }
 
     @Override
+    public float getLoudnessDb() {
+        return mLoudnessDb;
+    }
+
+    @Override
     public String getHlsManifestUrl() {
         return mHlsManifestUrl;
     }

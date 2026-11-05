@@ -205,7 +205,7 @@ internal fun TileItem.getUpcomingEventText() = null
 internal fun TileItem.getThumbnails() = header?.tileHeaderRenderer?.thumbnail ?: header?.trackTileHeaderRenderer?.thumbnail
 internal fun TileItem.getMovingThumbnails() = header?.tileHeaderRenderer?.let { it.movingThumbnail ?: it.onFocusThumbnail }
 internal fun TileItem.getMovingThumbnailUrl() = header?.tileHeaderRenderer?.movingThumbnail?.thumbnails?.getOrNull(0)?.url
-internal fun TileItem.getChannelId() = onSelectCommand?.getBrowseId() ?: getMenu()?.getBrowseId()
+internal fun TileItem.getChannelId() = onSelectCommand?.getBrowseId() ?: getMenu()?.getBrowseId() ?: metadata?.getBrowseId()
 internal fun TileItem.getChannelParams() = onSelectCommand?.getParams()
 internal fun TileItem.getFeedbackTokens() = getMenu()?.getFeedbackTokens()
 internal fun TileItem.getEngagementPanelEndpoint() = onLongPressCommand?.showEngagementPanelEndpoint
@@ -219,6 +219,9 @@ internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE
 internal fun TileItem.getQuery() = onSelectCommand?.getQuery()
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
 private fun TileItem.Metadata.getStatusStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
+// Channel link in the byline (e.g. suggestions under the player)
+private fun TileItem.Metadata.getBrowseId() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull {
+    it?.lineItemRenderer?.text?.runs?.firstNotNullOfOrNull { it?.navigationEndpoint?.getBrowseId() } } }
 private fun TileItem.getMenu() = menu ?: getShowMenuCommand()?.menu
 private fun TileItem.getTileStyle() = style
 private fun TileItem.getBadgeStyle() = header?.getBadgeStyle()
@@ -267,7 +270,7 @@ internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNul
 internal fun LockupItem.isEmpty() = getPercentWatched() == 100 && getBadgeText() == null
 internal fun LockupItem.getFeedbackTokens() =
     metadata?.lockupMetadataViewModel?.menuButton?.buttonViewModel?.onTap?.innertubeCommand?.getFeedbackTokens()
-internal fun LockupItem.getChannelId() = rendererContext?.getBrowseId()
+internal fun LockupItem.getChannelId() = rendererContext?.getBrowseId() ?: rendererContext?.getMenu()?.getBrowseId()
 private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull { it?.thumbnailOverlayBadgeViewModel?.thumbnailBadges
     ?: it?.thumbnailBottomOverlayViewModel?.badges }?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = getThumbnailView()?.overlays
@@ -420,6 +423,8 @@ internal fun RendererContext.getBrowseId() = getOnTapCommand()?.getBrowseId()
 internal fun RendererContext.getContinuationToken() = getOnTapCommand()?.getContinuationToken()
 internal fun RendererContext.getFeedbackToken() = getOnTapCommand()?.getFeedbackToken()
 private fun RendererContext.getOnTapCommand() = commandContext?.onTap?.innertubeCommand
+// Long press menu, e.g. 'Go to channel' item (search results)
+private fun RendererContext.getMenu() = commandContext?.onLongPress?.innertubeCommand?.showMenuCommand?.menu
 
 ///////
 

@@ -33,6 +33,7 @@ import com.liskovsoft.youtubeapi.innertube.utils.getVideoPlaybackUstreamerConfig
 import com.liskovsoft.youtubeapi.innertube.utils.getWatchTimeUrl
 import com.liskovsoft.youtubeapi.innertube.utils.isPlayableInEmbed
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemStoryboard
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import com.liskovsoft.youtubeapi.videoinfo.models.DashInfo
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoUrlHolder
 import io.reactivex.Observable
@@ -426,14 +427,12 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
      * TODO: remove when SABR parser will be fixed
      */
     private fun isAdaptiveFormatsBroken(): Boolean {
-        if (_adaptiveFormats?.isEmpty() ?: true) {
+        // NOTE: live SABR formats are experimental
+        if (_adaptiveFormats?.isEmpty() ?: true || MediaServiceData.instance().isSabrLiveEnabled) {
             return false
         }
 
-        // TODO: live SABR formats still broken
-        //return !containsDashFormats() && _isLive
-
-        // TODO: live SABR formats are experimental
-        return false
+        // Reportedly, live SABR formats do not work on some accounts
+        return !containsDashFormats() && _isLive
     }
 }

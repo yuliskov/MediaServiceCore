@@ -66,6 +66,7 @@ public class MediaServiceData {
     private ClientDataCached mClientData;
     private boolean mIsMoreSubtitlesUnlocked;
     private boolean mIsLegacyUIEnabled;
+    private boolean mIsSabrLiveEnabled;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -282,6 +283,15 @@ public class MediaServiceData {
         persistData();
     }
 
+    public boolean isSabrLiveEnabled() {
+        return mIsSabrLiveEnabled;
+    }
+
+    public void setSabrLiveEnabled(boolean enable) {
+        mIsSabrLiveEnabled = enable;
+        persistData();
+    }
+
     private void restoreData() {
         String data = mGlobalPrefs.getMediaServiceData();
 
@@ -311,6 +321,7 @@ public class MediaServiceData {
         //mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
         mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);
         mIsLegacyUIEnabled = Helpers.parseBoolean(split, 25);
+        mIsSabrLiveEnabled = Helpers.parseBoolean(split, 26);
 
         boolean isAppUpdated = mOldAppVersion != null && !Helpers.equals(mOldAppVersion, appVersion);
 
@@ -340,7 +351,8 @@ public class MediaServiceData {
                         mClientType, null, null, null, null, null,
                         null, mEnabledFormats, null, null, mPoToken, mAppInfo,
                         null, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
-                        null, mVisitorCookie, null, null, mFailedAppInfo, mIsLegacyUIEnabled));
+                        null, mVisitorCookie, null, null, mFailedAppInfo, mIsLegacyUIEnabled,
+                        mIsSabrLiveEnabled));
     }
 
     private void persistCachedDataInt() {

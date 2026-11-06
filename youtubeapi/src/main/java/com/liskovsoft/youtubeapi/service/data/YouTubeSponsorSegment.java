@@ -21,6 +21,15 @@ public class YouTubeSponsorSegment implements SponsorSegment {
         List<SponsorSegment> result = new ArrayList<>();
 
         for (Segment segment : segmentList.getSegments()) {
+            if (segment == null || !isValidTime(segment.getStart()) || !isValidTime(segment.getEnd()) ||
+                    segment.getEnd() < segment.getStart()) {
+                continue;
+            }
+            // Older responses omit the action type. Other actions need their own playback handling.
+            if (segment.getActionType() != null && !ACTION_SKIP.equals(segment.getActionType())) {
+                continue;
+            }
+
             YouTubeSponsorSegment sponsorSegment = new YouTubeSponsorSegment();
             sponsorSegment.mStartMs = (long) (segment.getStart() * 1_000);
             sponsorSegment.mEndMs = (long) (segment.getEnd() * 1_000);
@@ -30,6 +39,11 @@ public class YouTubeSponsorSegment implements SponsorSegment {
         }
 
         return result;
+    }
+
+    private static boolean isValidTime(float seconds) {
+        return !Float.isNaN(seconds) && !Float.isInfinite(seconds) && seconds >= 0 &&
+                (double) (seconds * 1_000) < Long.MAX_VALUE;
     }
 
     @Override

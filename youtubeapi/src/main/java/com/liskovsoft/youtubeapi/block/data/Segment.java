@@ -10,10 +10,10 @@ public class Segment {
     private String mActionType;
 
     @JsonPath("$.segment[0]")
-    private float mStart;
+    private float mStart = Float.NaN;
 
     @JsonPath("$.segment[1]")
-    private float mEnd;
+    private float mEnd = Float.NaN;
 
     @JsonPath("$.UUID")
     private String mUuid;

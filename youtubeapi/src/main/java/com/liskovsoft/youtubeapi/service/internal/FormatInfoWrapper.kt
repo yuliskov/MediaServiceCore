@@ -12,7 +12,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService
 
 internal object FormatInfoWrapper {
-    private var mCachedFormatInfo: MediaItemFormatInfo? = null
+    @Volatile private var mCachedFormatInfo: AccountSession.Value<MediaItemFormatInfo>? = null
     private var mTryInnertubeFirst: Boolean = false
     private val mInnertubeResult = object { var isUnplayable: Boolean = false; var client: AppClient? = null }
     private val mInnertubeProvider: (String, String?) -> MediaItemFormatInfo? =
@@ -112,13 +112,14 @@ internal object FormatInfoWrapper {
             return cachedFormatInfo
         }
 
+        val generation = AccountSession.getGeneration()
         checkSigned()
 
         AppService.instance().resetClientPlaybackNonce() // history fix: unique value per each video info
 
         val formatInfo = InnertubeService.createFormatInfo(videoId)
 
-        setCachedFormatInfo(formatInfo, clickTrackingParams)
+        setCachedFormatInfo(formatInfo, clickTrackingParams, generation)
 
         return formatInfo
     }
@@ -130,29 +131,30 @@ internal object FormatInfoWrapper {
             return cachedFormatInfo
         }
 
+        val generation = AccountSession.getGeneration()
         checkSigned()
 
         val videoInfo = getVideoInfoService().getVideoInfo(videoId, clickTrackingParams)
 
         val formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo)
 
-        setCachedFormatInfo(formatInfo, clickTrackingParams)
+        setCachedFormatInfo(formatInfo, clickTrackingParams, generation)
 
         return formatInfo
     }
 
     private fun getCachedFormatInfo(videoId: String?): MediaItemFormatInfo? {
-        return mCachedFormatInfo?.takeIf { videoId != null && it.getVideoId() == videoId && it.isCacheActual() }
+        return mCachedFormatInfo?.get()?.takeIf { videoId != null && it.getVideoId() == videoId && it.isCacheActual() }
     }
 
-    private fun setCachedFormatInfo(formatInfo: MediaItemFormatInfo?, clickTrackingParams: String?) {
+    private fun setCachedFormatInfo(formatInfo: MediaItemFormatInfo?, clickTrackingParams: String?, generation: Long) {
         if (formatInfo == null || formatInfo.isUnplayable()) {
             mCachedFormatInfo = null
             return
         }
 
-        mCachedFormatInfo = formatInfo
         formatInfo.setClickTrackingParams(clickTrackingParams)
+        mCachedFormatInfo = AccountSession.Value(generation, formatInfo)
     }
 
     private fun persistFormatInfoType(formatInfo: MediaItemFormatInfo?) {

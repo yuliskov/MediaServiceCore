@@ -31,5 +31,9 @@ internal object CommentsServiceInt {
 
     private fun getCommentsResult(commentsKey: String) = RetrofitHelper.get(mApi.getComments(CommentsApiParams.getCommentsQuery(commentsKey)))
 
+    fun createComment(videoId: String, commentText: String) {
+        RetrofitHelper.get(mApi.createComment(CommentsApiParams.getCreateCommentQuery(videoId, commentText)))
+    }
+
     private fun getActionResult(actionKey: String) = RetrofitHelper.get(mApi.commentAction(CommentsApiParams.getActionQuery(actionKey)))
 }

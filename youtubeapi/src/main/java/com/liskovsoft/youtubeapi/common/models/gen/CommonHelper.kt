@@ -168,17 +168,20 @@ internal fun RadioItem.isUpcoming() = false
 
 ///////////
 
-// 'tileRenderer.style' values:
+// 'tileRenderer.contentType' values:
 private const val TILE_CONTENT_TYPE_UNDEFINED = "UNDEFINED"
 private const val TILE_CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL"
 private const val TILE_CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST"
 private const val TILE_CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO"
 private const val TILE_CONTENT_TYPE_EDU = "TILE_CONTENT_TYPE_EDU" // a search query tile in Home section
 
-// 'tileRenderer.contentType' values:
+// 'tileRenderer.style' values:
 private const val TILE_STYLE_DEFAULT = "TILE_STYLE_YTLR_DEFAULT"
 private const val TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS"
 private const val TILE_STYLE_QUERY = "TILE_STYLE_YTLR_EDU" // a search query tile in Home section
+
+// 'thumbnailOverlayTimeStatusRenderer.icon.iconType' values:
+private const val ICON_TYPE_MIX = "MIX"
 
 internal fun TileItem.getTitle() = metadata?.tileMetadataRenderer?.title?.getText()
     ?: header?.tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.tileMetadataRenderer?.title?.getText() }
@@ -216,12 +219,15 @@ internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle() && getVideoId() == null // a movie has browseId instead of videoId
 internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE_STYLE_SHORTS == getTileStyle()
+internal fun TileItem.isMix() = ICON_TYPE_MIX == getIconType()
 internal fun TileItem.getQuery() = onSelectCommand?.getQuery()
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
+private fun TileItem.Header.getIconType() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.icon?.getType() }
 private fun TileItem.Metadata.getStatusStyle() = tileMetadataRenderer?.lines?.firstNotNullOfOrNull { it?.lineRenderer?.items?.firstNotNullOfOrNull { it?.lineItemRenderer?.badge?.metadataBadgeRenderer?.style } }
 private fun TileItem.getMenu() = menu ?: getShowMenuCommand()?.menu
 private fun TileItem.getTileStyle() = style
 private fun TileItem.getBadgeStyle() = header?.getBadgeStyle()
+private fun TileItem.getIconType() = header?.getIconType()
 private fun TileItem.getStatusStyle() = metadata?.getStatusStyle()
 private fun TileItem.getShowMenuCommand() = onLongPressCommand?.showMenuCommand
 
@@ -337,6 +343,7 @@ internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming() ?: false
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie() ?: false
 internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
+internal fun ItemWrapper.isMix() = getTileItem()?.isMix() ?: false
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()
 internal fun ItemWrapper.getFeedbackToken() = getFeedbackTokens()?.getOrNull(0)

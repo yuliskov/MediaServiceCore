@@ -627,7 +627,8 @@ internal data class ThumbnailOverlayItem(
 ) {
     data class ThumbnailOverlayTimeStatusRenderer(
         val text: TextItem?,
-        val style: String?
+        val style: String?,
+        val icon: IconItem?
     )
 
     data class ThumbnailOverlayResumePlaybackRenderer(

@@ -12,7 +12,15 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService
 
 internal object FormatInfoWrapper {
+    /**
+     * The cached format info is only meant for quick reloads of the same video (error retries,
+     * quality switches, next/prev). After a long pause (e.g. TV standby overnight) its stream URLs and
+     * SABR session are stale: playback trickles far below the format's bitrate and every
+     * long-buffering reload reuses the same entry, so it loops (yuliskov/SmartTube#6244).
+     */
+    private const val MAX_CACHE_AGE_MS = 30 * 60 * 1_000L
     private var mCachedFormatInfo: MediaItemFormatInfo? = null
+    private var mCachedAtMs: Long = 0
     private var mTryInnertubeFirst: Boolean = false
     private val mInnertubeResult = object { var isUnplayable: Boolean = false; var client: AppClient? = null }
     private val mInnertubeProvider: (String, String?) -> MediaItemFormatInfo? =
@@ -142,6 +150,10 @@ internal object FormatInfoWrapper {
     }
 
     private fun getCachedFormatInfo(videoId: String?): MediaItemFormatInfo? {
+        if (System.currentTimeMillis() - mCachedAtMs > MAX_CACHE_AGE_MS) {
+            return null
+        }
+
         return mCachedFormatInfo?.takeIf { videoId != null && it.getVideoId() == videoId && it.isCacheActual() }
     }
 
@@ -152,6 +164,7 @@ internal object FormatInfoWrapper {
         }
 
         mCachedFormatInfo = formatInfo
+        mCachedAtMs = System.currentTimeMillis()
         formatInfo.setClickTrackingParams(clickTrackingParams)
     }
 

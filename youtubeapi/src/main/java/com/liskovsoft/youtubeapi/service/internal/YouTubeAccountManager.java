@@ -277,6 +277,13 @@ public class YouTubeAccountManager {
             if (newAccounts != null) {
                 for (AccountInt newAccount : newAccounts) {
                     YouTubeAccount account = YouTubeAccount.from(newAccount);
+
+                    // Only refresh the profiles the user kept. Re-adding every returned profile brought back
+                    // the ones removed by the user (new profiles are added on sign in instead).
+                    if (!storedAccounts.contains(account)) {
+                        continue;
+                    }
+
                     account.setSelected(account.equals(selectedAccount));
                     addAccount(account);
                 }

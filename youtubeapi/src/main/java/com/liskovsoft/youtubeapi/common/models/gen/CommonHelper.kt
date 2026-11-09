@@ -17,6 +17,7 @@ import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 private const val BADGE_STYLE_LIVE = "LIVE"
 private const val BADGE_STYLE_UPCOMING = "UPCOMING"
 private const val BADGE_STYLE_SHORTS = "SHORTS"
+private const val LOCKUP_CONTENT_TYPE_SHORT = "LOCKUP_CONTENT_TYPE_SHORT"
 private const val BADGE_STYLE_DEFAULT = "DEFAULT"
 // A badge before the subtitle
 private const val STATUS_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC" // This mark sometimes presents on regular videos (e.g. fundraiser mark)
@@ -276,10 +277,20 @@ internal fun LockupItem.isLive() = Helpers.equalsAny(getBadge()?.badgeStyle, BAD
 internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent }
 // The video without a badge, probably Watch again
-internal fun LockupItem.isEmpty() = getPercentWatched() == 100 && getBadgeText() == null
+// Search (and other modern lockup rows) return Shorts as a regular lockup marked by its content type and a reel endpoint
+internal fun LockupItem.isShorts() = LOCKUP_CONTENT_TYPE_SHORT == contentType ||
+        rendererContext?.commandContext?.onTap?.innertubeCommand?.reelWatchEndpoint != null
+internal fun LockupItem.isEmpty() =getPercentWatched() == 100 && getBadgeText() == null
 internal fun LockupItem.getFeedbackTokens() =
     metadata?.lockupMetadataViewModel?.menuButton?.buttonViewModel?.onTap?.innertubeCommand?.getFeedbackTokens()
+// Video/Shorts lockups open the video on tap, so the channel is only found in the long-press menu ("Go to channel").
+// Only for lockups with a video: e.g. members only items have no video id and must stay without a channel id,
+// or they become cards that open the channel (see SmartTube#5831).
 internal fun LockupItem.getChannelId() = rendererContext?.getBrowseId()
+    ?: getVideoId()?.let {
+        rendererContext?.commandContext?.onLongPress?.innertubeCommand?.showMenuCommand?.menu?.menuRenderer?.items
+            ?.firstNotNullOfOrNull { it?.getBrowseId()?.takeIf { id -> id.startsWith("UC") } }
+    }
 private fun LockupItem.getBadge() = getOverlays()?.firstNotNullOfOrNull { it?.thumbnailOverlayBadgeViewModel?.thumbnailBadges
     ?: it?.thumbnailBottomOverlayViewModel?.badges }?.firstNotNullOfOrNull { it?.thumbnailBadgeViewModel }
 private fun LockupItem.getOverlays() = getThumbnailView()?.overlays
@@ -348,7 +359,8 @@ internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex()
 internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: getLockupItem()?.isLive() ?: false
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming() ?: false
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie() ?: false
-internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
+internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null ||
+        getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: getLockupItem()?.isShorts() ?: false
 internal fun ItemWrapper.isMix() = getTileItem()?.isMix() ?: false
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()

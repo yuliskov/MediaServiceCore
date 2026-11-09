@@ -315,6 +315,11 @@ public class MediaServiceData {
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
         mHiddenContent = Helpers.parseInt(split, 18,
                 CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_NEWS | CONTENT_UPCOMING_HOME);
+        // "Hide shorts everywhere" saved before the News flag existed: apply it to News too (no need to recheck the option)
+        int oldShortsAll = CONTENT_SHORTS_ALL & ~CONTENT_SHORTS_NEWS;
+        if ((mHiddenContent & oldShortsAll) == oldShortsAll) {
+            mHiddenContent |= CONTENT_SHORTS_NEWS;
+        }
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);

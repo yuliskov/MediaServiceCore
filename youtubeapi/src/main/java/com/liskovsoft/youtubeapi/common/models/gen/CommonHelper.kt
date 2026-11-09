@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.browse.v2.gen.getFeedbackToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getFeedbackTokens
 import com.liskovsoft.youtubeapi.browse.v2.gen.getItems
+import com.liskovsoft.youtubeapi.browse.v2.gen.getStyle
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 
 // A badge before the image
@@ -180,6 +181,9 @@ private const val TILE_STYLE_DEFAULT = "TILE_STYLE_YTLR_DEFAULT"
 private const val TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS"
 private const val TILE_STYLE_QUERY = "TILE_STYLE_YTLR_EDU" // a search query tile in Home section
 
+// 'reelPlayerOverlayRenderer.style' values:
+private const val REEL_STYLE_SHORTS = "REEL_PLAYER_OVERLAY_STYLE_SHORTS"
+
 // 'thumbnailOverlayTimeStatusRenderer.icon.iconType' values:
 private const val ICON_TYPE_MIX = "MIX"
 
@@ -219,6 +223,7 @@ internal fun TileItem.getContinuationToken() = onSelectCommand?.getContinuations
 internal fun TileItem.isUpcoming() = BADGE_STYLE_UPCOMING == getBadgeStyle()
 internal fun TileItem.isMovie() = STATUS_STYLE_MOVIE == getStatusStyle() && getVideoId() == null // a movie has browseId instead of videoId
 internal fun TileItem.isShorts() = BADGE_STYLE_SHORTS == getBadgeStyle() || TILE_STYLE_SHORTS == getTileStyle()
+        || REEL_STYLE_SHORTS == getReelStyle()
 internal fun TileItem.isMix() = ICON_TYPE_MIX == getIconType()
 internal fun TileItem.getQuery() = onSelectCommand?.getQuery()
 private fun TileItem.Header.getBadgeStyle() = tileHeaderRenderer?.thumbnailOverlays?.firstNotNullOfOrNull { it?.thumbnailOverlayTimeStatusRenderer?.style }
@@ -227,6 +232,7 @@ private fun TileItem.Metadata.getStatusStyle() = tileMetadataRenderer?.lines?.fi
 private fun TileItem.getMenu() = menu ?: getShowMenuCommand()?.menu
 private fun TileItem.getTileStyle() = style
 private fun TileItem.getBadgeStyle() = header?.getBadgeStyle()
+private fun TileItem.getReelStyle() = onSelectCommand?.reelWatchEndpoint?.getStyle()
 private fun TileItem.getIconType() = header?.getIconType()
 private fun TileItem.getStatusStyle() = metadata?.getStatusStyle()
 private fun TileItem.getShowMenuCommand() = onLongPressCommand?.showMenuCommand

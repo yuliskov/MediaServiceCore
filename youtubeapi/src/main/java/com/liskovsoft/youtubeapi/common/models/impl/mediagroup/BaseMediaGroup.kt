@@ -8,16 +8,16 @@ import com.liskovsoft.youtubeapi.common.models.gen.*
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.WrapperMediaItem
 
 internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): MediaGroup {
-    private val filter: ((ItemWrapper) -> Boolean) = {
-        it.isEmpty() ||
-        (options.removeShorts && it.isShorts()) ||
-        (options.removeLive && it.isLive()) ||
-        (options.removeUpcoming && it.isUpcoming()) ||
-        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive()) ||
-        (options.removeMixes && it.isMix())
+    private val filter: (ItemWrapper) -> Boolean = {
+        it.isEmpty()
+                || (options.removeShorts && it.isShorts())
+                || (options.removeLive && it.isLive())
+                || (options.removeUpcoming && it.isUpcoming())
+                || (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive())
+                || (options.removeMixes && it.isMix())
     }
     // TODO: remove the filter when yt will able to mark shorts longer than one minute
-    private val legacyFilter: ((WrapperMediaItem) -> Boolean) = {
+    private val legacyFilter: (WrapperMediaItem) -> Boolean = {
         options.removeShorts
                 && (options.groupType == MediaGroup.TYPE_HISTORY || options.groupType == MediaGroup.TYPE_HOME)
                 && YouTubeHelper.isShorts(it, options.enableLegacyUI)

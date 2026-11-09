@@ -202,8 +202,13 @@ internal data class ReelWatchEndpoint(
     val videoId: String?,
     val playerParams: String?,
     val params: String?,
-    val thumbnail: ThumbnailItem?
-)
+    val thumbnail: ThumbnailItem?,
+    val overlay: Overlay?
+) {
+    data class Overlay(
+        val reelPlayerOverlayRenderer: ReelPlayerOverlayRenderer?
+    )
+}
 
 // Reel only. Extended data.
 internal data class ReelPlayerHeaderRenderer(

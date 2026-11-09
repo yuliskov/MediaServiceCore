@@ -113,16 +113,17 @@ internal data class ReelResult(
     )
     data class Overlay(
         val reelPlayerOverlayRenderer: ReelPlayerOverlayRenderer?
-    ) {
-        data class ReelPlayerOverlayRenderer(
-            val reelPlayerHeaderSupportedRenderers: ReelPlayerHeaderSupportedRenderers?,
-            val menu: MenuWrapper?
-        ) {
-            data class ReelPlayerHeaderSupportedRenderers(
-                val reelPlayerHeaderRenderer: ReelPlayerHeaderRenderer?
-            )
-        }
-    }
+    )
+}
+
+internal data class ReelPlayerOverlayRenderer(
+    val reelPlayerHeaderSupportedRenderers: ReelPlayerHeaderSupportedRenderers?,
+    val menu: MenuWrapper?,
+    val style: String? // e.g. REEL_PLAYER_OVERLAY_STYLE_SHORTS
+) {
+    data class ReelPlayerHeaderSupportedRenderers(
+        val reelPlayerHeaderRenderer: ReelPlayerHeaderRenderer?
+    )
 }
 
 internal data class ReelContinuationResult(

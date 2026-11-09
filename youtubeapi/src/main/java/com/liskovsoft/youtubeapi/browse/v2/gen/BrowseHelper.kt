@@ -236,6 +236,7 @@ internal fun ReelContinuationResult.getContinuationToken(): String? = continuati
 
 internal fun ReelWatchEndpoint.getVideoId(): String? = videoId
 internal fun ReelWatchEndpoint.getThumbnails(): ThumbnailItem? = thumbnail
+internal fun ReelWatchEndpoint.getStyle(): String? = overlay?.reelPlayerOverlayRenderer?.style
 
 ///////
 

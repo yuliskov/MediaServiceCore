@@ -12,6 +12,7 @@ import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService
 import java.util.Collections
+import java.util.concurrent.atomic.AtomicInteger
 
 internal object FormatInfoWrapper {
     private enum class ProviderType { INNERTUBE, LEGACY }
@@ -29,8 +30,7 @@ internal object FormatInfoWrapper {
     /**
      * Incremented each time a cached video is opened for playback (it sets its own nonce)
      */
-    @Volatile
-    private var mCachedOpenCount: Int = 0
+    private val mCachedOpenCount = AtomicInteger()
     private val mInnertubeProvider: (AppClient, String, String?) -> MediaItemFormatInfo? =
         { client, videoId, clickTrackingParams -> getFormatInfoInnertube(client, videoId, clickTrackingParams) }
     private val mLegacyProvider: (AppClient, String, String?) -> MediaItemFormatInfo? =
@@ -102,7 +102,7 @@ internal object FormatInfoWrapper {
 
             val appService = AppService.instance()
             val currentNonce = appService.peekClientPlaybackNonce()
-            val openCount = mCachedOpenCount
+            val openCount = mCachedOpenCount.get()
             mIsPreloading = true
 
             try {
@@ -115,7 +115,7 @@ internal object FormatInfoWrapper {
                 mIsPreloading = false
                 // Watch history of the current video uses it.
                 // Skip if a cached video has been opened meanwhile (it has set its own nonce).
-                if (openCount == mCachedOpenCount)
+                if (openCount == mCachedOpenCount.get())
                     appService.setClientPlaybackNonce(currentNonce)
             }
         }
@@ -229,7 +229,7 @@ internal object FormatInfoWrapper {
 
         if (!calledByPreload) {
             AppService.instance().setClientPlaybackNonce(entry.clientPlaybackNonce)
-            mCachedOpenCount++
+            mCachedOpenCount.incrementAndGet()
         }
 
         return entry.formatInfo

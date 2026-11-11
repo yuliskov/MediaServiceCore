@@ -130,7 +130,7 @@ public class YouTubeServiceManager implements ServiceManager {
         }
 
         mRefreshCoreDataAction =
-                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().refreshCacheIfNeeded(getVideoInfoService().getClient())));
+                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().refreshCacheIfNeeded(getFormatInfoWrapper().getActualClient())));
     }
 
     @NonNull
@@ -166,6 +166,11 @@ public class YouTubeServiceManager implements ServiceManager {
     @NonNull
     private static VideoInfoService getVideoInfoService() {
         return VideoInfoService.instance();
+    }
+
+    @NonNull
+    private static FormatInfoWrapper getFormatInfoWrapper() {
+        return FormatInfoWrapper.INSTANCE;
     }
 
     @NonNull

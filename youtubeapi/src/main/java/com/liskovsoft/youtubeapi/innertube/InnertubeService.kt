@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.innertube
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.innertube.core.HTTPClient
 import com.liskovsoft.youtubeapi.innertube.core.RequestInit
 import com.liskovsoft.youtubeapi.innertube.core.RequestInitBody
@@ -9,6 +10,10 @@ import com.liskovsoft.youtubeapi.innertube.impl.MediaItemFormatInfoImpl
 import com.liskovsoft.youtubeapi.innertube.initialresponse.InitialResponseService
 
 internal object InnertubeService {
+    // TODO: currently only WEB client is supported. Add more later.
+    @JvmStatic
+    fun createFormatInfo(client: AppClient, videoId: String): MediaItemFormatInfo? = createFormatInfo(videoId)
+
     @JvmStatic
     fun createFormatInfo(videoId: String): MediaItemFormatInfo? = createFormatInfoV1(videoId)
 

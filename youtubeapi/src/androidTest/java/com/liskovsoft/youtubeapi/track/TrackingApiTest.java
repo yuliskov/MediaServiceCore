@@ -7,6 +7,7 @@ import com.liskovsoft.youtubeapi.browse.v1.models.grid.GridTab;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.helpers.tests.TestHelpers;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
@@ -100,7 +101,7 @@ public class TrackingApiTest {
 
     private Response<WatchTimeEmptyResult> createWatchRecord(String videoId, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(AppClient.WEB, videoId, null);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecordShort(
                 videoId, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam());
@@ -144,7 +145,7 @@ public class TrackingApiTest {
 
     private Response<WatchTimeEmptyResult> updateWatchTimeAlt(String videoId, float positionSec, String playbackNonce) throws IOException {
         //String playbackNonce = mAppService.getClientPlaybackNonce();
-        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(videoId, null);
+        VideoInfo videoInfo = mVideoInfoService.getVideoInfo(AppClient.WEB, videoId, null);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTimeShort(
                 videoId, positionSec, positionSec, playbackNonce, videoInfo.getEventId(), videoInfo.getVisitorMonitoringData(), videoInfo.getOfParam());

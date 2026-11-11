@@ -1,10 +1,11 @@
 package com.liskovsoft.youtubeapi.lounge.models.info;
 
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 
 public class PairingCodeV2 {
-    @JsonPath("$.code")
+    // Plain text body (current) or {"code": "..."} (older answers)
+    @RegExp({"\"code\"\\s*:\\s*\"?(\\d+)", "^\\s*(\\d+)\\s*$"})
     private String mPairingCode;
     private String mPairingCodeAlt;
 

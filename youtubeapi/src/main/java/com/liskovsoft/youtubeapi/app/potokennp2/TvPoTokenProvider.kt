@@ -93,7 +93,7 @@ internal object TvPoTokenProvider {
 
         reset()
 
-        val newGenerator = TvPoTokenWebView4.newPoTokenGenerator(AppService.instance().context, requestKey, challenge, AppClient.TV)
+        val newGenerator = TvPoTokenWebView4.newPoTokenGenerator(AppService.instance().context, requestKey, challenge, AppClient.TV, visitorData)
         val sessionPot = newGenerator.generatePoToken(livingRoomId)
 
         // Log.d(TAG, "TV poToken: livingRoomId=$livingRoomId, pot=$sessionPot, visitor_data=$visitorData")

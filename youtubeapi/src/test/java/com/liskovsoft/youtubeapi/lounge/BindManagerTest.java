@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandItem;
 import com.liskovsoft.youtubeapi.lounge.models.commands.CommandList;
+import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfo;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import okhttp3.OkHttpClient;
@@ -66,6 +67,24 @@ public class BindManagerTest {
 
         // Pairing code XXX-XXX-XXX-XXX
         assertNotNull("Pairing code not empty", pairingCode.getPairingCode());
+    }
+
+    /**
+     * Regression test: get_pairing_code returns text/plain ("836172621048"), not JSON.<br/>
+     * Parsing it with the JsonPath converter produced null ("fromNullable result is null" on the Add device screen).
+     */
+    @Test
+    public void testThatPairingCodeV2GeneratedSuccessfully() {
+        TokenInfo screen = getScreen();
+        Call<PairingCodeV2> pairingCodeWrapper = mBindManager.getPairingCodeV2(screen.getLoungeToken(),
+                screen.getScreenId(), SCREEN_NAME, BindParams.ACCESS_TYPE, BindParams.APP, DEVICE_ID, BindParams.QR);
+        PairingCodeV2 pairingCode = RetrofitHelper.get(pairingCodeWrapper);
+
+        assertNotNull("Pairing code parsed", pairingCode);
+        String code = pairingCode.getPairingCode();
+        System.out.println("Pairing code V2: " + code);
+        // Pairing code XXX XXX XXX XXX
+        org.junit.Assert.assertTrue("Pairing code format: " + code, code.matches("\\d{3}( \\d{3}){3}"));
     }
 
     @Test

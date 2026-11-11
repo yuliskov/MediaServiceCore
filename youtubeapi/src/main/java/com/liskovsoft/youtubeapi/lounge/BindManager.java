@@ -3,6 +3,7 @@ package com.liskovsoft.youtubeapi.lounge;
 import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp;
 import com.liskovsoft.youtubeapi.lounge.models.bind.PairingCode;
 import com.liskovsoft.youtubeapi.lounge.models.bind.ScreenId;
+import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -21,4 +22,18 @@ public interface BindManager {
                                      @Field("screen_name") String screenName,
                                      @Field("access_type") String accessType,
                                      @Field("app") String app);
+
+    /**
+     * The response is text/plain (just the code digits), so it must be parsed with the RegExp converter.
+     * Previously lived in {@link InfoManager} (JsonPath converter), which returned null for the plain text body.
+     */
+    @FormUrlEncoded
+    @POST("https://www.youtube.com/api/lounge/pairing/get_pairing_code?ctx=pair")
+    Call<PairingCodeV2> getPairingCodeV2(@Field("lounge_token") String loungeToken,
+                                         @Field("screen_id") String screenId,
+                                         @Field("screen_name") String screenName,
+                                         @Field("access_type") String accessType,
+                                         @Field("app") String app,
+                                         @Field("device_id") String deviceId,
+                                         @Field("qr") String qr);
 }

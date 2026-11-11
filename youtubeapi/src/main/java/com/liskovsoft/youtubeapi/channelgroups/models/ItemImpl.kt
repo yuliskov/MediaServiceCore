@@ -23,7 +23,9 @@ internal data class ItemImpl(
     }
 
     override fun getIconUrl(): String? {
-        return iconUrl
+        // Items stored from metadata (e.g. a local playlist item added from a card without a channel id) have no
+        // image, so the playlist and its videos showed blank thumbnails. Fall back to the video thumbnail.
+        return iconUrl ?: videoId?.let { "https://i.ytimg.com/vi/$it/mqdefault.jpg" }
     }
 
     override fun getChannelId(): String? {

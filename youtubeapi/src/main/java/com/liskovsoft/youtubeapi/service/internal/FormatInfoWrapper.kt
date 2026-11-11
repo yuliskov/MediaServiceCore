@@ -96,6 +96,16 @@ internal object FormatInfoWrapper {
     }
 
     @JvmStatic
+    fun switchNextSubtitle() {
+        getVideoInfoService().switchNextSubtitle()
+    }
+
+    @JvmStatic
+    fun allowRestrictedVideos(allow: Boolean) {
+        getVideoInfoService().allowRestrictedVideos(allow)
+    }
+
+    @JvmStatic
     fun syncWithAuthInfoIfNeeded(formatInfo: MediaItemFormatInfo?) {
         if (formatInfo == null) {
             return

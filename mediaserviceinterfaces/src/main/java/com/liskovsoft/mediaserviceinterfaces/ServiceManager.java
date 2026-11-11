@@ -15,4 +15,5 @@ public interface ServiceManager {
     void switchNextClientNow();
     void switchNextSubsFormat();
     void reloadPlayerResponse(String videoId, String reloadPlaybackToken);
+    void allowRestrictedVideos(boolean allow);
 }

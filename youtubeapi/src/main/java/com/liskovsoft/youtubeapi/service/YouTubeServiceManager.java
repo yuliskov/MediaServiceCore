@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.service;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService;
 import com.liskovsoft.mediaserviceinterfaces.CommentsService;
@@ -20,7 +19,6 @@ import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import com.liskovsoft.youtubeapi.service.internal.FormatInfoWrapper;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 
 import io.reactivex.disposables.Disposable;
 
@@ -111,7 +109,7 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void switchNextSubsFormat() {
         FormatInfoWrapper.invalidateCache();
-        getVideoInfoService().switchNextSubtitle();
+        FormatInfoWrapper.switchNextSubtitle();
     }
 
     /**
@@ -124,13 +122,18 @@ public class YouTubeServiceManager implements ServiceManager {
         ReloadPlaybackGate.setToken(videoId, reloadPlaybackToken);
     }
 
+    @Override
+    public void allowRestrictedVideos(boolean allow) {
+        FormatInfoWrapper.allowRestrictedVideos(allow);
+    }
+
     private void refreshCacheIfNeededInt() {
         if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
             return;
         }
 
         mRefreshCoreDataAction =
-                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().refreshCacheIfNeeded(getFormatInfoWrapper().getActualClient())));
+                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().refreshCacheIfNeeded(FormatInfoWrapper.getActualClient())));
     }
 
     @NonNull
@@ -164,16 +167,6 @@ public class YouTubeServiceManager implements ServiceManager {
     }
 
     @NonNull
-    private static VideoInfoService getVideoInfoService() {
-        return VideoInfoService.instance();
-    }
-
-    @NonNull
-    private static FormatInfoWrapper getFormatInfoWrapper() {
-        return FormatInfoWrapper.INSTANCE;
-    }
-
-    @NonNull
     private static AppService getAppService() {
         return AppService.instance();
     }
@@ -188,7 +181,7 @@ public class YouTubeServiceManager implements ServiceManager {
         return ChannelGroupServiceImpl.INSTANCE;
     }
 
-    @Nullable
+    @NonNull
     private static MediaServiceData getMediaServiceData() {
         return MediaServiceData.instance();
     }

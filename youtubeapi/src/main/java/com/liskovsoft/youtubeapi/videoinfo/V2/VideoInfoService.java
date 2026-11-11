@@ -28,6 +28,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private final VideoInfoApi mVideoInfoApi;
     private boolean mUseAuth;
     private List<TranslationLanguage> mCachedTranslationLanguages;
+    private boolean mIsRestrictedVideosAllowed = true;
 
     private VideoInfoService() {
         mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
@@ -47,7 +48,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
             return null;
         }
 
-        mUseAuth = true;
+        mUseAuth = mIsRestrictedVideosAllowed;
 
         VideoInfo result = getVideoInfoWithRentFix(client, videoId, clickTrackingParams);
 
@@ -76,6 +77,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextSubtitle() {
         CaptionTrack.sFormat = Helpers.getNextValue(CaptionTrack.CaptionFormat.values(), CaptionTrack.sFormat);
+    }
+
+    public void allowRestrictedVideos(boolean allow) {
+        mIsRestrictedVideosAllowed = allow;
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {

@@ -11,10 +11,26 @@ import com.liskovsoft.youtubeapi.innertube.InnertubeService
 import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService
+import java.util.Collections
+import java.util.concurrent.atomic.AtomicInteger
 
 internal object FormatInfoWrapper {
     private enum class ProviderType { INNERTUBE, LEGACY }
-    private var mCachedFormatInfo: MediaItemFormatInfo? = null
+    /**
+     * Current video + preloaded next video + recently played ones (instant going back)
+     */
+    private const val MAX_CACHE_SIZE = 10
+    private class CacheEntry(val formatInfo: MediaItemFormatInfo, val clientPlaybackNonce: String?)
+    private val mCache: MutableMap<String, CacheEntry> = Collections.synchronizedMap(
+        object : LinkedHashMap<String, CacheEntry>(MAX_CACHE_SIZE + 1, 0.75f, true) {
+            override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, CacheEntry>?): Boolean = size > MAX_CACHE_SIZE
+        })
+    @Volatile
+    private var mIsPreloading: Boolean = false
+    /**
+     * Incremented each time a cached video is opened for playback (it sets its own nonce)
+     */
+    private val mCachedOpenCount = AtomicInteger()
     private val mInnertubeProvider: (AppClient, String, String?) -> MediaItemFormatInfo? =
         { client, videoId, clickTrackingParams -> getFormatInfoInnertube(client, videoId, clickTrackingParams) }
     private val mLegacyProvider: (AppClient, String, String?) -> MediaItemFormatInfo? =
@@ -47,6 +63,9 @@ internal object FormatInfoWrapper {
             return null
 
         try {
+            // Preloaded video. Don't wait for another preload that is running now.
+            getCachedFormatInfo(videoId)?.let { return it }
+
             synchronized(lock) {
                 //videoId = "K04WmBtVsOs"; // the testing video: Memories of Memories
 
@@ -69,6 +88,39 @@ internal object FormatInfoWrapper {
         }
     }
 
+    /**
+     * Fetch and cache the format of the video that most likely will be played next (e.g. next Shorts).<br/>
+     * Keeps the state of the current video (playback nonce, client fallback state) untouched.
+     */
+    @JvmStatic
+    fun preloadFormatInfo(videoId: String?, clickTrackingParams: String?): MediaItemFormatInfo? {
+        if (videoId == null)
+            return null
+
+        synchronized(lock) {
+            getCachedEntry(videoId)?.let { return it.formatInfo }
+
+            val appService = AppService.instance()
+            val currentNonce = appService.peekClientPlaybackNonce()
+            val openCount = mCachedOpenCount.get()
+            mIsPreloading = true
+
+            try {
+                val formatInfo = firstPlayable(videoId, clickTrackingParams)
+
+                setCachedFormatInfo(formatInfo, clickTrackingParams)
+
+                return formatInfo
+            } finally {
+                mIsPreloading = false
+                // Watch history of the current video uses it.
+                // Skip if a cached video has been opened meanwhile (it has set its own nonce).
+                if (openCount == mCachedOpenCount.get())
+                    appService.setClientPlaybackNonce(currentNonce)
+            }
+        }
+    }
+
     @JvmStatic
     fun switchNextClient(force: Boolean) {
         // Try to reset pot cache for the last video
@@ -88,7 +140,7 @@ internal object FormatInfoWrapper {
 
     @JvmStatic
     fun invalidateCache() {
-        mCachedFormatInfo = null
+        mCache.clear()
     }
 
     @JvmStatic
@@ -169,17 +221,44 @@ internal object FormatInfoWrapper {
     }
 
     private fun getCachedFormatInfo(videoId: String?): MediaItemFormatInfo? {
-        return mCachedFormatInfo?.takeIf { videoId != null && it.getVideoId() == videoId && it.isCacheActual() }
+        val entry = getCachedEntry(videoId) ?: return null
+
+        // The video is about to be played. Its history should be tracked with the nonce of its own player request.
+        // NOTE: can be called without the lock (see getFormatInfo) while a preload is running on another thread.
+        val calledByPreload = mIsPreloading && Thread.holdsLock(lock)
+
+        if (!calledByPreload) {
+            AppService.instance().setClientPlaybackNonce(entry.clientPlaybackNonce)
+            mCachedOpenCount.incrementAndGet()
+        }
+
+        return entry.formatInfo
+    }
+
+    private fun getCachedEntry(videoId: String?): CacheEntry? {
+        if (videoId == null)
+            return null
+
+        val entry = mCache[videoId] ?: return null
+
+        if (!entry.formatInfo.isCacheActual()) {
+            mCache.remove(videoId)
+            return null
+        }
+
+        return entry
     }
 
     private fun setCachedFormatInfo(formatInfo: MediaItemFormatInfo?, clickTrackingParams: String?) {
-        if (formatInfo == null || formatInfo.isUnplayable()) {
-            mCachedFormatInfo = null
+        val videoId = formatInfo?.getVideoId() ?: return
+
+        if (formatInfo.isUnplayable()) {
+            mCache.remove(videoId)
             return
         }
 
-        mCachedFormatInfo = formatInfo
         formatInfo.setClickTrackingParams(clickTrackingParams)
+        mCache[videoId] = CacheEntry(formatInfo, AppService.instance().peekClientPlaybackNonce())
     }
 
     private fun checkSigned() {
@@ -231,6 +310,9 @@ internal object FormatInfoWrapper {
     }
 
     private fun persistRecentTypeIfNeeded(client: Pair<AppClient, ProviderType>, videoInfo: MediaItemFormatInfo?) {
+        if (mIsPreloading) // don't touch the state of the current video
+            return
+
         if (videoInfo == null || videoInfo.isUnplayable() || client == mActualClient) {
             return
         }

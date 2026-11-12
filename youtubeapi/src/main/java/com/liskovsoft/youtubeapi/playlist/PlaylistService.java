@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.playlist;
 
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.actions.models.ActionResult;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
@@ -11,6 +12,10 @@ import java.util.List;
 import retrofit2.Call;
 
 public class PlaylistService {
+    private static final String STATUS_SUCCEEDED = "STATUS_SUCCEEDED";
+    private static final String CHANNEL_ID_PREFIX = "UC";
+    // Playlist that holds the regular videos of a channel (no Shorts, no live streams)
+    private static final String CHANNEL_VIDEOS_PLAYLIST_PREFIX = "UULF";
     private final PlaylistApi mPlaylistManager;
 
     public PlaylistService() {
@@ -29,6 +34,33 @@ public class PlaylistService {
                 mPlaylistManager.editPlaylist(PlaylistApiHelper.getAddToPlaylistQuery(playlistId, videoId));
 
         RetrofitHelper.get(wrapper); // ignore result
+    }
+
+    /**
+     * Adds all videos of the source playlist in a single request.<br/>
+     * Videos that already exist in the target playlist are skipped.
+     */
+    public void addPlaylistToPlaylist(String playlistId, String sourcePlaylistId) {
+        Call<ActionResult> wrapper =
+                mPlaylistManager.editPlaylist(PlaylistApiHelper.getAddPlaylistToPlaylistQuery(playlistId, sourcePlaylistId));
+
+        ActionResult result = RetrofitHelper.getWithErrors(wrapper);
+        String status = result != null ? result.getStatus() : null;
+
+        if (!Helpers.equals(status, STATUS_SUCCEEDED)) {
+            throw new IllegalStateException("Can't add playlist to playlist. Status: " + status);
+        }
+    }
+
+    /**
+     * Adds all regular videos of the channel (no Shorts, no live streams) in a single request.
+     */
+    public void addChannelToPlaylist(String playlistId, String channelId) {
+        if (!Helpers.startsWith(channelId, CHANNEL_ID_PREFIX)) {
+            throw new IllegalStateException("Unsupported channel id: " + channelId);
+        }
+
+        addPlaylistToPlaylist(playlistId, CHANNEL_VIDEOS_PLAYLIST_PREFIX + channelId.substring(CHANNEL_ID_PREFIX.length()));
     }
 
     public void removeFromPlaylist(String playlistId, String videoId) {

@@ -21,8 +21,8 @@ internal object FormatInfoWrapper {
         { client, videoId, clickTrackingParams -> getFormatInfoLegacy(client, videoId, clickTrackingParams) }
     private val lock = Any()
     private val CLIENT_LIST = arrayOf(
-        Pair(AppClient.TV, ProviderType.LEGACY), // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
         Pair(AppClient.WEB, ProviderType.INNERTUBE), // Fix video clip blocked in current location
+        Pair(AppClient.TV, ProviderType.LEGACY), // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
         Pair(AppClient.VISIONOS, ProviderType.LEGACY), // no url formats
         Pair(AppClient.TV_DOWNGRADED, ProviderType.LEGACY), // works with old UAs like old Cobalt and old Xbox (non-tcl players)
         Pair(AppClient.WEB_EMBED, ProviderType.LEGACY), // Restricted (18+) videos (not working)
@@ -126,9 +126,9 @@ internal object FormatInfoWrapper {
     }
 
     private fun firstPlayable(videoId: String, clickTrackingParams: String?): MediaItemFormatInfo? {
-        val result = firstInfoWith(videoId, clickTrackingParams) { !it.isUnplayable() }
-
-        return result ?: firstInfoWith(videoId, clickTrackingParams) { it.urlFormats != null }
+        return firstInfoWith(videoId, clickTrackingParams) { !it.isUnplayable() }
+            ?: firstInfoWith(videoId, clickTrackingParams) { it.urlFormats != null } // fallback to regular formats (480p)
+            ?: firstInfoWith(videoId, clickTrackingParams) { true } // fallback to error result
     }
 
     private fun firstInfoWith(videoId: String, clickTrackingParams: String?, infoTester: (MediaItemFormatInfo) -> Boolean): MediaItemFormatInfo? {

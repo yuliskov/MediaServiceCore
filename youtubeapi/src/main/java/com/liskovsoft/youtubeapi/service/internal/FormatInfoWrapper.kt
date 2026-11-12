@@ -56,10 +56,6 @@ internal object FormatInfoWrapper {
                     return cachedFormatInfo
                 }
 
-                checkSigned()
-
-                AppService.instance().resetClientPlaybackNonce() // history fix: unique value per each format info
-
                 val formatInfo = firstPlayable(videoId, clickTrackingParams)
 
                 mIsUnplayable = formatInfo?.isUnplayable ?: true
@@ -136,7 +132,13 @@ internal object FormatInfoWrapper {
         var nextClient = beginClient
 
         do {
-            val result = getProvider(nextClient)(nextClient.first, videoId, clickTrackingParams)
+            val provider = getProvider(nextClient)
+
+            checkSigned()
+
+            AppService.instance().resetClientPlaybackNonce() // history/pot fix: unique value per each format info
+
+            val result = provider(nextClient.first, videoId, clickTrackingParams)
 
             if (result != null && infoTester(result)) {
                 persistRecentTypeIfNeeded(nextClient, result)

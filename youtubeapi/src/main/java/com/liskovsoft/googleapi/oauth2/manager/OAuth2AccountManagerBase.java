@@ -7,6 +7,7 @@ import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class OAuth2AccountManagerBase {
@@ -79,16 +80,18 @@ public abstract class OAuth2AccountManagerBase {
             return;
         }
 
-        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        headers.clear();
+        Map<String, String> headers = new HashMap<>();
 
-        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
+        Account selectedAccount = getSelectedAccount();
+        if (mCachedAuthorizationHeader != null && selectedAccount != null) {
             headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
+            String pageIdToken = ((YouTubeAccount) selectedAccount).getPageIdToken();
             if (pageIdToken != null) {
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
                 headers.put("X-Goog-Pageid", pageIdToken);
             }
         }
+
+        RetrofitOkHttpHelper.replaceAuthHeaders(headers);
     }
 }

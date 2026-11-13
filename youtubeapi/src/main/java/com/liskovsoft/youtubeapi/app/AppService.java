@@ -137,7 +137,7 @@ public class AppService {
     }
 
     /**
-     * NOTE: Unique per video info instance<br/>
+     * NOTE: The value should be unique per each /player fetch. Mainly used in tracking (history).<br/>
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
     public synchronized String getClientPlaybackNonce(@Nullable AppClient client) {

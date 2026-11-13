@@ -21,8 +21,8 @@ internal object FormatInfoWrapper {
         { client, videoId, clickTrackingParams -> getFormatInfoLegacy(client, videoId, clickTrackingParams) }
     private val lock = Any()
     private val CLIENT_LIST = arrayOf(
-        Pair(AppClient.WEB, ProviderType.INNERTUBE), // Fix video clip blocked in current location
         Pair(AppClient.TV, ProviderType.LEGACY), // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
+        Pair(AppClient.WEB, ProviderType.INNERTUBE), // Fix video clip blocked in current location
         Pair(AppClient.VISIONOS, ProviderType.LEGACY), // no url formats
         Pair(AppClient.TV_DOWNGRADED, ProviderType.LEGACY), // works with old UAs like old Cobalt and old Xbox (non-tcl players)
         Pair(AppClient.WEB_EMBED, ProviderType.LEGACY), // Restricted (18+) videos (not working)
@@ -55,6 +55,8 @@ internal object FormatInfoWrapper {
                 if (cachedFormatInfo != null) {
                     return cachedFormatInfo
                 }
+
+                checkSigned()
 
                 val formatInfo = firstPlayable(videoId, clickTrackingParams)
 
@@ -132,13 +134,10 @@ internal object FormatInfoWrapper {
         var nextClient = beginClient
 
         do {
-            val provider = getProvider(nextClient)
+            // NOTE: History fix. CPN should be unique per each /player fetch
+            AppService.instance().resetClientPlaybackNonce()
 
-            checkSigned()
-
-            AppService.instance().resetClientPlaybackNonce() // history/pot fix: unique value per each format info
-
-            val result = provider(nextClient.first, videoId, clickTrackingParams)
+            val result = getProvider(nextClient)(nextClient.first, videoId, clickTrackingParams)
 
             if (result != null && infoTester(result)) {
                 persistRecentTypeIfNeeded(nextClient, result)

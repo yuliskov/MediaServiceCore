@@ -22,6 +22,7 @@ internal object FormatInfoWrapper {
     private val lock = Any()
     private val CLIENT_LIST = arrayOf(
         Pair(AppClient.TV, ProviderType.LEGACY), // Supports auth. Fixes "please sign in" bug! (the best for Premium users)
+        Pair(AppClient.TV_SAMSUNG, ProviderType.LEGACY), // Supports auth. Still contains DASH formats
         Pair(AppClient.WEB, ProviderType.INNERTUBE), // Fix video clip blocked in current location
         Pair(AppClient.VISIONOS, ProviderType.LEGACY), // no url formats
         Pair(AppClient.TV_DOWNGRADED, ProviderType.LEGACY), // works with old UAs like old Cobalt and old Xbox (non-tcl players)

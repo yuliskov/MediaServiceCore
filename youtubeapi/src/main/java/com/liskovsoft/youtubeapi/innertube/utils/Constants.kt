@@ -69,7 +69,42 @@ internal object CLIENTS {
         API_VERSION = "v1",
         STATIC_VISITOR_ID = "6zpwvWUNAco",
         SUGG_EXP_ID = "ytzpb5_e2,ytpo.bo.lqp.elu=1,ytpo.bo.lqp.ecsc=1,ytpo.bo.lqp.mcsc=3,ytpo.bo.lqp.mec=1,ytpo.bo.lqp.rw=0.8,ytpo.bo.lqp.fw=0.2,ytpo.bo.lqp.szp=1,ytpo.bo.lqp.mz=3,ytpo.bo.lqp.al=en_us,ytpo.bo.lqp.zrm=1,ytpo.bo.lqp.er=1,ytpo.bo.ro.erl=1,ytpo.bo.ro.mlus=3,ytpo.bo.ro.erls=3,ytpo.bo.qfo.mlus=3,ytzprp.ppp.e=1,ytzprp.ppp.st=772,ytzprp.ppp.p=5",
+        USER_AGENT = DefaultHeaders.USER_AGENT_WEB,
         REFERER = "https://www.youtube.com"
+    )
+
+    val WEB_EMBEDDED = CLIENT(
+        NAME = "WEB_EMBEDDED_PLAYER",
+        VERSION = "2.20260908.01.00",
+        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
+        API_VERSION = "v1",
+        STATIC_VISITOR_ID = "6zpwvWUNAco",
+        USER_AGENT = DefaultHeaders.USER_AGENT_SAFARI,
+        REFERER = "https://www.youtube.com"
+    )
+
+    val WEB_SAFARI = CLIENT(
+        NAME = "WEB",
+        VERSION = "2.20260907.06.00",
+        API_VERSION = "v1",
+        USER_AGENT = DefaultHeaders.USER_AGENT_SAFARI,
+        REFERER = "https://www.youtube.com"
+    )
+
+    val WEB_KIDS = CLIENT(
+        NAME = "WEB_KIDS",
+        VERSION = "2.20260205.00.00",
+        USER_AGENT = DefaultHeaders.USER_AGENT_WEB
+    )
+
+    val WEB_CREATOR = CLIENT(
+        NAME = "WEB_CREATOR",
+        VERSION = "1.20241203.01.00",
+        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
+        API_VERSION = "v1",
+        STATIC_VISITOR_ID = "6zpwvWUNAco",
+        USER_AGENT = DefaultHeaders.USER_AGENT_WEB,
+        REFERER = "https://studio.youtube.com"
     )
 
     val MWEB = CLIENT(
@@ -77,18 +112,14 @@ internal object CLIENTS {
         VERSION = "2.20260907.05.00",
         API_VERSION = "v1",
         // mweb previously did not require PO Token with this UA
-        USER_AGENT = "Mozilla/5.0 (iPad; CPU OS 16_7_10 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1,gzip(gfe)",
+        USER_AGENT = DefaultHeaders.USER_AGENT_MOBILE_WEB,
         REFERER = "https://m.youtube.com"
-    )
-
-    val WEB_KIDS = CLIENT(
-        NAME = "WEB_KIDS",
-        VERSION = "2.20260205.00.00"
     )
 
     val YTMUSIC = CLIENT(
         NAME = "WEB_REMIX",
         VERSION = "1.20260707.12.00",
+        USER_AGENT = DefaultHeaders.USER_AGENT_WEB,
         REFERER = "https://music.youtube.com"
     )
 
@@ -107,7 +138,7 @@ internal object CLIENTS {
         OS_NAME = "Android",
         SDK_VERSION = 30,
         OS_VERSION = "11",
-        USER_AGENT = "com.google.android.youtube/21.26.364 (Linux; U; Android 11) gzip"
+        USER_AGENT = DefaultHeaders.USER_AGENT_ANDROID
     )
 
     // "Made for kids" videos aren't available with this client
@@ -125,19 +156,22 @@ internal object CLIENTS {
 
     val YTSTUDIO_ANDROID = CLIENT(
         NAME = "ANDROID_CREATOR",
-        VERSION = "22.43.101"
+        VERSION = "22.43.101",
+        USER_AGENT = DefaultHeaders.USER_AGENT_ANDROID
     )
 
     val YTMUSIC_ANDROID = CLIENT(
         NAME = "ANDROID_MUSIC",
-        VERSION = "5.34.51"
+        VERSION = "5.34.51",
+        USER_AGENT = DefaultHeaders.USER_AGENT_ANDROID
     )
 
     val TV = CLIENT(
         NAME = "TVHTML5",
         VERSION = "7.20260901.15.00",
         // See: https://github.com/youtube/cobalt/blob/main/cobalt/browser/user_agent/user_agent_platform_info.cc#L506
-        USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)",
+        //USER_AGENT = "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/25.lts.30.1034943-gold (unlike Gecko), Unknown_TV_Unknown_0/Unknown (Unknown, Unknown)",
+        USER_AGENT = DefaultHeaders.USER_AGENT_TV,
         REFERER = "https://www.youtube.com/tv"
     )
 
@@ -149,15 +183,28 @@ internal object CLIENTS {
         REFERER = "https://www.youtube.com/tv"
     )
 
+    val TV_SAMSUNG = CLIENT(
+        NAME = "TVHTML5",
+        VERSION = "5.20260707",
+        OS_NAME = "Tizen",
+        OS_VERSION = "2.4.0",
+        DEVICE_MAKE = "Samsung",
+        DEVICE_MODEL = "UKS9800",
+        USER_AGENT = "Mozilla/5.0 (SMART-TV; Linux; Tizen 2.4.0) AppleWebKit/538.1 (KHTML, like Gecko) Version/2.4.0 TV Safari/538.1",
+        REFERER = "https://www.youtube.com/tv"
+    )
+
     val TV_SIMPLY = CLIENT(
         NAME = "TVHTML5_SIMPLY",
         VERSION = "1.0",
+        USER_AGENT = DefaultHeaders.USER_AGENT_TV,
         REFERER = "https://www.youtube.com/tv"
     )
 
     val TV_EMBEDDED = CLIENT(
         NAME = "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
         VERSION = "2.0",
+        USER_AGENT = DefaultHeaders.USER_AGENT_TV,
         REFERER = "https://www.youtube.com/tv"
     )
 
@@ -165,25 +212,8 @@ internal object CLIENTS {
     val TV_KIDS = CLIENT(
         NAME = "TVHTML5_KIDS",
         VERSION = "3.20231113.03.00",
+        USER_AGENT = DefaultHeaders.USER_AGENT_TV,
         REFERER = "https://www.youtube.com/tv/kids"
-    )
-
-    val WEB_EMBEDDED = CLIENT(
-        NAME = "WEB_EMBEDDED_PLAYER",
-        VERSION = "2.20260908.01.00",
-        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
-        API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco",
-        REFERER = "https://www.youtube.com"
-    )
-
-    val WEB_CREATOR = CLIENT(
-        NAME = "WEB_CREATOR",
-        VERSION = "1.20241203.01.00",
-        API_KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
-        API_VERSION = "v1",
-        STATIC_VISITOR_ID = "6zpwvWUNAco",
-        REFERER = "https://studio.youtube.com"
     )
 
     val ALl = mapOf(
@@ -213,7 +243,7 @@ internal data class CLIENT(
     val SDK_VERSION: Int? = null,
     val DEVICE_MAKE: String? = null,
     val DEVICE_MODEL: String? = null,
-    val USER_AGENT: String? = null,
+    val USER_AGENT: String,
     val OS_NAME: String? = null,
     val OS_VERSION: String? = null,
     val API_KEY: String? = null,

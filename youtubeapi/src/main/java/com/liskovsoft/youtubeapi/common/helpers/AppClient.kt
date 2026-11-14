@@ -1,6 +1,5 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
-import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.innertube.utils.CLIENTS
@@ -33,46 +32,48 @@ internal enum class AppClient(
 ): MediaItemFormatInfo.ClientInfo {
     // Doesn't support 8AEB2AMB param if X-Goog-Pageid is set!
     TV(CLIENTS.TV.NAME, CLIENTS.TV.VERSION, CLIENT_NAME_IDS[CLIENTS.TV.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = CLIENTS.TV.USER_AGENT, referer = CLIENTS.TV.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     TV_LEGACY(TV, postDataBrowse = POST_DATA_BROWSE_TV_LEGACY),
     TV_EMBED(CLIENTS.TV_EMBEDDED.NAME, CLIENTS.TV_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_EMBEDDED.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV_EMBEDDED.REFERER, clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = CLIENTS.TV_EMBEDDED.USER_AGENT, referer = CLIENTS.TV_EMBEDDED.REFERER, clientScreen = CLIENT_SCREEN_EMBED, postDataBrowse = POST_DATA_BROWSE_TV),
     // Can't use authorization
     TV_SIMPLY(CLIENTS.TV_SIMPLY.NAME, CLIENTS.TV_SIMPLY.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_SIMPLY.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_TV, referer = CLIENTS.TV_SIMPLY.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
+        userAgent = CLIENTS.TV_SIMPLY.USER_AGENT, referer = CLIENTS.TV_SIMPLY.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     // NOTE: TV KIDS not exists anymore. It has been merged with TV client!
-    TV_KIDS(CLIENTS.TV_KIDS.NAME, CLIENTS.TV_KIDS.VERSION, null, userAgent = DefaultHeaders.USER_AGENT_TV,
+    TV_KIDS(CLIENTS.TV_KIDS.NAME, CLIENTS.TV_KIDS.VERSION, null, userAgent = CLIENTS.TV_KIDS.USER_AGENT,
         referer = CLIENTS.TV_KIDS.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     TV_DOWNGRADED(TV, clientVersion = CLIENTS.TV_DOWNGRADED.VERSION, userAgent = CLIENTS.TV_DOWNGRADED.USER_AGENT),
+    TV_SAMSUNG(CLIENTS.TV_SAMSUNG.NAME, CLIENTS.TV_SAMSUNG.VERSION, CLIENT_NAME_IDS[CLIENTS.TV_SAMSUNG.NAME],
+        userAgent = CLIENTS.TV_SAMSUNG.USER_AGENT, referer = CLIENTS.TV_SAMSUNG.REFERER, postDataBrowse = POST_DATA_BROWSE_TV),
     // 8AEB2AMB - web client premium formats?
     WEB(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB.REFERER),
+        userAgent = CLIENTS.WEB.USER_AGENT, referer = CLIENTS.WEB.REFERER),
     // Use WEB_EMBEDDED_PLAYER instead of WEB. Some videos have 403 error on WEB.
     WEB_EMBED(CLIENTS.WEB_EMBEDDED.NAME, CLIENTS.WEB_EMBEDDED.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_EMBEDDED.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = CLIENTS.WEB_EMBEDDED.REFERER),
+        userAgent = CLIENTS.WEB_EMBEDDED.USER_AGENT, referer = CLIENTS.WEB_EMBEDDED.REFERER),
     // Request contains an invalid argument.
     WEB_CREATOR(CLIENTS.WEB_CREATOR.NAME, CLIENTS.WEB_CREATOR.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_CREATOR.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.WEB_CREATOR.REFERER),
+        userAgent = CLIENTS.WEB_CREATOR.USER_AGENT, referer = CLIENTS.WEB_CREATOR.REFERER),
     WEB_MUSIC(CLIENTS.YTMUSIC.NAME, CLIENTS.YTMUSIC.VERSION, CLIENT_NAME_IDS[CLIENTS.YTMUSIC.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_WEB, referer = CLIENTS.YTMUSIC.REFERER),
-    WEB_SAFARI(CLIENTS.WEB.NAME, CLIENTS.WEB.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_SAFARI, referer = CLIENTS.WEB.REFERER),
+        userAgent = CLIENTS.YTMUSIC.USER_AGENT, referer = CLIENTS.YTMUSIC.REFERER),
+    WEB_SAFARI(CLIENTS.WEB_SAFARI.NAME, CLIENTS.WEB_SAFARI.VERSION, CLIENT_NAME_IDS[CLIENTS.WEB_SAFARI.NAME],
+        userAgent = CLIENTS.WEB_SAFARI.USER_AGENT, referer = CLIENTS.WEB_SAFARI.REFERER),
     WEB_DUMMY(WEB), // used for metadata fetching like available translation languages
     MWEB(CLIENTS.MWEB.NAME, CLIENTS.MWEB.VERSION, CLIENT_NAME_IDS[CLIENTS.MWEB.NAME],
-        userAgent = CLIENTS.MWEB.USER_AGENT!!, referer = CLIENTS.MWEB.REFERER),
+        userAgent = CLIENTS.MWEB.USER_AGENT, referer = CLIENTS.MWEB.REFERER),
     ANDROID(CLIENTS.ANDROID.NAME, CLIENTS.ANDROID.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID.NAME],
-        userAgent = DefaultHeaders.USER_AGENT_ANDROID, referer = null,
+        userAgent = CLIENTS.ANDROID.USER_AGENT, referer = null,
         postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID.SDK_VERSION) + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
     ANDROID_SDK_LESS(baseClient = ANDROID, postData = String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID.OS_VERSION)),
     ANDROID_REEL(ANDROID),
     ANDROID_VR(CLIENTS.ANDROID_VR.NAME, CLIENTS.ANDROID_VR.VERSION, CLIENT_NAME_IDS[CLIENTS.ANDROID_VR.NAME],
-        userAgent = CLIENTS.ANDROID_VR.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID_VR.SDK_VERSION)
+        userAgent = CLIENTS.ANDROID_VR.USER_AGENT, referer = null, postData = String.format(POST_DATA_ANDROID_SDK, CLIENTS.ANDROID_VR.SDK_VERSION)
                 + String.format(POST_DATA_ANDROID_OS, CLIENTS.ANDROID_VR.OS_VERSION)
                 + String.format(POST_DATA_ANDROID_MODEL, CLIENTS.ANDROID_VR.DEVICE_MODEL, CLIENTS.ANDROID_VR.DEVICE_MAKE)),
     IOS(CLIENTS.IOS.NAME, CLIENTS.IOS.VERSION, CLIENT_NAME_IDS[CLIENTS.IOS.NAME],
-        userAgent = CLIENTS.IOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.IOS.DEVICE_MODEL, CLIENTS.IOS.OS_VERSION)),
+        userAgent = CLIENTS.IOS.USER_AGENT, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.IOS.DEVICE_MODEL, CLIENTS.IOS.OS_VERSION)),
     VISIONOS(CLIENTS.VISIONOS.NAME, CLIENTS.VISIONOS.VERSION, CLIENT_NAME_IDS[CLIENTS.VISIONOS.NAME],
-        userAgent = CLIENTS.VISIONOS.USER_AGENT!!, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.VISIONOS.DEVICE_MODEL, CLIENTS.VISIONOS.OS_VERSION)),
+        userAgent = CLIENTS.VISIONOS.USER_AGENT, referer = null, postData = String.format(POST_DATA_IOS_MODEL, CLIENTS.VISIONOS.DEVICE_MODEL, CLIENTS.VISIONOS.OS_VERSION)),
     INITIAL(WEB),
     GEO(WEB);
 
@@ -108,9 +109,9 @@ internal enum class AppClient(
     val baseTemplate by lazy { String.format(JSON_POST_DATA_BASE, clientName, clientVersion, clientScreen, userAgent,
         (postDataBrowser ?: "") + (postData ?: "")) }
 
-    val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED) } // NOTE: TV_SIMPLY doesn't support auth
+    val isAuthSupported by lazy { Helpers.equalsAny(this, TV, TV_LEGACY, TV_EMBED, TV_KIDS, TV_DOWNGRADED, TV_SAMSUNG) } // NOTE: TV_SIMPLY doesn't support auth
     val isWebPotRequired by lazy { Helpers.equalsAny(this, WEB, MWEB, WEB_EMBED, WEB_SAFARI, INITIAL, GEO) }
-    val isTvPotRequired by lazy { Helpers.equalsAny(this, TV) }
+    val isTvPotRequired by lazy { Helpers.equalsAny(this, TV, TV_SAMSUNG) }
     // TODO: remove after implement SABR
     val isPlaybackBroken by lazy { Helpers.equalsAny(this, INITIAL, WEB, WEB_CREATOR, WEB_MUSIC, WEB_SAFARI, ANDROID_VR, GEO, MWEB, WEB_EMBED, TV_EMBED, IOS) }
     val isReelClient by lazy { Helpers.equalsAny(this, ANDROID_REEL) }

@@ -7,4 +7,5 @@ public interface CommentsService {
     Observable<CommentGroup> getCommentsObserve(String key);
     Observable<Void> toggleLikeObserve(String key);
     Observable<Void> toggleDislikeObserve(String key);
+    Observable<Void> createCommentObserve(String videoId, String commentText);
 }

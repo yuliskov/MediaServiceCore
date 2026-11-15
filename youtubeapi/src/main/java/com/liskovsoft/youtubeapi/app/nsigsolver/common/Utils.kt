@@ -56,3 +56,25 @@ internal inline fun <T> V8.withLock(block: (V8) -> T): T {
         locker.release()
     }
 }
+
+internal inline fun <T> withRuntimeCleanup(cleanup: () -> Unit, block: () -> T): T {
+    var failure: Throwable? = null
+    try {
+        return block()
+    } catch (error: Throwable) {
+        failure = error
+        throw error
+    } finally {
+        if (failure == null) {
+            cleanup()
+        } else {
+            try {
+                cleanup()
+            } catch (cleanupError: Throwable) {
+                if (cleanupError !== failure) {
+                    failure.addSuppressed(cleanupError)
+                }
+            }
+        }
+    }
+}

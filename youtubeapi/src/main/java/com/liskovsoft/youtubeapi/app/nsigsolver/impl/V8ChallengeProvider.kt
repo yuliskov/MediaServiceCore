@@ -4,6 +4,7 @@ import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.withLock
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.withRuntimeCleanup
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderError
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.JsRuntimeChalBaseJCP
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.Script
@@ -35,13 +36,10 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
     override fun runJsRuntime(stdin: String): String {
         synchronized(v8Lock) {
-            initRuntime()
-
-            val result = runV8(stdin)
-
-            shutdownIfNeeded()
-
-            return result
+            return withRuntimeCleanup(::shutdownIfNeeded) {
+                initRuntime()
+                runV8(stdin)
+            }
         }
     }
 
@@ -67,12 +65,12 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
     private fun disposeRuntime() {
         val runtime = v8Runtime ?: return
+        v8Runtime = null
 
         // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
         runtime.withLock {
             it.release(false)
         }
-        v8Runtime = null
     }
 
     private fun shutdownIfNeeded() {

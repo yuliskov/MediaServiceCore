@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.app.nsigsolver.common.CacheService
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.CachedData
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.loadScript
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.withLock
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.withRuntimeCleanup
 
 /**
  * Solves the n-parameter challenge for TCL-flavored players (tv-player-*-tcl.vflset), whose
@@ -74,10 +75,10 @@ internal object TclChallengeProvider {
 
         val stdout = try {
             synchronized(v8Lock) {
-                initRuntime()
-                val result = runV8(stdin)
-                shutdownIfNeeded()
-                result
+                withRuntimeCleanup(::shutdownIfNeeded) {
+                    initRuntime()
+                    runV8(stdin)
+                }
             }
         } catch (e: Exception) {
             Log.e(tag, "TCL n-function solve failed: ${e.message}")
@@ -131,9 +132,9 @@ internal object TclChallengeProvider {
 
     private fun shutdownIfNeeded() {
         val runtime = v8Runtime ?: return
+        v8Runtime = null
         runtime.withLock {
             it.release(false)
         }
-        v8Runtime = null
     }
 }

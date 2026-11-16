@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.actions;
 
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.youtubeapi.notifications.NotificationStorage;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
 
 public class ActionsServiceWrapper extends ActionsService {
     private static ActionsServiceWrapper sInstance;
@@ -16,7 +17,8 @@ public class ActionsServiceWrapper extends ActionsService {
 
     @Override
     public boolean subscribe(String channelId, String params) {
-        boolean accepted = super.subscribe(channelId, params);
+        // Signed out, the local channel list is the subscription, whatever YouTube answers
+        boolean accepted = super.subscribe(channelId, params) || !isSigned();
 
         if (accepted) {
             ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
@@ -27,7 +29,8 @@ public class ActionsServiceWrapper extends ActionsService {
 
     @Override
     public boolean unsubscribe(String channelId) {
-        boolean accepted = super.unsubscribe(channelId);
+        // Signed out, the local channel list is the subscription, whatever YouTube answers
+        boolean accepted = super.unsubscribe(channelId) || !isSigned();
 
         if (accepted) {
             ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
@@ -62,5 +65,9 @@ public class ActionsServiceWrapper extends ActionsService {
         super.removeDislike(videoId);
 
         NotificationStorage.setLike(true);
+    }
+
+    private static boolean isSigned() {
+        return YouTubeSignInService.instance().isSigned();
     }
 }

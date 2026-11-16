@@ -338,6 +338,18 @@ public class YouTubeMediaItemService implements MediaItemService {
         getPlaylistService().addToPlaylist(playlistId, item.getVideoId());
     }
 
+    private void addPlaylistToPlaylist(String playlistId, String sourcePlaylistId) {
+        checkSigned();
+
+        getPlaylistService().addPlaylistToPlaylist(playlistId, sourcePlaylistId);
+    }
+
+    private void addChannelToPlaylist(String playlistId, String channelId) {
+        checkSigned();
+
+        getPlaylistService().addChannelToPlaylist(playlistId, channelId);
+    }
+
     @Override
     public void removeFromPlaylist(String playlistId, String videoId) {
         checkSigned();
@@ -419,6 +431,16 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<Void> addToPlaylistObserve(String playlistId, MediaItem item) {
         return RxHelper.fromRunnable(() -> addToPlaylist(playlistId, item));
+    }
+
+    @Override
+    public Observable<Void> addPlaylistToPlaylistObserve(String playlistId, String sourcePlaylistId) {
+        return RxHelper.fromRunnable(() -> addPlaylistToPlaylist(playlistId, sourcePlaylistId));
+    }
+
+    @Override
+    public Observable<Void> addChannelToPlaylistObserve(String playlistId, String channelId) {
+        return RxHelper.fromRunnable(() -> addChannelToPlaylist(playlistId, channelId));
     }
 
     @Override

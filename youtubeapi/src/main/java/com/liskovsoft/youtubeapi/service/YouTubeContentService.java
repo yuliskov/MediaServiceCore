@@ -101,17 +101,6 @@ class YouTubeContentService implements ContentService {
 
         MediaGroup subscriptions = getBrowseService2().getSubscriptions();
 
-        // TEMP fix. Subs not fully populated.
-        //if (subscriptions != null && subscriptions.getMediaItems() != null && subscriptions.getMediaItems().size() <= 5) {
-        //    MediaGroup continuation = continueGroup(subscriptions);
-        //    if (continuation == null || continuation.getMediaItems() == null || continuation.getMediaItems().isEmpty()) {
-        //        if (getMediaServiceData() != null && !getMediaServiceData().isLegacyUIEnabled()) {
-        //            getMediaServiceData().setLegacyUIEnabled(true);
-        //            return getBrowseService2().getSubscriptions();
-        //        }
-        //    }
-        //}
-
         return subscriptions;
     }
 
@@ -335,7 +324,13 @@ class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getMyVideosObserve() {
-        return RxHelper.fromCallable(getBrowseService2()::getMyVideos);
+        return RxHelper.fromCallable(this::getMyVideos);
+    }
+
+    private MediaGroup getMyVideos() {
+        checkSigned();
+
+        return getBrowseService2().getMyVideos();
     }
 
     @Override

@@ -20,7 +20,9 @@ internal object WatchNextServiceWrapper: WatchNextService() {
     }
 
     private fun transformMetadata(metadata: MediaItemMetadata?, videoId: String?, playlistId: String?, playlistIndex: Int) =
-        getCachedGroup(playlistId)?.let { cached ->
+        // YouTube already knows this playlist (e.g. a big remote playlist). Don't replace its info with a local copy.
+        if (metadata?.playlistInfo?.playlistId == playlistId && (metadata?.playlistInfo?.size ?: -1) > 0) metadata
+        else getCachedGroup(playlistId)?.let { cached ->
             val currentIdx = cached.mediaItems?.indexOfFirst { it.videoId == videoId }.takeIf { it != -1 } ?: playlistIndex
             val currentItem = cached.mediaItems?.getOrNull(currentIdx)
             YouTubeMediaItemMetadata().apply {

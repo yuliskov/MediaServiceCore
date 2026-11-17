@@ -157,8 +157,9 @@ public class PlaylistServiceWrapper extends PlaylistService {
             playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroupByTitle(title);
 
             if (playlistGroup == null) {
-                playlistGroup = PlaylistGroupServiceImpl.createPlaylistGroup(
-                        playlistId, title, (String) null);
+                // Don't create a local copy of a remote playlist that contains only the added video.
+                // It replaced the playlist info of the real playlist (size 1), which broke e.g. shuffle.
+                return;
             }
         }
 

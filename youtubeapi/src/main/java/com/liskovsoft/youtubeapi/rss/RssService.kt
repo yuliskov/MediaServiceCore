@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 internal object RssService {
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
+    private const val RSS_PLAYLIST_URL: String = "https://www.youtube.com/feeds/videos.xml?playlist_id="
     private const val MAX_ITEMS = 100 // NOTE: Limit the result. Unlimited has veeery long loading and often crashing.
 
     @JvmStatic
@@ -68,15 +69,28 @@ internal object RssService {
 
     private suspend fun fetchFeed(channelId: String): List<MediaItem>? = withContext(Dispatchers.IO) {
         try {
-            val rssContent = YouTubeInfoExtractor.downloadWebpage(RSS_URL + channelId)
+            val rssContent = YouTubeInfoExtractor.downloadWebpage(getFeedUrl(channelId))
             val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
-            syncWithChannel(channelId, result)
+            // The channel videos tab can't be used to sync a playlist (it would remove all the items)
+            if (!isPlaylist(channelId)) {
+                syncWithChannel(channelId, result)
+            }
             result
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
     }
+
+    /**
+     * Playlists (e.g. added to a subscription group) are stored by their browse id (VL + playlist id).
+     * The channel feed doesn't work for them, they have their own feed.
+     */
+    private fun getFeedUrl(channelId: String): String {
+        return if (isPlaylist(channelId)) RSS_PLAYLIST_URL + channelId.substring(2) else RSS_URL + channelId
+    }
+
+    private fun isPlaylist(channelId: String) = channelId.startsWith("VL")
 
     /**
      * Add missing props and remove shorts etc

@@ -54,7 +54,14 @@ internal fun ThumbnailItem.Thumbnail.getUrl(): String? {
 ////////
 
 internal fun NavigationEndpointItem.getBrowseId() = browseEndpoint?.browseId
-internal fun NavigationEndpointItem.getParams() = browseEndpoint?.params ?: watchEndpoint?.params
+internal fun NavigationEndpointItem.getParams() = browseEndpoint?.getParams() ?: watchEndpoint?.params
+/**
+ * Some playlists are shown as an episodic "show" (e.g. playlists sorted from oldest to newest). With these params
+ * the page only contains the "Top episodes for you" shelf instead of all the videos of the playlist.
+ */
+internal fun BrowseEndpoint.getParams() = if (isEpisodicShowPlaylist()) null else params
+private fun BrowseEndpoint.isEpisodicShowPlaylist() = browseId?.startsWith("VL") == true &&
+        pageAnimation?.preloadPageConfig?.ghostState == "GHOST_STATE_EPISODIC_SHOW_PAGE"
 internal fun NavigationEndpointItem.getOverlayToggleButton() = getOverlayItems()?.firstNotNullOfOrNull { it?.toggleButtonRenderer }
 internal fun NavigationEndpointItem.getOverlaySubscribeButton() = getOverlayItems()?.firstNotNullOfOrNull { it?.subscribeButtonRenderer }
 internal fun NavigationEndpointItem.isSubscribed() = getOverlaySubscribeButton()?.subscribed

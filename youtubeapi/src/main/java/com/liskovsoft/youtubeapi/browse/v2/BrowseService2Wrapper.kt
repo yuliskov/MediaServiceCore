@@ -30,7 +30,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
     override fun getSubscribedChannelsByName(): MediaGroup? {
         // Backup channels ones
         // Add each channel on subscribe
-        return getCachedChannels(super.getSubscribedChannelsByName())
+        return getCachedChannels(super.getSubscribedChannelsByName(), sortByName = true)
     }
 
     override fun getSubscribedChannelsByNewContent(): MediaGroup? {
@@ -39,13 +39,15 @@ internal object BrowseService2Wrapper: BrowseService2() {
         return getCachedChannels(super.getSubscribedChannelsByNewContent())
     }
 
-    private fun getCachedChannels(subscribedChannels: MediaGroup?): MediaGroup? {
+    private fun getCachedChannels(subscribedChannels: MediaGroup?, sortByName: Boolean = false): MediaGroup? {
         if (subscribedChannels == null || subscribedChannels.isEmpty) {
             val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
 
             return if (channelGroup.isEmpty) null else channelGroup.let {
                 YouTubeMediaGroup(MediaGroup.TYPE_CHANNEL_UPLOADS).apply {
-                    mediaItems = it.items?.map {
+                    // Local (signed out) subscriptions: at least the name sorting can be done here
+                    val items = if (sortByName) it.items?.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { item -> item.title ?: "" }) else it.items
+                    mediaItems = items?.map {
                         YouTubeMediaItem().apply {
                             title = it.title
                             secondTitle = it.subtitle

@@ -33,6 +33,7 @@ public class YouTubeRssParser {
     private static final String TAG_STATISTICS = "media:statistics";
     private static final String TAG_AUTHOR = "author";
     private static final String TAG_AUTHOR_NAME = "name";
+    private static final String TAG_LINK = "link";
     private InputStream mContent;
     private XmlPullParser mParser;
 
@@ -148,6 +149,14 @@ public class YouTubeRssParser {
                     break;
                 case TAG_AUTHOR:
                     readAuthor(item);
+                    break;
+                case TAG_LINK:
+                    // Shorts link to youtube.com/shorts/VIDEO_ID
+                    String href = mParser.getAttributeValue(ns, "href");
+                    if (href != null && href.contains("/shorts/")) {
+                        item.setShorts(true);
+                    }
+                    skip();
                     break;
                 default:
                     skip();

@@ -77,8 +77,17 @@ internal data class OverlayPanelRenderer(
 
 internal data class BrowseEndpoint(
     val browseId: String?,
-    val params: String?
-)
+    val params: String?,
+    val pageAnimation: PageAnimation?
+) {
+    data class PageAnimation(
+        val preloadPageConfig: PreloadPageConfig?
+    ) {
+        data class PreloadPageConfig(
+            val ghostState: String?
+        )
+    }
+}
 
 internal data class WatchEndpointItem(
     val videoId: String?,
@@ -475,7 +484,8 @@ internal data class LockupItem(
     val contentImage: ContentImage?, // thumbnail
     val metadata: MetadataItem?, // title, subtitle, channelId
     val rendererContext: RendererContext?, // videoId
-    val contentId: String?
+    val contentId: String?,
+    val contentType: String? // e.g. LOCKUP_CONTENT_TYPE_SHORT
 ) {
     data class ContentImage(
         val thumbnailViewModel: ThumbnailViewModel?,

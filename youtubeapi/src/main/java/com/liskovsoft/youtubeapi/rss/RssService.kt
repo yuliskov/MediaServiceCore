@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -18,6 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 internal object RssService {
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
+    private const val RSS_PLAYLIST_URL: String = "https://www.youtube.com/feeds/videos.xml?playlist_id="
     private const val MAX_ITEMS = 100 // NOTE: Limit the result. Unlimited has veeery long loading and often crashing.
 
     @JvmStatic
@@ -68,9 +70,12 @@ internal object RssService {
 
     private suspend fun fetchFeed(channelId: String): List<MediaItem>? = withContext(Dispatchers.IO) {
         try {
-            val rssContent = YouTubeInfoExtractor.downloadWebpage(RSS_URL + channelId)
+            val rssContent = YouTubeInfoExtractor.downloadWebpage(getFeedUrl(channelId))
             val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
-            syncWithChannel(channelId, result)
+            // The channel videos tab can't be used to sync a playlist (it would remove all the items)
+            if (!isPlaylist(channelId)) {
+                syncWithChannel(channelId, result)
+            }
             result
         } catch (e: Exception) {
             e.printStackTrace()
@@ -79,11 +84,22 @@ internal object RssService {
     }
 
     /**
+     * Playlists (e.g. added to a subscription group) are stored by their browse id (VL + playlist id).
+     * The channel feed doesn't work for them, they have their own feed.
+     */
+    private fun getFeedUrl(channelId: String): String {
+        return if (isPlaylist(channelId)) RSS_PLAYLIST_URL + channelId.substring(2) else RSS_URL + channelId
+    }
+
+    private fun isPlaylist(channelId: String) = channelId.startsWith("VL")
+
+    /**
      * Add missing props and remove shorts etc
      */
     private fun syncWithChannel(channelId: String, result: List<MediaItem>) {
         val group = getBrowseService2().getChannelAsGrid(channelId)
         val originItems = group?.mediaItems ?: return
+        val keepShorts = !MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)
 
         Helpers.removeIf(result) { item ->
             val first = originItems.firstOrNull { it?.videoId == item.videoId }
@@ -95,6 +111,11 @@ internal object RssService {
                 item.videoPreviewUrl = first.videoPreviewUrl
                 item.percentWatched = first.percentWatched
 
+                return@removeIf false
+            }
+
+            // Shorts aren't on the channel videos tab. Keep them unless they're hidden.
+            if (keepShorts && item.isShorts) {
                 return@removeIf false
             }
 

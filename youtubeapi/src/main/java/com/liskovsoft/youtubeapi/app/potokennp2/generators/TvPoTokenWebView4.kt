@@ -41,6 +41,7 @@ internal class TvPoTokenWebView4 private constructor(
     private val requestKey: String,
     private val presetChallenge: String?,
     private val attClient: AppClient?,
+    private val visitorData: String?,
     private var onInitDone: () -> Unit
 ) : PoTokenGenerator {
     private val webView = WebView(context)
@@ -224,6 +225,12 @@ internal class TvPoTokenWebView4 private constructor(
      * Using challenge from /att/get (legacy fallback)
      */
     private fun getLegacyChallengeData(client: AppClient = AppClient.WEB): Pair<String, String?>? {
+        // The challenge is bound to the visitor. Without the visitor the server creates a new one,
+        // and the streaming server never accepts the poToken (ATTESTATION_PENDING after the first minute).
+        // So use the same visitor as the player requests.
+        val visitorField = visitorData?.let { "visitorData: \"$it\"," } ?: ""
+        val visitorHeader = visitorData?.let { mapOf("X-Goog-Visitor-Id" to it) } ?: emptyMap()
+
         val responseBody = makeBotguardServiceRequest(
             "https://www.youtube.com/youtubei/v1/att/get?prettyPrint=false",
             """
@@ -232,6 +239,7 @@ internal class TvPoTokenWebView4 private constructor(
                                 client: {
                                     clientName: "${client.clientName}",
                                     clientVersion: "${client.clientVersion}",
+                                    $visitorField
                                 },
                             },
                             engagementType: "ENGAGEMENT_TYPE_UNBOUND",
@@ -239,7 +247,7 @@ internal class TvPoTokenWebView4 private constructor(
             """,
             mapOf(
                 "Content-Type" to "application/json"
-            )
+            ) + visitorHeader
         ) ?: return null
 
         Log.d(TAG, "Using challenge from /att/get (legacy fallback)")
@@ -499,9 +507,10 @@ internal class TvPoTokenWebView4 private constructor(
          * @param requestKey BotGuard request key (web and TV clients have different ones)
          * @param presetChallenge ready to use challenge JSON (with `bgChallenge`). Null - fetch the web one.
          * @param attClient used only when [presetChallenge] is null: fetch the challenge (program) from /att/get for this client
+         * @param visitorData the visitor of the player requests. The /att/get challenge is bound to it.
          */
         fun newPoTokenGenerator(
-            context: Context, requestKey: String, presetChallenge: String?, attClient: AppClient? = null
+            context: Context, requestKey: String, presetChallenge: String?, attClient: AppClient? = null, visitorData: String? = null
         ): PoTokenGenerator {
             if (hasThermalServiceBug(context)) {
                 throw BadWebViewException("ThermalService isn't available")
@@ -518,7 +527,7 @@ internal class TvPoTokenWebView4 private constructor(
 
             runOnMainThread {
                 potWv = try {
-                    TvPoTokenWebView4(context, requestKey, presetChallenge, attClient) { latch.countDown() }
+                    TvPoTokenWebView4(context, requestKey, presetChallenge, attClient, visitorData) { latch.countDown() }
                 } catch (e: Throwable) {
                     initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
                     latch.countDown()

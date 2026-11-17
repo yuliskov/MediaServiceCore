@@ -1,7 +1,6 @@
 package com.liskovsoft.youtubeapi.lounge;
 
 import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
-import com.liskovsoft.youtubeapi.lounge.models.info.PairingCodeV2;
 import com.liskovsoft.youtubeapi.lounge.models.info.PlaylistInfo;
 import com.liskovsoft.youtubeapi.lounge.models.info.TokenInfoList;
 import retrofit2.Call;
@@ -36,14 +35,4 @@ public interface InfoManager {
                                    @Field("screen_id") String screenId,
                                    @Field("screen_name") String screenName,
                                    @Field("device_id") String deviceId);
-
-    @FormUrlEncoded
-    @POST("https://www.youtube.com/api/lounge/pairing/get_pairing_code?ctx=pair")
-    Call<PairingCodeV2> getPairingCodeV2(@Field("lounge_token") String loungeToken,
-                                         @Field("screen_id") String screenId,
-                                         @Field("screen_name") String screenName,
-                                         @Field("access_type") String accessType,
-                                         @Field("app") String app,
-                                         @Field("device_id") String deviceId,
-                                         @Field("qr") String qr);
 }

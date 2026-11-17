@@ -51,7 +51,7 @@ public class PlaylistServiceWrapper extends PlaylistService {
         if (videoId == null) {
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, null, Collections.emptyList());
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
-        } else if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
+        } else if (isCachedItemUsable(cachedVideo, videoId)) {
             ItemGroup playlist = PlaylistGroupServiceImpl.createPlaylistGroup(playlistName, cachedVideo.getCardImageUrl(),
                     Collections.singletonList(ItemImpl.fromMediaItem(cachedVideo)));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlist);
@@ -128,6 +128,14 @@ public class PlaylistServiceWrapper extends PlaylistService {
         return playlistsInfos;
     }
 
+    /**
+     * The card the user acted on. Some cards (e.g. lockups) may lack the channel id, and a stored item without it
+     * can't open its channel later, so the metadata is fetched instead.
+     */
+    private static boolean isCachedItemUsable(@Nullable MediaItem cachedVideo, String videoId) {
+        return cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId) && cachedVideo.getChannelId() != null;
+    }
+
     @Override
     public void addToPlaylist(String playlistId, String videoId) {
         super.addToPlaylist(playlistId, videoId);
@@ -149,14 +157,15 @@ public class PlaylistServiceWrapper extends PlaylistService {
             playlistGroup = PlaylistGroupServiceImpl.findPlaylistGroupByTitle(title);
 
             if (playlistGroup == null) {
-                playlistGroup = PlaylistGroupServiceImpl.createPlaylistGroup(
-                        playlistId, title, (String) null);
+                // Don't create a local copy of a remote playlist that contains only the added video.
+                // It replaced the playlist info of the real playlist (size 1), which broke e.g. shuffle.
+                return;
             }
         }
 
         MediaItem cachedVideo = PlaylistGroupServiceImpl.cachedItem;
 
-        if (cachedVideo != null && Helpers.equals(cachedVideo.getVideoId(), videoId)) {
+        if (isCachedItemUsable(cachedVideo, videoId)) {
             playlistGroup.add(ItemImpl.fromMediaItem(cachedVideo));
             PlaylistGroupServiceImpl.addPlaylistGroup(playlistGroup); // move to the top
         } else { // Google api quota exceeded

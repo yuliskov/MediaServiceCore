@@ -15,6 +15,11 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
     val clientTV by lazy { if (enableLegacyUI) AppClient.TV_LEGACY else AppClient.TV }
 
     companion object {
+        private val EVERYWHERE_ONLY_TYPES = setOf(
+            MediaGroup.TYPE_RECOMMENDED, MediaGroup.TYPE_MUSIC, MediaGroup.TYPE_GAMING, MediaGroup.TYPE_KIDS_HOME,
+            MediaGroup.TYPE_SPORTS, MediaGroup.TYPE_MOVIES, MediaGroup.TYPE_LIVE
+        )
+
         fun create(groupType: Int, channelId: String? = null): MediaGroupOptions {
             val data = MediaServiceData.instance()
             val removeShorts = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS))
@@ -25,6 +30,8 @@ internal class MediaGroupOptions private constructor(val removeShorts: Boolean =
                     || (MediaGroup.TYPE_TRENDING == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING))
                     || (MediaGroup.TYPE_SEARCH == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH))
                     || (MediaGroup.TYPE_NEWS == groupType && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_NEWS))
+                    // "Hide shorts everywhere" also covers the browse sections that have no option of their own
+                    || (groupType in EVERYWHERE_ONLY_TYPES && data.isContentHidden(MediaServiceData.CONTENT_SHORTS_ALL))
             val removeLive = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS))
             val removeUpcoming = (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)) ||
                     (MediaGroup.TYPE_CHANNEL == groupType && data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)) ||

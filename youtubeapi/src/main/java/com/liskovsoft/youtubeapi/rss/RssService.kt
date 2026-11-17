@@ -8,6 +8,7 @@ import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper
 import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -98,6 +99,7 @@ internal object RssService {
     private fun syncWithChannel(channelId: String, result: List<MediaItem>) {
         val group = getBrowseService2().getChannelAsGrid(channelId)
         val originItems = group?.mediaItems ?: return
+        val keepShorts = !MediaServiceData.instance().isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)
 
         Helpers.removeIf(result) { item ->
             val first = originItems.firstOrNull { it?.videoId == item.videoId }
@@ -109,6 +111,11 @@ internal object RssService {
                 item.videoPreviewUrl = first.videoPreviewUrl
                 item.percentWatched = first.percentWatched
 
+                return@removeIf false
+            }
+
+            // Shorts aren't on the channel videos tab. Keep them unless they're hidden.
+            if (keepShorts && item.isShorts) {
                 return@removeIf false
             }
 

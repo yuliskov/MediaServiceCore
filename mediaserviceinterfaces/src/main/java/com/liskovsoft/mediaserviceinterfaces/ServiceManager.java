@@ -11,7 +11,7 @@ public interface ServiceManager {
     ChannelGroupService getChannelGroupService();
     void invalidateCache();
     void invalidateFormatCache();
-    void refreshCacheIfNeeded();
+    void warmUpCacheIfNeeded();
     void switchNextClient();
     void switchNextClientNow();
     void switchNextSubsFormat();

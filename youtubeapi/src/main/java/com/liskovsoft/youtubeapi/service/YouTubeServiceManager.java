@@ -95,8 +95,13 @@ public class YouTubeServiceManager implements ServiceManager {
     }
 
     @Override
-    public void refreshCacheIfNeeded() {
-        refreshCacheIfNeededInt();
+    public void warmUpCacheIfNeeded() {
+        if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
+            return;
+        }
+
+        mRefreshCoreDataAction =
+                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().warmUpCacheIfNeeded(FormatInfoWrapper.getActualClient())));
     }
 
     @Override
@@ -130,15 +135,6 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void allowRestrictedVideos(boolean allow) {
         FormatInfoWrapper.allowRestrictedVideos(allow);
-    }
-
-    private void refreshCacheIfNeededInt() {
-        if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
-            return;
-        }
-
-        mRefreshCoreDataAction =
-                RxHelper.execute(RxHelper.fromRunnable(() -> getAppService().refreshCacheIfNeeded(FormatInfoWrapper.getActualClient())));
     }
 
     @NonNull

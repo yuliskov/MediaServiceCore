@@ -152,7 +152,7 @@ class AppServiceCore {
         return getClientData(getClientUrl());
     }
 
-    public void refreshCacheIfNeeded(@Nullable AppClient client) {
+    public void warmUpCacheIfNeeded(@Nullable AppClient client) {
         getAppInfoData();
         getClientData();
         getPlayerDataExtractor(client);

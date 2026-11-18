@@ -90,6 +90,11 @@ public class YouTubeServiceManager implements ServiceManager {
     }
 
     @Override
+    public void invalidateFormatCache() {
+        FormatInfoWrapper.invalidateCache();
+    }
+
+    @Override
     public void refreshCacheIfNeeded() {
         refreshCacheIfNeededInt();
     }

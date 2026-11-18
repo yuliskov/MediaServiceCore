@@ -59,7 +59,7 @@ internal object InitialResponseService {
     ): String? {
         val response = OkHttpManager.instance().doGetRequest(
             url,
-            if (auth) RetrofitOkHttpHelper.authHeaders else null
+            if (auth) RetrofitOkHttpHelper.snapshotAuthHeaders() else null
         )
 
         return if (response.isSuccessful) response.body()?.string() else null

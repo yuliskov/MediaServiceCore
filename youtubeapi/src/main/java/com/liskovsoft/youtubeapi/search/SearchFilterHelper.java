@@ -3,189 +3,172 @@ package com.liskovsoft.youtubeapi.search;
 import com.liskovsoft.mediaserviceinterfaces.data.SearchOptions;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
+import java.io.ByteArrayOutputStream;
+
+/**
+ * Builds the InnerTube search {@code params} (the "sp" value of the web UI) from {@link SearchOptions}.
+ * <p>
+ * The value is a protobuf message, base64 encoded:
+ * <pre>
+ * message Params {
+ *   int32 sort = 1;            // 1 rating, 2 upload date, 3 view count (0/absent = relevance)
+ *   Filters filters = 2;
+ * }
+ * message Filters {
+ *   int32 uploadDate = 1;      // 1 hour, 2 today, 3 week, 4 month, 5 year
+ *   int32 type = 2;            // 1 video, 2 channel, 3 playlist, 4 movie
+ *   int32 duration = 3;        // 1 under 4 min, 3 4-20 min, 2 over 20 min
+ *   int32 live = 8;
+ *   int32 is4k = 14;
+ *   int32 hdr = 25;
+ * }
+ * </pre>
+ * Any combination of options is encodable. (This used to be a lookup table that covered only a handful of
+ * combinations; anything else silently fell back to unfiltered results.)
+ */
 final class SearchFilterHelper {
     private SearchFilterHelper() {
     }
 
-    private static final int MAX_PARAMS = 7;
-
-    private static final int UPLOAD_DATE_ALL = 0;
-    private static final int UPLOAD_DATE_LAST_HOUR = 1;
-    private static final int UPLOAD_DATE_TODAY = 2;
-    private static final int UPLOAD_DATE_THIS_WEEK = 3;
-    private static final int UPLOAD_DATE_THIS_MONTH = 4;
-    private static final int UPLOAD_DATE_THIS_YEAR = 5;
-
-    private static final int DURATION_ANY = 0;
-    private static final int DURATION_UNDER_4 = 1;
-    private static final int DURATION_BETWEEN_4_20 = 2;
-    private static final int DURATION_OVER_20 = 3;
-
-    private static final int TYPE_ANY = 0;
-    private static final int TYPE_VIDEO = 1;
-    private static final int TYPE_CHANNEL = 2;
-    private static final int TYPE_PLAYLIST = 3;
-    private static final int TYPE_MOVIE = 4;
-
-    private static final int FEATURE_ANY = 0;
-    private static final int FEATURE_LIVE = 1;
-    private static final int FEATURE_4K = 2;
-    private static final int FEATURE_HDR = 3;
-    private static final int FEATURE_LIVE_4K = 4;
-    private static final int FEATURE_4K_HDR = 5;
-    private static final int FEATURE_LIVE_4K_HDR = 6;
-
-    private static final int SORT_BY_RELEVANCE = 0;
-    private static final int SORT_BY_UPLOAD_DATE = 1;
-    private static final int SORT_BY_VIEW_COUNT = 2;
-    private static final int SORT_BY_RATING = 3;
-
-    private static String[][][][][] sParams;
-
-    private static void init() {
-        if (sParams != null) {
-            return;
-        }
-
-        sParams = new String[MAX_PARAMS][MAX_PARAMS][MAX_PARAMS][MAX_PARAMS][MAX_PARAMS];
-
-        // Single criteria
-
-        sParams[UPLOAD_DATE_LAST_HOUR][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQIARAB";
-        sParams[UPLOAD_DATE_TODAY][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQIAhAB";
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQIAxAB";
-        sParams[UPLOAD_DATE_THIS_MONTH][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQIBBAB";
-        sParams[UPLOAD_DATE_THIS_YEAR][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQIBRAB";
-
-        sParams[UPLOAD_DATE_ALL][DURATION_UNDER_4][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQQARgB";
-        sParams[UPLOAD_DATE_ALL][DURATION_BETWEEN_4_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQQARgD";
-        sParams[UPLOAD_DATE_ALL][DURATION_OVER_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgQQARgC";
-
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_VIDEO][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgIQAQ%3D%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_CHANNEL][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgIQAg%3D%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_PLAYLIST][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgIQAw%3D%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_MOVIE][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgIQBA%3D%3D";
-
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE][SORT_BY_RELEVANCE] = "EgJAAQ%3D%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_4K][SORT_BY_RELEVANCE] = "EgJwAQ%3D%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_HDR][SORT_BY_RELEVANCE] = "EgPIAQE%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE_4K][SORT_BY_RELEVANCE] = "EgRAAXAB";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_4K_HDR][SORT_BY_RELEVANCE] = "EgVwAcgBAQ%3D%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_LIVE_4K_HDR][SORT_BY_RELEVANCE] = "EgdAAXAByAEB";
-
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_UPLOAD_DATE] = "CAI%3D";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_VIEW_COUNT] = "CAMSAhAB";
-        sParams[UPLOAD_DATE_ALL][DURATION_ANY][TYPE_ANY][FEATURE_ANY][SORT_BY_RATING] = "CAESAhAB";
-
-
-        // Various combinations
-
-        sParams[UPLOAD_DATE_TODAY][DURATION_UNDER_4][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIAhABGAE%3D";
-        sParams[UPLOAD_DATE_TODAY][DURATION_BETWEEN_4_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIAhABGAM%3D";
-        sParams[UPLOAD_DATE_TODAY][DURATION_OVER_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIAhABGAI%3D";
-
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_UNDER_4][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIAxABGAE%3D";
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_BETWEEN_4_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIAxABGAM%3D";
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_OVER_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIAxABGAI%3D";
-
-        sParams[UPLOAD_DATE_THIS_MONTH][DURATION_UNDER_4][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIBBABGAE%3D";
-        sParams[UPLOAD_DATE_THIS_MONTH][DURATION_BETWEEN_4_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIBBABGAM%3D";
-        sParams[UPLOAD_DATE_THIS_MONTH][DURATION_OVER_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RELEVANCE] = "EgYIBBABGAI%3D";
-
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_UNDER_4][TYPE_ANY][FEATURE_ANY][SORT_BY_UPLOAD_DATE] = "CAISBBABGAI%3D";
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_BETWEEN_4_20][TYPE_ANY][FEATURE_ANY][SORT_BY_VIEW_COUNT] = "CAMSBBABGAI%3D";
-        sParams[UPLOAD_DATE_THIS_WEEK][DURATION_OVER_20][TYPE_ANY][FEATURE_ANY][SORT_BY_RATING] = "CAESBBABGAI%3D";
-    }
+    private static final char[] BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
     public static String toParams(int options) {
         if (options == -1 || options == 0) {
             return null;
         }
 
-        init();
+        int sort = getSort(options);
+        int uploadDate = getUploadDate(options);
+        int duration = getDuration(options);
+        int type = getType(options);
 
-        return sParams[getUploadDateIndex(options)][getDurationIndex(options)][getTypeIndex(options)][getFeaturesIndex(options)][getSortByIndex(options)];
-    }
-
-    private static int getUploadDateIndex(int options) {
-        int index = UPLOAD_DATE_ALL;
-
-        if (Helpers.check(options, SearchOptions.UPLOAD_DATE_LAST_HOUR)) {
-            index = UPLOAD_DATE_LAST_HOUR;
-        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_TODAY)) {
-            index = UPLOAD_DATE_TODAY;
-        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_WEEK)) {
-            index = UPLOAD_DATE_THIS_WEEK;
-        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_MONTH)) {
-            index = UPLOAD_DATE_THIS_MONTH;
-        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_YEAR)) {
-            index = UPLOAD_DATE_THIS_YEAR;
+        // Date, duration and the view/rating sorts have always been sent together with type=video. Keep that.
+        if (type == 0 && (uploadDate != 0 || duration != 0 || sort == 1 || sort == 3)) {
+            type = 1;
         }
 
-        return index;
-    }
+        ByteArrayOutputStream filters = new ByteArrayOutputStream();
+        writeVarintField(filters, 1, uploadDate);
+        writeVarintField(filters, 2, type);
+        writeVarintField(filters, 3, duration);
+        writeVarintField(filters, 8, Helpers.check(options, SearchOptions.FEATURE_LIVE) ? 1 : 0);
+        writeVarintField(filters, 14, Helpers.check(options, SearchOptions.FEATURE_4K) ? 1 : 0);
+        writeVarintField(filters, 25, Helpers.check(options, SearchOptions.FEATURE_HDR) ? 1 : 0);
 
-    private static int getDurationIndex(int options) {
-        int index = DURATION_ANY;
-
-        if (Helpers.check(options, SearchOptions.DURATION_UNDER_4)) {
-            index = DURATION_UNDER_4;
-        } else if (Helpers.check(options, SearchOptions.DURATION_BETWEEN_4_20)) {
-            index = DURATION_BETWEEN_4_20;
-        } else if (Helpers.check(options, SearchOptions.DURATION_OVER_20)) {
-            index = DURATION_OVER_20;
+        ByteArrayOutputStream params = new ByteArrayOutputStream();
+        writeVarintField(params, 1, sort);
+        if (filters.size() > 0) {
+            writeVarint(params, (2 << 3) | 2);
+            writeVarint(params, filters.size());
+            byte[] bytes = filters.toByteArray();
+            params.write(bytes, 0, bytes.length);
         }
 
-        return index;
-    }
-
-    private static int getTypeIndex(int options) {
-        int index = TYPE_ANY;
-
-        if (Helpers.check(options, SearchOptions.TYPE_VIDEO)) {
-            index = TYPE_VIDEO;
-        } else if (Helpers.check(options, SearchOptions.TYPE_CHANNEL)) {
-            index = TYPE_CHANNEL;
-        } else if (Helpers.check(options, SearchOptions.TYPE_PLAYLIST)) {
-            index = TYPE_PLAYLIST;
-        } else if (Helpers.check(options, SearchOptions.TYPE_MOVIE)) {
-            index = TYPE_MOVIE;
+        if (params.size() == 0) {
+            return null;
         }
 
-        return index;
+        return base64UrlSafeEscaped(params.toByteArray());
     }
 
-    private static int getFeaturesIndex(int options) {
-        int index = FEATURE_ANY;
-
-        if (Helpers.check(options, SearchOptions.FEATURE_LIVE | SearchOptions.FEATURE_4K | SearchOptions.FEATURE_HDR)) {
-            index = FEATURE_LIVE_4K_HDR;
-        } else if (Helpers.check(options, SearchOptions.FEATURE_LIVE | SearchOptions.FEATURE_4K)) {
-            index = FEATURE_LIVE_4K;
-        } else if (Helpers.check(options, SearchOptions.FEATURE_4K | SearchOptions.FEATURE_HDR)) {
-            index = FEATURE_4K_HDR;
-        } else if (Helpers.check(options, SearchOptions.FEATURE_LIVE)) {
-            index = FEATURE_LIVE;
-        } else if (Helpers.check(options, SearchOptions.FEATURE_4K)) {
-            index = FEATURE_4K;
-        } else if (Helpers.check(options, SearchOptions.FEATURE_HDR)) {
-            index = FEATURE_HDR;
-        }
-
-        return index;
-    }
-
-    private static int getSortByIndex(int options) {
-        int index = SORT_BY_RELEVANCE;
-
+    private static int getSort(int options) {
         if (Helpers.check(options, SearchOptions.SORT_BY_UPLOAD_DATE)) {
-            index = SORT_BY_UPLOAD_DATE;
+            return 2;
         } else if (Helpers.check(options, SearchOptions.SORT_BY_VIEW_COUNT)) {
-            index = SORT_BY_VIEW_COUNT;
+            return 3;
         } else if (Helpers.check(options, SearchOptions.SORT_BY_RATING)) {
-            index = SORT_BY_RATING;
+            return 1;
         }
 
-        return index;
+        return 0;
+    }
+
+    private static int getUploadDate(int options) {
+        if (Helpers.check(options, SearchOptions.UPLOAD_DATE_LAST_HOUR)) {
+            return 1;
+        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_TODAY)) {
+            return 2;
+        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_WEEK)) {
+            return 3;
+        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_MONTH)) {
+            return 4;
+        } else if (Helpers.check(options, SearchOptions.UPLOAD_DATE_THIS_YEAR)) {
+            return 5;
+        }
+
+        return 0;
+    }
+
+    private static int getDuration(int options) {
+        if (Helpers.check(options, SearchOptions.DURATION_UNDER_4)) {
+            return 1;
+        } else if (Helpers.check(options, SearchOptions.DURATION_BETWEEN_4_20)) {
+            return 3;
+        } else if (Helpers.check(options, SearchOptions.DURATION_OVER_20)) {
+            return 2;
+        }
+
+        return 0;
+    }
+
+    private static int getType(int options) {
+        if (Helpers.check(options, SearchOptions.TYPE_VIDEO)) {
+            return 1;
+        } else if (Helpers.check(options, SearchOptions.TYPE_CHANNEL)) {
+            return 2;
+        } else if (Helpers.check(options, SearchOptions.TYPE_PLAYLIST)) {
+            return 3;
+        } else if (Helpers.check(options, SearchOptions.TYPE_MOVIE)) {
+            return 4;
+        }
+
+        return 0;
+    }
+
+    /** Writes a varint field; zero means "not set" and is skipped. */
+    private static void writeVarintField(ByteArrayOutputStream out, int fieldNumber, int value) {
+        if (value == 0) {
+            return;
+        }
+
+        writeVarint(out, fieldNumber << 3); // wire type 0
+        writeVarint(out, value);
+    }
+
+    private static void writeVarint(ByteArrayOutputStream out, int value) {
+        while ((value & ~0x7F) != 0) {
+            out.write((value & 0x7F) | 0x80);
+            value >>>= 7;
+        }
+        out.write(value);
+    }
+
+    /** Standard base64 with padding, then URL-escaped the way the old lookup table was ('=' as %3D). */
+    private static String base64UrlSafeEscaped(byte[] data) {
+        StringBuilder sb = new StringBuilder((data.length + 2) / 3 * 4 + 8);
+
+        for (int i = 0; i < data.length; i += 3) {
+            int b0 = data[i] & 0xFF;
+            int b1 = i + 1 < data.length ? data[i + 1] & 0xFF : 0;
+            int b2 = i + 2 < data.length ? data[i + 2] & 0xFF : 0;
+
+            sb.append(escape(BASE64[b0 >> 2]));
+            sb.append(escape(BASE64[((b0 & 0x3) << 4) | (b1 >> 4)]));
+            sb.append(i + 1 < data.length ? escape(BASE64[((b1 & 0xF) << 2) | (b2 >> 6)]) : "%3D");
+            sb.append(i + 2 < data.length ? escape(BASE64[b2 & 0x3F]) : "%3D");
+        }
+
+        return sb.toString();
+    }
+
+    private static String escape(char c) {
+        switch (c) {
+            case '+':
+                return "%2B";
+            case '/':
+                return "%2F";
+            default:
+                return String.valueOf(c);
+        }
     }
 }

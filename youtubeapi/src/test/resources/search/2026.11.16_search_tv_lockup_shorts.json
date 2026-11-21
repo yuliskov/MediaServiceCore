@@ -1,0 +1,756 @@
+{
+ "contents": {
+  "sectionListRenderer": {
+   "contents": [
+    {
+     "shelfRenderer": {
+      "content": {
+       "horizontalListRenderer": {
+        "items": [
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "thumbnailViewModel": {
+             "image": {
+              "sources": [
+               {
+                "url": "https://i.ytimg.com/vi/sqJ-eIJj-_Q/hq720.jpg?sqp=-oaymwEVCIAFEOgCSFDyq4qpAwcVAACIQhgB&rs=AOn4CLBpBMi8uIaqRU-VE0wM2scxIp176w",
+                "width": 640,
+                "height": 360
+               }
+              ]
+             },
+             "overlays": [
+              {
+               "thumbnailBottomOverlayViewModel": {
+                "badges": [
+                 {
+                  "thumbnailBadgeViewModel": {
+                   "text": "1:38",
+                   "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT",
+                   "rendererContext": {
+                    "accessibilityContext": {
+                     "label": "1 minuto y 38 segundos"
+                    }
+                   }
+                  }
+                 }
+                ]
+               }
+              }
+             ],
+             "styling": {}
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "Shakira, Burna Boy - Dai Dai (Cover Capibara)"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "metadataRows": [
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "Animales De Fancro"
+                   }
+                  }
+                 ]
+                },
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "2,2 M de visualizaciones"
+                   }
+                  },
+                  {
+                   "text": {
+                    "content": "hace 2 meses"
+                   },
+                   "accessibilityLabel": "hace 2 meses"
+                  }
+                 ]
+                }
+               ],
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "sqJ-eIJj-_Q",
+           "contentType": "LOCKUP_CONTENT_TYPE_VIDEO",
+           "itemPlayback": {
+            "playbackCommand": {
+             "startInlinePlaybackCommand": {
+              "caption": false,
+              "muted": false,
+              "delayMs": 3000,
+              "playbackEndpoint": {
+               "watchEndpoint": {
+                "videoId": "sqJ-eIJj-_Q",
+                "playerParams": "YAE%3D"
+               }
+              },
+              "blockAdoption": true,
+              "resumeVideo": true,
+              "restartPlaybackBeforeSeconds": 10,
+              "blockInlinePlaybackOnTileMount": true,
+              "durationMs": 40000
+             }
+            }
+           },
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_WIDESCREEN"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "watchEndpoint": {
+                "videoId": "sqJ-eIJj-_Q",
+                "params": "qgMIY2FwaWJhcmG6AwoI9dWg_PTgh5gpugMKCKa04aequPScfroDCwjCsqf42q_2l-EBugMKCKL__ZrtlbmSUroDCgii5pnk7aGgume6AwoIidiHy_e23ocEugMKCMuyxNahu73FKLoDCgjdpvGOhei1zjK6Aw8SDVJES1RBZkIwLUlLdlW6AwsIq8qIkPnPpuiBAboDCgiImZrmt_ierwi6AwsIssKK1eGqxo3-AboDCgjb2rj3gISqgBS6AwsI2KPm7dXq4_fIAboDCwji_62P5Luq8NcBugMLCLb8xInQ3Yv53gG6AwoIjeP18euS1LwTugMKCPb8tdetttvTZroDCgjChPi8xonl7zXyAwUNVbT1PQ%3D%3D",
+                "playerParams": "ygUIY2FwaWJhcmE%3D"
+               }
+              }
+             }
+            }
+           }
+          }
+         },
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "thumbnailViewModel": {
+             "image": {
+              "sources": [
+               {
+                "url": "https://i.ytimg.com/vi/KTAfB0-IKvU/hq720.jpg?sqp=-oaymwEVCIAFEOgCSFDyq4qpAwcVAACIQhgB&rs=AOn4CLBTbl7pWvbOxOktw0SpWhZfAXvvnQ",
+                "width": 640,
+                "height": 360
+               }
+              ]
+             },
+             "overlays": [
+              {
+               "thumbnailBottomOverlayViewModel": {
+                "badges": [
+                 {
+                  "thumbnailBadgeViewModel": {
+                   "icon": {
+                    "sources": [
+                     {
+                      "clientResource": {
+                       "imageName": "AUDIO"
+                      }
+                     }
+                    ]
+                   },
+                   "text": "2:08",
+                   "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT",
+                   "rendererContext": {
+                    "accessibilityContext": {
+                     "label": "2 minutos y 8 segundos"
+                    }
+                   }
+                  }
+                 }
+                ]
+               }
+              }
+             ],
+             "styling": {}
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "🎵 ¡LA CANCIÓN DEL CAPIBARA! 🐾 La Más Divertida para Niños | Capybara | Canta y Baila  🎶"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "metadataRows": [
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "Canta y Baila"
+                   }
+                  }
+                 ]
+                },
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "82 M de visualizaciones"
+                   }
+                  },
+                  {
+                   "text": {
+                    "content": "hace 1 año"
+                   },
+                   "accessibilityLabel": "hace 1 año"
+                  }
+                 ]
+                }
+               ],
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "KTAfB0-IKvU",
+           "contentType": "LOCKUP_CONTENT_TYPE_MUSIC",
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_WIDESCREEN"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "watchEndpoint": {
+                "videoId": "KTAfB0-IKvU",
+                "playlistId": "RDKTAfB0-IKvU",
+                "params": "qgMIY2FwaWJhcmG6AwoIprThp6q49Jx-ugMLCMKyp_jar_aX4QG6AwsI9PePk4jPn9GyAboDCgii__2a7ZW5klK6AwoIouaZ5O2hoLpnugMKCInYh8v3tt6HBLoDCgjLssTWobu9xSi6AwoI3abxjoXotc4yugMPEg1SREtUQWZCMC1JS3ZVugMLCKvKiJD5z6bogQG6AwoIiJma5rf4nq8IugMLCLLCitXhqsaN_gG6AwoI29q494CEqoAUugMLCNij5u3V6uP3yAG6AwsI4v-tj-S7qvDXAboDCwi2_MSJ0N2L-d4BugMKCI3j9fHrktS8E7oDCgj2_LXXrbbb02a6AwoIwoT4vMaJ5e818gMFDVW09T24BQE%3D",
+                "playerParams": "ygUIY2FwaWJhcmGgBwE%3D"
+               }
+              }
+             }
+            }
+           }
+          }
+         },
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "collectionThumbnailViewModel": {
+             "primaryThumbnail": {
+              "thumbnailViewModel": {
+               "image": {
+                "sources": [
+                 {
+                  "url": "https://i.ytimg.com/vi/KTAfB0-IKvU/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCBvO2iGbyqHDWh7Tw03uHCtCrIrg",
+                  "width": 480,
+                  "height": 270
+                 }
+                ]
+               },
+               "overlays": [
+                {
+                 "thumbnailOverlayBadgeViewModel": {
+                  "thumbnailBadges": [
+                   {
+                    "thumbnailBadgeViewModel": {
+                     "icon": {
+                      "sources": [
+                       {
+                        "clientResource": {
+                         "imageName": "MIX"
+                        }
+                       }
+                      ]
+                     },
+                     "text": "Mix",
+                     "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                    }
+                   }
+                  ],
+                  "position": "THUMBNAIL_OVERLAY_BADGE_POSITION_BOTTOM_END"
+                 }
+                }
+               ],
+               "styling": {},
+               "backgroundColor": {
+                "lightTheme": 4144959,
+                "darkTheme": 4144959
+               }
+              }
+             },
+             "stackColor": {
+              "lightTheme": 10066329,
+              "darkTheme": 9211020
+             }
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "🎵 ¡LA CANCIÓN DEL CAPIBARA! 🐾 La Más Divertida para Niños | Capybara | Canta y Baila  🎶"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "metadataRows": [
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "El Payaso Plim Plim, Canta y Baila, Galinha Pintadinha y más"
+                   }
+                  }
+                 ],
+                 "maxLines": 2
+                }
+               ],
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "RDKTAfB0-IKvU",
+           "contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST",
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_WIDESCREEN"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "watchEndpoint": {
+                "videoId": "KTAfB0-IKvU",
+                "playlistId": "RDKTAfB0-IKvU",
+                "params": "OALAAQE%3D",
+                "continuePlayback": true
+               }
+              }
+             }
+            }
+           }
+          }
+         },
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "thumbnailViewModel": {
+             "image": {
+              "sources": [
+               {
+                "url": "https://i.ytimg.com/vi/UiTkrtNff6I/hq720_2.jpg?sqp=-oaymwEvCIAFEOgCSFDyq4qpAyEVAACIQhgA8AEB-AHOBYACgAqKAgwIABABGHIgXihCMA8=&rs=AOn4CLBnwF4rC1mHZ6BnCRf1NhVpuQNdUA",
+                "width": 640,
+                "height": 360
+               }
+              ]
+             },
+             "overlays": [
+              {
+               "thumbnailBottomOverlayViewModel": {
+                "badges": [
+                 {
+                  "thumbnailBadgeViewModel": {
+                   "icon": {
+                    "sources": [
+                     {
+                      "clientResource": {
+                       "imageName": "YOUTUBE_SHORTS_FILL_NO_TRIANGLE_WHITE_16"
+                      }
+                     }
+                    ]
+                   },
+                   "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT",
+                   "rendererContext": {
+                    "accessibilityContext": {
+                     "label": "Shorts"
+                    }
+                   }
+                  }
+                 }
+                ]
+               }
+              }
+             ],
+             "styling": {}
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "Así se bañan los #capibara 😂 #shots #humor"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "metadataRows": [
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "Princetopia"
+                   }
+                  }
+                 ]
+                },
+                {
+                 "metadataParts": [
+                  {
+                   "text": {
+                    "content": "15 M de visualizaciones"
+                   }
+                  },
+                  {
+                   "text": {
+                    "content": "hace 1 año"
+                   },
+                   "accessibilityLabel": "hace 1 año"
+                  }
+                 ]
+                }
+               ],
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "UiTkrtNff6I",
+           "contentType": "LOCKUP_CONTENT_TYPE_SHORT",
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_WIDESCREEN"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "reelWatchEndpoint": {
+                "videoId": "UiTkrtNff6I",
+                "playerParams": "8AEBoAMIyAMyuAQUogYVAQMpuovT2ScMPdJxtiV-hPgKHezPkAcC",
+                "thumbnail": {
+                 "thumbnails": [
+                  {
+                   "url": "https://i.ytimg.com/vi/UiTkrtNff6I/frame0.jpg",
+                   "width": 720,
+                   "height": 1280
+                  }
+                 ],
+                 "isOriginalAspectRatio": true
+                },
+                "overlay": {
+                 "reelPlayerOverlayRenderer": {
+                  "style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+                  "reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+                 }
+                },
+                "params": "CBQwAkoWCgoiCGNhcGliYXJhEghjYXBpYmFyYboBGFVDcmNXcEVLb0p5dzUwdTNOWnBwRFRHZw%3D%3D",
+                "sequenceProvider": "REEL_WATCH_SEQUENCE_PROVIDER_RPC",
+                "ustreamerConfig": "CAw=",
+                "watchEndpointSource": "REEL_WATCH_ENDPOINT_SOURCE_SEARCH",
+                "videoType": "REEL_VIDEO_TYPE_VIDEO"
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        ],
+        "collapsedItemCount": 3,
+        "visibleItemCount": 3
+       }
+      },
+      "headerRenderer": {
+       "shelfHeaderRenderer": {
+        "avatarLockup": {
+         "avatarLockupRenderer": {
+          "title": {
+           "simpleText": "Resultados de búsqueda de capibara"
+          },
+          "size": "AVATAR_LOCKUP_SIZE_SMALL"
+         }
+        }
+       }
+      },
+      "tvhtml5Style": {
+       "style": "TV_SHELF_STYLE_DEFAULT",
+       "sizeStrategy": "TV_SHELF_SIZE_STRATEGY_FIXED"
+      }
+     }
+    },
+    {
+     "shelfRenderer": {
+      "content": {
+       "horizontalListRenderer": {
+        "items": [
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "thumbnailViewModel": {
+             "image": {
+              "sources": [
+               {
+                "url": "https://i.ytimg.com/vi/ke4bsktOV0w/oardefault.jpg?sqp=-oaymwEWCMsBEOgCSFCQAgHyq4qpAwUVAACIQg==&rs=AOn4CLA1bZs4FoBhIO4GqvDTMm6-YTE_PA",
+                "width": 203,
+                "height": 360
+               },
+               {
+                "url": "https://i.ytimg.com/vi/ke4bsktOV0w/oardefault.jpg?sqp=-oaymwEZCMsBELECSFCQAgHyq4qpAwgVAACIQsgBAQ==&rs=AOn4CLBNZ1jq5HtFGUzJLNj6S4r53wdV-g",
+                "width": 203,
+                "height": 305
+               },
+               {
+                "url": "https://i.ytimg.com/vi/ke4bsktOV0w/oardefault.jpg?sqp=-oaymwEWCJUDENAFSFCQAgHyq4qpAwUVAACIQg==&rs=AOn4CLAkUmm1vWzOCrEokWhMvefHGY8mzw",
+                "width": 405,
+                "height": 720
+               },
+               {
+                "url": "https://i.ytimg.com/vi/ke4bsktOV0w/oardefault.jpg?sqp=-oaymwEZCJUDEOAESFCQAgHyq4qpAwgVAACIQsgBAQ==&rs=AOn4CLAmIgqHAD0yGvGllSf5KxQ0GTYg7Q",
+                "width": 405,
+                "height": 608
+               }
+              ]
+             },
+             "styling": {
+              "objectFit": "THUMBNAIL_OBJECT_FIT_COVER",
+              "gradient": "THUMBNAIL_GRADIENT_SHORTS"
+             }
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "Nadie sabía que este capibara jugaba ASÍ al fútbol 😱⚽  #humor #fiona #comedia"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "ke4bsktOV0w",
+           "contentType": "LOCKUP_CONTENT_TYPE_SHORT",
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_SHORT"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "reelWatchEndpoint": {
+                "videoId": "ke4bsktOV0w",
+                "playerParams": "8AEBoAMIyAMyuAQUogYVAQMpuotpav5pxTDDpU0gx7Kyc9OmkAcC",
+                "thumbnail": {
+                 "thumbnails": [
+                  {
+                   "url": "https://i.ytimg.com/vi/ke4bsktOV0w/frame0.jpg",
+                   "width": 720,
+                   "height": 1280
+                  }
+                 ],
+                 "isOriginalAspectRatio": true
+                },
+                "overlay": {
+                 "reelPlayerOverlayRenderer": {
+                  "style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+                  "reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+                 }
+                },
+                "params": "CBQwAkoWCgoiCGNhcGliYXJhEghjYXBpYmFyYboBGFVDOXJ3UFUwLVY3UVJ6RWJPc0h6Z05kQQ%3D%3D",
+                "sequenceProvider": "REEL_WATCH_SEQUENCE_PROVIDER_RPC",
+                "ustreamerConfig": "CAw=",
+                "watchEndpointSource": "REEL_WATCH_ENDPOINT_SOURCE_SEARCH",
+                "videoType": "REEL_VIDEO_TYPE_VIDEO"
+               }
+              }
+             }
+            }
+           }
+          }
+         },
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "thumbnailViewModel": {
+             "image": {
+              "sources": [
+               {
+                "url": "https://i.ytimg.com/vi/9B_OcnsBSa0/hqdefault.jpg?sqp=-oaymwEWCMoBEOgCSFDyq4qpAwgVAACIQtABAQ==&rs=AOn4CLDWt8OW8F4Q0KwSOqfQPe0OZyUZpg",
+                "width": 202,
+                "height": 360
+               },
+               {
+                "url": "https://i.ytimg.com/vi/9B_OcnsBSa0/hq720.jpg?sqp=-oaymwEWCJUDENAFSFDyq4qpAwgVAACIQtABAQ==&rs=AOn4CLBvt5s1JV2zWDTYhDpdHgwHMHbyLA",
+                "width": 405,
+                "height": 720
+               }
+              ]
+             },
+             "styling": {
+              "objectFit": "THUMBNAIL_OBJECT_FIT_COVER",
+              "gradient": "THUMBNAIL_GRADIENT_SHORTS"
+             }
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "El capibara no Tiene un Dragon pero... #capibara #comedia"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "9B_OcnsBSa0",
+           "contentType": "LOCKUP_CONTENT_TYPE_SHORT",
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_SHORT"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "reelWatchEndpoint": {
+                "videoId": "9B_OcnsBSa0",
+                "playerParams": "8AEBoAMIyAMyuAQUogYVAQMpuotJuwjDp_64PMLX1IL53FQikAcC",
+                "thumbnail": {
+                 "thumbnails": [
+                  {
+                   "url": "https://i.ytimg.com/vi/9B_OcnsBSa0/frame0.jpg",
+                   "width": 1080,
+                   "height": 1920
+                  }
+                 ],
+                 "isOriginalAspectRatio": true
+                },
+                "overlay": {
+                 "reelPlayerOverlayRenderer": {
+                  "style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+                  "reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+                 }
+                },
+                "params": "CBQwAkoWCgoiCGNhcGliYXJhEghjYXBpYmFyYboBGFVDb2NXZUcwbGJJUXpTdGpCZG8xWTNxQQ%3D%3D",
+                "sequenceProvider": "REEL_WATCH_SEQUENCE_PROVIDER_RPC",
+                "ustreamerConfig": "CAw=",
+                "watchEndpointSource": "REEL_WATCH_ENDPOINT_SOURCE_SEARCH",
+                "videoType": "REEL_VIDEO_TYPE_VIDEO"
+               }
+              }
+             }
+            }
+           }
+          }
+         },
+         {
+          "lockupViewModel": {
+           "contentImage": {
+            "thumbnailViewModel": {
+             "image": {
+              "sources": [
+               {
+                "url": "https://i.ytimg.com/vi/_PvKFXU0njs/oardefault.jpg?sqp=-oaymwEWCMsBEOgCSFCQAgHyq4qpAwUVAACIQg==&rs=AOn4CLBpZ9MEKP0EGtBLSvle4oRbzT3ZYg",
+                "width": 203,
+                "height": 360
+               },
+               {
+                "url": "https://i.ytimg.com/vi/_PvKFXU0njs/oardefault.jpg?sqp=-oaymwEZCMsBELECSFCQAgHyq4qpAwgVAACIQsgBAQ==&rs=AOn4CLBGfuqQ0cUSstLhlIGSCc2Y79a50g",
+                "width": 203,
+                "height": 305
+               },
+               {
+                "url": "https://i.ytimg.com/vi/_PvKFXU0njs/oardefault.jpg?sqp=-oaymwEWCJUDENAFSFCQAgHyq4qpAwUVAACIQg==&rs=AOn4CLCsFCNhAqIAyojM9LfCV6tAyOMB_w",
+                "width": 405,
+                "height": 720
+               },
+               {
+                "url": "https://i.ytimg.com/vi/_PvKFXU0njs/oardefault.jpg?sqp=-oaymwEZCJUDEOAESFCQAgHyq4qpAwgVAACIQsgBAQ==&rs=AOn4CLBzPaaV0wNw9VW2qUKDpd9swvfmcw",
+                "width": 405,
+                "height": 608
+               }
+              ]
+             },
+             "styling": {
+              "objectFit": "THUMBNAIL_OBJECT_FIT_COVER",
+              "gradient": "THUMBNAIL_GRADIENT_SHORTS"
+             }
+            }
+           },
+           "metadata": {
+            "lockupMetadataViewModel": {
+             "title": {
+              "content": "CORRE CAPYBARA DE COCARDO #capybara #hamabeads #capibara"
+             },
+             "metadata": {
+              "contentMetadataViewModel": {
+               "delimiter": " • "
+              }
+             }
+            }
+           },
+           "contentId": "_PvKFXU0njs",
+           "contentType": "LOCKUP_CONTENT_TYPE_SHORT",
+           "styling": {
+            "layout": "LOCKUP_LAYOUT_VERTICAL",
+            "contentImageAspectRatio": "LOCKUP_CONTENT_IMAGE_ASPECT_RATIO_SHORT"
+           },
+           "rendererContext": {
+            "commandContext": {
+             "onTap": {
+              "innertubeCommand": {
+               "reelWatchEndpoint": {
+                "videoId": "_PvKFXU0njs",
+                "playerParams": "8AEBoAMIyAMyuAQUogYVAQMpuosJv1Y_xrS92XYAWUcpaiTNkAcC",
+                "thumbnail": {
+                 "thumbnails": [
+                  {
+                   "url": "https://i.ytimg.com/vi/_PvKFXU0njs/frame0.jpg",
+                   "width": 1080,
+                   "height": 1920
+                  }
+                 ],
+                 "isOriginalAspectRatio": true
+                },
+                "overlay": {
+                 "reelPlayerOverlayRenderer": {
+                  "style": "REEL_PLAYER_OVERLAY_STYLE_SHORTS",
+                  "reelPlayerNavigationModel": "REEL_PLAYER_NAVIGATION_MODEL_UNSPECIFIED"
+                 }
+                },
+                "params": "CBQwAkoWCgoiCGNhcGliYXJhEghjYXBpYmFyYboBGFVDMXBZWDEtN2xJeWFvTEJNS19XYkY2QQ%3D%3D",
+                "sequenceProvider": "REEL_WATCH_SEQUENCE_PROVIDER_RPC",
+                "ustreamerConfig": "CAw=",
+                "watchEndpointSource": "REEL_WATCH_ENDPOINT_SOURCE_SEARCH",
+                "videoType": "REEL_VIDEO_TYPE_VIDEO"
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        ],
+        "collapsedItemCount": 3,
+        "visibleItemCount": 3
+       }
+      },
+      "icon": {
+       "iconType": "YOUTUBE_SHORTS_FILL_24"
+      },
+      "headerRenderer": {
+       "shelfHeaderRenderer": {
+        "avatarLockup": {
+         "avatarLockupRenderer": {
+          "title": {
+           "simpleText": "Shorts"
+          },
+          "icon": {
+           "iconType": "YOUTUBE_SHORTS_FILL_24"
+          },
+          "size": "AVATAR_LOCKUP_SIZE_SMALL"
+         }
+        }
+       }
+      },
+      "tvhtml5ShelfRendererType": "TVHTML5_SHELF_RENDERER_TYPE_SHORTS"
+     }
+    }
+   ]
+  }
+ }
+}

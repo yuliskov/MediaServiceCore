@@ -263,6 +263,9 @@ internal fun ShortsItem.getThumbnails() = onTap?.innertubeCommand?.getThumbnails
 
 internal const val LOCKUP_BADGE_STYLE_LIVE = "THUMBNAIL_OVERLAY_BADGE_STYLE_LIVE"
 
+// 'lockupViewModel.contentType' values:
+private const val LOCKUP_CONTENT_TYPE_SHORT = "LOCKUP_CONTENT_TYPE_SHORT"
+
 internal fun LockupItem.getTitle() = metadata?.lockupMetadataViewModel?.title?.getText()
 internal fun LockupItem.getSubTitle() = YouTubeHelper.createInfo(
     *metadata?.lockupMetadataViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.mapNotNull {
@@ -273,6 +276,7 @@ internal fun LockupItem.getPlaylistId() = rendererContext?.getPlaylistId()
 internal fun LockupItem.getThumbnails() = getThumbnailView()?.image
 internal fun LockupItem.getBadgeText() = getBadge()?.text
 internal fun LockupItem.isLive() = Helpers.equalsAny(getBadge()?.badgeStyle, BADGE_STYLE_LIVE, LOCKUP_BADGE_STYLE_LIVE)
+internal fun LockupItem.isShorts() = LOCKUP_CONTENT_TYPE_SHORT == contentType
 internal fun LockupItem.getPercentWatched() = getOverlays()?.firstNotNullOfOrNull {
     it?.thumbnailBottomOverlayViewModel?.progressBar?.thumbnailOverlayProgressBarViewModel?.startPercent }
 // The video without a badge, probably Watch again
@@ -348,7 +352,8 @@ internal fun ItemWrapper.getPlaylistIndex() = getVideoItem()?.getPlaylistIndex()
 internal fun ItemWrapper.isLive() = getVideoItem()?.isLive() ?: getMusicItem()?.isLive() ?: getTileItem()?.isLive() ?: getLockupItem()?.isLive() ?: false
 internal fun ItemWrapper.isUpcoming() = getVideoItem()?.isUpcoming() ?: getMusicItem()?.isUpcoming() ?: getTileItem()?.isUpcoming() ?: false
 internal fun ItemWrapper.isMovie() = getVideoItem()?.isMovie() ?: getTileItem()?.isMovie() ?: false
-internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts() ?: false
+internal fun ItemWrapper.isShorts() = reelItemRenderer != null || shortsLockupViewModel != null || getVideoItem()?.isShorts() ?: getTileItem()?.isShorts()
+    ?: getLockupItem()?.isShorts() ?: false
 internal fun ItemWrapper.isMix() = getTileItem()?.isMix() ?: false
 internal fun ItemWrapper.getDescriptionText() = getTileItem()?.getRichTextTileText()
 internal fun ItemWrapper.getContinuationToken() = getTileItem()?.getContinuationToken() ?: getContinuationItem()?.getContinuationToken()

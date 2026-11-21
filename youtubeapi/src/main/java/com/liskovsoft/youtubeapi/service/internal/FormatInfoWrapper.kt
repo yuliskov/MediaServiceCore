@@ -59,7 +59,12 @@ internal object FormatInfoWrapper {
 
                 checkSigned()
 
-                val formatInfo = firstPlayable(videoId, clickTrackingParams)
+                var formatInfo = firstPlayable(videoId, clickTrackingParams)
+
+                // MOD: the TV token from disk may be rejected. Then remove it and repeat with a new token.
+                if ((formatInfo == null || formatInfo.isUnplayable) && PoTokenGate.discardRestoredPoToken()) {
+                    formatInfo = firstPlayable(videoId, clickTrackingParams)
+                }
 
                 mIsUnplayable = formatInfo?.isUnplayable ?: true
 

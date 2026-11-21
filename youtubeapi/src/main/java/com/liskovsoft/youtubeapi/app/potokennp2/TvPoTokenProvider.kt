@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
+import android.content.Context
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
@@ -22,6 +23,12 @@ internal object TvPoTokenProvider {
     private var result: PoTokenResult? = null
     @Volatile
     private var expirationMs: Long = -1
+    // MOD: the session token is saved to disk and reused after the app restart (until it expires)
+    private const val PREFS_NAME = "tv_potoken_cache"
+    private const val MIN_REMAINING_MS = 10 * 60_000L
+    @Volatile
+    private var isRestored = false
+    private var isRestoreTried = false
 
     /**
      * The id that should be passed to the player request: tvAppInfo.livingRoomPoTokenId
@@ -48,6 +55,8 @@ internal object TvPoTokenProvider {
     /** Clears all state, including the generator and cached tokens. The next call regenerates everything. */
     fun reset() {
         synchronized(lock) {
+            if (isRestored || result != null) clearSaved()
+            isRestored = false
             result = null
             livingRoomPoTokenId = null
             expirationMs = -1
@@ -64,8 +73,20 @@ internal object TvPoTokenProvider {
         }
     }
 
+    /** Returns true when the current token came from disk. Then the token is removed and the next call generates a new one. */
+    fun discardRestored(): Boolean {
+        synchronized(lock) {
+            if (!isRestored) return false
+            Log.w(TAG, "Discarding the restored TV poToken")
+            reset()
+            return true
+        }
+    }
+
     private fun getPoTokenSync(): PoTokenResult? {
-        result?.let { if (generator != null && !isPotExpired()) return it }
+        result?.let { if ((generator != null || isRestored) && !isPotExpired()) return it }
+
+        restoreSaved()?.let { return it }
 
         val tvConfig = AppService.instance().tvConfig
         val requestKey = tvConfig?.challengeRequestKey
@@ -103,7 +124,64 @@ internal object TvPoTokenProvider {
         livingRoomPoTokenId = livingRoomId
         // Same session token is used both for the player request and the streaming
         result = PoTokenResult("", visitorData, sessionPot, sessionPot)
+        isRestored = false
+
+        save(visitorData, sessionPot, livingRoomId, expirationMs)
 
         return result
+    }
+
+    private fun prefs() = AppService.instance().context?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    /** Any error here only disables the cache. The normal generation runs after it. */
+    private fun restoreSaved(): PoTokenResult? {
+        if (isRestoreTried) return null
+        isRestoreTried = true
+
+        return try {
+            val p = prefs() ?: return null
+            val savedExpirationMs = p.getLong("expirationMs", -1)
+            val visitorData = p.getString("visitorData", null)
+            val pot = p.getString("pot", null)
+            val livingRoomId = p.getString("livingRoomId", null)
+
+            if (visitorData.isNullOrEmpty() || pot.isNullOrEmpty() || livingRoomId.isNullOrEmpty() ||
+                savedExpirationMs - System.currentTimeMillis() < MIN_REMAINING_MS) {
+                clearSaved()
+                return null
+            }
+
+            expirationMs = savedExpirationMs
+            livingRoomPoTokenId = livingRoomId
+            result = PoTokenResult("", visitorData, pot, pot)
+            isRestored = true
+            Log.d(TAG, "Restored TV poToken from disk, valid for ${(savedExpirationMs - System.currentTimeMillis()) / 60_000} min")
+            result
+        } catch (e: Throwable) {
+            Log.e(TAG, "Could not restore the TV poToken", e)
+            clearSaved()
+            null
+        }
+    }
+
+    private fun save(visitorData: String, pot: String, livingRoomId: String, expirationMs: Long) {
+        try {
+            prefs()?.edit()
+                ?.putString("visitorData", visitorData)
+                ?.putString("pot", pot)
+                ?.putString("livingRoomId", livingRoomId)
+                ?.putLong("expirationMs", expirationMs)
+                ?.apply()
+        } catch (e: Throwable) {
+            Log.e(TAG, "Could not save the TV poToken", e)
+        }
+    }
+
+    private fun clearSaved() {
+        try {
+            prefs()?.edit()?.clear()?.apply()
+        } catch (e: Throwable) {
+            Log.e(TAG, "Could not clear the TV poToken", e)
+        }
     }
 }

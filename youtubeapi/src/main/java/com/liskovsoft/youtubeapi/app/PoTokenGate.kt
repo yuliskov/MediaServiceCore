@@ -94,6 +94,18 @@ internal object PoTokenGate {
     @JvmStatic
     fun isPotSupported() = WebPoTokenProvider.isPotSupported()
 
+    /** MOD: true when the TV token came from disk and is now removed. The caller should repeat the request. */
+    @JvmStatic
+    fun discardRestoredPoToken(): Boolean {
+        return try {
+            val discarded = TvPoTokenProvider.discardRestored()
+            if (discarded) mTvPoToken = null
+            discarded
+        } catch (e: Throwable) {
+            false
+        }
+    }
+
     @JvmStatic
     fun isPotExpired(client: AppClient): Boolean {
         return when {

@@ -94,6 +94,19 @@ internal object PoTokenGate {
     @JvmStatic
     fun isPotSupported() = WebPoTokenProvider.isPotSupported()
 
+    /** MOD: removes the saved TV token (forced client recovery after a playback failure). */
+    @JvmStatic
+    fun forgetSavedPoToken(client: AppClient) {
+        try {
+            if (client.isTvPotRequired) {
+                TvPoTokenProvider.forgetSaved()
+                mTvPoToken = null
+            }
+        } catch (e: Throwable) {
+            // The cache is optional
+        }
+    }
+
     /** MOD: true when the TV token came from disk and is now removed. The caller should repeat the request. */
     @JvmStatic
     fun discardRestoredPoToken(): Boolean {
@@ -119,7 +132,7 @@ internal object PoTokenGate {
     fun resetCache(client: AppClient): Boolean {
         return when {
             client.isWebPotRequired -> resetWebCache()
-            client.isTvPotRequired -> resetTvCache()
+            client.isTvPotRequired -> resetTvCache(clearSaved = true) // playback problem: do not reuse the token
             else -> false
         }
     }
@@ -127,7 +140,9 @@ internal object PoTokenGate {
     @JvmStatic
     fun resetCache() {
         resetWebCache()
-        resetTvCache()
+        // Called on app exit and account change: keep the saved TV token. On restore it is checked
+        // against the current visitor, so a token of another account/visitor is not reused.
+        resetTvCache(clearSaved = false)
     }
 
     private fun resetWebCache(): Boolean {
@@ -145,13 +160,13 @@ internal object PoTokenGate {
         return true
     }
 
-    private fun resetTvCache(): Boolean {
+    private fun resetTvCache(clearSaved: Boolean): Boolean {
         val currentTimeMs = System.currentTimeMillis()
         if (currentTimeMs < mTvCacheResetTimeMs)
             return false
 
         mTvPoToken = null
-        TvPoTokenProvider.reset()
+        TvPoTokenProvider.reset(clearSaved)
 
         mTvCacheResetTimeMs = currentTimeMs + CACHE_RESET_TIME_MS
 

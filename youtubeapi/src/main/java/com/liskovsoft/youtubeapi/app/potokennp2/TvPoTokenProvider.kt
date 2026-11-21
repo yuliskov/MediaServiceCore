@@ -52,10 +52,17 @@ internal object TvPoTokenProvider {
         }
     }
 
-    /** Clears all state, including the generator and cached tokens. The next call regenerates everything. */
-    fun reset() {
+    /**
+     * Clears all state, including the generator and cached tokens.
+     * @param clearSaved true: the saved copy is removed too (also when it is not loaded yet), the next call
+     * regenerates everything. false: only the memory is cleared (e.g. on app exit), the next call may restore
+     * the saved copy again.
+     */
+    @JvmOverloads
+    fun reset(clearSaved: Boolean = true) {
         synchronized(lock) {
-            if (isRestored || result != null) clearSaved()
+            if (clearSaved) clearSaved()
+            isRestoreTried = false // the next call may restore the saved copy (if one is left)
             isRestored = false
             result = null
             livingRoomPoTokenId = null
@@ -70,6 +77,17 @@ internal object TvPoTokenProvider {
             val old = generator
             generator = null
             old?.let { runOnMainThreadSync(3) { it.close() } }
+        }
+    }
+
+    /**
+     * Removes the saved copy, so the next app start generates a new token.
+     * A restored token in memory is dropped too. A token generated in this session stays in memory.
+     */
+    fun forgetSaved() {
+        synchronized(lock) {
+            if (isRestored) reset() else clearSaved()
+            isRestoreTried = true
         }
     }
 
@@ -131,6 +149,23 @@ internal object TvPoTokenProvider {
         return result
     }
 
+    /**
+     * The visitor id from the visitor data (protobuf, field 1). The visitor data also holds a timestamp,
+     * so the whole string may differ for the same visitor. Returns null when the format is unknown.
+     */
+    private fun visitorId(visitorData: String?): String? {
+        if (visitorData.isNullOrEmpty()) return null
+        return try {
+            val bytes = android.util.Base64.decode(java.net.URLDecoder.decode(visitorData, "UTF-8"),
+                android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP)
+            if (bytes.size < 2 || bytes[0].toInt() != 0x0a) return null
+            val len = bytes[1].toInt() and 0x7f
+            if (len == 0 || 2 + len > bytes.size) null else String(bytes, 2, len, Charsets.US_ASCII)
+        } catch (e: Throwable) {
+            null
+        }
+    }
+
     private fun prefs() = AppService.instance().context?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     /** Any error here only disables the cache. The normal generation runs after it. */
@@ -147,6 +182,15 @@ internal object TvPoTokenProvider {
 
             if (visitorData.isNullOrEmpty() || pot.isNullOrEmpty() || livingRoomId.isNullOrEmpty() ||
                 savedExpirationMs - System.currentTimeMillis() < MIN_REMAINING_MS) {
+                clearSaved()
+                return null
+            }
+
+            // The player requests send the current visitor (X-Goog-Visitor-Id). A token bound to another visitor
+            // would mix two identities, so it is not reused.
+            val currentVisitor = visitorId(AppService.instance().visitorData)
+            if (currentVisitor != null && currentVisitor != visitorId(visitorData)) {
+                Log.d(TAG, "Saved TV poToken belongs to another visitor. Generating a new one")
                 clearSaved()
                 return null
             }

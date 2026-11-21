@@ -1,5 +1,6 @@
 package com.liskovsoft.youtubeapi.app.potokennp2
 
+import android.content.Context
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.youtubeapi.app.AppService
@@ -22,6 +23,12 @@ internal object TvPoTokenProvider {
     private var result: PoTokenResult? = null
     @Volatile
     private var expirationMs: Long = -1
+    // MOD: the session token is saved to disk and reused after the app restart (until it expires)
+    private const val PREFS_NAME = "tv_potoken_cache"
+    private const val MIN_REMAINING_MS = 10 * 60_000L
+    @Volatile
+    private var isRestored = false
+    private var isRestoreTried = false
 
     /**
      * The id that should be passed to the player request: tvAppInfo.livingRoomPoTokenId
@@ -45,9 +52,18 @@ internal object TvPoTokenProvider {
         }
     }
 
-    /** Clears all state, including the generator and cached tokens. The next call regenerates everything. */
-    fun reset() {
+    /**
+     * Clears all state, including the generator and cached tokens.
+     * @param clearSaved true: the saved copy is removed too (also when it is not loaded yet), the next call
+     * regenerates everything. false: only the memory is cleared (e.g. on app exit), the next call may restore
+     * the saved copy again.
+     */
+    @JvmOverloads
+    fun reset(clearSaved: Boolean = true) {
         synchronized(lock) {
+            if (clearSaved) clearSaved()
+            isRestoreTried = false // the next call may restore the saved copy (if one is left)
+            isRestored = false
             result = null
             livingRoomPoTokenId = null
             expirationMs = -1
@@ -64,8 +80,31 @@ internal object TvPoTokenProvider {
         }
     }
 
+    /**
+     * Removes the saved copy, so the next app start generates a new token.
+     * A restored token in memory is dropped too. A token generated in this session stays in memory.
+     */
+    fun forgetSaved() {
+        synchronized(lock) {
+            if (isRestored) reset() else clearSaved()
+            isRestoreTried = true
+        }
+    }
+
+    /** Returns true when the current token came from disk. Then the token is removed and the next call generates a new one. */
+    fun discardRestored(): Boolean {
+        synchronized(lock) {
+            if (!isRestored) return false
+            Log.w(TAG, "Discarding the restored TV poToken")
+            reset()
+            return true
+        }
+    }
+
     private fun getPoTokenSync(): PoTokenResult? {
-        result?.let { if (generator != null && !isPotExpired()) return it }
+        result?.let { if ((generator != null || isRestored) && !isPotExpired()) return it }
+
+        restoreSaved()?.let { return it }
 
         val tvConfig = AppService.instance().tvConfig
         val requestKey = tvConfig?.challengeRequestKey
@@ -103,7 +142,90 @@ internal object TvPoTokenProvider {
         livingRoomPoTokenId = livingRoomId
         // Same session token is used both for the player request and the streaming
         result = PoTokenResult("", visitorData, sessionPot, sessionPot)
+        isRestored = false
+
+        save(visitorData, sessionPot, livingRoomId, expirationMs)
 
         return result
+    }
+
+    /**
+     * The visitor id from the visitor data (protobuf, field 1). The visitor data also holds a timestamp,
+     * so the whole string may differ for the same visitor. Returns null when the format is unknown.
+     */
+    private fun visitorId(visitorData: String?): String? {
+        if (visitorData.isNullOrEmpty()) return null
+        return try {
+            val bytes = android.util.Base64.decode(java.net.URLDecoder.decode(visitorData, "UTF-8"),
+                android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP)
+            if (bytes.size < 2 || bytes[0].toInt() != 0x0a) return null
+            val len = bytes[1].toInt() and 0x7f
+            if (len == 0 || 2 + len > bytes.size) null else String(bytes, 2, len, Charsets.US_ASCII)
+        } catch (e: Throwable) {
+            null
+        }
+    }
+
+    private fun prefs() = AppService.instance().context?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    /** Any error here only disables the cache. The normal generation runs after it. */
+    private fun restoreSaved(): PoTokenResult? {
+        if (isRestoreTried) return null
+        isRestoreTried = true
+
+        return try {
+            val p = prefs() ?: return null
+            val savedExpirationMs = p.getLong("expirationMs", -1)
+            val visitorData = p.getString("visitorData", null)
+            val pot = p.getString("pot", null)
+            val livingRoomId = p.getString("livingRoomId", null)
+
+            if (visitorData.isNullOrEmpty() || pot.isNullOrEmpty() || livingRoomId.isNullOrEmpty() ||
+                savedExpirationMs - System.currentTimeMillis() < MIN_REMAINING_MS) {
+                clearSaved()
+                return null
+            }
+
+            // The player requests send the current visitor (X-Goog-Visitor-Id). A token bound to another visitor
+            // would mix two identities, so it is not reused.
+            val currentVisitor = visitorId(AppService.instance().visitorData)
+            if (currentVisitor != null && currentVisitor != visitorId(visitorData)) {
+                Log.d(TAG, "Saved TV poToken belongs to another visitor. Generating a new one")
+                clearSaved()
+                return null
+            }
+
+            expirationMs = savedExpirationMs
+            livingRoomPoTokenId = livingRoomId
+            result = PoTokenResult("", visitorData, pot, pot)
+            isRestored = true
+            Log.d(TAG, "Restored TV poToken from disk, valid for ${(savedExpirationMs - System.currentTimeMillis()) / 60_000} min")
+            result
+        } catch (e: Throwable) {
+            Log.e(TAG, "Could not restore the TV poToken", e)
+            clearSaved()
+            null
+        }
+    }
+
+    private fun save(visitorData: String, pot: String, livingRoomId: String, expirationMs: Long) {
+        try {
+            prefs()?.edit()
+                ?.putString("visitorData", visitorData)
+                ?.putString("pot", pot)
+                ?.putString("livingRoomId", livingRoomId)
+                ?.putLong("expirationMs", expirationMs)
+                ?.apply()
+        } catch (e: Throwable) {
+            Log.e(TAG, "Could not save the TV poToken", e)
+        }
+    }
+
+    private fun clearSaved() {
+        try {
+            prefs()?.edit()?.clear()?.apply()
+        } catch (e: Throwable) {
+            Log.e(TAG, "Could not clear the TV poToken", e)
+        }
     }
 }

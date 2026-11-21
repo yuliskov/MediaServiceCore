@@ -74,6 +74,11 @@ internal object FormatInfoWrapper {
 
     @JvmStatic
     fun switchNextClient(force: Boolean) {
+        // MOD: a forced switch follows a playback failure. Do not reuse a saved TV token after the next app start.
+        if (force) {
+            mActualClient?.let { PoTokenGate.forgetSavedPoToken(it.first) }
+        }
+
         // Try to reset pot cache for the last video
         if (!force && !mIsUnplayable && (mActualClient?.let { PoTokenGate.resetCache(it.first) } ?: false)) {
             return
@@ -138,7 +143,14 @@ internal object FormatInfoWrapper {
             // NOTE: History fix. CPN should be unique per each /player fetch
             AppService.instance().resetClientPlaybackNonce()
 
-            val result = getProvider(nextClient)(nextClient.first, videoId, clickTrackingParams)
+            var result = getProvider(nextClient)(nextClient.first, videoId, clickTrackingParams)
+
+            // MOD: a TV token restored from disk may be rejected. Retry this client once with a new token
+            // before falling back to other clients. Content errors (removed, private, age) keep the token.
+            if (nextClient.first.isTvPotRequired && isTokenRelatedFailure(result) && PoTokenGate.discardRestoredPoToken()) {
+                AppService.instance().resetClientPlaybackNonce()
+                result = getProvider(nextClient)(nextClient.first, videoId, clickTrackingParams)
+            }
 
             if (result != null && infoTester(result)) {
                 persistRecentTypeIfNeeded(nextClient, result)
@@ -149,6 +161,17 @@ internal object FormatInfoWrapper {
         } while (nextClient != beginClient)
 
         return null
+    }
+
+    /**
+     * UNPLAYABLE (unknown reason, temporal ban) and LOGIN_REQUIRED ("confirm you're not a bot") may come from
+     * a rejected poToken. ERROR (removed or private video) and age checks are content errors.
+     * A null result is a transport error.
+     */
+    private fun isTokenRelatedFailure(result: MediaItemFormatInfo?): Boolean {
+        if (result == null || !result.isUnplayable()) return false
+        val status = result.getPlayabilityReason() ?: return false
+        return status == "UNPLAYABLE" || status == "LOGIN_REQUIRED"
     }
 
     private fun getProvider(client: Pair<AppClient, ProviderType>): (AppClient, String, String?) -> MediaItemFormatInfo? {

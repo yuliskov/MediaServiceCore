@@ -30,4 +30,14 @@ internal object YouTubeCommentsService: CommentsService {
     override fun toggleDislikeObserve(key: String?): Observable<Void> {
         return RxHelper.fromRunnable { toggleDislike(key) }
     }
+
+    override fun createCommentObserve(videoId: String?, commentText: String?): Observable<Void> {
+        return RxHelper.fromRunnable { createComment(videoId, commentText) }
+    }
+
+    private fun createComment(videoId: String?, commentText: String?) {
+        if (videoId != null && commentText != null) {
+            CommentsServiceInt.createComment(videoId, commentText)
+        }
+    }
 }

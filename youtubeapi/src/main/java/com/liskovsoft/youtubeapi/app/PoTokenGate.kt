@@ -99,8 +99,8 @@ internal object PoTokenGate {
     fun forgetSavedPoToken(client: AppClient) {
         try {
             if (client.isTvPotRequired) {
-                TvPoTokenProvider.forgetSaved()
                 mTvPoToken = null
+                runInBackground { TvPoTokenProvider.forgetSaved() } // may wait for a BotGuard run
             }
         } catch (e: Throwable) {
             // The cache is optional
@@ -166,11 +166,23 @@ internal object PoTokenGate {
             return false
 
         mTvPoToken = null
-        TvPoTokenProvider.reset(clearSaved)
+        // reset() waits for the provider lock. A BotGuard run holds it for several seconds, and this method
+        // is called from the UI thread (account change, app exit, error fixer). Do not block the caller.
+        runInBackground { TvPoTokenProvider.reset(clearSaved) }
 
         mTvCacheResetTimeMs = currentTimeMs + CACHE_RESET_TIME_MS
 
         return true
+    }
+
+    private fun runInBackground(action: () -> Unit) {
+        Thread({
+            try {
+                action()
+            } catch (e: Throwable) {
+                // The token cache is optional
+            }
+        }, "PoTokenGateReset").start()
     }
 
     private fun releaseOtherProviders(client: AppClient) {

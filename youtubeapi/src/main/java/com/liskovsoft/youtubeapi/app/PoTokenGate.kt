@@ -22,7 +22,7 @@ internal object PoTokenGate {
     private var mTvPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
     private var mTvCacheResetTimeMs: Long = -1
-    private const val CACHE_RESET_TIME_MS = 3 * 60_000
+    private const val CACHE_RESET_TIME_MS = 60_000
 
     init {
         WebPoTokenProvider.poTokenFactory = selectFactory()

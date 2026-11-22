@@ -6,7 +6,7 @@ internal object YouTubeInfoExtractor: InfoExtractor() {
     val cache: CacheService = CacheService
 
     fun loadPlayer(playerUrl: String): String = runBlocking {
-        return@runBlocking downloadWebpage(playerUrl)
+        return@runBlocking downloadWebpage(playerUrl, tries = 3, errorMsg = "loadPlayer")
     }
 
     fun loadPlayerSilent(playerUrl: String): String? {

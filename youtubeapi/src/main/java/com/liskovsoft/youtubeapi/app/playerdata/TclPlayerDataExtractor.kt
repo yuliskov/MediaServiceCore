@@ -40,7 +40,7 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
     }
     // Fetched lazily, once, and shared between validation (checkSigData) and real extraction —
     // TclChallengeProvider needs the raw player source.
-    private val playerCode: String? by lazy { loadPlayer() }
+    private val playerCode: String by lazy { loadPlayer() }
 
     init {
         Log.d(tag, "Using player url: $fixedPlayerUrl")
@@ -107,21 +107,24 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
 
         val validNParams = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()
 
-        val nResults = validNParams?.let { params -> playerCode?.let { TclChallengeProvider.solveN(fixedPlayerUrl, it, params) } }
+        val nResults = validNParams?.let { params -> playerCode.let { TclChallengeProvider.solveN(fixedPlayerUrl, it, params) } }
         val nProcessed = nResults?.let { results -> nParams?.map { results[it] } }
         // TCL works only in TV version, so sig isn't necessary in this client
         return Pair(nProcessed, null)
     }
 
-    private fun loadPlayer(): String? {
-        return YouTubeInfoExtractor.loadPlayerSilent(fixedPlayerUrl)
+    private fun loadPlayer(): String {
+        // Throw on failure, don't use loadPlayerSilent(): `lazy` caches a null forever, so one interrupted download
+        // (e.g. a canceled request) would disable n-param extraction until the app restart (403 for every video).
+        // A thrown exception isn't cached by `lazy`, so the next access retries the download.
+        return YouTubeInfoExtractor.loadPlayer(fixedPlayerUrl)
     }
 
     private fun fetchAllData() {
         val jsCode = playerCode
 
-        cpnCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
-        signatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
+        cpnCode = jsCode.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
+        signatureTimestamp = jsCode.let { CommonExtractor.extractSignatureTimestamp(it) }
     }
 
     private fun persistAllData() {
@@ -159,7 +162,7 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
 
         try {
             val nParam = "5cNpZqIJ7ixNqU68Y7S"
-            val code = playerCode ?: return
+            val code = playerCode
             val result = TclChallengeProvider.solveN(fixedPlayerUrl, code, listOf(nParam))
             if (result[nParam]?.let { it != nParam } == true) {
                 nFuncCode = true

@@ -40,7 +40,22 @@ internal class TclPlayerDataExtractor(override val playerUrl: String): PlayerDat
     }
     // Fetched lazily, once, and shared between validation (checkSigData) and real extraction —
     // TclChallengeProvider needs the raw player source.
-    private val playerCode: String? by lazy { loadPlayer() }
+    // Only a successful download is kept. `by lazy` also kept a null result: an interrupted download
+    // (e.g. a cancelled preview disposes the request) disabled the n-param extraction until the app restart,
+    // so the TV clients got "Response code: 403" for every video.
+    @Volatile
+    private var loadedPlayerCode: String? = null
+    private val playerCodeLock = Any()
+    private val playerCode: String?
+        get() {
+            loadedPlayerCode?.let { return it }
+            synchronized(playerCodeLock) {
+                loadedPlayerCode?.let { return it }
+                val code = loadPlayer()
+                loadedPlayerCode = code
+                return code
+            }
+        }
 
     init {
         Log.d(tag, "Using player url: $fixedPlayerUrl")

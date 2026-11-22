@@ -121,15 +121,18 @@ internal class WebPlayerDataExtractor(override val playerUrl: String): PlayerDat
         return Pair(nProcessed, sProcessed)
     }
 
-    private fun loadPlayer(): String? {
-        return YouTubeInfoExtractor.loadPlayerSilent(fixedPlayerUrl)
+    private fun loadPlayer(): String {
+        // Throw on failure, don't use loadPlayerSilent(): a null leaves the extractor without signatureTimestamp/cpn,
+        // and AppServiceCoreCached caches and reuses such a half-initialized instance until the app restart.
+        // An exception from the constructor prevents caching, so the next request recreates the extractor and retries.
+        return YouTubeInfoExtractor.loadPlayer(fixedPlayerUrl)
     }
 
     private fun fetchAllData() {
         val jsCode = loadPlayer()
 
-        cpnCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
-        signatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
+        cpnCode = jsCode.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
+        signatureTimestamp = jsCode.let { CommonExtractor.extractSignatureTimestamp(it) }
     }
 
     private fun persistAllData() {

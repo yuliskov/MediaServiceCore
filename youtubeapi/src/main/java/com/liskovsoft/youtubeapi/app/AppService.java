@@ -161,6 +161,20 @@ public class AppService {
     }
 
     /**
+     * Current nonce without creating a new one (may be null)
+     */
+    public synchronized String peekClientPlaybackNonce() {
+        return mClientPlaybackNonce;
+    }
+
+    /**
+     * Restore the nonce that belongs to a cached (e.g. preloaded) video info
+     */
+    public synchronized void setClientPlaybackNonce(String nonce) {
+        mClientPlaybackNonce = nonce;
+    }
+
+    /**
      * Constant used in {@link AuthApi}
      */
     public String getClientId() {

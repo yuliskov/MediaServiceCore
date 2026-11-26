@@ -57,6 +57,10 @@ public interface MediaItemService {
     Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
     Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams);
+    /**
+     * Fetch and cache the format of the next video (e.g. next Shorts) without affecting the current one
+     */
+    Observable<MediaItemFormatInfo> preloadFormatInfoObserve(String videoId);
     Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item);
     Observable<MediaItemStoryboard> getStoryboardObserve(String videoId);
     Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);

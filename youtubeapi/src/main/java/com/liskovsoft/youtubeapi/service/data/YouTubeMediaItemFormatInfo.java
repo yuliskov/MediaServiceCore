@@ -358,7 +358,11 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean isUnplayable() {
-        return mIsUnplayable;
+        return mIsUnplayable || isLiveBroken();
+    }
+
+    private boolean isLiveBroken() {
+        return isLive() && getStartTimeMs() == 0;
     }
 
     @Override

@@ -233,7 +233,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         return YouTubeMediaItemStoryboard.from(storyboard)
     }
 
-    override fun isUnplayable() = _isUnplayable
+    override fun isUnplayable() = _isUnplayable || isLiveBroken()
 
     override fun isSynced() = _isSynced
 
@@ -435,4 +435,6 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         // Reportedly, live SABR formats do not work on some accounts
         return !containsDashFormats() && _isLive
     }
+
+    private fun isLiveBroken() = isLive && startTimeMs == 0L
 }

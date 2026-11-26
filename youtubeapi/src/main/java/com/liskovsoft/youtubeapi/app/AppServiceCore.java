@@ -60,6 +60,7 @@ class AppServiceCore {
     public PlayerDataExtractor getPlayerDataExtractor(@Nullable AppClient client, String playerUrl) {
         // Only the TCL flavored player (e.g. resolved from tv_config) has a different n-function shape.
         // Other urls (e.g. fallbacks) are regular players and should be solved the regular way, whatever the client is.
+        // Example of raw url: https://www.youtube.com/s/player/b485e332/tv-player-es6.vflset/tv-player-es6.js
         return isTcl(client) ? new TclPlayerDataExtractor(playerUrl) : new WebPlayerDataExtractor(playerUrl);
     }
 

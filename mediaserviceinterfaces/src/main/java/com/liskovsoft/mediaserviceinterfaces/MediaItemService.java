@@ -79,6 +79,8 @@ public interface MediaItemService {
     Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId);
     Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
     Observable<Void> addToPlaylistObserve(String playlistId, MediaItem item);
+    Observable<Void> addPlaylistToPlaylistObserve(String playlistId, String sourcePlaylistId);
+    Observable<Void> addChannelToPlaylistObserve(String playlistId, String channelId);
     Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
     Observable<Void> renamePlaylistObserve(String playlistId, String newName);
     Observable<Void> setPlaylistOrderObserve(String playlistId, int playlistOrder);

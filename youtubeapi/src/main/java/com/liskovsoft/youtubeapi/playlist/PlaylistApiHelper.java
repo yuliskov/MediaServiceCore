@@ -6,6 +6,8 @@ public class PlaylistApiHelper {
     private static final String PLAYLISTS_INFO_QUERY = "\"videoIds\":[\"%s\"]";
     private static final String ADD_TO_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
             "\"actions\":[{\"addedVideoId\":\"%s\",\"action\":\"ACTION_ADD_VIDEO\"}]";
+    private static final String ADD_PLAYLIST_TO_PLAYLIST_QUERY = "\"playlistId\":\"%s\"," +
+            "\"actions\":[{\"addedFullListId\":\"%s\",\"dedupeOption\":\"DEDUPE_OPTION_DROP_DUPLICATE\",\"action\":\"ACTION_ADD_PLAYLIST\"}]";
     private static final String PLAYLIST_ORDER_QUERY = "\"playlistId\":\"%s\"," +
             "\"actions\":[{\"playlistVideoOrder\":\"%s\",\"action\":\"ACTION_SET_PLAYLIST_VIDEO_ORDER\"}]";
     private static final String REMOVE_FROM_PLAYLISTS_QUERY = "\"playlistId\":\"%s\"," +
@@ -24,6 +26,11 @@ public class PlaylistApiHelper {
 
     public static String getAddToPlaylistQuery(String playlistId, String videoId) {
         String queryTemplate = String.format(ADD_TO_PLAYLISTS_QUERY, playlistId, videoId);
+        return PostDataHelper.createQueryTV(queryTemplate);
+    }
+
+    public static String getAddPlaylistToPlaylistQuery(String playlistId, String sourcePlaylistId) {
+        String queryTemplate = String.format(ADD_PLAYLIST_TO_PLAYLIST_QUERY, playlistId, sourcePlaylistId);
         return PostDataHelper.createQueryTV(queryTemplate);
     }
 

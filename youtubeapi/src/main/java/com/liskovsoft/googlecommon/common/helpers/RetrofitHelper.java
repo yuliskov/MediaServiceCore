@@ -118,12 +118,12 @@ public class RetrofitHelper {
             return wrapper.execute();
         } catch (ConnectException e) {
             // ConnectException - server is down or address is banned (returnyoutubedislikeapi.com)
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
         } catch (IOException e) {
             // SocketException - no internet
             // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
             throw new IllegalStateException(e); // notify caller about network condition
         }
 

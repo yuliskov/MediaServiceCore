@@ -36,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class LoungeService {
     private static final String TAG = LoungeService.class.getSimpleName();
     private static final long TOKEN_ACTIVE_TIME_MS = 30 * 60 * 1_000;
+    static final long RETRY_DELAY_MS = 3_000;
+    static final long MAX_RETRY_DELAY_MS = 60_000;
     private static LoungeService sInstance;
     private final BindManager mBindManager;
     private final InfoManager mInfoManager;
@@ -130,18 +132,23 @@ public class LoungeService {
      * Process couldn't be stopped, only interrupted.
      */
     public void startListening(OnCommand callback) {
+        long retryDelayMs = RETRY_DELAY_MS;
+
         // It's common to stream to be interrupted multiple times
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
+            long sleepMs = RETRY_DELAY_MS;
             try {
                 initConstants();
-                startListeningInt(callback);
-                Thread.sleep(3_000); // fix too frequent request
+                if (startListeningInt(callback)) {
+                    retryDelayMs = RETRY_DELAY_MS;
+                } else {
+                    sleepMs = retryDelayMs;
+                    retryDelayMs = Math.min(retryDelayMs * 2, MAX_RETRY_DELAY_MS);
+                }
             } catch (SocketTimeoutException e) {
                 Log.e(TAG, "Connection hanged. Reconnecting...");
+                retryDelayMs = RETRY_DELAY_MS;
             } catch (InterruptedIOException e) {
-                Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
-                break;
-            } catch (InterruptedException e) {
                 Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
                 break;
             } catch (NullPointerException e) {
@@ -149,10 +156,42 @@ public class LoungeService {
                 e.printStackTrace();
                 break;
             } catch (Exception e) {
+                if (isInterrupted(e)) {
+                    Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
+                    break;
+                }
                 Log.e(TAG, e.getMessage());
                 // Continue to listen whichever is happening.
+                sleepMs = retryDelayMs;
+                retryDelayMs = Math.min(retryDelayMs * 2, MAX_RETRY_DELAY_MS);
+            }
+
+            try {
+                Thread.sleep(sleepMs); // fix too frequent request
+            } catch (InterruptedException e) {
+                Log.e(TAG, "Oops. Stopping. Listening thread interrupted.");
+                Thread.currentThread().interrupt();
+                break;
             }
         }
+    }
+
+    static boolean isInterrupted(Throwable e) {
+        if (Thread.currentThread().isInterrupted()) {
+            return true;
+        }
+
+        while (e != null) {
+            if (e instanceof InterruptedException) {
+                return true;
+            }
+            if (e instanceof InterruptedIOException && !(e instanceof SocketTimeoutException)) {
+                return true;
+            }
+            e = e.getCause();
+        }
+
+        return false;
     }
 
     private void initConstants() {
@@ -179,7 +218,11 @@ public class LoungeService {
         }
     }
 
-    private void startListeningInt(OnCommand callback) throws IOException {
+    private boolean startListeningInt(OnCommand callback) throws IOException {
+        if (mLoungeToken == null) {
+            return false;
+        }
+
         Log.d(TAG, "Opening session...");
 
         CommandList sessionInfos = getSessionBind();
@@ -187,7 +230,7 @@ public class LoungeService {
         if (sessionInfos == null) {
             Log.e(TAG, "Can't open a session because it's empty. Expired lounge token or too frequent request?");
             mLoungeToken = null;
-            return;
+            return false;
         }
 
         mSessionId = sessionInfos.getParam(CommandItem.TYPE_SESSION_ID);
@@ -211,40 +254,46 @@ public class LoungeService {
 
         Log.d(TAG, "Starting read session...");
 
-        Response response = client.newCall(request).execute();
-
-        InputStream in = response.body().byteStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String result = "";
-        String line = "";
-
-        // Skip initial commands: TYPE_SESSION_ID, TYPE_G_SESSION_ID, TYPE_LOUNGE_STATUS, TYPE_GET_NOW_PLAYING
-        //processCommands(sessionInfos, callback);
-
-        while((line = reader.readLine()) != null) {
-            if (mLoungeToken == null) {
-                // restart service
-                break;
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() == null) {
+                Log.e(TAG, "Can't read session: response body is null");
+                mLoungeToken = null;
+                return false;
             }
 
-            result += line + "\n";
+            InputStream in = response.body().byteStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String result = "";
+            String line = "";
 
-            boolean isLastLine = line.equals("]") && !result.endsWith("\"noop\"]\n]\n");
+            // Skip initial commands: TYPE_SESSION_ID, TYPE_G_SESSION_ID, TYPE_LOUNGE_STATUS, TYPE_GET_NOW_PLAYING
+            //processCommands(sessionInfos, callback);
 
-            if (isLastLine) {
-                Log.d(TAG, "New command: \n" + result);
+            while ((line = reader.readLine()) != null) {
+                if (mLoungeToken == null) {
+                    // restart service
+                    break;
+                }
 
-                CommandList infos = toCommandInfos(result);
+                result += line + "\n";
 
-                processCommands(infos, callback);
+                boolean isLastLine = line.equals("]") && !result.endsWith("\"noop\"]\n]\n");
 
-                result = "";
+                if (isLastLine) {
+                    Log.d(TAG, "New command: \n" + result);
+
+                    CommandList infos = toCommandInfos(result);
+
+                    processCommands(infos, callback);
+
+                    result = "";
+                }
             }
+
+            Log.d(TAG, "Closing session...");
         }
 
-        Log.d(TAG, "Closing session...");
-
-        response.body().close();
+        return true;
     }
 
     private void processCommands(CommandList commandList, OnCommand callback) {

@@ -7,6 +7,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
+import javax.net.ssl.SSLHandshakeException;
+import java.io.InterruptedIOException;
+import java.net.SocketTimeoutException;
 import java.util.Map;
 
 @RunWith(RobolectricTestRunner.class)
@@ -34,5 +37,17 @@ public class LoungeServiceTest {
 
         Map<String, String> packagedCommands2 = CommandParams.packageCommands(null, null);
         Assert.assertNull("Packed result is null", packagedCommands2);
+    }
+
+    @Test
+    public void testIsInterrupted() {
+        Assert.assertTrue("Direct InterruptedException is detected",
+                LoungeService.isInterrupted(new InterruptedException()));
+        Assert.assertTrue("Wrapped InterruptedIOException from RetrofitHelper is detected",
+                LoungeService.isInterrupted(new IllegalStateException(new InterruptedIOException("thread interrupted"))));
+        Assert.assertFalse("Wrapped SocketTimeoutException is not treated as thread interruption",
+                LoungeService.isInterrupted(new IllegalStateException(new SocketTimeoutException("Read timed out"))));
+        Assert.assertFalse("Wrapped SSLHandshakeException is not treated as thread interruption",
+                LoungeService.isInterrupted(new IllegalStateException(new SSLHandshakeException("Connection reset by peer"))));
     }
 }

@@ -105,7 +105,59 @@ var jsc = (function (meriyah, astring) {
       optional: false,
     },
   };
-  function extract(node) {
+  const split = {
+    type: 'CallExpression',
+    callee: {
+      type: 'MemberExpression',
+      property: { type: 'Identifier', name: 'split' },
+      object: { type: 'Literal' },
+    },
+    arguments: [{ type: 'Literal' }],
+  };
+  function getExpressions(stmt) {
+    if (stmt.type === 'VariableDeclaration') {
+      return stmt.declarations
+        .map((d) => d.init)
+        .filter((init) => Boolean(init));
+    }
+    if (
+      stmt.type === 'ExpressionStatement' &&
+      stmt.expression.type === 'AssignmentExpression'
+    )
+      return [stmt.expression.right];
+    return [];
+  }
+  function extractArray(statements) {
+    for (const statement of statements.slice(0, 30)) {
+      for (const expr of getExpressions(statement)) {
+        let pool = null;
+        if (expr.type === 'ArrayExpression' && expr.elements.length > 500) {
+          pool = expr.elements.map((el) =>
+            el && el.type === 'Literal' && typeof el.value === 'string'
+              ? el.value
+              : '',
+          );
+        } else if (matchesStructure(expr, split)) {
+          const call = expr;
+          const str = call.callee.object.value;
+          const delim = call.arguments[0].value;
+          if (typeof str === 'string' && typeof delim === 'string') {
+            pool = str.split(delim);
+          }
+        }
+        if (pool) {
+          const actualSet = pool.indexOf('set');
+          const actualAlr = pool.indexOf('alr');
+          const actualYes = pool.indexOf('yes');
+          if (actualSet !== -1 && actualAlr !== -1 && actualYes !== -1) {
+            return [actualSet, actualSet ^ actualAlr, actualAlr ^ actualYes];
+          }
+        }
+      }
+    }
+    return null;
+  }
+  function extract(node, pool, allStatements) {
     if (!matchesStructure(node, identifier)) {
       return null;
     }
@@ -137,28 +189,40 @@ var jsc = (function (meriyah, astring) {
         return null;
       }
       const name = node.expression.left;
-      const body = _optionalChain$1([
-        node.expression.right,
-        'optionalAccess',
-        (_5) => _5.body,
-        'optionalAccess',
-        (_6) => _6.body,
-      ]);
-      if (name && body) {
-        options.push({ name: name, statements: body });
+      const fn = node.expression.right;
+      if (
+        name &&
+        (name.type === 'CallExpression' ||
+          name.type === 'Identifier' ||
+          name.type === 'MemberExpression') &&
+        _optionalChain$1([
+          fn,
+          'optionalAccess',
+          (_5) => _5.body,
+          'optionalAccess',
+          (_6) => _6.body,
+        ]) &&
+        !fn.async
+      ) {
+        options.push({ name: name, statements: fn.body.body });
       }
     } else if (node.type === 'VariableDeclaration') {
       for (const declaration of node.declarations) {
         const name = declaration.id;
-        const body = _optionalChain$1([
-          declaration.init,
-          'optionalAccess',
-          (_7) => _7.body,
-          'optionalAccess',
-          (_8) => _8.body,
-        ]);
-        if (name && body) {
-          options.push({ name: name, statements: body });
+        const fn = declaration.init;
+        if (
+          name &&
+          name.type === 'Identifier' &&
+          _optionalChain$1([
+            fn,
+            'optionalAccess',
+            (_7) => _7.body,
+            'optionalAccess',
+            (_8) => _8.body,
+          ]) &&
+          !fn.async
+        ) {
+          options.push({ name: name, statements: fn.body.body });
         }
       }
     }
@@ -166,17 +230,314 @@ var jsc = (function (meriyah, astring) {
       if (matchesStructure(statements, { anykey: [asdasd] })) {
         return createSolver(name);
       }
+      if (pool) {
+        const solver = matchPoolSolver(name, statements, pool, allStatements);
+        if (solver) {
+          return solver;
+        }
+      }
     }
     return null;
   }
-  function createSolver(expression) {
+  function isNode(val) {
+    return typeof val === 'object' && val !== null && 'type' in val;
+  }
+  function getPosition(node) {
+    if (!node) return null;
+    if (node.type === 'Literal' && typeof node.value === 'number') {
+      return { val: node.value, isXor: false };
+    }
+    if (node.type === 'MemberExpression' && node.computed) {
+      return getPosition(node.property);
+    }
+    if (node.type === 'BinaryExpression' && node.operator === '^') {
+      if (
+        node.right.type === 'Literal' &&
+        typeof node.right.value === 'number'
+      ) {
+        return { val: node.right.value, isXor: true };
+      }
+      if (node.left.type === 'Literal' && typeof node.left.value === 'number') {
+        return { val: node.left.value, isXor: true };
+      }
+    }
+    return null;
+  }
+  function hasNewWithTrue(node) {
+    let has = false;
+    function walk(n) {
+      if (has) return;
+      if (
+        _optionalChain$1([n, 'optionalAccess', (_9) => _9.type]) ===
+          'NewExpression' &&
+        _optionalChain$1([
+          n,
+          'access',
+          (_10) => _10.arguments,
+          'optionalAccess',
+          (_11) => _11.length,
+        ]) >= 2 &&
+        ((_optionalChain$1([
+          n,
+          'access',
+          (_12) => _12.arguments,
+          'access',
+          (_13) => _13[1],
+          'optionalAccess',
+          (_14) => _14.type,
+        ]) === 'Literal' &&
+          n.arguments[1].value === true) ||
+          (_optionalChain$1([
+            n,
+            'access',
+            (_15) => _15.arguments,
+            'access',
+            (_16) => _16[1],
+            'optionalAccess',
+            (_17) => _17.type,
+          ]) === 'UnaryExpression' &&
+            n.arguments[1].operator === '!' &&
+            n.arguments[1].argument.type === 'Literal' &&
+            n.arguments[1].argument.value === 0))
+      ) {
+        has = true;
+        return;
+      }
+      for (const child of Object.values(n)) {
+        if (Array.isArray(child)) {
+          for (const item of child) {
+            if (isNode(item)) {
+              walk(item);
+            }
+          }
+        } else if (isNode(child)) {
+          walk(child);
+        }
+      }
+    }
+    walk(node);
+    return has;
+  }
+  function findXorValue(node, pool) {
+    let result = null;
+    function walk(n) {
+      if (result) return;
+      if (
+        n.type === 'CallExpression' &&
+        n.callee.type === 'MemberExpression' &&
+        _optionalChain$1([
+          n,
+          'access',
+          (_18) => _18.arguments,
+          'optionalAccess',
+          (_19) => _19.length,
+        ]) >= 2
+      ) {
+        const k1 = getPosition(n.callee.property);
+        const k2 = getPosition(n.arguments[0]);
+        const k3 = getPosition(n.arguments[1]);
+        if (
+          k1 !== null &&
+          k2 !== null &&
+          k3 !== null &&
+          (k1.val ^ k2.val) === pool[1] &&
+          (k2.val ^ k3.val) === pool[2]
+        ) {
+          if (!k1.isXor && !k2.isXor && !k3.isXor) {
+            result = { key: 0, isDirect: true };
+            return;
+          }
+          result = { key: k1.val ^ pool[0], isDirect: false };
+          return;
+        }
+      }
+      for (const child of Object.values(n)) {
+        if (Array.isArray(child)) {
+          for (const item of child) {
+            if (isNode(item)) {
+              walk(item);
+            }
+          }
+        } else if (isNode(child)) {
+          walk(child);
+        }
+      }
+    }
+    walk(node);
+    return result;
+  }
+  function getCalleeName(callee) {
+    if (callee.type === 'Identifier') return callee.name;
+    if (
+      callee.type === 'MemberExpression' &&
+      callee.property.type === 'Identifier'
+    ) {
+      return callee.property.name;
+    }
+    if (callee.type === 'SequenceExpression') {
+      const last = callee.expressions[callee.expressions.length - 1];
+      return last ? getCalleeName(last) : null;
+    }
+    return null;
+  }
+  function findArgs(allStatements, name, key) {
+    let found = null;
+    function walk(node) {
+      if (found) return;
+      if (
+        node.type === 'CallExpression' &&
+        getCalleeName(node.callee) === name &&
+        _optionalChain$1([
+          node,
+          'access',
+          (_20) => _20.arguments,
+          'optionalAccess',
+          (_21) => _21.length,
+        ])
+      ) {
+        const a0 = node.arguments[0];
+        const a1 = node.arguments[1];
+        if (
+          _optionalChain$1([a0, 'optionalAccess', (_22) => _22.type]) ===
+            'Literal' &&
+          typeof a0.value === 'number' &&
+          _optionalChain$1([a1, 'optionalAccess', (_23) => _23.type]) ===
+            'Literal' &&
+          typeof a1.value === 'number'
+        ) {
+          if (
+            (a0.value ^ a1.value) === key ||
+            a0.value + a1.value === key ||
+            a0.value - a1.value === key
+          ) {
+            found = [a0.value, a1.value];
+            return;
+          }
+        }
+        if (
+          _optionalChain$1([a0, 'optionalAccess', (_24) => _24.type]) ===
+            'Literal' &&
+          typeof a0.value === 'number' &&
+          a0.value === key
+        ) {
+          found = [a0.value];
+          return;
+        }
+      }
+      for (const child of Object.values(node)) {
+        if (Array.isArray(child)) {
+          for (const item of child) {
+            if (isNode(item)) {
+              walk(item);
+            }
+          }
+        } else if (isNode(child)) {
+          walk(child);
+        }
+      }
+    }
+    for (const s of allStatements) {
+      walk(s);
+      if (found) break;
+    }
+    return found;
+  }
+  function resolveOp(node, key) {
+    let init = null;
+    if (node.type === 'VariableDeclaration') {
+      for (const decl of node.declarations) {
+        if (decl.init) {
+          init = decl.init;
+          break;
+        }
+      }
+    } else if (
+      node.type === 'ExpressionStatement' &&
+      node.expression.type === 'AssignmentExpression'
+    ) {
+      init = node.expression.right;
+    }
+    if (!init) return null;
+    if (init.type === 'MemberExpression') {
+      return `${astring.generate(init)} = ${key}`;
+    }
+    if (init.type === 'BinaryExpression') {
+      const isLeftMember = init.left.type === 'MemberExpression';
+      const slot = isLeftMember ? init.left : init.right;
+      const lit = isLeftMember ? init.right : init.left;
+      if (
+        slot.type !== 'MemberExpression' ||
+        _optionalChain$1([lit, 'optionalAccess', (_25) => _25.type]) !==
+          'Literal' ||
+        typeof lit.value !== 'number'
+      ) {
+        return null;
+      }
+      const val = lit.value;
+      switch (init.operator) {
+        case '%':
+          return `${astring.generate(slot)} = ${val > key ? key : key + val}`;
+        case '^':
+          return `${astring.generate(slot)} = ${key ^ val}`;
+        case '+':
+          return `${astring.generate(slot)} = ${key - val}`;
+        case '-':
+          return `${astring.generate(slot)} = ${isLeftMember ? key + val : val - key}`;
+        case '&':
+        case '|':
+          return `${astring.generate(slot)} = ${key}`;
+      }
+    }
+    return null;
+  }
+  function matchPoolSolver(identifier, bodyStatements, pool, allStatements) {
+    const node = { type: 'BlockStatement', body: bodyStatements };
+    if (!hasNewWithTrue(node)) return null;
+    const found = findXorValue(node, pool);
+    if (!found) return null;
+    if (found.isDirect) {
+      return createSolver(identifier);
+    }
+    if (allStatements) {
+      const name =
+        identifier.type === 'Identifier'
+          ? identifier.name
+          : identifier.type === 'MemberExpression' &&
+              identifier.property.type === 'Identifier'
+            ? identifier.property.name
+            : null;
+      if (name) {
+        const args = findArgs(allStatements, name, found.key);
+        if (args) {
+          return createSolver(identifier, args);
+        }
+      }
+    }
+    for (const stmt of bodyStatements.slice(0, 5)) {
+      const code = resolveOp(stmt, found.key);
+      if (code) {
+        return createSolver(identifier, undefined, code);
+      }
+    }
+    return null;
+  }
+  function createSolver(expression, args, code) {
+    const moreArgs = args && args.length ? `${args.join(', ')}, ` : '';
+    const prefix = code ? `${code};\n  ` : '';
     return generateArrowFunction(
-      `\n({sig, n}) => {\n  const url = (${astring.generate(expression)})("https://youtube.com/watch?v=yt-dlp-wins", "s", sig ? encodeURIComponent(sig) : undefined);\n  url.set("n", n);\n  const proto = Object.getPrototypeOf(url);\n  const keys = Object.keys(proto).concat(Object.getOwnPropertyNames(proto));\n  for (const key of keys) {\n    if (!["constructor", "set", "get", "clone"].includes(key)) {\n      url[key]();\n      break;\n    }\n  }\n  const s = url.get("s");\n  return {\n    sig: s ? decodeURIComponent(s) : null,\n    n: url.get("n") ?? null,\n  };\n}\n`,
+      `\n({sig, n}) => {\n  ${prefix}const url = (${astring.generate(expression)})(${moreArgs}"https://youtube.com/watch?v=yt-dlp-wins", "s", sig ? encodeURIComponent(sig) : undefined);\n  url.set("n", n);\n  const proto = Object.getPrototypeOf(url);\n  const keys = Object.keys(proto).concat(Object.getOwnPropertyNames(proto));\n  for (const key of keys) {\n    if (!["constructor", "set", "get", "clone"].includes(key)) {\n      url[key]();\n      break;\n    }\n  }\n  const s = url.get("s");\n  return {\n    sig: s ? decodeURIComponent(s) : null,\n    n: url.get("n") ?? null,\n  };\n}\n`,
     );
   }
   const setupNodes = meriyah.parse(
-    `\nif (typeof globalThis.XMLHttpRequest === "undefined") {\n    globalThis.XMLHttpRequest = { prototype: {} };\n}\nif (typeof URL === "undefined") {\n    globalThis.location = {\n        hash: "",\n        host: "www.youtube.com",\n        hostname: "www.youtube.com",\n        href: "https://www.youtube.com/watch?v=yt-dlp-wins",\n        origin: "https://www.youtube.com",\n        password: "",\n        pathname: "/watch",\n        port: "",\n        protocol: "https:",\n        search: "?v=yt-dlp-wins",\n        username: "",\n    };\n} else {\n    globalThis.location = new URL("https://www.youtube.com/watch?v=yt-dlp-wins");\n}\nif (typeof globalThis.document === "undefined") {\n    globalThis.document = Object.create(null);\n}\nif (typeof globalThis.navigator === "undefined") {\n    globalThis.navigator = Object.create(null);\n}\nif (typeof globalThis.self === "undefined") {\n    globalThis.self = globalThis;\n}\nif (typeof globalThis.window === "undefined") {\n    globalThis.window = globalThis;\n}\n`,
+    `\nif (typeof globalThis.XMLHttpRequest === "undefined") {\n    globalThis.XMLHttpRequest = { prototype: {} };\n}\nif (typeof URL === "undefined") {\n    globalThis.location = {\n        hash: "",\n        host: "www.youtube.com",\n        hostname: "www.youtube.com",\n        href: "https://www.youtube.com/watch?v=yt-dlp-wins",\n        origin: "https://www.youtube.com",\n        password: "",\n        pathname: "/watch",\n        port: "",\n        protocol: "https:",\n        search: "?v=yt-dlp-wins",\n        username: "",\n    };\n} else {\n    globalThis.location = new URL("https://www.youtube.com/watch?v=yt-dlp-wins");\n}\nif (typeof globalThis.document === "undefined") {\n    globalThis.document = Object.create(null);\n}\nif (typeof globalThis.navigator === "undefined") {\n    globalThis.navigator = Object.create(null);\n}\nif (typeof globalThis.self === "undefined") {\n    globalThis.self = globalThis;\n}\nif (typeof globalThis.window === "undefined") {\n    globalThis.window = globalThis;\n}\nglobalThis.window.location = globalThis.location;\n`,
   ).body;
+  function _nullishCoalesce(lhs, rhsFn) {
+    if (lhs != null) {
+      return lhs;
+    } else {
+      return rhsFn();
+    }
+  }
   function _optionalChain(ops) {
     let lastAccessLHS = undefined;
     let value = ops[0];
@@ -225,6 +586,7 @@ var jsc = (function (meriyah, astring) {
   function modifyPlayer(program) {
     const body = program.body;
     const block = (() => {
+      let block = null;
       switch (body.length) {
         case 1: {
           const func = body[0];
@@ -235,7 +597,7 @@ var jsc = (function (meriyah, astring) {
             func.expression.callee.type === 'MemberExpression' &&
             func.expression.callee.object.type === 'FunctionExpression'
           ) {
-            return func.expression.callee.object.body;
+            block = func.expression.callee.object.body;
           }
           break;
         }
@@ -247,30 +609,98 @@ var jsc = (function (meriyah, astring) {
             func.expression.type === 'CallExpression' &&
             func.expression.callee.type === 'FunctionExpression'
           ) {
-            const block = func.expression.callee.body;
-            block.body.splice(0, 1);
-            return block;
+            block = func.expression.callee.body;
+            _optionalChain([
+              block,
+              'optionalAccess',
+              (_3) => _3.body,
+              'access',
+              (_4) => _4.splice,
+              'call',
+              (_5) => _5(0, 1),
+            ]);
           }
           break;
         }
       }
-      throw 'unexpected structure';
+      if (!block) {
+        throw 'unexpected structure';
+      }
+      return block;
     })();
+    const prototypeHelpers = findPrototypeHelpers(block.body);
     block.body = block.body.filter((node) => {
       if (node.type === 'ExpressionStatement') {
-        if (node.expression.type === 'AssignmentExpression') {
-          return true;
+        if (node.expression.type === 'CallExpression') {
+          const call = node.expression;
+          return prototypeHelpers.some((identifier) =>
+            matchesStructure(call.callee, identifier),
+          );
         }
-        return node.expression.type === 'Literal';
+        return (
+          node.expression.type === 'AssignmentExpression' ||
+          node.expression.type === 'Literal'
+        );
       }
       return true;
     });
     return block.body;
   }
+  function findPrototypeHelpers(body) {
+    const result = [];
+    for (const node of body) {
+      if (
+        node.type !== 'ExpressionStatement' ||
+        node.expression.type !== 'AssignmentExpression' ||
+        node.expression.right.type !== 'FunctionExpression' ||
+        node.expression.left.type.endsWith('Pattern')
+      ) {
+        continue;
+      }
+      const func = node.expression.right;
+      for (const line of _nullishCoalesce(
+        _optionalChain([
+          func,
+          'access',
+          (_6) => _6.body,
+          'optionalAccess',
+          (_7) => _7.body,
+        ]),
+        () => [],
+      )) {
+        if (
+          line.type === 'ExpressionStatement' &&
+          line.expression.type === 'AssignmentExpression' &&
+          line.expression.left.type === 'MemberExpression' &&
+          line.expression.left.property.type === 'Identifier' &&
+          line.expression.left.property.name === 'prototype'
+        ) {
+          result.push(makePrototypeHelpersIdentifier(node.expression.left));
+          break;
+        }
+      }
+    }
+    return result;
+  }
+  function makePrototypeHelpersIdentifier(member) {
+    if (member.type === 'MemberExpression' && member.object.type !== 'Super') {
+      const object = makePrototypeHelpersIdentifier(member.object);
+      const property = makePrototypeHelpersIdentifier(member.property);
+      if (!object || !property) {
+        return null;
+      }
+      return { type: member.type, object: object, property: property };
+    }
+    if (member.type === 'Identifier') {
+      return { type: member.type, name: member.name };
+    }
+    return null;
+  }
   function getSolutions(statements) {
     const found = { n: [], sig: [] };
+    const pool = extractArray(statements);
     for (const statement of statements) {
-      const result = extract(statement);
+      const result = extract(statement, pool, statements);
       if (result) {
         found.n.push(makeSolver(result, { type: 'Identifier', name: 'n' }));
         found.sig.push(makeSolver(result, { type: 'Identifier', name: 'sig' }));

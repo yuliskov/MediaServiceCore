@@ -175,6 +175,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
             || (serverAbrStreamingUrl != null && videoPlaybackUstreamerConfig != null))
 
     override fun containsDashFormats() = containsAdaptiveVideoFormats() && getAdaptiveFormats()?.firstOrNull()?.getFormatType() == MediaFormat.FORMAT_TYPE_DASH
+            && !isDashLiveBroken()
 
     private fun containsAdaptiveVideoFormats() = _containsAdaptiveVideoFormats
 
@@ -233,7 +234,7 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         return YouTubeMediaItemStoryboard.from(storyboard)
     }
 
-    override fun isUnplayable() = _isUnplayable
+    override fun isUnplayable() = _isUnplayable || isLiveBroken()
 
     override fun isSynced() = _isSynced
 
@@ -435,4 +436,9 @@ internal data class MediaItemFormatInfoImpl(private val playerResult: PlayerResu
         // Reportedly, live SABR formats do not work on some accounts
         return !containsDashFormats() && _isLive
     }
+
+    private fun isLiveBroken() = isDashLiveBroken() && !MediaServiceData.instance().isSabrLiveEnabled
+
+    // Not enough info for full length live streams with DASH
+    private fun isDashLiveBroken() = isLive && startTimeMs == 0L
 }

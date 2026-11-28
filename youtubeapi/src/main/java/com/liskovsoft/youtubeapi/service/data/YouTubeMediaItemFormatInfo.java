@@ -14,6 +14,7 @@ import com.liskovsoft.youtubeapi.formatbuilders.hlsbuilder.YouTubeUrlListBuilder
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser;
 import com.liskovsoft.youtubeapi.formatbuilders.storyboard.YouTubeStoryParser.Storyboard;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.youtubeapi.videoinfo.models.CaptionTrack;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoDetails;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
@@ -242,7 +243,7 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean containsDashFormats() {
-        return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_DASH;
+        return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_DASH && !isDashLiveBroken();
     }
     
     private boolean containsAdaptiveVideoFormats() {
@@ -358,7 +359,16 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
 
     @Override
     public boolean isUnplayable() {
-        return mIsUnplayable;
+        return mIsUnplayable || isLiveBroken();
+    }
+
+    private boolean isLiveBroken() {
+        return isDashLiveBroken() && !MediaServiceData.instance().isSabrLiveEnabled();
+    }
+
+    private boolean isDashLiveBroken() {
+        // Not enough info for full length live streams with DASH
+        return isLive() && getStartTimeMs() == 0;
     }
 
     @Override

@@ -78,7 +78,7 @@ class WebPlayerDataExtractorTest {
 
     @Test
     fun testThatTVAndWebHasSameResult() {
-        val urlTV = AppConstants.playerUrls.first()
+        val urlTV = AppConstants.playerUrls.first().replace("-tcl", "")
         val urlWeb = urlTV.replace("/tv-player-es6.vflset/tv-player-es6.js", "/player_es6.vflset/en_US/base.js")
 
         assertNotEquals("Using tv and web urls", urlTV, urlWeb)
